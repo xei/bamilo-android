@@ -51,8 +51,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
 
-    private static CheckoutSummaryFragment sOrderSummaryFragment;
-
     private ViewGroup mProductList;
 
     private TextView mSubTotal;
@@ -93,7 +91,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
         //if (mOrderSummaryFragment == null) 
-        sOrderSummaryFragment = new CheckoutSummaryFragment();
+        CheckoutSummaryFragment sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
         sOrderSummaryFragment.mCheckoutStep = checkoutStep;
         // Save order summary
@@ -493,11 +491,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
     
@@ -521,10 +519,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditProdButton() {
         Log.i(TAG, "ON CLICK: EDIT PROD");
-        if(FragmentController.getInstance().hasEntry(FragmentType.SHOPPING_CART.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHOPPING_CART.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHOPPING_CART.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -533,10 +530,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditAddessButton() {
         Log.i(TAG, "ON CLICK: EDIT ADDRESS");
-        if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -544,10 +540,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditMethodButton() {
         Log.i(TAG, "ON CLICK: EDIT METHOD");
-        if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**
@@ -623,7 +618,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
-            getBaseActivity().updateNavigationMenu();
             hideActivityProgress();
             showFragmentContentContainer();
             break;

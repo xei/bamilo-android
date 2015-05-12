@@ -3,11 +3,15 @@ package com.mobile.helpers;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
+import android.text.TextUtils;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Errors;
+import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -25,9 +29,9 @@ import de.akquinet.android.androlog.Log;
 /**
  * Base helper for the test app. The helper is responsible for generating the bundle for the api
  * call and parse the http response
- * 
+ *
  * @author Guilherme Silva
- * 
+ *
  */
 public abstract class BaseHelper {
     private static String TAG = BaseHelper.class.getSimpleName();
@@ -45,7 +49,7 @@ public abstract class BaseHelper {
 
     /**
      * Creates the bundle for the request
-     * 
+     *
      * @return
      */
     public abstract Bundle generateRequestBundle(Bundle bundle);
@@ -53,7 +57,7 @@ public abstract class BaseHelper {
     /**
      * Checks the response status of the response that came in a bundle in order to evaluate if its
      * a valid response or not
-     * 
+     *
      * @param bundle
      * @return
      */
@@ -96,7 +100,7 @@ public abstract class BaseHelper {
                 handleError(messagesObject, bundle);
                 return parseResponseErrorBundle(bundle, metaData);
             }
-            
+
         } catch (JSONException e) {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
@@ -152,7 +156,7 @@ public abstract class BaseHelper {
     /**
      * In case there as a valid json response, but that contains an error indication, be it due to
      * wrong parameters or something else this is the method used to parse that error
-     * 
+     *
      * @return
      */
     public Bundle parseResponseErrorBundle(Bundle bundle) {
@@ -162,7 +166,7 @@ public abstract class BaseHelper {
     /**
      * In case there as a valid json response, but that contains an error indication, be it due to
      * wrong parameters or something else this is the method used to parse that error
-     * 
+     *
      * @return
      */
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
@@ -171,7 +175,7 @@ public abstract class BaseHelper {
 
     /**
      * Parses a correct json response
-     * 
+     *
      * @param bundle
      * @return
      */
@@ -180,7 +184,7 @@ public abstract class BaseHelper {
     /**
      * Parses the bundle from the error response - This parses errors of generic factors: TIMEOUT,
      * PROTOCOL ERROR, SOCKET ERROR among others
-     * 
+     *
      * @param bundle
      * @return
      */
@@ -188,7 +192,7 @@ public abstract class BaseHelper {
 
     /**
      * Create a request with parameters.
-     * 
+     *
      * @param request
      * @param params
      * @return string, the url with parameters
@@ -204,5 +208,14 @@ public abstract class BaseHelper {
             uriBuilder.appendQueryParameter(key, params.getString(key));
         // Return the new
         return uriBuilder.build().toString();
+    }
+
+    /**
+     * Remove the url from http cache validating the request cache definition.
+     */
+    public void removeRequestFromHttpCache(String url, EventType type) {
+        if (!TextUtils.isEmpty(url) && type != null && type.cacheTime != RestContract.NO_CACHE) {
+            RestClientSingleton.getSingleton(JumiaApplication.INSTANCE).removeEntry(url);
+        }
     }
 }

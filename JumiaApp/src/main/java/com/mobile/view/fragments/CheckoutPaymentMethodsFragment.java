@@ -59,8 +59,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private static final String TAG = LogTagHelper.create(CheckoutPaymentMethodsFragment.class);
 
     private static final String SAVED_STATE = "saved_state";
-    
-    private static CheckoutPaymentMethodsFragment paymentMethodsFragment;
 
     private ViewGroup paymentMethodsContainer;
     
@@ -82,8 +80,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private String paymentName = "";
     
     /**
-     * 
-     * @return
+     * Get new instance of CheckoutPaymentMethodsFragment.
+     * @return CheckoutPaymentMethodsFragment
      */
     public static CheckoutPaymentMethodsFragment getInstance() {
         return new CheckoutPaymentMethodsFragment();
@@ -288,7 +286,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private void generateNoPayment(){
         paymentMethodsContainer.removeAllViews();
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-        View view = mLayoutInflater.inflate(R.layout.no_payment_layout, null);
+        View view = mLayoutInflater.inflate(R.layout.no_payment_layout, paymentMethodsContainer, false);
         paymentMethodsContainer.addView(view);
         prepareCouponView();
         paymentMethodsContainer.refreshDrawableState();
@@ -349,11 +347,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
     
@@ -377,16 +375,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         if(formGenerator != null){
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
-                // JumiaApplication.INSTANCE.setPaymentMethod(values);
-                 paymentName = values.getAsString("name");
+                paymentName = values.getAsString("name");
                 triggerSubmitPaymentMethod(values);
             } else {
                 Toast.makeText(getActivity(), getString(R.string.please_fill_all_data),Toast.LENGTH_SHORT).show();
             }
         } else if (noPaymentNeeded) {
-         // Get next step
+            // Get next step
             FragmentType nextFragment = FragmentType.MY_ORDER;
-            
             Bundle bundle = new Bundle();
             bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderSummary);
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -421,13 +417,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     /**
      * ############# RESPONSE #############
      */
-  
-    protected boolean onSuccessEvent(Bundle bundle) {
+
+    @Override
+    public void onRequestComplete(Bundle bundle) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -448,36 +445,23 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 loadForm(form);                
             }
-
             updateVoucher(orderSummary);
-
             break;
         case SET_PAYMENT_METHOD_EVENT:
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            // Get order summary
-            OrderSummary orderFinish = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-            Log.d(TAG, "ORDER SUMMARY: " + orderFinish.toString());
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
-            
-            Bundle params = new Bundle();
-            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-            params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentName);    
-            TrackerDelegator.trackPaymentMethod(params);
-            
+            // Tracking
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+            TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
-            bundle.clear();
-            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderFinish);
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
-
-            
             break;
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
-            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             noPaymentNeeded = false;
             removeVoucher = true;
@@ -487,7 +471,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
-            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             triggerGetPaymentMethods();
             removeVoucher = false;
@@ -495,60 +478,50 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         default:
             break;
         }
-        
-        return true;
     }
-    
 
-    protected boolean onErrorEvent(Bundle bundle) {
-        
+
+    @Override
+    public void onRequestError(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-        
     	// Generic error
         if (super.handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
+            return;
         }
-        
+        // Get event type and error
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
+        // Validate event type
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:
-            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            Log.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_PAYMENT_METHOD_EVENT:
+            Log.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             //GTM TRACKING
-            ContentValues values = new ContentValues();
             if(formGenerator != null){
-                values = formGenerator.save();
+                ContentValues values = formGenerator.save();
                 if(values != null && values.containsKey("name") && null != JumiaApplication.INSTANCE.getCart()){
                     String paymentMethod = values.getAsString("name");
                     TrackerDelegator.trackFailedPayment(paymentMethod, JumiaApplication.INSTANCE.getCart().getCartValueEuroConverted());
                 }
             }
-            
-
-            Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
             voucherCode.setText("");
             voucherError.setVisibility(View.VISIBLE);
-            // voucherDivider.setBackgroundColor(R.color.red_middle);
             hideActivityProgress();
             break;
         default:
             break;
         }
-        
-        
-        return false;
     }
     
     /**
@@ -576,23 +549,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private void triggerGetPaymentMethods(){
         Log.i(TAG, "TRIGGER: GET PAYMENT METHODS");
         triggerContentEvent(new GetPaymentMethodsHelper(), null, this);
-    }
-    
-    /**
-     * ########### RESPONSE LISTENER ###########  
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
-    }
-        
-    @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
     }
 
 }

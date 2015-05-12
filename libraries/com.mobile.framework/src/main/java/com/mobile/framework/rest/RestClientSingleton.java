@@ -75,104 +75,102 @@ import de.akquinet.android.androlog.Log;
  * the current session. It is always possible to set the session id manually.
  * The client itself updates the session id everytime a new session id is
  * received. If there is a session id it will be send with each request.
- * 
+ *
  * provides methods to send REST Requests
- * 
+ *
  * GET POST PUT DELETE
- * 
+ *
  * notifies the Processor the state of the current REST Methodcall
- * 
+ *
  * @see https://code.google.com/p/httpclientandroidlib/
- * 
+ *
  * @author Jacob Zschunke
  *
  */
 public final class RestClientSingleton {
-	
+
 	private static final String TAG = RestClientSingleton.class.getSimpleName();
-	
+
 	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
 
-    public static RestClientSingleton sRestClientSingleton;
-	
-	private DarwinHttpClient mDarwinHttpClient;
-	
+	private static final int SC_SERVER_OVERLOAD = 429;
+
+	public static RestClientSingleton sRestClientSingleton;
+
 	private HttpClient mHttpClient;
-	
+
 	private PersistentCookieStore mCookieStore;
-	
+
 	private HttpContext mHttpContext;
-	
+
 	private DBHttpCacheStorage mCacheStore;
-	
+
 	private ConnectivityManager mConnManager;
-	
+
 	private Context mContext;
 
 	/**
 	 * Create a singleton instance
-	 * @param context
 	 * @return RestClientSingleton
 	 * @author spereira
 	 */
-    public static synchronized RestClientSingleton getSingleton(Context context) {
-        // Validate the current reference
-        return sRestClientSingleton == null ? sRestClientSingleton = new RestClientSingleton(context) : sRestClientSingleton;
-    }
-	
+	public static synchronized RestClientSingleton getSingleton(Context context) {
+		// Validate the current reference
+		return sRestClientSingleton == null ? sRestClientSingleton = new RestClientSingleton(context) : sRestClientSingleton;
+	}
+
 	/**
 	 * Constructor
-	 * @param context
 	 * @author spereira
 	 */
 	private RestClientSingleton(Context context) {
-	    Log.i(TAG, "CONSTRUCTOR");
-	    // Save context
-	    this.mContext = context;
-	    // Save connectivity manager
-	    this.mConnManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    // Initialize rest client
-	    this.init();
+		Log.i(TAG, "CONSTRUCTOR");
+		// Save context
+		this.mContext = context;
+		// Save connectivity manager
+		this.mConnManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		// Initialize rest client
+		this.init();
 	}
-	
+
 	/**
 	 * Initialize all components.
 	 * @author spereira
 	 */
-    public void init(){
-        Log.i(TAG, "ON INITIALIZE");
-        
-        CacheConfig cacheConfig = new CacheConfig();
-        cacheConfig.setMaxCacheEntries(100);
-        cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
-        cacheConfig.setSharedCache(false);
-        mCacheStore = new DBHttpCacheStorage(mContext, cacheConfig);
-        mDarwinHttpClient = new DarwinHttpClient(getHttpParams());
-        setAuthentication(mContext, mDarwinHttpClient);
+	public void init(){
+		Log.i(TAG, "ON INITIALIZE");
 
-        CachingHttpClient cachingClient = new CachingHttpClient(mDarwinHttpClient, mCacheStore, cacheConfig);
-        cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
-        if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-            cachingClient.log.enableWarn(true);
-            cachingClient.log.enableInfo(true);
-            cachingClient.log.enableTrace(true);
-        }
+		CacheConfig cacheConfig = new CacheConfig();
+		cacheConfig.setMaxCacheEntries(100);
+		cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
+		cacheConfig.setSharedCache(false);
+		mCacheStore = new DBHttpCacheStorage(mContext, cacheConfig);
+		DarwinHttpClient mDarwinHttpClient = new DarwinHttpClient(getHttpParams());
+		setAuthentication(mContext, mDarwinHttpClient);
 
-        mHttpClient = new DecompressingHttpClient(cachingClient);
-        mHttpContext = new BasicHttpContext();
-        mCookieStore = new PersistentCookieStore(mContext);
-        mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
-        
-        // Set the default or custom user agent
-        setHttpUserAgent();
-    }
+		CachingHttpClient cachingClient = new CachingHttpClient(mDarwinHttpClient, mCacheStore, cacheConfig);
+		cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
+		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+			cachingClient.log.enableWarn(true);
+			cachingClient.log.enableInfo(true);
+			cachingClient.log.enableTrace(true);
+		}
+
+		mHttpClient = new DecompressingHttpClient(cachingClient);
+		mHttpContext = new BasicHttpContext();
+		mCookieStore = new PersistentCookieStore(mContext);
+		mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+
+		// Set the default or custom user agent
+		setHttpUserAgent();
+	}
 
 
 	
     /*
      * ############# HTTP PARAMS #############
      */
-	
+
 	/**
 	 * Method used to set the user agent
 	 * @author sergiopereira
@@ -190,40 +188,40 @@ public final class RestClientSingleton {
     /*
      * ############# COOKIE #############
      */
-    
-    /**
-     * Get the Cookie store
-     * @return CookieStore
-     * @author spereira
-     */
-    public CookieStore getCookieStore() {
-        return mCookieStore;
-    }
-    
-    /**
-     * Clear all cookies from Cookie Store.
-     * @author spereira
-     */
-    public void clearCookieStore() {
-        mCookieStore.clear();
-    }
-    
-    /**
-     * Return all cookies from CookieStore.
-     * @return list of cookies
-     * @author spereira
-     */
-    public List<Cookie> getCookies() {
-        return mCookieStore.getCookies();
-    }
-    
-    /**
-     * Persist session cookie.
-     * @author spereira
-     */
-    public void persistSessionCookie() {
-        mCookieStore.saveSessionCookie();
-    }
+
+	/**
+	 * Get the Cookie store
+	 * @return CookieStore
+	 * @author spereira
+	 */
+	public CookieStore getCookieStore() {
+		return mCookieStore;
+	}
+
+	/**
+	 * Clear all cookies from Cookie Store.
+	 * @author spereira
+	 */
+	public void clearCookieStore() {
+		mCookieStore.clear();
+	}
+
+	/**
+	 * Return all cookies from CookieStore.
+	 * @return list of cookies
+	 * @author spereira
+	 */
+	public List<Cookie> getCookies() {
+		return mCookieStore.getCookies();
+	}
+
+	/**
+	 * Persist session cookie.
+	 * @author spereira
+	 */
+	public void persistSessionCookie() {
+		mCookieStore.saveSessionCookie();
+	}
 	
     /*
      * ############# GET #############
@@ -240,7 +238,7 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "executeGetRestUrlString original: " + uri.toString());
 		}
-		
+
 		// Get event type
 		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 		// Validate if is ventures.json
@@ -249,22 +247,19 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executeGetRestUrlString complete: " + url);
 		}
-		
-		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+		try {
+			HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
+			return executeHttpRequest(httpRequest, mHandler, metaData);
+		} catch (IllegalArgumentException ex){
+			// Catch error in case of malformed url
+			Log.e(TAG, ex.getLocalizedMessage(), ex);
+			return executeHttpRequest(new HttpGet(""), mHandler,metaData);
+		}
 	}
-	
+
 	/**
 	 * Sends a HTTP POST request with formData to the given url and returns the
 	 * response as String (e.g. a json string).
-	 * 
-	 * @param ctx
-	 *            Used for the RestProcessor to call getContentResolver and
-	 *            store the state in the database
-	 * @param urlString
-	 *            the URL to send the HTTP request
-	 * @param formData
-	 *            name - value pairs of the form to send with the request
 	 * @return the response as String e.g. a json string
 	 */
 	public String executePostRestUrlString(Uri uri, ContentValues formData, Handler mHandler, Bundle metaData) {
@@ -272,124 +267,129 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "executePostRestUrlString original: " + uri.toString());
 		}
-		
+
 		// Get event type
 		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 		// Validate if is ventures.json
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
-		
+
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executePostRestUrlString complete: " + url);
 		}
-		
-		HttpPost httpRequest = new HttpPost(url);
 
-		List<NameValuePair> params = new ArrayList<>();
-		if(formData != null){
-			for (Entry<String, Object> entry : formData.valueSet()) {
-				Object value = entry.getValue();
-				if (value == null) {
-					Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
-					continue;
-				}
-	
-				params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
-				if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-					Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
+		try {
+			HttpPost httpRequest = new HttpPost(url);
+
+			List<NameValuePair> params = new ArrayList<>();
+			if (formData != null) {
+				for (Entry<String, Object> entry : formData.valueSet()) {
+					Object value = entry.getValue();
+					if (value == null) {
+						Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
+						continue;
+					}
+
+					params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
+					if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+						Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
+					}
 				}
 			}
-		}
-		
-		httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
 
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+			httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+			return executeHttpRequest(httpRequest, mHandler, metaData);
+		} catch(IllegalArgumentException ex){
+			// Catch error in case of malformed url
+			Log.e(TAG, ex.getLocalizedMessage(), ex);
+			return executeHttpRequest(new HttpPost(""), mHandler,metaData);
+		}
 	}
 
 	/**
 	 * Executes a HTTPRequest and protocols the state of that request.
-	 * 
-	 * @param httpRequest
-	 *            the request to execute
-	 * @param processor
-	 *            the logger which stores and updates the state in the database
 	 * @return the response as String e.g. json string
 	 */
 	private String executeHttpRequest(HttpUriRequest httpRequest, Handler mHandler, Bundle metaData) {
 		Log.i("TRACK", "ON EXECUTE HTTP REQUEST");
-		
+
 		String result = "";
 		String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
-		
+
 		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-		
+
 		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
 
-        EventTask eventTask = (EventTask)metaData.getSerializable(Constants.BUNDLE_EVENT_TASK);
+		EventTask eventTask = (EventTask)metaData.getSerializable(Constants.BUNDLE_EVENT_TASK);
 
 		if(!checkConnection()){
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.NO_NETWORK, result, md5, priority, eventTask));
 		}
 
 		metaData.putString(IMetaData.URI, httpRequest.getURI().toString());
-		
+
 		// Validate cache
-		if(RestContract.RUNNING_TESTS){
-			
+		// CASE TESTS
+		if (RestContract.RUNNING_TESTS) {
 			httpRequest.addHeader(HeaderConstants.CACHE_CONTROL,HeaderConstants.CACHE_CONTROL_NO_CACHE);
-		}else{
+		}
+		// CASE NORMAL
+		else{
 			if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE) || eventType.cacheTime == RestContract.NO_CACHE) {
 				Log.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
 				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
-			} else {			
+			} else {
 				Log.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
 				String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + eventType.cacheTime + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
 				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
 			}
 		}
-		
+
 
 		HttpResponse response = null;
 		HttpEntity entity = null;
-		
+
 		// Start time 
 		long startTimeMillis = System.currentTimeMillis();
-		
+
 		try {
 			response = mHttpClient.execute(httpRequest, mHttpContext);
 			int statusCode = response.getStatusLine().getStatusCode();
-			
+
 			if (statusCode != HttpStatus.SC_OK) {
 				ClientProtocolException e = new ClientProtocolException();
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
+				} else if(statusCode == SC_SERVER_OVERLOAD){
+					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_OVERLOAD, result, md5, priority,eventTask));
+					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_OVERLOAD, result, false, startTimeMillis);
 				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
 				}
-				
+
 				EntityUtils.consumeQuietly(response.getEntity());
 				Log.w(TAG, "Got bad status code for request: " + httpRequest.getURI() + " -> " + statusCode);
-				
+
 				return null;
 			}
 
 			CacheResponseStatus responseStatus = (CacheResponseStatus) mHttpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
 			switch (responseStatus) {
-			case CACHE_HIT:
-				Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
-				break;
-			case CACHE_MODULE_RESPONSE:
-				Log.d(TAG, "CACHE RESPONSE STATUS: The response came directly by the caching module");
-				break;
-			case CACHE_MISS:
-				Log.d(TAG, "CACHE RESPONSE STATUS: The response came from an upstream server");
-				break;
-			case VALIDATED:
-				Log.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
-				break;
+				case CACHE_HIT:
+					Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
+					break;
+				case CACHE_MODULE_RESPONSE:
+					Log.d(TAG, "CACHE RESPONSE STATUS: The response came directly by the caching module");
+					break;
+				case CACHE_MISS:
+					Log.d(TAG, "CACHE RESPONSE STATUS: The response came from an upstream server");
+					break;
+				case VALIDATED:
+					Log.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
+					break;
 			}
-			
+
 //			//String cacheWarning = null;
 //			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 //				Header[] headers = response.getAllHeaders();
@@ -415,7 +415,7 @@ public final class RestClientSingleton {
 //			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 //				Log.d(TAG, "currentUrl: " + currentUrl);
 //			}
-			
+
 			// metaData.putString(IMetaData.LOCATION, currentUrl);
 
 			entity = response.getEntity();
@@ -427,23 +427,22 @@ public final class RestClientSingleton {
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
-			
-            // Save the session cookie into preferences
-            persistSessionCookie();
-			
-			// FIXME - OutOfMemoryError
+
+			// Save the session cookie into preferences
+			persistSessionCookie();
+
 			result = EntityUtils.toString(entity, Consts.UTF_8);
 			Log.i(TAG, "API RESPONSE : " + result);
-			
+
 			// Get the byte count response
-            int byteCountResponse = result.getBytes().length;
+			int byteCountResponse = result.getBytes().length;
 			// closes the stream
 			EntityUtils.consumeQuietly(entity);
 			// Send success message
-			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,eventTask, startTimeMillis, byteCountResponse));
+			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority, eventTask, startTimeMillis, byteCountResponse));
 			// Return the result string
 			return result;
-			
+
 		} catch (ClientProtocolException e) {
 			Log.d("TRACK", "ClientProtocolException");
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
@@ -480,10 +479,10 @@ public final class RestClientSingleton {
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (OutOfMemoryError e) {
-            Log.d("TRACK", "OutOfMemoryError");
-            Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
-            trackError(mContext, null, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
+			Log.d("TRACK", "OutOfMemoryError");
+			Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
+			trackError(mContext, null, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (Exception e) {
 			Log.d("TRACK", "Exception");
 			e.printStackTrace();
@@ -507,19 +506,19 @@ public final class RestClientSingleton {
 	private static void setAuthentication(Context mContext, DefaultHttpClient httpClient) {
 		if(RestContract.RUNNING_TESTS){
 			httpClient.getCredentialsProvider()
-			.setCredentials(
-					new AuthScope(RestContract.REQUEST_HOST, AuthScope.ANY_PORT),
-					new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER_TEST, RestContract.AUTHENTICATION_PASS_TEST));
+					.setCredentials(
+							new AuthScope(RestContract.REQUEST_HOST, AuthScope.ANY_PORT),
+							new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER_TEST, RestContract.AUTHENTICATION_PASS_TEST));
 			return;
 		}
-		
+
 		if(RestContract.USE_AUTHENTICATION == null){
 			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-	        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-	        if(shopId == null){
-	        	throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
-	        }
-	        
+			String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+			if(shopId == null){
+				throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
+			}
+
 			RestContract.init(mContext, "" + shopId);
 			Darwin.initialize(mContext, "" + shopId);
 		}
@@ -530,39 +529,14 @@ public final class RestClientSingleton {
 							new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS));
 		}
 	}
-    
+
 	private boolean checkConnection() {
 		NetworkInfo networkInfo = mConnManager.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
-	/*-public void removeEntryFromCache(String url) {
-
-		if (url == null) {
-			Log.w(TAG, "REMOVE ENTRY FROM CACHE: URL IS NULL !");
-			return;
-		}
-
-		Uri uri = RemoteService.completeUri(Uri.parse(url));
-		SchemeRegistry sr = mDarwinHttpClient.getConnectionManager().getSchemeRegistry();
-		Scheme s = sr.getScheme(uri.getScheme());
-		uri = uri.buildUpon().authority(uri.getAuthority() + ":" + String.valueOf(s.getDefaultPort())).build();
-		String newUrl = Uri.decode(uri.toString());
-		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "Removing entry from cache: " + newUrl);
-		}
-		try {
-			mCacheStore.removeEntry(newUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
-
-	
 	/**
 	 * Method used to move an entry for other key, (TEASERS)
-	 * @param url1
-	 * @param url2
 	 * @author sergiopereira
 	 */
 	public void moveEntryInCache(String url1, String url2) {
@@ -576,32 +550,26 @@ public final class RestClientSingleton {
 			mCacheStore.putEntry(uri2, entry);
 			// Remove entry for url1
 			mCacheStore.removeEntry(uri1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
+		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
 	}
 
-    /**
-     * Remove entry in cache
-     * @param url
-     * @author ricardosoares
-     */
-    public void removeEntry(String url) {
-        String completeUrl = RemoteService.completeUrlWithPort(Uri.parse(url));
-        try {
-            mCacheStore.removeEntryDB(completeUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Remove entry in cache
+	 * @author ricardosoares
+	 */
+	public void removeEntry(String url) {
+		String completeUrl = RemoteService.completeUrlWithPort(Uri.parse(url));
+		try {
+			mCacheStore.removeEntryDB(completeUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Method that builds the response for the information requested
-	 * 
-	 * @param status
-	 * @return
 	 */
 	private Message buildResponseMessage(EventType eventType, int status, ErrorCode error, String response, String md5, Boolean priority, EventTask eventTask, long... values) {
 		Message msg = new Message();
@@ -613,28 +581,18 @@ public final class RestClientSingleton {
 		bundle.putString(Constants.BUNDLE_RESPONSE_KEY, response);
 		bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, priority);
 		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, eventTask);
+		bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, eventTask);
 		// Get elapsed time
 		if (values != null && values.length > 0) bundle.putLong(Constants.BUNDLE_ELAPSED_REQUEST_TIME, values[0]);
-	
+
 		msg.setData(bundle);
-		
+
 		return msg;
 	}
-	
+
 	/**
 	 * Method that builds the response for the information requested
 	 * And track success response
-	 * @param eventType
-	 * @param uri
-	 * @param status
-	 * @param error
-	 * @param response
-	 * @param md5
-	 * @param priority
-	 * @param startTimeMillis
-	 * @param bytesReceived
-	 * @return Message
 	 * @author sergiopereira
 	 */
 	private Message buildResponseSuccessMessage(EventType eventType, URI uri, int status, ErrorCode error, String response, String md5, Boolean priority, EventTask eventTask,long startTimeMillis, long bytesReceived) {
@@ -649,17 +607,10 @@ public final class RestClientSingleton {
 		// Create a message
 		return buildResponseMessage(eventType, status, error, response, md5, priority, eventTask,elapsed);
 	}
-	
-	
+
+
 	/**
 	 * Track error
-	 * @param mContext
-	 * @param e
-	 * @param uri
-	 * @param errorCode
-	 * @param msg
-	 * @param nonFatal
-	 * @param startTimeMillis
 	 * @author sergiopereira
 	 */
 	private void trackError(Context mContext, Exception e, URI uri, ErrorCode errorCode, String msg, boolean nonFatal, long startTimeMillis) {

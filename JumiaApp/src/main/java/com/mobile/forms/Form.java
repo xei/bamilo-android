@@ -96,7 +96,7 @@ public class Form implements IJSONSerializable, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
      * )
@@ -119,14 +119,17 @@ public class Form implements IJSONSerializable, Parcelable {
                 fieldMapping = FormsMapping.genericMapping.get(id);
             }
 
-            
+            // Case FIELDS
             JSONArray fieldsArray = null;
             if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)){
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
-            } else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
+            }
+            // Case OPTIONS
+            else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
                 Log.i(TAG, "code1subForms : fieldsArray :  "+fieldsArray.length()+" name : "+name);
             }
+            // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
                     if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG)){

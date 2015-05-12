@@ -28,8 +28,8 @@ public class GetFavouriteHelper implements IResponseCallback {
     private IResponseCallback mResponseCallback;
 
     /**
-     * @param mNumberOfIncomplete
-     * @param counter
+     * Get a list of favourite items
+     * @param requester The listener
      */
     public GetFavouriteHelper(IResponseCallback requester) {
         Log.d(TAG, "ON CONSTRUCTOR");
@@ -40,7 +40,7 @@ public class GetFavouriteHelper implements IResponseCallback {
     }
     
     /**
-     * TODO
+     * Get the favourite items
      */
     public void getCompleteFavouriteList() {
         Log.d(TAG, "ON GET COMPLETE FAVOURITE LIST");
@@ -59,7 +59,7 @@ public class GetFavouriteHelper implements IResponseCallback {
     }
 
     /**
-     * TODO
+     * Get the favourite items
      */
     private void getFavouriteList() {
         Log.d(TAG, "ON GET FAVOURITE LIST");

@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -136,7 +135,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
      */
     public WriteSellerReviewFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.review_write_fragment,
                 0,
                 KeyboardState.ADJUST_CONTENT);
@@ -525,7 +524,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
                                     getBaseActivity().onBackPressed();
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
+                                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }
@@ -626,31 +625,12 @@ public class WriteSellerReviewFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_SELLER_REVIEW_EVENT:
-            triggerSellerReviewForm();
-            return;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            return;
-        default:
-            super.onRetryRequest(eventType);
-            return;
-        }
     }
     
     /**

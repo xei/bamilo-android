@@ -14,6 +14,7 @@ import com.mobile.framework.database.RelatedItemsTableHelper;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
+import com.mobile.framework.objects.Product;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
@@ -23,6 +24,7 @@ import com.mobile.helpers.HelperPriorityConfiguration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -136,16 +138,23 @@ public class GetCatalogPageHelper extends BaseHelper {
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog);
             // Persist related Items when initially loading products for POPULARITY tab
             if (isToSaveRelatedItems) {
-                try {
-                    RelatedItemsTableHelper.insertRelatedItemsAndClear(catalog.getProducts());
-                } catch (InterruptedException e) {
-                    Log.w(TAG, "WARNING: IE ON SAVE RELATED ITEMS FROM CATALOG");
-                }
+                final ArrayList<Product> aux = new ArrayList<>(catalog.getProducts());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            RelatedItemsTableHelper.insertRelatedItemsAndClear(aux);
+                        } catch (IllegalStateException | InterruptedException e) {
+                            Log.w(TAG, "WARNING: IE ON SAVE RELATED ITEMS FROM CATALOG");
+                        }
+                    }
+                }).start();
             }
         } catch (JSONException e) {
             e.printStackTrace();
             return parseErrorBundle(bundle);
         }
+
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         return bundle;
     }

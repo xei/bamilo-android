@@ -1,19 +1,19 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
- * Class used to represnt a filter option for catalog
+ * Class used to represent a filter option for catalog
  * 
  * @author sergiopereira
  */
-public class CatalogFilterOption implements IJSONSerializable, Parcelable {
+public class CatalogFilterOption implements IJSONSerializable, Parcelable, Cloneable{
 
     private String mId = "";
 
@@ -215,8 +215,17 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable {
     public String toString() {
         return "" + mId + "; " + mLabel + "; " + mValue + "; " + mCount + "; " + mHex + "; " + mImg + "; " + mMax + "; " + mMin + "; " + mInterval + "; "
                 + isSelected + "; " + isSectionBrand;
-    };
-    
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
     /**
      * ############### Parcelable ###############
      */

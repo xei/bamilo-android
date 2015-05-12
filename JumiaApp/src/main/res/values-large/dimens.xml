@@ -13,4 +13,7 @@
 
     <dimen name="delete_button_size">23dp</dimen>
     <dimen name="delete_button_margin">3dp</dimen>
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">500dp</dimen>
 </resources>

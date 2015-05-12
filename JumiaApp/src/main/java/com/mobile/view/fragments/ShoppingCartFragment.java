@@ -515,14 +515,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             TrackerDelegator.trackLoadTiming(params);
 
-            params = new Bundle();
-            params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-            params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-            if (JumiaApplication.CUSTOMER != null) {
-                params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-            }
+            params.clear();
             params.putParcelable(AdjustTracker.CART, shoppingCart);
-
             TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
             TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
 
@@ -740,7 +734,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
 
-            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfArticles, cart.getCartCount(), cart.getCartCount()));
+            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
 
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
@@ -1087,6 +1081,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     dialogList.dismissAllowingStateLoss();
                 }
             }
+
+            @Override
+            public void onDismiss() {
+            }
         };
 
         dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY,
@@ -1182,20 +1180,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        onResume();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
 

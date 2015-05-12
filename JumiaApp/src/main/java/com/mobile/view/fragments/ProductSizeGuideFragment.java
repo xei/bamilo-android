@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.NetworkConnectivity;
 import com.mobile.utils.MyMenuItem;
@@ -58,7 +57,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
      */
     public ProductSizeGuideFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.product_size_guide_main,
                 R.string.size_guide_label,
                 KeyboardState.NO_ADJUST_CONTENT,
@@ -220,7 +219,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     
     private void showRetryLayout() {
         if(NetworkConnectivity.isConnected(getBaseActivity())) showFragmentErrorRetry();
-        else showFragmentNoNetworkRetry(this);
+        else showFragmentNoNetworkRetry();
     }
     
     /**
@@ -280,21 +279,12 @@ public class ProductSizeGuideFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         showSizeGuide(mImageView, mSizeGuideUrl);
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        Log.i(TAG, "ON RETRY REQUEST");
-        showSizeGuide(mImageView, mSizeGuideUrl);
-    }
+
 }

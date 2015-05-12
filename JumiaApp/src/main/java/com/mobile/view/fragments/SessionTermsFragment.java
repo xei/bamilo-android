@@ -29,16 +29,12 @@ public class SessionTermsFragment extends BaseFragment {
     private TextView textView;
     
     private String termsText;
+
     /**
-     * Get instance
-     * 
-     * @return
+     * New instance SessionTermsFragment.
+     * @param bundle The arguments
+     * @return SessionTermsFragment
      */
-    public static SessionTermsFragment getInstance() {
-        return new SessionTermsFragment();
-    }
-    
-    
     public static SessionTermsFragment getInstance(Bundle bundle) {
         SessionTermsFragment termsFragment = new SessionTermsFragment();
         termsFragment.setArguments(bundle);
@@ -54,11 +50,6 @@ public class SessionTermsFragment extends BaseFragment {
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
                 KeyboardState.NO_ADJUST_CONTENT);
-    }
-
-    @Override
-    public void sendValuesToFragment(Object values) {
-        this.termsText= (String) values;
     }
     
     /*

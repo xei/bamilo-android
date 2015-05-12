@@ -135,9 +135,21 @@ public enum TrackingEvent {
 	
 	SHARE_APP(R.string.gaccount,R.string.gShareApp),
 
-    ACCOUNT_CREATE_ADDRESS(R.string.gaccount, R.string.gAccountCreateAddress);
-	
-	;
+	ACCOUNT_CREATE_ADDRESS(R.string.gaccount, R.string.gAccountCreateAddress),
+
+	MAIN_BANNER_CLICK(R.string.gmainbanner, R.string.gPurchase),
+
+	SMALL_BANNER_CLICK(R.string.gsmallbanner, R.string.gPurchase),
+
+	CAMPAIGNS_BANNER_CLICK(R.string.gcampaignsbanner, R.string.gPurchase),
+
+	SHOP_BANNER_CLICK(R.string.gshopbanner, R.string.gPurchase),
+
+	BRAND_BANNER_CLICK(R.string.gbrandbanner, R.string.gPurchase),
+
+	SHOPS_WEEK_BANNER_CLICK(R.string.gshopweekbanner, R.string.gPurchase),
+
+	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase);
 	
 	/**
 	 * ############## CLASS ##############

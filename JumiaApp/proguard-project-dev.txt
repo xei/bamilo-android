@@ -58,6 +58,8 @@
 -keep class com.google.android.gms.analytics.Tracker { *; }
 #-keep class com.google.analytics.tracking.android.Tracker { *; }
 #-keep class com.flurry.android.FlurryAgent { *; }
+#-keep class com.omniture.AppMeasurementBase { *;}
+#-keep class com.adobe.adms.measurement.ADMS_Measurement { *;}
 #############################################################################
 
 ## BEGIN SUPPORT LIBRARY (v?) ###############################################

@@ -13,7 +13,7 @@ import android.os.Parcelable;
  * @version 1.01
  * @date 2015/03/06
  */
-public class BaseProduct implements Parcelable{
+public class BaseProduct implements Parcelable {
     protected String sku;
     protected String name;
     protected String brand;
@@ -193,6 +193,27 @@ public class BaseProduct implements Parcelable{
     }
 
 
+    /*
+	 * ############ PARCELABLE ############
+	 */
+
+    /**
+     * Parcelable constructor
+     * @param in The parcel object
+     */
+    protected BaseProduct(Parcel in) {
+        sku = in.readString();
+        name = in.readString();
+        brand = in.readString();
+        price = in.readString();
+        url = in.readString();
+        specialPrice = in.readString();
+        priceDouble = in.readDouble();
+        specialPriceDouble = in.readDouble();
+        specialPriceConverted = in.readDouble();
+        priceConverted = in.readDouble();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -212,16 +233,16 @@ public class BaseProduct implements Parcelable{
         dest.writeDouble(priceConverted);
     }
 
-    public BaseProduct(Parcel in){
-        sku = in.readString();
-        brand = in.readString();
-        name = in.readString();
-        price = in.readString();
-        specialPrice = in.readString();
-        url = in.readString();
-        priceDouble = in.readDouble();
-        specialPriceDouble = in.readDouble();
-        priceConverted = in.readDouble();
-        specialPriceConverted = in.readDouble();
-    }
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<BaseProduct> CREATOR = new Parcelable.Creator<BaseProduct>() {
+        @Override
+        public BaseProduct createFromParcel(Parcel in) {
+            return new BaseProduct(in);
+        }
+
+        @Override
+        public BaseProduct[] newArray(int size) {
+            return new BaseProduct[size];
+        }
+    };
 }

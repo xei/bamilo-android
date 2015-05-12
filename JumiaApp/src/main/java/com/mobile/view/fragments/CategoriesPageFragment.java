@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -19,22 +18,23 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to shoe the categories in the main container
+ * Class used to show the categories in the main container
  * @author sergiopereira
  */
-public class CategoriesPageFragment extends BaseFragment implements OnItemClickListener, OnClickListener, IResponseCallback {
+public class CategoriesPageFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CategoriesPageFragment.class);
     
@@ -48,7 +48,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     private static final int HEADER_FOR_BACK_POSITION_LANDSCAPE = 0;
     
-    private static final int NO_SELECETD_LANDSCAPE_CATEGORY = 0;
+    private static final int NO_SELECTED_LANDSCAPE_CATEGORY = 0;
     
     private static final int CLICK_FROM_DEFAULT_CONTAINER = 0;
     
@@ -76,11 +76,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
 
     private Category mCurrentSubCategory;
     
-    private String treeName = "";
-    
     /**
      * Create a new instance and save the bundle data
-     * @param bundle
+     * @param bundle The arguments
      * @return NavigationCategoryFragment
      * @author sergiopereira
      */
@@ -122,7 +120,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         // Get data
         if(bundle != null) {
             Log.i(TAG, "ON GET DATA FROM BUNDLE");
-            // Sava data
+            // Save data
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
             mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
             mSelectedParentPosition = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
@@ -275,7 +273,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             ArrayList<Category> child = category.getChildren();
             String categoryName = category.getName();
             // Set adapter, tag and listener
-            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
+            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
             mCategoryList.setTag(CLICK_FROM_DEFAULT_CONTAINER);
             mCategoryList.setAdapter(mSubCategoryAdapter);
             mCategoryList.setOnItemClickListener(this);
@@ -293,8 +291,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     /**
      * Create a header using a layout with R.id.text
-     * @param layout
-     * @param text
+     * @param layout The header layout
+     * @param text The header text
      * @return View
      * @author sergiopereira
      */
@@ -327,8 +325,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
 
     /**
      * Method used to fill the landscape container with the sub categories from selected category in the default container.
-     * @param category
-     * @param parent position
+     * @param category The category object
      * @author sergiopereira
      */
     private void showChildrenInLandscape(Category category) {
@@ -338,7 +335,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             mLandscapeCategoryChildrenList.addHeaderView(headerForBack);
         }
         // Set adapter, tag and listener
-        SubCategoriesAdapter adapter = new SubCategoriesAdapter(getBaseActivity(), category.getChildren(), category.getName());
+        SubCategoriesAdapter adapter = new SubCategoriesAdapter(getBaseActivity(), category.getChildren(), category);
         mLandscapeCategoryChildrenList.setAdapter(adapter);
         mLandscapeCategoryChildrenList.setTag(CLICK_FROM_LANDSCAPE_CONTAINER);
         mLandscapeCategoryChildrenList.setOnItemClickListener(this);
@@ -350,7 +347,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showLandscapeLoading() {
         // Show inner loading
-        showLoadingInfo(mLandscapeLoading);
+        mLandscapeLoading.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -359,7 +356,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void hideLandscapeLoading() {
         // Hide inner loading
-        hideLoadingInfo(mLandscapeLoading);
+        mLandscapeLoading.setVisibility(View.GONE);
     }
     
     /**
@@ -383,7 +380,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     /**
      * Trigger to get sub categories for landscape container.
-     * @param category url key
+     * @param categoryKey url key
      * @author sergiopereira
      */
     private void triggerGetCategoriesLandscape(String categoryKey) {
@@ -397,24 +394,24 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
         // Trigger
         triggerContentEventNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
-            
+
             @Override
             public void onRequestError(Bundle bundle) {
                 // Validate fragment state
-                if(isOnStoppingProcess) return;
-                // Hide laoding
+                if (isOnStoppingProcess) return;
+                // Hide loading
                 hideLandscapeLoading();
             }
-            
+
             @Override
             public void onRequestComplete(Bundle bundle) {
                 // Validate fragment state
-                if(isOnStoppingProcess) return;
+                if (isOnStoppingProcess) return;
                 // Get categories
                 ArrayList<Category> categories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 // Show categories and hide loading
-                showChildrenInLandscape((hasContent(categories)) ? categories.get(0) : new Category());
-                hideLandscapeLoading();                
+                showChildrenInLandscape(CollectionUtils.isNotEmpty(categories) ? categories.get(0) : new Category());
+                hideLandscapeLoading();
             }
         });
     }
@@ -425,22 +422,12 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Log.d(TAG, "ON CLICK RETRY");
-        triggerGetCategories(mCategoryKey);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
         triggerGetCategories(mCategoryKey);
     }
     
@@ -486,9 +473,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * Process the click on a root category.
      * In landscape shows the sub categories in the right container.
-     * @param position
+     * @param parent The adapter
+     * @param position The position
      * @author sergiopereira
-     * @param parent 
      */
     private void onClickRootCategory(AdapterView<?> parent, int position) {
         try {
@@ -501,7 +488,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Show sub level in landscape container
             else if (isPresentLandscapeContainer()) triggerGetCategoriesLandscape(category.getUrlKey());
             // Show sub level
-            else gotoNestedCategories(category.getName(), category.getUrlKey(), NO_SELECETD_LANDSCAPE_CATEGORY);
+            else gotoNestedCategories(category.getName(), category.getUrlKey(), NO_SELECTED_LANDSCAPE_CATEGORY);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON CLICK ROOT CATEGORY POS: " + position);   
         }
@@ -510,7 +497,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * Process the click on a nested category.<br>
      * In landscape shows the sub categories in the right container.
-     * @param position
+     * @param parent The adapter
+     * @param position The position
      * @author sergiopereira
      */
     private void onClickNestedCategory(AdapterView<?> parent, int position) {
@@ -531,7 +519,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 // Show sub level in landscape container
                 else if (isPresentLandscapeContainer()) triggerGetCategoriesLandscape(selectedCategory.getUrlKey());
                 // Show sub level
-                else gotoNestedCategories(selectedCategory.getName(), selectedCategory.getUrlKey() , NO_SELECETD_LANDSCAPE_CATEGORY);
+                else gotoNestedCategories(selectedCategory.getName(), selectedCategory.getUrlKey() , NO_SELECTED_LANDSCAPE_CATEGORY);
                 break;
             }
         } catch (NullPointerException e) {
@@ -543,10 +531,10 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
 
     /**
-     * Proccess the click on a category in landscape container.<br>
-     * The behavior it's like {@link #onClickNestedCategory(int)}.
-     * @param parent
-     * @param position
+     * Process the click on a category in landscape container.<br>
+     * The behavior it's like {@link #onClickNestedCategory(AdapterView, int)}.
+     * @param parent The adapter
+     * @param position The position
      * @author sergiopereira
      */
     private void onClickSubCategoryWithoutBack(AdapterView<?> parent, int position) {
@@ -578,8 +566,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * Proccess the click on a category in landscape container.<br>
      * This layout contains two header, BACK and ALL.
-     * @param parent
-     * @param position
+     * @param parent The adapter
+     * @param position The position
      * @author sergiopereira
      */
     private void onClickSubCategoryWithBack(AdapterView<?> parent, int position) {
@@ -614,9 +602,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     /**
      * Show nested categories with title name
-     * @param name
-     * @param selectedCategoryPosition
-     * @param landscapeCategoryPosition
+     * @param name The category name
+     * @param key The category id
+     * @param landscapeCategoryPosition The sub category position
      * @author sergiopereira 
      */
     private void gotoNestedCategories(String name, String key, int landscapeCategoryPosition){
@@ -624,7 +612,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, key);
         bundle.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, name);
         bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, landscapeCategoryPosition);
-        treeName = (TextUtils.isEmpty(mTitleCategory))? name : mTitleCategory + "/" + name;
+        String treeName = TextUtils.isEmpty(mTitleCategory) ? name : mTitleCategory + "/" + name;
         bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME,  treeName);
         // Switch
         ((CategoriesCollectionFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
@@ -632,36 +620,34 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     /**
      * Show product list
-     * @param category
+     * @param category The category object
      * @author sergiopereira
      */
     private void gotoCatalog(Category category) {
-        
         // Update category counter for tracking
         CategoriesTableHelper.updateCategoryCounter(category.getId(), category.getName());
         // Tracking category
-        //trackCategory(category.getName());
-        
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, category.getId());
         String categoryTree = "";
         if(!TextUtils.isEmpty(getBaseActivity().getCategoriesTitle())){
-            categoryTree = getBaseActivity().getCategoriesTitle()+"/"+category.getName(); 
+            categoryTree = getBaseActivity().getCategoriesTitle() + "/" + category.getName();
             categoryTree = categoryTree.replace("/", ",");
         }
         bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME,  categoryTree);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
      * Pop the back stack until the parent from current level type
-     * @param type
+     * @param type The fragment type
      * @author sergiopereira
      */
     private void goToParentCategoryFromType(FragmentType type){
@@ -709,19 +695,5 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         // Generic errors
         super.handleErrorEvent(bundle);
     }
-    
-    /**
-     * ####### TRACKING ####### 
-     */
-//    /**
-//     * Tracking category
-//     * @param name
-//     */
-//    private void trackCategory(String name){
-//        Bundle params = new Bundle();
-//        params.putString(TrackerDelegator.CATEGORY_KEY, name);
-//        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-//        params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
-//        TrackerDelegator.trackCategoryView(params);
-//    }
+
 }

@@ -31,7 +31,11 @@
 
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/JUMIA</string>
-    <string name="dp_app_index_scheme">android-app</string>
 
     <string name="app_name_placeholder">Jumia</string>
+
+    <!-- ADJUST -->
+    <item name="adjust_enabled" type="bool">true</item>
+    <string name="adjust_app_token">tx59byfttp6z</string>
+    <item name="adjust_is_production_env" type="bool">false</item>
 </resources>

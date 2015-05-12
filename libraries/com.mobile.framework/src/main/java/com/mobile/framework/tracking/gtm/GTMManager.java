@@ -15,6 +15,7 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
@@ -38,6 +39,7 @@ public class GTMManager {
 
     volatile static Container mContainer;
     private static String EVENT_TYPE = "event";
+    private static String EVENT_TYPE_TRANSACTION = "transaction";
     private String CONTAINER_ID = "";
     private static boolean isContainerAvailable = false;
     private static DataLayer dataLayer;
@@ -82,10 +84,11 @@ public class GTMManager {
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
-        
-        CONTAINER_ID = context.getResources().getString(R.string.gtm_key);
+
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        CONTAINER_ID = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
         Log.e(TAG,"init id:"+CONTAINER_ID);
-        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,R.raw.gtm_default_container);
+        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,0);
         
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -120,24 +123,26 @@ public class GTMManager {
     /**
      * This method tracks if either the application was opened either by push
      * notification or if the app was started directly
-     * 
-     * @param appOpenContext
      */
     public void gtmTrackAppOpen(Bundle deviceInfo, String countryIso, String campaignId, String source, String medium, boolean isFromPush) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
-        Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
+        Log.d(TAG, "gtmTrackAppOpen campaignId:" + campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
         
-        String version = "";
-        version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
-        
+        String version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
+        if(version == null){
+            version = "";
+        }
         Map<String, Object> message = null;
-        String operator = "";
-        operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);        
-        
-        String deviceBrand = "";
-        deviceBrand = deviceInfo.getString(Constants.INFO_BRAND);
+        String operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);
+        if(operator == null){
+            operator = "";
+        }
+        String deviceBrand = deviceInfo.getString(Constants.INFO_BRAND);
+        if(deviceBrand == null){
+            deviceBrand = "";
+        }
 
         
         boolean isPreInstall = false;
@@ -368,7 +373,7 @@ public class GTMManager {
 //        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_TRANSACTION, GTMKeys.PREVIOUSPURCHASES, DataLayer.OBJECT_NOT_PRESENT, GTMKeys.TRANSACTIONID, transactionId, GTMKeys.TRANSACTIONAFFILIATION, DataLayer.OBJECT_NOT_PRESENT,
 //                GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
         
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
+        message = DataLayer.mapOf(EVENT_TYPE_TRANSACTION, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
                 GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
         
         if(!TextUtils.isEmpty(coupon))

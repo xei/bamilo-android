@@ -74,6 +74,8 @@
     <dimen name="catalog_grid_item_image_width">146dp</dimen>
     <dimen name="catalog_grid_item_image_height">182.5dp</dimen>
     <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+    <integer name="activate_go_top_buttom_line">5</integer>
+    <integer name="activate_go_top_buttom_line_grid">3</integer>
 
     <dimen name="root_empty_container_height">288dp</dimen> <!--720/2.5 -->
     <dimen name="root_empty_drawable_padding">35dp</dimen>
@@ -95,6 +97,7 @@
     <dimen name="track_order_content_height">160dp</dimen>
 
     <dimen name="home_items_margin">27dp</dimen>
+    <dimen name="double_home_items_margin">50dp</dimen>
 
     <!-- dimen name="fragment_root_text_size">27sp</dimen -->
 
@@ -164,5 +167,17 @@
    
     <!-- PDV IMAGE -->
     <dimen name="pdv_image">270dp</dimen>
+
+    <!-- NO CONNECTION -->
+    <dimen name="no_connection_label_small_size">19sp</dimen>
+    <dimen name="no_connection_label_details_small_size">15sp</dimen>
+
+
+    <!-- HOME -->
+    <item name="home_offset_percentage" format="float" type="dimen">0</item>
+    <dimen name="home_main_teaser_height">260dp</dimen>
+    <dimen name="home_small_teaser_item_width">195dp</dimen>
+    <dimen name="home_shop_week_teaser_min_height">258dp</dimen>
+    <integer name="home_featured_stores_teaser_num_columns">3</integer>
 
 </resources>

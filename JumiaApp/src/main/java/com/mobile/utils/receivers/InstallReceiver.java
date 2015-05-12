@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.ReferrerHandler;
-import com.adjust.sdk.ReferrerReceiver;
+import com.adjust.sdk.AdjustReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
 import com.mobile.framework.tracking.gtm.GTMManager;
 
@@ -25,8 +25,6 @@ public class InstallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Received INSTALL_REFERRAL");
-        new ReferrerReceiver().onReceive(context, intent);
-                
         Bundle bundle = intent.getExtras();
         
         if(bundle != null) {
@@ -60,7 +58,10 @@ public class InstallReceiver extends BroadcastReceiver {
        
         // Google Analytics
         new CampaignTrackingReceiver().onReceive(context, intent);
+        // ACCENGAGE
         new ReferrerHandler().onReceive(context, intent);
+        // Adjust
+        new AdjustReferrerReceiver().onReceive(context, intent);
     }
     
     public static Map<String, String> getQueryMap(String query) {  

@@ -1,8 +1,5 @@
 package com.mobile.framework.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -10,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.Section;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -127,7 +127,7 @@ public class SectionsTablesHelper extends BaseTable {
 		}, 
 		null, null, null, null, null);
 		
-		List<Section> sections = new ArrayList<Section>();
+		List<Section> sections = new ArrayList<>();
     	
 		while (cursor.moveToNext()) {
 			String name = cursor.getString(Projection.NAME);

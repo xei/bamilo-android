@@ -40,7 +40,7 @@ public class PurchaseItem implements Parcelable {
 	 * For WebCheckout
 	 */
 	public static List<PurchaseItem> parseItems(JSONObject itemsJson) {
-		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
+		List<PurchaseItem> items = new ArrayList<>();
 
 		int indexBegin = 0;
 		while (!TextUtils.isEmpty(itemsJson.optString(String.valueOf(indexBegin)))) {
@@ -64,7 +64,7 @@ public class PurchaseItem implements Parcelable {
 	"1": { "name": "دستمال کاغذی با طرح گربه" },
 	"2": { "category": "خانه و آشپزخانه" },
 	"3": { "paidprice": 37000 },
-	"4": { "paidprice_euroConverted": 0.88095238095238 },
+	"4": { "paidprice_converted": 0.88095238095238 },
 	"5": { "quantity": 1 }
 	 */
 	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {

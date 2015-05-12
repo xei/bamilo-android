@@ -18,13 +18,11 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.OrderTracker;
 import com.mobile.framework.objects.OrderTrackerItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LoadingBarView;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetTrackOrderHelper;
@@ -54,8 +52,6 @@ public class TrackOrderFragment extends BaseFragment {
     
     private boolean mOrderTrackerError = false;
     
-    private MyOrdersFragment parentFragment;
-    
     private static String order_number = "";
     
     private String instanceOrder = "";
@@ -84,10 +80,6 @@ public class TrackOrderFragment extends BaseFragment {
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -113,8 +105,7 @@ public class TrackOrderFragment extends BaseFragment {
         if(arguments != null) {
             order_number = arguments.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         }
-        // Parent
-        parentFragment = (MyOrdersFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.MY_ORDERS.toString());
+
         // Get saved arguments
         if(savedInstanceState != null && savedInstanceState.containsKey("track")){
             if(TextUtils.isEmpty(order_number)){
@@ -136,8 +127,8 @@ public class TrackOrderFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(parentFragment != null)
-            MyOrdersFragment.mPositionToStart = 0;
+//        if(parentFragment != null)
+//            MyOrdersFragment.mPositionToStart = 0;
     }
 
     /*
@@ -293,13 +284,13 @@ public class TrackOrderFragment extends BaseFragment {
             getView().findViewById(R.id.tip_tracking_order).setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
-    protected void onRetryRequest(EventType eventType) {
-        super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         showFragmentContentContainer();
     }
-    
+
     /**
      * 
      */
@@ -392,7 +383,7 @@ public class TrackOrderFragment extends BaseFragment {
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
-        };
+        }
         Log.d(TAG, "ON SUCCESS EVENT");
         mOrderTracker = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         showFragmentContentContainer();

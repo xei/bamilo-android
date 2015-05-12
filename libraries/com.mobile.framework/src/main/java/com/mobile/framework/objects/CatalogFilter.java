@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.mobile.framework.utils.LogTagHelper;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +22,7 @@ import java.util.Locale;
  * @see https://wiki.jira.rocket-internet.de/display/NAFAMZ/Filters
  * 
  */
-public class CatalogFilter implements IJSONSerializable, Parcelable {
+public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
     public static final String TAG = LogTagHelper.create(CatalogFilter.class);
 
@@ -214,6 +215,21 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         this.mSelectedOption = selectedOption;
     }
 
+    public void switchSelectedOption(SparseArray<CatalogFilterOption> selectedOptions){
+        if(mSelectedOption != null){
+
+            for (int j = 0; j < mSelectedOption.size(); j++) {
+                mSelectedOption.valueAt(j).setSelected(false);
+            }
+
+            for(int j = 0; j < selectedOptions.size();j++){
+                selectedOptions.valueAt(j).setSelected(true);
+            }
+        }
+
+        this.mSelectedOption = selectedOptions;
+    }
+
     public void cleanSelectedOption() {
         for (int i = 0; i < mSelectedOption.size(); i++)
             mSelectedOption.valueAt(i).setSelected(false);
@@ -252,11 +268,11 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
      */
 
     public boolean hasRangeValues() {
-        return (mRangeValues != null) ? true : false;
+        return (mRangeValues != null);
     }
 
     public boolean hasOptionSelected() {
-        return (mSelectedOption != null && mSelectedOption.size() > 0) ? true : false;
+        return (mSelectedOption != null && mSelectedOption.size() > 0);
     }
 
     public boolean isMulti() {
@@ -413,4 +429,49 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         return "id: "+mId + ", name: "+mName + ", options:" +mFilterOptions.size()+", multi: "+mMulti+";";
     }
 
+    @Override
+    public Object clone() {
+        try {
+            CatalogFilter catalogFilter = (CatalogFilter)super.clone();
+            catalogFilter.mFilterOptions = new ArrayList<>(mFilterOptions.size());
+
+            for(CatalogFilterOption catalogFilterOption : mFilterOptions){
+                catalogFilter.mFilterOptions.add((CatalogFilterOption)catalogFilterOption.clone());
+            }
+
+            if(mSelectedOption != null) {
+                catalogFilter.mSelectedOption = new SparseArray<>(mSelectedOption.size());
+                for (int i = 0; i < mSelectedOption.size(); i++) {
+                    for (int j = 0; j < catalogFilter.mFilterOptions.size(); j++) {
+                        CatalogFilterOption filterOption = catalogFilter.mFilterOptions.get(j);
+                        if (mSelectedOption.valueAt(i).getId().equals(filterOption.getId())) {
+                            catalogFilter.mSelectedOption.put(i, filterOption);
+                        }
+                    }
+                }
+            }
+
+            return catalogFilter;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean isPriceFilter(){
+        return CollectionUtils.isEmpty(mFilterOptions) && mFilterOption != null;
+    }
+
+    public static class RangeValuesFilter{
+        public RangeValuesFilter(){}
+        public int[] range;
+        public boolean rangeWithDiscount;
+
+    }
+
+    public void setPriceValues(RangeValuesFilter rangeValuesFilter){
+        mRangeValues = rangeValuesFilter.range;
+        isRangeWithDiscount = rangeValuesFilter.rangeWithDiscount;
+    }
 }

@@ -263,6 +263,8 @@
     <!-- CATALOG -->
     <integer name="catalog_list_num_columns">1</integer>
     <integer name="catalog_grid_num_columns">2</integer>
+    <integer name="activate_go_top_buttom_line">6</integer>.
+    <integer name="activate_go_top_buttom_line_grid">3</integer>
     <dimen name="catalog_list_item_height">111dp</dimen>
     <dimen name="catalog_grid_item_height">200dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
@@ -298,7 +300,7 @@
     </dimen>
 
     <dimen name="home_items_margin">18dp</dimen>
-
+    <dimen name="double_home_items_margin">50dp</dimen>
     <!-- dimen name="fragment_root_text_size">18sp</dimen -->
 
     <dimen name="login_container_width">@dimen/inner_container_width</dimen>
@@ -393,4 +395,71 @@
     <dimen name="pdv_image_alone">320dp</dimen>
     <dimen name="pdv_image_with_bundle">20dp</dimen>
     <dimen name="pdv_image_with_seller">30dp</dimen>
+
+    <!-- NO CONNECTION -->
+    <dimen name="no_connection_label_small_size">16sp</dimen>
+    <dimen name="no_connection_label_details_small_size">12sp</dimen>
+
+
+    <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
+
+    <!-- MATERIAL DIMENSION 1:1 -->
+    <dimen name="dimen_mat_1px">1dp</dimen>
+    <dimen name="dimen_mat_1_25px">1.25dp</dimen>
+    <dimen name="dimen_mat_2px">2dp</dimen>
+    <dimen name="dimen_mat_3px">3dp</dimen>
+    <dimen name="dimen_mat_4px">4dp</dimen>
+    <dimen name="dimen_mat_8px">8dp</dimen>
+    <dimen name="dimen_mat_16px">16dp</dimen>
+    <dimen name="dimen_mat_36px">36dp</dimen>
+    <dimen name="dimen_mat_45px">45dp</dimen>
+    <dimen name="dimen_mat_48px">48dp</dimen>
+    <dimen name="dimen_mat_60px">60dp</dimen>
+    <dimen name="dimen_mat_80px">80dp</dimen>
+    <dimen name="dimen_mat_88px">88dp</dimen>
+    <dimen name="dimen_mat_110px">110dp</dimen>
+    <dimen name="dimen_mat_118px">118dp</dimen>
+    <dimen name="dimen_mat_123px">123dp</dimen>
+    <dimen name="dimen_mat_124px">124dp</dimen>
+    <dimen name="dimen_mat_128px">128dp</dimen>
+    <dimen name="dimen_mat_140px">140dp</dimen>
+    <dimen name="dimen_mat_148px">148dp</dimen>
+    <dimen name="dimen_mat_150px">150dp</dimen>
+    <dimen name="dimen_mat_158px">158dp</dimen>
+    <dimen name="dimen_mat_160px">160dp</dimen>
+    <dimen name="dimen_mat_165px">165dp</dimen>
+    <dimen name="dimen_mat_170px">170dp</dimen>
+    <dimen name="dimen_mat_178px">178dp</dimen>
+    <dimen name="dimen_mat_210px">210dp</dimen>
+
+    <!-- ########### HOME ########### -->
+    <!-- BASE -->
+    <item name="home_offset_percentage" format="float" type="dimen">0</item>
+    <dimen name="home_horizontal_fade">20dp</dimen>
+    <!-- MAIN TEASER -->
+    <dimen name="home_main_teaser_height">@dimen/dimen_mat_148px</dimen>
+    <!-- SMALL TEASER -->
+    <dimen name="home_small_teaser_height">@dimen/dimen_mat_165px</dimen>
+    <dimen name="home_small_teaser_item_width">@dimen/dimen_mat_128px</dimen>
+    <dimen name="home_small_teaser_item_height">@dimen/dimen_mat_158px</dimen>
+    <!-- CAMPAIGN TEASER -->
+    <dimen name="home_campaign_teaser_height">@dimen/dimen_mat_118px</dimen>
+    <!-- SHOP TEASER -->
+    <dimen name="home_shop_teaser_height">@dimen/dimen_mat_150px</dimen>
+    <!-- BRAND TEASER -->
+    <dimen name="home_brand_teaser_item_width">@dimen/dimen_mat_60px</dimen>
+    <dimen name="home_brand_teaser_item_height">@dimen/dimen_mat_48px</dimen>
+    <!-- FEATURED STORES TEASER -->
+    <dimen name="home_featured_stores_teaser_item_height">@dimen/dimen_mat_60px</dimen>
+    <integer name="home_featured_stores_teaser_num_columns">2</integer>
+    <!-- SHOP WEEK TEASER -->
+    <dimen name="home_shop_week_teaser_min_height">@dimen/dimen_mat_148px</dimen>
+    <!-- TOP SELLERS TEASER -->
+    <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
+    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_178px</dimen>
+
+
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">@integer/wrap_content</dimen>
 </resources>

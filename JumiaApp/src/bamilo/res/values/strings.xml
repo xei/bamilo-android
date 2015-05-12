@@ -99,7 +99,7 @@
     <string name="fallback_maintenance_text">در حال بروزرسانی است</string>
     <string name="fallback_maintenance_text_bottom">ما به این موضوع رسیدگی خواهیم کرد، شما می توانید بعدا دوباره اقدام نمایید.</string>
     <string name="fallback_mobile">تلفن های همراه</string>
-    <string name="fallback_welcome">به %name خوش آمدید</string>
+    <string name="fallback_welcome">خوش آمدید به</string>
     <string name="favourite_add_to_cart">کالا به سبد خرید شما اضافه شد.</string>
     <string name="favourite_addalltocart">اضافه کردن تمام کالاها به سبد خرید</string>
     <string name="favourite_no_favourites">شما هیچ کالای مورد علاقه ای در لیست ندارد</string>
@@ -207,14 +207,14 @@
     <string name="product_could_not_retrieved">اطلاعات مربوط به کالا قابل بازیابی نیست.</string>
     <string name="product_delivery_days">روز</string>
     <string name="product_delivery_time">تحویل در:</string>
-    <string name="product_description_title">توضیحات کالا</string>
+    <!--<string name="product_description_title">توضیحات کالا</string>-->
     <string name="product_details_title">جزییات کالا</string>
-    <string name="product_features_title">امکانات کالا</string>
+    <!--<string name="product_features_title">امکانات کالا</string>-->
     <string name="product_offer_from_title">پیشنهادهای</string>
     <string name="product_outof_stock">کالا موجود نیست.</string>
     <string name="product_sold_by">فروخته شده توسط:</string>
     <string name="product_sort_button">مرتب سازی</string>
-    <string name="product_specifications">مشخصات فنی</string>
+    <string name="product_specifications">مشخصات کالا</string>
     <string name="product_variance_choose">لطفا انتخاب کنید</string>
     <string name="product_variance_choose_error">لطفا یکی از موارد را انتخاب کنید</string>
     <string name="product_variant_placeholder">&#8230;</string>
@@ -266,7 +266,7 @@
     <string name="server_error">بازیابی اطلاعات دچار مشکل شده است.</string>
     <string name="server_error_title">مشکلی ایجاد شده است.</string>
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
-    <string name="share_subject">%s اشتراک گذاری بامیلو</string>
+    <string name="share_subject">اشتراک گذاری %s</string>
     <string name="shipping">ارسال کالا</string>
     <string name="shipping_fee">هزینه ارسال :</string>
     <string name="shipping_time">زمان ارسال:</string>
@@ -364,4 +364,15 @@
     <string name="dialog_to_product">جزئیات محصول</string>
     <string name="address_creation_failed_title">ثبت نشانی با مشکل مواجه شد.</string>
     <string name="address_creation_failed_main">لطفا تمام موارد را بطورصحیح وارد کنید.</string>
+    <string name="product_desc_summary_title">خلاصه</string>
+    <string name="description">توضیحات</string>
+    <string name="key_features">ویژگی های کلیدی</string>
+    <string name="kickout_page_title">از پیشنهادات ویژه ما استقبال زیادی شده است!</string>
+    <string name="kickout_page_text1">به اندازه ای که ظرفیت فروشگاه تکمیل گردیده و امکان خدمت رسانی به مشتریان جدید در این زمان امکان پذیر نمی باشد.</string>
+    <string name="kickout_page_text2">ما می خواهیم تجربه ی خریدی دلپذیر را برای شما فراهم آوریم، و به همین دلیل از شما تقاضا می کنیم که دقایقی دیگر مراجعه نمائید.</string>
+    <string name="see_more_offers">پیشنهادات دیگر</string>
+    <string name="shops_of_the_week">برندهای برتر</string>
+    <string name="featured_stores">مجموعه های منتخب</string>
+    <string name="you_may_like">برگزیده های بامیلو</string>
+    <string name="top_sellers">پرفروش ترین ها</string>
 </resources>

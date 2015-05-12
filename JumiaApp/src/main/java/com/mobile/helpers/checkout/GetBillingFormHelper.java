@@ -63,10 +63,8 @@ public class GetBillingFormHelper extends BaseHelper {
             form.initialize(jsonForm);
             // Create addresses
             Addresses addresses = new Addresses(jsonList);
-            
             // Get order summary
             OrderSummary orderSummary = new OrderSummary(jsonObject);
-            
             // Add to bundle
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);

@@ -30,7 +30,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     public static final int MAX_ITEMS_PER_PAGE = 24;
 
-    private static final int FIRST_PAGE = 1;
+    public static final int FIRST_PAGE = 1;
 
     private String mId;
 
@@ -45,6 +45,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private ArrayList<Product> mProducts;
 
     private ArrayList<CatalogFilter> mFilters;
+
+    private Banner mCatalogBanner;
+    private String mSearchTerm;
 
 
     /*
@@ -71,6 +74,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Get data
         mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
+        mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
@@ -108,6 +112,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 // save filter
                 mFilters.add(catalogFilter);
             }
+        }
+
+        //Get Banner
+        if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
+            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.JSON_BANNER_TAG);
+           Banner banner = new Banner();
+            banner.initialize(bannerObject);
+            mCatalogBanner = banner;
         }
 
         return true;
@@ -266,12 +278,31 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mName;
     }
 
+    public Banner getmCatalogBanner() {
+        return mCatalogBanner;
+    }
+
+    /**
+     * Get search term
+     * @return String
+     */
+    public String getSearchTerm(){
+        return mSearchTerm;
+    }
+
     /**
      * Get id
      * @return String
      */
     public String getCategoryId(){
         return mId;
+    }
+
+    /**
+     * Set search term
+     */
+    public void setSearchTerm(String searchTerm){
+        mSearchTerm = searchTerm;
     }
 
     /*
@@ -302,11 +333,13 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mFilters);
         }
+        dest.writeValue(mCatalogBanner);
+        dest.writeString(mSearchTerm);
+
     }
 
     /**
      * Parcel constructor
-     * @param in
      */
     private CatalogPage(Parcel in){
         mId = in.readString();
@@ -326,6 +359,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         } else {
             mFilters = null;
         }
+        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
+        mSearchTerm = in.readString();
     }
 
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
@@ -337,5 +372,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             return new CatalogPage[size];
         }
     };
+
 
 }

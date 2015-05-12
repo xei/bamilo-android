@@ -53,9 +53,9 @@ public class AddableToCart extends BaseProduct {
 	protected String mSelectedSimpleValue;
 	protected Boolean mChooseVariationWarning = false;
 	protected boolean mStockVariationWarning = false;
-	private ArrayList<String> mCategories;
-	private Double mRatingsAverage;
-	private String mSizeGuideUrl;
+	protected ArrayList<String> mCategories;
+	protected Double mRatingsAverage;
+	protected String mSizeGuideUrl;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -86,7 +86,6 @@ public class AddableToCart extends BaseProduct {
         super(completeProduct);
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
         isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
-		selectedSimple = NO_SIMPLE_SELECTED;
 		isComplete = true;
 		imageList = completeProduct.getImageList();
 		simples = completeProduct.getSimples();
@@ -136,6 +135,9 @@ public class AddableToCart extends BaseProduct {
 	 * @return the selectedSimple
 	 */
 	public int getSelectedSimple() {
+		if(selectedSimple == NO_SIMPLE_SELECTED){
+			return selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
+		}
 		return selectedSimple;
 	}
 
@@ -333,7 +335,6 @@ public class AddableToCart extends BaseProduct {
     public boolean hasSizeGuide() {
         return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
     }
-    
 
 	/*
 	 * ############ PARCELABLE ############
@@ -409,4 +410,5 @@ public class AddableToCart extends BaseProduct {
 			return new AddableToCart[size];
 		}
 	};
+
 }

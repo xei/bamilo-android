@@ -1,15 +1,17 @@
 package com.mobile.framework.rest;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Locale;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 import ch.boye.httpclientandroidlib.androidextra.Base64;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
@@ -20,7 +22,7 @@ import de.akquinet.android.androlog.Log;
  * @see https://github.com/loopj/android-async-http/blob/master/library/src/main/java/com/loopj/android/http/PersistentCookieStore.java
  * @author spereira
  */
-public class PersistentCookieStore extends BasicCookieStore {
+public class PersistentCookieStore extends BasicCookieStore implements ICurrentCookie{
 
     private static final String TAG = PersistentCookieStore.class.getSimpleName();
 
@@ -33,6 +35,8 @@ public class PersistentCookieStore extends BasicCookieStore {
     private static final long serialVersionUID = 1L;
 
     private SharedPreferences mCookiePrefs;
+
+    private String domain;
     
     /**
      * Construct a persistent cookie store.
@@ -66,17 +70,32 @@ public class PersistentCookieStore extends BasicCookieStore {
      */
     @Override
     public synchronized void addCookie(Cookie cookie) {
-        super.addCookie(cookie);
+        if(cookie != null) {
+            super.addCookie(cookie);
+            if (cookie.getName().contains(PHPSESSID_TAG)) {
+                this.domain = cookie.getDomain();
+            }
+        }
     }
-    
+
+    /**
+     * Add the encoded string to the store.
+     *
+     * @param encodedCookie Cookie in string format.
+     */
+    public void addCookie(String encodedCookie){
+        addCookie(decodeCookie(encodedCookie));
+    }
+
     /**
      * Save the session cookie into shared preferences.
      * @author spereira
      */
     public synchronized void saveSessionCookie() {
         // Save cookie into persistent store
-        for (Cookie cookie : getCookies()) {
-            if(cookie.getName().contains(PHPSESSID_TAG)) {
+        List<Cookie> cookies =  getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(domain)) {
                 Log.i(TAG, "ON PERSIST COOKIE SESSION");
                 SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
                 String str = encodeCookie(new PersistentCookie(cookie));
@@ -104,7 +123,9 @@ public class PersistentCookieStore extends BasicCookieStore {
             // Get 
             Cookie cookie = decodeCookie(encodedCookie);
             // Save
-            if(cookie != null) super.addCookie((Cookie) cookie);
+            if(cookie != null){
+                addCookie(cookie);
+            }
         }
     }    
 
@@ -129,7 +150,7 @@ public class PersistentCookieStore extends BasicCookieStore {
 
     /**
      * Create a cookie from cookie string Base64. 
-     * @param string
+     * @param cookieString
      * @return Cookie or null
      * @author spereira
      */
@@ -187,6 +208,21 @@ public class PersistentCookieStore extends BasicCookieStore {
             data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4) + Character.digit(hexString.charAt(i + 1), 16));
         }
         return data;
+    }
+
+    /**
+     * Return the cookie that is being used.
+     *
+     * @return The current cookie.
+     */
+    public String getCurrentCookie(){
+        List<Cookie> cookies =  getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(domain)) {
+                return encodeCookie(new PersistentCookie(cookie));
+            }
+        }
+        return null;
     }
 
 }

@@ -15,12 +15,12 @@ package com.mobile.forms;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.objects.PollOption;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -48,10 +48,11 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
+
     private final static String TAG = LogTagHelper.create(FormField.class);
 
     public interface OnDataSetReceived {
-        public void DataSetReceived(Map<String, String> dataSet);
+        void DataSetReceived(Map<String, String> dataSet);
     }
 
     private Form parent;
@@ -91,25 +92,25 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String scenario;
     
     private LinkedHashMap<String, String> dataSet;
-    // public ArrayList<String> dataSet;
-    private String datasetSource;
-    private OnDataSetReceived dataset_Listener;
+
+    private String dataSetSource;
+
+    private OnDataSetReceived dataSetListener;
 
     private FieldValidation validation;
 
-    @Deprecated
     /**
-     * use validation.regex instead.
+     * TODO
      */
-    private String regEx;
+    private ArrayList<RelatedFieldOption> mRelatedFieldOptions;
+    private int preSelectedRelatedOption = 0;
+    private String mRelatedFieldKey;
 
     /**
      * value that is shown to the user. 
      * It's empty when it is to show the label transparent instead.
      */
     private String value;
-
-    private Map<String, String> dataValues;
 
     private HashMap<String, String> dataCalls;
 
@@ -135,12 +136,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.validation = new FieldValidation();
         this.value = "";
         this.dataSet = new LinkedHashMap<>();
-        this.dataValues = new HashMap<>();
         this.dataCalls = new HashMap<>();
         this.dataOptions = new HashMap<>();
-        this.datasetSource = "";
+        this.dataSetSource = "";
         this.parent = parent;
-        this.dataset_Listener = null;
+        this.dataSetListener = null;
         this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.linkText = "";
@@ -149,8 +149,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /**
      * Form param cosntructor.
-     * @param maxSize
-     *            . Max size of the characters.
      * @param parent
      *            . Form that encapsulates the field.
      * @param name
@@ -169,12 +167,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.validation = new FieldValidation();
         this.validation.required = obligatory;
         this.dataSet = new LinkedHashMap<>();
-        this.dataValues = new HashMap<>();
         this.dataCalls = new HashMap<>();
         this.dataOptions = new HashMap<>();
-        this.datasetSource = "";
+        this.dataSetSource = "";
         this.parent = parent;
-        this.dataset_Listener = null;
+        this.dataSetListener = null;
         this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.dataSetRating = new LinkedHashMap<>();
@@ -188,11 +185,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         boolean result = true;
-
         try {
+            //Log.i(TAG, "FORM FIELD: " + jsonObject.toString());
             // get the form field
             String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
-
             switch (formFieldString) {
                 case "string":
                 case "text":
@@ -235,208 +231,192 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case "checkbox_link":
                     inputType = InputType.checkBoxList;
                     break;
+                case "radio_related":
+                    inputType = InputType.radioRelated;
+                    break;
                 default:
                     return false;
             }
 
             // if the field is one of the supported types
-            if (result) {
-                id = jsonObject.optString(RestConstants.JSON_ID_TAG);
-                key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
-                name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
-                label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-                value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
-                scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-                linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
-                Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
-                //should be more generic
-                JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
-                dataSetRating.clear();
-                if (optionsArray != null && optionsArray.length() > 0) {
-                    for (int i = 0; i < optionsArray.length(); i++) {
-                        Log.e("RATING","key:"+optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG)+" value:"+ optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
-                        dataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG), 
-                                optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+            name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
+            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
+            value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
+            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
+            linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
+            mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
+            Log.i(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
+
+            // Case RULES TODO
+            JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
+            if(validationObject != null) {
+                if (!validation.initialize(validationObject)) {
+                    //Log.e(TAG, "initialize: Error parsing the rules fields");
+                    result = false;
+                }
+            }
+
+            /**
+             * Validate and hide the city key for create/edit address form.<br>
+             * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
+             * @author sergiopereira
+             */
+            if(key != null && key.equals(RestConstants.JSON_CITY_TAG) && inputType == InputType.list) {
+                inputType = InputType.hide;
+            }
+
+            // Case "data_set" //should be more generic
+            JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
+            dataSetRating.clear();
+            if (optionsArray != null && optionsArray.length() > 0) {
+                for (int i = 0; i < optionsArray.length(); i++) {
+                    //Log.e("RATING","key:"+optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG)+" value:"+ optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                    dataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG), optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                }
+            }
+
+            dataSet.clear();
+            dataCalls.clear();
+            JSONArray dataSetArray = null;
+            JSONObject dataSetObject = null;
+
+            // Case "dataset" TODO Unify dataset response
+            if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_TAG)) {
+                dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_TAG);
+                dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
+            }
+            /**
+             * Get data from dataset as json object
+             */
+            if(dataSetObject != null && dataSetObject.length() > 0){
+                Iterator<?> it = dataSetObject.keys();
+                while (it.hasNext()) {
+                    String curKey = (String) it.next();
+                    // Validate keys
+                    if(curKey.equals(RestConstants.JSON_API_CALL_TAG)){
+                        dataCalls.put(curKey, (String) dataSetObject.get(RestConstants.JSON_API_CALL_TAG));
+                    } else{
+                        dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
                     }
                 }
-                
-                /**
-                 * Validate the city key for create/edit address form.
-                 * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
-                 * @author sergiopereira 
-                 */
-                if(key != null && key.equals(RestConstants.JSON_CITY_TAG)) inputType = InputType.text;
-                
-                
-                // Get rules
-                JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
-
-                if (validationObject != null) {
-
-                    if (!validation.initialize(validationObject)) {
-                    	Log.e( TAG, "initialize: Error parsing the rules fields" );
-                        result = false;
+            /**
+             * Get data from dataset as json array
+             */
+            } else if (dataSetArray != null && dataSetArray.length() > 0) {
+                mRelatedFieldOptions = new ArrayList<>();
+                for (int i = 0; i < dataSetArray.length(); ++i) {
+                    // New options
+                    JSONObject dataItem = dataSetArray.optJSONObject(i);
+                    if(dataItem != null) {
+                        RelatedFieldOption formFieldOption = new RelatedFieldOption();
+                        formFieldOption.initialize(dataItem);
+                        mRelatedFieldOptions.add(formFieldOption);
+                        if(formFieldOption.isDefault()) {
+                            preSelectedRelatedOption = i;
+                        }
+                    }
+                    // Case old TODO: Remove this case in the next release
+                    else {
+                        String label = dataSetArray.getString(i);
+                        dataSet.put(label, label);
                     }
                 }
-                
+            }
+            // Case "dataset_source"
+            else if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_SOURCE_TAG)) {
+                    dataSetSource = jsonObject.optString(RestConstants.JSON_DATA_SET_SOURCE_TAG);
+                    if (!TextUtils.isEmpty(dataSetSource)) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(GetFormsDatasetListHelper.KEY, key);
+                        bundle.putString(GetFormsDatasetListHelper.URL, dataSetSource);
+                        JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
+                    }
+            }
+
+            // Case options TODO Unify options response
+            /**
+             * Validate this method to save the shipping methods
+             */
+            JSONArray dataOptionsArray = null;
+            JSONObject dataOptionsObject = null;
+            if(!jsonObject.isNull("options")) {
+                dataOptionsArray = jsonObject.optJSONArray("options");
+                dataOptionsObject = jsonObject.optJSONObject("options");
+                //if(dataOptionsArray != null) Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
+                //if(dataOptionsObject != null) Log.i(TAG,"code1options json "+dataOptionsObject.toString());
+            }
+
+            /**
+             * Method to save the newsletter options
+             */
+            if(key.equals("newsletter_categories_subscribed") && dataOptionsArray != null) {
+                newsletterOptions = new ArrayList<>();
+                for (int i = 0; i < dataOptionsArray.length(); i++) {
+                    newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name));
+                }
+                dataOptionsArray = null;
+                dataOptionsObject = null;
+            }
+
+            // Case shipping options from array
+            dataOptions.clear();
+            if(dataOptionsArray != null){
+                extrasValues.clear();
+                for (int i = 0; i < dataOptionsArray.length(); ++i) {
+                    if(scenario != null){
+                        PickUpStationObject pStation = new PickUpStationObject();
+                        pStation.initialize(dataOptionsArray.getJSONObject(i));
+                        extrasValues.put(pStation.getIdPickupstation(), pStation);
+                        dataSet.put(pStation.getName(), pStation.getName());
+                    } else {
+                        dataSet.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));
+                    }
+                    //Log.d(TAG, "FORM FIELD: CURRENT KEY " + dataOptionsArray.getString(i));
+                }
+            }
+            // Case shipping options from object
+            else if(dataOptionsObject != null){
+                Iterator<?> it = dataOptionsObject.keys();
+                while (it.hasNext()) {
+                    String curKey = (String) it.next();
+                    dataSet.put(curKey, curKey);
+                }
+            }
+
+            /**
+             * ########### PAYMENT METHODS ###########
+             */
+
+            if(key.equals("payment_method")){
                 dataSet.clear();
-                dataCalls.clear();
-                JSONArray dataSetArray = null;
-                JSONObject dataSetObject = null;
-                if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_TAG)) {
-                    dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_TAG);
-                    dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
-                }
-                
-                                
-                /**
-                 * Get data from dataset as json object
-                 */
-                if(dataSetObject != null && dataSetObject.length() > 0){
-                    Iterator<?> it = dataSetObject.keys();
-                    while (it.hasNext()) {
-                        String curKey = (String) it.next();
-                        // Validate keys
-                        if(curKey.equals(RestConstants.JSON_API_CALL_TAG)){
-                            dataCalls.put(curKey, (String) dataSetObject.get(RestConstants.JSON_API_CALL_TAG));
-                        } else{
-                            dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
-                        }
-                    }
-                /**
-                 * Get data from dataset as json array
-                 */  
-                } else if (dataSetArray != null && dataSetArray.length() > 0) {
-                    for (int i = 0; i < dataSetArray.length(); ++i) {
-                        dataSet.put(dataSetArray.getString(i), dataSetArray.getString(i));
-                        Log.i(TAG, "code1put : "+dataSetArray.getString(i) );
-                    }
-                } else {
-                    if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_SOURCE_TAG)) {
-                        datasetSource = jsonObject.optString(RestConstants.JSON_DATA_SET_SOURCE_TAG);
-                        if (!datasetSource.equals("")) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(GetFormsDatasetListHelper.KEY, key);
-                            bundle.putString(GetFormsDatasetListHelper.URL, datasetSource);
-                            JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
-                        }
-                    }
-                }
-                
-                if(dataSet != null) {
-                    Log.i(TAG, "code1put : "+dataSet.toString() );
-                }
-                
-                /**
-                 * Validate this method to get the poll values
-                 */
-                dataValues.clear();
-                JSONArray dataValuesArray = null;
-                if (!jsonObject.isNull("values")) {
-                    dataValuesArray = jsonObject.optJSONArray("values");
-                }
-                if (dataValuesArray != null && dataValuesArray.length() > 0) {
-                    for (int i = 0; i < dataValuesArray.length(); ++i) {
-                        PollOption option = new PollOption(dataValuesArray.getJSONObject(i));
-                        dataValues.put(option.getOption(), option.getValue());
-                    }
-                }
-                
-                
-                /**
-                 * Validate this method to save the shipping methods
-                 */
-                JSONArray dataOptionsArray = null;
-                JSONObject dataOptionsObject = null;
-                if(!jsonObject.isNull("options")) {
-                    dataOptionsArray = jsonObject.optJSONArray("options");
-                    dataOptionsObject = jsonObject.optJSONObject("options");
-                    if(dataOptionsArray != null)
-                        Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
-                    if(dataOptionsObject != null)
-                        Log.i(TAG,"code1options json "+dataOptionsObject.toString());
-                }
-                
-                /**
-                 * Method to save the newsletter options
-                 */
-                if(key.equals("newsletter_categories_subscribed") && dataOptionsArray != null) {
-                    newsletterOptions = new ArrayList<>();
-                    for (int i = 0; i < dataOptionsArray.length(); i++)
-                        newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name));
-                    dataOptionsArray = null;
-                    dataOptionsObject = null;
-                }
+                paymentFields = new HashMap<>();
+                dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
+                Iterator<?> it = dataOptionsObject.keys();
+                //Clean payment method info
+                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+                JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
+                while (it.hasNext()) {
 
-                dataOptions.clear();
-                if(dataOptionsArray != null){
-                    extrasValues.clear();
-                    for (int i = 0; i < dataOptionsArray.length(); ++i) {
-                        if(scenario != null){
-                            //extrasValues.clear();
-                            //for (int j = 0; j < dataOptionsArray.length(); j++) {
-                                PickUpStationObject pStation = new PickUpStationObject();
-                                pStation.initialize(dataOptionsArray.getJSONObject(i));
-                                extrasValues.put(pStation.getIdPickupstation(), pStation);
-                                dataSet.put(pStation.getName(), pStation.getName());
-                            //}
-                            
-                        } else {
-                            dataSet.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));    
-                        }
-                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + dataOptionsArray.getString(i));
-                        
-                    }
-                }else if(dataOptionsObject != null){
-                    Iterator<?> it = dataOptionsObject.keys();
-                    while (it.hasNext()) {
-                        String curKey = (String) it.next();
-                        dataSet.put(curKey, curKey);
-                    }
+                    String curKey = (String) it.next();
+                    String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_LABEL_TAG);
+                    String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_VALUE_TAG);
+                    //Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
+                    dataSet.put(value, label);
+
+                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                    PaymentInfo mPaymentInfo = new PaymentInfo();
+                    mPaymentInfo.initialize(paymentDescription);
+                    JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
+
+                    Log.i(TAG, "code1paymentDescription : saved : "+curKey);
+                    JSONObject json = dataOptionsObject.getJSONObject(curKey);
+                    Form mForm = new Form();
+                    mForm.initialize(json);
+                    paymentFields.put(label, mForm);
+                    Log.i(TAG, "code1paymentDescription : initialized form : "+curKey);
                 }
-                
-                
-                
-                
-                /**
-                 * ########### PAYMENT METHODS ########### 
-                 */
-                
-                if(key.equals("payment_method")){
-                    dataSet.clear();
-                    paymentFields = new HashMap<>();
-                    dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
-                    Iterator<?> it = dataOptionsObject.keys();
-                    //Clean payment method info
-                    JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-                    JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
-                    while (it.hasNext()) {
-                        
-                        String curKey = (String) it.next();
-                        String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_LABEL_TAG);
-                        String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_VALUE_TAG);
-                        Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
-                        dataSet.put(value, label);
-                        
-                        JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
-                        PaymentInfo mPaymentInfo = new PaymentInfo();
-                        mPaymentInfo.initialize(paymentDescription);
-                        JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
-                        
-                        Log.i(TAG, "code1paymentDescription : saved : "+curKey);
-                        JSONObject json = dataOptionsObject.getJSONObject(curKey);
-                        Form mForm = new Form();
-                        mForm.initialize(json);
-                        paymentFields.put(label, mForm);
-                        Log.i(TAG, "code1paymentDescription : initialized form : "+curKey);
-                    }
-                }
-                
-                
-                /**
-                 * ########################################################
-                 */
-                
             }
 
         } catch (JSONException e) {
@@ -444,7 +424,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             result = false;
         }
 
-        regEx = validation.regex;
         return result;
     }
 
@@ -515,13 +494,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             jsonObject.put(RestConstants.JSON_VALUE_TAG, value);
             jsonObject.put(RestConstants.JSON_TERMS_TAG, linkText);
             // validation
-            jsonObject.put(RestConstants.JSON_VALIDATION_TAG, validation.toJSON());
+            jsonObject.put(RestConstants.JSON_RULES_TAG, validation.toJSON());
 
             
             //FIXME add rating data set to Json Object
             
             // dataset
-
             JSONArray dataSetArray = new JSONArray();
             for (String dataSetItem : dataSet.keySet()) {
                 dataSetArray.put(dataSetItem);
@@ -530,7 +508,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             jsonObject.put(RestConstants.JSON_DATA_SET_TAG, dataSetArray);
 
             // datasetsource
-            jsonObject.put(RestConstants.JSON_DATA_SET_SOURCE_TAG, datasetSource);
+            jsonObject.put(RestConstants.JSON_DATA_SET_SOURCE_TAG, dataSetSource);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -646,11 +624,20 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return dataSet;
     }
 
-    public void setDataSet(LinkedHashMap<String, String> dataSet) {
-        this.dataSet = dataSet;
+    @Override
+    public ArrayList<RelatedFieldOption> getRelatedFieldOptions() {
+        return this.mRelatedFieldOptions;
     }
-    
-    
+    @Override
+    public int getPreSelectedRelatedOptionPosition() {
+        return this.preSelectedRelatedOption;
+    }
+
+    @Override
+    public String getRelatedFieldKey() {
+        return this.mRelatedFieldKey;
+    }
+
     public HashMap<String, Form> getPaymentMethodsField(){
         return this.paymentFields;
     }
@@ -658,35 +645,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public void setPaymentMethodsField(HashMap<String, Form> pFields){
         this.paymentFields = pFields;
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.forms.IFormField#getDataSet()
-     */
-    @Override
-    public Map<String, String> getDataValues() {
-        return dataValues;
-    }
 
-    public void setDataSet(Map<String, String> dataValues) {
-        this.dataValues = dataValues;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.forms.IFormField#getDatasetSource()
-     */
-    @Override
-    public String getDatasetSource() {
-        return datasetSource;
-    }
-
-    public void setDatasetSource(String datasetSource) {
-        this.datasetSource = datasetSource;
-    }
-    
     @Override
     public Map<String, String> getDataCalls() {
         return dataCalls;
@@ -704,20 +663,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     public void setValidation(FieldValidation validation) {
         this.validation = validation;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.forms.IFormField#getRegEx()
-     */
-    @Override
-    public String getRegEx() {
-        return regEx;
-    }
-
-    public void setRegEx(String regEx) {
-        this.regEx = regEx;
     }
 
     /*
@@ -748,12 +693,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * @param listener
      */
     public void setOnDataSetReceived(OnDataSetReceived listener) {
-        dataset_Listener = listener;
-    }
-
-    @Override
-    public OnDataSetReceived getOnDataSetReceived() {
-        return dataset_Listener;
+        dataSetListener = listener;
     }
 
     public void handleSuccessEvent(Bundle bundle) {
@@ -766,8 +706,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             dataSet = (LinkedHashMap<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
-            if (null != dataset_Listener) {
-                dataset_Listener.DataSetReceived(dataSet);
+            if (null != dataSetListener) {
+                dataSetListener.DataSetReceived(dataSet);
             }
         default:
             break;
@@ -786,7 +726,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     @Override
     public int describeContents() {
-        // Auto-generated method stub
         return 0;
     }
 
@@ -799,9 +738,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(validation);
         dest.writeString(value);
         dest.writeMap(dataSet);
-        dest.writeString(datasetSource);
+        dest.writeString(dataSetSource);
         dest.writeValue(parent);
-        dest.writeValue(dataset_Listener);
+        dest.writeValue(dataSetListener);
         dest.writeMap(extrasValues);
         dest.writeString(linkText);
         dest.writeMap(dataSetRating);
@@ -819,29 +758,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         validation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         value = in.readString();
         dataSet = (LinkedHashMap<String, String>) in.readHashMap(null);
-        datasetSource = in.readString();
+        dataSetSource = in.readString();
         parent = (Form) in.readValue(Form.class.getClassLoader());
-        dataset_Listener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
+        dataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
         linkText = in.readString();
         dataSetRating = (LinkedHashMap<String, String>) in.readHashMap(null);
-    }
-    
-    /**
-     * @return the extrasValues
-     */
-    public LinkedHashMap<Object, Object> getExtrasValues() {
-        return extrasValues;
-    }
-
-    /**
-     * Some of the Form Fields have extra content that needs to be set after the user selects an option
-     * This(extrasValues) will keep a list of objects with that info.
-     * 
-     * @param extrasValues the extrasValues to set
-     */
-    public void setExtrasValues(LinkedHashMap<Object, Object> extrasValues) {
-        this.extrasValues = extrasValues;
     }
 
     /**
@@ -862,21 +784,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return this.linkText;
     }
 
-    public LinkedHashMap<String, String> getDataSetRating() {
-        return dataSetRating;
-    }
-
-    public void setDataSetRating(LinkedHashMap<String, String> dataSetRating) {
-        this.dataSetRating = dataSetRating;
-    }
 
     @Override
     public Map<String, String> getDateSetRating() {
         return dataSetRating;
     }
 
-
-    
-    
-    
 }

@@ -9,6 +9,7 @@ package com.mobile.controllers.fragments;
 public enum FragmentType {
     UNKNOWN,
     LOGIN,
+    MY_ADDRESSES_LOGIN,
     REGISTER,
     FORGOT_PASSWORD,
     POPULARITY,
@@ -27,7 +28,7 @@ public enum FragmentType {
     PRODUCT_DETAILS,
     WRITE_REVIEW,
     REVIEW,
-    PRODUCT_DESCRIPTION,
+    PRODUCT_INFO,
     PRODUCT_GALLERY,
     SHOPPING_CART,
     CHECKOUT_BASKET,
@@ -46,7 +47,6 @@ public enum FragmentType {
     PAYMENT_METHODS,
     ABOUT_YOU,
     MY_ORDER,
-    POLL,
     CHECKOUT_EXTERNAL_PAYMENT,
     HEADLESS_CART,
     CAMPAIGNS,
@@ -62,4 +62,40 @@ public enum FragmentType {
     PRODUCT_OFFERS,
     INNER_SHOP,
     WRITE_REVIEW_SELLER;
+
+    private int id;
+    private final static String DIVIDER = ":";
+
+    @Override
+    public String toString() {
+        return name() + (id != 0 ? DIVIDER + id : "");
+    }
+
+    /**
+     * Get id associated to type.
+     * @return int
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Associate an id to type.
+     * @param id The fragment id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Return the last value (FragmentType) of the tag.
+     *
+     * @param tag The fragment tag.
+     * @author ricardosoares
+     */
+    public static FragmentType getValue(String tag){
+        String[] strings = tag.split(DIVIDER);
+        return FragmentType.valueOf(strings[0]);
+    }
+
 }

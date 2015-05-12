@@ -1,11 +1,9 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,9 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is called by Category Activity <p/><br> 
@@ -45,8 +46,10 @@ public class SubCategoriesAdapter extends BaseAdapter {
     //private Context context;
     private final int CATEGORIES_LAYOUT = R.layout.category_inner_childcat;
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
-	private String categoryName;
-    
+	private Category headCategory;
+    private String selectedCategoryId = "";
+    private Activity mActivity;
+
 
     /**
      * A representation of each item on the list
@@ -65,10 +68,12 @@ public class SubCategoriesAdapter extends BaseAdapter {
      * @param imageLoader
      *            NOT USED
      */
-    public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, String categoryName) {
+    public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, Category category) {
         this.categories = categories;
-        this.categoryName = categoryName;
+        this.headCategory = category;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mActivity = activity;
+        selectedCategoryId = "";
     }
 
     /*
@@ -87,7 +92,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
      */
     public Object getItem(int position) {
     	if ( position == 0 )
-    		return categoryName;
+    		return headCategory.getName();
     	else
     		return categories.get( position - 1 );
     }
@@ -101,8 +106,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setAdapterData(List<Category> children, String categoryName) {
-    	this.categoryName = categoryName;
+    public void setAdapterData(List<Category> children, Category category) {
+    	this.headCategory = category;
         this.categories = children;
         notifyDataSetChanged();
     }
@@ -138,19 +143,23 @@ public class SubCategoriesAdapter extends BaseAdapter {
         	
         	item = new Item();
             item.textView = (TextView) itemView.findViewById( R.id.text);
-            itemView.setTag( item );
+            itemView.setTag(item);
         } else {
         	item = (Item)itemView.getTag();
         }
-        	
-       
-        if ( position == 0 )
-        	item.textView.setText(categoryName);
-        else
-        	item.textView.setText( categories.get(position - 1).getName());
-    	
+        if ( position == 0 ) {
+            item.textView.setText(headCategory.getName());
+//            if(!TextUtils.isEmpty(selectedCategoryId) && headCategory.getId().equals(selectedCategoryId)){
+//                itemView.setSelected(true);
+//                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
+//            } else {
+//                itemView.setSelected(false);
+//                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
+//            }
+        } else {
+            item.textView.setText(categories.get(position - 1).getName());
+        }
         return itemView;
-        	
     }
 
     /**
@@ -163,5 +172,9 @@ public class SubCategoriesAdapter extends BaseAdapter {
             super.unregisterDataSetObserver(observer);    
         }
     }
-    
+
+    public void setSelectedCategory(String catId){
+        selectedCategoryId = catId;
+        notifyDataSetChanged();
+    }
 }

@@ -23,29 +23,25 @@ public class GetRecentlyViewedHelper {
 
     private static final EventType EVENT_TYPE = EventType.GET_RECENLTLY_VIEWED_LIST;
 
-    private IResponseCallback mResponseCallback;
-
     /**
      * 
      * @param requester
      */
     public GetRecentlyViewedHelper(IResponseCallback requester) {
         Log.d(TAG, "ON CONSTRUCTOR");
-        // Get call back
-        mResponseCallback = requester;
         // Get all items on database
-        getRecentlyViewedList();
+        getRecentlyViewedList(requester);
     }
 
     /**
      * TODO
      */
-    private void getRecentlyViewedList() {
+    private void getRecentlyViewedList(IResponseCallback requester) {
         Log.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<LastViewedAddableToCart> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, listLastViewed);
-        mResponseCallback.onRequestComplete(bundle);
+        requester.onRequestComplete(bundle);
     }
 }

@@ -70,14 +70,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CheckoutExternalPaymentFragment.class);
 
-    // private static final String CHECKOUT_URL_WITH_PARAM =
-    // "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
-
     private WebView webview;
 
     private String paymentUrl;
 
     private String failedPageRequest;
+
     private boolean isRequestedPage;
 
     private Handler handler = new Handler();
@@ -162,7 +160,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void triggerGetCustomer() {
-
         triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
     }
 
@@ -216,12 +213,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
-
         startCheckout();
     }
 
@@ -233,10 +228,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "ON PAUSE");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -247,10 +242,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.i(TAG, "ON STOP");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON STOP");
     }
 
     /*
@@ -261,7 +256,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         Log.i(TAG, "ON DESTROY");
     }
 
@@ -275,12 +269,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } catch (IllegalArgumentException e) {
                 // TODO: handle exception
             }
-
             webview.destroy();
             webview = null;
         }
         System.gc();
-
     }
 
     @Override
@@ -314,33 +306,28 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
             return;
         }
-
-        Log.i(TAG, "trackPaymentMethod : payment method : " + JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : " + JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, JumiaApplication.INSTANCE.getPaymentMethodForm().getName());
-
-        TrackerDelegator.trackPaymentMethod(params);
-
         Log.d(TAG, "Loading Url: " + paymentUrl);
+        // Track
+        String userId = JumiaApplication.CUSTOMER.getIdAsString();
+        String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+        String payment = JumiaApplication.INSTANCE.getPaymentMethodForm().getName();
+        TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
         List<NameValuePair> parameters = new ArrayList<>();
 
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
                 && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
                 && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == RequestType.POST) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm()
-                    .getContentValues().valueSet();
+            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
                     parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
                 } else {
                     parameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
                 }
-
             }
 
-            Log.i(TAG, "code1content : " + parameters.toString());
+            Log.i(TAG, "code1content parameters: " + parameters.toString());
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
@@ -351,18 +338,15 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 e.printStackTrace();
             }
         } else if (JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm()
-                    .getContentValues().valueSet();
+            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
             setProxy();
             for (Entry<String, Object> entry : mValues) {
-
                 if (!paymentUrl.contains("?")) {
                     paymentUrl += "?" + entry.getKey() + "=" + entry.getValue();
                 } else {
                     paymentUrl += "&" + entry.getKey() + "=" + entry.getValue();
                 }
             }
-
             webview.loadUrl(paymentUrl);
         } else {
             setProxy();
@@ -434,19 +418,15 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         @SuppressWarnings("deprecation")
         @Override
-        public void onReceivedError(WebView view, int errorCode,
-                                    String description, final String failingUrl) {
-            Log.e(TAG, "Received error: " + errorCode + " " + description + " "
-                    + failingUrl);
+        public void onReceivedError(WebView view, int errorCode, String description, final String failingUrl) {
+            Log.e(TAG, "Received error: " + errorCode + " " + description + " " + failingUrl);
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
-
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
             return false;
         }
 
@@ -457,11 +437,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.HttpAuthHandler, java.lang.String, java.lang.String)
          */
         @Override
-        public void onReceivedHttpAuthRequest(WebView view,
-                                              HttpAuthHandler handler, String host, String realm) {
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
             Log.i(TAG, "code1payment : onReceivedHttpAuthRequest");
-            handler.proceed(RestContract.AUTHENTICATION_USER,
-                    RestContract.AUTHENTICATION_PASS);
+            handler.proceed(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS);
         }
 
         /*
@@ -516,7 +494,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "onLoadResource: url = OOF");
                 e.printStackTrace();
             }
-
         }
 
         /*
@@ -552,24 +529,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.SslErrorHandler, android.net.http.SslError)
          */
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler,
-                                       SslError error) {
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             Log.i(TAG, "code1payment : onReceivedSslError : " + error);
             Log.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                Toast.makeText(
-                        getActivity(),
-                        "The host name does not match the certificate: "
-                                + error, Toast.LENGTH_LONG).show();
-
+                Toast.makeText(getActivity(), "The host name does not match the certificate: " + error, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getActivity(),
-                        "An SSL error occurred: " + error, Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(getActivity(), "An SSL error occurred: " + error, Toast.LENGTH_LONG).show();
             }
             handler.proceed();
         }
-
     }
 
     private class JavaScriptInterface {
@@ -581,16 +550,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args,
-                            mCallback);
-
-                    // Measure to escape the webview thread
+                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
+                    // Measure to escape the web view thread
                     handler.post(new Runnable() {
-
                         @Override
                         public void run() {
                             trackPurchase(result);
@@ -616,7 +581,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     } else if (result.has("grandTotal")) {
                         grandTotal = result.optString("grandTotal");
                     }
-
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
@@ -651,8 +615,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);

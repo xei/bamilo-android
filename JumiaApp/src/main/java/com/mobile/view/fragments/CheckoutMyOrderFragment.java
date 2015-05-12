@@ -102,7 +102,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     
     /**
      * Get CheckoutMyOrderFragment instance
-     * @return
+     * @return CheckoutMyOrderFragment
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
         CheckoutMyOrderFragment fragment = new CheckoutMyOrderFragment();
@@ -194,7 +194,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
         
         //Validate is service is available
-        if(JumiaApplication.mIsBound){
+        if (JumiaApplication.mIsBound) {
             // Get my Order
             showMyOrder();
         } else {
@@ -297,10 +297,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         billingAddress = mOrderFinish.getBillingAddress();
         if(billingAddress != null) showBillingAddress();
         // Get shipping method
-        shipMethod = mOrderFinish.getmShippingMethodLabel();
+        shipMethod = mOrderFinish.getShippingMethodLabel();
         if(shipMethod != null) showShippingMethod();
         // Get payment options
-        payMethod = mOrderFinish.getmPaymentMethodLabel();
+        payMethod = mOrderFinish.getPaymentMethodLabel();
         if(payMethod != null) showPaymentOptions();
         // Show container
         showFragmentContentContainer();
@@ -469,11 +469,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
    
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
     
@@ -521,10 +521,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditAddressesButton() {
         Log.i(TAG, "ON CLICK: EditAddresses");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
+                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
 
@@ -536,10 +536,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditShippingMethodButton() {
         Log.i(TAG, "ON CLICK: EditShippingMethod");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
+                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
     
@@ -550,10 +550,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditPaymentOptionsButton() {
         Log.i(TAG, "ON CLICK: EditPaymentOptions");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.PAYMENT_METHODS.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PAYMENT_METHODS.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
+                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
     
@@ -582,74 +582,73 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         return "app=android&customer_device=" + device;
     }
 
+    /**
+     * Trigger to clear cart after checkout finish.
+     */
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
         triggerContentEventNoLoading(new SetVoucherHelper(), null, this);
     }
-    
+
     /**
      * ############# RESPONSE #############
      */
     /**
      * Process the success event
-     * @param bundle
-     * @return
+     * @param bundle The success response
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    @Override
+    public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
-        case CHECKOUT_FINISH_EVENT:
-            Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            if(JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL){
-                JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
-            }
-            
-            getBaseActivity().updateCartInfo();
-            break;
-
-        default:
-            break;
+            case CHECKOUT_FINISH_EVENT:
+                Log.i(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
+                if (JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL) {
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
+                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
+                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                }
+                getBaseActivity().updateCartInfo();
+                break;
+            default:
+                break;
         }
-
-        return true;
     }
 
     /**
      * Process the error event
-     * @param bundle
-     * @return
+     * @param bundle The error response
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    @Override
+    public void onRequestError(Bundle bundle) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
         
         // Generic error
         if (super.handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
+            return;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -657,44 +656,21 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
-        case CHECKOUT_FINISH_EVENT:
-            Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                @SuppressWarnings("unchecked")
-                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
-                showErrorDialog(errors);
-                showFragmentContentContainer();
-            } else {
-                Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
-                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
-            }
-            break;
-        default:
-            break;
+            case CHECKOUT_FINISH_EVENT:
+                Log.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    @SuppressWarnings("unchecked")
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    showErrorDialog(errors);
+                    showFragmentContentContainer();
+                } else {
+                    Log.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                }
+                break;
+            default:
+                break;
         }
-
-        return false;
-    }
-
-    /**
-     * ########### RESPONSE LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
-    }
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-    @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
     }
     
     /**

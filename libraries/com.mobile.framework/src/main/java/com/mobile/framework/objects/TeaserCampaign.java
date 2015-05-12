@@ -1,55 +1,56 @@
 /**
- * 
+ *
  */
 package com.mobile.framework.objects;
-
-import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 
+import org.json.JSONObject;
+
 /**
  * Class that represents a teaser campaign
  * @author sergiopereira
  *
  */
+@Deprecated
 public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable {
-	
+
 	private String name;
-	
+
 	private String url;
 
 	/**
 	 * Empty constructor
 	 */
 	public TeaserCampaign() { }
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.mobile.framework.objects.ITargeting#getTargetType()
 	 */
 	@Override
 	public TargetType getTargetType() {
 		return TargetType.CAMPAIGN;
 	}
-	
+
 	/**
 	 * Set the campaign title
 	 * @param title
 	 * @author sergiopereira
 	 */
 	public void setTitle(String title) { this.name = title; }
-	
+
 	/**
-	 * Set the campaign url/id 
+	 * Set the campaign url/id
 	 * @param url
 	 * @author sergiopereira
 	 */
 	public void setUrl(String url) { this.url = url; }
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -87,7 +88,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public String getTargetTitle() {
 		return name;
 	}
-	
+
     /**
      * ########### Parcelable ###########
      */
@@ -99,7 +100,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public int describeContents() {
 		return 0;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
@@ -109,7 +110,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 		dest.writeString(name);
 		dest.writeString(url);
 	}
-	
+
 	/**
 	 * Parcel constructor
 	 * @param in
@@ -118,9 +119,9 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
         name = in.readString();
         url = in.readString();
 	}
-	
+
 	/**
-	 * Create parcelable 
+	 * Create parcelable
 	 */
 	public static final Parcelable.Creator<TeaserCampaign> CREATOR = new Parcelable.Creator<TeaserCampaign>() {
         public TeaserCampaign createFromParcel(Parcel in) {

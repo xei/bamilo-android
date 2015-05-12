@@ -45,7 +45,7 @@
     <style name="activity_sectionheader_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textSize">@dimen/text_s</item>
         <item name="android:layout_marginLeft">@dimen/margin_huge</item>
         <item name="android:layout_marginStart">@dimen/margin_huge</item>
@@ -150,7 +150,7 @@
         <item name="android:layout_height">@dimen/action_bar_icon_size</item>
         <item name="android:textSize">11sp</item>
         <item name="android:text">0</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingStart">5dp</item>
@@ -393,7 +393,7 @@
     <style name="divider_horizontal_orange">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/orange_basic</item>
+        <item name="android:background">@color/orange_ffa200</item>
     </style>
 
     <!-- BUTTON FOR BOTTOM CONTAINER -->
@@ -456,8 +456,11 @@
     </style>
 
     <style name="discount_percentage">
-        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width</item>
-        <item name="android:layout_height">@dimen/product_list_item_discount_percentage_image_height</item>
+        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width
+        </item>
+        <item name="android:layout_height">
+            @dimen/product_list_item_discount_percentage_image_height
+        </item>
         <item name="android:background">@drawable/discount_badge</item>
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:gravity">center</item>
@@ -539,7 +542,6 @@
     </style>
 
 
-
     <!-- ################# ACTION BAR ################# -->
 
 
@@ -552,7 +554,7 @@
         <item name="android:layout_width">33dp</item>
         <item name="android:layout_height">33dp</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -565,7 +567,7 @@
         <item name="android:minWidth">@dimen/action_bar_icon_size</item>
     </style>
 
-    <style name="Widget"/>
+    <style name="Widget" />
 
     <!-- CUSTOM SPINNER STYLE -->
     <style name="Widget.Jumia.Spinner.Style" parent="Widget">
@@ -604,6 +606,163 @@
         <item name="android:drawablePadding">@dimen/margin_20px</item>
         <item name="android:textSize">@dimen/text_header</item>
         <item name="android:textColor">@drawable/selector_text_secondary</item>
+    </style>
+
+    <!-- ################# MATERIAL ################# -->
+
+    <!-- CLICKABLE VIEW -->
+    <style name="ClickableStyle">
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">@drawable/selector_card_view</item>
+    </style>
+
+    <!-- TEASER CONTAINER -->
+    <style name="TeaserWhiteContainerStyle">
+        <item name="android:paddingBottom">@dimen/dimen_mat_8px</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <!-- HEADERS TEASER  -->
+    <style name="HeaderTeaser" parent="TextTitle_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_mat_48px</item>
+        <item name="android:paddingLeft">@dimen/dimen_mat_8px</item>
+        <item name="android:paddingStart">@dimen/dimen_mat_8px</item>
+    </style>
+
+    <!-- SMALL TEASER -->
+    <style name="SmallTeaserStyle" parent="CardViewFloatStyle">
+        <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
+        <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
+    </style>
+
+    <!-- PRODUCT TEASER -->
+    <style name="ProductTeaserStyle" parent="CardViewFloatStyle">
+        <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
+        <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
+    </style>
+
+    <!-- FLOAT CARD VIEW -->
+    <style name="CardViewFloatStyle" parent="ClickableStyle">
+        <item name="cardCornerRadius">@dimen/dimen_mat_2px</item>
+        <item name="cardElevation">@dimen/dimen_mat_3px</item>
+        <item name="contentPadding">@dimen/dimen_mat_4px</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+    </style>
+
+    <!-- FLAT CARD VIEW -->
+    <style name="CardViewFlatStyle" parent="ClickableStyle">
+        <item name="cardCornerRadius">0dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">@dimen/dimen_mat_4px</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+    </style>
+
+    <!-- BASE TEXT STYLES -->
+    <style name="text_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:gravity">left|start|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/grey_middle</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="TextDisplay_1" parent="text_base">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="TextHeadLine" parent="text_base">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextTitle_2" parent="text_base">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <style name="TextTitle_1" parent="text_base">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextSubHead" parent="text_base">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextBody_2" parent="text_base">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <style name="TextBody_1" parent="text_base">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextCaption" parent="text_base">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextMenu" parent="text_base">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <style name="TextButton" parent="text_base">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <!-- CUSTOM TEXT STYLES -->
+
+    <style name="TextTimer" parent="TextTitle_2">
+        <item name="android:textColor">@color/red_cc0000</item>
+    </style>
+
+    <style name="TextSubHeadOrange" parent="TextSubHead">
+        <item name="android:textColor">@color/orange_ffa200</item>
+    </style>
+
+    <style name="TextPriceSubHead" parent="TextSubHead">
+        <item name="android:textColor">@color/red_basic</item>
+    </style>
+
+    <!-- BASE BUTTONS STYLES -->
+
+    <style name="ButtonFlat" parent="TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/dimen_mat_36px</item>
+        <item name="android:minWidth">@dimen/dimen_mat_88px</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_mat_2px</item>
+        <item name="android:layout_marginRight">@dimen/dimen_mat_2px</item>
+        <item name="android:paddingLeft">@dimen/dimen_mat_4px</item>
+        <item name="android:paddingRight">@dimen/dimen_mat_4px</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/selector_card_view</item>
+    </style>
+
+    <!-- HORIZONTAL LIST -->
+
+    <style name="HorizontalListStyle" >
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">@dimen/home_horizontal_fade</item>
+        <item name="android:requiresFadingEdge">horizontal</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!-- WHITE HORIZONTAL LIST -->
+
+    <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
+        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>

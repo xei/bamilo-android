@@ -1,9 +1,7 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.checkout;
-
-import org.json.JSONObject;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,18 +14,20 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 
+import org.json.JSONObject;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
+ *
  * @author Guilherme Silva
- * 
+ *
  */
 public class GetTrackOrderHelper extends BaseHelper {
-    
+
     private static String TAG = GetTrackOrderHelper.class.getSimpleName();
-    
+
     private static final EventType EVENT_TYPE = EventType.TRACK_ORDER_EVENT;
 
     public static final String ORDER_NR = "ordernr";
@@ -63,7 +63,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
@@ -86,7 +86,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
-    
+
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         return parseResponseErrorBundle(bundle);

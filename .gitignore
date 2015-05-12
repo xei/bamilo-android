@@ -18,6 +18,7 @@ gradle-app.setting
 
 ## Directory-based project format:
 .idea/
+.idea/workspace.xml
 
 # if you remove the above rule, at least ignore the following:
 
@@ -68,7 +69,7 @@ crashlytics-build.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 

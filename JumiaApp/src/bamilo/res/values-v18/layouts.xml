@@ -49,5 +49,24 @@
     <item name="catalog_item_list_rounded" 		    type="layout">@layout/_def_catalog_item_list_rounded</item>
 
     <!-- PDV -->
-    <item name="product_details_fragment_seller_info" type="layout">@layout/_def_product_details_fragment_seller_info</item>
+    <item name="product_details_fragment_seller_info"   type="layout">@layout/_def_product_details_fragment_seller_info</item>
+    <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
+    <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
+    <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
+    <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
+
+    <!-- MY ORDERS -->
+    <item name="track_order_fragment"               type="layout">@layout/_def_track_order_fragment</item>
+    <item name="myorders_fragment_main"             type="layout">@layout/_def_myorders_fragment_main</item>
+
+    <!-- NAVIGATION DRAWER -->
+    <item name="navigation_fragment_main"           type="layout">@layout/_def_navigation_fragment_main</item>
+
+    <!-- CATEGORY -->
+    <item name="category"                           type="layout">@layout/_def_category</item>
+    <item name="category_inner_top_back"            type="layout">@layout/_def_category_inner_top_back</item>
+    <item name="category_inner_childcat"            type="layout">@layout/_def_category_inner_childcat</item>
+    <item name="category_inner_currentcat"          type="layout">@layout/_def_category_inner_currentcat</item>
+    <item name="navigation_fragment_categories"     type="layout">@layout/_def_navigation_fragment_categories</item>
+
 </resources>

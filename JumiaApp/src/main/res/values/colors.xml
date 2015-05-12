@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_color">@color/grey_background</color>
+    <color name="background_color">@color/white_f9f9f9</color>
     <color name="test_color">@color/red_basic</color>
 
     <!-- New Colors for redesign -->
@@ -9,7 +9,6 @@
     <color name="red_basic">#c11800</color>
     <color name="red_middle">#cc0000</color>
     <color name="blue_basic">#004789</color>
-    <color name="orange_basic">#ffa200</color>
     <color name="grey_dark">#333333</color>
     <color name="grey_middledark">#4e4e4e</color>
     <color name="grey_middle">#666666</color>
@@ -27,6 +26,10 @@
 
     <color name="yellow_dark">#feaf07</color>
     <color name="green_basic">#47b638</color>
+
+
+    <color name="green_warning">#7dcb7d</color>
+    <color name="red_warning">#e77979</color>
 
     <!-- The color used in the divider -->
     <!-- color name="semi_transparent">#88000000</color -->
@@ -48,9 +51,9 @@
     <color name="grey_campaign_bar">#dadada</color>
     <color name="green_campaign_bar">#0a9f2a</color>
     <color name="yellow_campaign_bar">#ffc64a</color>
-    <color name="orange_campaign_bar">@color/orange_basic</color>
+    <color name="orange_campaign_bar">@color/orange_ffa200</color>
 
-    <color name="orange_tab_bar">@color/orange_basic</color>
+    <color name="orange_tab_bar">@color/orange_ffa200</color>
     <color name="grey_tab_background">#ebebeb</color>
     <color name="grey_div_background">#d3d3d3</color>
 
@@ -64,5 +67,17 @@
     <color name="wizard_text_color">#c3c3c3</color>
     <color name="wizard_text_shadow">#000000</color>
     <color name="wizard_bck">#90000000</color>
+
+    <!-- ANDROID 5.0: COLOR ACCENT -->
+    <color name="color_accent">@color/orange_ffa200</color>
+    <color name="orange_ffa200">#ffa200</color>
+    <color name="white_f9f9f9">#f9f9f9</color>
+    <color name="red_cc0000">#cc0000</color>
+    <!--<color name="color_selection">#7FC0C0C0</color>-->
+    <color name="color_selection">#33C0C0C0</color>
+
+
+    <color name="kickout_background">#111111</color>
+    <color name="white_95_op">#f2ffffff</color>
 
 </resources>

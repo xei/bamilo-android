@@ -47,7 +47,7 @@
         <!-- Color for the status bar and contextual app bars -->
         <item name="colorPrimaryDark">@color/grey_dark</item>
         <!-- Color for UI controls like checkboxes and text fields -->
-        <item name="colorAccent">@color/orange_basic</item>
+        <item name="colorAccent">@color/color_accent</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/grey_dark</item>
         <!-- Color for app background -->
@@ -162,9 +162,11 @@
 
     <!-- Circle page indicator from attr:CirclePageIndicator -->
     <style name="Widget.JumiaCirclePageIndicator" parent="Widget">
-        <item name="fillColor">@color/orange_basic</item>
+        <item name="fillColor">@color/color_accent</item>
         <item name="pageColor">@color/grey_middlelight</item>
         <item name="snap">true</item>
+        <item name="extraSpacing">2dp</item>
+        <item name="radius">2.5dp</item>
     </style>
 
 </resources>

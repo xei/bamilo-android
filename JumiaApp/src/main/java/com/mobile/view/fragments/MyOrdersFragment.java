@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -38,7 +39,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     private SlidingTabLayout mMyOrdersPagerTabStrip;
 
-    public static int mPositionToStart = 0;
+    private int mPositionToStart = 0;
 
     /**
      * Get instance
@@ -60,10 +61,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
                 R.layout.myorders_fragment_main,
                 R.string.my_orders_label,
                 KeyboardState.ADJUST_CONTENT);
-    }
-
-    @Override
-    public void sendValuesToFragment(Object values) {
     }
 
     /*
@@ -108,7 +105,13 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
         mMyOrdersPager = (ViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
         mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
-        mMyOrdersPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
+
+        int layout = R.layout.tab_simple_half_item;
+        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
+            layout = R.layout.tab_simple_item;
+        }
+
+        mMyOrdersPagerTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
         if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {

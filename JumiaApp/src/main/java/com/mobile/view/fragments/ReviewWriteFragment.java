@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -124,7 +124,7 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     public ReviewWriteFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.review_write_fragment,
                 NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
@@ -150,16 +150,8 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Get arguments
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
-        }
-        //
+
         JumiaApplication.setIsSellerReview(false);
-        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        isExecutingSendReview = false;
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -215,6 +207,19 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)parcelableProduct;
+            }
+
+        }
+
         isExecutingSendReview = false;
         
         if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
@@ -311,8 +316,9 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setReviewName(DynamicForm reviewForm) {
         if(reviewForm != null && reviewForm.getItemByKey(NAME) != null && reviewForm.getItemByKey(NAME).getValue().equals("")){
             Customer customer = JumiaApplication.CUSTOMER;
-            String firstname = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : ""; 
-            reviewForm.getItemByKey(NAME).setValue(firstname);
+            if(customer != null && !TextUtils.isEmpty(customer.getFirstName())){
+                reviewForm.getItemByKey(NAME).setValue(customer.getFirstName());
+            }
         }
     }
     
@@ -346,8 +352,8 @@ public class ReviewWriteFragment extends BaseFragment {
             ratingContainer.addView(dynamicRatingForm.getContainer());
             
             loadReviewAndRatingFormValues();
-            setReviewName(dynamicRatingForm);
             restoreTextReview(dynamicRatingForm);
+            setReviewName(dynamicRatingForm);
 
             //Validate if both reviews and ratings are enabled on country configuration
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
@@ -602,7 +608,7 @@ public class ReviewWriteFragment extends BaseFragment {
                                     getBaseActivity().onBackPressed();
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
+                                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }
@@ -643,7 +649,6 @@ public class ReviewWriteFragment extends BaseFragment {
                 return true;
             } else {
                 completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();
@@ -773,31 +778,12 @@ public class ReviewWriteFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_RATING_EVENT:
-            triggerRatingForm();
-            break;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            break;
-        default:
-            super.onRetryRequest(eventType);
-            break;
-        }
     }
     
     /**
@@ -929,7 +915,7 @@ public class ReviewWriteFragment extends BaseFragment {
     private SharedPreferences getSharedPref(){
         if(mSharedPrefs == null){
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }

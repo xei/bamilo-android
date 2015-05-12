@@ -1,9 +1,9 @@
 package com.mobile.utils;
 
-import org.json.JSONObject;
-
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -15,8 +15,7 @@ import de.akquinet.android.androlog.Log;
 public class CheckoutStepManager {
     
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
-    
-    public final static String POLL_STEP = "checkoutpoll";
+
     public final static String ADDRESSES_STEP = "createAddress";
     public final static String BILLING_STEP = "billing";
     public final static String SHIPPING_STEP = "shippingMethod";
@@ -25,7 +24,7 @@ public class CheckoutStepManager {
     
     /**
      * Method used to get the next step value from JSON and return a fragment type
-     * @param jsonObject
+     * @param jsonObject The json response to get the next step
      * @return {@link FragmentType}
      */
     public static FragmentType getNextCheckoutStep(JSONObject jsonObject){
@@ -33,7 +32,6 @@ public class CheckoutStepManager {
         String nextStep = null;
         
         try {
-            
             // Validate data
             if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
                 // From native checkout tag
@@ -63,17 +61,15 @@ public class CheckoutStepManager {
     
     /**
      * Method used to get the Fragment type from a constant 
-     * @param nextStep
+     * @param nextStep The next step
      * @return {@link FragmentType}
      */
     public static FragmentType getNextFragment(String nextStep) {
         Log.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
-        // Poll answer
-        if (nextStep.equalsIgnoreCase(POLL_STEP)) fragmentType = FragmentType.POLL;
         // Create addresses step
-        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
         // Billing and shipping address step
         else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
         // Shipping method step
@@ -86,4 +82,23 @@ public class CheckoutStepManager {
         Log.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
         return fragmentType;
     }
+
+    /**
+     * Return all checkout fragment types
+     *
+     * @return String[] a list of types
+     */
+    public static String[] getAllNativeCheckout() {
+        return new String[]{
+                FragmentType.ABOUT_YOU.toString(),
+                FragmentType.MY_ADDRESSES.toString(),
+                FragmentType.CREATE_ADDRESS.toString(),
+                FragmentType.EDIT_ADDRESS.toString(),
+                FragmentType.SHIPPING_METHODS.toString(),
+                FragmentType.PAYMENT_METHODS.toString(),
+                FragmentType.MY_ORDER.toString(),
+                FragmentType.CHECKOUT_THANKS.toString()
+        };
+    }
+
 }

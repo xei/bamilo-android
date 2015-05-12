@@ -1,8 +1,10 @@
 package com.mobile.utils.deeplink;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -12,11 +14,16 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
+import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.preferences.ShopPreferences;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,12 +43,19 @@ public class DeepLinkManager {
 
     public static final String TAG = DeepLinkManager.class.getSimpleName();
 
+    public static final String DEEP_LINK_PAGE_INDICATION = "u";
+
+    public static final String EXTRA_GCM_PAYLOAD = "com.ad4screen.sdk.extra.GCM_PAYLOAD";
+
     private static final int PATH_CC_POS = 0;
-
     private static final int PATH_VIEW_POS = 1;
-
     private static final int PATH_DATA_POS = 2;
-
+    public static final int FROM_GCM = 0;
+    public static final int FROM_URI = 1;
+    public static final int FROM_UNKNOWN = -1;
+    private static final int CC_SIZE = 2;
+    private static final int MIN_SEGMENTS = 3;
+    private static final String DEFAULT_TAG = "default";
     private static final String CATALOG_TAG = "c";
     private static final String CATALOG_RATING_TAG = "cbr";
     private static final String CATALOG_POPULARITY_TAG = "cp";
@@ -62,182 +76,181 @@ public class DeepLinkManager {
     private static final String RECENTLY_VIEWED_TAG = "rv";
     private static final String RECENT_SEARCHES_TAG = "rc";
     private static final String FAVORITES_TAG = "w";
-
+    private static final String SHOPS_IN_SHOP_TAG = "ss";
     public static final String FRAGMENT_TYPE_TAG = "fragment_type";
-
     public static final String PDV_SIZE_TAG = "size";
 
     /**
-     * Load the external deep link. Get and set the country Load the deep view and create a bundle <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/cart/
-     * <p># Other case   -> JUMIA://eg/cart/
-     *
+     * Load the external deep link.<br>
+     * Get and set the country Load the deep view and create a bundle<br>
+     * # Default case -> JUMIA://com.mobile.jumia.dev/eg/cart/<br>
+     * # Other case   -> JUMIA://eg/cart/<br>
      * @author sergiopereira
      */
-    public static Bundle loadExternalDeepLink(Context context, Uri data) {
-        // Decode path
-        List<String> segments = isValidLink(context, data.getHost(), data.getPathSegments());
-        if (segments == null) {
-            return null;
-        }
-        // Get the country code
-        loadCountryCode(context, segments.get(PATH_CC_POS));
+    public static Bundle loadDeepLink(Uri data) {
+        // Validate deep link
+        List<String> segments = isValidLink(data);
         // Get the tag view and return values
-        return loadDeepViewTag(segments, data);
+        return loadDeepViewTag(data, segments);
     }
 
     /**
-     * Validate if is a valid link <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/ <p># Other case   -> JUMIA://eg/
-     *
-     * @param context
-     * @param host
-     * @param segments
-     * @return list of segments
+     * Validate the deep link data<br>
+     *  - Case from GCM: JUMIA://eg/cart/<br>
+     *  - Case from URI: JUMIA://com.jumia.android/eg/cart<br>
+     * @param data The Uri
+     * @return A list of segments should be something like this [eg, cart]
+     * @author sergiopereira
      */
-    private static List<String> isValidLink(Context context, String host, List<String> segments) {
-        Log.i(TAG, "DEEP LINK URI HOST: " + host);
-        Log.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
-        // Validate segments
-        if (segments.size() == 0) {
-            Log.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
-
-            // Case -> JUMIA://ng/
-            if (isSupporedCountryCode(host)) {
-                List<String> array = new ArrayList<>();
-                array.add(host);
-                return array;
-
-                // Case -> JUMIA://XXXX/
-            } else {
-                return null;
-            }
-
-            // Case -> JUMIA://eg/cart/
-        } else if (isSupporedCountryCode(host)) {
-            List<String> array = new ArrayList<>();
-            array.addAll(segments);
-            array.add(PATH_CC_POS, host);
-            return array;
+    private static List<String> isValidLink(Uri data) {
+        // Get host and path
+        String host = data.getHost();
+        List<String> segments = data.getPathSegments();
+        Log.i(TAG, "DEEP LINK URI HOST: " + data.getHost() + " PATH: " + data.getPathSegments());
+        // Get deep link origin
+        int origin = validateDeepLinkOrigin(host);
+        // Case empty
+        if (CollectionUtils.isEmpty(segments)) {
+            Log.w(TAG, "WARNING: DEEP LINK IS EMPTY");
         }
-
-        // Return default segments
-        // Case -> JUMIA://com.mobile.jumia.dev/eg/cart
+        // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
+        else if(origin == FROM_URI) {
+            // Add country code
+            ArrayList<String> arrayList = new ArrayList<>(segments);
+            arrayList.add(PATH_CC_POS, host);
+            segments = arrayList;
+            Log.i(TAG, "DEEP LINK FROM URI: " + segments.toString());
+        }
+        // Case from GCM: JUMIA://eg/cart/
+        else {
+            Log.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
+        }
+        // Return segments
         return segments;
     }
 
     /**
-     * Load the deep link view to create the respective bundle for that view
+     * specifies if the deep link is FROM_URI or FROM_GCM
+     * @param host
+     * @return
+     */
+    private static int validateDeepLinkOrigin(String host){
+        // Get deep link origin
+        return  !TextUtils.isEmpty(host) && host.length() == CC_SIZE ? FROM_URI : FROM_GCM;
+    }
+
+    /**
+     * Load the deep link view to create the respective bundle for that view.
      *
-     * @param segments
-     * @param data
+     * @param data The URI.
+     * @param segments The list of segments from URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle loadDeepViewTag(List<String> segments, Uri data) {
-        // 
+    private static Bundle loadDeepViewTag(Uri data, List<String> segments) {
+        Log.i(TAG, "DEEP LINK URI: " + data + " " + segments);
+        //
         Bundle bundle = null;
         try {
+            // Default case
+            String tag = DEFAULT_TAG;
             // Validate current URI size
-            if (segments != null && segments.size() > 1) {
-                // Get the tag
-                String tag = segments.get(PATH_VIEW_POS);
-                // Catalog
-                if (tag.equalsIgnoreCase(CATALOG_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
-                }
-                // Catalog - Rating
-                else if (tag.equalsIgnoreCase(CATALOG_RATING_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data);
-                }
-                // Catalog - Popularity
-                else if (tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
-                }
-                // Catalog - New In
-                else if (tag.equalsIgnoreCase(CATALOG_NEW_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.NEWIN, segments, data);
-                }
-                // Catalog - Price Up
-                else if (tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data);
-                }
-                // Catalog - Price Down
-                else if (tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data);
-                }
-                // Catalog - Name
-                else if (tag.equalsIgnoreCase(CATALOG_NAME_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.NAME, segments, data);
-                }
-                // Catalog - Brand
-                else if (tag.equalsIgnoreCase(CATALOG_BRAND_TAG)) {
-                    bundle = processCatalogLink(CatalogSort.BRAND, segments, data);
-                }
-                // Cart
-                else if (tag.equalsIgnoreCase(CART_TAG)) {
-                    bundle = processCartLink(segments);
-                }
-                // Product Details
-                else if (tag.equalsIgnoreCase(PDV_TAG)) {
-                    bundle = processPdvLink(segments, data);
-                }
-                // Login
-                else if (tag.equalsIgnoreCase(LOGIN_TAG)) {
-                    bundle = processLoginLink();
-                }
-                // Register
-                else if (tag.equalsIgnoreCase(REGISTER_TAG)) {
-                    bundle = processRegisterLink();
-                }
-                // Category
-                else if (tag.equalsIgnoreCase(CATEGORY_TAG)) {
-                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
-                }
-                // Search term
-                else if (tag.equalsIgnoreCase(SEARCH_TERM_TAG)) {
-                    bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
-                }
-                // Order overview
-                else if (tag.equalsIgnoreCase(ORDER_OVERVIEW_TAG)) {
-                    bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
-                }
-                // Campaign
-                else if (tag.equalsIgnoreCase(CAMPAIGN_TAG)) {
-                    bundle = processCampaignLink(segments.get(PATH_DATA_POS));
-                }
-                // Newsleter
-                else if (tag.equalsIgnoreCase(NEWSLETTER_TAG)) {
-                    bundle = processNewsletterLink();
-                }
-                // Recently Viewed
-                else if (tag.equalsIgnoreCase(RECENTLY_VIEWED_TAG)) {
-                    bundle = processRecentViewedLink();
-                }
-                // Recent Searches
-                else if (tag.equalsIgnoreCase(RECENT_SEARCHES_TAG)) {
-                    bundle = processRecenteSearchesLink();
-                }
-                // Favorites
-                else if (tag.equalsIgnoreCase(FAVORITES_TAG)) {
-                    bundle = processFavoritesLink();
-                }
-
-            } else {
-                // Home
-                bundle = processHomeLink();
+            if (CollectionUtils.isNotEmpty(segments) && segments.size() > 1) {
+                 tag = segments.get(PATH_VIEW_POS);
             }
-        } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG: " + segments.toString(), e);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "ON LOAD THE DEEP VIEW TAG", e);
+            // Get bundle
+            switch (tag) {
+                case CATALOG_TAG:
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
+                    break;
+                case CATALOG_RATING_TAG:
+                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data);
+                    break;
+                case CATALOG_POPULARITY_TAG:
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
+                    break;
+                case CATALOG_NEW_TAG:
+                    bundle = processCatalogLink(CatalogSort.NEWIN, segments, data);
+                    break;
+                case CATALOG_PRICE_UP_TAG:
+                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data);
+                    break;
+                case CATALOG_PRICE_DOWN_TAG:
+                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data);
+                    break;
+                case CATALOG_NAME_TAG:
+                    bundle = processCatalogLink(CatalogSort.NAME, segments, data);
+                    break;
+                case CATALOG_BRAND_TAG:
+                    bundle = processCatalogLink(CatalogSort.BRAND, segments, data);
+                    break;
+                case CART_TAG:
+                    bundle = processCartLink(segments);
+                    break;
+                case PDV_TAG:
+                    bundle = processPdvLink(segments, data);
+                    break;
+                case LOGIN_TAG:
+                    bundle = processLoginLink();
+                    break;
+                case REGISTER_TAG:
+                    bundle = processRegisterLink();
+                    break;
+                case CATEGORY_TAG:
+                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
+                    break;
+                case SEARCH_TERM_TAG:
+                    bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
+                    break;
+                case ORDER_OVERVIEW_TAG:
+                    bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
+                    break;
+                case CAMPAIGN_TAG:
+                    bundle = processCampaignLink(segments.get(PATH_DATA_POS));
+                    break;
+                case NEWSLETTER_TAG:
+                    bundle = processNewsletterLink();
+                    break;
+                case RECENTLY_VIEWED_TAG:
+                    bundle = processRecentViewedLink();
+                    break;
+                case RECENT_SEARCHES_TAG:
+                    bundle = processRecenteSearchesLink();
+                    break;
+                case FAVORITES_TAG:
+                    bundle = processFavoritesLink();
+                    break;
+                case SHOPS_IN_SHOP_TAG:
+                    bundle = processShopsInShopLink(segments.get(PATH_DATA_POS));
+                    break;
+                default:
+                    bundle = processHomeLink();
+                    break;
+            }
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            Log.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
+        }
+        bundle = addOriginGroupType(data,bundle);
+        return bundle;
+    }
+
+    /**
+     *  method that adds the Deep link origin to all bundles
+     * @param bundle
+     * @param origin
+     * @return
+     */
+    private static Bundle addOriginGroupType(Uri data,Bundle bundle){
+        if(bundle != null && data != null){
+            bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
         }
         return bundle;
     }
 
-
     /**
-     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/cam/deals-of-the-day
+     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/camp/deals-of-the-day
      *
-     * @param campaign id
+     * @param campaignId The campaign id
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -248,18 +261,17 @@ public class DeepLinkManager {
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(campaignId.replace("-", " "));
-        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?campaign_slug=" + campaignId);
+        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?" + GetCampaignHelper.CAMPAIGN_TAG + "=" + campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
         return bundle;
     }
 
-
     /**
      * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
      *
-     * @param category id
+     * @param categoryId The category id
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -276,7 +288,7 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for track order view with the order id. JUMIA://com.jumia.android/ng/o/1233
      *
-     * @param order id
+     * @param orderId order id
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -292,7 +304,7 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for catalog view with the search query. <p>JUMIA://com.mobile.jumia.dev/ng/s/cart <p>key: u value: ng/s/cart
      *
-     * @param query
+     * @param query The search query.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -313,13 +325,13 @@ public class DeepLinkManager {
      * Method used to create a bundle for cart or headless cart view with the respective SKUs. JUMIA://com.jumia.android/ng/cart
      * JUMIA://com.jumia.android/ng/cart/sku1_sku2_sku3
      *
-     * @param segments
+     * @param segments The list of segments from URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
     private static Bundle processCartLink(List<String> segments) {
         Log.i(TAG, "DEEP LINK TO CART");
-        // Default link 
+        // Default link
         String simpleSkuArray;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
         Bundle bundle = new Bundle();
@@ -327,12 +339,10 @@ public class DeepLinkManager {
         if (segments.size() > 2) {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
-//            fragmentType = FragmentType.HEADLESS_CART;
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
             Log.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
-
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, fragmentType);
@@ -343,8 +353,8 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for PDV view with the respective product SKU and size. JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
      *
-     * @param segments
-     * @param data
+     * @param segments The list of segments from URI.
+     * @param data The URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -465,14 +475,23 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for Catalog view with the respective catalog value. JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
      *
-     * @param segments
-     * @param data
+     * @param segments The list of segments from URI.
+     * @param data The URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
-        // Get catalog 
+        // Get catalog
         String catalogUrlKey = segments.get(PATH_DATA_POS);
+
+        // create the url with more that one segment:
+        // case [KE, c, mobile-phones, samsung] ---> mobile-phones/samsung
+        if(segments.size() > MIN_SEGMENTS){
+            for (int i = MIN_SEGMENTS; i < segments.size(); i++) {
+                catalogUrlKey = catalogUrlKey + "/" + segments.get(i);
+            }
+        }
+
         // Get filters
         Set<String> filters = getQueryParameterNames(data);
         // Get all params
@@ -494,33 +513,72 @@ public class DeepLinkManager {
         return bundle;
     }
 
-//    /**
-//     * Get the adx id value and add it to the received bundle
-//     * @param deepLinkBundle
-//     * @param data
-//     * @author sergiopereira
-//     */
-//    private static void getAdxValues(Bundle deepLinkBundle, Uri data){
-//        // Validate current bundle
-//        if(deepLinkBundle == null || data == null) return;
-//        try {
-//            // Get the adx id
-//            String adxIdValue = data.getQueryParameter(ADX_ID_TAG);
-//            // Add to bundle
-//            deepLinkBundle.putString(ADX_ID_TAG, adxIdValue);
-//        } catch (UnsupportedOperationException e) {
-//            Log.w(TAG, "ON GET ADX VALUE FROM: " + data.toString(), e);
-//            deepLinkBundle.putString(ADX_ID_TAG, null);
-//        }
-//    }
+    /**
+     * Method used to create a bundle for shops in shop view with the respective shop id.<br/>
+     * JUMIA://com.jumia.android/ug/ss/lego_shop_en_UG
+     *
+     * @param innerShopId The shop id
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processShopsInShopLink(String innerShopId) {
+        Log.i(TAG, "DEEP LINK TO SHOPS IN SHOP: " + innerShopId);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
+        return bundle;
+    }
+
+    /**
+     * Validate if is a valid link <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/ <p># Other case   -> JUMIA://eg/
+     *
+     * @param host The host from path
+     * @param segments A list of segments
+     * @return list of segments
+     */
+    @Deprecated
+    private static List<String> isValidLink(String host, List<String> segments) {
+        Log.i(TAG, "DEEP LINK URI HOST: " + host);
+        Log.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
+        // Validate segments
+        if (segments.size() == 0) {
+            Log.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
+
+            // Case -> JUMIA://ng/
+            if (isSupportedCountryCode(host)) {
+                List<String> array = new ArrayList<>();
+                array.add(host);
+                return array;
+
+                // Case -> JUMIA://XXXX/
+            } else {
+                return null;
+            }
+
+            // Case -> JUMIA://eg/cart/
+        } else if (isSupportedCountryCode(host)) {
+            List<String> array = new ArrayList<>();
+            array.addAll(segments);
+            array.add(PATH_CC_POS, host);
+            return array;
+        }
+
+        // Return default segments
+        // Case -> JUMIA://com.mobile.jumia.dev/eg/cart
+        return segments;
+    }
+
 
     /**
      * Load the country and set
      *
-     * @param context
-     * @param countryCode
+     * @param context The application context
+     * @param countryCode The country code
      * @author sergiopereira
      */
+    @Deprecated
     private static void loadCountryCode(Context context, String countryCode) {
         Log.d(TAG, "DEEP LINK URI PATH: " + countryCode);
         // Get current country code
@@ -536,11 +594,12 @@ public class DeepLinkManager {
     /**
      * Locate the shop id and save it for a respective country code
      *
-     * @param countryCode
+     * @param countryCode The country code
      * @author sergiopereira
      */
+    @Deprecated
     private static void locateCountryCode(Context context, String countryCode) {
-        // Valdiate countries available
+        // Validate countries available
         if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
@@ -562,10 +621,11 @@ public class DeepLinkManager {
     /**
      * Locate the shop id and save it for a respective country code
      *
-     * @param countryCode
+     * @param countryCode The country code
      * @author sergiopereira
      */
-    private static boolean isSupporedCountryCode(String countryCode) {
+    @Deprecated
+    private static boolean isSupportedCountryCode(String countryCode) {
         if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
@@ -584,7 +644,7 @@ public class DeepLinkManager {
     /**
      * Get all query parameters from Uri
      *
-     * @param uri
+     * @param uri The URI.
      * @return set of keys
      */
     private static Set<String> getQueryParameterNames(Uri uri) {
@@ -592,26 +652,123 @@ public class DeepLinkManager {
         if (query == null) {
             return Collections.emptySet();
         }
-
         Set<String> names = new LinkedHashSet<>();
         int start = 0;
         do {
             int next = query.indexOf('&', start);
             int end = (next == -1) ? query.length() : next;
-
             int separator = query.indexOf('=', start);
             if (separator > end || separator == -1) {
                 separator = end;
             }
-
             String name = query.substring(start, separator);
             names.add(Uri.decode(name));
-
             // Move start to end of name.
             start = end + 1;
         } while (start < query.length());
-
         return Collections.unmodifiableSet(names);
+    }
+
+    /*
+     * ############ DEEP LINK VALIDATIONS ############
+     */
+    /**
+     * Create a deep link bundle from deep link intent.<br>
+     * - From initial choose country<br>
+     * - From external uri<br>
+     * - From notification<br>
+     */
+    public static Bundle hasDeepLink(Intent intent) {
+        Log.i(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
+        // Create bundle from initial CC intent
+        Bundle bundle = hasInitialChooseCountry(intent);
+        // Create bundle from external URI intent
+        if(bundle == null) {
+            bundle = hasDeepLinkFromURI(intent);
+        }
+        // Create bundle from GCM intent
+        if(bundle == null) {
+            bundle = hasDeepLinkFromGCM(intent);
+        }
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from External URI.
+     *
+     * @param intent The CC intent from Splash Screen
+     * @return Bundle or null
+     * @author sergiopereira
+     */
+    private static Bundle hasInitialChooseCountry(Intent intent) {
+        Log.i(TAG, "DEEP LINK: FROM INITIAL CHOOSE COUNTRY");
+        Bundle bundle = null;
+        // Validate intent
+        if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
+            Log.i(TAG, "DEEP LINK: VALID INTENT");
+            // Get extras from notifications
+            bundle = new Bundle();
+            bundle.putSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG, FragmentType.CHOOSE_COUNTRY);
+            bundle.putBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+        }
+        Log.i(TAG, "DEEP LINK: INVALID INTENT");
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from External URI.
+     *
+     * @param intent The URI intent
+     * @return Bundle or null
+     * @author sergiopereira
+     */
+    private static Bundle hasDeepLinkFromURI(Intent intent) {
+        Bundle bundle = null;
+        // Get intent action ACTION_VIEW
+        String action = intent.getAction();
+        // Get intent data
+        Uri data = intent.getData();
+        // ## DEEP LINK FROM EXTERNAL URIs ##
+        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
+            bundle = loadDeepLink(data);
+            Log.i(TAG, "DEEP LINK: RECEIVED FROM URI");
+        }
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from Push Notification.
+     *
+     * @param intent The GCM intent.
+     * @return true or false
+     * @author sergiopereira
+     */
+    private static Bundle hasDeepLinkFromGCM(Intent intent) {
+        Log.i(TAG, "DEEP LINK: FROM GCM");
+        Bundle bundle = null;
+        // ## DEEP LINK FROM NOTIFICATION ##
+        Bundle payload = intent.getBundleExtra(EXTRA_GCM_PAYLOAD);
+        // Get Deep link
+        if (null != payload) {
+            // Get UTM
+            String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+            // ## Google Analytics "General Campaign Measurement" ##
+            TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
+            Log.i(TAG, "UTM FROM GCM: " + mUtm);
+            // Get value from deep link key
+            String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
+            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
+            // Validate deep link
+            if (!TextUtils.isEmpty(deepLink)) {
+                // Create uri from the value
+                Uri data = Uri.parse(deepLink);
+                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                // Load deep link
+                bundle = loadDeepLink(data);
+                Log.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
+            }
+        }
+        return bundle;
     }
 
 }

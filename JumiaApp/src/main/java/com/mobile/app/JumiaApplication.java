@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,12 +18,14 @@ import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.VersionInfo;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
+import com.mobile.framework.rest.ICurrentCookie;
+import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.IRemoteService;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.service.RemoteService;
@@ -33,12 +34,12 @@ import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
@@ -66,14 +67,12 @@ public class JumiaApplication extends A4SApplication {
     private VersionInfo mMobApiVersionInfo;
     // Account variables
     public static Customer CUSTOMER;
-    private CustomerUtils mCustomerUtils;
+    private PersistentSessionStore mCustomerUtils;
     private boolean loggedIn = false;
 
     /**
      * General Persistent Variables
      */
-    private CompleteProduct currentProduct = null;
-
     /**
      * Cart
      */
@@ -95,9 +94,6 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-    // TODO : Validate recover
-    private static ArrayList<EventType> requestOrder = new ArrayList<>();
-
     /**
      * The md5 registry
      */
@@ -106,13 +102,6 @@ public class JumiaApplication extends A4SApplication {
     private Handler resendHandler;
     private Handler resendMenuHandler;
     private Message resendMsg;
-
-    /**
-     * Fallback and retry backups
-     */
-    private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<>();
-    private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<>();
-    private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<>();
 
     private IRemoteServiceCallback callBackWaitingService;
 
@@ -127,6 +116,8 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
+    //    private ArrayList<String> bannerSkus = new ArrayList<>();
+    private HashMap<String,TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -163,7 +154,9 @@ public class JumiaApplication extends A4SApplication {
          */
         Log.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if(!TextUtils.isEmpty(currencyCode)) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+        if(!TextUtils.isEmpty(currencyCode)){
+            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+        }
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -200,8 +193,8 @@ public class JumiaApplication extends A4SApplication {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE || 
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
+        if((eventType == EventType.INITIALIZE ||
+                errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
                 errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
                 && ServiceSingleton.getInstance().getService() == null ){
             Log.d(TAG, "ON HANDLE WITH ERROR");
@@ -251,7 +244,7 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * Method used to register the call back that is waiting for service.
-     * 
+     *
      * @author sergiopereira
      */
     private void registerCallBackIsWaiting() {
@@ -266,53 +259,31 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
-    // TODO : Validate recover
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-        return sendRequest(helper, args, responseCallback, true);
-    }
-
     /**
      * Triggers the request for a new api call
-     * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
      * @return the md5 of the reponse
      */
-    // TODO : Validate recover
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback, boolean addToRequestOrder) {
+    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         if (helper == null) {
             return "";
         }
-        final Bundle bundle = helper.newRequestBundle(args);
+        final Bundle requestBundle = helper.newRequestBundle(args);
 
-        if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
-            Log.i(TAG, "codesave saving : " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
-            requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
-            requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
-            // TODO : Validate recover
-            if (addToRequestOrder) {
-                requestOrder.add((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            }
-        } else {
-            Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
-        }
-        final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
 
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
+
                 //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
                 //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-                
+
                 JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
                     @Override
                     public void onRequestComplete(Bundle bundle) {
-                        
+
                         /**
                          * ###################################################
                          * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
@@ -323,15 +294,23 @@ public class JumiaApplication extends A4SApplication {
                         //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
                         //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());                        
                         //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
-                        
+
                         Log.d("TRACK", "onRequestComplete BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = helper.checkResponseForStatus(bundle);
+                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
                         if (responseCallback != null) {
-                            if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                                responseCallback.onRequestError(formatedBundle);
-                            } else {
-                                responseCallback.onRequestComplete(formatedBundle);
+                            // CASE: Error parsing
+                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
+                                // Remove request from cache
+                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
+                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+                                helper.removeRequestFromHttpCache(url, type);
+                                // Callback
+                                responseCallback.onRequestError(responseBundle);
+                            }
+                            // CASE: Success
+                            else {
+                                responseCallback.onRequestComplete(responseBundle);
                             }
                         }
                     }
@@ -340,19 +319,15 @@ public class JumiaApplication extends A4SApplication {
                     public void onRequestError(Bundle bundle) {
                         Log.d("TRACK", "onRequestError  BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = helper.parseErrorBundle(bundle);
+                        Bundle responseBundle = helper.parseErrorBundle(bundle);
                         if (responseCallback != null) {
-                            responseCallback.onRequestError(formatedBundle);
+                            responseCallback.onRequestError(responseBundle);
                         }
                     }
                 });
 
-                
-                // TODO : Validate recover
-                if (!sendRequest(bundle)) {
-                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENTTYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                    /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
-                    responseCallback.onRequestError(bundle);*/
+                if (!sendRequest(requestBundle)) {
+                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
                 }
             }
         }).start();
@@ -360,7 +335,6 @@ public class JumiaApplication extends A4SApplication {
         return md5;
     }
 
-    // TODO : Validate recover
     public boolean sendRequest(Bundle bundle) {
         if(ServiceSingleton.getInstance().getService() != null){
             try {
@@ -373,22 +347,6 @@ public class JumiaApplication extends A4SApplication {
         } else {
             return false;
         }
-
-    }
-
-    /**
-     * @return the currentProduct
-     */
-    public CompleteProduct getCurrentProduct() {
-        return currentProduct;
-    }
-
-    /**
-     * @param currentProduct
-     *            the currentProduct to set
-     */
-    public void setCurrentProduct(CompleteProduct currentProduct) {
-        this.currentProduct = currentProduct;
     }
 
     /**
@@ -409,9 +367,10 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the mCustomerUtils
      */
-    public CustomerUtils getCustomerUtils() {
+    public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
-            mCustomerUtils = new CustomerUtils(getApplicationContext());
+            ch.boye.httpclientandroidlib.client.CookieStore cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
         }
         return mCustomerUtils;
     }
@@ -481,31 +440,6 @@ public class JumiaApplication extends A4SApplication {
         this.loggedIn = loggedIn;
     }
 
-    /**
-     * @return the requestsRetryBundleList
-     */
-    public HashMap<EventType, Bundle> getRequestsRetryBundleList() {
-        return requestsRetryBundleList;
-    }
-
-    /**
-     * @return the requestsRetryHelperList
-     */
-    public HashMap<EventType, BaseHelper> getRequestsRetryHelperList() {
-        return requestsRetryHelperList;
-    }
-
-    /**
-     * @return the requestsResponseList
-     */
-    public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
-        return requestsResponseList;
-    }
-    
-    // TODO : Validate recover
-    public ArrayList<EventType> getRequestOrderList(){
-        return requestOrder;
-    }
 
     public void setResendHandler(Handler mHandler) {
         resendInitializationSignal = true;
@@ -535,18 +469,7 @@ public class JumiaApplication extends A4SApplication {
             Log.i(TAG, "onServiceConnected");
             mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-            
-            // TODO : Validate recover
-            // TODO uncomment this to re execute pending requests
-            
-            /*-if (requestOrder != null && requestOrder.size() > 0) {
-                Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.size());
-                for (int i = 0; i < requestOrder.size(); i++) {
-                    Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.get(i).toString());
-                    sendRequest(requestsRetryHelperList.get(requestOrder.get(i)), requestsRetryBundleList.get(requestOrder.get(i)), requestsResponseList.get(requestOrder.get(i)), false);
-                }
-                requestOrder.clear();
-            } else {*/
+
             if (resendInitializationSignal) {
                 resendHandler.sendMessage(resendMsg);
                 resendInitializationSignal = false;
@@ -555,8 +478,6 @@ public class JumiaApplication extends A4SApplication {
             if (resendMenuHandler != null) {
                 resendMenuHandler.sendEmptyMessage(0);
                 resendMenuHandler = null;
-                /* } */
-
             }
             // Register the fragment callback
             registerCallBackIsWaiting();
@@ -570,11 +491,10 @@ public class JumiaApplication extends A4SApplication {
     public PaymentMethodForm getPaymentMethodForm() {
         return this.paymentMethodForm;
     }
-    
-    //FIXME
+
     /**
      * clean and return last saved rating
-     * 
+     *
      * @return last saved review
      */
     public static ContentValues getRatingReviewValues() {
@@ -589,7 +509,7 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-            JumiaApplication.ratingReviewValues = ratingReviewValues;
+        JumiaApplication.ratingReviewValues = ratingReviewValues;
     }
 
     /**
@@ -614,7 +534,6 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * flag to control if it is showing seller review, ou product review
-     * @param mIsSellerReview
      */
     public static void setIsSellerReview(boolean mIsSellerReview) {
         JumiaApplication.isSellerReview = mIsSellerReview;
@@ -626,7 +545,7 @@ public class JumiaApplication extends A4SApplication {
     public static boolean getIsSellerReview() {
         return JumiaApplication.isSellerReview;
     }
-    
+
     /**
      * @return the paymentsInfoList
      */
@@ -665,19 +584,14 @@ public class JumiaApplication extends A4SApplication {
         registerForm = null;
         paymentMethodForm = null;
         registerSavedInstanceState = null;
-        getCustomerUtils().clearCredentials();
-        CUSTOMER = null;        
+        CUSTOMER = null;
+        getCustomerUtils().save();
         mCustomerUtils = null;
-        currentProduct = null;
         cart = null;
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
-        requestOrder.clear();       
         responseCallbacks.clear();
-        requestsRetryBundleList.clear();
-        requestsRetryHelperList.clear();
-        requestsResponseList.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
@@ -686,49 +600,47 @@ public class JumiaApplication extends A4SApplication {
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
-        resetTransactionCount();
+        AdjustTracker.resetTransactionCount(getApplicationContext());
+        clearBannerFlowSkus();
     }
-    
-    private void resetTransactionCount() {
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
-        editor.apply();
-    }  
 
-    /*
-    @SuppressWarnings("unused")
-    @Deprecated
-    private class ParseSuccessAsyncTask extends AsyncTask<Void, Void, Bundle> {
-
-        private BaseHelper helper;
-        private Bundle bundle;
-        private IResponseCallback callback;
-
-        private ParseSuccessAsyncTask(BaseHelper helper, Bundle bundle, IResponseCallback callback) {
-            this.helper = helper;
-            this.bundle = bundle;
-            this.callback = callback;
+    /**
+     * add a sku to a list of sku products that were added from a banner flow
+     */
+    public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
+        if(bannerSkus == null){
+            bannerSkus = new HashMap<>();
         }
-        
-        @Override
-        protected Bundle doInBackground(Void... params) {
-            Log.i(TAG, "############ AS CURRENT THREAD ID: " + Thread.currentThread().getId());
-            Log.i(TAG, "############ AS MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-            return helper.checkResponseForStatus(bundle);
-        }
-        
-        @Override
-        protected void onPostExecute(Bundle result) {
-            if (callback != null) {
-                if (result.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                    callback.onRequestError(result);
-                } else {
-                    callback.onRequestComplete(result);
+
+        if(!TextUtils.isEmpty(sku)){
+            if(bannerSkus.size() == 0){
+                bannerSkus.put(sku, groupType);
+            } else {
+                if(!bannerSkus.containsKey(sku)){
+                    bannerSkus.put(sku, groupType);
                 }
             }
         }
     }
-    */
+
+    /**
+     * returns a list of skus of products that were added to cart from a banner flow
+     *
+     * @return list of skus
+     */
+    public HashMap<String,TeaserGroupType> getBannerFlowSkus() {
+        if(bannerSkus == null){
+            bannerSkus = new HashMap<>();
+        }
+        return bannerSkus;
+    }
+
+    /**
+     * clear all skus from banner flow
+     */
+    public void clearBannerFlowSkus() {
+        bannerSkus = null;
+    }
 
 }
+

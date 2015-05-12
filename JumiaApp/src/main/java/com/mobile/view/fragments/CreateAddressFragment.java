@@ -16,7 +16,6 @@ import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -25,7 +24,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.AddressCity;
 import com.mobile.framework.objects.AddressRegion;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -41,9 +39,12 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -103,7 +104,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected CheckBox mIsSameCheckBox;
     protected TextView mShippingTitle;
 
-    protected View mMsgRequired;
     protected Boolean oneAddressCreated = false;
     protected ContentValues mShippingSavedValues;
     protected ContentValues mBillingSavedValues;
@@ -150,11 +150,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
-
-        TrackerDelegator.trackCheckoutStep(params);
     }
 
     /*
@@ -179,9 +174,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mIsSameCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox);
         mIsSameCheckBox.setOnCheckedChangeListener(this);
         mIsSameCheckBox.setChecked(true);
-        // Message
-        mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
-        mMsgRequired.setOnClickListener(this);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener(this);
 
@@ -380,6 +372,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
+                    item.getControl().setVisibility(View.GONE);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "WARNING: NPE ON TRY HIDE THE GENDER IN BILLING ADDRESS");
@@ -542,34 +535,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (id == R.id.checkout_address_button_enter) {
             onClickCreateAddressButton();
         }
-        // message view
-        else if (id == R.id.checkout_address_required_text) {
-            onClickRequired(view);
-        }
         // Unknown view
         else {
             Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
-    /**
-     * Process the click required text.
-     *
-     * @author paulo
-     */
-    private void onClickRequired(View view) {
-        if (view.isShown()) {
-            mMsgRequired.setVisibility(View.GONE);
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
 
@@ -591,24 +569,28 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Clean the flag for each click
         oneAddressCreated = false;
 
-        // Hide error message
-        if (mMsgRequired != null) {
-            mMsgRequired.setVisibility(View.GONE);
+        if(mIsSameCheckBox.isChecked()){
+            if(!shippingFormGenerator.validate()){
+                Log.i(TAG, "SAME FORM: INVALID");
+                return;
+            }
+        } else {
+            validateSameGender();
+            if (!shippingFormGenerator.validate() | !billingFormGenerator.validate()) {
+                Log.i(TAG, "SHIP OR BILL FORM: INVALID");
+                return;
+            }
         }
 
+        /*
         // Validate spinner
         ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         // Validate if region group is filled
         if (!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
             Log.w(TAG, "REGION SPINNER NOT FILL YET");
-            // Show error message
-            if (mMsgRequired != null) {
-                mMsgRequired.setVisibility(View.VISIBLE);
-                changeMessageState(mMsgRequired, true, ERROR_DELAY);
-            }
             return;
         }
-        ;
+        */
 
         // Validate check
         if (mIsSameCheckBox.isChecked()) {
@@ -625,6 +607,29 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
 //            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
 //            triggerCreateAddress(mBillValues,true);
+        }
+    }
+
+    /**
+     * method that controls that the addresses have the same gender when creating billing and shipping at the same time
+     */
+    private void validateSameGender() {
+        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        if (shippingGenderItem != null && billingGenderItem != null) {
+            try {
+                int genderIndex = -1;
+                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
+                    // Get selected gender index from the shipping form
+                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
+                }
+                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
+                    // Set the billing gender with the same as the shipping
+                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -841,11 +846,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
         bundle.putBoolean(SetNewAddressHelper.IS_BILLING, isBilling);
-        // Validate origin
-        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-            bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP, args.getBoolean(ConstantsIntentExtra.IS_SIGN_UP, false));
-        }
-        // Trigger
         triggerContentEvent(new SetNewAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
@@ -857,16 +857,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddressForm() {
-        // Get Arguments
-        Bundle args = getArguments();
-        // Validate arguments
-        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM FOR GUEST USER");
-            triggerContentEvent(new GetFormAddAddressHelper(), args, this);
-        } else {
-            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
-            triggerContentEvent(new GetFormAddAddressHelper(), null, this);
-        }
+        Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
+        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
     }
 
     /**
@@ -993,7 +985,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
         regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Validate response
-        if (super.hasContent(regions)) {
+        if (CollectionUtils.isNotEmpty(regions)) {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         } else {
@@ -1092,7 +1084,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Dialog used to show an error
      *
-     * @param errors
+     * @param errorMessage
      * @author sergiopereira
      */
     protected void showErrorDialog(String errorMessage ,String dialogTitle) {
@@ -1103,22 +1095,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
 //        }
 //        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    dialogTitle,
-                    errorMessage,
-                    getString(R.string.ok_label),
-                    "",
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
+        showFragmentContentContainer();
+        dialog = DialogGenericFragment.newInstance(true, false,
+                dialogTitle,
+                errorMessage,
+                getString(R.string.ok_label),
+                "",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            dismissDialogFragment();
                         }
-                    });
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                    }
+                });
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
 //        } else {
 //            if (mMsgRequired != null) {
 //                mMsgRequired.setVisibility(View.VISIBLE);
@@ -1129,26 +1121,4 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            }
 //        }
     }
-
-
-    /**
-     * function that changes visibility state of a view giving a delay
-     *
-     * @param view
-     * @param isToHide
-     * @param delay
-     */
-    private void changeMessageState(final View view, final boolean isToHide, long delay) {
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isToHide) {
-                    view.setVisibility(View.GONE);
-                } else {
-                    view.setVisibility(View.VISIBLE);
-                }
-            }
-        }, delay);
-    }
-
 }

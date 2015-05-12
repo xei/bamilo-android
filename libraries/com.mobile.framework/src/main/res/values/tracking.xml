@@ -60,6 +60,15 @@
     <string name="gcampaign">Campaign</string>
     <string name="grelateditem">RelatedItem</string>
 
+    <!-- HOME TEASERS -->
+    <string name="gmainbanner">Main_Teaser</string>
+    <string name="gsmallbanner">Small_Teaser</string>
+    <string name="gcampaignsbanner">Campaigns_Teaser</string>
+    <string name="gshopbanner">Shop_Teaser</string>
+    <string name="gbrandbanner">Brand_Teaser</string>
+    <string name="gshopweekbanner">Shops_Week</string>
+    <string name="gfeaturebanner">Feature_Stores</string>
+
     <!-- Action -->
     <string name="gpdv">pdv</string>
     <string name="gsearch">Search</string>
@@ -102,6 +111,7 @@
     <string name="gAddSellerToCart">SellerAddToCart</string>
     <string name="gShareApp">ShareApp</string>
     <string name="gAccountCreateAddress">AccountCreateAddress</string>
+    <string name="gPurchase">Purchase</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

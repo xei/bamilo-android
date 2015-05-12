@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- better naming sceme for the text dimensions
-    <dimen name="text_xs">18sp</dimen>
-    <dimen name="text_s">20sp</dimen>
-    <dimen name="text_m">21sp</dimen>
-    <dimen name="text_l">22sp</dimen>
-    <dimen name="text_xl">23sp</dimen> -->
-
-
     <!-- HOME -->
     <dimen name="teaser_swipe_banner_height">260dp</dimen> <!-- 1440x600 -->
     
@@ -55,6 +47,8 @@
     <!-- CATALOG REDESIGN -->
     <integer name="catalog_list_num_columns">3</integer>
     <integer name="catalog_grid_num_columns">4</integer>
+    <integer name="activate_go_top_buttom_line">5</integer>
+    <integer name="activate_go_top_buttom_line_grid">3</integer>
 
     <!-- PDV IMAGE LANDSCAPE --> 
     <dimen name="pdv_image_with_var_simple">370dp</dimen>
@@ -62,5 +56,10 @@
     <dimen name="pdv_image_alone">480dp</dimen>
     <dimen name="pdv_image_with_bundle">60dp</dimen>
     <dimen name="pdv_image_with_seller">50dp</dimen>
-    
+
+    <!-- HOME -->
+    <item name="home_offset_percentage" format="float" type="dimen">.15</item>
+    <dimen name="home_small_teaser_item_width">288dp</dimen>
+    <dimen name="home_main_teaser_height">320dp</dimen>
+
 </resources>

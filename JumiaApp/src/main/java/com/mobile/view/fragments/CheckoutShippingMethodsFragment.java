@@ -263,11 +263,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
     
@@ -330,12 +330,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
             loadForm(form);
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            Log.d(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            Log.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
-            // Switch
-            getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
             break;

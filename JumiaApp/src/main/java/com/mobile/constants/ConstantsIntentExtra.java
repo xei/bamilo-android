@@ -36,12 +36,13 @@ public class ConstantsIntentExtra {
     public static final String SIZE_GUIDE_URL = mPackage + "SizeGuideUrl";
     public static final String PRODUCT_NAME = mPackage + "ProductName";
     public static final String IMAGE_LIST = mPackage + "ProductImages";
+    public static final String PRODUCT = mPackage + "Product";
+    public static final String PRODUCT_GALLERY_POS = mPackage + "ProductPosition";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
     public static final String SUCCESS_INFORMATION = mPackage + "SuccessInformation";
     public static final String CUSTOMER_EMAIL = mPackage + "CustomerEmail";
-    public static final String IS_SIGN_UP = mPackage + "isSignUp";
 
     // ########### REVIEW ##############
     public static final String REVIEW_TITLE = mPackage + "ReviewTitle";
@@ -64,6 +65,7 @@ public class ConstantsIntentExtra {
     public static final String SELECTED_SUB_CATEGORY_INDEX = mPackage + "SubCategoryIdx";
     public static final String CATEGORY_PARENT_NAME = mPackage + "CategoryParentName";
     public static final String CATEGORY_TREE_NAME = mPackage + "CategoryTreeName";
+    public static final String CATALOG_SOURCE = mPackage + "isFromNavigationDrawer";
 
     // ########### Catalog ##############
     public static final String CATALOG_PAGE = mPackage + "catalogPage";
@@ -86,15 +88,24 @@ public class ConstantsIntentExtra {
     // ########### DEEP LINK ##############    
     public static final String DEEP_LINK_TAG = "u";
     public static final String CART_DEEP_LINK_TAG = "cart";
+    public static final String DEEP_LINK_ORIGIN = "deepLinkOrigin";
 
     // ########### MAINTANCE ##############
     public static final String IN_MAINTANCE = "is_in_maintance";
 
     // ########### BACKSTACK ##############
     public static final String BACK_STACK = mPackage + "backstack";
+    public static final String REMOVE_ENTRIES = mPackage + "removeEntries";
 
     // ########### MY ORDER ##############
     public static final String MY_ORDER_POS = "position";
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
+
+    // ############ BANNER TRACKING ###############
+    public static final String BANNER_TRACKING_TYPE = "bannerGroupType";
+
+    // ########### MY ORDER ##############
+    public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
+
 
 }
