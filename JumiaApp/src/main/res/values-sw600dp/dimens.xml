@@ -16,6 +16,7 @@
     <!-- dimen name="text_description">15sp</dimen -->
     <dimen name="text_button">25sp</dimen>
     <dimen name="text_button_item">16sp</dimen>
+    <dimen name="warning_text_size">13sp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">48dp</dimen>

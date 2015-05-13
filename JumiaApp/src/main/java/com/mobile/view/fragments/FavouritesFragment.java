@@ -392,6 +392,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             }
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON ADD ALL TO CART");
+            getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA);
         } catch (IllegalStateException e){
             Log.w(TAG, "WARNING: ILLEGAL STATE EXCEPTION ON ADD ALL TO CART");
             getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA);
