@@ -1028,7 +1028,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-
+        errorCode = ErrorCode.IO;
         Log.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -1164,8 +1164,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryUnexpectedError(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+            view.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
+            view.findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
