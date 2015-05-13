@@ -128,16 +128,18 @@ public class SectionsTablesHelper extends BaseTable {
 		null, null, null, null, null);
 		
 		List<Section> sections = new ArrayList<>();
-    	
-		while (cursor.moveToNext()) {
-			String name = cursor.getString(Projection.NAME);
-			String md5 = cursor.getString(Projection.MD5);
-			String url = cursor.getString(Projection.URL);
-			
-			sections.add(new Section(name, md5, url));
+
+		if(cursor != null){
+			while (cursor.moveToNext()) {
+				String name = cursor.getString(Projection.NAME);
+				String md5 = cursor.getString(Projection.MD5);
+				String url = cursor.getString(Projection.URL);
+
+				sections.add(new Section(name, md5, url));
+			}
+			cursor.close();
 		}
-		cursor.close();
-		
+
 		return sections;
 	}
     
