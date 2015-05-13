@@ -31,6 +31,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     // Views
     public PreviewViewPager pager;
     public CirclePageIndicator indicator;
+    public View container;
 
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
         super(context, itemView, onClickListener);
@@ -38,12 +39,15 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         isTablet = DeviceInfoHelper.isTabletDevice(mContext);
         // Pager indicator
         indicator = (CirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
+        // Pager indicator
+        container = itemView.findViewById(R.id.home_teaser_main_container);
+        // Set height
+        setViewPagerHeightBasedOnImageRatio();
         // Pager
         pager = (PreviewViewPager) itemView.findViewById(R.id.home_teaser_main_pager);
         // Set the preview offset
         pager.setPreviewOffset(mOffset);
-        // Set height
-        setViewPagerHeightBasedOnImageRatio();
+
     }
 
     /**
@@ -61,7 +65,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             width = width - 2 * mOffset;
         }
         // Set height
-        pager.getLayoutParams().height = (int) (width / ratio);
+        container.getLayoutParams().height = (int) (width / ratio);
     }
 
     @Override
