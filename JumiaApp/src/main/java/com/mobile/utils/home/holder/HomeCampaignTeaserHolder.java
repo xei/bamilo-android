@@ -65,6 +65,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         loadMainCampaign();
     }
 
+    /**
+     * Load next main campaign
+     */
     private void loadMainCampaign() {
         // Case empty
         if (!CollectionUtils.isNotEmpty(campaigns)) {
@@ -80,6 +83,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    /**
+     * Pop the outdated main campaign
+     */
     private void popOutDatedMainCampaign() {
         // Remove main campaign
         if (CollectionUtils.isNotEmpty(campaigns)) {
@@ -108,6 +114,10 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    /**
+     * Set the main campaign layout
+     * @param campaign The main campaign
+     */
     private void setMainCampaignLayout(BaseTeaserObject campaign) {
         Log.i(TAG, "SET MAIN CAMPAIGN");
         // More button
@@ -124,6 +134,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         TeaserViewFactory.setClickableView(container, campaign, listener);
     }
 
+    /**
+     * Set the more button
+     */
     private void setMoreButton(BaseTeaserObject campaign) {
         // Has more campaigns
         if(campaigns.size() > 1) {
@@ -134,6 +147,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    /**
+     * Set the count down
+     */
     private void setCountDown(BaseTeaserObject campaign) {
         // Validate campaign timer
         if(campaign.hasValidRealTimer()) {
@@ -143,6 +159,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    /**
+     * Set the click listener
+     */
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -154,6 +173,10 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
     };
 
+    /**
+     * Start the campaign timer
+     * @param timeInMilliSeconds The remaining time in ms
+     */
     private void startCampaignTimer(long timeInMilliSeconds) {
         /*
         if(counter != null) {

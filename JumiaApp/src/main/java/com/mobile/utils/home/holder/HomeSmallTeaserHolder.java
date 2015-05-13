@@ -26,9 +26,12 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
      */
     public HomeSmallTeaserHolder(Context context, View view, View.OnClickListener onClickListener) {
         super(context, view, onClickListener);
+        // Get horizontal container
         horizontal = (HorizontalListView) view.findViewById(R.id.home_teaser_small_horizontal_list);
         // Disable fading for tablets
         horizontal.setHorizontalFadingEdgeEnabled(mOffset == NO_OFFSET);
+        // Validate orientation
+        horizontal.enableRtlSupport(isRtl);
         // Calculate the width for each item: SCREEN_WIDTH - LEFT_OFFSET - RIGHT_OFFSET / NUMBER_OF_PIECES
         mItemWidth = (DeviceInfoHelper.getWidth(context) - (2 * mOffset)) / NUMBER_OF_PIECES;
     }

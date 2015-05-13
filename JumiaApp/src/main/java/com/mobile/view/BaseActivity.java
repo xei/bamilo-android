@@ -37,7 +37,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.adjust.sdk.Adjust;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -447,16 +446,13 @@ public abstract class BaseActivity extends ActionBarActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_daraz_specific) ||
-                getResources().getBoolean(R.bool.is_shop_specific) ||
+        else if (getResources().getBoolean(R.bool.is_shop_specific) ||
                 getResources().getBoolean(R.bool.is_bamilo_specific)) {
             // Show the application name in the action bar
             setActionBarTitle(R.string.app_name);
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            setTitle(actionBarTitleResId);
-        }
-        // Case Jumia
-        else {
+            hideTitle();
+        } else {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             setActionBarTitle(actionBarTitleResId);
@@ -1386,7 +1382,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title + " ");
             headerTitle.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)) {
+        } else {
             headerTitle.setVisibility(View.GONE);
         }
     }

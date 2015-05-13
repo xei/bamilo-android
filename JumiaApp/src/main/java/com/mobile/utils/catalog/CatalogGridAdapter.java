@@ -12,8 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.Product;
