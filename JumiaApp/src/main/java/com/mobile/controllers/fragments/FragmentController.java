@@ -159,7 +159,7 @@ public class FragmentController {
      * @param tags
      */
     public void removeAllEntriesWithTag(final String... tags) {
-        WorkerThread.executeRunnable(mWorkerThread, new Runnable() {
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
             @Override
             public void run() {
                 for (String tag : tags){
