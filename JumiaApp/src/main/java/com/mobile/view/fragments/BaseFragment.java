@@ -1028,7 +1028,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-        errorCode = ErrorCode.IO;
+
         Log.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
