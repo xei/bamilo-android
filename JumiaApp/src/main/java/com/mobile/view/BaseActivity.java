@@ -551,7 +551,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragmentOld#onCreate(Bundle)}.
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link com.mobile.view.fragments.HomePageFragment#onCreate(Bundle)}.
      *
      * @return true or false
      * @author sergiopereira
