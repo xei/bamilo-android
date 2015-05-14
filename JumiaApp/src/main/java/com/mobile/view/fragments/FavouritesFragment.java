@@ -390,10 +390,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 // Update content
                 mAddableToCartAdapter.notifyDataSetChanged();
             }
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON ADD ALL TO CART");
-        } catch (IllegalStateException e){
-            Log.w(TAG, "WARNING: ILLEGAL STATE EXCEPTION ON ADD ALL TO CART");
+        } catch (NullPointerException | IllegalStateException e) {
+            Log.e(TAG, "WARNING: EXCEPTION ON ADD ALL TO CART", e);
             getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA);
         }
     }
