@@ -25,6 +25,7 @@ public class FullSizeListView extends ListView implements OnTouchListener, OnScr
         listViewTouchAction = -1;
         setOnScrollListener(this);
         setOnTouchListener(this);
+        setVerticalScrollBarEnabled(false);
     }
 
     @Override

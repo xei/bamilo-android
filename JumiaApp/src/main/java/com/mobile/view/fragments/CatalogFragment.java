@@ -215,6 +215,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.setOnScrollListener(onRecyclerScrollListener);
+        mGridView.post(new Runnable() {
+            @Override
+            public void run() {
+                setVisibilityTopButton(mGridView);
+            }
+        });
     }
 
     /*
@@ -458,7 +464,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @param  stringId The message.
      */
-    private void showFilterError(int stringId){
+    private void showFilterError(int stringId) {
         Log.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
@@ -766,19 +772,23 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 RocketImageLoader.getInstance().stopProcessingQueue();
             } else {
                 RocketImageLoader.getInstance().startProcessingQueue();
-                // Set the goto top button
-                GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
-                int last = manager.findLastVisibleItemPosition();
-                // Show or hide top button after X arrow
-                if (last > mNumberOfColumns * mTopButtonActivateLine) {
-                    UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
-                } else {
-                    UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
-                }
+                setVisibilityTopButton(recyclerView);
             }
         }
     };
-    
+
+    protected void setVisibilityTopButton(RecyclerView recyclerView){
+        // Set the goto top button
+        GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+        int last = manager.findLastVisibleItemPosition();
+        // Show or hide top button after X arrow
+        if (last > mNumberOfColumns * mTopButtonActivateLine) {
+            UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
+        } else {
+            UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
+        }
+    }
+
     /*
      * ############## TRIGGERS ##############
      */
@@ -943,7 +953,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mErrorLoading = true;
         // Scroll to hide the loading view
         mGridView.stopScroll();
-        mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
+        mGridView.scrollBy(0, - getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
         // Show respective warning indicating to use the warning bar
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
         // Case super not handle the error show unexpected error

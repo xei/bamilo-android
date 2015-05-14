@@ -344,7 +344,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
-            Log.e(TAG,"shouldHandleEvent" + shouldHandleEvent);
+            Log.e(TAG,"shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
 
@@ -537,13 +537,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onRequestError(Bundle bundle) {
         Log.i(TAG, "ON ERROR RESPONSE");
+        if (!shouldHandleEvent) {
+            Log.e(TAG,"shouldHandleEvent: " + shouldHandleEvent);
+            return;
+        }
+        // Get data
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        Log.i(TAG, "codeerror " + errorCode);
-
+        Log.i(TAG, "ERROR CODE: " + errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
                 case IO:
@@ -578,18 +582,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     }
                     dialog = DialogGenericFragment.newInstance(true, false, getString(R.string.validation_title), dialogMsg,
                             getResources().getString(R.string.ok_label), "", new OnClickListener() {
-
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
                                         dialog.dismissAllowingStateLoss();
                                     }
-
                                 }
-
                             });
-
                     dialog.show(getSupportFragmentManager(), null);
                     break;
                 case SERVER_OVERLOAD:

@@ -82,6 +82,7 @@ public class FormsMapping {
         currMapping.put("city", 13);
         currMapping.put("is_default_shipping", 14);
         currMapping.put("is_default_billing", 15);
+        currMapping.put("id_customer_address", 16);
         addressForm = Collections.unmodifiableMap(currMapping);
     }
 
