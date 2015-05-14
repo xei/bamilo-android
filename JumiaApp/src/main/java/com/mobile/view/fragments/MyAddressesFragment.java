@@ -362,6 +362,13 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      */
     protected void showAddresses(boolean isSameAddress) {
         Log.d(TAG, "SHOW ADDRESSES: " + isSameAddress);
+        // Clear containers before adding to them
+        if(mBottomRadioGroup != null){
+            mBottomRadioGroup.removeAllViews();
+        }
+        if(mTopRadioGroup != null){
+            mTopRadioGroup.removeAllViews();
+        }
         // Set flag
         sameAddress = "" + isSameAddress;
         // Validate current address
