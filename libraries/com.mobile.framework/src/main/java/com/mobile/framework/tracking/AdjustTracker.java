@@ -589,8 +589,7 @@ public class AdjustTracker {
                     eventRevenue.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                     eventRevenue.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
 
-                    double finalValue = bundle.getDouble(TRANSACTION_VALUE) * ADJUST_CENT_VALUE;
-                    eventRevenue.setRevenue(finalValue, EURO_CURRENCY);
+                    eventRevenue.setRevenue(bundle.getDouble(TRANSACTION_VALUE), EURO_CURRENCY);
                     Adjust.trackEvent(eventRevenue);
 
                     AdjustEvent eventTransaction = new AdjustEvent(mContext.getString(R.string.adjust_token_transaction_confirmation));
