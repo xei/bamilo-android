@@ -541,61 +541,55 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * @param productsContainer
      * @param toShowInnerProds
      */
-    private void setOrderProducts(Order order, ViewGroup productsContainer, boolean toShowInnerProds){
+    private void setOrderProducts(Order order, ViewGroup productsContainer, boolean toShowInnerProds) {
         class Item {
             public TextView productName;
             public TextView productQtd;
             public TextView productPrice;
             public View productBottomDivider;
             public View bottomSpace;
-       }
-        if(ordersAdapter != null)
+        }
+
+        if (ordersAdapter != null) {
             ordersAdapter.setSelectedPosition(selectedProduct);
-        
-        ordersAdapter.notifyDataSetChanged();
-        
-        if (toShowInnerProds && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
-            if(productsLanscapeContainer.getChildCount() > 0)
+            ordersAdapter.notifyDataSetChanged();
+        }
+
+        if (toShowInnerProds && productsLanscapeContainer != null && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
+            if (productsLanscapeContainer.getChildCount() > 0) {
                 productsLanscapeContainer.removeAllViews();
-            
+            }
             ordersProductsPayment.setText(order.getmPayment());
             ordersProductDate.setText(order.getmDate());
         }
 
-        
-       if(toShowInnerProds && productsContainer.getChildCount() == 0) {
-           
-           ArrayList<OrderItem> orderItems = order.getmOrderProducts();
-           
-           for (int i = 0; i < orderItems.size(); i++) {
-               View itemView = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.order_history_product_item, productsContainer, false);
+        if (toShowInnerProds && productsContainer.getChildCount() == 0) {
 
-               Item item = new Item();
-               
-               item.productName = (TextView) itemView.findViewById(R.id.order_product_name);
-               item.productQtd = (TextView) itemView.findViewById(R.id.order_product_quantity);
-               item.productPrice = (TextView) itemView.findViewById(R.id.order_product_price);
-               item.productBottomDivider = itemView.findViewById(R.id.order_product_divider);
-               item.bottomSpace = itemView.findViewById(R.id.order_product_bottom_space);
-               
-               if(!"null".equals(orderItems.get(i).getmProductTotalString()))
-                   item.productPrice.setText(CurrencyFormatter.formatCurrency(orderItems.get(i).getmProductTotalString()));
-               else
-                   item.productPrice.setText(CurrencyFormatter.getCurrencyCode()+" "+orderItems.get(i).getmProductTotal());
-               
-               item.productName.setText(orderItems.get(i).getmProductName());
-               item.productQtd.setText(getString(R.string.my_order_quantity_label)+" "+orderItems.get(i).getmProductQuantity());
-               if(i == (orderItems.size() - 1)){
-                   item.productBottomDivider.setVisibility(View.GONE);
-                   item.bottomSpace.setVisibility(View.VISIBLE);
-               }
-               
-               itemView.setTag(item);
-               
-               productsContainer.addView(itemView);
-           }
+            ArrayList<OrderItem> orderItems = order.getmOrderProducts();
 
-       }
+            for (int i = 0; i < orderItems.size(); i++) {
+                View itemView = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.order_history_product_item, productsContainer, false);
+                Item item = new Item();
+                item.productName = (TextView) itemView.findViewById(R.id.order_product_name);
+                item.productQtd = (TextView) itemView.findViewById(R.id.order_product_quantity);
+                item.productPrice = (TextView) itemView.findViewById(R.id.order_product_price);
+                item.productBottomDivider = itemView.findViewById(R.id.order_product_divider);
+                item.bottomSpace = itemView.findViewById(R.id.order_product_bottom_space);
+                if (!"null".equals(orderItems.get(i).getmProductTotalString())) {
+                    item.productPrice.setText(CurrencyFormatter.formatCurrency(orderItems.get(i).getmProductTotalString()));
+                } else {
+                    item.productPrice.setText(CurrencyFormatter.getCurrencyCode() + " " + orderItems.get(i).getmProductTotal());
+                }
+                item.productName.setText(orderItems.get(i).getmProductName());
+                item.productQtd.setText(getString(R.string.my_order_quantity_label) + " " + orderItems.get(i).getmProductQuantity());
+                if (i == (orderItems.size() - 1)) {
+                    item.productBottomDivider.setVisibility(View.GONE);
+                    item.bottomSpace.setVisibility(View.VISIBLE);
+                }
+                itemView.setTag(item);
+                productsContainer.addView(itemView);
+            }
+        }
     }
     
 
