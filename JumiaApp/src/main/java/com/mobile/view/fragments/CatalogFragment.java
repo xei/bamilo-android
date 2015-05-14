@@ -221,8 +221,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 setVisibilityTopButton(mGridView);
             }
         });
-        // Validate data
-        onValidateDataState();
     }
 
     /*
@@ -233,6 +231,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        // Validate data
+        onValidateDataState();
     }
 
     /*

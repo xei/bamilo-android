@@ -77,7 +77,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private DialogGenericFragment dialog;
 
-    private static boolean shouldHandleEvent = true;
+    private boolean shouldHandleEvent = true;
 
     private View mJumiaMapImage;
 
@@ -114,9 +114,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get unexpected error layout
         mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
-        // Tracking
-//        if(Adjust.isEnabled())
-//            AdjustTracker.onResume();
+        // Intercept event
+        shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
     }
@@ -130,6 +129,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        // Intercept event
+        shouldHandleEvent = true;
     }
 
     /*
@@ -141,10 +142,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Start Accengage for this activity
-        Ad4PushTracker.get().startActivity(this);
         // Intercept event
         shouldHandleEvent = true;
+        // Start Accengage for this activity
+        Ad4PushTracker.get().startActivity(this);
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
@@ -178,6 +179,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        // Intercept event
+        shouldHandleEvent = false;
+        // Set preferences
         SharedPreferences sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
@@ -193,15 +197,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        // Intercept event
+        shouldHandleEvent = false;
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-        // Mark data for GC
-        dialog = null;
-        mJumiaMapImage = null;
-        mMainFallBackStub = null;
-        mRetryFallBackStub = null;
-        mUnexpectedError = null;
-        initializationHandler = null;
-        mLastSuccessResponse = null;
     }
 
 
