@@ -42,9 +42,9 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
         private TextView mBrand;
         private TextView mName;
         private TextView mPrice;
+
         /**
          * Constructor
-         * @param view
          */
         public ViewHolder(View view) {
             super(view);
@@ -58,8 +58,6 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param teasers
-     * @author sergiopereira
      */
     public HomeTopSellersTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mDataSet = teasers;
@@ -91,7 +89,8 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
         // Set name
         holder.mName.setText(item.getTitle());
         // Set price
-        holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(item.getPrice())));
+        double price = item.hasSpecialPrice() ? item.getSpecialPrice() : item.getPrice();
+        holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(price)));
         // Set listener and tags
         TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener);
     }
