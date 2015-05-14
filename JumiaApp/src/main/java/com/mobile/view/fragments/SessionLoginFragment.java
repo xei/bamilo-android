@@ -385,8 +385,9 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             if(!NetworkConnectivity.isConnected(getBaseActivity())){
                 showFragmentNoNetworkRetry();
             } else {
-                showFragmentContentContainer();
-
+                if(formResponse != null){
+                    showFragmentContentContainer();
+                }
             }
         }
     }
