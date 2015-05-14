@@ -61,7 +61,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
         // Clear cookies from persistent store
         SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
         prefsWriter.clear();
-        prefsWriter.commit();
+        prefsWriter.apply();
     }
     
     /*
@@ -100,7 +100,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
                 SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
                 String str = encodeCookie(new PersistentCookie(cookie));
                 prefsWriter.putString(COOKIE_PREFS_TAG, str);
-                prefsWriter.commit();
+                prefsWriter.apply();
                 return;
             }
         }

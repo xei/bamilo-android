@@ -100,7 +100,7 @@ android {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
         release {

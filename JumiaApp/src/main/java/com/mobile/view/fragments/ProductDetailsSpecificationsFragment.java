@@ -238,6 +238,9 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         }
 
         if(!CollectionUtils.isEmpty(mProductSpecifications)){
+            if(mProductSpecsContainer != null){
+                mProductSpecsContainer.removeAllViews();
+            }
             for (ProductDetailsSpecification productSpecification : mProductSpecifications) {
                 addSpecTable(productSpecification);
             }
@@ -249,10 +252,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param productSpecification
      */
     private void addSpecTable(ProductDetailsSpecification productSpecification){
-
-        if(mProductSpecsContainer != null){
-            mProductSpecsContainer.removeAllViews();
-        }
 
         final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
         final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
