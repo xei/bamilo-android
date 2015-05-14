@@ -1151,20 +1151,21 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
 
         // Validate current objects
-        if (menuItems == null && mCurrentMenu == null && mSearchAutoComplete == null) {
+        if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
             return;
         }
         // Validate current menu items
-        if (menuItems != null && !menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+        if (!menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
             return;
         }
-        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
+        MenuItem searchMenuItem = mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId);
+        if (searchMenuItem != null && !searchMenuItem.isVisible()) {
             return;
         }
         // Validate current search
         if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
                 || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Log.w(TAG, "SEARCH: DISCARTED DATA FOR QUERY " + requestQuery);
+            Log.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
         // Show suggestions
