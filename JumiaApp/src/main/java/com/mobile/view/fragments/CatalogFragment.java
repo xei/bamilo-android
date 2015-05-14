@@ -215,8 +215,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.setOnScrollListener(onRecyclerScrollListener);
-        // Validate data
-        onValidateDataState();
     }
 
     /*
@@ -227,6 +225,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        // Validate data
+        onValidateDataState();
     }
 
     /*
