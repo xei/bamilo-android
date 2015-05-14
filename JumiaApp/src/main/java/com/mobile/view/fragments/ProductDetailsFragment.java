@@ -385,6 +385,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onPause() {
         super.onPause();
         dialogListFragment = null;
+        // Hide dialog progress TODO: Test this call in BaseFragment
+        hideActivityProgress();
     }
 
     /*
