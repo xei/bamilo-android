@@ -62,7 +62,7 @@
     <!-- UNEXPECTED ERROR LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_unexpected_error_stub"
+        android:id="@+id/fragment_stub_unexpected_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
