@@ -18,9 +18,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int DEFAULT_POSITION = 1;
+    private static final int DEFAULT_POSITION_PHONE = 0;
 
-    private static final int DEFAULT_REVERSE_POSITION = 2;
+    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
+
+    private static final int DEFAULT_POSITION_TABLET = 1;
+
+    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
 
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
@@ -28,9 +32,10 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private final boolean isTablet;
 
-    // Views
     public PreviewViewPager pager;
+
     public CirclePageIndicator indicator;
+
     public View container;
 
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
@@ -79,14 +84,25 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             // Add pager to indicator
             indicator.setViewPager(pager);
             // Set default position
-            int position = DEFAULT_POSITION;
-            if (isRtl) {
-                position = group.hasData() ? adapter.getCount() - DEFAULT_REVERSE_POSITION : 0;
-            }
-            pager.setCurrentItem(position);
+            pager.setCurrentItem(getDefaultPosition(adapter.getCount()));
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }
+    }
+
+    /**
+     * Get the default position
+     * @param size The number of items
+     * @return int
+     */
+    private int getDefaultPosition(int size) {
+        int position;
+        if(!isTablet) {
+            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
+        } else {
+            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
+        }
+        return position;
     }
 
     @Override

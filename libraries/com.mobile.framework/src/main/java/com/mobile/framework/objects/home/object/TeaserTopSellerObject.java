@@ -52,6 +52,10 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         return mSpecialPrice;
     }
 
+    public boolean hasSpecialPrice() {
+        return !Double.isNaN(mSpecialPrice);
+    }
+
     /*
      * ########## JSON ##########
      */
