@@ -397,7 +397,7 @@ public class FormFactory {
         DynamicForm userForm = new DynamicForm(parent);
         userForm.setForm( form );
 
-        // Used for dates with day/moth/year
+        // Used for dates with day/month/year
         LinearLayout groupLayout = new LinearLayout(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //#RTL
