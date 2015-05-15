@@ -813,6 +813,7 @@ public class ReviewWriteFragment extends BaseFragment {
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
@@ -823,6 +824,7 @@ public class ReviewWriteFragment extends BaseFragment {
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(reviewForm.action, dynamicRatingForm);
