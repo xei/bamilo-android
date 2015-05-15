@@ -798,7 +798,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             ToastFactory.ERROR_UNEXPECTED_PLEASE_RETRY.show(getBaseActivity());
         }
     }
-    
+
     /**
      * 
      * @author ricardo
