@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.view.fragments;
 
@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
@@ -42,13 +43,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
 
     private static final int HEADER_FOR_ALL_POSITION = 0;
-    
+
     private static final String ROOT_CATEGORIES = null;
 
     private ListView mCategoryList;
 
     private static Category sCurrentCategory;
-    
+
     private String mCategoryKey;
 
     private ArrayList<Category> mCategories;
@@ -100,7 +101,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
         }
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -111,10 +112,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.i(TAG, "ON VIEW CREATED");
         // Get category list view
         mCategoryList = (ListView) view.findViewById(R.id.nav_sub_categories_grid);
-        
+
         // Validation to show content
         // Case cache
-        if (mCategories != null && mCategories.size() > 0){ 
+        if (mCategories != null && mCategories.size() > 0){
             showCategoryList(mCategories);
         }
         // Case empty
@@ -148,9 +149,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");            
+        Log.i(TAG, "ON RESUME");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
@@ -194,7 +195,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
-    
+
     /**
      * ######## LAYOUT ########
      */
@@ -219,7 +220,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         else showRetry();
 
     }
-    
+
     /**
      * Show the root categories without headers
      * @author sergiopereira
@@ -232,7 +233,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         //Hide back button
         ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.GONE);
     }
-    
+
     /**
      * Show the nested categories with respective headers
      * @author sergiopereira
@@ -282,7 +283,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
     }
 
-    
+
     /**
      * Show only the retry view
      * @author sergiopereira
@@ -292,7 +293,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         verifyBackButton();
         showFragmentErrorRetry();
     }
-    
+
     /**
      * ####### TRIGGERS ####### 
      */
@@ -311,7 +312,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Trigger
         triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
-    
+
     /**
      * ####### LISTENERS ####### 
      */
@@ -326,7 +327,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get categories from unexpected error
         triggerGetCategories(mCategoryKey);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -338,10 +339,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.d(TAG, "ON ITEM CLICKED: " + position);
         // Case root
         if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
-        // Case branch or leaf
+            // Case branch or leaf
         else onClickNestedCategory(parent, position,view);
     }
-    
+
     /**
      * Process the click on a root category
      * @param position
@@ -352,13 +353,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             Category category = (Category) parent.getAdapter().getItem(position);
             // Show product list
             if (!category.hasChildren()) gotoCatalog(category);
-            // Show sub level
+                // Show sub level
             else gotoSubCategory(category.getUrlKey());
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK ROOT CATEGORY");   
+            Log.w(TAG, "WARNING: NPE ON CLICK ROOT CATEGORY");
         }
     }
-    
+
     /**
      * Process the click on a nested category
      * @param position
@@ -367,24 +368,24 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private void onClickNestedCategory(AdapterView<?> parent, int position,View view) {
         try {
             switch (position) {
-            case HEADER_FOR_ALL_POSITION:
-                // Second header goes to all
-                gotoCatalog(sCurrentCategory);
-                break;
-            default:
-                // Validate item goes to product list or a sub level
-                Category selectedCategory = (Category) parent.getAdapter().getItem(position);
-                // Show product list
-                if (!selectedCategory.hasChildren()) gotoCatalog(selectedCategory);
-                // Show sub level
-                else gotoSubCategory(selectedCategory.getUrlKey());
-                break;
+                case HEADER_FOR_ALL_POSITION:
+                    // Second header goes to all
+                    gotoCatalog(sCurrentCategory);
+                    break;
+                default:
+                    // Validate item goes to product list or a sub level
+                    Category selectedCategory = (Category) parent.getAdapter().getItem(position);
+                    // Show product list
+                    if (!selectedCategory.hasChildren()) gotoCatalog(selectedCategory);
+                        // Show sub level
+                    else gotoSubCategory(selectedCategory.getUrlKey());
+                    break;
             }
         } catch (Exception e) {
             Log.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position);
         }
     }
-    
+
     /**
      * Show nested categories
      * @param categoryKey key
@@ -395,7 +396,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryKey);
         ((NavigationFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
     }
-    
+
     /**
      * Show product list
      * @param category
@@ -417,7 +418,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     /**
      * Pop the back stack until the parent from current level type
      * @param type
@@ -426,15 +427,15 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private void gotoParentCategoryFromType(FragmentType type){
         Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
-        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
-            break;
-        case NAVIGATION_CATEGORIES_SUB_LEVEL:
-            ((NavigationFragment) getParentFragment()).goToParentCategory();
-            break;
-        default:
-            Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
-            break;
+            case NAVIGATION_CATEGORIES_ROOT_LEVEL:
+                ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+                break;
+            case NAVIGATION_CATEGORIES_SUB_LEVEL:
+                ((NavigationFragment) getParentFragment()).goToParentCategory();
+                break;
+            default:
+                Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
+                break;
         }
     }
 
@@ -495,20 +496,29 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
 
     @Override
-    protected void showFragmentNoNetworkRetry() {
-        super.showFragmentNoNetworkRetry();
-        try {
-            // Show back button
-            verifyBackButton();
-            // Set no network view
-            ((TextView) getView().findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
-            ((TextView) getView().findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
-        }
+    protected void onInflateNoNetwork(View inflated) {
+        super.onInflateNoNetwork(inflated);
+        // Show back button
+        verifyBackButton();
+        // Set no network view
+        ((TextView) inflated.findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
+        ((TextView) inflated.findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
     }
 
-//    protected void clearSelectedCategory() {
+    @Override
+    protected void onInflateLoading(View inflated) {
+        super.onInflateLoading(inflated);
+        View loadingBar = inflated.findViewById(R.id.loading_bar);
+        if(loadingBar != null){
+            android.view.ViewGroup.LayoutParams layoutParams =  loadingBar.getLayoutParams();
+            layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            loadingBar.setLayoutParams(layoutParams);
+
+        }
+
+    }
+
+    //    protected void clearSelectedCategory() {
 //        if(sCurrentCategory != null){
 //            sSelectedCategoryId = "";
 //            showSubCategory(sCurrentCategory);
