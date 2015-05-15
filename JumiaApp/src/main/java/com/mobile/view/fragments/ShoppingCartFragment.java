@@ -1072,13 +1072,17 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         for (int i = 1; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));
         }
-        long crrQuantity = items.get(position).getQuantity();
+        final long crrQuantity = items.get(position).getQuantity();
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
-                changeQuantityOfItem(position, quantity+1);
+                if(quantity != crrQuantity -1){
+                    changeQuantityOfItem(position, quantity+1);
+                }
+
                 if(dialogList != null) {
                     dialogList.dismissAllowingStateLoss();
+                    dialogList = null;
                 }
             }
 
