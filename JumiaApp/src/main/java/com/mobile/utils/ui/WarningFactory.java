@@ -33,6 +33,7 @@ public class WarningFactory {
     public static final int ADDED_ITEM_TO_CART = 2;
     public static final int ADDED_ITEMS_TO_CART = 3;
     public static final int NO_INTERNET = 4;
+    public static final int ERROR_ADD_TO_CART = 5;
     public static final int PROBLEM_FETCHING_DATA = 6;
     public static final int PROBLEM_FETCHING_DATA_ANIMATION = 7;
 
@@ -85,12 +86,28 @@ public class WarningFactory {
             case NO_INTERNET:
                 showWarningNoInternet();
                 break;
+            case ERROR_ADD_TO_CART:
+                showErrorAddToCart();
+                break;
             case PROBLEM_FETCHING_DATA:
                 showWarningProblemFetchingData(false);
                 break;
             case PROBLEM_FETCHING_DATA_ANIMATION:
                 showWarningProblemFetchingData(true);
                 break;
+        }
+    }
+
+    private void showErrorAddToCart() {
+        if(actualWarning != ERROR_ADD_TO_CART){
+            new Builder().setText(R.string.error_add_to_shopping_cart)
+                    .setBackground(R.color.red_warning)
+                    .setImageVisibility(true)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = ERROR_ADD_TO_CART;
+        } else {
+            new Builder().startAnimation();
         }
     }
 

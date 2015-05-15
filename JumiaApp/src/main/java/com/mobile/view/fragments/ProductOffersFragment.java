@@ -6,7 +6,6 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,7 +16,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Errors;
@@ -34,6 +32,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -71,9 +70,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     private TextView mOffersMinPrice;
     
     private GridView mOffersList;
-    
-    private DialogFragment mDialogAddedToCart;
-
 
     /**
      * Get a new instance of {@link #ProductOffersFragment}.
@@ -427,65 +423,15 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     }
     
     private void executeAddToShoppingCartCompleted() {
-
-        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                getString(R.string.your_cart),
-                msgText,
-                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            if (getBaseActivity() != null) {
-                                getBaseActivity().onSwitchFragment(
-                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                        FragmentController.ADD_TO_BACK_STACK);
-                            }
-                            if (mDialogAddedToCart != null) {
-                                mDialogAddedToCart.dismiss();
-                            }
-
-                        } else if (id == R.id.button2) {
-                            showFragmentContentContainer();
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        }
     }
     
     private void addToShoppingCartFailed() {
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                null,
-                getResources().getString(R.string.error_add_to_shopping_cart),
-                getResources().getString(R.string.ok_label),
-                "",
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            mDialogAddedToCart.dismiss();
-                        }
-                        /*
-                        else if (id == R.id.button2) {
-
-                        }
-                        */
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+        }
     }
 
 
