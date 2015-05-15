@@ -42,7 +42,8 @@
         android:layout_toStartOf="@id/catalog_bar_divider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:paddingRight="@dimen/dimen_100px"
         android:paddingEnd="@dimen/dimen_100px"
         android:gravity="right|end">
@@ -68,7 +69,8 @@
         android:layout_toStartOf="@id/catalog_bar_button_columns"
         android:paddingLeft="@dimen/dimen_100px"
         android:paddingStart="@dimen/dimen_100px"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:gravity="left|start">
 
         <com.mobile.components.customfontviews.TextView

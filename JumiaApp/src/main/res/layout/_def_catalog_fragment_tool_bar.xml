@@ -12,7 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView
@@ -42,14 +43,15 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
+            style="@style/catalog_tool_bar_text"
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawableStart="@drawable/selector_catalog_filter"
-            style="@style/catalog_tool_bar_text"
             android:text="@string/filter_label" />
 
     </LinearLayout>
