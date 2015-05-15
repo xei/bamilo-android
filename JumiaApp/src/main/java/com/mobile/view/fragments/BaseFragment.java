@@ -806,7 +806,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case loading
         else if(id == R.id.fragment_stub_loading) {
-            onInflateLoading(inflated);
+            onInflateLoading();
         }
         // Case no network
         else if(id == R.id.fragment_stub_retry) {
@@ -890,7 +890,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set the loading view.
      */
-    protected void onInflateLoading(View inflated) {
+    private void onInflateLoading() {
         Log.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
@@ -900,7 +900,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set no network view.
      * @param inflated The inflated view
      */
-    protected void onInflateNoNetwork(View inflated) {
+    private void onInflateNoNetwork(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: RETRY");
         // Set view
         inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);

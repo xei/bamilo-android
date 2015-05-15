@@ -10,7 +10,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
@@ -496,29 +495,20 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
 
     @Override
-    protected void onInflateNoNetwork(View inflated) {
-        super.onInflateNoNetwork(inflated);
-        // Show back button
-        verifyBackButton();
-        // Set no network view
-        ((TextView) inflated.findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
-        ((TextView) inflated.findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
-    }
-
-    @Override
-    protected void onInflateLoading(View inflated) {
-        super.onInflateLoading(inflated);
-        View loadingBar = inflated.findViewById(R.id.loading_bar);
-        if(loadingBar != null){
-            android.view.ViewGroup.LayoutParams layoutParams =  loadingBar.getLayoutParams();
-            layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-            loadingBar.setLayoutParams(layoutParams);
-
+    protected void showFragmentNoNetworkRetry() {
+        super.showFragmentNoNetworkRetry();
+        try {
+            // Show back button
+            verifyBackButton();
+            // Set no network view
+            ((TextView) getView().findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
+            ((TextView) getView().findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
-
     }
 
-    //    protected void clearSelectedCategory() {
+//    protected void clearSelectedCategory() {
 //        if(sCurrentCategory != null){
 //            sSelectedCategoryId = "";
 //            showSubCategory(sCurrentCategory);
