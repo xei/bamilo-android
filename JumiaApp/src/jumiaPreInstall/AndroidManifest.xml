@@ -11,11 +11,12 @@
 
         <!-- Injoo: 6ohr47 -->
         <!-- Tigo: mkcqip -->
+        <!-- Infinix: qwj7o2 -->
 
         <!-- PRE INSTALL -->
         <meta-data
             android:name="AdjustDefaultTracker"
-            android:value="mkcqip" />
+            android:value="qwj7o2" />
 
     </application>
 
