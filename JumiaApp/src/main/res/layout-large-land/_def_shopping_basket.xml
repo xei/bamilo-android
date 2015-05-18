@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:baselineAligned="false">
 
-    <!-- SHOPPPING CART ITEMS -->
+    <!-- SHOPPING CART ITEMS -->
 
     <ScrollView
         android:layout_width="match_parent"

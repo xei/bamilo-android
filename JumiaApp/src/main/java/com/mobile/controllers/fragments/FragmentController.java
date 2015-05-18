@@ -159,7 +159,7 @@ public class FragmentController {
      * @param tags
      */
     public void removeAllEntriesWithTag(final String... tags) {
-        WorkerThread.executeRunnable(mWorkerThread, new Runnable() {
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
             @Override
             public void run() {
                 for (String tag : tags){
@@ -329,7 +329,11 @@ public class FragmentController {
         else if (!TextUtils.isEmpty(lastTag)) {
             Log.i(TAG, "ON POP BACK STACK: TAG " + lastTag);
             // Pop stack until fragment tag
-            activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
+            try {
+                activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
+            } catch (IllegalStateException | NullPointerException e) {
+                Log.w(TAG, "WARNING ON POP BACK STACK", e);
+            }
         }
         // Case visible fragment
         else Log.w(TAG, "WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
@@ -455,7 +459,6 @@ public class FragmentController {
         if (backStackSize == 1)
             activity.finish();
         else {
-            //getSupportFragmentManager().popBackStack();
             activity.getSupportFragmentManager().popBackStackImmediate();
         }
     }
@@ -475,8 +478,11 @@ public class FragmentController {
      */
     @Deprecated
     public void popBackStackUntilTag(BaseActivity activity, String tag) {
-        // getSupportFragmentManager().popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
+        try {
+            activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
+        } catch (IllegalStateException | NullPointerException e) {
+            Log.w(TAG, "WARNING ON POP BACK STACK", e);
+        }
     }
     
     /**

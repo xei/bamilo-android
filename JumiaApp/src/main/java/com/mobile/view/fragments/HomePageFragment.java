@@ -535,6 +535,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
+        // Fix: java.lang.IllegalStateException
+        // The specified child already has a parent.
+        // You must call removeView() on the child's parent first.
+        TeaserViewFactory.onDetachedViewHolder(mViewHolders);
+        // Reload
         onReloadContent();
     }
 

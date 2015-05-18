@@ -556,30 +556,30 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * FATAL EXCEPTION: main
      * java.lang.IllegalStateException: No activity
      * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
-    static {
-        Field f = null;
-        try {
-            f = Fragment.class.getDeclaredField("ChildFragmentManager");
-            f.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            Log.w(TAG, "Error getting ChildFragmentManager field", e);
-        }
-        sChildFragmentManagerField = f;
-    }
+     static {
+     Field f = null;
+     try {
+     f = Fragment.class.getDeclaredField("ChildFragmentManager");
+     f.setAccessible(true);
+     } catch (NoSuchFieldException e) {
+     Log.w(TAG, "Error getting ChildFragmentManager field", e);
+     }
+     sChildFragmentManagerField = f;
+     }
      */
 
     @Override
     public void onDetach() {
         super.onDetach();
         /**
-        // TODO : Validate if is necessary
-        if (sChildFragmentManagerField != null) {
-            try {
-                sChildFragmentManagerField.set(this, null);
-            } catch (Exception e) {
-                Log.e(TAG, "Error setting mChildFragmentManager field", e);
-            }
-        }
+         // TODO : Validate if is necessary
+         if (sChildFragmentManagerField != null) {
+         try {
+         sChildFragmentManagerField.set(this, null);
+         } catch (Exception e) {
+         Log.e(TAG, "Error setting mChildFragmentManager field", e);
+         }
+         }
          */
     }
 
@@ -648,7 +648,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Set screen response to keyboard request
-     * 
+     *
      * @param newAdjustState
      *            <code>KeyboardState</code> indicating if the layout will suffer any adjustment
      * @param force
@@ -806,7 +806,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case loading
         else if(id == R.id.fragment_stub_loading) {
-            onInflateLoading();
+            onInflateLoading(inflated);
         }
         // Case no network
         else if(id == R.id.fragment_stub_retry) {
@@ -890,7 +890,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set the loading view.
      */
-    private void onInflateLoading() {
+    protected void onInflateLoading(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
@@ -900,14 +900,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set no network view.
      * @param inflated The inflated view
      */
-    private void onInflateNoNetwork(View inflated) {
+    protected void onInflateNoNetwork(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: RETRY");
         // Set view
         inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
-    
+
     /**
      * Set unexpected error view.
      * @param inflated The inflated view
@@ -1032,78 +1032,78 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Log.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
-            case IO:
-            case CONNECT_ERROR:
-                if(eventTask == EventTask.SMALL_TASK) {
-                    showUnexpectedErrorWarning();
-                } else {
-                    showFragmentErrorRetry();
-                }
-                return true;
-            case TIME_OUT:
-            case NO_NETWORK:
-                // Show no network layout
-                if(eventTask == EventTask.SMALL_TASK){
-                    showNoNetworkWarning();
-                } else {
-                    showFragmentNoNetworkRetry();
-                }
-                return true;
-            case HTTP_STATUS:
-                // Case HOME show retry otherwise show continue
-                if(action == NavigationAction.Home) {
-                    showFragmentErrorRetry();
-                } else {
-                    showContinueShopping();
-                }
-                return true;
-            case SSL:
-            case SERVER_IN_MAINTENANCE:
-                showFragmentMaintenance();
-                return true;
-            case REQUEST_ERROR:
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                String dialogMsg = "";
-                if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                }
-                if (validateMessages != null) {
-                    for (String message : validateMessages) {
-                        dialogMsg += message + "\n";
+                case IO:
+                case CONNECT_ERROR:
+                    if(eventTask == EventTask.SMALL_TASK) {
+                        showUnexpectedErrorWarning();
+                    } else {
+                        showFragmentErrorRetry();
                     }
-                } else {
-                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                    return true;
+                case TIME_OUT:
+                case NO_NETWORK:
+                    // Show no network layout
+                    if(eventTask == EventTask.SMALL_TASK){
+                        showNoNetworkWarning();
+                    } else {
+                        showFragmentNoNetworkRetry();
                     }
-                }
-                if (dialogMsg.equals("")) {
-                    dialogMsg = getString(R.string.validation_errortext);
-                }
-                // showContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, false,
-                        getString(R.string.validation_title), dialogMsg,
-                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
+                    return true;
+                case HTTP_STATUS:
+                    // Case HOME show retry otherwise show continue
+                    if(action == NavigationAction.Home) {
+                        showFragmentErrorRetry();
+                    } else {
+                        showContinueShopping();
+                    }
+                    return true;
+                case SSL:
+                case SERVER_IN_MAINTENANCE:
+                    showFragmentMaintenance();
+                    return true;
+                case REQUEST_ERROR:
+                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                    String dialogMsg = "";
+                    if (validateMessages == null || validateMessages.isEmpty()) {
+                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    }
+                    if (validateMessages != null) {
+                        for (String message : validateMessages) {
+                            dialogMsg += message + "\n";
+                        }
+                    } else {
+                        for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+                            dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                        }
+                    }
+                    if (dialogMsg.equals("")) {
+                        dialogMsg = getString(R.string.validation_errortext);
+                    }
+                    // showContentContainer();
+                    dialog = DialogGenericFragment.newInstance(true, false,
+                            getString(R.string.validation_title), dialogMsg,
+                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                int id = v.getId();
-                                if (id == R.id.button1) {
-                                    dismissDialogFragment();
+                                @Override
+                                public void onClick(View v) {
+                                    int id = v.getId();
+                                    if (id == R.id.button1) {
+                                        dismissDialogFragment();
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                dialog.show(getActivity().getSupportFragmentManager(), null);
-                return true;
-            case SERVER_OVERLOAD:
-                if(getBaseActivity() != null){
-                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
-                    showFragmentErrorRetry();
-                }
-                return true;
-            default:
-                break;
+                    dialog.show(getActivity().getSupportFragmentManager(), null);
+                    return true;
+                case SERVER_OVERLOAD:
+                    if(getBaseActivity() != null){
+                        ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                        showFragmentErrorRetry();
+                    }
+                    return true;
+                default:
+                    break;
             }
         }
         return false;
@@ -1129,15 +1129,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         int id = view.getId();
         // Case retry button from network
         if (id == R.id.fragment_root_retry_network) onClickRetryNoNetwork(view);
-        // Case retry button from error
+            // Case retry button from error
         else if(id == R.id.fragment_root_retry_unexpected_error) onClickRetryUnexpectedError(view);
-        // Case retry button in maintenance page
+            // Case retry button in maintenance page
         else if(id == R.id.fragment_root_retry_maintenance)  onClickRetryMaintenance(view);
-        // Case continue button
+            // Case continue button
         else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-        // Case choose country button in maintenance page
+            // Case choose country button in maintenance page
         else if(id == R.id.fragment_root_cc_maintenance) onClickMaintenanceChooseCountry();
-        // Case unknown
+            // Case unknown
         else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
     }
 
@@ -1164,8 +1164,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryUnexpectedError(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+            view.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
+            view.findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }

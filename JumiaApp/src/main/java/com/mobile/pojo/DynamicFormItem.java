@@ -1062,27 +1062,7 @@ public class DynamicFormItem {
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        params.leftMargin = formPadding;
-        params.rightMargin = formPadding;
-        this.dataControl = View.inflate(this.context, R.layout.form_checkbox, null);
-        this.dataControl.setId(parent.getNextId());
-
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        this.dataControl.setLayoutParams(params);
-        this.dataControl.setContentDescription(this.entry.getKey());
-        this.dataControl.setFocusable(false);
-        this.dataControl.setFocusableInTouchMode(false);
-        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-
-        if (this.entry.getValue().equals("1")) {
-            ((CheckBox) this.dataControl).setChecked(true);
-        }
-
-        this.dataControl.setVisibility(View.VISIBLE);
+        //Mandatory control
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         //#RTL
@@ -1095,12 +1075,37 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setId(parent.getNextId());
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+
+        //Data control
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        params.leftMargin = formPadding;
+        params.rightMargin = formPadding;
+        this.dataControl = View.inflate(this.context, R.layout.form_checkbox, null);
+        this.dataControl.setId(parent.getNextId());
+
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        params.addRule(RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
+        this.dataControl.setLayoutParams(params);
+        this.dataControl.setContentDescription(this.entry.getKey());
+        this.dataControl.setFocusable(false);
+        this.dataControl.setFocusableInTouchMode(false);
+        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
+
+        if (this.entry.getValue().equals("1")) {
+            ((CheckBox) this.dataControl).setChecked(true);
+        }
+
+        this.dataControl.setVisibility(View.VISIBLE);
 
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);

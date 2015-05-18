@@ -260,6 +260,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(isFavourite);
         holder.favourite.setOnClickListener(this);
+        item.getAttributes().setFavourite(isFavourite);
     }
     
     /**

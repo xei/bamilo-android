@@ -385,6 +385,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onPause() {
         super.onPause();
         dialogListFragment = null;
+        // Hide dialog progress TODO: Test this call in BaseFragment
+        hideActivityProgress();
     }
 
     /*
@@ -1787,13 +1789,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
-        // Hide dialog progress
-        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
+        // Hide dialog progress
+        hideActivityProgress();
 
         if (getBaseActivity() == null)
             return;
@@ -1804,7 +1807,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
-            hideActivityProgress();
             mAddToCartButton.setEnabled(true);
             break;
         case SEARCH_PRODUCT:
@@ -1856,7 +1858,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         case ADD_PRODUCT_BUNDLE:
             isAddingProductToCart = false;
             getBaseActivity().updateCartInfo();
-            hideActivityProgress();
             mBundleButton.setEnabled(true);
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted(true);
@@ -1870,12 +1871,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
 
-        // Hide dialog progress
-        hideActivityProgress();
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
+        // Hide dialog progress
+        hideActivityProgress();
 
         // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -1897,7 +1899,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         case ADD_PRODUCT_BUNDLE:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             mBundleButton.setEnabled(true);
-            hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 

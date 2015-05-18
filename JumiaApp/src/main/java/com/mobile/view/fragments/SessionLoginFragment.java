@@ -385,8 +385,9 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             if(!NetworkConnectivity.isConnected(getBaseActivity())){
                 showFragmentNoNetworkRetry();
             } else {
-                showFragmentContentContainer();
-
+                if(formResponse != null){
+                    showFragmentContentContainer();
+                }
             }
         }
     }
@@ -577,7 +578,13 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         if (nextFragmentType != null && baseActivity != null) {
             Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-            Bundle args = new Bundle();
+            Bundle oldArgs = getArguments();
+            Bundle args;
+            if(oldArgs != null){
+                args = oldArgs;
+            } else {
+                args = new Bundle();
+            }
             args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
             baseActivity.onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
         } else {

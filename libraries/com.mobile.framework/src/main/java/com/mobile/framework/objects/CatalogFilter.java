@@ -138,7 +138,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
             // Get the first char
             char currentChar = option.getLabel().charAt(0);
             // If different the current
-            if (currentChar != savedChar) {
+            if (!String.valueOf(currentChar).equalsIgnoreCase(String.valueOf(savedChar))) {
                 // Create the section item
                 savedChar = currentChar;
                 CatalogFilterOption optionSection = new CatalogFilterOption();

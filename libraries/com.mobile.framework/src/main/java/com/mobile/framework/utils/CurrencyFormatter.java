@@ -104,16 +104,14 @@ public class CurrencyFormatter {
      * @return the formatted string
      */
     public static String formatCurrency(String value) {
-        if (!initialized) throw new RuntimeException("currency converter not initialized");
-    	
+        if (!initialized) {
+            throw new RuntimeException("currency converter not initialized");
+        }
         try {
-            
             NumberFormat format = NumberFormat.getInstance(apiLocale);
             Number number = format.parse(value);
             Double valueDouble = number.doubleValue();
-            
         	return String.format(currencyUnitPattern, formatter.format(valueDouble));
-        	
         } catch (NumberFormatException e) {
             //In case of bad formatting, return the parsed value with no currency sign
         	Log.e( TAG, "bad formatting for value = " + value, e );

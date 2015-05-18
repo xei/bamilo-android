@@ -129,7 +129,7 @@ public enum EventType {
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", RestContract.NO_CACHE),
 
-    EDIT_ADDRESS_EVENT("https:/customer/address/save/", RestContract.NO_CACHE),
+    EDIT_ADDRESS_EVENT("https:/customer/address/edit/", RestContract.NO_CACHE),
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 

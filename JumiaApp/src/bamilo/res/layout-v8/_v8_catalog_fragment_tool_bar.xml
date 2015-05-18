@@ -23,7 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView
@@ -53,7 +54,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/white"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/selector_card_default_white"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView

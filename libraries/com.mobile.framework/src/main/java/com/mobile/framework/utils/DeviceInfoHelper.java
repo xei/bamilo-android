@@ -388,4 +388,13 @@ public class DeviceInfoHelper {
         executeCodeBasedOnVersion(Build.VERSION_CODES.HONEYCOMB, iDeviceVersionBasedCode);
     }
 
+    /**
+     * Execute callbacks based on Ice Cream Sandwich version.
+     *
+     * @param iDeviceVersionBasedCode
+     */
+    public static void executeCodeBasedOnIceCreamSandwichVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+        executeCodeBasedOnVersion(Build.VERSION_CODES.ICE_CREAM_SANDWICH, iDeviceVersionBasedCode);
+    }
+
 }

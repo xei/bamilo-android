@@ -23,6 +23,7 @@ import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilter.RangeValuesFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.OnDialogFilterListener;
@@ -240,8 +241,8 @@ public class DialogFilterFragment extends DialogFragment {
      *
      * @param catalogFilter
      */
-    void addToInitialFilterValues(int position, CatalogFilter catalogFilter){
-        if(initialFilterValues[position] != null){
+    void addToInitialFilterValues(final int position, final CatalogFilter catalogFilter){
+        if(initialFilterValues[position] != null) {
             return;
         }
 
@@ -249,8 +250,30 @@ public class DialogFilterFragment extends DialogFragment {
         // If normal Catalog filter
         if(!catalogFilter.isPriceFilter()){
 
-            SparseArray<CatalogFilterOption> catalogFilterOptions = catalogFilter.getSelectedOption();
-            initialFilterValues[position] =  (catalogFilterOptions != null && catalogFilterOptions.size() != 0) ? catalogFilterOptions.clone() : new SparseArray<>();
+            final SparseArray<CatalogFilterOption> catalogFilterOptions = catalogFilter.getSelectedOption();
+
+            DeviceInfoHelper.executeCodeBasedOnIceCreamSandwichVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+                @Override
+                public void highVersionCallback() {
+                    initialFilterValues[position] =  (catalogFilterOptions != null && catalogFilterOptions.size() > 0) ? catalogFilterOptions.clone() : new SparseArray<>();
+                }
+
+                @Override
+                public void lowerVersionCallback() {
+                    SparseArray<CatalogFilterOption> catalogFilterOptionsClone = new SparseArray<>();
+                    if(catalogFilterOptions != null && catalogFilterOptions.size() > 0){
+                         for(int i = 0; i<catalogFilterOptions.size();i++){
+                             int key = catalogFilterOptions.keyAt(i);
+                             CatalogFilterOption catalogFilterOption = catalogFilterOptions.get(key);
+                             if(catalogFilterOption != null) {
+                                 catalogFilterOptionsClone.put(key, catalogFilterOption);
+                             }
+                         }
+                    }
+                    initialFilterValues[position] = catalogFilterOptionsClone;
+                }
+            });
+
 
         //If Catalog filter price
         } else {

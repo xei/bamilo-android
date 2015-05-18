@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -16,6 +17,7 @@ import com.ad4screen.sdk.A4SApplication;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.CountryObject;
@@ -49,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.boye.httpclientandroidlib.client.CookieStore;
 import de.akquinet.android.androlog.Log;
 
 public class JumiaApplication extends A4SApplication {
@@ -369,7 +372,11 @@ public class JumiaApplication extends A4SApplication {
      */
     public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
-            ch.boye.httpclientandroidlib.client.CookieStore cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+            CookieStore cookieStore = null;
+            SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
+                cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+            }
             mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
         }
         return mCustomerUtils;
