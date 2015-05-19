@@ -138,6 +138,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public Map<String, String> simpleData;
         public String variation;
         public String productUrl;
+        public int maxQuantity;
     }
 
     /**
@@ -761,6 +762,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
                 values.productUrl = item.getProductUrl();
+                values.maxQuantity = item.getMaxQuantity();
 
                 Log.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -966,15 +968,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
+        long actualMaxQuantity = prodItem.itemValues.stock < prodItem.itemValues.maxQuantity ? prodItem.itemValues.stock : prodItem.itemValues.maxQuantity;
         prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+        if(actualMaxQuantity > 1) {
+            prodItem.quantityBtn.setEnabled(true);
+            prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                prodItem.itemValues.is_checked = true;
-                changeQuantityOfItem(position);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    prodItem.itemValues.is_checked = true;
+                    changeQuantityOfItem(position);
+                }
+            });
+        } else {
+            prodItem.quantityBtn.setEnabled(false);
+        }
 
         // Save the position to process the click on item
         view.setTag(R.id.target_url, item.productUrl);
