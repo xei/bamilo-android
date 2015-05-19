@@ -1106,11 +1106,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 if(sizes.size() == 1){
 //                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
 //                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    view.mSizeSpinner.setClickable(false);
+                    view.mSizeSpinner.setEnabled(false);
                 } else {
 //                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
 //                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    view.mSizeSpinner.setClickable(true);
+                    view.mSizeSpinner.setEnabled(true);
                 }
                 
                 // Save position in spinner
