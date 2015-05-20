@@ -9,11 +9,6 @@ import retrofit.RestAdapter;
  */
 public class AigRestAdapter {
 
-
-    public static final String BASE_URL = "http://api.myservice.com";
-
-    public static final String END_POINT = "https://www.jumia.com/mobapi";
-
     /**
      * Prepares everything needed to perform the request regarding Retrofit configurations
      *

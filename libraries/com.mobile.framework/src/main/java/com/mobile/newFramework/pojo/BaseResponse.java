@@ -7,8 +7,6 @@ public class BaseResponse {
 
     public String success;
 
-    Object metadata;
-
 }
 
 
