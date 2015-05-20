@@ -200,3 +200,10 @@
 -keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 #################################################################################
+
+## BEGIN RETROFIT #################################################################
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+#################################################################################
