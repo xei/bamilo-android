@@ -356,7 +356,7 @@ public class GTMManager {
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SEARCH, GTMKeys.SEARCHTERM, searchTerm, GTMKeys.RESULTSNUMBER, numberItems);
 
-        //FIXME if search term if from dropdpwn, is sending empty
+        //FIXME if search term if from dropdown, is sending empty
         sendEvent(message);
     }
 
