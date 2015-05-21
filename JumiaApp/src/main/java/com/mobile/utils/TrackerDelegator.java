@@ -1200,7 +1200,7 @@ public class TrackerDelegator {
     
     public static void trackAddOfferToCart(String productSku, double price) {
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_BUNDLE_TO_CART, productSku, (long) price);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_OFFER_TO_CART, productSku, (long) price);
     }
     
     public static void clearTransactionCount() {
