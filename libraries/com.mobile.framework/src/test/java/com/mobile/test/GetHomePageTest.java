@@ -4,9 +4,9 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequestBundle;
-import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
+import com.mobile.newFramework.requests.home.GetHomePage;
 
-public class GetCountryConfigurationsTest extends BaseTestCase {
+public class GetHomePageTest extends BaseTestCase {
 
     BaseRequestBundle requestBundle;
 
@@ -23,7 +23,7 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCountryConfigurations(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetHomePage(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

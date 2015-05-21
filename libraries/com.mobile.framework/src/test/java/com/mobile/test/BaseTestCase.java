@@ -2,14 +2,14 @@ package com.mobile.test;
 
 import android.content.Context;
 
+import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
+
 import junit.framework.TestCase;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * Created by spereira on 5/20/15.
- */
-public class BaseTestCase extends TestCase {
+public class BaseTestCase extends TestCase implements AigResponseCallback {
 
     protected CountDownLatch mCountDownLatch;
 
@@ -21,5 +21,10 @@ public class BaseTestCase extends TestCase {
         mCountDownLatch = new CountDownLatch(1);
     }
 
+    @Override
+    public void onRequestComplete(BaseResponse response) { }
+
+    @Override
+    public void onRequestError(BaseResponse response) { }
 }
 

@@ -3,39 +3,27 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.GetAvailableCountries;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.configs.GetAvailableCountries;
 
 public class GetAvailableCountriesTest extends BaseTestCase {
+
+    BaseRequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        requestBundle = new BaseRequestBundle.Builder()
+                .setUrl("https://www.jumia.com/mobapi/")
+                .setData(null)
+                .setPriority(true)
+                .build();
     }
 
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        GetAvailableCountries getAvailableCountries = new GetAvailableCountries(IS_AUTOMATED_TEST);
-        getAvailableCountries.setCallBack(new Callback<BaseResponse>() {
-            @Override
-            public void success(BaseResponse countries, Response response) {
-                System.out.println("TEST SUCCESS: " + response.getBody() + " " + countries.success);
-                // tests returned then countdown semaphore
-                mCountDownLatch.countDown();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                System.out.println("TEST ERROR: " + error.getBody());
-                // tests returned then countdown semaphore
-                mCountDownLatch.countDown();
-            }
-        });
-
+        new GetAvailableCountries(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {
@@ -43,7 +31,18 @@ public class GetAvailableCountriesTest extends BaseTestCase {
         }
     }
 
+    @Override
+    public void onRequestComplete(BaseResponse response) {
+        System.out.println("TEST SUCCESS: " + response.success);
+        // tests returned then countdown semaphore
+        mCountDownLatch.countDown();
+    }
 
-
+    @Override
+    public void onRequestError(BaseResponse response) {
+        System.out.println("TEST ERROR: " + response.success);
+        // tests returned then countdown semaphore
+        mCountDownLatch.countDown();
+    }
 
 }

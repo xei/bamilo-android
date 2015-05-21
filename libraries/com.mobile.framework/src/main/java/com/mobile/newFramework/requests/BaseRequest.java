@@ -2,39 +2,48 @@ package com.mobile.newFramework.requests;
 
 import android.content.Context;
 
+import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by spereira on 5/19/15.
- */
 public abstract class BaseRequest implements Callback<BaseResponse> {
 
-    private Callback<BaseResponse> automatedTestCallback;
+    protected final Context mContext;
 
-    protected Context context;
+    protected final BaseRequestBundle mRequestBundle;
 
-    public BaseRequest(Context context) {
-        this.context = context;
+    protected final AigResponseCallback mRequester;
+
+    /*
+     * ############## REQUEST ##############
+     */
+
+    public BaseRequest(Context context, BaseRequestBundle requestBundle, AigResponseCallback requester) {
+        this.mContext = context;
+        this.mRequestBundle = requestBundle;
+        this.mRequester = requester;
     }
 
-    // TODO: Remove this
-    public void setCallBack(Callback<BaseResponse> otherCallback) {
-        this.automatedTestCallback = otherCallback;
-    }
-    
+    public abstract void execute();
+
+    /*
+     * ############## RESPONSE ##############
+     */
+
     @Override
     public void success(BaseResponse baseResponse, Response response) {
         System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.success);
-        if(automatedTestCallback != null) this.automatedTestCallback.success(baseResponse, response);
+        //
+        if(mRequester != null) this.mRequester.onRequestComplete(baseResponse);
     }
 
     @Override
     public void failure(RetrofitError error) {
         System.out.println("BASE ERROR: " + error.getBody());
-        if(automatedTestCallback != null) this.automatedTestCallback.failure(error);
+
+        if(mRequester != null) this.mRequester.onRequestError(new BaseResponse());
     }
 }
