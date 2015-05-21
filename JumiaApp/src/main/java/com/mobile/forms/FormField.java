@@ -699,7 +699,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public void handleSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-        case GET_FORMS_DATASET_LIST_EVENT:
+        case GET_FORMS_DATA_SET_LIST_EVENT:
             Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT");
 
             Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
@@ -717,7 +717,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public void handleErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-        case GET_FORMS_DATASET_LIST_EVENT:
+        case GET_FORMS_DATA_SET_LIST_EVENT:
             Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
         default:
             break;

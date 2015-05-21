@@ -16,26 +16,20 @@ import java.net.CookiePolicy;
 import java.net.CookieStore;
 import java.util.concurrent.TimeUnit;
 
-import retrofit.client.OkClient;
-
-/**
- * Created by spereira on 5/19/15.
- */
 public class AigHttpClient {
 
-    private static OkClient sOkHttpClient;
+    private static OkHttpClient sOkHttpClient;
 
-    public static OkClient getOkHttpClient(Context context) {
+    public static OkHttpClient getOkHttpClient(Context context) {
         return sOkHttpClient == null ? sOkHttpClient = newOkHttpClient(context) : sOkHttpClient;
     }
 
-    private static OkClient newOkHttpClient(Context context) {
+    private static OkHttpClient newOkHttpClient(Context context) {
         // HTTP CLIENT
         OkHttpClient okHttpClient = new OkHttpClient();
         // AUTHENTICATION
         okHttpClient.setAuthenticator(new AigAuthenticator());
-        // HEADERS
-        // TODO: UA, GZIP
+
         if (context != null) {
             // COOKIES
             PersistentCookieStore cookieStore = new PersistentCookieStore(context);
@@ -46,52 +40,50 @@ public class AigHttpClient {
             Cache cache = new Cache(cacheDir, AigConfigurations.CACHE_MAX_SIZE);
             okHttpClient.setCache(cache);
         }
+
         // REDIRECTS
         okHttpClient.setFollowSslRedirects(true);
         okHttpClient.setFollowRedirects(true);
         // TIMEOUTS
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
-        // RETRIES
-
-        okHttpClient.interceptors().add(new LoggingInterceptor());
-
-
-        return new OkClient(okHttpClient);
+        // INTERCEPTORS
+        okHttpClient.interceptors().add(new RequestInterceptor());
+        okHttpClient.interceptors().add(new ResponseInterceptor());
+        // Return client
+        return okHttpClient;
     }
 
-    private static class LoggingInterceptor implements Interceptor {
-
+    private static class RequestInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
+            System.out.println("############ OK HTTP: REQUEST INTERCEPTOR ############");
             Request request = chain.request();
-            System.out.println("############ OK HTTP CLIENT ############");
-
-            long t1 = System.nanoTime();
-            System.out.println(String.format("Sending request %s on %s%n%s", request.url(), chain.connection(), request.headers()));
-
-            Response response = chain.proceed(request);
-
-            long t2 = System.nanoTime();
-            System.out.println(String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d, response.headers()));
-
-            System.out.println("#########################################\n");
-
-            return response;
+            System.out.println("Headers:      \n" + request.headers());
+            System.out.println("Url:            " + request.url());
+            System.out.println("Https:          " + request.isHttps());
+            System.out.println("Method:         " + request.method());
+            System.out.println("Body:           " + request.body());
+            System.out.println("Cache:          " + request.cacheControl());
+            System.out.println("####################################################\n");
+            return chain.proceed(request);
         }
     }
 
-//    /**
-//     * Method used to set the user agent
-//     * @author sergiopereira
-//     */
-//    private void setHttpUserAgent(){
-//        // CASE Default user agent
-//        String defaultUserAgent = System.getProperty("http.agent");
-//        Log.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
-//        if(!TextUtils.isEmpty(defaultUserAgent)) {
-//            mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
-//        }
-//    }
+    private static class ResponseInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            System.out.println("############ OK HTTP: RESPONSE INTERCEPTOR ############");
+            Response response = chain.proceed(chain.request());
+            System.out.println("Headers:          \n" + response.headers());
+            System.out.println("Message:            " + response.message());
+            System.out.println("Redirect:           " + response.isRedirect());
+            System.out.println("Cache response:     " + response.cacheResponse());
+            System.out.println("Network response:   " + response.networkResponse());
+            System.out.println("> Request:          " + response.request().toString());
+            System.out.println("######################################################\n");
+            return response;
+        }
+    }
 
 }

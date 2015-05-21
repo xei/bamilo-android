@@ -87,7 +87,7 @@ public enum EventType {
 
     CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", RestContract.NO_CACHE),
 
-    GET_FORMS_DATASET_LIST_EVENT,
+    GET_FORMS_DATA_SET_LIST_EVENT,
 
     GET_API_INFO("http:/main/md5/", RestContract.NO_CACHE),
 
