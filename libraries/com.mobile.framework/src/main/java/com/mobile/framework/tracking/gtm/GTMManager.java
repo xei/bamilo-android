@@ -129,7 +129,11 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAppOpen campaignId:" + campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
-        
+
+        if(countryIso == null){
+            //for the first ever app open event when theres no selected country
+            return;
+        }
         String version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
         if(version == null){
             version = "";
@@ -150,7 +154,7 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAppOpen isPreInstall:"+isPreInstall);
         if(isPreInstall) source = GTMValues.PRE_INSTALL;
         else source = GTMValues.ORGANIC;
-        
+
         if(isFromPush){
             source = GTMValues.PUSH;
         }
@@ -266,7 +270,7 @@ public class GTMManager {
       sendEvent(message);
     }
     
-    public void gtmTrackLoginFailed(String method, String location) {
+    public void gtmTrackLoginFailed(String location, String method) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackLoginFailed -> location " + location);
         Log.d(TAG, "gtmTrackLoginFailed"+" method:"+method+" location:"+location);
 
@@ -352,7 +356,7 @@ public class GTMManager {
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SEARCH, GTMKeys.SEARCHTERM, searchTerm, GTMKeys.RESULTSNUMBER, numberItems);
 
-
+        //FIXME if search term if from dropdown, is sending empty
         sendEvent(message);
     }
 
