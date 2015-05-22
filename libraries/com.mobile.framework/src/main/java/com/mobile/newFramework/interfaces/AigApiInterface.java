@@ -16,6 +16,9 @@ public interface AigApiInterface {
     @GET("/availablecountries")
     void getAvailableCountries(Callback<BaseResponse> callback);
 
+    @GET("/main/getconfigurations")
+    void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
+
     @GET("/main/md5/")
     void getApiInformation(Callback<BaseResponse> callback);
 
@@ -69,8 +72,5 @@ public interface AigApiInterface {
 
     @GET("/order/cartdata/")
     void getCart(Callback<BaseResponse> callback);
-
-    @GET("/getconfigurations")
-    void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
 }

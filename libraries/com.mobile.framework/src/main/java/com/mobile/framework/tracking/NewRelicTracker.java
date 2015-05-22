@@ -11,7 +11,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * NewRelic class.<br>
- * Current version: 4.98
+ * Current version: 5.0.3
  * @author sergiopereira
  *
  */
@@ -46,7 +46,7 @@ public class NewRelicTracker {
 	 */
 	public static void noticeSuccessTransaction(String url, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
 		Log.i(TAG, "ON SUCCESS TRANSACTION: " + url);
-		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url.toString() : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
+		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
 	}
 
 	/**
