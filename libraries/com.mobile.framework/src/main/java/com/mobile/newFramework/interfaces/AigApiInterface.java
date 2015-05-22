@@ -3,9 +3,14 @@ package com.mobile.newFramework.interfaces;
 import com.mobile.framework.objects.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 
+import java.util.Map;
+
 import retrofit.Callback;
+import retrofit.http.FieldMap;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit.http.POST;
+import retrofit.http.QueryMap;
 
 
 public interface AigApiInterface {
@@ -14,20 +19,17 @@ public interface AigApiInterface {
      * ## CONFIGS
      */
 
-    @GET("/{url}")
-    void getAvailableCountries(@Path(value = "url", encode = false) String url, Callback<BaseResponse> callback);
+    @GET("/")
+    void getAvailableCountries(Callback<BaseResponse> callback);
 
-    @GET("/main/getconfigurations")
+    @GET("/")
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
-    @GET("/main/md5/")
+    @GET("/")
     void getApiInformation(Callback<BaseResponse> callback);
 
-    @GET("/main/imageresolutions")
+    @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
-
-    @GET("/main/getstatic?key=terms_mobile")
-    void getTermsConditions(Callback<BaseResponse> callback);
 
     /*
      * ## FORMS
@@ -40,25 +42,29 @@ public interface AigApiInterface {
      * ## CATALOG
      */
 
-    @GET("/catalog/categories")
-    void getCatalog(Callback<BaseResponse> callback);
+    @GET("/")
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
 
-    @GET("/search")
-    void getSearchCatalog(Callback<BaseResponse> callback);
+    /*
+     * ## CATEGORIES
+     */
+
+    @GET("/")
+    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
 
     /*
      * ## HOME
      */
 
-    @GET("/main/home")
+    @GET("/")
     void getHome(Callback<BaseResponse> callback);
 
     /*
      * ## PRODUCT
      */
 
-    @GET("{request}")
-    void getProduct(Callback<BaseResponse> callback);
+    @GET("/")
+    void getProductDetail(Callback<BaseResponse> callback);
 
     /*
      * ## SEARCH SUGGESTIONS
@@ -71,7 +77,16 @@ public interface AigApiInterface {
      * ## CART
      */
 
-    @GET("/order/cartdata")
-    void getCart(Callback<BaseResponse> callback);
+    @GET("/")
+    void getShoppingCart(Callback<BaseResponse> callback);
+
+    /*
+     * ## SESSION
+     */
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
+
 
 }

@@ -2,6 +2,7 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequestBundle;
 import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
@@ -14,7 +15,8 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         requestBundle = new BaseRequestBundle.Builder()
-                .setUrl("https://www.jumia.ci/mobapi/v1.7/")
+                .setUrl("https://www.jumia.ci/mobapi/v1.7/main/getconfigurations")
+                .setCache(EventType.GET_COUNTRY_CONFIGURATIONS.cacheTime)
                 .setData(null)
                 .setPriority(true)
                 .build();
