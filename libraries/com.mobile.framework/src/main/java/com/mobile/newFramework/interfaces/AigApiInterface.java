@@ -5,6 +5,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.Path;
 
 
 public interface AigApiInterface {
@@ -13,8 +14,8 @@ public interface AigApiInterface {
      * ## CONFIGS
      */
 
-    @GET("/availablecountries")
-    void getAvailableCountries(Callback<BaseResponse> callback);
+    @GET("/{url}")
+    void getAvailableCountries(@Path(value = "url", encode = false) String url, Callback<BaseResponse> callback);
 
     @GET("/main/getconfigurations")
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
@@ -22,7 +23,7 @@ public interface AigApiInterface {
     @GET("/main/md5/")
     void getApiInformation(Callback<BaseResponse> callback);
 
-    @GET("/main/imageresolutions/")
+    @GET("/main/imageresolutions")
     void getImageResolutions(Callback<BaseResponse> callback);
 
     @GET("/main/getstatic?key=terms_mobile")
@@ -32,24 +33,24 @@ public interface AigApiInterface {
      * ## FORMS
      */
 
-    @GET("/forms/index/")
+    @GET("/forms/index")
     void getFormsIndex(Callback<BaseResponse> callback);
 
     /*
      * ## CATALOG
      */
 
-    @GET("/catalog/categories/")
+    @GET("/catalog/categories")
     void getCatalog(Callback<BaseResponse> callback);
 
-    @GET("/search/")
+    @GET("/search")
     void getSearchCatalog(Callback<BaseResponse> callback);
 
     /*
      * ## HOME
      */
 
-    @GET("/main/home/")
+    @GET("/main/home")
     void getHome(Callback<BaseResponse> callback);
 
     /*
@@ -63,14 +64,14 @@ public interface AigApiInterface {
      * ## SEARCH SUGGESTIONS
      */
 
-    @GET("/search/suggest/")
+    @GET("/search/suggest")
     void getSearchSuggestions(Callback<BaseResponse> callback);
 
     /*
      * ## CART
      */
 
-    @GET("/order/cartdata/")
+    @GET("/order/cartdata")
     void getCart(Callback<BaseResponse> callback);
 
 }

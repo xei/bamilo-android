@@ -13,6 +13,8 @@ public class GetAvailableCountries extends BaseRequest {
 
     EventType type = EventType.GET_GLOBAL_CONFIGURATIONS;
 
+    private final static String IS_FULL_URL = "";
+
     public GetAvailableCountries(Context context, BaseRequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
     }
@@ -20,7 +22,7 @@ public class GetAvailableCountries extends BaseRequest {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), type.cacheTime).create(AigApiInterface.class);
-        service.getAvailableCountries(this);
+        service.getAvailableCountries(IS_FULL_URL, this);
     }
 
 }
