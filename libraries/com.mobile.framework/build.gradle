@@ -8,6 +8,9 @@ android {
         minSdkVersion 9
         targetSdkVersion 21
     }
+//    testOptions {
+//        unitTests.returnDefaultValues = true
+//    }
 
 }
 
@@ -34,5 +37,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
 
     testCompile 'junit:junit:4.12'
+    testCompile files('libs/json.jar')
 
 }
