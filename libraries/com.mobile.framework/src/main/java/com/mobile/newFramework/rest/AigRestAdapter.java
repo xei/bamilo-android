@@ -25,6 +25,7 @@ public class AigRestAdapter {
                 .setClient(new OkClient(AigHttpClient.getOkHttpClient(context)))
                 .setEndpoint(url)
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(cache))
+                .setConverter(new ResponseConverter())
                 //.setErrorHandler(new JovagoErrorHandler())
                 .build();
     }
