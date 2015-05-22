@@ -1,14 +1,18 @@
 package com.mobile.newFramework.pojo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by spereira on 5/19/15.
  */
 public class BaseResponse<T>{
-    public String success;
-    public List<String> messages;
+    public boolean success;
+    public Map<String,List<String>> messages;
+    //TODO remove message variable as soon as possible
+    public String message;
     public Metadata<T> metadata;
+    public Map<String, String> sessions;
 
     public BaseResponse(){
         metadata = new Metadata<T>();
