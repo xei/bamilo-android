@@ -9,7 +9,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public abstract class BaseRequest implements Callback<BaseResponse> {
+public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     protected final Context mContext;
 

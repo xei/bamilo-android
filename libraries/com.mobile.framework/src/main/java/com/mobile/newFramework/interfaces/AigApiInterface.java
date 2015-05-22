@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.framework.objects.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import retrofit.Callback;
@@ -14,9 +15,6 @@ public interface AigApiInterface {
 
     @GET("/availablecountries")
     void getAvailableCountries(Callback<BaseResponse> callback);
-
-    @GET("/main/getconfigurations")
-    void getCountryConfigurations(Callback<BaseResponse> callback);
 
     @GET("/main/md5/")
     void getApiInformation(Callback<BaseResponse> callback);
@@ -72,5 +70,7 @@ public interface AigApiInterface {
     @GET("/order/cartdata/")
     void getCart(Callback<BaseResponse> callback);
 
+    @GET("/getconfigurations")
+    void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
 }
