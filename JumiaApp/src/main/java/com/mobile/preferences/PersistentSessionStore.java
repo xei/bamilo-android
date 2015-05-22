@@ -5,9 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.utils.CustomerUtils;
-import com.newrelic.com.google.gson.Gson;
 
 import java.util.Map;
 

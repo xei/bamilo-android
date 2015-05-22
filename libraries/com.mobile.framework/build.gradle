@@ -18,7 +18,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.google.android.gms:play-services-analytics:7.0.0'
     compile 'com.google.android.gms:play-services-location:7.0.0'
-    compile 'com.newrelic.agent.android:android-agent:4.120.0'
+    // https://docs.newrelic.com/docs/release-notes/mobile-release-notes/android-release-notes
+    compile 'com.newrelic.agent.android:android-agent:5.0.3'
     compile 'com.ad4screen.sdk:A4SSDK:3.1.3'
     compile 'com.adjust.sdk:adjust-android:4.0.5'
     compile files('libs/A4SSDK-GooglePlayServices-1.5.jar')
@@ -27,12 +28,11 @@ dependencies {
     compile project(':libraries:Volley')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/apptimize-android-2.6.5.jar')
-
+    /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
-
+    /** TESTS **/
     testCompile 'junit:junit:4.12'
-
 }

@@ -16,7 +16,7 @@ import de.akquinet.android.androlog.Log;
  *
  */
 public class NewRelicTracker {
-	
+
 	private static final String TAG = NewRelicTracker.class.getSimpleName();
 
 	/**
@@ -34,7 +34,7 @@ public class NewRelicTracker {
 			Log.w(TAG, "WARNING NPE ON INIT NEW RELIC");
 		}
 	}
-	
+
 	/**
 	 * Notice a success transaction
 	 * @param url
@@ -48,7 +48,7 @@ public class NewRelicTracker {
 		Log.i(TAG, "ON SUCCESS TRANSACTION: " + url);
 		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url.toString() : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
 	}
-	
+
 	/**
 	 * Notice a failure transaction
 	 * @param url
