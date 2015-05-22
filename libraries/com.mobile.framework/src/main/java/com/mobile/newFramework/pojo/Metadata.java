@@ -1,6 +1,6 @@
 package com.mobile.newFramework.pojo;
 
-import com.mobile.framework.interfaces.IJSONSerializable;
+import com.mobile.framework.objects.IJSONSerializable;
 
 /**
  * Created by rsoares on 5/21/15.

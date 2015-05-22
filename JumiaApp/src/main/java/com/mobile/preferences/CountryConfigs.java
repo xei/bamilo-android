@@ -23,6 +23,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author ricardosoares
  * @modified sergiopereira
+ * TODO extends from countryConfigs on Framework
  */
 public class CountryConfigs {
 
