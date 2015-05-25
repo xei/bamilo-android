@@ -2,6 +2,7 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import retrofit.Callback;
@@ -21,7 +22,7 @@ public interface AigApiInterface {
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
     @GET("/main/md5/")
-    void getApiInformation(Callback<BaseResponse> callback);
+    void getApiInformation(Callback<BaseResponse<Sections>> callback);
 
     @GET("/main/imageresolutions/")
     void getImageResolutions(Callback<BaseResponse> callback);
