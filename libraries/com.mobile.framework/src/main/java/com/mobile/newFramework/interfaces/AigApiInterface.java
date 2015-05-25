@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -14,7 +15,7 @@ public interface AigApiInterface {
      */
 
     @GET("/availablecountries")
-    void getAvailableCountries(Callback<BaseResponse> callback);
+    void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
 
     @GET("/main/getconfigurations")
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
