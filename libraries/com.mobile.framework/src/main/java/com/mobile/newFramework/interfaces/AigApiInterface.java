@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Sections;
@@ -59,7 +60,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getHome(Callback<BaseResponse> callback);
+    void getHome(Callback<BaseResponse<HomePageObject>> callback);
 
     /*
      * ## PRODUCT

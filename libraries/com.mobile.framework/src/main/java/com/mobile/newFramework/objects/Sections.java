@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects;
 
-import com.mobile.framework.objects.Section;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;

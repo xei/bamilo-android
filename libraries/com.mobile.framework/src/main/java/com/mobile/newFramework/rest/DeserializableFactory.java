@@ -1,6 +1,7 @@
 package com.mobile.newFramework.rest;
 
 
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.IJSONSerializable;
@@ -18,6 +19,8 @@ public class DeserializableFactory {
             return new AvailableCountries();
         } else if(object.equals(Sections.class.getName())){
             return new Sections();
+        } else if(object.equals(HomePageObject.class.getName())){
+            return new HomePageObject();
         }
 
         return null;
