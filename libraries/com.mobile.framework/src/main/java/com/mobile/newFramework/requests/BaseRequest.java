@@ -55,9 +55,8 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
     public void failure(RetrofitError error) {
         System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getStatusCode());
 
-        JumiaError jumiaError = ((AigBaseException) error.getCause()).getError();
         BaseResponse errorResponse = new BaseResponse();
-        errorResponse.error = jumiaError;
+        errorResponse.error = ((AigBaseException) error.getCause()).getError();
 
         if(mRequester != null) this.mRequester.onRequestError(errorResponse);
     }
