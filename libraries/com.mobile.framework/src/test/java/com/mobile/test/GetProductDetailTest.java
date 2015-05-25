@@ -5,9 +5,9 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequestBundle;
-import com.mobile.newFramework.requests.configs.GetApiInformation;
+import com.mobile.newFramework.requests.product.GetProductDetail;
 
-public class GetApiInformationTest extends BaseTestCase {
+public class GetProductDetailTest extends BaseTestCase {
 
     BaseRequestBundle requestBundle;
 
@@ -15,8 +15,8 @@ public class GetApiInformationTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         requestBundle = new BaseRequestBundle.Builder()
-                .setUrl("https://www.jumia.ci/mobapi/v1.7/main/md5/")
-                .setCache(EventType.GET_API_INFO.cacheTime)
+                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/925-sterling-silver-cz-engagement-ring-243093.html")
+                .setCache(EventType.GET_PRODUCT_EVENT.cacheTime)
                 .setData(null)
                 .setPriority(true)
                 .build();
@@ -25,7 +25,7 @@ public class GetApiInformationTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetApiInformation(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductDetail(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

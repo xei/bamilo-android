@@ -62,5 +62,17 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
         if(mRequester != null) this.mRequester.onRequestError(errorResponse);
     }
 
+    /*
+     * ############## UTILS TEMPORARY ##############
+     */
 
+    protected String[] getBaseAndEndPointFrom(String fullUrl) {
+        String baseUrl = fullUrl;
+        String endPoint = "";
+        if (baseUrl.contains("/mobapi/")) {
+            baseUrl = mRequestBundle.getUrl().substring(0, baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
+            endPoint = mRequestBundle.getUrl().substring(baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
+        }
+        return new String[]{baseUrl, endPoint};
+    }
 }

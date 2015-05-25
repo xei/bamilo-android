@@ -5,27 +5,30 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequestBundle;
-import com.mobile.newFramework.requests.configs.GetApiInformation;
+import com.mobile.newFramework.requests.campaign.GetCampaign;
 
-public class GetApiInformationTest extends BaseTestCase {
+import java.util.HashMap;
+
+public class GetCampaignTest extends BaseTestCase {
 
     BaseRequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        HashMap<String, String> data = new HashMap<>();
+        data.put("campaign_slug", "deals-of-the-day");
         requestBundle = new BaseRequestBundle.Builder()
-                .setUrl("https://www.jumia.ci/mobapi/v1.7/main/md5/")
+                .setUrl("http://www.jumia.com.ng/mobapi/v1.7/campaign/get/")
                 .setCache(EventType.GET_API_INFO.cacheTime)
-                .setData(null)
-                .setPriority(true)
+                .setData(data)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetApiInformation(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCampaign(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

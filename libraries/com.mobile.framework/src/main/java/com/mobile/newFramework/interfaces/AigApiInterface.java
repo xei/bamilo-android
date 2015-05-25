@@ -1,10 +1,20 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.framework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.CompleteProduct;
+import com.mobile.newFramework.objects.HomePageObject;
+import com.mobile.newFramework.objects.AvailableCountries;
+import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
+import java.util.Map;
+
 import retrofit.Callback;
+import retrofit.http.FieldMap;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.QueryMap;
 
 
 public interface AigApiInterface {
@@ -13,64 +23,88 @@ public interface AigApiInterface {
      * ## CONFIGS
      */
 
-    @GET("/availablecountries")
-    void getAvailableCountries(Callback<BaseResponse> callback);
+    @GET("/")
+    void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
 
-    @GET("/main/getconfigurations")
+    @GET("/")
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
-    @GET("/main/md5/")
-    void getApiInformation(Callback<BaseResponse> callback);
+    @GET("/")
+    void getApiInformation(Callback<BaseResponse<Sections>> callback);
 
-    @GET("/main/imageresolutions/")
+    @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
-
-    @GET("/main/getstatic?key=terms_mobile")
-    void getTermsConditions(Callback<BaseResponse> callback);
 
     /*
      * ## FORMS
      */
 
-    @GET("/forms/index/")
+    @GET("/forms/index")
     void getFormsIndex(Callback<BaseResponse> callback);
 
     /*
      * ## CATALOG
      */
 
-    @GET("/catalog/categories/")
-    void getCatalog(Callback<BaseResponse> callback);
+    @GET("/")
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
 
-    @GET("/search/")
-    void getSearchCatalog(Callback<BaseResponse> callback);
+    /*
+     * ## CATEGORIES
+     */
+
+    @GET("/")
+    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
 
     /*
      * ## HOME
      */
 
-    @GET("/main/home/")
-    void getHome(Callback<BaseResponse> callback);
+    @GET("/")
+    void getHome(Callback<BaseResponse<HomePageObject>> callback);
+
+    /*
+     * ## SHOP IN SHOP
+     */
+
+    @GET("/")
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<HomePageObject>> callback);
+
+    /*
+     * ## CAMPAIGN
+     */
+
+    @GET("/")
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
 
     /*
      * ## PRODUCT
      */
 
-    @GET("{request}")
-    void getProduct(Callback<BaseResponse> callback);
+    @GET("/")
+    void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
     /*
      * ## SEARCH SUGGESTIONS
      */
 
-    @GET("/search/suggest/")
+    @GET("/search/suggest")
     void getSearchSuggestions(Callback<BaseResponse> callback);
 
     /*
      * ## CART
      */
 
-    @GET("/order/cartdata/")
-    void getCart(Callback<BaseResponse> callback);
+    @GET("/")
+    void getShoppingCart(Callback<BaseResponse> callback);
+
+    /*
+     * ## SESSION
+     */
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
+
 
 }

@@ -6,10 +6,15 @@ public class BaseRequestBundle {
 
     private String url;
 
+    private Integer cache;
+
     private Map<String, String> data;
 
     private boolean priority;
 
+    /*
+     * GETTERS
+     */
 
     public String getUrl() {
         return url;
@@ -23,9 +28,19 @@ public class BaseRequestBundle {
         return priority;
     }
 
+    public Integer getCache() {
+        return cache;
+    }
+
+    /*
+     * BUILDER
+     */
+
     public static class Builder {
 
         String url;
+
+        Integer cache;
 
         Map<String, String> data;
 
@@ -46,9 +61,15 @@ public class BaseRequestBundle {
             return this;
         }
 
+        public Builder setCache(Integer cache) {
+            this.cache = cache;
+            return this;
+        }
+
         public BaseRequestBundle build() {
             BaseRequestBundle requestBundle = new BaseRequestBundle();
             requestBundle.url = url;
+            requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.priority = priority;
             return requestBundle;

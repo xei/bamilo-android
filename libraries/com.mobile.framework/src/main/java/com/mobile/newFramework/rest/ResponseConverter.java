@@ -1,8 +1,9 @@
 package com.mobile.newFramework.rest;
 
 import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import org.apache.commons.io.IOUtils;
@@ -57,7 +58,7 @@ public class ResponseConverter implements Converter{
 
     protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType) throws JSONException {
         BaseResponse<?> response = new BaseResponse<>();
-        response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG,false);
+        response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false);
 
         if(response.success){
             parseSuccessResponse(response, responseJsonObject, dataType);
@@ -70,15 +71,14 @@ public class ResponseConverter implements Converter{
 
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
-        if(responseJsonObject.has(RestConstants.JSON_DATA_TAG)){
-            iJsonSerializable.initialize(responseJsonObject.getJSONObject(RestConstants.JSON_DATA_TAG));
-        } else {
-            iJsonSerializable.initialize(responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG));
-        }
+
+        iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
+
         baseResponse.metadata.setData(iJsonSerializable);
         //TODO change to use method getMessages when response from API is coming correctly
         baseResponse.message = handleSuccessMessage(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG));
         baseResponse.sessions = getSessions(responseJsonObject);
+        baseResponse.metadata.md5 = getMd5(responseJsonObject);
     }
 
     protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject) throws JSONException {
@@ -87,49 +87,75 @@ public class ResponseConverter implements Converter{
         baseResponse.sessions = getSessions(responseJsonObject);
     }
 
-    //TODO provisory method
-    protected String handleSuccessMessage(JSONObject messagesObject) throws JSONException {
+    //TODO temporary method
+    protected String handleSuccessMessage(JSONObject messagesObject){
+        try {
         if (messagesObject != null) {
             JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-           return successArray.getString(0);
+            return successArray != null ? successArray.getString(0) : null;
         }
-        return null;
+        } finally {
+            return null;
+        }
     }
 
-    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) throws JSONException {
+    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
         Map<String, List<String>> messages = new HashMap<>();
-        if(responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
-            JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
-            Iterator<?> keys = messagesJsonObject.keys();
+        try {
+            if (responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
+                JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
+                Iterator<?> keys = messagesJsonObject.keys();
 
-            while( keys.hasNext() ) {
-                String key = (String)keys.next();
-                List<String> stringList = new LinkedList<>();
-                if ( messagesJsonObject.get(key) instanceof JSONArray) {
-                    JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
-                    for(int i = 0; i<jsonArray.length();i++) {
-                        stringList.add(jsonArray.getString(i));
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    List<String> stringList = new LinkedList<>();
+                    if (messagesJsonObject.get(key) instanceof JSONArray) {
+                        JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            stringList.add(jsonArray.getString(i));
+                        }
+                    }
+                    messages.put(key, stringList);
+                }
+            }
+        } finally {
+            return messages;
+        }
+    }
+
+    protected Map<String, String> getSessions(JSONObject responseJsonObject) {
+        Map<String, String> sessions = new HashMap<>();
+        try {
+            if (responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
+                JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
+                Iterator<?> keys = sessionJsonObject.keys();
+
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (sessionJsonObject.get(key) instanceof String) {
+                        sessions.put(key, sessionJsonObject.getString(key));
                     }
                 }
-                messages.put(key, stringList);
             }
+        } finally {
+            return sessions;
         }
-        return messages;
     }
 
-    protected Map<String, String> getSessions(JSONObject responseJsonObject) throws JSONException {
-        Map<String, String> sessions = new HashMap<>();
-        if(responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
-            JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
-            Iterator<?> keys = sessionJsonObject.keys();
-
-            while( keys.hasNext() ) {
-                String key = (String)keys.next();
-                if ( sessionJsonObject.get(key) instanceof String) {
-                    sessions.put(key, sessionJsonObject.getString(key));
-                }
-            }
+    protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
+        RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
+        if(requiredJson == RequiredJson.METADATA){
+            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
+        } else if(requiredJson == RequiredJson.OBJECT_DATA){
+            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
         }
-        return sessions;
+        return responseJsonObject;
+    }
+
+    public String getMd5(JSONObject responseJsonObject) {
+        if(responseJsonObject.has(RestConstants.JSON_METADATA_TAG)){
+            return responseJsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG).optString(RestConstants.JSON_MD5_TAG, null);
+        }
+        return null;
     }
 }
