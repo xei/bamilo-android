@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
@@ -75,7 +76,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
 
     /*
      * ## PRODUCT
