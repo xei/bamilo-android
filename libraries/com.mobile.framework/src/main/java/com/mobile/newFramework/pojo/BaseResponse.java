@@ -1,5 +1,7 @@
 package com.mobile.newFramework.pojo;
 
+import com.mobile.newFramework.rest.JumiaError;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ public class BaseResponse<T>{
     public String message;
     public Metadata<T> metadata;
     public Map<String, String> sessions;
+    public JumiaError error;
 
     public BaseResponse(){
         metadata = new Metadata<T>();
