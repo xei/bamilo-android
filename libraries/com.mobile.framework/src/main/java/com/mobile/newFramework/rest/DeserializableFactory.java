@@ -1,8 +1,8 @@
 package com.mobile.newFramework.rest;
 
 
-import com.mobile.framework.objects.CountryConfigs;
-import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.IJSONSerializable;
 
 /**
  * Created by rsoares on 5/21/15.

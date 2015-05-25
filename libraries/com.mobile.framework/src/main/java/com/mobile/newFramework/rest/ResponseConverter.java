@@ -1,8 +1,9 @@
 package com.mobile.newFramework.rest;
 
 import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import org.apache.commons.io.IOUtils;
@@ -57,7 +58,7 @@ public class ResponseConverter implements Converter{
 
     protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType) throws JSONException {
         BaseResponse<?> response = new BaseResponse<>();
-        response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG,false);
+        response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false);
 
         if(response.success){
             parseSuccessResponse(response, responseJsonObject, dataType);
@@ -70,11 +71,9 @@ public class ResponseConverter implements Converter{
 
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
-        if(responseJsonObject.has(RestConstants.JSON_DATA_TAG)){
-            iJsonSerializable.initialize(responseJsonObject.getJSONObject(RestConstants.JSON_DATA_TAG));
-        } else {
-            iJsonSerializable.initialize(responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG));
-        }
+
+        iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject,iJsonSerializable));
+
         baseResponse.metadata.setData(iJsonSerializable);
         //TODO change to use method getMessages when response from API is coming correctly
         baseResponse.message = handleSuccessMessage(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG));
@@ -131,5 +130,15 @@ public class ResponseConverter implements Converter{
             }
         }
         return sessions;
+    }
+
+    protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
+        RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
+        if(requiredJson == RequiredJson.METADATA){
+            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
+        } else if(requiredJson == RequiredJson.DATA){
+            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
+        }
+        return responseJsonObject;
     }
 }

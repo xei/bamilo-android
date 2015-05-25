@@ -1,6 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.framework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import retrofit.Callback;
