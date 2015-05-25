@@ -72,12 +72,13 @@ public class ResponseConverter implements Converter{
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
 
-        iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject,iJsonSerializable));
+        iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
 
         baseResponse.metadata.setData(iJsonSerializable);
         //TODO change to use method getMessages when response from API is coming correctly
         baseResponse.message = handleSuccessMessage(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG));
         baseResponse.sessions = getSessions(responseJsonObject);
+        baseResponse.metadata.md5 = getMd5(responseJsonObject);
     }
 
     protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject) throws JSONException {
@@ -140,5 +141,12 @@ public class ResponseConverter implements Converter{
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
         }
         return responseJsonObject;
+    }
+
+    public String getMd5(JSONObject responseJsonObject) {
+        if(responseJsonObject.has(RestConstants.JSON_METADATA_TAG)){
+            return responseJsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG).optString(RestConstants.JSON_MD5_TAG, null);
+        }
+        return null;
     }
 }
