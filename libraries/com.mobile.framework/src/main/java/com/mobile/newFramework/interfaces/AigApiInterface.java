@@ -1,6 +1,8 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.framework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.AvailableCountries;
+import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -20,13 +22,13 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getAvailableCountries(Callback<BaseResponse> callback);
+    void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
 
     @GET("/")
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
     @GET("/")
-    void getApiInformation(Callback<BaseResponse> callback);
+    void getApiInformation(Callback<BaseResponse<Sections>> callback);
 
     @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);

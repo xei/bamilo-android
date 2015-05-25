@@ -1,4 +1,4 @@
-package com.mobile.framework.objects;
+package com.mobile.newFramework.objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,7 +19,7 @@ import de.akquinet.android.androlog.Log;
  * @author ricardosoares
  * @modified sergiopereira
  */
-public class CountryConfigs implements IJSONSerializable{
+public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSerializable {
 
     private static final String TAG = CountryConfigs.class.getSimpleName();
 
@@ -156,5 +156,10 @@ public class CountryConfigs implements IJSONSerializable{
     @Override
     public JSONObject toJSON() {
         return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
     }
 }
