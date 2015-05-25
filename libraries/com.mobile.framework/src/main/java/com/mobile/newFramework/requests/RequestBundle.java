@@ -2,7 +2,7 @@ package com.mobile.newFramework.requests;
 
 import java.util.Map;
 
-public class BaseRequestBundle {
+public class RequestBundle {
 
     private String url;
 
@@ -10,7 +10,7 @@ public class BaseRequestBundle {
 
     private Map<String, String> data;
 
-    private boolean priority;
+    private boolean discard;
 
     /*
      * GETTERS
@@ -24,8 +24,8 @@ public class BaseRequestBundle {
         return data;
     }
 
-    public boolean isPriority() {
-        return priority;
+    public boolean isDiscardedResponse() {
+        return discard;
     }
 
     public Integer getCache() {
@@ -44,15 +44,15 @@ public class BaseRequestBundle {
 
         Map<String, String> data;
 
-        boolean priority;
+        boolean discard;
 
         public Builder setUrl(String url) {
             this.url = url;
             return this;
         }
 
-        public Builder setPriority(boolean priority) {
-            this.priority = priority;
+        public Builder discardResponse() {
+            this.discard = true;
             return this;
         }
 
@@ -66,12 +66,12 @@ public class BaseRequestBundle {
             return this;
         }
 
-        public BaseRequestBundle build() {
-            BaseRequestBundle requestBundle = new BaseRequestBundle();
+        public RequestBundle build() {
+            RequestBundle requestBundle = new RequestBundle();
             requestBundle.url = url;
             requestBundle.cache = cache;
             requestBundle.data = data;
-            requestBundle.priority = priority;
+            requestBundle.discard = discard;
             return requestBundle;
         }
 

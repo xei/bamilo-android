@@ -4,14 +4,14 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 
 import java.util.HashMap;
 
 public class LoginCustomerTest extends BaseTestCase {
 
-    BaseRequestBundle requestBundle;
+    RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
@@ -23,11 +23,10 @@ public class LoginCustomerTest extends BaseTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
         data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
-        requestBundle = new BaseRequestBundle.Builder()
+        requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/login/")
                 .setCache(EventType.LOGIN_EVENT.cacheTime)
                 .setData(data)
-                .setPriority(true)
                 .build();
     }
 

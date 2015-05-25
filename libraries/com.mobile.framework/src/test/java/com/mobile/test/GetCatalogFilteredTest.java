@@ -4,14 +4,14 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.catalog.GetCatalogFiltered;
 
 import java.util.HashMap;
 
 public class GetCatalogFilteredTest extends BaseTestCase {
 
-    BaseRequestBundle requestBundle;
+    RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
@@ -23,11 +23,10 @@ public class GetCatalogFilteredTest extends BaseTestCase {
         data.put("sort", "newest");
         data.put("dir", "desc");
         // Bundle
-        requestBundle = new BaseRequestBundle.Builder()
+        requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/wedding/")
                 .setCache(EventType.GET_PRODUCTS_EVENT.cacheTime)
                 .setData(data)
-                .setPriority(true)
                 .build();
     }
 

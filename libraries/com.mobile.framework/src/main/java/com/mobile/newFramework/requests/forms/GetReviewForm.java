@@ -6,14 +6,14 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
 public class GetReviewForm extends BaseRequest {
 
     EventType type = EventType.GET_FORM_REVIEW_EVENT;
 
-    public GetReviewForm(Context context, BaseRequestBundle requestBundle, AigResponseCallback requester) {
+    public GetReviewForm(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
     }
 

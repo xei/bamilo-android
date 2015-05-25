@@ -1,10 +1,10 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CompleteProduct;
-import com.mobile.newFramework.objects.HomePageObject;
-import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -40,7 +40,7 @@ public interface AigApiInterface {
      * ## FORMS
      */
 
-    @GET("/forms/index")
+    @GET("/")
     void getFormsIndex(Callback<BaseResponse> callback);
 
     /*
@@ -105,7 +105,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
 
 }

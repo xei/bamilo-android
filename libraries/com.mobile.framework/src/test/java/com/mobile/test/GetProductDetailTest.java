@@ -4,21 +4,19 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.product.GetProductDetail;
 
 public class GetProductDetailTest extends BaseTestCase {
 
-    BaseRequestBundle requestBundle;
+    RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        requestBundle = new BaseRequestBundle.Builder()
+        requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/925-sterling-silver-cz-engagement-ring-243093.html")
                 .setCache(EventType.GET_PRODUCT_EVENT.cacheTime)
-                .setData(null)
-                .setPriority(true)
                 .build();
     }
 
