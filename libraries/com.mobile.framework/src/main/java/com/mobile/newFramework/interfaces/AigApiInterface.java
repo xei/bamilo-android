@@ -64,6 +64,20 @@ public interface AigApiInterface {
     void getHome(Callback<BaseResponse<HomePageObject>> callback);
 
     /*
+     * ## SHOP IN SHOP
+     */
+
+    @GET("/")
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<HomePageObject>> callback);
+
+    /*
+     * ## CAMPAIGN
+     */
+
+    @GET("/")
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+
+    /*
      * ## PRODUCT
      */
 
