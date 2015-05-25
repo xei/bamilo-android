@@ -9,7 +9,7 @@ import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 
 import java.util.HashMap;
 
-public class GetCategoriesPaginatedTest extends BaseTestCase {
+public class GetCategoryPaginatedTest extends BaseTestCase {
 
     BaseRequestBundle requestBundle;
 
@@ -17,6 +17,7 @@ public class GetCategoriesPaginatedTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         HashMap<String, String> data = new HashMap<>();
+        data.put("category", "phones-tablets");
         data.put("paginate", "1");
         requestBundle = new BaseRequestBundle.Builder()
                 .setUrl("http://www.jumia.com.ng/mobapi/v1.7/catalog/categories/")

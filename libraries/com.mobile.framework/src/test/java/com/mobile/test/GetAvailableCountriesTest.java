@@ -16,7 +16,7 @@ public class GetAvailableCountriesTest extends BaseTestCase {
         super.setUp();
         requestBundle = new BaseRequestBundle.Builder()
                 //.setUrl("https://cld.pt/dl/download/40e5154f-fbe5-4b4d-abad-bef636d089e5/jtmobapi_040215")
-                .setUrl("https://www.jumia.com/mobapi/availablecountries")
+                .setUrl("https://www.jumia.com/mobapi/availablecountries/")
                 .setCache(EventType.GET_GLOBAL_CONFIGURATIONS.cacheTime)
                 .setData(null)
                 .setPriority(true)

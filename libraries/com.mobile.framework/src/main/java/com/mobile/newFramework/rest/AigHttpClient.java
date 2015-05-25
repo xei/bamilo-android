@@ -48,14 +48,16 @@ public class AigHttpClient {
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        okHttpClient.interceptors().add(new FullRequestInterceptor());
-        okHttpClient.interceptors().add(new RequestInterceptor());
-        okHttpClient.interceptors().add(new ResponseInterceptor());
+        //okHttpClient.interceptors().add(new FullUrlRequestInterceptor());
+        //okHttpClient.networkInterceptors().add(new FullUrlRequestInterceptor());
+        //okHttpClient.interceptors().add(new RequestInterceptor());
+        //okHttpClient.interceptors().add(new ResponseInterceptor());
+
         // Return client
         return okHttpClient;
     }
 
-    private static class FullRequestInterceptor implements Interceptor {
+    private static class FullUrlRequestInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
             // Remove the "/" from request because the interface requires an end point as "/{end_point}"
@@ -65,7 +67,27 @@ public class AigHttpClient {
                 String newUrl =  url.substring(0, url.length() -1);
                 request = request.newBuilder().url(newUrl).build();
             }
-            return chain.proceed(request);
+            System.out.println("############ OK HTTP: REQUEST INTERCEPTOR ############");
+            System.out.println("Headers:      \n" + request.headers());
+            System.out.println("Url:            " + request.url());
+            System.out.println("UrI:            " + request.uri());
+            System.out.println("Https:          " + request.isHttps());
+            System.out.println("Method:         " + request.method());
+            System.out.println("Body:           " + request.body());
+            System.out.println("Cache:          " + request.cacheControl());
+            System.out.println("####################################################\n");
+
+            Response response = chain.proceed(request);
+            System.out.println("############ OK HTTP: RESPONSE INTERCEPTOR ############");
+            System.out.println("Headers:          \n" + response.headers());
+            System.out.println("Message:            " + response.message());
+            System.out.println("Redirect:           " + response.isRedirect());
+            System.out.println("Cache response:     " + response.cacheResponse());
+            System.out.println("Network response:   " + response.networkResponse());
+            System.out.println("> Request:          " + response.request().toString());
+            System.out.println("######################################################\n");
+
+            return response;
         }
     }
 

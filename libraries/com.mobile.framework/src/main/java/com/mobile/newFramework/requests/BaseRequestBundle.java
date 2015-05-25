@@ -12,6 +12,9 @@ public class BaseRequestBundle {
 
     private boolean priority;
 
+    /*
+     * GETTERS
+     */
 
     public String getUrl() {
         return url;
@@ -28,6 +31,10 @@ public class BaseRequestBundle {
     public Integer getCache() {
         return cache;
     }
+
+    /*
+     * BUILDER
+     */
 
     public static class Builder {
 
