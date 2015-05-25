@@ -1,8 +1,8 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -63,6 +63,20 @@ public interface AigApiInterface {
     void getHome(Callback<BaseResponse<HomePageObject>> callback);
 
     /*
+     * ## SHOP IN SHOP
+     */
+
+    @GET("/")
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<HomePageObject>> callback);
+
+    /*
+     * ## CAMPAIGN
+     */
+
+    @GET("/")
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+
+    /*
      * ## PRODUCT
      */
 
@@ -90,6 +104,5 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
-
 
 }

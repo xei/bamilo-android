@@ -2,6 +2,7 @@ package com.mobile.test.suites;
 
 import com.mobile.test.GetApiInformationTest;
 import com.mobile.test.GetAvailableCountriesTest;
+import com.mobile.test.GetCampaignTest;
 import com.mobile.test.GetCatalogFilteredTest;
 import com.mobile.test.GetCategoriesPaginatedTest;
 import com.mobile.test.GetCategoryPaginatedTest;
@@ -9,6 +10,7 @@ import com.mobile.test.GetCountryConfigurationsTest;
 import com.mobile.test.GetHomePageTest;
 import com.mobile.test.GetImageResolutionsTest;
 import com.mobile.test.GetProductDetailTest;
+import com.mobile.test.GetShopInShopTest;
 import com.mobile.test.GetShoppingCartTest;
 import com.mobile.test.LoginCustomerTest;
 
@@ -32,7 +34,11 @@ import org.junit.runners.Suite;
         // CATALOG
         GetCatalogFilteredTest.class,
         // PRODUCT DETAIL
-        GetProductDetailTest.class
+        GetProductDetailTest.class,
+        // CAMPAIGN
+        GetCampaignTest.class,
+        // SHOP IN SHOP
+        GetShopInShopTest.class
 })
 
 public class MobApiNigeriaTestSuite {
