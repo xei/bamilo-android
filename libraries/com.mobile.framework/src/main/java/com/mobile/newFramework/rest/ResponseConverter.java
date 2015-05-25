@@ -87,57 +87,66 @@ public class ResponseConverter implements Converter{
         baseResponse.sessions = getSessions(responseJsonObject);
     }
 
-    //TODO provisory method
-    protected String handleSuccessMessage(JSONObject messagesObject) throws JSONException {
+    //TODO temporary method
+    protected String handleSuccessMessage(JSONObject messagesObject){
+        try {
         if (messagesObject != null) {
             JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-           return successArray.getString(0);
+            return successArray != null ? successArray.getString(0) : null;
         }
-        return null;
+        } finally {
+            return null;
+        }
     }
 
-    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) throws JSONException {
+    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
         Map<String, List<String>> messages = new HashMap<>();
-        if(responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
-            JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
-            Iterator<?> keys = messagesJsonObject.keys();
+        try {
+            if (responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
+                JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
+                Iterator<?> keys = messagesJsonObject.keys();
 
-            while( keys.hasNext() ) {
-                String key = (String)keys.next();
-                List<String> stringList = new LinkedList<>();
-                if ( messagesJsonObject.get(key) instanceof JSONArray) {
-                    JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
-                    for(int i = 0; i<jsonArray.length();i++) {
-                        stringList.add(jsonArray.getString(i));
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    List<String> stringList = new LinkedList<>();
+                    if (messagesJsonObject.get(key) instanceof JSONArray) {
+                        JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            stringList.add(jsonArray.getString(i));
+                        }
+                    }
+                    messages.put(key, stringList);
+                }
+            }
+        } finally {
+            return messages;
+        }
+    }
+
+    protected Map<String, String> getSessions(JSONObject responseJsonObject) {
+        Map<String, String> sessions = new HashMap<>();
+        try {
+            if (responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
+                JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
+                Iterator<?> keys = sessionJsonObject.keys();
+
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (sessionJsonObject.get(key) instanceof String) {
+                        sessions.put(key, sessionJsonObject.getString(key));
                     }
                 }
-                messages.put(key, stringList);
             }
+        } finally {
+            return sessions;
         }
-        return messages;
-    }
-
-    protected Map<String, String> getSessions(JSONObject responseJsonObject) throws JSONException {
-        Map<String, String> sessions = new HashMap<>();
-        if(responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
-            JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
-            Iterator<?> keys = sessionJsonObject.keys();
-
-            while( keys.hasNext() ) {
-                String key = (String)keys.next();
-                if ( sessionJsonObject.get(key) instanceof String) {
-                    sessions.put(key, sessionJsonObject.getString(key));
-                }
-            }
-        }
-        return sessions;
     }
 
     protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
         RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
         if(requiredJson == RequiredJson.METADATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
-        } else if(requiredJson == RequiredJson.DATA){
+        } else if(requiredJson == RequiredJson.OBJECT_DATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
         }
         return responseJsonObject;

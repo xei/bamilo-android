@@ -5,6 +5,6 @@ package com.mobile.newFramework.objects;
  */
 public enum RequiredJson {
     COMPLETE_JSON,
-    DATA,
+    OBJECT_DATA,
     METADATA
 }
