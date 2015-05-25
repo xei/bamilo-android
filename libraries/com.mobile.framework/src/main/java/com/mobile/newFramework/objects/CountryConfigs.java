@@ -83,8 +83,32 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         initialize(jsonObject);
     }
 
+    @Override
+    public String toString() {
+        return "####################" +
+                "\ncurrency_iso: " + mCurrencyIso +
+                "\ncurrency_symbol: " + mCurrencySymbol +
+                "\ncurrency_position: " + mCurrencyPosition +
+                "\nno_decimals: " + mNoDecimals +
+                "\nthousands_sep: " + mThousandsSep +
+                "\ndecimals_sep: " + mDecimalsSep +
+                "\nlanguages_code: " + mLangCode +
+                "\nlanguages_name: " + mLangName +
+                "\ngtm_android: " + mGTMId +
+                "\nga_android_id: " + mGaId +
+                "\nphone_number: " + mPhoneNumber +
+                "\ncs_email: " + mCsEmail +
+                "\nfacebook_is_available: " + isFacebookAvailable +
+                "\nrating: " + isRatingEnable +
+                "\nrating_login: " + isRatingLoginRequired +
+                "\nreview: " + isReviewEnable +
+                "\nreview_login: " + isReviewLoginRequired
+                ;
+    }
+
     /**
      * Function used to get the shop country code.
+     *
      * @param context The application context
      */
     public static String getCountryPhoneNumber(Context context) {
@@ -96,6 +120,7 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
 
     /**
      * Get the value for Facebook.
+     *
      * @param context The application context
      * @return true or false
      */

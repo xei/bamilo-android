@@ -37,7 +37,6 @@ public class GetAvailableCountriesTest extends BaseTestCase {
     @Override
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
-        // Assert;
         System.out.println("############# COUNTRIES #############");
         AvailableCountries countries = (AvailableCountries) response.metadata.getData();
         assertNotNull(countries);

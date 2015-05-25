@@ -3,6 +3,7 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
@@ -34,6 +35,11 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
     @Override
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("############# COUNTRY CONFIGS #############");
+        CountryConfigs configurations = (CountryConfigs) response.metadata.getData();
+        assertNotNull(configurations);
+        System.out.println(configurations.toString());
+        System.out.println("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

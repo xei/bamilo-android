@@ -34,7 +34,6 @@ public class ResponseConverter implements Converter{
         try {
             String bodyJson = IOUtils.toString(body.in());
             JSONObject responseJsonObject = new JSONObject(bodyJson);
-
             return parseResponse(responseJsonObject, type);
         } catch (Exception e) {
             throw new ConversionException(e);
@@ -59,13 +58,11 @@ public class ResponseConverter implements Converter{
     protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType) throws JSONException {
         BaseResponse<?> response = new BaseResponse<>();
         response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false);
-
-        if(response.success){
+        if(response.success) {
             parseSuccessResponse(response, responseJsonObject, dataType);
         } else {
             parseUnsuccessResponse(response, responseJsonObject);
         }
-
         return response;
     }
 
