@@ -1,8 +1,10 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.Campaign;
+import com.mobile.newFramework.objects.CompleteProduct;
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
-import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -74,14 +76,14 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
 
     /*
      * ## PRODUCT
      */
 
     @GET("/")
-    void getProductDetail(Callback<BaseResponse> callback);
+    void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
     /*
      * ## SEARCH SUGGESTIONS
@@ -104,5 +106,6 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
+
 
 }

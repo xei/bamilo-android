@@ -1,6 +1,8 @@
 package com.mobile.newFramework.rest;
 
 
+import com.mobile.newFramework.objects.Campaign;
+import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
@@ -21,6 +23,10 @@ public class DeserializableFactory {
             return new Sections();
         } else if(object.equals(HomePageObject.class.getName())){
             return new HomePageObject();
+        } else if(object.equals(CompleteProduct.class.getName())){
+            return new CompleteProduct();
+        } else if(object.equals(Campaign.class.getName())){
+            return new Campaign();
         }
 
         return null;

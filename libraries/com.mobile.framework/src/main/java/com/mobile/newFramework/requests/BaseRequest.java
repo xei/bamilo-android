@@ -2,8 +2,11 @@ package com.mobile.newFramework.requests;
 
 import android.content.Context;
 
+import com.mobile.framework.ErrorCode;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.AigBaseException;
+import com.mobile.newFramework.rest.JumiaError;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,15 +39,26 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
     @Override
     public void success(BaseResponse baseResponse, Response response) {
         System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.success);
-        //
-        if(mRequester != null) this.mRequester.onRequestComplete(baseResponse);
+        if(mRequester != null && mRequestBundle != null && mRequestBundle.isPriority()){
+            if(baseResponse.success){
+                this.mRequester.onRequestComplete(baseResponse);
+            } else {
+                JumiaError jumiaError = new JumiaError();
+                jumiaError.setErrorCode(ErrorCode.REQUEST_ERROR);
+                baseResponse.error = jumiaError;
+                this.mRequester.onRequestError(baseResponse);
+            }
+        }
     }
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("BASE ERROR: " + error.getBody());
+        System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getStatusCode());
 
-        if(mRequester != null) this.mRequester.onRequestError(new BaseResponse());
+        BaseResponse errorResponse = new BaseResponse();
+        errorResponse.error = ((AigBaseException) error.getCause()).getError();
+
+        if(mRequester != null) this.mRequester.onRequestError(errorResponse);
     }
 
     /*
