@@ -3,6 +3,8 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.AvailableCountries;
+import com.mobile.newFramework.objects.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequestBundle;
 import com.mobile.newFramework.requests.configs.GetAvailableCountries;
@@ -15,11 +17,9 @@ public class GetAvailableCountriesTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         requestBundle = new BaseRequestBundle.Builder()
-                //.setUrl("https://cld.pt/dl/download/40e5154f-fbe5-4b4d-abad-bef636d089e5/jtmobapi_040215")
-                .setUrl("https://www.jumia.com/mobapi/availablecountries/")
+                .setUrl("https://cld.pt/dl/download/40e5154f-fbe5-4b4d-abad-bef636d089e5/jtmobapi_040215")
+                //.setUrl("https://www.jumia.com/mobapi/availablecountries/")
                 .setCache(EventType.GET_GLOBAL_CONFIGURATIONS.cacheTime)
-                .setData(null)
-                .setPriority(true)
                 .build();
     }
 
@@ -37,6 +37,15 @@ public class GetAvailableCountriesTest extends BaseTestCase {
     @Override
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
+        // Assert;
+        System.out.println("############# COUNTRIES #############");
+        AvailableCountries countries = (AvailableCountries) response.metadata.getData();
+        assertNotNull(countries);
+        for (CountryObject country : countries) {
+            assertNotNull(country);
+            System.out.println(country.toString());
+        }
+        System.out.println("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

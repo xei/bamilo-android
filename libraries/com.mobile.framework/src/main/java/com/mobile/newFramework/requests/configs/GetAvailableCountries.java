@@ -4,11 +4,12 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.BaseRequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetAvailableCountries extends BaseRequest {
+public class GetAvailableCountries extends BaseRequest<AvailableCountries> {
 
     public GetAvailableCountries(Context context, BaseRequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
