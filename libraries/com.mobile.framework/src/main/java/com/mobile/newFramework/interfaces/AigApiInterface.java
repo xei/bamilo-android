@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -98,7 +99,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShoppingCart(Callback<BaseResponse> callback);
+    void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
 
     /*
      * ## SESSION

@@ -14,17 +14,22 @@ public class AigErrorHandler implements ErrorHandler {
     public Throwable handleError(RetrofitError cause) {
         String errorMsg = "";
         AigBaseException serverException;
-//        System.out.println("CAUSE KIND: " + cause.getKind());
-//        System.out.println("CAUSE LOCALIZED MESSAGE: " + cause.getLocalizedMessage());
-//        System.out.println("CAUSE MESSAGE: " + cause.getMessage());
-//        System.out.println("CAUSE SUCCESS TYPE: " + cause.getSuccessType());
-//        System.out.println("CAUSE CAUSE: " + cause.getCause());
-//        System.out.println("CAUSE BODY: " + cause.getBody().toString());
-//        System.out.println("CAUSE URL: " + cause.getResponse().getUrl());
-//        System.out.println("CAUSE REASON: " + cause.getResponse().getReason());
-//        System.out.println("CAUSE BODY MIME: " + cause.getResponse().getBody().mimeType().toString());
-//        System.out.println("CAUSE STATUS: " + cause.getResponse().getStatus());
-//        System.out.println("CAUSE HEADER: " + cause.getResponse().getHeaders());
+        try {
+//            System.out.println("CAUSE KIND: " + cause.getKind());
+//            System.out.println("CAUSE LOCALIZED MESSAGE: " + cause.getLocalizedMessage());
+//            System.out.println("CAUSE MESSAGE: " + cause.getMessage());
+//            System.out.println("CAUSE SUCCESS TYPE: " + cause.getSuccessType());
+//            System.out.println("CAUSE CAUSE: " + cause.getCause());
+//            System.out.println("CAUSE BODY: " + cause.getBody().toString());
+//            System.out.println("CAUSE URL: " + cause.getResponse().getUrl());
+//            System.out.println("CAUSE REASON: " + cause.getResponse().getReason());
+//            System.out.println("CAUSE BODY MIME: " + cause.getResponse().getBody().mimeType().toString());
+//            System.out.println("CAUSE STATUS: " + cause.getResponse().getStatus());
+//            System.out.println("CAUSE HEADER: " + cause.getResponse().getHeaders());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
         errorMsg = cause.getMessage();
