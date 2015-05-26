@@ -2,10 +2,14 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
+import com.mobile.newFramework.objects.CatalogPage;
+import com.mobile.newFramework.objects.Categories;
 import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.ProductRatingPage;
+import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -50,14 +54,14 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<CatalogPage>> callback);
 
     /*
      * ## CATEGORIES
      */
 
     @GET("/")
-    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse<Categories>> callback);
 
     /*
      * ## HOME
@@ -87,6 +91,15 @@ public interface AigApiInterface {
     @GET("/")
     void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
+    @GET("/")
+    void getProductBundle(Callback<BaseResponse<BaseResponse<ProductBundle>>> callback);
+
+    @GET("/")
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
     /*
      * ## SEARCH SUGGESTIONS
      */
@@ -101,15 +114,64 @@ public interface AigApiInterface {
     @GET("/")
     void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
 
+    @FormUrlEncoded
+    @POST("/")
+    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeAllShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
     /*
-     * ## SESSION
+     * ## VOUCHER
      */
 
     @FormUrlEncoded
     @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
+    @GET("/")
+    void removeVoucher(Callback<BaseResponse<BaseResponse>> callback);
 
+    /*
+     * ## SESSION
+     */
+
+    @GET("/")
+    void logoutCustomer(Callback<BaseResponse<BaseResponse>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+    
     /*
      * ## RATINGS/REVIEWS
      */
