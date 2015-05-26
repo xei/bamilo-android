@@ -55,7 +55,9 @@ public class ResponseConverter implements Converter{
         return null;
     }
 
-    protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType) throws JSONException {
+    protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType)
+            throws JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+
         BaseResponse<?> response = new BaseResponse<>();
         response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false);
         if(response.success) {
@@ -66,7 +68,9 @@ public class ResponseConverter implements Converter{
         return response;
     }
 
-    protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
+    protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType)
+            throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+
         IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
 
         iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
