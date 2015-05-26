@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetProductOffers extends BaseRequest<BaseResponse> {
+public class GetProductOffers extends BaseRequest<ProductOffers> {
 
     public GetProductOffers(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

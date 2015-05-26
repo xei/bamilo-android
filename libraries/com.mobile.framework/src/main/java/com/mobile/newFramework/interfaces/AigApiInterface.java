@@ -10,6 +10,7 @@ import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
+import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -98,7 +99,7 @@ public interface AigApiInterface {
     void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
 
     /*
      * ## SEARCH SUGGESTIONS
@@ -180,7 +181,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     @FormUrlEncoded
     @POST("/")
