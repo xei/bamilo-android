@@ -12,9 +12,15 @@ import com.mobile.framework.objects.Errors;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
+import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 import com.mobile.utils.JSONConstants;
 
 import org.json.JSONArray;
@@ -34,7 +40,68 @@ import de.akquinet.android.androlog.Log;
  *
  */
 public abstract class BaseHelper {
+
     private static String TAG = BaseHelper.class.getSimpleName();
+
+
+    /**
+     * NEW
+     */
+
+    /**
+     *
+     * @param type
+     * @param args
+     * @param requester
+     */
+    public void sendRequest(EventType type, Bundle args, IResponseCallback requester) {
+        onPreRequest(args);
+        onRequest(type, args, requester);
+    }
+
+    public void onPreRequest(Bundle args) {
+        // ...
+    }
+
+    public void onRequest(EventType type, Bundle args, IResponseCallback requester) {
+        // Create request bundle
+        RequestBundle.Builder builder = new RequestBundle.Builder()
+                .setUrl(RemoteService.completeUri(Uri.parse(type.action)).toString())
+                .setCache(type.cacheTime);
+        // Create map
+        if(args != null) {
+            HashMap<String, String> data = new HashMap<>();
+            for (String key : args.keySet()) {
+                data.put(key, args.getString(key));
+            }
+            builder.setData(data);
+        }
+        // Build
+        RequestBundle requestBundle = builder.build();
+
+        switch (type) {
+            case GET_CATEGORIES_EVENT:
+                new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, mResponseCallback).execute();
+                break;
+        }
+    }
+
+    AigResponseCallback mResponseCallback = new AigResponseCallback() {
+        @Override
+        public void onRequestComplete(BaseResponse baseResponse) {
+            Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.message);
+        }
+
+        @Override
+        public void onRequestError(BaseResponse baseResponse) {
+            Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        }
+    };
+
+    /**
+     * OLD
+     */
+
 
     /**
      * Creates the bundle for the request

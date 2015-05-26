@@ -271,7 +271,7 @@ public class JumiaApplication extends A4SApplication {
 
 
         if(helper instanceof GetCategoriesPerLevelsHelper) {
-            ((GetCategoriesPerLevelsHelper) helper).sendRequest(args, responseCallback);
+            helper.sendRequest(GetCategoriesPerLevelsHelper.EVENT_TYPE, args, responseCallback);
             return null;
         }
 
