@@ -88,6 +88,12 @@ public interface AigApiInterface {
     @GET("/")
     void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
+    @GET("/")
+    void getProductBundle(Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
     /*
      * ## SEARCH SUGGESTIONS
      */
