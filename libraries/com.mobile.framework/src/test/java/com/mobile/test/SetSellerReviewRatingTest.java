@@ -5,34 +5,32 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.product.SetProductRatingReview;
+import com.mobile.newFramework.requests.product.SetSellerRatingReview;
 
 import java.util.HashMap;
 
-public class SetReviewRatingTest extends BaseTestCase {
+public class SetSellerReviewRatingTest extends BaseTestCase {
 
     RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        // Params
-        // facebook_login=false
-        // __autologin_requested__=true
 
         HashMap<String, String> data = new HashMap<>();
-
-        data.put("ReviewForm[ratings][1]", "4");
-        data.put("ReviewForm[ratings][2]", "4");
-        data.put("ReviewForm[ratings][3]", "4");
-        data.put("ReviewForm[name]", "test");
-        data.put("ReviewForm[sku]", "BL683ELADX3ENAFAMZ");
-        data.put("ReviewForm[title]", "test");
-        data.put("ReviewForm[comment]", "test");
-//        data.put("review[sellerId]", "28");
+// TODO this test should be temporary and for test porpouse only.
+// TODO This helper should be merged with SetReviewRatingTest where th data is passed as parameters and the url should be the action on the form
+        data.put("review[ratings][1]", "4");
+//        data.put("review[ratings][2]", "4");
+//        data.put("review[ratings][3]", "4");
+//        data.put("review[sku]", "BL683ELADX3ENAFAMZ");
+        data.put("review[name]", "test");
+        data.put("review[title]", "test");
+        data.put("review[comment]", "test");
+        data.put("review[sellerId]", "128");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/rating/addreview/")
+                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/rating/addsellerreview/")
                 .setCache(EventType.REVIEW_RATING_PRODUCT_EVENT.cacheTime)
                 .setData(data)
                 .build();
@@ -41,7 +39,7 @@ public class SetReviewRatingTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetProductRatingReview(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetSellerRatingReview(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {
