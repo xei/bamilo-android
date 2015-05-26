@@ -3,22 +3,31 @@
  */
 package com.mobile.helpers.categories;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,6 +51,38 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     public static final String CATEGORY_KEY = "category";
     
     public static final String PAGINATE_ENABLE = "1";
+
+
+
+    public void sendRequest(Bundle args, IResponseCallback callback) {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("paginate", "1");
+        RequestBundle requestBundle = new RequestBundle.Builder()
+                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
+                .setCache(EVENT_TYPE.cacheTime)
+                .setData(data)
+                .build();
+
+        Log.i(TAG, "########### URL: " + requestBundle.getUrl());
+
+        new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, new AigResponseCallback() {
+            @Override
+            public void onRequestComplete(BaseResponse baseResponse) {
+                Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.message);
+            }
+
+            @Override
+            public void onRequestError(BaseResponse baseResponse) {
+                Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+            }
+        }).execute();
+    }
+
+
+    /**
+     * OLD
+     */
+
     
     /*
      * (non-Javadoc)
