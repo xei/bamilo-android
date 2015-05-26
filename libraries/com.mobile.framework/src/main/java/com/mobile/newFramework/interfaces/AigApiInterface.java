@@ -150,9 +150,23 @@ public interface AigApiInterface {
      * ## SESSION
      */
 
+    @GET("/")
+    void logoutCustomer(Callback<BaseResponse<BaseResponse>> callback);
+
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
 
+    @FormUrlEncoded
+    @POST("/")
+    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
 
 }
