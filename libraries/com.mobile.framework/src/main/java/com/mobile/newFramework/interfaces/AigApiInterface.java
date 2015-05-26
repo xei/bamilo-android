@@ -2,6 +2,7 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
+import com.mobile.newFramework.objects.CatalogPage;
 import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
@@ -50,7 +51,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse> callback);
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<CatalogPage>> callback);
 
     /*
      * ## CATEGORIES
