@@ -41,7 +41,7 @@ public interface AigApiInterface {
      * ## FORMS
      */
 
-    @GET("/forms/index")
+    @GET("/")
     void getFormsIndex(Callback<BaseResponse> callback);
 
     /*
@@ -106,7 +106,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data , Callback<BaseResponse> callback);
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
 
 }

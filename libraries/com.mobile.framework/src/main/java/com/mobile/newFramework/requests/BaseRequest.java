@@ -1,6 +1,7 @@
 package com.mobile.newFramework.requests;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.mobile.framework.ErrorCode;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
@@ -16,7 +17,7 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     protected final Context mContext;
 
-    protected final BaseRequestBundle mRequestBundle;
+    protected final RequestBundle mRequestBundle;
 
     protected final AigResponseCallback mRequester;
 
@@ -24,7 +25,7 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
      * ############## REQUEST ##############
      */
 
-    public BaseRequest(Context context, BaseRequestBundle requestBundle, AigResponseCallback requester) {
+    public BaseRequest(@NonNull Context context, @NonNull RequestBundle requestBundle, AigResponseCallback requester) {
         this.mContext = context;
         this.mRequestBundle = requestBundle;
         this.mRequester = requester;
@@ -39,26 +40,36 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
     @Override
     public void success(BaseResponse baseResponse, Response response) {
         System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.success);
-        if(mRequester != null && mRequestBundle != null && mRequestBundle.isPriority()){
-            if(baseResponse.success){
-                this.mRequester.onRequestComplete(baseResponse);
-            } else {
-                JumiaError jumiaError = new JumiaError();
-                jumiaError.setErrorCode(ErrorCode.REQUEST_ERROR);
-                baseResponse.error = jumiaError;
-                this.mRequester.onRequestError(baseResponse);
-            }
+        // Validate requester and discard flag
+        if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
+            System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
+        }
+        // Validate success response
+        else if (baseResponse.success) {
+            this.mRequester.onRequestComplete(baseResponse);
+        }
+        // Validate error response
+        else {
+            JumiaError jumiaError = new JumiaError();
+            jumiaError.setErrorCode(ErrorCode.REQUEST_ERROR);
+            baseResponse.error = jumiaError;
+            this.mRequester.onRequestError(baseResponse);
         }
     }
 
     @Override
     public void failure(RetrofitError error) {
         System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getStatusCode());
-
-        BaseResponse errorResponse = new BaseResponse();
-        errorResponse.error = ((AigBaseException) error.getCause()).getError();
-
-        if(mRequester != null) this.mRequester.onRequestError(errorResponse);
+        // Validate requester and discard flag
+        if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
+            System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
+        }
+        // Error response
+        else {
+            BaseResponse errorResponse = new BaseResponse();
+            errorResponse.error = ((AigBaseException) error.getCause()).getError();
+            this.mRequester.onRequestError(errorResponse);
+        }
     }
 
     /*

@@ -3,22 +3,22 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.Section;
+import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequestBundle;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetApiInformation;
 
 public class GetApiInformationTest extends BaseTestCase {
 
-    BaseRequestBundle requestBundle;
+    RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        requestBundle = new BaseRequestBundle.Builder()
+        requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.ci/mobapi/v1.7/main/md5/")
                 .setCache(EventType.GET_API_INFO.cacheTime)
-                .setData(null)
-                .setPriority(true)
                 .build();
     }
 
@@ -36,6 +36,14 @@ public class GetApiInformationTest extends BaseTestCase {
     @Override
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("############# MD5 SECTIONS #############");
+        Sections sections = (Sections) response.metadata.getData();
+        assertNotNull(sections);
+        for (Section section : sections) {
+            assertNotNull(section);
+            System.out.println("SECTION: " + section.getName() + " " + section.getMd5());
+        }
+        System.out.println("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

@@ -16,4 +16,8 @@ public class Metadata<T> {
     public void setData(IJSONSerializable ijsonSerializable){
         data = (T)ijsonSerializable;
     }
+
+    public T getData(){
+        return this.data;
+    }
 }

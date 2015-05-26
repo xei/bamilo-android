@@ -19,7 +19,7 @@ public class AigRestAdapter {
      *
      * @return BaseRequest
      */
-    public static RestAdapter getRestAdapter(Context context, String url, Integer cache){
+    public static RestAdapter getRestAdapter(Context context, String url, Integer cache) {
         return new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(new OkClient(AigHttpClient.getOkHttpClient(context)))
@@ -30,6 +30,9 @@ public class AigRestAdapter {
                 .build();
     }
 
+    /**
+     * TODO
+     */
     private static class HttpHeaderRequestInterceptor implements RequestInterceptor {
 
         Integer cache = RestContract.NO_CACHE;
