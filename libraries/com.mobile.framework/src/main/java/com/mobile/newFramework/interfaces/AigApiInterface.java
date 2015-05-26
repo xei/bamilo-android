@@ -1,11 +1,12 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CompleteProduct;
-import com.mobile.newFramework.objects.HomePageObject;
-import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -97,7 +98,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShoppingCart(Callback<BaseResponse> callback);
+    void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
 
     /*
      * ## SESSION

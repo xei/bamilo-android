@@ -1,13 +1,14 @@
 package com.mobile.newFramework.rest;
 
 
+import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CompleteProduct;
-import com.mobile.newFramework.objects.HomePageObject;
-import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.CountryConfigs;
+import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.objects.ShoppingCart;
 
 /**
  * Created by rsoares on 5/21/15.
@@ -27,6 +28,8 @@ public class DeserializableFactory {
             return new CompleteProduct();
         } else if(object.equals(Campaign.class.getName())){
             return new Campaign();
+        } else if(object.equals(ShoppingCart.class.getName())){
+            return new ShoppingCart();
         }
 
         return null;
