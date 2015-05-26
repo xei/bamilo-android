@@ -71,8 +71,10 @@ public class ResponseConverter implements Converter{
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-        IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
-        if(!getType(dataType).equals(BaseResponse.class.getName())){
+        String objectType = getType(dataType);
+        IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(objectType);
+
+        if(!objectType.equals(Void.class.getName())){
             iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
             baseResponse.metadata.setData(iJsonSerializable);
         }
