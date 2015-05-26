@@ -267,6 +267,11 @@ public class JumiaApplication extends A4SApplication {
      * @return the md5 of the reponse
      */
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+
+//        com.mobile.helpers_new.BaseHelper helper1 = new BaseHelper();
+//        helper1.sendRequest(args, responseCallback);
+
+
         if (helper == null) {
             return "";
         }
