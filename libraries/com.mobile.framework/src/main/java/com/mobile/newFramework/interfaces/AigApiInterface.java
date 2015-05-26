@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
+import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -90,7 +91,7 @@ public interface AigApiInterface {
     void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
     @GET("/")
-    void getProductBundle(Callback<BaseResponse<BaseResponse>> callback);
+    void getProductBundle(Callback<BaseResponse<BaseResponse<ProductBundle>>> callback);
 
     @GET("/")
     void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
