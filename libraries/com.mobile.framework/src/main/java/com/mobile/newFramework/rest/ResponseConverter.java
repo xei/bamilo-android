@@ -68,10 +68,10 @@ public class ResponseConverter implements Converter{
 
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(getType(dataType));
-
-        iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
-
-        baseResponse.metadata.setData(iJsonSerializable);
+        if(!getType(dataType).equals(BaseResponse.class.getName())){
+            iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
+            baseResponse.metadata.setData(iJsonSerializable);
+        }
         //TODO change to use method getMessages when response from API is coming correctly
         baseResponse.message = handleSuccessMessage(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG));
         baseResponse.sessions = getSessions(responseJsonObject);
@@ -86,14 +86,18 @@ public class ResponseConverter implements Converter{
 
     //TODO temporary method
     protected String handleSuccessMessage(JSONObject messagesObject){
+        String successMessage = null;
         try {
         if (messagesObject != null) {
             JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-            return successArray != null ? successArray.getString(0) : null;
+            if(successArray != null){
+                successMessage = successArray.getString(0);
+            }
         }
-        } finally {
-            return null;
+        } catch (JSONException e){
+            return successMessage;
         }
+        return successMessage;
     }
 
     protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {

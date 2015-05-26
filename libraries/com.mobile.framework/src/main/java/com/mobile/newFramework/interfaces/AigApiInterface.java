@@ -5,6 +5,7 @@ import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.HomePageObject;
+import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -108,5 +109,15 @@ public interface AigApiInterface {
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
+
+    /*
+     * ## RATINGS/REVIEWS
+     */
+    @GET("/")
+    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
 }

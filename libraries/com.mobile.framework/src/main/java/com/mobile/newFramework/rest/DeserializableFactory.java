@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 
@@ -30,6 +31,8 @@ public class DeserializableFactory {
             return new Campaign();
         } else if(object.equals(ShoppingCart.class.getName())){
             return new ShoppingCart();
+        } else if(object.equals(ProductRatingPage.class.getName())){
+            return new ProductRatingPage();
         }
 
         return null;
