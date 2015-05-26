@@ -1,42 +1,17 @@
 package com.mobile.newFramework.rest;
 
-import com.mobile.newFramework.objects.AvailableCountries;
-import com.mobile.newFramework.objects.Campaign;
-import com.mobile.newFramework.objects.CatalogPage;
-import com.mobile.newFramework.objects.CompleteProduct;
-import com.mobile.newFramework.objects.HomePageObject;
-import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.IJSONSerializable;
-import com.mobile.newFramework.objects.Sections;
-import com.mobile.newFramework.objects.ShoppingCart;
-import com.mobile.newFramework.objects.Customer;
 
 /**
  * Created by rsoares on 5/21/15.
  */
 public class DeserializableFactory {
 
-    public IJSONSerializable createObject(String object){
-        if(object.equals(CountryConfigs.class.getName())){
-            return new CountryConfigs();
-        } else if(object.equals(AvailableCountries.class.getName())){
-            return new AvailableCountries();
-        } else if(object.equals(Sections.class.getName())){
-            return new Sections();
-        } else if(object.equals(HomePageObject.class.getName())){
-            return new HomePageObject();
-        } else if(object.equals(CompleteProduct.class.getName())){
-            return new CompleteProduct();
-        } else if(object.equals(Campaign.class.getName())){
-            return new Campaign();
-        } else if(object.equals(ShoppingCart.class.getName())){
-            return new ShoppingCart();
-        } else if(object.equals(Customer.class.getName())){
-            return new Customer();
-        } else if(object.equals(CatalogPage.class.getName())){
-            return new CatalogPage();
-        }
+    public IJSONSerializable createObject(String object) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-        return null;
+        Class<?> objectClass = Class.forName(object);
+        Object concreteObject = objectClass.newInstance();
+        return (concreteObject instanceof IJSONSerializable) ? (IJSONSerializable) concreteObject : null;
+
     }
 }
