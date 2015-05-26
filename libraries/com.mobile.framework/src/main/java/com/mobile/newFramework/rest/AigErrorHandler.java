@@ -35,7 +35,10 @@ public class AigErrorHandler implements ErrorHandler {
         errorMsg = cause.getMessage();
 
         JumiaError  jumiaError = new JumiaError();
-        int statusCode = cause.getResponse().getStatus();
+        int statusCode = -1;
+        if(cause.getResponse() != null){
+            statusCode = cause.getResponse().getStatus();
+        }
         jumiaError.setStatusCode(statusCode);
         jumiaError.setMessage(cause.getMessage());
         // priority = true
@@ -85,6 +88,12 @@ public class AigErrorHandler implements ErrorHandler {
 
         serverException = new AigBaseException(jumiaError);
 
+        //TODO temporary for better debugging
+        if(cause.getStackTrace() != null && cause.getStackTrace().length > 0){
+            for (int i = 0; i < cause.getStackTrace().length; i++) {
+                System.out.println("GSON Conversion stacktrace: "+cause.getStackTrace()[i].toString());
+            }
+        }
         return serverException;
     }
 }

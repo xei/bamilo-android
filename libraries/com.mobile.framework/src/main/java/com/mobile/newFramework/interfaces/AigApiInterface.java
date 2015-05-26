@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
+import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.objects.Sections;
@@ -171,5 +172,15 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+    
+    /*
+     * ## RATINGS/REVIEWS
+     */
+    @GET("/")
+    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
 }
