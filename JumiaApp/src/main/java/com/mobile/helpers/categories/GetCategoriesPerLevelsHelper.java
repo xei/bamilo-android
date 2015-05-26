@@ -5,14 +5,21 @@ package com.mobile.helpers.categories;
 
 import android.os.Bundle;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.objects.Categories;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +40,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class GetCategoriesPerLevelsHelper extends BaseHelper {
     
-    private static String TAG = GetCategoriesPerLevelsHelper.class.getSimpleName();
+    public static String TAG = GetCategoriesPerLevelsHelper.class.getSimpleName();
     
     public static final EventType EVENT_TYPE = EventType.GET_CATEGORIES_EVENT;
     
@@ -43,7 +50,36 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     
     public static final String PAGINATE_ENABLE = "1";
 
-    
+
+    public void execute(RequestBundle requestBundle) {
+        new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, mResponseCallback).execute();
+    }
+
+    AigResponseCallback mResponseCallback = new AigResponseCallback() {
+        @Override
+        public void onRequestComplete(BaseResponse baseResponse) {
+            Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+            Categories categories = (Categories) baseResponse.metadata.getData();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
+
+            mRequester.onRequestComplete(bundle);
+        }
+
+        @Override
+        public void onRequestError(BaseResponse baseResponse) {
+            Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        }
+    };
+
+
+
+
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)

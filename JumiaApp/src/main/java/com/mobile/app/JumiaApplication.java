@@ -40,7 +40,6 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
-import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
@@ -263,17 +262,16 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
+
+    public void sendRequest(final BaseHelper helper, EventType type, final Map args, final IResponseCallback responseCallback) {
+        helper.sendRequest(type, args, responseCallback);
+    }
+
     /**
      * Triggers the request for a new api call
      * @return the md5 of the reponse
      */
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-
-
-        if(helper instanceof GetCategoriesPerLevelsHelper) {
-            helper.sendRequest(GetCategoriesPerLevelsHelper.EVENT_TYPE, args, responseCallback);
-            return null;
-        }
 
         if (helper == null) {
             return "";

@@ -26,11 +26,13 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
+import com.mobile.helpers_new.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -309,8 +311,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         // Get category
         if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+
         // Trigger
-        triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
+        Map data = SuperBaseHelper.convertBundleToMap(bundle);
+        triggerContentEvent(new GetCategoriesPerLevelsHelper(), GetCategoriesPerLevelsHelper.EVENT_TYPE, data, this);
     }
 
     /**

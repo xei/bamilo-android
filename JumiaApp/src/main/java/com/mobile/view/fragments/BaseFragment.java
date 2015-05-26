@@ -64,6 +64,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -498,6 +499,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected final void triggerContentEventNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+
+    /**
+     * Send request and show loading
+     */
+    protected final void triggerContentEvent(final BaseHelper helper, EventType type, Map<String, String> args, final IResponseCallback responseCallback) {
+        // Show loading
+        showFragmentLoading();
+        // Request
+        JumiaApplication.INSTANCE.sendRequest(helper, type, args, responseCallback);
     }
 
     /**
