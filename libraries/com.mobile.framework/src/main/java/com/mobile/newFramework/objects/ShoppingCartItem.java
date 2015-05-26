@@ -21,8 +21,6 @@ import java.util.Map;
  */
 public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = ShoppingCartItem.class.getSimpleName();
-
 	private String imageUrl;
 	private String productUrl;
 	private String configSKU;
@@ -116,7 +114,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 			String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(priceJSON)) {
 				priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
-				price = CurrencyFormatter.formatCurrency(priceJSON);
+//				price = CurrencyFormatter.formatCurrency(priceJSON); TODO
 			} else {
 				// throw new JSONException("Price is not a number!");
 				System.out.println("WARNING: Price is not a number!");

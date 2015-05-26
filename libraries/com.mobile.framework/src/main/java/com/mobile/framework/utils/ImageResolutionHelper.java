@@ -174,10 +174,11 @@ public class ImageResolutionHelper {
      * @return String or null
      */
 	public static String replaceResolution(String url) {
-		Log.i(TAG, "######### REPLACING RESOLUTION ...");
+		//TODO uncomment logs
+//		Log.i(TAG, "######### REPLACING RESOLUTION ...");
 		// Validate Helper
 		if(CONTEXT == null){
-			Log.i(TAG, "IMAGE RESOLUTION NOT INITIALIZED");
+//			Log.i(TAG, "IMAGE RESOLUTION NOT INITIALIZED");
 			return null;
 		}
 		// Get the current resolution
@@ -190,8 +191,8 @@ public class ImageResolutionHelper {
 		Pattern pattern = Pattern.compile(REGEX_RESOLUTION);
 		Matcher matcher = pattern.matcher(url);
 		String newUrl = matcher.replaceAll("-" + resolutionTag);
-		Log.i(TAG, "CURRENT URL: " + url);
-		Log.i(TAG, "MODIFIED URL: " + newUrl);
+//		Log.i(TAG, "CURRENT URL: " + url);
+//		Log.i(TAG, "MODIFIED URL: " + newUrl);
 		return newUrl;
 	}
 	
