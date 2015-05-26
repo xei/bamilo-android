@@ -5,11 +5,11 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.product.GetProductReviews;
+import com.mobile.newFramework.requests.product.GetProductOffers;
 
 import java.util.HashMap;
 
-public class GetProductReviewsTest extends BaseTestCase {
+public class GetProductOffersTest extends BaseTestCase {
 
     RequestBundle requestBundle;
 
@@ -17,12 +17,10 @@ public class GetProductReviewsTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         HashMap<String, String> data = new HashMap<>();
-        data.put("rating", "1");
-        data.put("per_page", "18");
-        data.put("page", "1");
+        data.put("all_offers", "1");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://www.jumia.com.ng/mobapi/v1.7/galaxy-s4-i9500-black-53281.html")
-                .setCache(EventType.GET_PRODUCT_REVIEWS_EVENT.cacheTime)
+                .setUrl("http://integration-www.jumia.ug/mobapi/v1.7/gt-s7262-galaxy-star-plus-duo-dual-sim-4gb-hdd-512mb-ram-2mp-camera-black-25409.html")
+                .setCache(EventType.GET_PRODUCT_OFFERS.cacheTime)
                 .setData(data)
                 .build();
     }
@@ -30,7 +28,7 @@ public class GetProductReviewsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetProductReviews(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductOffers(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

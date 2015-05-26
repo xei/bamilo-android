@@ -16,7 +16,7 @@ public class GetProductBundleTest extends BaseTestCase {
         super.setUp();
         requestBundle = new RequestBundle.Builder()
                 .setUrl("http://www.jumia.com.ng/mobapi/v1.7/catalog/bundle/sku/SA948ELAB541NGAMZ")
-                .setCache(EventType.GET_PRODUCT_EVENT.cacheTime)
+                .setCache(EventType.GET_PRODUCT_BUNDLE.cacheTime)
                 .build();
     }
 

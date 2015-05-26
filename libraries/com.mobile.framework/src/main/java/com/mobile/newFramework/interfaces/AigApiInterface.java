@@ -93,6 +93,9 @@ public interface AigApiInterface {
     @GET("/")
     void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
+    @GET("/")
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
     /*
      * ## SEARCH SUGGESTIONS
      */
@@ -106,6 +109,30 @@ public interface AigApiInterface {
 
     @GET("/")
     void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeAllShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     /*
      * ## SESSION
