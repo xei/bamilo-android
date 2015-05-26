@@ -136,6 +136,17 @@ public interface AigApiInterface {
     void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     /*
+     * ## VOUCHER
+     */
+
+    @FormUrlEncoded
+    @POST("/")
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void removeVoucher(Callback<BaseResponse<BaseResponse>> callback);
+
+    /*
      * ## SESSION
      */
 
