@@ -1,10 +1,8 @@
 package com.mobile.helpers.teasers;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -25,19 +23,17 @@ public class GetHomeHelper extends SuperBaseHelper {
 
     public static String TAG = GetHomeHelper.class.getSimpleName();
 
-    public static final EventType EVENT_TYPE = EventType.GET_HOME_EVENT;
-
     //private EventType type = EventType.GET_HOME_EVENT;
 
     @Override
-    public void onRequest(Bundle args) {
-        // Create request bundle
-        RequestBundle requestBundle = new RequestBundle.Builder()
-                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
-                .setCache(EVENT_TYPE.cacheTime)
-                .build();
+    public void onRequest(RequestBundle requestBundle) {
         // Request
         new GetHomePage(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    }
+
+    @Override
+    public EventType getEventType() {
+        return EventType.GET_HOME_EVENT;
     }
 
     @Override
@@ -45,7 +41,7 @@ public class GetHomeHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         HomePageObject homePageObject = (HomePageObject) baseResponse.metadata.getData();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, homePageObject);
@@ -57,7 +53,7 @@ public class GetHomeHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

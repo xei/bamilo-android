@@ -40,8 +40,13 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
                 .setUrl(RemoteService.completeUri(Uri.parse(eventType.action)).toString())
                 .setCache(eventType.cacheTime);
+
         if(args != null) {
             requestBundleBuilder.setData(convertBundleToMap(args));
+        }
+
+        if(!isPrioritary()){
+            requestBundleBuilder.discardResponse();
         }
 
         return requestBundleBuilder.build();
@@ -58,4 +63,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     }
 
     public abstract EventType getEventType();
+
+    public boolean isPrioritary(){
+        return HelperPriorityConfiguration.IS_PRIORITARY;
+    }
+
+
 }

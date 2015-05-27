@@ -17,7 +17,7 @@ public class AddMultipleItemsShoppingCart extends BaseRequest<ShoppingCart> {
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), mRequestBundle.getCache()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.addMultipleItemsShoppingCart(mRequestBundle.getData(), this);
     }
 }
