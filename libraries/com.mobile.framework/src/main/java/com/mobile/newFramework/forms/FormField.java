@@ -10,13 +10,12 @@
  * 
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package com.mobile.forms;
+package com.mobile.newFramework.forms;
 
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.PickUpStationObject;
@@ -24,8 +23,8 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.InputType;
+import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +36,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represent and entry in the form.
@@ -245,7 +243,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
-            Log.i(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
+            System.out.println("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
 
             // Case RULES TODO
             JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
@@ -383,8 +381,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
                 Iterator<?> it = dataOptionsObject.keys();
                 //Clean payment method info
-                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-                JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
+                //FIXME
+//                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+//                JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
                 while (it.hasNext()) {
 
                     String curKey = (String) it.next();
@@ -396,39 +395,54 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
-                    JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
+                    //FIXME
+//                    JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
 
-                    Log.i(TAG, "code1paymentDescription : saved : "+curKey);
+                    System.out.println("code1paymentDescription : saved : " + curKey);
                     JSONObject json = dataOptionsObject.getJSONObject(curKey);
                     Form mForm = new Form();
                     mForm.initialize(json);
                     paymentFields.put(label, mForm);
-                    Log.i(TAG, "code1paymentDescription : initialized form : "+curKey);
+                    System.out.println("code1paymentDescription : initialized form : " + curKey);
                 }
             }
 
         } catch (JSONException e) {
-        	Log.e( TAG, "Error parsing the json fields" , e );
+            System.out.println("Error parsing the json fields"+ e);
             result = false;
         }
 
         return result;
     }
 
-    IResponseCallback responseCallback = new IResponseCallback() {
-        
+//    IResponseCallback responseCallback = new IResponseCallback() {
+//
+//        @Override
+//        public void onRequestError(Bundle bundle) {
+//            handleErrorEvent(bundle);
+//        }
+//
+//        @Override
+//        public void onRequestComplete(Bundle bundle) {
+//            handleSuccessEvent(bundle);
+//
+//        }
+//    };
+//FIXME using new callback
+    AigResponseCallback responseCallback = new AigResponseCallback() {
+
+
         @Override
-        public void onRequestError(Bundle bundle) {
-            handleErrorEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+//            handleSuccessEvent(bundle);
         }
-        
+
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            handleSuccessEvent(bundle);
-            
+        public void onRequestError(BaseResponse baseResponse) {
+//            handleErrorEvent(bundle);
         }
     };
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -688,9 +702,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_FORMS_DATA_SET_LIST_EVENT:
-            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT");
+            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT");
 
-            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
+            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
 
             dataSet = (LinkedHashMap<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
@@ -706,7 +720,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_FORMS_DATA_SET_LIST_EVENT:
-            Log.d(TAG, "Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
+            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
         default:
             break;
         }
@@ -757,7 +771,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     /**
      * Create parcelable 
      */
-    public static final Parcelable.Creator<FormField> CREATOR = new Parcelable.Creator<FormField>() {
+    public static final Creator<FormField> CREATOR = new Creator<FormField>() {
         public FormField createFromParcel(Parcel in) {
             return new FormField(in);
         }

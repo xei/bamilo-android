@@ -20,6 +20,6 @@ public class GetSellerReviewForm extends BaseRequest {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), type.cacheTime).create(AigApiInterface.class);
-        service.getCountryConfigurations(this);
+        service.getSellerReviewForm(this);
     }
 }

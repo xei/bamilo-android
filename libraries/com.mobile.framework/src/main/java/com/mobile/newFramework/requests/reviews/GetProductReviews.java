@@ -1,4 +1,4 @@
-package com.mobile.newFramework.requests.product;
+package com.mobile.newFramework.requests.reviews;
 
 import android.content.Context;
 

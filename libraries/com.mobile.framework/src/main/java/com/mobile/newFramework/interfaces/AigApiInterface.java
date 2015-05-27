@@ -8,11 +8,13 @@ import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.HomePageObject;
-import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.ProductOffers;
+import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.forms.SuperForm;
+import com.mobile.newFramework.forms.SuperFormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -48,8 +50,28 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getFormsIndex(Callback<BaseResponse> callback);
+    void getLoginForm(Callback<BaseResponse<SuperForm>> callback);
 
+    @GET("/")
+    void getFormsIndex(Callback<BaseResponse<SuperFormData>> callback);
+
+    @GET("/")
+    void getRatingForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getReviewForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getSellerReviewForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getRegisterForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getSignupForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getForgotPasswordForm(Callback<BaseResponse<SuperForm>> callback);
     /*
      * ## CATALOG
      */
