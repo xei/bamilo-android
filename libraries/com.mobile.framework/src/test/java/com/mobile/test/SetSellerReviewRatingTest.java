@@ -5,7 +5,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.product.SetSellerRatingReview;
+import com.mobile.newFramework.requests.reviews.SetSellerRatingReview;
 
 import java.util.HashMap;
 

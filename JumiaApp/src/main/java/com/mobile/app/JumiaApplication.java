@@ -23,7 +23,6 @@ import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.IRemoteService;
@@ -42,6 +41,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.CountryObject;
 import com.mobile.newFramework.objects.VersionInfo;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -121,7 +121,7 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
     //    private ArrayList<String> bannerSkus = new ArrayList<>();
-    private HashMap<String,TeaserGroupType> bannerSkus = new HashMap<>();
+    private HashMap<String, TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)

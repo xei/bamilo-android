@@ -1,13 +1,14 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.home.group;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

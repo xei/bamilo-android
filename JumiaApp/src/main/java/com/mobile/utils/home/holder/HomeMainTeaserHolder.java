@@ -5,8 +5,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.mobile.components.viewpager.PreviewViewPager;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 import com.viewpagerindicator.CirclePageIndicator;

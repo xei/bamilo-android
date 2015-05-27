@@ -1,20 +1,19 @@
-/**
- *
- */
 package com.mobile.helpers.teasers;
 
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.home.HomePageObject;
+import com.mobile.app.JumiaApplication;
+import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.Utils;
-import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.home.HomePageObject;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.home.GetHomePage;
 
 import de.akquinet.android.androlog.Log;
 
@@ -22,73 +21,109 @@ import de.akquinet.android.androlog.Log;
  * Helper used to get the home page
  * @author sergiopereira
  */
-public class GetHomeHelper extends BaseHelper {
+public class GetHomeHelper extends SuperBaseHelper {
 
     public static String TAG = GetHomeHelper.class.getSimpleName();
 
-    private EventType type = EventType.GET_HOME_EVENT;
+    public static final EventType EVENT_TYPE = EventType.GET_HOME_EVENT;
 
-    /**
-     * Create request
-     */
+    //private EventType type = EventType.GET_HOME_EVENT;
+
     @Override
-    public Bundle generateRequestBundle(Bundle args) {
-        Log.i(TAG, "ON REQUEST HOME");
+    public void onRequest(Bundle args) {
+        // Create request bundle
+        RequestBundle requestBundle = new RequestBundle.Builder()
+                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
+                .setCache(EVENT_TYPE.cacheTime)
+                .build();
+        // Request
+        new GetHomePage(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        HomePageObject homePageObject = (HomePageObject) baseResponse.metadata.getData();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(type.name()));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        return bundle;
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, homePageObject);
+        mRequester.onRequestComplete(bundle);
     }
 
-    /**
-     * Parse the response
-     */
     @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.i(TAG, "ON PARSE RESPONSE BUNDLE");
-        try {
-            // Get home
-            HomePageObject newHomePageObject = new HomePageObject();
-            newHomePageObject.initialize(jsonObject);
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, newHomePageObject);
-        } catch (JSONException e) {
-            Log.w(TAG, "WARNING: JE ON PARSE RESPONSE", e);
-            return parseErrorBundle(bundle);
-        }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
-        return bundle;
-    }
-
-    /**
-     * Error on parsing json
-     */
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        Log.i(TAG, "ON PARSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+    public void onRequestError(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
+        mRequester.onRequestError(bundle);
     }
 
-    /**
-     * Error on response
-     */
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
-        Log.i(TAG, "ON ERROR RESPONSE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
 
-    /**
-     * Parent error on parsing json
-     */
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-        return parseResponseErrorBundle(bundle);
-    }
+//    /**
+//     * Create request
+//     */
+//    @Override
+//    public Bundle generateRequestBundle(Bundle args) {
+//        Log.i(TAG, "ON REQUEST HOME");
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(type.name()));
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+//        return bundle;
+//    }
+//
+//    /**
+//     * Parse the response
+//     */
+//    @Override
+//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//        Log.i(TAG, "ON PARSE RESPONSE BUNDLE");
+//        try {
+//            // Get home
+//            HomePageObject newHomePageObject = new HomePageObject();
+//            newHomePageObject.initialize(jsonObject);
+//            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, newHomePageObject);
+//        } catch (JSONException e) {
+//            Log.w(TAG, "WARNING: JE ON PARSE RESPONSE", e);
+//            return parseErrorBundle(bundle);
+//        }
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+//        return bundle;
+//    }
+//
+//    /**
+//     * Error on parsing json
+//     */
+//    @Override
+//    public Bundle parseErrorBundle(Bundle bundle) {
+//        Log.i(TAG, "ON PARSE ERROR");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    /**
+//     * Error on response
+//     */
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle) {
+//        Log.i(TAG, "ON ERROR RESPONSE");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    /**
+//     * Parent error on parsing json
+//     */
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+//        return parseResponseErrorBundle(bundle);
+//    }
 }

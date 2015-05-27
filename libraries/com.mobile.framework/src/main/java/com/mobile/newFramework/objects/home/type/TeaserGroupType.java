@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.home.type;
 
 
 /**

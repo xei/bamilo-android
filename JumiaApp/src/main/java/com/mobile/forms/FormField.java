@@ -15,7 +15,6 @@ package com.mobile.forms;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.IJSONSerializable;
@@ -25,7 +24,6 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.configs.GetFormsDatasetListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.InputType;
 
@@ -323,16 +321,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         dataSet.put(label, label);
                     }
                 }
-            }
-            // Case "dataset_source"
-            else if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_SOURCE_TAG)) {
-                    dataSetSource = jsonObject.optString(RestConstants.JSON_DATA_SET_SOURCE_TAG);
-                    if (!TextUtils.isEmpty(dataSetSource)) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(GetFormsDatasetListHelper.KEY, key);
-                        bundle.putString(GetFormsDatasetListHelper.URL, dataSetSource);
-                        JumiaApplication.INSTANCE.sendRequest(new GetFormsDatasetListHelper(), bundle, responseCallback);
-                    }
             }
 
             // Case options TODO Unify options response

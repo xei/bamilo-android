@@ -1,4 +1,4 @@
-package com.mobile.newFramework.requests.product;
+package com.mobile.newFramework.requests.reviews;
 
 import android.content.Context;
 
@@ -8,15 +8,15 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class SetSellerRatingReview extends BaseRequest<Void> {
+public class SetProductRatingReview extends BaseRequest {
 
-    public SetSellerRatingReview(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
+    public SetProductRatingReview(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
     }
 
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), mRequestBundle.getCache()).create(AigApiInterface.class);
-        service.setSellerReview(mRequestBundle.getData(),this);
+        service.setRatingReview(mRequestBundle.getData(),this);
     }
 }

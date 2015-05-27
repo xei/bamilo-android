@@ -14,7 +14,6 @@ import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.objects.ShoppingCartItem;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -28,6 +27,7 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.framework.utils.Utils;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
