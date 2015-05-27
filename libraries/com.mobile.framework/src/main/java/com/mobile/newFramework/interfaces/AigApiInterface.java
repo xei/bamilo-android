@@ -97,7 +97,7 @@ public interface AigApiInterface {
     void getProductBundle(Callback<BaseResponse<BaseResponse<ProductBundle>>> callback);
 
     @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
     @GET("/")
     void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
