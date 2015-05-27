@@ -186,6 +186,6 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
 }
