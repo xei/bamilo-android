@@ -43,6 +43,7 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.BaseHelper;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -491,6 +492,35 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * #### TRIGGER EVENT ####
+     */
+
+    /*
+    ########################### TODO: NEW FAMEWORK
+     */
+    protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Show loading
+        showFragmentLoading();
+        // Request
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+    /**
+     * Send request and show progress view
+     */
+    protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        showActivityProgress();
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+    /**
+     * Send request
+     */
+    protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+    /*
+    ###########################
      */
 
     /**

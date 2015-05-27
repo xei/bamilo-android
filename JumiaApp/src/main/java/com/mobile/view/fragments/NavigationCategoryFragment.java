@@ -21,12 +21,12 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
-import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.Category;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 

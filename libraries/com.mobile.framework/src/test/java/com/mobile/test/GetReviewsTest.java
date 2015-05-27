@@ -13,8 +13,6 @@ import java.util.HashMap;
 
 public class GetReviewsTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

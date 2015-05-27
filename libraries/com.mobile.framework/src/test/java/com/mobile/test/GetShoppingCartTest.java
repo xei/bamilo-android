@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.cart.GetShoppingCart;
 
 public class GetShoppingCartTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

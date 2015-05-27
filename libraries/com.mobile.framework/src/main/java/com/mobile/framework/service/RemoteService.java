@@ -156,9 +156,9 @@ public class RemoteService extends Service {
         return completeUrl;
     }
 
-    public static Uri completeUri( Uri uri ) {
-        if ( Darwin.logDebugEnabled) {
-            Log.d( TAG, "completeUri: uri = " + uri);
+    public static Uri completeUri(Uri uri) {
+        if (Darwin.logDebugEnabled) {
+            Log.d(TAG, "completeUri: host= " + RestContract.REQUEST_HOST + " base= " + RestContract.REST_BASE_PATH + " service= " + uri);
         }
         Builder builder = uri.buildUpon();
 

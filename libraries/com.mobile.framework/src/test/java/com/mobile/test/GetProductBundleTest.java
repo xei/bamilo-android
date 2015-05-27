@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.product.GetProductBundle;
 
 public class GetProductBundleTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

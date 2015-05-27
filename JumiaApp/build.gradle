@@ -195,8 +195,8 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.3.1"
-            versionCode getAppVersionCode(6)
+            versionName "1.3.2"
+            versionCode getAppVersionCode(7)
             signingConfig signingConfigs.darazSigning
             resConfigs "en"
         }

@@ -20,11 +20,9 @@ import com.mobile.forms.PaymentMethodForm;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
-import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.objects.VersionInfo;
 import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestClientSingleton;
@@ -40,7 +38,10 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.CountryObject;
+import com.mobile.newFramework.objects.VersionInfo;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -262,11 +263,23 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
+    /*
+    ########################### TODO: NEW FAMEWORK
+     */
+
+    public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+        helper.sendRequest(args, responseCallback);
+    }
+    /*
+    #################################
+     */
+
     /**
      * Triggers the request for a new api call
      * @return the md5 of the reponse
      */
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+
         if (helper == null) {
             return "";
         }

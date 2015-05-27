@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.Category;
+import com.mobile.newFramework.objects.Category;
 
 import java.util.ArrayList;
 

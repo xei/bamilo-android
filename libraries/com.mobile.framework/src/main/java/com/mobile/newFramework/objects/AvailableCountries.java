@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by rsoares on 5/21/15.
  */
-public class AvailableCountries extends ArrayList<com.mobile.newFramework.objects.CountryObject> implements com.mobile.newFramework.objects.IJSONSerializable {
+public class AvailableCountries extends ArrayList<CountryObject> implements com.mobile.newFramework.objects.IJSONSerializable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {

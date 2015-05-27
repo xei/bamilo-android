@@ -33,7 +33,8 @@ import de.akquinet.android.androlog.Log;
  * @author Guilherme Silva
  *
  */
-public abstract class BaseHelper {
+public abstract class BaseHelper  {
+
     private static String TAG = BaseHelper.class.getSimpleName();
 
     /**

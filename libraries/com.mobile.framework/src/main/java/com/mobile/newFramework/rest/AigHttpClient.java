@@ -2,7 +2,6 @@ package com.mobile.newFramework.rest;
 
 import android.content.Context;
 
-import com.mobile.framework.rest.PersistentCookieStore;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -11,9 +10,6 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.CookieStore;
 import java.util.concurrent.TimeUnit;
 
 public class AigHttpClient {
@@ -31,10 +27,10 @@ public class AigHttpClient {
         okHttpClient.setAuthenticator(new AigAuthenticator());
 
         if (context != null) {
-            // COOKIES
-            PersistentCookieStore cookieStore = new PersistentCookieStore(context);
-            CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-            okHttpClient.setCookieHandler(cookieManager);
+            // TODO: COOKIES
+            //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+            //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+            //okHttpClient.setCookieHandler(cookieManager);
             // CACHE
             File cacheDir = context.getCacheDir();
             Cache cache = new Cache(cacheDir, AigConfigurations.CACHE_MAX_SIZE);

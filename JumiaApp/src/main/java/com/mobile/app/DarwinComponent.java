@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.utils.Constants;
@@ -56,7 +55,7 @@ public class DarwinComponent extends ApplicationComponent {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         boolean countriesConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
-        boolean countryConfigsAvailable = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        boolean countryConfigsAvailable = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         boolean isChangeShop = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CHANGED, false);
         
         Log.i(TAG, "DarwinComponent shopId :  "+shopId+ " countriesConfigs : "+countriesConfigs + " " + isChangeShop);
@@ -108,7 +107,7 @@ public class DarwinComponent extends ApplicationComponent {
         // Get data from shared preferences
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-        boolean hasCountryConfigs = sharedPrefs.getBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        boolean hasCountryConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         Log.i(TAG, "SINGLE SHOP ID: " + shopId + " HAS COUNTRY CONFIGS: " + hasCountryConfigs);
         
         // Case first time

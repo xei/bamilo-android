@@ -32,8 +32,6 @@ public class ConstantsSharedPrefs {
 
     public static String KEY_COUNTRY = "country";
 
-    public static String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
-
     public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";
 
     public static String KEY_REMEMBERED_EMAIL = "remembered_email";
