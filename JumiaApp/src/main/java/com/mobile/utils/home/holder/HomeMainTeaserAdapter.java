@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
