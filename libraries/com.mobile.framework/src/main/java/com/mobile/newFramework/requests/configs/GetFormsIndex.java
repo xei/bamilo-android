@@ -5,11 +5,12 @@ import android.content.Context;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.forms.SuperFormData;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetFormsIndex extends BaseRequest {
+public class GetFormsIndex extends BaseRequest<SuperFormData> {
     
     EventType type = EventType.INIT_FORMS;
 
@@ -20,7 +21,7 @@ public class GetFormsIndex extends BaseRequest {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), type.cacheTime).create(AigApiInterface.class);
-        service.getCountryConfigurations(this);
+        service.getFormsIndex(this);
     }
 
 }

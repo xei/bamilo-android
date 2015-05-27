@@ -7,7 +7,7 @@ import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductReviewComment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.product.GetReviews;
+import com.mobile.newFramework.requests.reviews.GetReviews;
 
 import java.util.HashMap;
 
