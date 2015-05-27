@@ -7,13 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.Category;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+import com.mobile.newFramework.objects.Category;
 
 import org.json.JSONArray;
 import org.json.JSONException;

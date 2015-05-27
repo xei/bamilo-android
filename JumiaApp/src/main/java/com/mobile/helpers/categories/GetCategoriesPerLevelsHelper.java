@@ -1,31 +1,21 @@
-/**
- * 
- */
 package com.mobile.helpers.categories;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.Category;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.Utils;
-import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.Categories;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -38,7 +28,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class GetCategoriesPerLevelsHelper extends BaseHelper {
+public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
     
     public static String TAG = GetCategoriesPerLevelsHelper.class.getSimpleName();
     
@@ -50,111 +40,116 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     
     public static final String PAGINATE_ENABLE = "1";
 
-
-    public void execute(RequestBundle requestBundle) {
-        new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, mResponseCallback).execute();
+    @Override
+    public void onRequest(Bundle args) {
+        // Convert
+        Map data = SuperBaseHelper.convertBundleToMap(args);
+        // Create request bundle
+        RequestBundle requestBundle = new RequestBundle.Builder()
+                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
+                .setCache(EVENT_TYPE.cacheTime)
+                .setData(data)
+                .build();
+        // Request
+        new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
-    AigResponseCallback mResponseCallback = new AigResponseCallback() {
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
-            Categories categories = (Categories) baseResponse.metadata.getData();
-
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-            bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-
-            mRequester.onRequestComplete(bundle);
-        }
-
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        }
-    };
-
-
-
-
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
-     */
     @Override
-    public Bundle generateRequestBundle(Bundle args) {
-        Log.i(TAG, "ON REQUEST");
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Categories categories = (Categories) baseResponse.metadata.getData();
         Bundle bundle = new Bundle();
-        String url = (args != null) ? buildUriWithParameters(EVENT_TYPE.action, args) : EVENT_TYPE.action; 
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        return bundle;
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
+        mRequester.onRequestComplete(bundle);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
-     */
     @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.i(TAG, "ON PARSE RESPONSE");
-        try {
-            // Get data
-        	JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-            int categoriesArrayLenght = categoriesArray.length();
-            ArrayList<Category> categories = new ArrayList<>();
-            // For each child
-            for (int i = 0; i < categoriesArrayLenght; ++i) {
-                // Get category
-                JSONObject categoryObject = categoriesArray.getJSONObject(i);
-                Category category = new Category();
-                category.initialize(categoryObject);
-                categories.add(category);
-            }
-            // Add categories
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return parseErrorBundle(bundle);
-        }
-
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        return bundle;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
+    public void onRequestError(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
+        mRequester.onRequestError(bundle);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
-  
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-        return parseResponseErrorBundle(bundle);
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle generateRequestBundle(Bundle args) {
+//        Log.i(TAG, "ON REQUEST");
+//        Bundle bundle = new Bundle();
+//        String url = (args != null) ? buildUriWithParameters(EVENT_TYPE.action, args) : EVENT_TYPE.action;
+//        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+//     */
+//    @Override
+//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//        Log.i(TAG, "ON PARSE RESPONSE");
+//        try {
+//            // Get data
+//        	JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+//            int categoriesArrayLenght = categoriesArray.length();
+//            ArrayList<Category> categories = new ArrayList<>();
+//            // For each child
+//            for (int i = 0; i < categoriesArrayLenght; ++i) {
+//                // Get category
+//                JSONObject categoryObject = categoriesArray.getJSONObject(i);
+//                Category category = new Category();
+//                category.initialize(categoryObject);
+//                categories.add(category);
+//            }
+//            // Add categories
+//            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return parseErrorBundle(bundle);
+//        }
+//
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
+//
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle) {
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+//        return parseResponseErrorBundle(bundle);
+//    }
     
 }

@@ -15,7 +15,6 @@ import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers_new.SuperBaseHelper;
 import com.mobile.utils.JSONConstants;
 
 import org.json.JSONArray;
@@ -34,14 +33,9 @@ import de.akquinet.android.androlog.Log;
  * @author Guilherme Silva
  *
  */
-public abstract class BaseHelper extends SuperBaseHelper {
+public abstract class BaseHelper  {
 
     private static String TAG = BaseHelper.class.getSimpleName();
-
-    /**
-     * OLD
-     */
-
 
     /**
      * Creates the bundle for the request

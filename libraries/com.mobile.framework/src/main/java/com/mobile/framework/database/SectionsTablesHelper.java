@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.Section;
+import com.mobile.newFramework.objects.Section;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +76,6 @@ public class SectionsTablesHelper extends BaseTable {
     /**
      * Save sections to database
      * this replaces existent entry on unique conflict (the row will get a new id)
-     * 
-     * @param shopBys
      */
     public static void saveSections(List<Section> sections) {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
@@ -105,7 +103,6 @@ public class SectionsTablesHelper extends BaseTable {
      * this replaces existent entry on unique conflict (the row will get a new id)
      * 
      * @param db writable database instance
-     * @param shopBy
      */
 	public static void saveSection(SQLiteDatabase db, Section section) {
     	ContentValues contentValues = new ContentValues();

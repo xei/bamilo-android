@@ -40,6 +40,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
@@ -262,10 +263,16 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
+    /*
+    ########################### TODO: NEW FAMEWORK
+     */
 
-    public void sendRequest(final BaseHelper helper, EventType type, final Map args, final IResponseCallback responseCallback) {
-        helper.sendRequest(type, args, responseCallback);
+    public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+        helper.sendRequest(args, responseCallback);
     }
+    /*
+    #################################
+     */
 
     /**
      * Triggers the request for a new api call

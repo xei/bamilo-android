@@ -4,27 +4,29 @@
  */
 package com.mobile.helpers.configs;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.database.SectionsTablesHelper;
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.interfaces.IMetaData;
-import com.mobile.framework.objects.Section;
 import com.mobile.framework.objects.VersionInfo;
 import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.Utils;
-import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.Section;
+import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.configs.GetApiInformation;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,65 +41,124 @@ import de.akquinet.android.androlog.Log;
  * @modified sergiopereira
  * 
  */
-public class GetApiInfoHelper extends BaseHelper {
+public class GetApiInfoHelper extends SuperBaseHelper {
     
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.GET_API_INFO;
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
-     */
     @Override
-    public Bundle generateRequestBundle(Bundle args) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_API_INFO.action);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-        return bundle;
+    public void onRequest(Bundle args) {
+        // Create request bundle
+        RequestBundle requestBundle = new RequestBundle.Builder()
+                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
+                .setCache(EVENT_TYPE.cacheTime)
+                .build();
+        // Request
+        new GetApiInformation(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
-     */
+
     @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d(TAG, "ON PARSE RESPONSE");
-        // Validate sections
-        JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
-        ArrayList<Section> outDatedSections = null;
-        if (sessionJSONArray != null) {
-            // Get old sections
-            List<Section> oldSections = SectionsTablesHelper.getSections();
-            // Get new sections
-            List<Section> sections = parseSections(sessionJSONArray);
-            // Get out dated sections
-            outDatedSections = checkSections(oldSections, sections);
-            // Save all new sections
-            SectionsTablesHelper.saveSections(sections);
-        }
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Sections sections = (Sections) baseResponse.metadata.getData();
+        // Get old sections
+        List<Section> oldSections = SectionsTablesHelper.getSections();
+        // Get out dated sections
+        ArrayList<Section> outDatedSections = checkSections(oldSections, sections);
+        // Save all new sections
+        SectionsTablesHelper.saveSections(sections);
+
+
+        Bundle bundle = new Bundle();
+
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
-        // VERSION
+
+        // TODO: VERSION
+//        // VERSION
         VersionInfo info = new VersionInfo();
-        try {
-            info.initialize(jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            info.initialize(jsonObject);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+
+
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
-        
-        return bundle;
+        mRequester.onRequestComplete(bundle);
     }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        mRequester.onRequestError(bundle);
+    }
+
+
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle generateRequestBundle(Bundle args) {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_API_INFO.action);
+//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+//        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+//        return bundle;
+//    }
+    
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+//     */
+//    @Override
+//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//        Log.d(TAG, "ON PARSE RESPONSE");
+//        // Validate sections
+//        JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+//        ArrayList<Section> outDatedSections = null;
+//        if (sessionJSONArray != null) {
+//            // Get old sections
+//            List<Section> oldSections = SectionsTablesHelper.getSections();
+//            // Get new sections
+//            List<Section> sections = parseSections(sessionJSONArray);
+//            // Get out dated sections
+//            outDatedSections = checkSections(oldSections, sections);
+//            // Save all new sections
+//            SectionsTablesHelper.saveSections(sections);
+//        }
+//        // Validate out dated sections
+//        if (CollectionUtils.isNotEmpty(outDatedSections)) {
+//            clearOutDatedMainSections(outDatedSections, bundle);
+//        }
+//        // VERSION
+//        VersionInfo info = new VersionInfo();
+//        try {
+//            info.initialize(jsonObject);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
+//
+//        return bundle;
+//    }
 
     /**
      * Clears the database of outdated sections
@@ -225,32 +286,32 @@ public class GetApiInfoHelper extends BaseHelper {
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "ON PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "ON RESPONSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
-    
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-        return parseResponseErrorBundle(bundle);
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "ON PARSE ERROR BUNDLE");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "ON RESPONSE ERROR BUNDLE");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+//        return parseResponseErrorBundle(bundle);
+//    }
 }

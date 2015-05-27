@@ -1,8 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -12,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Category;
+import com.mobile.newFramework.objects.Category;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is
