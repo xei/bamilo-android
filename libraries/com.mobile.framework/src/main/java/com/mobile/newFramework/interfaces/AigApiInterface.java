@@ -1,5 +1,7 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.forms.SuperForm;
+import com.mobile.newFramework.forms.SuperFormData;
 import com.mobile.newFramework.objects.ApiInformation;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
@@ -13,8 +15,6 @@ import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.objects.Voucher;
-import com.mobile.newFramework.forms.SuperForm;
-import com.mobile.newFramework.forms.SuperFormData;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 
