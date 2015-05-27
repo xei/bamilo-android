@@ -12,7 +12,6 @@ import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.ProductOffers;
-import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -157,7 +156,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void logoutCustomer(Callback<BaseResponse<BaseResponse>> callback);
+    void logoutCustomer(Callback<BaseResponse<Void>> callback);
 
     @FormUrlEncoded
     @POST("/")

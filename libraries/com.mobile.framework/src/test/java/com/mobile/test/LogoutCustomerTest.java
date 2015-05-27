@@ -17,7 +17,7 @@ public class LogoutCustomerTest extends BaseTestCase {
         requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/logout/")
                 .setCache(EventType.LOGOUT_EVENT.cacheTime)
-                .discardResponse()
+//                .discardResponse()
                 .build();
     }
 
