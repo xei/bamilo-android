@@ -15,9 +15,7 @@ import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
-
 import java.util.Map;
-
 import retrofit.Callback;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;

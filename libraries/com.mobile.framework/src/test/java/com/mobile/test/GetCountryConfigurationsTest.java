@@ -10,8 +10,6 @@ import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
 
 public class GetCountryConfigurationsTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

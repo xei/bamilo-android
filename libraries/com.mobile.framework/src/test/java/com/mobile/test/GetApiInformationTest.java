@@ -12,8 +12,6 @@ import com.mobile.newFramework.requests.configs.GetApiInformation;
 
 public class GetApiInformationTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

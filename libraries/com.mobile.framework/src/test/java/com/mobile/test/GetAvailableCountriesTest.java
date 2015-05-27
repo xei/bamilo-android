@@ -11,8 +11,6 @@ import com.mobile.newFramework.requests.configs.GetAvailableCountries;
 
 public class GetAvailableCountriesTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

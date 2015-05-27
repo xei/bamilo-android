@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.session.LogoutCustomer;
 
 public class LogoutCustomerTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

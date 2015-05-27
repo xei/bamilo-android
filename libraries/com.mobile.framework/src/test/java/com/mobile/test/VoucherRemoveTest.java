@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.voucher.RemoveVoucher;
 
 public class VoucherRemoveTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

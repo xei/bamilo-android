@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.home.GetHomePage;
 
 public class GetHomePageTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

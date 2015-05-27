@@ -9,8 +9,6 @@ import com.mobile.newFramework.requests.configs.GetImageResolutions;
 
 public class GetImageResolutionsTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();
