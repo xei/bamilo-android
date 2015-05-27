@@ -22,7 +22,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -30,6 +29,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.CountryObject;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -326,11 +326,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-            //editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-            editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+            editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
             editor.apply();
 
             // Clean memory

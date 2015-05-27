@@ -193,13 +193,16 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-//        if(url != null ){
-//            url = url.replace("http://www", "www");
-//            url = url.replace("http://alice-staging", "alice-staging");
-//            url = url.replace("https://www", "www");
-//            url = url.replace("https://alice-staging", "alice-staging");
-//            url = url.replace("/mobapi/", "");
-//        }
+        if(url != null ){
+            // TODO: Validate this
+            //url = url.replace("http://www", "www");
+            //url = url.replace("http://alice-staging", "alice-staging");
+            //url = url.replace("https://www", "www");
+            //url = url.replace("https://alice-staging", "alice-staging");
+
+            // This is necessary otherwise Uri.Builder will encode the authority
+            url = url.replace("/mobapi/", "");
+        }
         flag = jsonObject.optString(RestConstants.JSON_FLAG_TAG);
         iso = jsonObject.optString(RestConstants.JSON_COUNTRY_ISO);
         forceHttps = jsonObject.optBoolean(RestConstants.JSON_FORCE_HTTPS, false);

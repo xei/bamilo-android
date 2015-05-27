@@ -40,7 +40,7 @@ import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.Section;
-import com.mobile.preferences.CountryConfigs;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
@@ -511,7 +511,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
             Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else if(!CountryConfigs.checkCountryRequirements(getApplicationContext())){
+        } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
             Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else {

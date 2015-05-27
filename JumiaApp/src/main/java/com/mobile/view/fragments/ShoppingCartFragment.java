@@ -45,7 +45,7 @@ import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.preferences.CountryConfigs;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -402,7 +402,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         });
 
         // Get phone number from country configs
-        mPhone2Call = CountryConfigs.getCountryPhoneNumber(getBaseActivity());
+        mPhone2Call = CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity());
         // Show Call To Order if available on the device
         PackageManager pm = getActivity().getPackageManager();
         if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && !TextUtils.isEmpty(mPhone2Call)) {

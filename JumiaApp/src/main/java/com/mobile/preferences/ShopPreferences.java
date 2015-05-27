@@ -10,8 +10,8 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.objects.CountryObject;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class ShopPreferences {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
-        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.apply();
 
         // Clean other
@@ -131,7 +131,7 @@ public class ShopPreferences {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, countryObject.getCountryFlag());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
-        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.apply();

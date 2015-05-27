@@ -11,7 +11,6 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
@@ -626,17 +625,17 @@ public class DeepLinkManager {
      */
     @Deprecated
     private static boolean isSupportedCountryCode(String countryCode) {
-        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
-            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        }
-        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-            // Get the shop id for the country code 
-            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) {
-                if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) {
-                    return true;
-                }
-            }
-        }
+//        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
+//            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+//        }
+//        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+//            // Get the shop id for the country code
+//            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) {
+//                if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) {
+//                    return true;
+//                }
+//            }
+//        }
 
         return false;
     }
