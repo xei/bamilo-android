@@ -11,7 +11,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.database.SectionsTablesHelper;
-import com.mobile.framework.objects.VersionInfo;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
@@ -19,6 +18,7 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.ApiInformation;
 import com.mobile.newFramework.objects.Section;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -61,14 +61,18 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
-        Sections sections = (Sections) baseResponse.metadata.getData();
+        // Get api info
+        ApiInformation apiInformation = (ApiInformation) baseResponse.metadata.getData();
+        // Save mob api version
+        JumiaApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
+        // Get md5 sections
+        Sections sections = apiInformation.getSections();
         // Get old sections
         List<Section> oldSections = SectionsTablesHelper.getSections();
         // Get out dated sections
         ArrayList<Section> outDatedSections = checkSections(oldSections, sections);
         // Save all new sections
         SectionsTablesHelper.saveSections(sections);
-
 
         Bundle bundle = new Bundle();
 
@@ -77,21 +81,10 @@ public class GetApiInfoHelper extends SuperBaseHelper {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
 
-        // TODO: VERSION
-//        // VERSION
-        VersionInfo info = new VersionInfo();
-//        try {
-//            info.initialize(jsonObject);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-        JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
-
-
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
         mRequester.onRequestComplete(bundle);
     }
 

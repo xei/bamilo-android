@@ -15,9 +15,9 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.framework.objects.Version;
-import com.mobile.framework.objects.VersionInfo;
 import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.objects.Version;
+import com.mobile.newFramework.objects.VersionInfo;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
@@ -208,10 +208,10 @@ public class CheckVersion {
         Log.d(TAG, "checkResult = " + checkResult);
         return true;
     }
-    
-    private static Version getVersion( Context context ) {
+
+    private static Version getVersion(Context context) {
         VersionInfo vInfo = JumiaApplication.INSTANCE.getMobApiVersionInfo();
-        if ( vInfo == null) {
+        if (vInfo == null) {
             return null;
         }
         return vInfo.getEntryByKey(context.getPackageName());
