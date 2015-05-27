@@ -8,7 +8,7 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class SetSellerRatingReview extends BaseRequest {
+public class SetSellerRatingReview extends BaseRequest<Void> {
 
     public SetSellerRatingReview(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

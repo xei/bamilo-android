@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
 
 import junit.framework.TestCase;
 
@@ -14,6 +15,8 @@ public class BaseTestCase extends TestCase implements AigResponseCallback {
     protected CountDownLatch mCountDownLatch;
 
     protected final static Context IS_AUTOMATED_TEST = null;
+
+    RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {

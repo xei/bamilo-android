@@ -11,8 +11,6 @@ import java.util.HashMap;
 
 public class ShoppingCartAddItemTest extends BaseTestCase {
 
-    RequestBundle requestBundle;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();

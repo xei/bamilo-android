@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.ApiInformation;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CatalogPage;
@@ -11,13 +12,10 @@ import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.ProductOffers;
-import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
-
 import java.util.Map;
-
 import retrofit.Callback;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
@@ -39,7 +37,7 @@ public interface AigApiInterface {
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
     @GET("/")
-    void getApiInformation(Callback<BaseResponse<Sections>> callback);
+    void getApiInformation(Callback<BaseResponse<ApiInformation>> callback);
 
     @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
@@ -156,7 +154,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void logoutCustomer(Callback<BaseResponse<BaseResponse>> callback);
+    void logoutCustomer(Callback<BaseResponse<Void>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -186,6 +184,6 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
 }
