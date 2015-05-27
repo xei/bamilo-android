@@ -32,8 +32,6 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
     
     public static String TAG = GetCategoriesPerLevelsHelper.class.getSimpleName();
     
-    public static final EventType EVENT_TYPE = EventType.GET_CATEGORIES_EVENT;
-    
     public static final String PAGINATE_KEY = "paginate";
     
     public static final String CATEGORY_KEY = "category";
@@ -41,17 +39,14 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
     public static final String PAGINATE_ENABLE = "1";
 
     @Override
-    public void onRequest(Bundle args) {
-        // Convert
-        Map data = SuperBaseHelper.convertBundleToMap(args);
-        // Create request bundle
-        RequestBundle requestBundle = new RequestBundle.Builder()
-                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
-                .setCache(EVENT_TYPE.cacheTime)
-                .setData(data)
-                .build();
+    public void onRequest(RequestBundle requestBundle) {
         // Request
         new GetCategoriesPaginated(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    }
+
+    @Override
+    public EventType getEventType() {
+        return EventType.GET_CATEGORIES_EVENT;
     }
 
     @Override
@@ -59,7 +54,7 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         Categories categories = (Categories) baseResponse.metadata.getData();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
@@ -71,7 +66,7 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

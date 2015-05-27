@@ -44,18 +44,16 @@ import de.akquinet.android.androlog.Log;
 public class GetApiInfoHelper extends SuperBaseHelper {
     
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
-    
-    private static final EventType EVENT_TYPE = EventType.GET_API_INFO;
 
     @Override
-    public void onRequest(Bundle args) {
-        // Create request bundle
-        RequestBundle requestBundle = new RequestBundle.Builder()
-                .setUrl(RemoteService.completeUri(Uri.parse(EVENT_TYPE.action)).toString())
-                .setCache(EVENT_TYPE.cacheTime)
-                .build();
+    public void onRequest(RequestBundle requestBundle) {;
         // Request
         new GetApiInformation(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    }
+
+    @Override
+    public EventType getEventType() {
+        return EventType.GET_API_INFO;
     }
 
     @Override
@@ -81,7 +79,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
 
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
@@ -93,7 +91,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

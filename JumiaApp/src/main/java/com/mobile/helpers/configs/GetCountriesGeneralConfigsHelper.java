@@ -40,17 +40,9 @@ import de.akquinet.android.androlog.Log;
 public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
-    
-    private static final EventType EVENT_TYPE = EventType.GET_GLOBAL_CONFIGURATIONS;
 
     @Override
-    public void onRequest(Bundle args) {
-        // Create request bundle
-        Context context = JumiaApplication.INSTANCE.getApplicationContext();
-        RequestBundle requestBundle = new RequestBundle.Builder()
-                .setUrl(context.getString(R.string.countries_url))
-                .setCache(EVENT_TYPE.cacheTime)
-                .build();
+    public void onRequest(RequestBundle requestBundle) {
         // Request
         new GetAvailableCountries(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
@@ -82,7 +74,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         mEditor.apply();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
@@ -107,11 +99,15 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         }
 
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 
+    @Override
+    public EventType getEventType() {
+        return EventType.GET_GLOBAL_CONFIGURATIONS;
+    }
 
 
 //    /*
