@@ -71,6 +71,16 @@ public interface AigApiInterface {
 
     @GET("/")
     void getForgotPasswordForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getCreateAddressForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getEditAddressForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getNewsletterForm(Callback<BaseResponse<SuperForm>> callback);
+
     /*
      * ## CATALOG
      */
@@ -193,6 +203,14 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
     
     /*
      * ## RATINGS/REVIEWS
