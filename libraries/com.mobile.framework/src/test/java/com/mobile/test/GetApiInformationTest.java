@@ -3,6 +3,7 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.ApiInformation;
 import com.mobile.newFramework.objects.Section;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -37,7 +38,7 @@ public class GetApiInformationTest extends BaseTestCase {
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
         System.out.println("############# MD5 SECTIONS #############");
-        Sections sections = (Sections) response.metadata.getData();
+        Sections sections = ((ApiInformation) response.metadata.getData()).getSections();
         assertNotNull(sections);
         for (Section section : sections) {
             assertNotNull(section);

@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.newFramework.objects.ApiInformation;
 import com.mobile.newFramework.objects.AvailableCountries;
 import com.mobile.newFramework.objects.Campaign;
 import com.mobile.newFramework.objects.CatalogPage;
@@ -39,7 +40,7 @@ public interface AigApiInterface {
     void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
 
     @GET("/")
-    void getApiInformation(Callback<BaseResponse<Sections>> callback);
+    void getApiInformation(Callback<BaseResponse<ApiInformation>> callback);
 
     @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
