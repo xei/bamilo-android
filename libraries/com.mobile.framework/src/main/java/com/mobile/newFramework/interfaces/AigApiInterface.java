@@ -13,6 +13,7 @@ import com.mobile.newFramework.objects.ProductBundle;
 import com.mobile.newFramework.objects.ProductOffers;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -145,7 +146,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<Voucher>> callback);
 
     @GET("/")
     void removeVoucher(Callback<BaseResponse<BaseResponse>> callback);
