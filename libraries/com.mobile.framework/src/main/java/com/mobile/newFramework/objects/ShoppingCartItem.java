@@ -135,7 +135,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(specialPriceJSON)) {
 				specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
-				specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+//				specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON); TODO
 			} else {
 				specialPriceVal = priceVal;
 				specialPrice = price;
