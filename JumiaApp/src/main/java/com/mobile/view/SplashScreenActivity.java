@@ -9,7 +9,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +28,6 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
-import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
@@ -79,7 +77,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private boolean shouldHandleEvent = true;
 
-    private View mJumiaMapImage;
+    private View mMainMapImage;
 
     private View mMainFallBackStub;
 
@@ -107,7 +105,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
-        mJumiaMapImage = findViewById(R.id.jumiaMap);
+        mMainMapImage = findViewById(R.id.jumiaMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -149,8 +147,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
-        mJumiaMapImage.clearAnimation();
-        mJumiaMapImage.startAnimation(animationFadeIn);
+        mMainMapImage.clearAnimation();
+        mMainMapImage.startAnimation(animationFadeIn);
     }
 
     /*
@@ -199,7 +197,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "ON DESTROY");
         // Intercept event
         shouldHandleEvent = false;
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
     }
 
 
@@ -233,7 +230,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         Log.i(TAG, "START ANIMATION ACTIVITY");
-        mJumiaMapImage.clearAnimation();
+        mMainMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(SPLASH_DURATION_OUT);
         animationFadeOut.setAnimationListener(new AnimationListener() {
@@ -251,14 +248,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.i(TAG, "ON ANIMATION END");
-                mJumiaMapImage.setVisibility(View.GONE);
+                mMainMapImage.setVisibility(View.GONE);
                 // Validate deep link bundle
                 startMainActivity();
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
             }
         });
-        mJumiaMapImage.startAnimation(animationFadeOut);
+        mMainMapImage.startAnimation(animationFadeOut);
     }
 
     /**
@@ -393,14 +390,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessInitialize() {
         Log.i(TAG, "ON PROCESS: INITIALIZE");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, this);
     }
 
     /**
      * Process the global configs event
-     *
-     * @param bundle
      * @author sergiopereira
      */
     private void onProcessGlobalConfigsEvent(Bundle bundle) {
@@ -438,7 +432,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountryConfigsError() {
         Log.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
@@ -449,7 +442,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountriesConfigsError() {
         Log.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper(), null, this);
     }
 
@@ -469,7 +461,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError() {
-        mJumiaMapImage.clearAnimation();
+        mMainMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);
         animationFadeOut.setAnimationListener(new AnimationListener() {
@@ -484,7 +476,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mJumiaMapImage.setVisibility(View.GONE);
+                mMainMapImage.setVisibility(View.GONE);
                 Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
@@ -496,14 +488,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 finish();
             }
         });
-        mJumiaMapImage.startAnimation(animationFadeOut);
+        mMainMapImage.startAnimation(animationFadeOut);
 
     }
 
     /**
      * Process the api md5 event
-     *
-     * @param bundle
      */
     private void onProcessApiEvent(Bundle bundle) {
         Log.i(TAG, "ON PROCESS API EVENT");
@@ -524,7 +514,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Trigger to get the country configurations
      */
     private void triggerGetCountryConfigs(){
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
@@ -635,9 +624,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /**
      * Show maintenance page.
-     *
-     * @param eventType
-     * @author sergiopereira
      */
     private void setLayoutMaintenance(EventType eventType) {
         // Inflate maintenance
@@ -697,59 +683,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
     }
-    
-    /*
-     * ########### RESPONSES ###########
-     */
-
-    /**
-     * Requests and Callbacks methods
-     */
-
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-    /**
-     * Sends error responses to the target callback
-     *
-     * @param bundle
-     */
-    private void handleError(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-
-    }
-
-    /**
-     * Sends the correct responses to be handled by the target callback
-     *
-     * @param bundle
-     */
-    private void handleResponse(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-
-    }
 
     /*
      * ########### LISTENERS ###########
@@ -769,7 +702,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Case retry button from maintenance
         else if (id == R.id.fragment_root_retry_maintenance) {
-            onClickMaintenanceRetryButton(view);
+            onClickMaintenanceRetryButton();
         }
         // Case choose country
         else if (id == R.id.fragment_root_cc_maintenance) {
@@ -843,7 +776,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the click on retry button in maintenance page.
      */
-    private void onClickMaintenanceRetryButton(View view) {
+    private void onClickMaintenanceRetryButton() {
         // Retry
         mMainFallBackStub.setVisibility(View.GONE);
         // Retry
