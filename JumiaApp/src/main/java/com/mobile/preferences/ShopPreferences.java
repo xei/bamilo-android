@@ -11,7 +11,7 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.utils.Constants;
-import com.mobile.newFramework.objects.CountryObject;
+import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.product;
 
 
 import android.os.Parcel;
@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.mobile.framework.objects.*;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.objects.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,15 +45,15 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
     private ArrayList<String> known_variations;
     private boolean isNew;
     private String mSizeGuideUrl;
-    private ProductBundle productBundle;
+    private com.mobile.newFramework.objects.product.ProductBundle productBundle;
     private boolean hasSeller;
     private boolean hasBundle;
-    private Seller seller;
+    private com.mobile.newFramework.objects.Seller seller;
     private double minPriceOfferDouble;
     private String minPriceOffer;
     private double minPriceOfferConverted;
     private int totalOffers;
-    private ArrayList<RelatedProduct> relatedProducts;
+    private ArrayList<com.mobile.newFramework.objects.RelatedProduct> relatedProducts;
     private String mShortDescription;
     private ArrayList<ProductDetailsSpecification> mProductSpecs;
 
@@ -82,7 +83,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         productBundle = null;
         hasSeller = false;
         hasBundle = false;
-        seller = new Seller();
+        seller = new com.mobile.newFramework.objects.Seller();
         minPriceOfferDouble = 0.0;
         minPriceOffer = "";
         minPriceOfferConverted = 0.0;
@@ -233,7 +234,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
             if(hasSeller){
                 JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
                 if(sellerObject != null){
-                    seller = new Seller(sellerObject);
+                    seller = new com.mobile.newFramework.objects.Seller(sellerObject);
                 }
             }
 
@@ -260,7 +261,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
             if(relatedProductsJsonArray != null){
                 for(int i = 0; i<relatedProductsJsonArray.length();i++){
-                    RelatedProduct relatedProduct = new RelatedProduct();
+                    com.mobile.newFramework.objects.RelatedProduct relatedProduct = new com.mobile.newFramework.objects.RelatedProduct();
                     JSONObject relatedProductJsonObject = relatedProductsJsonArray.optJSONObject(i);
                     if(relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)){
                         getRelatedProducts().add(relatedProduct);
@@ -567,11 +568,11 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
     }
 
-    public ProductBundle getProductBundle() {
+    public com.mobile.newFramework.objects.product.ProductBundle getProductBundle() {
         return productBundle;
     }
 
-    public void setProductBundle(ProductBundle productBundle) {
+    public void setProductBundle(com.mobile.newFramework.objects.product.ProductBundle productBundle) {
         this.productBundle = productBundle;
     }
 
@@ -599,11 +600,11 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         this.reviewsCount = reviewsCount;
     }
 
-    public Seller getSeller() {
+    public com.mobile.newFramework.objects.Seller getSeller() {
         return seller;
     }
 
-    public void setSeller(Seller seller) {
+    public void setSeller(com.mobile.newFramework.objects.Seller seller) {
         this.seller = seller;
     }
 
@@ -647,7 +648,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         this.mProductSpecs = specs;
     }
 
-    public ArrayList<RelatedProduct> getRelatedProducts() {
+    public ArrayList<com.mobile.newFramework.objects.RelatedProduct> getRelatedProducts() {
         return relatedProducts;
     }
 
@@ -735,8 +736,8 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         isNew = in.readByte() == 1;
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
-        seller = in.readParcelable(Seller.class.getClassLoader());
-        productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
+        seller = in.readParcelable(com.mobile.newFramework.objects.Seller.class.getClassLoader());
+        productBundle = in.readParcelable(com.mobile.newFramework.objects.product.ProductBundle.class.getClassLoader());
         minPriceOfferDouble = in.readDouble();
         minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();

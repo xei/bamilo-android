@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.campaign;
 
 
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 /**
  * Class that represent a campaign page

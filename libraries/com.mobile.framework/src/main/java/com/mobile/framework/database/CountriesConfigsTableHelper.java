@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.newFramework.objects.CountryObject;
+import com.mobile.newFramework.objects.configs.CountryObject;
 
 import java.util.ArrayList;
 

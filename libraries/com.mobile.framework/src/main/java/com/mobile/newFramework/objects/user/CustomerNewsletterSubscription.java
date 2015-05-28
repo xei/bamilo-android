@@ -1,10 +1,12 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.user;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 /**
  * Class used to save the newsletter subscription

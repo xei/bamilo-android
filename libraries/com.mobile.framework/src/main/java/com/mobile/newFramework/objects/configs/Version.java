@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.configs;
 
 
 import org.json.JSONException;
@@ -8,6 +8,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 public class Version implements IJSONSerializable, Parcelable {
     private final static String TAG = Version.class.getSimpleName();

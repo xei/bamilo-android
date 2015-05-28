@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.category;
 
 
 import java.util.ArrayList;
@@ -9,9 +9,10 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 /**
  * Class that represents an Category. Composed by id, name and

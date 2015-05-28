@@ -4,7 +4,6 @@
  */
 package com.mobile.helpers.configs;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -12,13 +11,12 @@ import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.database.SectionsTablesHelper;
 import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.ApiInformation;
+import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.Section;
 import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
