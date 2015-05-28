@@ -13,7 +13,6 @@ import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +32,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
 
-        Serializable evenTask = args.getSerializable(Constants.BUNDLE_EVENT_TASK);
-        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
+        mEventTask = setEventTask();
+        if (args != null && args.containsKey(Constants.BUNDLE_EVENT_TASK)) {
+            mEventTask = (EventTask) args.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        }
 
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);

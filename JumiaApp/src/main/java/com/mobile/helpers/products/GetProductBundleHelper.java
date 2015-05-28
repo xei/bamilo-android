@@ -41,6 +41,11 @@ public class GetProductBundleHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     protected String getRequestUrl(Bundle args) {
         return RemoteService.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
     }
