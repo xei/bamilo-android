@@ -37,6 +37,11 @@ public class GetHomeHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         HomePageObject homePageObject = (HomePageObject) baseResponse.metadata.getData();

@@ -55,6 +55,11 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         // Get api info

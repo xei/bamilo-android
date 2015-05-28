@@ -75,6 +75,11 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     protected RequestBundle createRequest(Bundle args) {
         // Get specific data
         mCurrentPos = args.getInt(PRODUCT_POS_TAG, -1);

@@ -39,7 +39,12 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     }
 
     @Override
-    public boolean isPrioritary() {
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
+    public boolean hasPriority() {
         return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
     }
 
