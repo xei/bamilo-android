@@ -1,17 +1,16 @@
 package com.mobile.newFramework.objects;
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.LogTagHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.LogTagHelper;
+import java.util.ArrayList;
 
 /**
  * 
@@ -150,6 +149,11 @@ public class Order implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         // TODO
         return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
     }
 
     protected Order(Parcel in) {

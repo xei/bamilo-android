@@ -5,7 +5,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.GetLoginForm;
+import com.mobile.newFramework.requests.session.GetCustomerDetails;
 
 public class GetCustomerDetailsTest extends BaseTestCase {
 
@@ -15,15 +15,15 @@ public class GetCustomerDetailsTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.ci/mobapi/v1.7/forms/login/")
-                .setCache(EventType.GET_LOGIN_FORM_EVENT.cacheTime)
+                .setUrl("https://www.jumia.ci/mobapi/v1.7/customer/getdetails/")
+                .setCache(EventType.GET_CUSTOMER.cacheTime)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetLoginForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCustomerDetails(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

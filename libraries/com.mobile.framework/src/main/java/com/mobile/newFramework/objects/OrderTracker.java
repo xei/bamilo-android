@@ -9,19 +9,17 @@
  */
 package com.mobile.newFramework.objects;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.objects.*;
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.LogTagHelper;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class that represents an Order Tracked
@@ -102,7 +100,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
+		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
         creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
         payment_method = jsonObject.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
@@ -145,9 +143,13 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
         return jsonObject;
     }
 
+	@Override
+	public RequiredJson getRequiredJson() {
+		return RequiredJson.METADATA;
+	}
 
 
-    /**
+	/**
      * ########### Parcelable ###########
      * @author sergiopereira
      */

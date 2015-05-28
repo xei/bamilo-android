@@ -18,6 +18,6 @@ public class GetCustomerDetails extends BaseRequest<Customer> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.loginCustomer(mRequestBundle.getData(), this);
+        service.getCustomerDetails(this);
     }
 }

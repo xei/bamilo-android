@@ -17,6 +17,11 @@ public class SuperOrder implements IJSONSerializable {
 
     private static final String TAG = SuperOrder.class.getSimpleName();
 
+    private int currentPage = 0;
+    private int numPages = 0;
+    private int totalOrders = 0;
+    ArrayList<Order> orders;
+
 
     /**
      * Empty constructor
@@ -32,23 +37,28 @@ public class SuperOrder implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-            ArrayList<com.mobile.framework.objects.CustomerNewsletterSubscription> subscriptions = new ArrayList<>();
-            // Get subscribed newsletters
-            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG);
-            if(jsonArray != null && jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    com.mobile.framework.objects.CustomerNewsletterSubscription newsletter = new com.mobile.framework.objects.CustomerNewsletterSubscription();
-                    newsletter.initialize(object);
-                    subscriptions.add(newsletter);
+            JSONObject paginationObject = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+            currentPage = paginationObject.optInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG, 0);
+            numPages = paginationObject.optInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG, 0);
+
+            totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
+            System.out.println( "ORDERS TOTAL: " + totalOrders);
+            orders = new ArrayList<>();
+            // Get order history
+            JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.JSON_ORDERS_TAG);
+            if (null != ordersArray && ordersArray.length() > 0)
+                for (int i = 0; i < ordersArray.length(); i++) {
+                    Order order = new Order(ordersArray.getJSONObject(i));
+                    if (totalOrders > 0)
+                        order.setTotalOrdersHistory(totalOrders);
+                    orders.add(order);
                 }
-            }
-            // Save the newsletter subscriptions
-//            if(JumiaApplication.CUSTOMER != null)
-//                JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
+
         } catch (JSONException e) {
-            System.out.println("ON PARSING NEWSLETTER SUBSCRIPTIONS"+ e);
+            System.out.println("ERROR ON PARSE: " + e.getMessage());
+
         }
+
         return true;
     }
 
