@@ -5,10 +5,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.mobile.framework.objects.*;
+import com.mobile.framework.objects.BaseProduct;
+import com.mobile.framework.objects.ProductDetailsSpecification;
+import com.mobile.framework.objects.ProductSimple;
+import com.mobile.framework.objects.Variation;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.newFramework.objects.*;
+import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.Seller;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,15 +49,15 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
     private ArrayList<String> known_variations;
     private boolean isNew;
     private String mSizeGuideUrl;
-    private com.mobile.newFramework.objects.product.ProductBundle productBundle;
+    private ProductBundle productBundle;
     private boolean hasSeller;
     private boolean hasBundle;
-    private com.mobile.newFramework.objects.Seller seller;
+    private Seller seller;
     private double minPriceOfferDouble;
     private String minPriceOffer;
     private double minPriceOfferConverted;
     private int totalOffers;
-    private ArrayList<com.mobile.newFramework.objects.RelatedProduct> relatedProducts;
+    private ArrayList<RelatedProduct> relatedProducts;
     private String mShortDescription;
     private ArrayList<ProductDetailsSpecification> mProductSpecs;
 
@@ -261,7 +265,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
             if(relatedProductsJsonArray != null){
                 for(int i = 0; i<relatedProductsJsonArray.length();i++){
-                    com.mobile.newFramework.objects.RelatedProduct relatedProduct = new com.mobile.newFramework.objects.RelatedProduct();
+                    RelatedProduct relatedProduct = new RelatedProduct();
                     JSONObject relatedProductJsonObject = relatedProductsJsonArray.optJSONObject(i);
                     if(relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)){
                         getRelatedProducts().add(relatedProduct);
@@ -648,7 +652,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         this.mProductSpecs = specs;
     }
 
-    public ArrayList<com.mobile.newFramework.objects.RelatedProduct> getRelatedProducts() {
+    public ArrayList<RelatedProduct> getRelatedProducts() {
         return relatedProducts;
     }
 
@@ -736,8 +740,8 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         isNew = in.readByte() == 1;
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
-        seller = in.readParcelable(com.mobile.newFramework.objects.Seller.class.getClassLoader());
-        productBundle = in.readParcelable(com.mobile.newFramework.objects.product.ProductBundle.class.getClassLoader());
+        seller = in.readParcelable(Seller.class.getClassLoader());
+        productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
         minPriceOfferDouble = in.readDouble();
         minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();

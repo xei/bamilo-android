@@ -1,21 +1,17 @@
 package com.mobile.helpers.categories;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.Categories;
+import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
-
-import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 

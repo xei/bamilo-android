@@ -21,7 +21,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Category;
+import com.mobile.newFramework.objects.category.Category;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
