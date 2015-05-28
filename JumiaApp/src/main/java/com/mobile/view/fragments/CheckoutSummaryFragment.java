@@ -313,7 +313,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + price);
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
             if (variation != null &&

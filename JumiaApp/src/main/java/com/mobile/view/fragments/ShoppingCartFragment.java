@@ -746,14 +746,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             for (int i = 0; i < items.size(); i++) {
                 ShoppingCartItem item = items.get(i);
                 CartItemValues values = new CartItemValues();
-                // values.is_in_wishlist = false;
                 values.is_checked = false;
                 values.product_name = item.getName();
-                values.price = item.getPrice();
+                values.price = CurrencyFormatter.formatCurrency(item.getPrice());
                 values.product_id = 0;
                 values.quantity = item.getQuantity();
                 values.image = item.getImageUrl();
-                values.price_disc = item.getSpecialPrice();
+                values.price_disc = CurrencyFormatter.formatCurrency(item.getSpecialPrice());
                 values.discount_value = (double) Math.round(item.getSavingPercentage());
                 values.stock = item.getStock();
                 values.min_delivery_time = 0;

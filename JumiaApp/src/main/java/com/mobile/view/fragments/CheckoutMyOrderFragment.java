@@ -325,7 +325,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(price);
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation(); 
             if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
