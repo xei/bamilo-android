@@ -740,8 +740,8 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         isNew = in.readByte() == 1;
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
-        seller = in.readParcelable(com.mobile.newFramework.objects.Seller.class.getClassLoader());
-        productBundle = in.readParcelable(com.mobile.newFramework.objects.product.ProductBundle.class.getClassLoader());
+        seller = in.readParcelable(Seller.class.getClassLoader());
+        productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
         minPriceOfferDouble = in.readDouble();
         minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();
