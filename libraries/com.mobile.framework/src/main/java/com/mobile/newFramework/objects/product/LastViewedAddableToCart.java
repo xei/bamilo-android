@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects.product;
 
-import android.text.TextUtils;
 
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.IJSONSerializable;
@@ -8,6 +7,7 @@ import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,20 +38,22 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
             name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
             brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
             url = jsonObject.getString(RestConstants.JSON_URL_TAG);
+
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
             if (!CurrencyFormatter.isNumber(priceJSON)) {
                 throw new JSONException("Price is not a number!");
             }
             priceDouble = Double.parseDouble(priceJSON);
-            price = CurrencyFormatter.formatCurrency(priceJSON);
+            price = priceJSON;
             priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
             if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
                 specialPriceJSON = priceJSON;
             }
             specialPriceDouble = Double.parseDouble(specialPriceJSON);
 
-            specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+            specialPrice = specialPriceJSON;
             specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
             String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);

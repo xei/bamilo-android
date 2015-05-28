@@ -38,16 +38,11 @@ public class SuperValidProducts implements IJSONSerializable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
 
         boolean status;
-        System.out.println("initialize"+1);
         try {
             JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
-            System.out.println("initialize"+2);
             if (validProductsArray != null) {
-                System.out.println("initialize"+3);
                 validProducts = new ArrayList<>();
                 if (validProductsArray.length() > 0) {
-                    System.out.println("initialize"+4);
-                    System.out.println("initialize"+4);
                     for (int i = 0; i < validProductsArray.length(); i++) {
                         LastViewedAddableToCart lastViewedAddableToCart = new LastViewedAddableToCart();
                         status = lastViewedAddableToCart.initialize(validProductsArray.getJSONObject(i));
