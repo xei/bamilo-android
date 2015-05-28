@@ -20,4 +20,6 @@ public class RemoveAllShoppingCart extends BaseRequest<ShoppingCart> {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.removeAllShoppingCart(this);
     }
+
+
 }

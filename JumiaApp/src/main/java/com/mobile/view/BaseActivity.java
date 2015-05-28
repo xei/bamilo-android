@@ -48,9 +48,7 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
-import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -66,6 +64,8 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -1937,7 +1937,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void triggerGetShoppingCartItemsHelper() {
         Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+        //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
         JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(Bundle bundle) {

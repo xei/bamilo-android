@@ -1,7 +1,3 @@
-/**
- * @author Manuel Silva
- * 
- */
 package com.mobile.helpers.configs;
 
 import android.content.Context;
@@ -22,6 +18,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetAvailableCountries;
+import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -39,6 +36,11 @@ import de.akquinet.android.androlog.Log;
 public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
+
+    @Override
+    protected String getRequestUrl() {
+        return JumiaApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
+    }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
@@ -73,7 +75,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         mEditor.apply();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
@@ -98,7 +100,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         }
 
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

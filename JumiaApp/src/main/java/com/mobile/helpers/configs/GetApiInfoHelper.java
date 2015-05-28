@@ -16,9 +16,9 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.Section;
 import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetApiInformation;
@@ -77,7 +77,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
 
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
@@ -89,7 +89,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

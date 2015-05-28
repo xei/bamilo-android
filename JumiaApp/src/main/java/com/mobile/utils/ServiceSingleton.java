@@ -1,9 +1,9 @@
 package com.mobile.utils;
 
-import java.util.HashMap;
-
 import com.mobile.framework.service.IRemoteService;
 import com.mobile.interfaces.IResponseCallback;
+
+import java.util.HashMap;
 
 /**
  * Service singelton in order to access the service object in the needed places

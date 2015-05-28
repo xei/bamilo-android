@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +98,7 @@ public class PurchaseItem implements Parcelable {
 	 * For NativeCheckout
 	 */
 	public static List<PurchaseItem> parseItems(Map<String, ShoppingCartItem> mItems) {
-		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
+		List<PurchaseItem> items = new ArrayList<>();
 		
 		for(String key: mItems.keySet()){
             ShoppingCartItem mShoppingCartItem = mItems.get(key);

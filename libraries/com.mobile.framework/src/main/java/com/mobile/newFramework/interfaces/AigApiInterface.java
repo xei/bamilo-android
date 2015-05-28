@@ -2,6 +2,7 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.forms.SuperForm;
 import com.mobile.newFramework.forms.SuperFormData;
+import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.objects.SuperOrder;

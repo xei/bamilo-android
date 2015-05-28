@@ -50,7 +50,7 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         Categories categories = (Categories) baseResponse.metadata.getData();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
@@ -62,7 +62,7 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

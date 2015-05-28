@@ -1,12 +1,6 @@
 package com.mobile.newFramework.objects.product;
 
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,6 +10,12 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.Offer;
 import com.mobile.newFramework.objects.RequiredJson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents the product offers

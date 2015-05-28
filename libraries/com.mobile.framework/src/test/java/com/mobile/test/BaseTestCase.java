@@ -25,9 +25,11 @@ public class BaseTestCase extends TestCase implements AigResponseCallback {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse response) { }
+    public void onRequestComplete(BaseResponse response) {
+    }
 
     @Override
-    public void onRequestError(BaseResponse response) { }
+    public void onRequestError(BaseResponse response) {
+    }
 }
 

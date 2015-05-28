@@ -6,11 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Favourite;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
+import com.mobile.newFramework.objects.product.CompleteProduct;
 
 import org.json.JSONArray;
 import org.json.JSONException;

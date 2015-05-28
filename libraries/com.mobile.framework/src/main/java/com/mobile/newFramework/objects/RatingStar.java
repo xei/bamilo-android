@@ -10,9 +10,9 @@ import org.json.JSONObject;
 
 /**
  * Star object to allow the individual display of each rating
- * 
+ *
  * @author josedourado
- * 
+ *
  */
 public class RatingStar implements IJSONSerializable, Parcelable {
 

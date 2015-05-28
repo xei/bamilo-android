@@ -20,8 +20,6 @@ import com.mobile.forms.PaymentMethodForm;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
@@ -33,6 +31,8 @@ import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.checkout.CheckoutFinishHelper;
 import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -325,7 +325,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(price);
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation(); 
             if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
