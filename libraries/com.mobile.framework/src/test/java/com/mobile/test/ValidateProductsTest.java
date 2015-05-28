@@ -5,22 +5,24 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.reviews.GetProductReviews;
+import com.mobile.newFramework.requests.product.ValidateProducts;
 
 import java.util.HashMap;
 
-public class GetProductReviewsTest extends BaseTestCase {
+public class ValidateProductsTest extends BaseTestCase {
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         HashMap<String, String> data = new HashMap<>();
-        data.put("rating", "1");
-        data.put("per_page", "18");
-        data.put("page", "1");
+        data.put("products[0]", "HP246ELAE4ZWNAFAMZ");
+        data.put("products[1]", "DE168ELACU1NNAFAMZ");
+        data.put("products[2]", "HP246ELADB9QNAFAMZ");
+        data.put("products[3]", "LE842ELAC3ZVNGAMZ");
+
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://www.jumia.com.ng/mobapi/v1.7/galaxy-s4-i9500-black-53281.html")
-                .setCache(EventType.GET_PRODUCT_REVIEWS_EVENT.cacheTime)
+                .setUrl(" http://www.jumia.com.ng/mobapi/v1.7/catalog/validate/")
+                .setCache(EventType.VALIDATE_PRODUCTS.cacheTime)
                 .setData(data)
                 .build();
     }
@@ -28,7 +30,7 @@ public class GetProductReviewsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetProductReviews(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new ValidateProducts(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

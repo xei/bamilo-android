@@ -18,6 +18,7 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
 
     private static final String TAG = SuperCustomerNewsletterSubscription.class.getSimpleName();
 
+    private CustomerNewsletterSubscription newsletter;
 
     /**
      * Empty constructor
@@ -39,7 +40,7 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
             if(jsonArray != null && jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
-                    CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
+                    newsletter = new CustomerNewsletterSubscription();
                     newsletter.initialize(object);
                     subscriptions.add(newsletter);
                 }
@@ -67,4 +68,12 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
         return RequiredJson.METADATA;
     }
 
+
+    public CustomerNewsletterSubscription getNewsletter() {
+        return newsletter;
+    }
+
+    public void setNewsletter(CustomerNewsletterSubscription newsletter) {
+        this.newsletter = newsletter;
+    }
 }

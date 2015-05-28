@@ -3,8 +3,8 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
-import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
+import com.mobile.newFramework.objects.product.SuperProductRatingPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetReviews;
@@ -47,9 +47,9 @@ public class GetReviewsTest extends BaseTestCase {
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
         System.out.println("############# REVIEWS #############");
-        ProductRatingPage reviews = (ProductRatingPage) response.metadata.getData();
-        assertNotNull(reviews);
-        for (ProductReviewComment review : reviews.getReviewComments()) {
+        SuperProductRatingPage superRating = (SuperProductRatingPage) response.metadata.getData();
+        assertNotNull(superRating);
+        for (ProductReviewComment review : superRating.getRating().getReviewComments()) {
             assertNotNull(review);
             System.out.println(review.toString());
         }
