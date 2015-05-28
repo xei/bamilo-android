@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects;
 
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.user.CustomerNewsletterSubscription;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,13 +33,13 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-            ArrayList<com.mobile.framework.objects.CustomerNewsletterSubscription> subscriptions = new ArrayList<>();
+            ArrayList<CustomerNewsletterSubscription> subscriptions = new ArrayList<>();
             // Get subscribed newsletters
             JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG);
             if(jsonArray != null && jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
-                    com.mobile.framework.objects.CustomerNewsletterSubscription newsletter = new com.mobile.framework.objects.CustomerNewsletterSubscription();
+                    CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
                     newsletter.initialize(object);
                     subscriptions.add(newsletter);
                 }
