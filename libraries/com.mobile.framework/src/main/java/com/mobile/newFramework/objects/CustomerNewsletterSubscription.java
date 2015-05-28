@@ -1,10 +1,10 @@
 package com.mobile.newFramework.objects;
 
 
+import com.mobile.framework.rest.RestConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.rest.RestConstants;
 
 /**
  * Class used to save the newsletter subscription
@@ -56,7 +56,7 @@ public class CustomerNewsletterSubscription implements IJSONSerializable {
 
     @Override
     public RequiredJson getRequiredJson() {
-        return null;
+        return RequiredJson.COMPLETE_JSON;
     }
 
 	/*

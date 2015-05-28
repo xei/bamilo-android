@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.Categories;
 import com.mobile.newFramework.objects.CompleteProduct;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.objects.HomePageObject;
 import com.mobile.newFramework.objects.ProductRatingPage;
 import com.mobile.newFramework.objects.ProductBundle;
@@ -211,6 +212,10 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
     
     /*
      * ## RATINGS/REVIEWS

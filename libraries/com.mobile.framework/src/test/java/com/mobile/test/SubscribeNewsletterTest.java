@@ -5,11 +5,11 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.ChangePassword;
+import com.mobile.newFramework.requests.session.SubscribeNewsletter;
 
 import java.util.HashMap;
 
-public class ChangePasswordTest extends BaseTestCase {
+public class SubscribeNewsletterTest extends BaseTestCase {
 
     @Override
     protected void setUp() throws Exception {
@@ -17,12 +17,11 @@ public class ChangePasswordTest extends BaseTestCase {
 
 
         HashMap<String, String> data = new HashMap<>();
-        data.put("Alice_Module_Customer_Model_PasswordForm[email]", "sofias@jumia.com");
-        data.put("Alice_Module_Customer_Model_PasswordForm[password]", "123456");
-        data.put("Alice_Module_Customer_Model_PasswordForm[password2]", "123456");
+        data.put("Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterManageForm[newsletter_categories_subscribed][5]", "5");
+        data.put("Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterManageForm[newsletter_categories_subscribed][6]", "6");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/changepass/")
-                .setCache(EventType.FORGET_PASSWORD_EVENT.cacheTime)
+                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/managenewsletters/")
+                .setCache(EventType.SUBSCRIBE_NEWSLETTERS_EVENT.cacheTime)
                 .setData(data)
                 .build();
     }
@@ -30,7 +29,7 @@ public class ChangePasswordTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new ChangePassword(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SubscribeNewsletter(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

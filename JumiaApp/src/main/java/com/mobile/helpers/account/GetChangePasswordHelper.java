@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.account;
 
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 
@@ -15,6 +13,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -51,7 +51,7 @@ public class GetChangePasswordHelper extends BaseHelper {
         return bundle;
     }
 
-    /*
+    /*Bom
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
      */

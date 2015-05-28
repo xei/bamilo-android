@@ -17,7 +17,7 @@ public class ForgotPasswordTest extends BaseTestCase {
 
 
         HashMap<String, String> data = new HashMap<>();
-        data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
+        data.put("Alice_Module_Mobapi_Form_Customer_ForgotPasswordForm[email]", "sofias@jumia.com");
         requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/forgotpassword/")
                 .setCache(EventType.FORGET_PASSWORD_EVENT.cacheTime)
