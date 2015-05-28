@@ -16,7 +16,7 @@ public class GetShopInShopPage extends BaseRequest {
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), mRequestBundle.getCache()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext,mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.getShopInShop(mRequestBundle.getData(), this);
     }
 }

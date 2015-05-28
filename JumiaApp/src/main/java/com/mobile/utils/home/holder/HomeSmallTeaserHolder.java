@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.components.recycler.HorizontalListView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.view.R;
 
 /**

@@ -19,7 +19,7 @@ public class GetPromotions extends BaseRequest {
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), type.cacheTime).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.getCountryConfigurations(this);
     }
 }

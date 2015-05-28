@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.mobile.components.recycler.HorizontalListView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 

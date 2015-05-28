@@ -16,7 +16,7 @@ public class SignUpCustomer extends BaseRequest<com.mobile.newFramework.objects.
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), mRequestBundle.getCache()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.signUpCustomer(mRequestBundle.getData(), this);
     }
 }

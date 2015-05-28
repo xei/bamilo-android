@@ -13,21 +13,29 @@ import retrofit.client.OkClient;
 
 public class AigRestAdapter {
 
-
+    public static class RestAdapterInit{
+        public String url;
+        public Integer cache;
+        public boolean discardResponse;
+    }
     /**
      * Prepares everything needed to perform the request regarding Retrofit configurations
      *
      * @return BaseRequest
      */
-    public static RestAdapter getRestAdapter(Context context, String url, Integer cache) {
-        return new RestAdapter.Builder()
+    public static RestAdapter getRestAdapter(Context context, RestAdapterInit restAdapterInit) {
+        RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(new OkClient(AigHttpClient.getOkHttpClient(context)))
-                .setEndpoint(url)
-                .setRequestInterceptor(new HttpHeaderRequestInterceptor(cache))
-                .setConverter(new ResponseConverter())
-                .setErrorHandler(new AigErrorHandler())
-                .build();
+                .setEndpoint(restAdapterInit.url)
+                .setRequestInterceptor(new HttpHeaderRequestInterceptor(restAdapterInit.cache));
+
+        if(!restAdapterInit.discardResponse) {
+            builder.setConverter(new ResponseConverter())
+                .setErrorHandler(new AigErrorHandler());
+        }
+
+        return builder.build();
     }
 
     /**

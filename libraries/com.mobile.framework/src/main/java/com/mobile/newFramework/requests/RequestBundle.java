@@ -1,5 +1,7 @@
 package com.mobile.newFramework.requests;
 
+import com.mobile.newFramework.rest.AigRestAdapter;
+
 import java.util.Map;
 
 public class RequestBundle {
@@ -75,6 +77,14 @@ public class RequestBundle {
             return requestBundle;
         }
 
+    }
+
+    public AigRestAdapter.RestAdapterInit toRestAdapterInit(){
+        AigRestAdapter.RestAdapterInit restAdapterInit = new AigRestAdapter.RestAdapterInit();
+        restAdapterInit.url = url;
+        restAdapterInit.cache = cache;
+        restAdapterInit.discardResponse = discard;
+        return restAdapterInit;
     }
 
 }

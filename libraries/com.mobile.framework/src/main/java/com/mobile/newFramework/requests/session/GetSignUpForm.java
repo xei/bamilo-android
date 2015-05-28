@@ -20,7 +20,7 @@ public class GetSignUpForm extends BaseRequest<SuperForm> {
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.getUrl(), type.cacheTime).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.getSignupForm(this);
     }
 }
