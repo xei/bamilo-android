@@ -15,8 +15,8 @@ import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.ProductBundleProduct;
-import com.mobile.framework.objects.ProductBundleSimple;
+import com.mobile.newFramework.objects.product.ProductBundleProduct;
+import com.mobile.newFramework.objects.product.ProductBundleSimple;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -84,8 +84,6 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param productTeaserGroup
-     * @param parentClickListener
      * @author paulocarvalho
      */
     public BundleItemsListAdapter(ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,

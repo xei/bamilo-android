@@ -22,7 +22,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.account.GetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;

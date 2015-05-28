@@ -38,7 +38,7 @@ import com.mobile.helpers.configs.GetTermsConditionsHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.GetRegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;

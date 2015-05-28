@@ -1,8 +1,10 @@
 package com.mobile.framework.utils;
 
+import com.mobile.newFramework.objects.product.CompleteProduct;
+
 import java.util.LinkedHashMap;
 
-import com.mobile.framework.objects.CompleteProduct;
+
 
 /**
  * Structure used by the product service to keep track of the allocated complete products in memory cache.

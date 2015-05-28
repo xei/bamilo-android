@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
 
 import java.math.BigDecimal;
 

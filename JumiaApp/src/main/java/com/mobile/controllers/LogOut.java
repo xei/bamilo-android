@@ -7,7 +7,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
 

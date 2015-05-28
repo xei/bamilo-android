@@ -23,7 +23,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetSellerReviewFormHelper;
 import com.mobile.helpers.products.RatingReviewProductHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;

@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.product;
 
 
 import android.os.Parcel;
@@ -8,6 +8,8 @@ import com.mobile.framework.objects.BaseProduct;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;

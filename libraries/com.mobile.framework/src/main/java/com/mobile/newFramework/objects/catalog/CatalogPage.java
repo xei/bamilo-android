@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.catalog;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,6 +10,9 @@ import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.Product;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

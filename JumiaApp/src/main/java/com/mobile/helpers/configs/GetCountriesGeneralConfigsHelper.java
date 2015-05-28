@@ -1,7 +1,3 @@
-/**
- * @author Manuel Silva
- * 
- */
 package com.mobile.helpers.configs;
 
 import android.content.Context;
@@ -17,8 +13,8 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.AvailableCountries;
-import com.mobile.newFramework.objects.CountryObject;
+import com.mobile.newFramework.objects.configs.AvailableCountries;
+import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetAvailableCountries;

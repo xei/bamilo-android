@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.category;
 
 
 import android.os.Parcel;
@@ -177,6 +177,7 @@ public class Category implements IJSONSerializable, Parcelable {
                 }
             }
         } catch (JSONException e) {
+            // Log.w(TAG, "WARNING: ON INIT CATEGORY" , e);
             return false;
         }
         return true;

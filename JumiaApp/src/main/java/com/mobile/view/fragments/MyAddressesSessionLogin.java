@@ -8,7 +8,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;

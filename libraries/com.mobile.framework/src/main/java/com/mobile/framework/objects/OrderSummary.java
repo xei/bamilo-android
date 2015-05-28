@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
 
 import org.json.JSONException;
 import org.json.JSONObject;

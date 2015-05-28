@@ -36,7 +36,7 @@ import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -60,6 +60,8 @@ import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
+
+;
 
 /**
  * Webview to execute an external Payment

@@ -1,6 +1,7 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.configs;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;

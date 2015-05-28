@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.framework.objects.CustomerGender;
 import com.mobile.framework.objects.CustomerPrefix;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;

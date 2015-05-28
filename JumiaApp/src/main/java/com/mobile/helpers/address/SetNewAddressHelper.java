@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.address;
 
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 
@@ -15,6 +13,8 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.CheckoutStepManager;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 

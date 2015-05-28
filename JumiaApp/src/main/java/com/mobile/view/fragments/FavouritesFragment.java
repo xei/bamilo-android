@@ -34,7 +34,7 @@ import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.products.GetFavouriteHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;

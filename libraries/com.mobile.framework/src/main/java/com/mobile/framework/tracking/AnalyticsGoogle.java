@@ -15,7 +15,7 @@ import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.newFramework.objects.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 
 import java.util.List;
 

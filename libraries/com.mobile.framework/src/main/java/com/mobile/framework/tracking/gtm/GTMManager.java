@@ -17,12 +17,12 @@ import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.tracking.ContainerHolderSingleton;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
-import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.user.Customer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

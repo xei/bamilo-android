@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.product;
 
 import com.mobile.framework.objects.LastViewed;
 import com.mobile.framework.rest.RestConstants;

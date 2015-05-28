@@ -1,6 +1,8 @@
-package com.mobile.newFramework.objects;
+package com.mobile.newFramework.objects.category;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Categories extends ArrayList<Category> implements IJSONSerializable{
+public class Categories extends ArrayList<Category> implements IJSONSerializable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {

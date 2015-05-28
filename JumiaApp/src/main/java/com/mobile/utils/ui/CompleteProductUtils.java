@@ -1,9 +1,9 @@
 package com.mobile.utils.ui;
 
-import java.util.ArrayList;
-
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Variation;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+
+import java.util.ArrayList;
 
 public class CompleteProductUtils {
 
