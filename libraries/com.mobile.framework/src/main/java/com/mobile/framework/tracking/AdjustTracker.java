@@ -26,7 +26,6 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.CustomerGender;
-import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.tracking.gtm.GTMKeys;
 import com.mobile.framework.tracking.gtm.GTMManager;
@@ -35,6 +34,7 @@ import com.mobile.framework.utils.NetworkConnectivity;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.objects.user.Customer;
 
 import org.json.JSONException;

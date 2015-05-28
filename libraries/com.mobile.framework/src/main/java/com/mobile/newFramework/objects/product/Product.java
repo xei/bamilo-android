@@ -40,8 +40,8 @@ public class Product implements IJSONSerializable, Parcelable {
     public Product() {
         id = "";
         attributes = new ProductAttributes();
-        images = new ArrayList<Image>();
-        imagesTablet = new ArrayList<Image>();
+        images = new ArrayList<>();
+        imagesTablet = new ArrayList<>();
     }
 
     /**

@@ -3,19 +3,20 @@
  */
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.product.Product;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 

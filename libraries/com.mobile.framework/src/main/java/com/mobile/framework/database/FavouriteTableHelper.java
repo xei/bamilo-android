@@ -7,10 +7,10 @@ import android.text.TextUtils;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -211,11 +211,6 @@ public class FavouriteTableHelper extends BaseTable {
 
 	/**
 	 * Update favourite with variations values
-	 * 
-	 * @param sku
-	 * @param simples
-	 * @param variations
-	 * @param knownVariations
 	 */
 	public static void updateFavouriteProduct(CompleteProduct completeProduct) {
 	    

@@ -1,16 +1,3 @@
-/**
- * CompleteProduct.java
- * Complete PRoduct class. Represents the complete product used in the products detials activity.
- * 
- * @author Guilherme Silva
- * 
- * @version 1.01
- * 
- * 2012/06/18
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
-
 package com.mobile.framework.objects;
 
 import android.os.Parcel;

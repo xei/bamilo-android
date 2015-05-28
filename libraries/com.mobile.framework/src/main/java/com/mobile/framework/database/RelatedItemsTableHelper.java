@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.LastViewed;
-import com.mobile.framework.objects.Product;
+import com.mobile.newFramework.objects.product.Product;
 
 import java.util.ArrayList;
 
