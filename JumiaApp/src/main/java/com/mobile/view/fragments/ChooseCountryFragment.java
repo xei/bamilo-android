@@ -29,7 +29,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.CountryObject;
+import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;

@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.objects.ApiInformation;
-import com.mobile.newFramework.objects.Sections;
+import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;

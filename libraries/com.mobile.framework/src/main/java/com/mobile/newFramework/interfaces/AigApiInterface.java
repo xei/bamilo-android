@@ -2,12 +2,14 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.forms.SuperForm;
 import com.mobile.newFramework.forms.SuperFormData;
-import com.mobile.newFramework.objects.ApiInformation;
-import com.mobile.newFramework.objects.AvailableCountries;
-import com.mobile.newFramework.objects.Campaign;
-import com.mobile.newFramework.objects.CatalogPage;
+import com.mobile.newFramework.objects.configs.ApiInformation;
+import com.mobile.newFramework.objects.configs.AvailableCountries;
+import com.mobile.newFramework.objects.campaign.Campaign;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.Categories;
 import com.mobile.newFramework.objects.CompleteProduct;
+import com.mobile.newFramework.objects.configs.CountryConfigs;
+import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.objects.CountryConfigs;
 import com.mobile.newFramework.objects.Customer;
 import com.mobile.newFramework.objects.OrderTracker;
