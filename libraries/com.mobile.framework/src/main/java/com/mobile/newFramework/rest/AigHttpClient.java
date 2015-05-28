@@ -1,6 +1,7 @@
 package com.mobile.newFramework.rest;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -10,6 +11,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
 public class AigHttpClient {
@@ -25,18 +29,10 @@ public class AigHttpClient {
         OkHttpClient okHttpClient = new OkHttpClient();
         // AUTHENTICATION
         okHttpClient.setAuthenticator(new AigAuthenticator());
-
-        if (context != null) {
-            // TODO: COOKIES
-            //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
-            //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-            //okHttpClient.setCookieHandler(cookieManager);
-            // CACHE
-            File cacheDir = context.getCacheDir();
-            Cache cache = new Cache(cacheDir, AigConfigurations.CACHE_MAX_SIZE);
-            okHttpClient.setCache(cache);
-        }
-
+        // COOKIES
+        setCookies(okHttpClient, context);
+        // CACHE
+        setCache(okHttpClient, context);
         // REDIRECTS
         okHttpClient.setFollowSslRedirects(true);
         okHttpClient.setFollowRedirects(true);
@@ -44,13 +40,39 @@ public class AigHttpClient {
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        //okHttpClient.interceptors().add(new FullUrlRequestInterceptor());
-        //okHttpClient.networkInterceptors().add(new FullUrlRequestInterceptor());
-        //okHttpClient.interceptors().add(new RequestInterceptor());
-        //okHttpClient.interceptors().add(new ResponseInterceptor());
-
+        //addInterceptors(okHttpClient);
         // Return client
         return okHttpClient;
+    }
+
+    private static void setCache(OkHttpClient okHttpClient, Context context) {
+        if (context != null) {
+            // CACHE
+            File cacheDir = context.getCacheDir();
+            Cache cache = new Cache(cacheDir, AigConfigurations.CACHE_MAX_SIZE);
+            okHttpClient.setCache(cache);
+        }
+    }
+
+    private static void setCookies(OkHttpClient okHttpClient, Context context) {
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+            CookieManager cookieManager = new CookieManager();
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            CookieHandler.setDefault(cookieManager);
+        }
+        // TODO: COOKIES
+        //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+        //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+        //okHttpClient.setCookieHandler(cookieManager);
+        //
+        okHttpClient.setCookieHandler(CookieHandler.getDefault());
+    }
+
+    private static void addInterceptors(OkHttpClient okHttpClient) {
+        //okHttpClient.interceptors().add(new FullUrlRequestInterceptor());
+        //okHttpClient.networkInterceptors().add(new FullUrlRequestInterceptor());
+        okHttpClient.interceptors().add(new RequestInterceptor());
+        okHttpClient.interceptors().add(new ResponseInterceptor());
     }
 
     private static class FullUrlRequestInterceptor implements Interceptor {
