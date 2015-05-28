@@ -646,7 +646,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             offersContainer.setVisibility(View.VISIBLE);
 
             numOffers.setText(" (" + mCompleteProduct.getTotalOffers() + ")");
-            minOffers.setText(mCompleteProduct.getMinPriceOffer());
+            minOffers.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getMinPriceOffer()));
 
             if (DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())) {
                 offersContent.setOnClickListener(this);
@@ -855,9 +855,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             String unitPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
             String specialPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
 
-            unitPrice = currencyFormatHelper(unitPrice);
-            if (specialPrice != null)
-                specialPrice = currencyFormatHelper(specialPrice);
+//            unitPrice = currencyFormatHelper(unitPrice);
+//            if (specialPrice != null)
+//                specialPrice = currencyFormatHelper(specialPrice);
 
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
 
@@ -875,14 +875,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Log.d(TAG, "displayPriceInfo: unitPrice = " + unitPrice + " specialPrice = " + specialPrice);
         if (specialPrice == null || specialPrice.equals(unitPrice)) {
             // display only the normal price
-            mSpecialPriceText.setText(unitPrice);
+            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
             mPriceText.setVisibility(View.GONE);
         } else {
             // display reduced and special price
-            mSpecialPriceText.setText(specialPrice);
+            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(specialPrice));
             mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-            mPriceText.setText(unitPrice);
+            mPriceText.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
         }
@@ -1050,19 +1050,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             String specPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
 
             if (TextUtils.isEmpty(specPrice)) {
-                normPrice = currencyFormatHelper(normPrice);
+                //normPrice = currencyFormatHelper(normPrice);
                 // display only the normal price
-                mSpecialPriceText.setText(normPrice);
+                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(normPrice));
                 mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
                 mPriceText.setVisibility(View.GONE);
             }
             else {
-                normPrice = currencyFormatHelper(normPrice);
-                specPrice = currencyFormatHelper(specPrice);
+                //normPrice = currencyFormatHelper(normPrice);
+                //specPrice = currencyFormatHelper(specPrice);
                 // display reduced and special price
-                mSpecialPriceText.setText(specPrice);
+                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(specPrice));
                 mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-                mPriceText.setText(normPrice);
+                mPriceText.setText(CurrencyFormatter.formatCurrency(normPrice));
                 mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 mPriceText.setVisibility(View.VISIBLE);
             }
@@ -1073,9 +1073,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     }
 
-    private String currencyFormatHelper(String number) {
-        return CurrencyFormatter.formatCurrency(number);
-    }
+//    private String currencyFormatHelper(String number) {
+//        return CurrencyFormatter.formatCurrency(number);
+//    }
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();

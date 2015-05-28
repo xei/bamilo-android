@@ -12,7 +12,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.cart.RemoveAllShoppingCart;
+import com.mobile.newFramework.requests.cart.AddMultipleItemsShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
 import org.json.JSONObject;
@@ -59,6 +59,11 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     protected Map<String, String> getRequestData(Bundle args) {
         return productBySku;
     }
@@ -71,7 +76,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new RemoveAllShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddMultipleItemsShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
@@ -84,10 +89,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
         // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         mRequester.onRequestComplete(bundle);
     }
@@ -95,10 +97,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
 

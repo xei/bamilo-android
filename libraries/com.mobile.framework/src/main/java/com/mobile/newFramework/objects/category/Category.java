@@ -48,7 +48,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mName = "defaultName";
         mUrlKey = "-1";
         mApiUrl = "";
-        mChildren = new ArrayList<Category>();
+        mChildren = new ArrayList<>();
         mParent = null;
         mHasChildren = false;
     }

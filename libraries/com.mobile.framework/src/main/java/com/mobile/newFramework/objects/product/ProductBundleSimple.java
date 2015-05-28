@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.framework.utils.TextUtils;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
@@ -21,7 +22,7 @@ import org.json.JSONObject;
  */
 public class ProductBundleSimple implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = LogTagHelper.create(ProductBundleSimple.class);
+    public static final String TAG = LogTagHelper.create(ProductBundleSimple.class);
 
     private String simpleSku;
     private String simpleQuantity;
@@ -39,7 +40,6 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
      * Complete product bundle empty constructor.
      */
     public ProductBundleSimple() {
-
         simpleSku = "";
         simpleQuantity = "";
         simpleSize = "";
@@ -50,11 +50,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         simpleSpecialPrice =  "";
         simpleSpecialPriceDouble = 0.0;
         simpleSpecialPriceConverted = 0.0;
-
     }
 
     public ProductBundleSimple(int parentPos, JSONObject jsonObject) {
-
         simpleSku = "";
         simpleQuantity = "";
         simpleSize = "";
@@ -66,7 +64,6 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         simpleSpecialPriceDouble = 0.0;
         simpleSpecialPriceConverted = 0.0;
         initialize(jsonObject);
-
     }
 
     /*
@@ -85,10 +82,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
 
             // TODO - Please Unify
             simpleSize = jsonObject.optString(RestConstants.JSON_SIZE_TAG,"");
-            /*TODO
             if(TextUtils.isEmpty(simplePrice)) {
                 simpleSize = jsonObject.optString(RestConstants.JSON_VARIATION_TAG,"");
-            }*/
+            }
 
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
 
@@ -96,20 +92,19 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
                 throw new JSONException("Price is not a number!");
             }
             simplePriceDouble = Double.parseDouble(priceJSON);
-//            simplePrice = CurrencyFormatter.formatCurrency(priceJSON); TODO
+            simplePrice = priceJSON;
 
             simplePriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
 
             // Special Price
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 
-            if(!specialPriceJSON.equals("")){ // TODO TextUtils.isEmpty
+            if(!TextUtils.isEmpty(specialPriceJSON)) {
                 if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
                 simpleSpecialPriceDouble = Double.parseDouble(specialPriceJSON);
-//                simpleSpecialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON); TODO
-
+                simpleSpecialPrice = specialPriceJSON;
                 simpleSpecialPriceConverted = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
             }
 

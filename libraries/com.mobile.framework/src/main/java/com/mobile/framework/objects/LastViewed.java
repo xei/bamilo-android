@@ -6,6 +6,7 @@ package com.mobile.framework.objects;
  *
  */
 public class LastViewed extends BaseProduct{
+
 	protected final static String TAG = LastViewed.class.getSimpleName();
 
     private String imageUrl;

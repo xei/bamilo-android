@@ -28,7 +28,7 @@ public class RelatedProduct extends LastViewed {
 
     public RelatedProduct(){
         super();
-        categories = new ArrayList<String>();
+        categories = new ArrayList<>();
     }
 
     public boolean initialize(JSONObject relatedProductJsonObject){
@@ -44,11 +44,11 @@ public class RelatedProduct extends LastViewed {
                 throw new JSONException("Price is not a number!");
             }
             setPriceAsDouble(Double.parseDouble(priceJson));
-//            setPrice(CurrencyFormatter.formatCurrency(priceJson)); TODO
+            setPrice(priceJson);
 
             double specialPrice = relatedProductJsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG, 0d);
             setSpecialPriceDouble(specialPrice);
-//            setSpecialPrice(CurrencyFormatter.formatCurrency(String.valueOf(specialPrice))); TODO
+            setSpecialPrice(String.valueOf(specialPrice));
 
             String priceEuroConvertedJson = relatedProductJsonObject.getString(RestConstants.JSON_PRICE_CONVERTED_TAG);
             if (!CurrencyFormatter.isNumber(priceEuroConvertedJson)) {

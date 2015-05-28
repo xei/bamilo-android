@@ -147,7 +147,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(priceJSON)) {
-				price = CurrencyFormatter.formatCurrency(priceJSON);
+				price = priceJSON;
 				priceDouble = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
 			} else {
 				throw new JSONException("Price is not a number!");
@@ -158,7 +158,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 			// 
 			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(specialPriceJSON)) {
-				specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+				specialPrice = specialPriceJSON;
 				specialPriceDouble = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			} else {
 				specialPrice = price;

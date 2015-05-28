@@ -14,6 +14,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.Favourite;
 import com.mobile.framework.objects.LastViewedAddableToCart;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
@@ -256,7 +257,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             // Validate special price
             if (null != addableToCart.getSpecialPrice() && !addableToCart.getSpecialPrice().equals(addableToCart.getPrice())) {
                 // Set discount 
-                prodItem.discount.setText(addableToCart.getSpecialPrice());
+                prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
                 Double discountPercentage = addableToCart.getMaxSavingPercentage();
                 if (discountPercentage != null) {
                     prodItem.discountPercentage.setText("-" + discountPercentage.intValue() + "%");
@@ -264,7 +265,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 prodItem.discount.setVisibility(View.VISIBLE);
                 prodItem.discountPercentage.setVisibility(View.VISIBLE);
                 // Set price
-                prodItem.price.setText(addableToCart.getPrice());
+                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 prodItem.price.setSelected(true);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
@@ -273,7 +274,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 // Set price
                 prodItem.discount.setVisibility(View.GONE);
                 prodItem.discountPercentage.setVisibility(View.INVISIBLE);
-                prodItem.price.setText(addableToCart.getPrice());
+                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
