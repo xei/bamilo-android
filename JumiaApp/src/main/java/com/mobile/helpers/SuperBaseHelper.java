@@ -5,11 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.framework.service.RemoteService;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.requests.RequestBundle;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
+
+        Serializable evenTask = args.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
+
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);
     }
