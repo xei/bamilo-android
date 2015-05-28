@@ -58,7 +58,7 @@ public class CustomerNewsletterSubscription implements IJSONSerializable {
 
     @Override
     public RequiredJson getRequiredJson() {
-        return null;
+        return RequiredJson.COMPLETE_JSON;
     }
 
 	/*

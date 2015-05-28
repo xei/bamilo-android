@@ -54,6 +54,11 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
     protected Map<String, String> getRequestData(Bundle args) {
         return convertContentValuesToMap((ContentValues) args.getParcelable(ADD_BUNDLE));
     }
@@ -74,10 +79,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
         // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         mRequester.onRequestComplete(bundle);
     }
@@ -85,10 +87,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
 

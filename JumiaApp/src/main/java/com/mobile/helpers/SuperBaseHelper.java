@@ -5,11 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.framework.service.RemoteService;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,13 +24,18 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected EventType mEventType;
 
+    private EventTask mEventTask;
 
     public SuperBaseHelper(){
         mEventType = getEventType();
     }
 
-    public void sendRequest(Bundle args, IResponseCallback requester) {
+    public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
+
+        Serializable evenTask = args.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
+
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);
     }
@@ -41,7 +50,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             requestBundleBuilder.setData(getRequestData(args));
         }
         // Validate priority
-        if(!isPrioritary()){
+        if(!hasPriority()){
             requestBundleBuilder.discardResponse();
         }
         //
@@ -56,7 +65,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return convertBundleToMap(args);
     }
 
-    public boolean isPrioritary(){
+    public boolean hasPriority(){
         return HelperPriorityConfiguration.IS_PRIORITARY;
     }
 
@@ -84,7 +93,30 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return data;
     }
 
+    public EventTask getEventTask(){
+        if(mEventTask == null){
+            mEventTask = setEventTask();
+        }
+        return mEventTask;
+    }
+
+    protected abstract EventTask setEventTask();
 
 
+    public Bundle generateSuccessBundle(BaseResponse baseResponse){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
+        return bundle;
+    }
+
+    public Bundle generateErrorBundle(BaseResponse baseResponse){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
 
 }

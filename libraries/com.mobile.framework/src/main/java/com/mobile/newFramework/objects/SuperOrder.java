@@ -1,0 +1,79 @@
+package com.mobile.newFramework.objects;
+
+
+import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+/**
+ * Class used to save the newsletter subscription
+ * @author sergiopereira
+ */
+public class SuperOrder implements IJSONSerializable {
+
+    private static final String TAG = SuperOrder.class.getSimpleName();
+
+    private int currentPage = 0;
+    private int numPages = 0;
+    private int totalOrders = 0;
+    ArrayList<Order> orders;
+
+
+    /**
+     * Empty constructor
+     */
+    public SuperOrder() {
+        // ...
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+     */
+    @Override
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        try {
+            JSONObject paginationObject = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+            currentPage = paginationObject.optInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG, 0);
+            numPages = paginationObject.optInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG, 0);
+
+            totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
+            System.out.println( "ORDERS TOTAL: " + totalOrders);
+            orders = new ArrayList<>();
+            // Get order history
+            JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.JSON_ORDERS_TAG);
+            if (null != ordersArray && ordersArray.length() > 0)
+                for (int i = 0; i < ordersArray.length(); i++) {
+                    Order order = new Order(ordersArray.getJSONObject(i));
+                    if (totalOrders > 0)
+                        order.setTotalOrdersHistory(totalOrders);
+                    orders.add(order);
+                }
+
+        } catch (JSONException e) {
+            System.out.println("ERROR ON PARSE: " + e.getMessage());
+
+        }
+
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
+     */
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
+
+}

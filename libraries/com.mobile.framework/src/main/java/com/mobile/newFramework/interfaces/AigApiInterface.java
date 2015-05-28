@@ -2,6 +2,9 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.forms.SuperForm;
 import com.mobile.newFramework.forms.SuperFormData;
+import com.mobile.newFramework.objects.OrderTracker;
+import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
+import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
@@ -73,6 +76,16 @@ public interface AigApiInterface {
 
     @GET("/")
     void getForgotPasswordForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getCreateAddressForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getEditAddressForm(Callback<BaseResponse<SuperForm>> callback);
+
+    @GET("/")
+    void getNewsletterForm(Callback<BaseResponse<SuperForm>> callback);
+
     /*
      * ## CATALOG
      */
@@ -195,6 +208,21 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+
+    @GET("/")
+    void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
     
     /*
      * ## RATINGS/REVIEWS
@@ -209,5 +237,18 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+
+    /*
+    * ## ORDERS
+    */
+    @GET("/")
+    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
+
+    /*
+* ## ORDERS
+*/
+    @GET("/")
+    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperOrder>> callback);
 
 }
