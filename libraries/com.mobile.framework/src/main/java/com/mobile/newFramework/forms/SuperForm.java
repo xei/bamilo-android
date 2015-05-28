@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.Image;
 import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONArray;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
  */
 public class SuperForm implements IJSONSerializable, Parcelable {
 
+    private ArrayList<Form> forms;
 
     public SuperForm() {
     }
@@ -32,7 +34,7 @@ public class SuperForm implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        final ArrayList<Form> forms = new ArrayList<>();
+        forms = new ArrayList<>();
         JSONArray dataObject;
 
         try {
@@ -77,7 +79,7 @@ public class SuperForm implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeList(forms);
     }
 
     /**
@@ -85,7 +87,8 @@ public class SuperForm implements IJSONSerializable, Parcelable {
      * @param in
      */
     private SuperForm(Parcel in) {
-
+        forms = new ArrayList<Form>();
+        in.readList(forms, Image.class.getClassLoader());
     }
     
     /**
@@ -100,5 +103,12 @@ public class SuperForm implements IJSONSerializable, Parcelable {
             return new SuperForm[size];
         }
     };
-    
+
+    public ArrayList<Form> getForms() {
+        return forms;
+    }
+
+    public void setForms(ArrayList<Form> forms) {
+        this.forms = forms;
+    }
 }

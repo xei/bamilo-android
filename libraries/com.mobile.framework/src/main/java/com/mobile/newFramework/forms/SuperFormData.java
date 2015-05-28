@@ -18,6 +18,7 @@ import org.json.JSONObject;
  */
 public class SuperFormData implements IJSONSerializable, Parcelable {
 
+    private FormData formData;
 
     public SuperFormData() {
     }
@@ -34,7 +35,7 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
             int dataArrayLength = dataArray.length();
             for (int i = 0; i < dataArrayLength; ++i) {
                 JSONObject formDataObject = dataArray.getJSONObject(i);
-                FormData formData = new FormData();
+                formData = new FormData();
                 formData.initialize(formDataObject);
 //                JumiaApplication.INSTANCE.getFormDataRegistry().put(formData.getAction(), formData);
             }
@@ -66,7 +67,7 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeValue(formData);
     }
 
     /**
@@ -74,7 +75,7 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
      * @param in
      */
     private SuperFormData(Parcel in) {
-
+        formData = (FormData) in.readValue(FormData.class.getClassLoader());
     }
     
     /**
@@ -89,5 +90,12 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
             return new SuperFormData[size];
         }
     };
-    
+
+    public FormData getFormData() {
+        return formData;
+    }
+
+    public void setFormData(FormData formData) {
+        this.formData = formData;
+    }
 }

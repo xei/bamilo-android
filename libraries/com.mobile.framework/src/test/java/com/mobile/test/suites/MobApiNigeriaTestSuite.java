@@ -12,7 +12,6 @@ import com.mobile.test.GetImageResolutionsTest;
 import com.mobile.test.GetProductBundleTest;
 import com.mobile.test.GetProductDetailTest;
 import com.mobile.test.GetProductOffersTest;
-import com.mobile.test.GetProductReviewsTest;
 import com.mobile.test.GetShopInShopTest;
 import com.mobile.test.GetShoppingCartTest;
 import com.mobile.test.LoginCustomerTest;
@@ -41,7 +40,6 @@ import org.junit.runners.Suite;
         // PRODUCT DETAIL
         GetProductDetailTest.class,
         GetProductBundleTest.class,
-        GetProductReviewsTest.class,
         GetProductOffersTest.class,
         // CAMPAIGN
         GetCampaignTest.class,

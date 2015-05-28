@@ -17,7 +17,8 @@ import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductOffers;
-import com.mobile.newFramework.objects.product.ProductRatingPage;
+import com.mobile.newFramework.objects.product.SuperProductRatingPage;
+import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -132,10 +133,11 @@ public interface AigApiInterface {
     void getProductBundle(Callback<BaseResponse<ProductBundle>> callback);
 
     @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    @GET("/")
     void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperValidProducts>> callback);
 
     /*
      * ## SEARCH SUGGESTIONS
@@ -228,7 +230,7 @@ public interface AigApiInterface {
      * ## RATINGS/REVIEWS
      */
     @GET("/")
-    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperProductRatingPage>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -245,9 +247,6 @@ public interface AigApiInterface {
     @GET("/")
     void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
 
-    /*
-* ## ORDERS
-*/
     @GET("/")
     void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperOrder>> callback);
 

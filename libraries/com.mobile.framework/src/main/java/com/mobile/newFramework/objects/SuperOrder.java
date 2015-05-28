@@ -20,7 +20,7 @@ public class SuperOrder implements IJSONSerializable {
     private int currentPage = 0;
     private int numPages = 0;
     private int totalOrders = 0;
-    ArrayList<Order> orders;
+    private ArrayList<Order> orders;
 
 
     /**
@@ -76,4 +76,36 @@ public class SuperOrder implements IJSONSerializable {
         return RequiredJson.METADATA;
     }
 
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getNumPages() {
+        return numPages;
+    }
+
+    public void setNumPages(int numPages) {
+        this.numPages = numPages;
+    }
+
+    public int getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(int totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public ArrayList<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
+    }
 }
