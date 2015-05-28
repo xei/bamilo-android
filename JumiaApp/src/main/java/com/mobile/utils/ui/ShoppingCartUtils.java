@@ -3,8 +3,8 @@ package com.mobile.utils.ui;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.objects.ShoppingCart;
 
 import java.math.BigDecimal;
 

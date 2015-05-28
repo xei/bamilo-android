@@ -25,7 +25,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.Customer;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
@@ -37,6 +36,7 @@ import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.Customer;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -550,10 +550,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
+
+                    // TODO VALIDATE THIS REQUEST
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
                     triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
+
                     // Measure to escape the web view thread
                     handler.post(new Runnable() {
                         @Override

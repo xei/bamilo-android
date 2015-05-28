@@ -307,7 +307,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
      * @author sergiopereira
      */
     public boolean hasNewsletterSubscriptions(){
-        return (mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0) ? true : false;
+        return mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0;
     }
 
 

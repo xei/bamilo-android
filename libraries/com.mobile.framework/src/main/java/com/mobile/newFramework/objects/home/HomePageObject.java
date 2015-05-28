@@ -80,7 +80,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-//        Log.i(TAG, "ON INITIALIZE");
         // Get name
         mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
         // Get teaser
@@ -103,7 +102,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
             // Create an array with an order
             for (TeaserGroupType type : TeaserGroupType.values()) {
                 BaseTeaserGroupType group = map.get(type.getType());
-//                Log.i(TAG, "ON ADD GROUP: " + type + " DATA IS NULL: " + (group == null));
                 // Append case not null
                 if (group != null) {
                     mTeasers.add(group);
@@ -140,20 +138,19 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         BaseTeaserGroupType teaserGroup = null;
         // Get type
         TeaserGroupType type = TeaserGroupType.byString(groupType);
-//        Log.i(TAG, "CREATE TEASER GROUP: " + type.toString() + " " + json.toString());
         // Validate group type
         try {
             if( type != TeaserGroupType.UNKNOWN) {
                 teaserGroup = new BaseTeaserGroupType(type, json);
             } else {
-//                Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
+                //Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
             }
         } catch (JSONException e) {
-//            Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
+            //Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
         // Discard groups with items
         if (teaserGroup != null && !teaserGroup.hasData()) {
-//            Log.w(TAG, "WARNING: DISCARDED GROUP EMPTY: " + groupType);
+            //Log.w(TAG, "WARNING: DISCARDED GROUP EMPTY: " + groupType);
             teaserGroup = null;
         }
         // Return the group or null

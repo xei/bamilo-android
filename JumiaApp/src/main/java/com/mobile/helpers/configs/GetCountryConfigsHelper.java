@@ -3,11 +3,9 @@
  */
 package com.mobile.helpers.configs;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -50,7 +48,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         mRequester.onRequestComplete(bundle);
@@ -61,7 +59,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

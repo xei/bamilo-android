@@ -42,6 +42,11 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
 
     @Override
+    protected String getRequestUrl() {
+        return JumiaApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
+    }
+
+    @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
         new GetAvailableCountries(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
@@ -74,7 +79,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         mEditor.apply();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
@@ -99,7 +104,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         }
 
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }

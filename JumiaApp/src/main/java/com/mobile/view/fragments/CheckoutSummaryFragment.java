@@ -22,8 +22,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -31,6 +29,8 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.ShoppingCart;
+import com.mobile.newFramework.objects.ShoppingCartItem;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
@@ -382,7 +382,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     /**
      * Show the shipping fee
      *
-     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.framework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
+     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
      * @author sergiopereira
      */
     @Deprecated

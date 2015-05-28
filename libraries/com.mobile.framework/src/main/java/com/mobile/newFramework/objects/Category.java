@@ -1,17 +1,17 @@
 package com.mobile.newFramework.objects;
 
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.TextUtils;
-
-import com.mobile.framework.rest.RestConstants;
+import java.util.ArrayList;
 
 /**
  * Class that represents an Category. Composed by id, name and
@@ -163,13 +163,11 @@ public class Category implements IJSONSerializable, Parcelable {
             mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
             mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG, "");
             mHasChildren = jsonObject.optBoolean(RestConstants.JSON_HAS_CHILDREN);
-
             mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
-//            if ( TextUtils.isEmpty( mPath )) mPath = calcCategoryPath(); TODO
-
+            if (TextUtils.isEmpty(mPath)) mPath = calcCategoryPath();
             JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
             if (childrenArray != null) {
-                mChildren = new ArrayList<Category>();
+                mChildren = new ArrayList<>();
                 for (int i = 0; i < childrenArray.length(); ++i) {
                     JSONObject childObject = childrenArray.getJSONObject(i);
                     Category child = new Category();
@@ -179,7 +177,6 @@ public class Category implements IJSONSerializable, Parcelable {
                 }
             }
         } catch (JSONException e) {
-//            Log.w(TAG, "WARNING: ON INIT CATEGORY" , e);
             return false;
         }
         return true;
@@ -289,7 +286,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mName = in.readString();
         mUrlKey = in.readString();
         mApiUrl = in.readString();
-        mChildren = new ArrayList<Category>();
+        mChildren = new ArrayList<>();
         in.readList(mChildren, Category.class.getClassLoader());
         mParent = (Category) in.readValue(Category.class.getClassLoader());
     }

@@ -26,8 +26,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.PaymentMethodForm;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -38,6 +36,8 @@ import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.Customer;
+import com.mobile.newFramework.objects.ShoppingCart;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -159,6 +159,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void triggerGetShoppingCartItems() {
+        // TODO VALIDATE THIS REQUEST
         // Defining event as having no priority
         Bundle args = new Bundle();
         args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
@@ -541,6 +542,7 @@ public class CheckoutWebFragment extends BaseFragment {
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
 
+                    // TODO VALIDATE THIS REQUEST
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
