@@ -8,6 +8,7 @@ import com.mobile.framework.objects.BaseProduct;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.framework.utils.TextUtils;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class ProductBundleProduct extends BaseProduct implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = LogTagHelper.create(ProductBundleProduct.class);
+    public static final String TAG = LogTagHelper.create(ProductBundleProduct.class);
 
     private String bundleProductMaxPrice;
     private double bundleProductMaxPriceDouble;
@@ -56,13 +57,12 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
         bundleProductSavingPercentage = "";
         isChecked = true;
         simpleSelectedPos = 0;
-        bundleSimples = new ArrayList<ProductBundleSimple>();
+        bundleSimples = new ArrayList<>();
     }
 
     public ProductBundleProduct(JSONObject jsonObject) {
         this();
         initialize(jsonObject);
-
     }
 
     /*
@@ -81,23 +81,23 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
             brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
             String maxPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG,"");
 
-            if (!"".equals(maxPriceJSON)) {
+            if (!TextUtils.isEmpty(maxPriceJSON)) {
                 if (!CurrencyFormatter.isNumber(maxPriceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
                 bundleProductMaxPriceDouble = Double.parseDouble(maxPriceJSON);
-//                bundleProductMaxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON); TODO
+                bundleProductMaxPrice = maxPriceJSON;
             }
 
             bundleProductMaxPriceConverted = jsonObject.getDouble(RestConstants.JSON_MAX_PRICE_CONVERTED_TAG);
             bundleProductImage = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
             String priceJSON = jsonObject.optString(RestConstants.JSON_PRICE_TAG, "");
-            if (!"".equals(priceJSON)) {
+            if (!TextUtils.isEmpty(priceJSON)) {
                 if (!CurrencyFormatter.isNumber(priceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
                 priceDouble = Double.parseDouble(priceJSON);
-//                price = CurrencyFormatter.formatCurrency(priceJSON); TODO
+                price = priceJSON;
             }
 
             priceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
@@ -105,26 +105,25 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
 
             String maxSpecialPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "");
 
-            if (!"".equals(maxSpecialPriceJSON)) { //TODO TextUtils.isEmpty
+            if (!TextUtils.isEmpty(maxSpecialPriceJSON)) {
 
                 if (!CurrencyFormatter.isNumber(maxSpecialPriceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
                 bundleProductMaxSpecialPriceDouble = Double.parseDouble(maxSpecialPriceJSON);
-//                bundleProductMaxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialPriceJSON); TODO
+                bundleProductMaxSpecialPrice = maxSpecialPriceJSON;
             }
 
             bundleProductMaxSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG);
 
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "");
 
-            if (!"".equals(specialPriceJSON)) { //TODO TextUtils.isEmpty
+            if (!TextUtils.isEmpty(specialPriceJSON)) {
                 if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
                 specialPriceDouble = Double.parseDouble(specialPriceJSON);
-//                specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON); TODO
-
+                specialPrice = specialPriceJSON;
             }
 
             specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
@@ -302,7 +301,7 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
         specialPriceConverted = in.readDouble();
         bundleProductSavingPercentage = in.readString();
         if (in.readByte() == 0x01) {
-            bundleSimples = new ArrayList<ProductBundleSimple>();
+            bundleSimples = new ArrayList<>();
             in.readList(bundleSimples, ProductBundleSimple.class.getClassLoader());
         } else {
             bundleSimples = null;

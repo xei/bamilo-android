@@ -12,7 +12,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.cart.RemoveAllShoppingCart;
+import com.mobile.newFramework.requests.cart.AddMultipleItemsShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
 import org.json.JSONObject;
@@ -71,7 +71,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new RemoveAllShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddMultipleItemsShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override

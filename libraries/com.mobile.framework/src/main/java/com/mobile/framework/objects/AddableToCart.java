@@ -15,10 +15,9 @@ package com.mobile.framework.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.TextUtils;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -68,8 +67,8 @@ public class AddableToCart extends BaseProduct {
 		knownVariations = new ArrayList<>();
 		priceDouble = 0.0;
 		specialPriceDouble = 0.0;
-		price = CurrencyFormatter.formatCurrency("0");
-		specialPrice = CurrencyFormatter.formatCurrency("0");
+		price = "0";
+		specialPrice = "0";
 		maxSavingPercentage = 0.0;
 		url = "";
 		favoriteSelected = NO_SIMPLE_SELECTED;
@@ -241,7 +240,7 @@ public class AddableToCart extends BaseProduct {
 	}
 
 	public boolean hasSimples() {
-		return (simples != null && simples.size() > 1) ? true : false;
+		return simples != null && simples.size() > 1;
 	}
 
 	public void setSelectedSimpleValue(String value) {
@@ -308,7 +307,7 @@ public class AddableToCart extends BaseProduct {
      * @author sergiopereira
      */
     public boolean hasDiscount() {
-        return specialPriceConverted > 0 ? true : false;
+        return specialPriceConverted > 0;
     }
     
     /**
@@ -334,7 +333,7 @@ public class AddableToCart extends BaseProduct {
      * @author sergiopereira
      */
     public boolean hasSizeGuide() {
-        return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
+        return TextUtils.isEmpty(mSizeGuideUrl);
     }
 
 	/*
@@ -383,20 +382,20 @@ public class AddableToCart extends BaseProduct {
 		isNew = in.readByte() == 1;
 		selectedSimple = in.readInt();
 		isComplete = in.readByte() == 1;
-		imageList = new ArrayList<String>();
+		imageList = new ArrayList<>();
 		in.readList(imageList, String.class.getClassLoader());
-		simples = new ArrayList<ProductSimple>();
+		simples = new ArrayList<>();
 		in.readList(simples, ProductSimple.class.getClassLoader());
-		variations = new ArrayList<Variation>();
+		variations = new ArrayList<>();
 		in.readList(variations, Variation.class.getClassLoader());
-		knownVariations = new ArrayList<String>();
+		knownVariations = new ArrayList<>();
 		in.readList(knownVariations, String.class.getClassLoader());
 		favoriteSelected = in.readInt();
 		hasVariations = in.readByte() == 1;
 		mSelectedSimpleValue = in.readString();
 		mChooseVariationWarning = in.readByte() == 1;
 		mStockVariationWarning = in.readByte() == 1;
-        mCategories = new ArrayList<String>();
+        mCategories = new ArrayList<>();
         in.readList(mCategories, String.class.getClassLoader());
         mRatingsAverage = in.readDouble();
         mSizeGuideUrl = in.readString();

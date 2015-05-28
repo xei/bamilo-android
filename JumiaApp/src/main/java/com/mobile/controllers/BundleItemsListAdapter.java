@@ -15,6 +15,7 @@ import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.newFramework.objects.product.ProductBundleProduct;
 import com.mobile.newFramework.objects.product.ProductBundleSimple;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -122,9 +123,9 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
         if(item.hasDiscount() ){
-            holder.mPrice.setText(item.getBundleProductMaxSpecialPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxSpecialPrice()));
         } else {
-            holder.mPrice.setText(item.getBundleProductMaxPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxPrice()));
         }
         
         // Set listener and tags

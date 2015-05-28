@@ -38,7 +38,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
 
     @Override
-    protected String getRequestUrl() {
+    protected String getRequestUrl(Bundle args) {
         return JumiaApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
     }
 

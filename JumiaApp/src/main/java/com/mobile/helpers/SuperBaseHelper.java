@@ -34,7 +34,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     protected RequestBundle createRequest(Bundle args) {
         // Create builder
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
-                .setUrl(getRequestUrl())
+                .setUrl(getRequestUrl(args))
                 .setCache(mEventType.cacheTime);
         // Validate data
         if (args != null) {
@@ -48,7 +48,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return requestBundleBuilder.build();
     }
 
-    protected String getRequestUrl() {
+    protected String getRequestUrl(Bundle args) {
         return RemoteService.completeUri(Uri.parse(mEventType.action)).toString();
     }
 

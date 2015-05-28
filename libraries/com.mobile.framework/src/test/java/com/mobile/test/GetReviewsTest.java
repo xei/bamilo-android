@@ -3,8 +3,8 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
-import com.mobile.newFramework.objects.ProductRatingPage;
-import com.mobile.newFramework.objects.ProductReviewComment;
+import com.mobile.newFramework.objects.product.ProductRatingPage;
+import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetReviews;

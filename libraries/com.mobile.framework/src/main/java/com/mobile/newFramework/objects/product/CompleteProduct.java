@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects.product;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -11,6 +10,7 @@ import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.Seller;
 
@@ -26,9 +26,8 @@ import java.util.Iterator;
  * Class that manages the full representation of a given product.
  *
  * @author GuilhermeSilva
- *
  */
-public class CompleteProduct extends BaseProduct implements com.mobile.newFramework.objects.IJSONSerializable {
+public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     private String idCatalogConfig;
     private String attributeSetId;
@@ -76,7 +75,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         variations = new ArrayList<>();
         known_variations = new ArrayList<>();
         description = "";
-//        specialPrice = CurrencyFormatter.formatCurrency("0");
+        specialPrice = "0";
         maxSavingPercentage = 0.0;
         ratingsAverage = 0.0;
         ratingsCount = 0;
@@ -87,7 +86,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         productBundle = null;
         hasSeller = false;
         hasBundle = false;
-        seller = new com.mobile.newFramework.objects.Seller();
+        seller = new Seller();
         minPriceOfferDouble = 0.0;
         minPriceOffer = "";
         minPriceOfferConverted = 0.0;
@@ -95,6 +94,12 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         relatedProducts = new ArrayList<>();
         mShortDescription = "";
         mProductSpecs = new ArrayList<>();
+    }
+
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.OBJECT_DATA;
     }
 
     /*
@@ -123,7 +128,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
                 throw new JSONException("Price is not a number!");
             }
             priceDouble = Double.parseDouble(priceJSON);
-//            price = CurrencyFormatter.formatCurrency(priceJSON); TODO
+            price = priceJSON;
             priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
@@ -132,7 +137,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
             }
             specialPriceDouble = Double.parseDouble(specialPriceJSON);
 
-//            specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON); TODO
+            specialPrice = specialPriceJSON;
             specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
             String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
@@ -145,13 +150,13 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
             JSONObject ratingsSummaryObject = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
 
-            if(ratingsSummaryObject != null){
+            if (ratingsSummaryObject != null) {
                 ratingsAverage = ratingsSummaryObject.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG, .0);
                 ratingsCount = ratingsSummaryObject.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG, 0);
                 reviewsCount = ratingsSummaryObject.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG, 0);
             }
 
-//          JSONObject ratingsTotalObject = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+//          JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
 //          if (ratingsTotalObject != null) {
 //              ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
 //              ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
@@ -162,7 +167,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
 
 			/*
-			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
+            if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
 				maxSavingPercentage = (double) Math.round(specialPriceDouble * 100 / priceDouble);
 			}
 			*/
@@ -235,17 +240,17 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
             hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
             hasSeller = jsonObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
-            if(hasSeller){
+            if (hasSeller) {
                 JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
-                if(sellerObject != null){
-                    seller = new com.mobile.newFramework.objects.Seller(sellerObject);
+                if (sellerObject != null) {
+                    seller = new Seller(sellerObject);
                 }
             }
 
             //Offers
             JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
 
-            if(offers != null){
+            if (offers != null) {
 
                 String offerPriceJSON = offers.optString(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
 
@@ -254,7 +259,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
                 }
                 minPriceOfferDouble = Double.parseDouble(offerPriceJSON);
 
-//                minPriceOffer = CurrencyFormatter.formatCurrency(offerPriceJSON); TODO
+                minPriceOffer = offerPriceJSON;
 
 
                 minPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
@@ -263,25 +268,25 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
             // Handle related products
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
-            if(relatedProductsJsonArray != null){
-                for(int i = 0; i<relatedProductsJsonArray.length();i++){
+            if (relatedProductsJsonArray != null) {
+                for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
                     RelatedProduct relatedProduct = new RelatedProduct();
                     JSONObject relatedProductJsonObject = relatedProductsJsonArray.optJSONObject(i);
-                    if(relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)){
+                    if (relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)) {
                         getRelatedProducts().add(relatedProduct);
                     }
                 }
             }
             // PDV bucket info
             JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.JSON_SUMMARY_TAG);
-            if(summaryObject != null){
+            if (summaryObject != null) {
                 description = summaryObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
                 mShortDescription = summaryObject.optString(RestConstants.JSON_SHORT_DESC_TAG, "");
             }
 
             JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.JSON_SPECIFICATIONS_TAG);
-            if(specificationsArray != null && specificationsArray.length() > 0){
-                for (int i = 0; i < specificationsArray.length() ; i++) {
+            if (specificationsArray != null && specificationsArray.length() > 0) {
+                for (int i = 0; i < specificationsArray.length(); i++) {
                     ProductDetailsSpecification prodSpecs = new ProductDetailsSpecification();
                     prodSpecs.initialize(specificationsArray.getJSONObject(i));
                     mProductSpecs.add(prodSpecs);
@@ -303,8 +308,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
 
         } catch (JSONException e) {
-
-//            Log.e(TAG, "Error initializing the complete product", e);
+            //Log.e(TAG, "Error initializing the complete product", e);
             return false;
         }
         return true;
@@ -318,11 +322,6 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
     @Override
     public JSONObject toJSON() {
         return null;
-    }
-
-    @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
     }
 
     /**
@@ -417,72 +416,63 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
     }
 
     /**
-     * @param idCatalogConfig
-     *            the idCatalogConfig to set
+     * @param idCatalogConfig the idCatalogConfig to set
      */
     public void setIdCatalogConfig(String idCatalogConfig) {
         this.idCatalogConfig = idCatalogConfig;
     }
 
     /**
-     * @param attributeSetId
-     *            the attributeSetId to set
+     * @param attributeSetId the attributeSetId to set
      */
     public void setAttributeSetId(String attributeSetId) {
         this.attributeSetId = attributeSetId;
     }
 
     /**
-     * @param activatedAt
-     *            the activatedAt to set
+     * @param activatedAt the activatedAt to set
      */
     public void setActivatedAt(String activatedAt) {
         this.activatedAt = activatedAt;
     }
 
     /**
-     * @param description
-     *            the description to set
+     * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @param categories
-     *            the categories to set
+     * @param categories the categories to set
      */
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
 
     /**
-     * @param attributes
-     *            the attributes to set
+     * @param attributes the attributes to set
      */
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * @param shipmentData
-     *            the shipmentData to set
+     * @param shipmentData the shipmentData to set
      */
     public void setShipmentData(HashMap<String, String> shipmentData) {
         this.shipmentData = shipmentData;
     }
 
     /**
-     * @param simples
-     *            the simples to set
+     * @param simples the simples to set
      */
     public void setSimples(ArrayList<ProductSimple> simples) {
         this.simples = simples;
     }
 
     /**
-     * @param imageList
-     *            the imageList to set
+     * @param imageList the imageList to set
      */
     public void setImageList(ArrayList<String> imageList) {
         this.imageList = imageList;
@@ -503,7 +493,6 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
     }
 
     /**
-     * @return the ratings count
      * @return
      */
     public Integer getRatingsCount() {
@@ -558,6 +547,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
     /**
      * Get size guide URL
+     *
      * @return
      */
     public String getSizeGuideUrl() {
@@ -566,17 +556,18 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
     /**
      * Set size guide
+     *
      * @return
      */
     public boolean hasSizeGuide() {
-        return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
+        return TextUtils.isEmpty(mSizeGuideUrl);
     }
 
-    public com.mobile.newFramework.objects.product.ProductBundle getProductBundle() {
+    public ProductBundle getProductBundle() {
         return productBundle;
     }
 
-    public void setProductBundle(com.mobile.newFramework.objects.product.ProductBundle productBundle) {
+    public void setProductBundle(ProductBundle productBundle) {
         this.productBundle = productBundle;
     }
 
@@ -604,11 +595,11 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         this.reviewsCount = reviewsCount;
     }
 
-    public com.mobile.newFramework.objects.Seller getSeller() {
+    public Seller getSeller() {
         return seller;
     }
 
-    public void setSeller(com.mobile.newFramework.objects.Seller seller) {
+    public void setSeller(Seller seller) {
         this.seller = seller;
     }
 
@@ -661,7 +652,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
      */
 
     /*
-	 * (non-Javadoc)
+     * (non-Javadoc)
 	 *
 	 * @see android.os.Parcelable#describeContents()
 	 */
@@ -677,7 +668,7 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest,flags);
+        super.writeToParcel(dest, flags);
         dest.writeList(categories);
         dest.writeMap(attributes);
         dest.writeMap(shipmentData);
@@ -709,22 +700,22 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
     private CompleteProduct(Parcel in) {
         super(in);
-        categories = new ArrayList<String>();
+        categories = new ArrayList<>();
         in.readList(categories, String.class.getClassLoader());
 
-        attributes = new HashMap<String, String>();
+        attributes = new HashMap<>();
         in.readMap(attributes, String.class.getClassLoader());
 
-        shipmentData = new HashMap<String, String>();
+        shipmentData = new HashMap<>();
         in.readMap(shipmentData, String.class.getClassLoader());
 
-        simples = new ArrayList<ProductSimple>();
+        simples = new ArrayList<>();
         in.readList(simples, ProductSimple.class.getClassLoader());
 
-        imageList = new ArrayList<String>();
+        imageList = new ArrayList<>();
         in.readList(imageList, null);
 
-        variations = new ArrayList<Variation>();
+        variations = new ArrayList<>();
         in.readList(variations, Variation.class.getClassLoader());
 
         url = in.readString();
@@ -740,14 +731,14 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
         isNew = in.readByte() == 1;
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
-        seller = in.readParcelable(com.mobile.newFramework.objects.Seller.class.getClassLoader());
-        productBundle = in.readParcelable(com.mobile.newFramework.objects.product.ProductBundle.class.getClassLoader());
+        seller = in.readParcelable(Seller.class.getClassLoader());
+        productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
         minPriceOfferDouble = in.readDouble();
         minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();
         totalOffers = in.readInt();
 
-        mProductSpecs = new ArrayList<ProductDetailsSpecification>();
+        mProductSpecs = new ArrayList<>();
         in.readList(mProductSpecs, ProductDetailsSpecification.class.getClassLoader());
 
         mShortDescription = in.readString();
@@ -765,4 +756,3 @@ public class CompleteProduct extends BaseProduct implements com.mobile.newFramew
 
 
 }
-

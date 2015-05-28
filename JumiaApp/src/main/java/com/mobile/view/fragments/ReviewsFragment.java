@@ -34,6 +34,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -454,12 +455,12 @@ public class ReviewsFragment extends BaseFragment {
     private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial, String unitPrice, String specialPrice) {
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
             // display only the special price
-            productPriceSpecial.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.GONE);
         } else {
             // display special and normal price
-            productPriceSpecial.setText(specialPrice);
-            productPriceNormal.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.VISIBLE);
             productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }

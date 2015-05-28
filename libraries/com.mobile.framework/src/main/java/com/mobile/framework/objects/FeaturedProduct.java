@@ -3,15 +3,15 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Class that represents the server side product. Contains id, url, name, image
@@ -64,7 +64,7 @@ public class FeaturedProduct extends FeaturedItem implements Parcelable {
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(priceJSON)) {
-			    price = CurrencyFormatter.formatCurrency(priceJSON);
+			    price = priceJSON;
 			} else {
 			    throw new JSONException("Price is not a number!");
 			}

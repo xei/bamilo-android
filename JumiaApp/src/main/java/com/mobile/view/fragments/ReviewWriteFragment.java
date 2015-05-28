@@ -28,6 +28,7 @@ import com.mobile.forms.Form;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetRatingFormHelper;
@@ -528,12 +529,12 @@ public class ReviewWriteFragment extends BaseFragment {
             String unitPrice, String specialPrice) {
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
             // display only the special price
-            productPriceSpecial.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.GONE);
         } else {
             // display special and normal price
-            productPriceSpecial.setText(specialPrice);
-            productPriceNormal.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.VISIBLE);
             productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
                     | Paint.STRIKE_THRU_TEXT_FLAG);

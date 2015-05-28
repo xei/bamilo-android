@@ -39,15 +39,13 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
      * Complete product bundle empty constructor.
      */
     public ProductBundle() {
-
         bundleName = "";
         bundleId = "";
         bundlePrice = "";
         bundlePriceDouble = 0.0;
         bundlePriceConverted = 0.0;
         bundleLeaderPos = 0;
-        bundleProducts = new ArrayList<ProductBundleProduct>();
-
+        bundleProducts = new ArrayList<>();
     }
 
     /*
@@ -70,7 +68,7 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
                 throw new JSONException("Price is not a number!");
             }
             bundlePriceDouble = Double.parseDouble(priceJSON);
-//            bundlePrice = CurrencyFormatter.formatCurrency(priceJSON); TODO
+            bundlePrice = priceJSON;
 
             bundlePriceConverted = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
             bundleLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
@@ -179,7 +177,7 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
         bundlePriceConverted = in.readDouble();
         bundleLeaderPos = in.readInt();
         if (in.readByte() == 0x01) {
-            bundleProducts = new ArrayList<ProductBundleProduct>();
+            bundleProducts = new ArrayList<>();
             in.readList(bundleProducts, ProductBundleProduct.class.getClassLoader());
         } else {
             bundleProducts = null;

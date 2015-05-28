@@ -15,6 +15,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.products.GetProductHelper;
@@ -251,12 +252,12 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         } else*/
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
             // display only the special price
-            mProductPriceSpecial.setText(unitPrice);
+            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mProductPriceNormal.setVisibility(View.GONE);
         } else {
             // display special and normal price
-            mProductPriceSpecial.setText(specialPrice);
-            mProductPriceNormal.setText(unitPrice);
+            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            mProductPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mProductPriceNormal.setVisibility(View.VISIBLE);
             mProductPriceNormal.setPaintFlags(mProductPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }

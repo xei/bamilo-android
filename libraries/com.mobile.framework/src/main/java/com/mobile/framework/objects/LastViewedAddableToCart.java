@@ -40,7 +40,7 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
                 throw new JSONException("Price is not a number!");
             }
             priceDouble = Double.parseDouble(priceJSON);
-            price = CurrencyFormatter.formatCurrency(priceJSON);
+            price = priceJSON;
             priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
@@ -49,7 +49,7 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
             }
             specialPriceDouble = Double.parseDouble(specialPriceJSON);
 
-            specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+            specialPrice = specialPriceJSON;
             specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
             String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);

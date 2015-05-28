@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.LastViewed;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -93,9 +94,9 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
         if(item.getSpecialPriceDouble() != 0d){
-            holder.mPrice.setText(item.getSpecialPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
         } else {
-            holder.mPrice.setText(item.getPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
         }
         // Set listener and tags
         holder.mContainer.setTag(item.getUrl());
