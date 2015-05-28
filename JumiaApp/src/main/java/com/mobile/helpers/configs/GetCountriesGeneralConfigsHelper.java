@@ -74,10 +74,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.apply();
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
         mRequester.onRequestComplete(bundle);
     }
@@ -86,7 +83,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
 
-        Bundle bundle = new Bundle();
+        Bundle bundle = generateErrorBundle(baseResponse);
 
         // TODO: VALIDATE THIS METHOD ????
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -99,9 +96,6 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
         }
 
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 

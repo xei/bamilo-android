@@ -75,16 +75,13 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         // Save all new sections
         SectionsTablesHelper.saveSections(sections);
 
-        Bundle bundle = new Bundle();
+        Bundle bundle = generateSuccessBundle(baseResponse);
 
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
 
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
         mRequester.onRequestComplete(bundle);
     }
@@ -92,10 +89,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
 

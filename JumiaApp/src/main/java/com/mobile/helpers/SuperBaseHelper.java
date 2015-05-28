@@ -10,6 +10,7 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 
 import java.io.Serializable;
@@ -102,5 +103,20 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     protected abstract EventTask setEventTask();
 
 
+    public Bundle generateSuccessBundle(BaseResponse baseResponse){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
+        return bundle;
+    }
+
+    public Bundle generateErrorBundle(BaseResponse baseResponse){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        return bundle;
+    }
 
 }
