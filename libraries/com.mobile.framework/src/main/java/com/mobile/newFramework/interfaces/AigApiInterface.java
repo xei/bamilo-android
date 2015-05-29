@@ -9,7 +9,6 @@ import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.catalog.Catalog;
-import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;

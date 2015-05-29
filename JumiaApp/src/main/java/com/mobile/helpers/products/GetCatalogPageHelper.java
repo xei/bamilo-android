@@ -11,7 +11,6 @@ import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -139,7 +138,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         Catalog catalog = (Catalog) baseResponse.metadata.getData();
 
         Bundle bundle = generateErrorBundle(baseResponse);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
+       if(catalog != null) bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
         mRequester.onRequestError(bundle);
     }
 

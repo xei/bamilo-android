@@ -7,7 +7,6 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -65,13 +64,8 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        return productBySku;
-    }
-
-    @Override
-    protected RequestBundle createRequest(Bundle args) {
         productBySku = (HashMap<String, String>) args.getSerializable(ADD_ITEMS);
-        return super.createRequest(args);
+        return createContentValues(productBySku);
     }
 
     @Override
@@ -101,7 +95,16 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         mRequester.onRequestError(bundle);
     }
 
-
+    private Map<String, String> createContentValues(HashMap<String, String> values) {
+        int counter = 0;
+        Map<String, String> data = new HashMap<>();
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            data.put(getProductListSkuTag(counter), entry.getKey());
+            data.put(getProductListPTag(counter), entry.getValue());
+            counter++;
+        }
+        return data;
+    }
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
@@ -116,7 +119,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        return bundle;
 //    }
-
+//
 //    private ContentValues createContentValues(HashMap<String, String> values) {
 //        ContentValues valuesToReturn = new ContentValues();
 //        int counter = 0;
