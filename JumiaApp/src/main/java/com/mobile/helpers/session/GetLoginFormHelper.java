@@ -43,7 +43,7 @@ public class GetLoginFormHelper extends SuperBaseHelper {
     protected String getRequestUrl(Bundle args) {
         String url = EventType.GET_LOGIN_FORM_FALLBACK_EVENT.action;
         try {
-            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EventType.GET_LOGIN_FORM_EVENT.action);
+            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(mEventType.action);
             url = formData.getUrl();
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET LOGIN FORM FALLBACK", e);
