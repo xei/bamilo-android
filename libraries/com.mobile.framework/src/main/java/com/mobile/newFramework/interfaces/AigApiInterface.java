@@ -19,6 +19,7 @@ import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductOffers;
 import com.mobile.newFramework.objects.product.SuperProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -127,6 +128,9 @@ public interface AigApiInterface {
      */
 
     @GET("/")
+    void searchProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+
+    @GET("/")
     void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
     @GET("/")
@@ -143,8 +147,8 @@ public interface AigApiInterface {
      * ## SEARCH SUGGESTIONS
      */
 
-    @GET("/search/suggest")
-    void getSearchSuggestions(Callback<BaseResponse> callback);
+    @GET("/")
+    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
 
     /*
      * ## CART

@@ -55,15 +55,21 @@ public class AigHttpClient {
     }
 
     private static void setCookies(OkHttpClient okHttpClient, Context context) {
+//        if(context != null) {
+//            // TODO: COOKIES
+//            //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+//            //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+//            //okHttpClient.setCookieHandler(cookieManager);
+//            AigPersistentCookieStore cookieManager = new AigPersistentCookieStore();
+//            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+//            CookieHandler.setDefault(cookieManager);
+//        }
+//        else
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
         }
-        // TODO: COOKIES
-        //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
-        //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-        //okHttpClient.setCookieHandler(cookieManager);
         //
         okHttpClient.setCookieHandler(CookieHandler.getDefault());
     }

@@ -11,10 +11,8 @@ public interface IJSONSerializable {
 	
 	/**
 	 * Initializes a jsonobject to the needed objects
-	 * @param obj
-	 * @return
 	 */
-	public boolean initialize(JSONObject obj);
+	boolean initialize(JSONObject obj);
 
 
 
