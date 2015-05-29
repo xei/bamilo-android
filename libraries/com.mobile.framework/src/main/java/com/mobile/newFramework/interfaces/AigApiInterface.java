@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.configs.ApiInformation;
@@ -93,7 +94,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<CatalogPage>> callback);
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
 
     /*
      * ## CATEGORIES

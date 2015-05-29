@@ -23,6 +23,7 @@ public class GetCatalogFilteredTest extends BaseTestCase {
         // Bundle
         requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/wedding/")
+//                .setUrl("https://www.jumia.ci/mobapi/v1.7/search/?q=buogogiogio&sort=popularity&maxitems=24&page=1") //To test featured box
                 .setCache(EventType.GET_PRODUCTS_EVENT.cacheTime)
                 .setData(data)
                 .build();
