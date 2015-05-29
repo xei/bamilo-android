@@ -32,7 +32,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
 
-        Serializable evenTask = args.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        Serializable evenTask = args != null ? args.getSerializable(Constants.BUNDLE_EVENT_TASK) : null;
         mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
 
         RequestBundle requestBundle = createRequest(args);
