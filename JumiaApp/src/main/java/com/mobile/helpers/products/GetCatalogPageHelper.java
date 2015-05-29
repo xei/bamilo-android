@@ -13,6 +13,7 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -108,11 +109,11 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         //
-        CatalogPage catalog = (CatalogPage) baseResponse.metadata.getData();
-        catalog.setPage(mCurrentPage);
+        Catalog catalog = (Catalog) baseResponse.metadata.getData();
+        catalog.getCatalogPage().setPage(mCurrentPage);
         // Persist related Items when initially loading products for POPULARITY tab
         if (isToSaveRelatedItems) {
-            final ArrayList<Product> aux = new ArrayList<>(catalog.getProducts());
+            final ArrayList<Product> aux = new ArrayList<>(catalog.getCatalogPage().getProducts());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -125,22 +126,20 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
             }).start();
         }
         //
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog);
+        Bundle bundle = generateSuccessBundle(baseResponse);
+
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getCatalogPage());
         mRequester.onRequestComplete(bundle);
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        // TODO: FeaturedBox
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+
+        Catalog catalog = (Catalog) baseResponse.metadata.getData();
+
+        Bundle bundle = generateErrorBundle(baseResponse);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
         mRequester.onRequestError(bundle);
     }
 

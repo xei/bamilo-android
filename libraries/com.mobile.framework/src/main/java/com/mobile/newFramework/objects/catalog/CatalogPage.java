@@ -62,6 +62,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         //...
     }
 
+    public CatalogPage(JSONObject metadataObject) throws JSONException{
+        this();
+        initialize(metadataObject);
+    }
+
     /*
      * ############### IJSON ###############
      */
