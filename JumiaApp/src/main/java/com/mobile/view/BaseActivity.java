@@ -48,7 +48,6 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -61,10 +60,11 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.search.GetSearchSuggestionHelper;
+import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
@@ -867,7 +867,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
                 // Get suggestion
-                SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
+                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
                 // Clean edit text
@@ -876,7 +876,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 // Collapse search view
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Save query
-                GetSearchSuggestionHelper.saveSearchQuery(text);
+                GetSearchSuggestionsHelper.saveSearchQuery(text);
                 // Show query
                 showSearchCategory(text);
                 if (JumiaApplication.INSTANCE != null) {
@@ -926,7 +926,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     // Save query
-                    GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
                     // Show query
                     showSearchCategory(searchTerm);
                     return true;
@@ -1072,8 +1072,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
 
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle,
+        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
                 new IResponseCallback() {
 
                     @Override
@@ -1101,7 +1101,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void processErrorSearchEvent(Bundle bundle) {
         Log.d(TAG, "SEARCH COMPONENT: ON ERROR");
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
         Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
@@ -1145,9 +1145,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void processSuccessSearchEvent(Bundle bundle) {
         Log.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        List<SearchSuggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        List<Suggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
+        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
 
         // Validate current objects

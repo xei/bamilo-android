@@ -1,16 +1,16 @@
 package com.mobile.framework.database;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.SearchSuggestion;
+import com.mobile.newFramework.objects.search.Suggestion;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -70,7 +70,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 
     /**
      * Insert current search query
-     * @param query
      * @return true or false
      * @author sergiopereira
      */
@@ -87,17 +86,16 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         values.put(SearchRecentQueriesTableHelper._QUERY, query);
         long result = db.insert(SearchRecentQueriesTableHelper.TABLE_NAME, null, values);
         db.close();
-        return (result == -1) ? false : true;
+        return result == -1;
     }
      
     /**
      * Get the recent queries
-     * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
      * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getAllRecentQueries() throws InterruptedException{
+    public static synchronized ArrayList<Suggestion> getAllRecentQueries() throws InterruptedException{
 		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
@@ -111,12 +109,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     
     /**
      * Get the recent queries
-     * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
      * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
+    public static synchronized ArrayList<Suggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
 		Log.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
@@ -131,8 +128,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 
     /**
      * Update the recent query
-     * @param query
-     * @return 
      * @author sergiopereira
      */
     public static synchronized boolean updateRecentQuery(String query) {
@@ -149,25 +144,24 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         values.put(SearchRecentQueriesTableHelper._TIME_STAMP, timestamp);
         long result = db.update(TABLE_NAME, values, _QUERY + " LIKE ?", new String[] {query});
         db.close();
-        return (result == -1) ? false : true;
+        return result == -1;
     }
     
     
     /**
      * Get the recent queries
-     * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
      * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String query) throws InterruptedException{
+    public static synchronized ArrayList<Suggestion> getRecentQueries(String query) throws InterruptedException{
     	Log.i(TAG, "SQL QUERY: " + query);
     	// Lock access
     	DarwinDatabaseSemaphore.getInstance().getLock();
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		// Get results
-		ArrayList<SearchSuggestion> recentSuggestions = new ArrayList<SearchSuggestion>();
+		ArrayList<Suggestion> recentSuggestions = new ArrayList<>();
 		// 
         try {
             Cursor cursor = db.rawQuery(query, null);
@@ -179,7 +173,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
                 while (!cursor.isAfterLast()) {
                     String recentSuggestion = cursor.getString(0);
                     Log.d(TAG, "QUERY: " + recentSuggestion);
-                    SearchSuggestion searchSuggestion = new SearchSuggestion();
+                    Suggestion searchSuggestion = new Suggestion();
                     searchSuggestion.setResult(recentSuggestion);
                     searchSuggestion.setIsRecentSearch(true);
                     // Save product

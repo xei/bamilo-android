@@ -17,13 +17,13 @@ import com.mobile.controllers.SearchSuggestionsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.SearchRecentQueriesTableHelper;
-import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.search.GetSearchSuggestionHelper;
+import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -47,7 +47,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
 
     private SearchSuggestionsAdapter mRecentSearchesAdapter;
     
-    private ArrayList<SearchSuggestion> mRecentSearches;
+    private ArrayList<Suggestion> mRecentSearches;
     
     private ListView mRecentSearchesList;
     
@@ -112,7 +112,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         // Get Recent Searches
         Log.i(TAG, "LOAD RECENT SEARCHES");
         showFragmentLoading();
-        new GetSearchSuggestionHelper(this);
+        new GetSearchSuggestionsHelper(this);
     }
 
 
@@ -226,19 +226,19 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Log.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            ArrayList<SearchSuggestion> response = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (response != null && response instanceof ArrayList) {
+            ArrayList<Suggestion> response = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            if (response != null) {
                 mRecentSearches = response;
-                if (mRecentSearches != null && !mRecentSearches.isEmpty()) {
+                if (!mRecentSearches.isEmpty()) {
                     mRecentSearchesAdapter = new SearchSuggestionsAdapter(mContext, mRecentSearches);
                     mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
                     mRecentSearchesList.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                            SearchSuggestion selectedSuggestion = (SearchSuggestion) mRecentSearchesList.getItemAtPosition(position);
+                            Suggestion selectedSuggestion = (Suggestion) mRecentSearchesList.getItemAtPosition(position);
                             String text = selectedSuggestion.getResult();
-                            GetSearchSuggestionHelper.saveSearchQuery(text);
+                            GetSearchSuggestionsHelper.saveSearchQuery(text);
                             executeSearchRequest(text);
                         }
                     });
