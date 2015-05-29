@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.RelatedItemsTableHelper;
 import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
@@ -137,8 +138,14 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
         Catalog catalog = (Catalog) baseResponse.metadata.getData();
 
+
         Bundle bundle = generateErrorBundle(baseResponse);
-       if(catalog != null) bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
+
+        if(baseResponse.error.getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
+            bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
+        }
+
         mRequester.onRequestError(bundle);
     }
 
