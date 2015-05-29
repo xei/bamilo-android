@@ -1,6 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.newFramework.forms.SuperForm;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.SuperFormData;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
@@ -56,37 +56,37 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getLoginForm(Callback<BaseResponse<SuperForm>> callback);
+    void getLoginForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
     void getFormsIndex(Callback<BaseResponse<SuperFormData>> callback);
 
     @GET("/")
-    void getRatingForm(Callback<BaseResponse<SuperForm>> callback);
+    void getRatingForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getReviewForm(Callback<BaseResponse<SuperForm>> callback);
+    void getReviewForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getSellerReviewForm(Callback<BaseResponse<SuperForm>> callback);
+    void getSellerReviewForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getRegisterForm(Callback<BaseResponse<SuperForm>> callback);
+    void getRegisterForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getSignupForm(Callback<BaseResponse<SuperForm>> callback);
+    void getSignupForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getForgotPasswordForm(Callback<BaseResponse<SuperForm>> callback);
+    void getForgotPasswordForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getCreateAddressForm(Callback<BaseResponse<SuperForm>> callback);
+    void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getEditAddressForm(Callback<BaseResponse<SuperForm>> callback);
+    void getEditAddressForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getNewsletterForm(Callback<BaseResponse<SuperForm>> callback);
+    void getNewsletterForm(Callback<BaseResponse<Form>> callback);
 
     /*
      * ## CATALOG

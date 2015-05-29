@@ -29,8 +29,6 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.forms.Form;
-import com.mobile.forms.FormData;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
@@ -46,11 +44,13 @@ import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -569,8 +569,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             TrackerDelegator.trackLoginSuccessful(params);
 
             // Persist user email or empty that value after successfully login
-            CustomerPreferences.setRememberedEmail(baseActivity,
-                    rememberEmailCheck.isChecked() ? customer.getEmail() : null);
+            CustomerPreferences.setRememberedEmail(baseActivity, rememberEmailCheck.isChecked() ? customer.getEmail() : null);
         }
 
         cameFromRegister = false;

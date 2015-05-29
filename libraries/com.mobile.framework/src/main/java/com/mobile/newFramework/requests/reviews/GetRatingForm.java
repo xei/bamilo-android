@@ -2,17 +2,14 @@ package com.mobile.newFramework.requests.reviews;
 
 import android.content.Context;
 
-import com.mobile.framework.utils.EventType;
-import com.mobile.newFramework.forms.SuperForm;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetRatingForm extends BaseRequest<SuperForm> {
-
-    EventType type = EventType.GET_FORM_RATING_EVENT;
+public class GetRatingForm extends BaseRequest<Form> {
 
     public GetRatingForm(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

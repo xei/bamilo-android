@@ -11,7 +11,6 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -83,10 +82,10 @@ public class GetLoginHelper extends SuperBaseHelper {
         JumiaApplication.CUSTOMER = (Customer) baseResponse.metadata.getData();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
-
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         // TODO: NEXT STEP
         // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
-
+        //
         mRequester.onRequestComplete(bundle);
     }
 

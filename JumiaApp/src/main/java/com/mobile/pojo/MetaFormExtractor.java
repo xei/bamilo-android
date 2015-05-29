@@ -1,10 +1,11 @@
 package com.mobile.pojo;
 
-import com.mobile.forms.FormField;
-import com.mobile.forms.FormFieldMeta;
-import com.mobile.forms.IFormField;
+
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
+import com.mobile.newFramework.forms.FormField;
+import com.mobile.newFramework.forms.FormFieldMeta;
+import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.forms.InputType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class MetaFormExtractor {
 	
 	private static ArrayList<IFormField> generateMetaField( ArrayList<FormField> fields, String metaFieldKey ) {
 		IFormField foundMetaField = null;
-		for( IFormField field: fields ) {
+		for(IFormField field: fields ) {
 			if ( field.getKey().equals( metaFieldKey))
 				foundMetaField = field;
 		}
