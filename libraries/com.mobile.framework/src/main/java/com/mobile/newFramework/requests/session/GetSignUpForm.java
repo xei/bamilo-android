@@ -18,7 +18,7 @@ public class GetSignUpForm extends BaseRequest<Form> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.getSignupForm(this);
+        service.getSignUpForm(this);
     }
 }
 

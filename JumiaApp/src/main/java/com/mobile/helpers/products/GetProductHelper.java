@@ -31,8 +31,6 @@ public class GetProductHelper extends SuperBaseHelper {
     
     private static String TAG = GetProductHelper.class.getSimpleName();
     
-    //private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_EVENT;
-    
     public static final String PRODUCT_URL = "productUrl";
 
 

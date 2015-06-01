@@ -1,3 +1,18 @@
+package com.mobile.newFramework.forms;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.TextUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import de.akquinet.android.androlog.Log;
+
+
 /**
  * FieldValidation.java
  * form field validation class. Manages if the form field is required, the max and minimum number of characters and the regular expression.
@@ -8,23 +23,6 @@
  * 2012/06/18
  * <p/>
  * Copyright (c) Rocket Internet All Rights Reserved
- */
-package com.mobile.newFramework.forms;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
-/**
- * Class that represents the form fiel validation parameters.
- * @author GuilhermeSilva
- *
  */
 public class FieldValidation implements IJSONSerializable, Parcelable {
     private static final String TAG = FieldValidation.class.getName();
@@ -63,7 +61,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
         //
         required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
-        System.out.println("code1message :  jsonObject : " + jsonObject.toString() + " required : " + required);
+        Log.i(TAG, "code1message :  jsonObject : " + jsonObject.toString() + " required : " + required);
         if (!required) {
             JSONObject mJSONObject = null;
 
@@ -75,9 +73,9 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
             if (mJSONObject != null) {
                 required = mJSONObject.optBoolean(RestConstants.JSON_REQUIRED_VALUE_TAG, false);
-                System.out.println("code1message : " + required);
+                Log.i(TAG, "code1message : " + required);
                 message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG, "");
-                System.out.println("code1message : " + message);
+                Log.i(TAG, "code1message : " + message);
 
                 // TODO : If contains message is required
                 if (message != null && !message.equals("")) required = true;
@@ -90,9 +88,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG);
 
         // CASE "match: {pattern: "/^[0-9]+$/u" }"
-        //FIXME
-//      if (TextUtils.isEmpty(regex)) {
-        if (regex == null || regex.length() == 0) {
+        if (TextUtils.isEmpty(regex)) {
             //this extra parsing option exists because
             JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
             if (null != matchObject) {
@@ -137,7 +133,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
      */
     @Override
@@ -192,9 +188,9 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * Create parcelable 
+     * Create parcelable
      */
-    public static final Creator<FieldValidation> CREATOR = new Creator<FieldValidation>() {
+    public static final Parcelable.Creator<FieldValidation> CREATOR = new Parcelable.Creator<FieldValidation>() {
         public FieldValidation createFromParcel(Parcel in) {
             return new FieldValidation(in);
         }

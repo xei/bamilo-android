@@ -30,8 +30,6 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     private static String TAG = GetProductBundleHelper.class.getSimpleName();
 
-    //private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_BUNDLE;
-
     public static final String PRODUCT_SKU = "productSku";
 
 

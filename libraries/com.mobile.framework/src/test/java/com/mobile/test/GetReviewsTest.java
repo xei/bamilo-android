@@ -3,11 +3,11 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
-import com.mobile.newFramework.objects.product.SuperProductRatingPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.reviews.GetReviews;
+import com.mobile.newFramework.requests.reviews.GetProductReviews;
 
 import java.util.HashMap;
 
@@ -35,7 +35,7 @@ public class GetReviewsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetReviews(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductReviews(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {
@@ -47,9 +47,9 @@ public class GetReviewsTest extends BaseTestCase {
     public void onRequestComplete(BaseResponse response) {
         System.out.println("TEST SUCCESS: " + response.success);
         System.out.println("############# REVIEWS #############");
-        SuperProductRatingPage superRating = (SuperProductRatingPage) response.metadata.getData();
-        assertNotNull(superRating);
-        for (ProductReviewComment review : superRating.getRating().getReviewComments()) {
+        ProductRatingPage rating = (ProductRatingPage) response.metadata.getData();
+        assertNotNull(rating);
+        for (ProductReviewComment review : rating.getReviewComments()) {
             assertNotNull(review);
             System.out.println(review.toString());
         }

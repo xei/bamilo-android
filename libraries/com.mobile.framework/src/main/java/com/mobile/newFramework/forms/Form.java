@@ -62,7 +62,7 @@ public class Form implements IJSONSerializable, Parcelable {
         this.subForms = new HashMap<>();
         this.mFieldKeyMap = new HashMap<>();
         this.fieldMapping = null;
-        this.setEventType(null);
+        this.sortForm(null);
     }
 
     /**
@@ -109,12 +109,14 @@ public class Form implements IJSONSerializable, Parcelable {
 
             fields.clear();
             subForms.clear();
-            
+
+            /*
             if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
                 fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
             } else if (FormsMapping.genericMapping.containsKey(id)) {
                 fieldMapping = FormsMapping.genericMapping.get(id);
             }
+            */
 
             // Case FIELDS
             JSONArray fieldsArray = null;
@@ -160,15 +162,15 @@ public class Form implements IJSONSerializable, Parcelable {
                 subForms.clear();
                 subForms = null;
             }
-            
+
+            /*
             if (null != fieldMapping) {
                 // Remove unsorted fields.
                 FormsMapping.removeUnsortedFields(this, fieldMapping);
-
                 System.out.println("initialize: Sorting fields");
                 Collections.sort(fields, new FormsMapping.byFieldOrder());
-                
             }
+            */
             
         } catch (JSONException e) {
             System.out.println("initialize: error parsing jsonobject"+ e);
@@ -210,6 +212,30 @@ public class Form implements IJSONSerializable, Parcelable {
     public Map<String, FormField> getFieldKeyMap(){
         return mFieldKeyMap;
     }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void sortForm(EventType eventType) {
+        this.eventType = eventType;
+        sortFormFields();
+    }
+
+    private void sortFormFields() {
+        if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
+            fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
+        } else if (FormsMapping.genericMapping.containsKey(id)) {
+            fieldMapping = FormsMapping.genericMapping.get(id);
+        }
+
+        if (null != fieldMapping) {
+            // Remove unsorted fields.
+            FormsMapping.removeUnsortedFields(this, fieldMapping);
+            System.out.println("initialize: Sorting fields");
+            Collections.sort(fields, new FormsMapping.byFieldOrder());
+        }
+    }
     
     @Override
     public int describeContents() {
@@ -242,14 +268,6 @@ public class Form implements IJSONSerializable, Parcelable {
         in.readArrayList(FormField.class.getClassLoader());
         in.readMap(fieldMapping, null);
         eventType = (EventType) in.readSerializable();
-    }
-    
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
     }
 
     /**

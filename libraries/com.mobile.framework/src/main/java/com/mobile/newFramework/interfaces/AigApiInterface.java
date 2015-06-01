@@ -1,7 +1,7 @@
 package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.SuperFormData;
+import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.objects.SuperOrder;
@@ -17,7 +17,7 @@ import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductOffers;
-import com.mobile.newFramework.objects.product.SuperProductRatingPage;
+import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.user.Customer;
@@ -59,7 +59,7 @@ public interface AigApiInterface {
     void getLoginForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getFormsIndex(Callback<BaseResponse<SuperFormData>> callback);
+    void getFormsIndex(Callback<BaseResponse<FormsIndex>> callback);
 
     @GET("/")
     void getRatingForm(Callback<BaseResponse<Form>> callback);
@@ -74,7 +74,7 @@ public interface AigApiInterface {
     void getRegisterForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getSignupForm(Callback<BaseResponse<Form>> callback);
+    void getSignUpForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
     void getForgotPasswordForm(Callback<BaseResponse<Form>> callback);
@@ -234,7 +234,7 @@ public interface AigApiInterface {
      * ## RATINGS/REVIEWS
      */
     @GET("/")
-    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperProductRatingPage>> callback);
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -243,6 +243,9 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @GET("/")
+    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
 
     /*

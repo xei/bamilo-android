@@ -35,8 +35,6 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     private static String TAG = GetCatalogPageHelper.class.getSimpleName();
 
-    //private static final EventType EVENT_TYPE = EventType.GET_PRODUCTS_EVENT;
-
     public static final String SEARCH_NO_RESULTS = "SEARCH_NO_RESULTS";
 
     public static final String CATALOG_ARGUMENTS = "catalog_arguments";
