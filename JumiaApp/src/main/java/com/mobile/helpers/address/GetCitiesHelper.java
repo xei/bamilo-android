@@ -65,9 +65,9 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        //Cities cities = (Cities) baseResponse.metadata.getData();
+        //Cities cities = (Cities) baseResponse.getMetadata.getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
         bundle.putString(CUSTOM_TAG, customTag);
@@ -76,7 +76,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

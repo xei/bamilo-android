@@ -24,8 +24,6 @@ import de.akquinet.android.androlog.Log;
 public class GetShippingMethodsHelper extends SuperBaseHelper {
     
     private static String TAG = GetShippingMethodsHelper.class.getSimpleName();
-    
-    // private static final EventType EVENT_TYPE = EventType.GET_SHIPPING_METHODS_EVENT;
 
     @Override
     public EventType getEventType() {
@@ -44,8 +42,8 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
-        Form form = (Form) baseResponse.metadata.getData();
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Form form = (Form) baseResponse.getMetadata().getData();
         form.sortForm(mEventType);
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
@@ -81,7 +79,7 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

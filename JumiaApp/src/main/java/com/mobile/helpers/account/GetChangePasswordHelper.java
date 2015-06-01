@@ -54,7 +54,7 @@ public class GetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save credentials
         Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
         mContentValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
@@ -66,7 +66,7 @@ public class GetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

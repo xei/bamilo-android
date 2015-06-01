@@ -50,9 +50,9 @@ public class GetRegionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        //Regions regions = (Regions) baseResponse.metadata.getData();
+        //Regions regions = (Regions) baseResponse.getMetadata.getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
         mRequester.onRequestComplete(bundle);
@@ -60,7 +60,7 @@ public class GetRegionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

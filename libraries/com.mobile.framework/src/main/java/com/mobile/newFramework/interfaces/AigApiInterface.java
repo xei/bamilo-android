@@ -110,6 +110,10 @@ public interface AigApiInterface {
     @GET("/")
     void getPaymentMethodsForm(Callback<BaseResponse<SuperGetPaymentMethodsForm>> callback);
 
+    @GET("/")
+    void getBillingForm(Callback<BaseResponse<BaseResponse>> callback);
+
+
     /*
      * ## CATALOG
      */
@@ -252,8 +256,6 @@ public interface AigApiInterface {
     @GET("/")
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
 
-<<<<<<< HEAD
-=======
     @GET("/")
     void getAddressesList(Callback<BaseResponse<Addresses>> callback);
 
@@ -281,8 +283,7 @@ public interface AigApiInterface {
 
     @GET("/")
     void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperAddressCity>> callback);
-    
->>>>>>> 17443cfbfb2379165d1ce580b6783d5a0fee93fb
+
     /*
      * ## RATINGS/REVIEWS
      */
@@ -312,26 +313,13 @@ public interface AigApiInterface {
 
     /*
     * ## CHECKOUT
-<<<<<<< HEAD
     */
 
     @GET("/")
+    void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
     void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
-
-    @GET("/")
-    void getShippingForm(Callback<BaseResponse<BaseResponse>> callback);
-
-    /*
-     * ## ADDRESSES
-     */
-
-    @GET("/")
-    void getRegions(Callback<BaseResponse<BaseResponse>> callback);
-
-    @GET("/")
-    void getCities(Callback<BaseResponse<BaseResponse>> callback);
-=======
-     */
 
     @FormUrlEncoded
     @POST("/")
@@ -344,6 +332,5 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCheckoutFinish>> callback);
->>>>>>> 17443cfbfb2379165d1ce580b6783d5a0fee93fb
 
 }

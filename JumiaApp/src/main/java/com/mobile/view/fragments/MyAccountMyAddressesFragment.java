@@ -16,8 +16,8 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.address.GetMyAddressesHelper;
-import com.mobile.helpers.address.SetDefaultBillingAddress;
-import com.mobile.helpers.address.SetDefaultShippingAddress;
+import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -138,7 +138,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         if(!shippingAddressId.equals(addresses.getShippingAddress().getId() + "")) {
             // Create content values from form
             ContentValues shippingContentValues = new ContentValues();
-            shippingContentValues.put(SetDefaultShippingAddress.ID, shippingAddressId);
+            shippingContentValues.put(SetDefaultShippingAddressHelper.ID, shippingAddressId);
             triggerSetDefaultShippingAddress(shippingContentValues);
         } else {
             isSetShippingComplete = true;
@@ -148,7 +148,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         if(!billingAddressId.equals(addresses.getBillingAddress().getId() + "")) {
             // Create content values from form
             ContentValues billingContentValues = new ContentValues();
-            billingContentValues.put(SetDefaultBillingAddress.ID, billingAddressId);
+            billingContentValues.put(SetDefaultBillingAddressHelper.ID, billingAddressId);
             triggerSetDefaultBillingAddress(billingContentValues);
         } else {
             isSetBillingComplete = true;
@@ -184,14 +184,14 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     private void triggerSetDefaultShippingAddress(ContentValues contentValues) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetDefaultShippingAddress.FORM_CONTENT_VALUES, contentValues);
-        triggerContentEvent(new SetDefaultShippingAddress(), bundle, this);
+        bundle.putParcelable(SetDefaultShippingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        triggerContentEvent(new SetDefaultShippingAddressHelper(), bundle, this);
     }
 
     private void triggerSetDefaultBillingAddress(ContentValues contentValues){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetDefaultBillingAddress.FORM_CONTENT_VALUES, contentValues);
-        triggerContentEvent(new SetDefaultBillingAddress(), bundle, this);
+        bundle.putParcelable(SetDefaultBillingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        triggerContentEvent(new SetDefaultBillingAddressHelper(), bundle, this);
     }
 
     /**

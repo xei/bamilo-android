@@ -20,9 +20,6 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
- * @author Manuel Silva
- * 
  */
 public class GetLoginHelper extends SuperBaseHelper {
     

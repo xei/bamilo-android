@@ -46,9 +46,9 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        //Terms terms = (Terms) baseResponse.metadata.getData();
+        //Terms terms = (Terms) baseResponse.getMetadata.getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         //bundle.putString(Constants.BUNDLE_RESPONSE_KEY, terms.toString());
         mRequester.onRequestComplete(bundle);
@@ -56,7 +56,7 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

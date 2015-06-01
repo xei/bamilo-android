@@ -59,9 +59,9 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
-        Customer customer = (Customer) baseResponse.metadata.getData();
+        Customer customer = (Customer) baseResponse.getMetadata.getData();
 
         // TODO : CREATE NEW OBJECT
 //        // Parse the response
@@ -115,7 +115,7 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 
