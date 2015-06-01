@@ -105,9 +105,9 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
-        Catalog catalog = (Catalog) baseResponse.metadata.getData();
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         catalog.getCatalogPage().setPage(mCurrentPage);
         // Persist related Items when initially loading products for POPULARITY tab
         if (isToSaveRelatedItems) {
@@ -132,14 +132,14 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
 
-        Catalog catalog = (Catalog) baseResponse.metadata.getData();
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
 
 
         Bundle bundle = generateErrorBundle(baseResponse);
 
-        if(baseResponse.error.getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
+        if(baseResponse.getError().getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
             bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
         }

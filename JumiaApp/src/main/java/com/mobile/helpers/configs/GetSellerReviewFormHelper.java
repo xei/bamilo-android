@@ -51,8 +51,8 @@ public class GetSellerReviewFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
-        Form form = (Form) baseResponse.metadata.getData();
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Form form = (Form) baseResponse.getMetadata().getData();
         form.sortForm(mEventType);
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
@@ -61,7 +61,7 @@ public class GetSellerReviewFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

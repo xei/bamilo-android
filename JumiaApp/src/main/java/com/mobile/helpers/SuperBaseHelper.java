@@ -112,7 +112,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public Bundle generateErrorBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

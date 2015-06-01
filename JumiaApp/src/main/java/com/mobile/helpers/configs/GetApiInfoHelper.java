@@ -14,7 +14,6 @@ import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.Section;
 import com.mobile.newFramework.objects.Sections;
@@ -61,9 +60,9 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Get api info
-        ApiInformation apiInformation = (ApiInformation) baseResponse.metadata.getData();
+        ApiInformation apiInformation = (ApiInformation) baseResponse.getMetadata().getData();
         // Save mob api version
         JumiaApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
         // Get md5 sections
@@ -88,7 +87,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

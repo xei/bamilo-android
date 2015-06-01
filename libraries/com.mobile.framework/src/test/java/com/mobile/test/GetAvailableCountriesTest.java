@@ -34,9 +34,9 @@ public class GetAvailableCountriesTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("TEST SUCCESS: " + response.hadSuccess());
         System.out.println("############# COUNTRIES #############");
-        AvailableCountries countries = (AvailableCountries) response.metadata.getData();
+        AvailableCountries countries = (AvailableCountries) response.getMetadata().getData();
         assertNotNull(countries);
         for (CountryObject country : countries) {
             assertNotNull(country);
@@ -49,7 +49,7 @@ public class GetAvailableCountriesTest extends BaseTestCase {
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.success);
+        System.out.println("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

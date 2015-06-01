@@ -69,14 +69,14 @@ public class GetShoppingCartRemoveItemHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
 
         // TODO: VALIDATE THIS ???
         // Don't continue if isToUpdateCart was set as false on generateRequestBundle()
         if (!isToUpdateCart) return;
 
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = (ShoppingCart) baseResponse.metadata.getData();
+        ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Log.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
@@ -92,9 +92,9 @@ public class GetShoppingCartRemoveItemHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);

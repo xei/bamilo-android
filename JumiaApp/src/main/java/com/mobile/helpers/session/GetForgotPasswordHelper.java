@@ -46,13 +46,13 @@ public class GetForgotPasswordHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

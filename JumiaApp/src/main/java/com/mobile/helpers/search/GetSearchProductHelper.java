@@ -58,9 +58,9 @@ public class GetSearchProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
-        CompleteProduct product = (CompleteProduct) baseResponse.metadata.getData();
+        CompleteProduct product = (CompleteProduct) baseResponse.getMetadata().getData();
         //
         Bundle bundle = super.generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
@@ -69,7 +69,7 @@ public class GetSearchProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 

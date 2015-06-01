@@ -6,7 +6,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -43,8 +42,8 @@ public class GetHomeHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
-        HomePageObject homePageObject = (HomePageObject) baseResponse.metadata.getData();
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        HomePageObject homePageObject = (HomePageObject) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, homePageObject);
         mRequester.onRequestComplete(bundle);
@@ -52,7 +51,7 @@ public class GetHomeHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);;
         mRequester.onRequestError(bundle);
     }

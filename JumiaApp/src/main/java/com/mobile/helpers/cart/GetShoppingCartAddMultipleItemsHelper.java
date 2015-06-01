@@ -3,7 +3,6 @@ package com.mobile.helpers.cart;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -14,12 +13,8 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddMultipleItemsShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,9 +72,9 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = (ShoppingCart) baseResponse.metadata.getData();
+        ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Log.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
@@ -93,7 +88,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         handleError(baseResponse, bundle);
         mRequester.onRequestError(bundle);
@@ -181,7 +176,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     //@Override
     protected void handleSuccess(BaseResponse baseResponse, Bundle bundle) {
 //        JSONObject successObject = messagesObject.optJSONObject(RestConstants.JSON_SUCCESS_TAG);
-        Map<String, String> successMessages = baseResponse.successMessages;
+        Map<String, String> successMessages = baseResponse.getSuccessMessages();
         if (successMessages != null && !successMessages.isEmpty()) {
             bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, checkAddedProducts(successMessages));
         }
@@ -190,7 +185,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     //@Override
     protected void handleError(BaseResponse baseResponse, Bundle bundle) {
-        Map<String, List<String>> errorMessages = baseResponse.errorMessages;
+        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         if (errorMessages != null && !errorMessages.isEmpty()) {
             bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, checkNotAddedProducts(errorMessages));
         }

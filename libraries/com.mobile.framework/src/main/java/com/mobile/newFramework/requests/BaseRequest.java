@@ -39,20 +39,20 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void success(BaseResponse baseResponse, Response response) {
-        System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.success);
+        System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.hadSuccess());
         // Validate requester and discard flag
         if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
             System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Validate success response
-        else if (baseResponse.success) {
+        else if (baseResponse.hadSuccess()) {
             this.mRequester.onRequestComplete(baseResponse);
         }
         // Validate error response
         else {
             JumiaError jumiaError = new JumiaError();
             jumiaError.setErrorCode(ErrorCode.REQUEST_ERROR);
-            baseResponse.error = jumiaError;
+            baseResponse.setError(jumiaError);
             this.mRequester.onRequestError(baseResponse);
         }
     }
@@ -67,7 +67,7 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Error response
         else {
             BaseResponse errorResponse = new BaseResponse();
-            errorResponse.error = ((AigBaseException) error.getCause()).getError();
+            errorResponse.setError(((AigBaseException) error.getCause()).getError());
             this.mRequester.onRequestError(errorResponse);
         }
     }

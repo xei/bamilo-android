@@ -60,8 +60,8 @@ public class ResponseConverter implements Converter{
             throws JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 
         BaseResponse<?> response = new BaseResponse<>();
-        response.success = responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false);
-        if(response.success) {
+        response.setSuccess(responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false));
+        if(response.hadSuccess()) {
             parseSuccessResponse(response, responseJsonObject, dataType);
         } else {
             parseUnsuccessResponse(response, responseJsonObject, dataType);
@@ -73,26 +73,26 @@ public class ResponseConverter implements Converter{
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         //body data
-        baseResponse.metadata.setData(getData(responseJsonObject, dataType));
+        baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
         //TODO change to use method getMessages when response from API is coming correctly
 
         //Messages
         JSONObject messagesJsonObject = responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);
-        baseResponse.message = handleSuccessMessage(messagesJsonObject);
+        baseResponse.setMessage(handleSuccessMessage(messagesJsonObject));
 
-        baseResponse.successMessages = Success.createMap(messagesJsonObject);
-        baseResponse.errorMessages = Errors.createErrorMessageMap(messagesJsonObject);
+        baseResponse.setSuccessMessages(Success.createMap(messagesJsonObject));
+        baseResponse.setErrorMessages(Errors.createErrorMessageMap(messagesJsonObject));
 
         //Sessions
-        baseResponse.sessions = getSessions(responseJsonObject);
+        baseResponse.setSessions(getSessions(responseJsonObject));
         //md5
-        baseResponse.metadata.md5 = getMd5(responseJsonObject);
+        baseResponse.getMetadata().setMd5(getMd5(responseJsonObject));
     }
 
     protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         //body data
         try{
-            baseResponse.metadata.setData(getData(responseJsonObject, dataType));
+            baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
         } catch (ClassNotFoundException | InstantiationException | NullPointerException | JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -100,8 +100,8 @@ public class ResponseConverter implements Converter{
         }
 
         //TODO change to use method getMessages when response from API is coming correctly
-        baseResponse.errorMessages = Errors.createErrorMessageMap(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG));
-        baseResponse.sessions = getSessions(responseJsonObject);
+        baseResponse.setErrorMessages(Errors.createErrorMessageMap(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG)));
+        baseResponse.setSessions(getSessions(responseJsonObject));
     }
 
     protected IJSONSerializable getData(JSONObject responseJsonObject, Type dataType)

@@ -11,7 +11,6 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryObject;
@@ -50,9 +49,9 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
 
-        AvailableCountries availableCountries = (AvailableCountries) baseResponse.metadata.getData();
+        AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
 
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -81,7 +80,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
 
         Bundle bundle = generateErrorBundle(baseResponse);
 
