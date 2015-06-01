@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.checkout.CheckoutService;
 
 import org.json.JSONObject;
 
@@ -27,27 +28,11 @@ public class CheckoutStepManager {
      * @param jsonObject The json response to get the next step
      * @return {@link FragmentType}
      */
-    public static FragmentType getNextCheckoutStep(JSONObject jsonObject){
-        // Get the next step from json 
-        String nextStep = null;
-        
+    public static FragmentType getNextCheckoutFragment(JSONObject jsonObject){
         try {
-            // Validate data
-            if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
-                // From native checkout tag
-                JSONObject checkoutJson = jsonObject.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
-                nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-            } else if(jsonObject.has(RestConstants.JSON_NEXT_STEP_TAG)){
-                // From next step tag
-                nextStep = jsonObject.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-            } else if (jsonObject.has(RestConstants.JSON_DATA_TAG) &&
-                        jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG) != null &&
-                        jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG).has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)) {
-                // From data and native checkout tag
-                JSONObject dataJson = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
-                JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
-                nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-            }
+
+            // Get the next step from json
+            String nextStep = getNextCheckoutStep(jsonObject);
                          
             // Validate value
             if(nextStep != null) return getNextFragment(nextStep);
@@ -58,7 +43,29 @@ public class CheckoutStepManager {
             return FragmentType.UNKNOWN;
         }
     }
-    
+
+    public static String getNextCheckoutStep(JSONObject jsonObject){
+        String nextStep = null;
+
+        if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
+            // From native checkout tag
+            JSONObject checkoutJson = jsonObject.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
+            nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
+        } else if(jsonObject.has(RestConstants.JSON_NEXT_STEP_TAG)){
+            // From next step tag
+            nextStep = jsonObject.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
+        } else if (jsonObject.has(RestConstants.JSON_DATA_TAG) &&
+                jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG) != null &&
+                jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG).has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)) {
+            // From data and native checkout tag
+            JSONObject dataJson = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
+            JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
+            nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
+        }
+
+        return nextStep;
+    }
+
     /**
      * Method used to get the Fragment type from a constant 
      * @param nextStep The next step

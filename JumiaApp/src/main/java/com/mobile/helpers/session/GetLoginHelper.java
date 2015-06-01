@@ -84,7 +84,7 @@ public class GetLoginHelper extends SuperBaseHelper {
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         // TODO: NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
         //
         mRequester.onRequestComplete(bundle);
     }
@@ -133,7 +133,7 @@ public class GetLoginHelper extends SuperBaseHelper {
 //
 //        JumiaApplication.CUSTOMER = new Customer(jsonUser);
 //        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER );
-//        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+//        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGIN_EVENT);
 //        return bundle;
 //    }

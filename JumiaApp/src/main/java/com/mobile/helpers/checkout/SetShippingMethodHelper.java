@@ -64,7 +64,7 @@ public class SetShippingMethodHelper extends BaseHelper {
         Log.d(TAG, "PARSE BUNDLE");
         // Get and set next step
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
         // Get order summary from response
         try {
             OrderSummary orderSummary = new OrderSummary(jsonObject);

@@ -56,7 +56,7 @@
 //            // Get order
 //            OrderSummary orderSummary = new OrderSummary(jsonObject);
 //            // Get next step
-//            bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+//            bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
 //            // Set order
 //            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, orderSummary);
 //        } catch (JSONException e) {

@@ -67,7 +67,7 @@ public class SetNewAddressHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
         return bundle;
     }
     
