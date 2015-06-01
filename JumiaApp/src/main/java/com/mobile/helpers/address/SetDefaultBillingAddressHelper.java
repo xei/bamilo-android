@@ -17,13 +17,13 @@ import de.akquinet.android.androlog.Log;
 /**
  * Created by rsoares on 2/25/15.
  */
-public class SetDefaultBillingAddress extends BaseHelper {
+public class SetDefaultBillingAddressHelper extends BaseHelper {
 
     public static final String ID = "id";
 
     public static final String FORM_CONTENT_VALUES = "content_values";
 
-    private static String TAG = SetDefaultBillingAddress.class.getSimpleName();
+    private static String TAG = SetDefaultBillingAddressHelper.class.getSimpleName();
 
     private static final EventType EVENT_TYPE = EventType.SET_DEFAULT_BILLING_ADDRESS;
 

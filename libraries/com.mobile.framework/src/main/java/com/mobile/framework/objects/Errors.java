@@ -3,6 +3,7 @@ package com.mobile.framework.objects;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -54,6 +55,10 @@ public class Errors implements Parcelable {
 			map.put(RestConstants.JSON_ERROR_TAG, errorMessages);
 		}
 
+		if(map.isEmpty()){
+			parseSuccessObject(messagesObject, map);
+		}
+
 		// Parsing Validate Messages
 		validateMessages = null;
 		if (parseValidateObjectWithObject(messagesObject) || parseValidateObjectWithObjectWithArray(messagesObject) || parseValidateArray(messagesObject)) {
@@ -62,6 +67,19 @@ public class Errors implements Parcelable {
 
 		dumpMessages();
 		return map;
+	}
+
+	private static void parseSuccessObject(JSONObject messagesObject, HashMap<String, List<String>> map) {
+		JSONObject errorObject = messagesObject.optJSONObject(RestConstants.JSON_ERROR_TAG);
+		if(errorObject != null){
+			Iterator<?> iter = errorObject.keys();
+			while (iter.hasNext()) {
+				List<String> tmp = new LinkedList<>();
+				String key = iter.next().toString();
+				tmp.add(errorObject.optString(key));
+				map.put(key,tmp);
+			}
+		}
 	}
 
 	public static void dumpMessages() {

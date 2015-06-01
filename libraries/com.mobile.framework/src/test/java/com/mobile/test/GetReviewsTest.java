@@ -45,9 +45,9 @@ public class GetReviewsTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("TEST SUCCESS: " + response.hadSuccess());
         System.out.println("############# REVIEWS #############");
-        ProductRatingPage rating = (ProductRatingPage) response.metadata.getData();
+        ProductRatingPage rating = (ProductRatingPage) response.getMetadata().getData();
         assertNotNull(rating);
         for (ProductReviewComment review : rating.getReviewComments()) {
             assertNotNull(review);
@@ -60,7 +60,7 @@ public class GetReviewsTest extends BaseTestCase {
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.success);
+        System.out.println("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

@@ -63,7 +63,7 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save credentials
         if (saveCredentials) {
             Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
@@ -72,7 +72,7 @@ public class GetLoginHelper extends SuperBaseHelper {
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.metadata.getData();
+        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
@@ -84,7 +84,7 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

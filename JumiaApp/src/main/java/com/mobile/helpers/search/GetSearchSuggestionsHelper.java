@@ -81,7 +81,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Get recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         try {
@@ -96,7 +96,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
         //
-        Suggestions searchSuggestions = (Suggestions) baseResponse.metadata.getData();
+        Suggestions searchSuggestions = (Suggestions) baseResponse.getMetadata().getData();
         CollectionUtils.addAll(suggestions, searchSuggestions);
         //
         Bundle bundle = generateSuccessBundle(baseResponse);
@@ -107,7 +107,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         // Get the recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         // Get recent queries

@@ -17,13 +17,13 @@ import de.akquinet.android.androlog.Log;
 /**
  * Created by rsoares on 2/25/15.
  */
-public class SetDefaultShippingAddress extends BaseHelper{
+public class SetDefaultShippingAddressHelper extends BaseHelper{
 
     public static final String ID = "id";
 
     public static final String FORM_CONTENT_VALUES = "content_values";
 
-    private static String TAG = SetDefaultShippingAddress.class.getSimpleName();
+    private static String TAG = SetDefaultShippingAddressHelper.class.getSimpleName();
 
     private static final EventType EVENT_TYPE = EventType.SET_DEFAULT_SHIPPING_ADDRESS;
 
