@@ -31,6 +31,7 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.user.LoginCustomer;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -227,7 +228,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<LoginCustomer>> callback);
 
     @FormUrlEncoded
     @POST("/")

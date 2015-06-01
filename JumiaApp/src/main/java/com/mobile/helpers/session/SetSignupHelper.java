@@ -75,7 +75,7 @@ public class SetSignupHelper extends BaseHelper {
             Log.d(TAG, "STORE CREDENTIALS: " + contentValues.toString());
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
         if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
             
             try {

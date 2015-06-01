@@ -42,7 +42,6 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
     private ArrayList<CustomerNewsletterSubscription> mNewsletterSubscriptions;
 
-
     /**
      * Customer empty constructor
      */

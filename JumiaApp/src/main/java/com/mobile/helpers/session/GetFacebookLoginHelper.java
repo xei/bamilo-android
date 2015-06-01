@@ -139,8 +139,8 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 //        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
 //        return bundle;
 //    }
-    
-    
+
+
 //    @Override
 //    public Bundle parseErrorBundle(Bundle bundle) {
 //        Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
