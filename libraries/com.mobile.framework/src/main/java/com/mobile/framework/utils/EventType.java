@@ -73,7 +73,8 @@ public enum EventType {
 
     GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", RestContract.MAX_CACHE_TIME),
 
-    GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME),
+    //GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME),
+    GET_TERMS_EVENT("http:/main/getstatic/", RestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", RestContract.MAX_CACHE_TIME),
 

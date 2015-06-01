@@ -29,7 +29,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.checkout.CheckoutFinishHelper;
-import com.mobile.helpers.voucher.SetVoucherHelper;
+import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
@@ -579,7 +579,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      */
     private String getUserAgentAsExtraData(){
         String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";      
-        return "app=android&customer_device=" + device;
+        //return "app=android&customer_device=" + device;
+        return device;
     }
 
     /**
@@ -588,7 +589,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
-        triggerContentEventNoLoading(new SetVoucherHelper(), null, this);
+        triggerContentEventNoLoading(new AddVoucherHelper(), null, this);
     }
 
     /**

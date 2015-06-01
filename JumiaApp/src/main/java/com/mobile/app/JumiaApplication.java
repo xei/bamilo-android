@@ -3,7 +3,6 @@ package com.mobile.app;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.IRemoteService;
 import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
@@ -32,7 +30,6 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
-import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
@@ -132,8 +129,11 @@ public class JumiaApplication extends A4SApplication {
         Log.i(TAG, "ON APPLICATION CREATE");
         Log.init(getApplicationContext());
         INSTANCE = this;
+
+        // TODO : REMOVE OLD FRAMEWORK
         // Service
-        doBindService();
+        //doBindService();
+
         // Init image loader
         RocketImageLoader.init(this);
         // Init apptimize
@@ -205,7 +205,10 @@ public class JumiaApplication extends A4SApplication {
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;
-            doBindService();
+
+            // TODO : REMOVE OLD FRAMEWORK
+            //doBindService();
+
         } else {
             Log.d(TAG, "ON INIT HANDLE");
             initializationHandler.sendMessage(msg);
@@ -219,8 +222,11 @@ public class JumiaApplication extends A4SApplication {
         }
         if (ServiceSingleton.getInstance().getService() == null) {
             Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
+
             // Try connect with service
-            doBindService();
+            // TODO : REMOVE OLD FRAMEWORK
+            //doBindService();
+
             // Save the call back
             callBackWaitingService = mCallback;
             return;
@@ -274,96 +280,96 @@ public class JumiaApplication extends A4SApplication {
     #################################
      */
 
-    /**
-     * Triggers the request for a new api call
-     * @return the md5 of the reponse
-     */
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-
-        if (helper == null) {
-            return "";
-        }
-        final Bundle requestBundle = helper.newRequestBundle(args);
-
-        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
-
-        Log.d("TRACK", "sendRequest");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
-                //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-
-                JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
-
-                    @Override
-                    public void onRequestComplete(Bundle bundle) {
-
-                        /**
-                         * ###################################################
-                         * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
-                         * # - Alternative -> ParseSuccessAsyncTask          #
-                         * # @author sergiopereira                           #
-                         * ###################################################
-                         */
-                        //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
-                        //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());                        
-                        //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
-
-                        Log.d("TRACK", "onRequestComplete BaseActivity");
-                        // We have to parse this bundle to the final one
-                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
-                        if (responseCallback != null) {
-                            // CASE: Error parsing
-                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                                // Remove request from cache
-                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
-                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-                                helper.removeRequestFromHttpCache(url, type);
-                                // Callback
-                                responseCallback.onRequestError(responseBundle);
-                            }
-                            // CASE: Success
-                            else {
-                                responseCallback.onRequestComplete(responseBundle);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onRequestError(Bundle bundle) {
-                        Log.d("TRACK", "onRequestError  BaseActivity");
-                        // We have to parse this bundle to the final one
-                        Bundle responseBundle = helper.parseErrorBundle(bundle);
-                        if (responseCallback != null) {
-                            responseCallback.onRequestError(responseBundle);
-                        }
-                    }
-                });
-
-                if (!sendRequest(requestBundle)) {
-                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                }
-            }
-        }).start();
-
-        return md5;
-    }
-
-    public boolean sendRequest(Bundle bundle) {
-        if(ServiceSingleton.getInstance().getService() != null){
-            try {
-                ServiceSingleton.getInstance().getService().sendRequest(bundle);
-                return true;
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
+//    /**
+//     * Triggers the request for a new api call
+//     * @return the md5 of the reponse
+//     */
+//    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+//
+//        if (helper == null) {
+//            return "";
+//        }
+//        final Bundle requestBundle = helper.newRequestBundle(args);
+//
+//        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
+//
+//        Log.d("TRACK", "sendRequest");
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
+//                //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
+//
+//                JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
+//
+//                    @Override
+//                    public void onRequestComplete(Bundle bundle) {
+//
+//                        /**
+//                         * ###################################################
+//                         * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
+//                         * # - Alternative -> ParseSuccessAsyncTask          #
+//                         * # @author sergiopereira                           #
+//                         * ###################################################
+//                         */
+//                        //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
+//                        //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
+//                        //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
+//
+//                        Log.d("TRACK", "onRequestComplete BaseActivity");
+//                        // We have to parse this bundle to the final one
+//                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
+//                        if (responseCallback != null) {
+//                            // CASE: Error parsing
+//                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
+//                                // Remove request from cache
+//                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
+//                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//                                helper.removeRequestFromHttpCache(url, type);
+//                                // Callback
+//                                responseCallback.onRequestError(responseBundle);
+//                            }
+//                            // CASE: Success
+//                            else {
+//                                responseCallback.onRequestComplete(responseBundle);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onRequestError(Bundle bundle) {
+//                        Log.d("TRACK", "onRequestError  BaseActivity");
+//                        // We have to parse this bundle to the final one
+//                        Bundle responseBundle = helper.parseErrorBundle(bundle);
+//                        if (responseCallback != null) {
+//                            responseCallback.onRequestError(responseBundle);
+//                        }
+//                    }
+//                });
+//
+//                if (!sendRequest(requestBundle)) {
+//                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+//                }
+//            }
+//        }).start();
+//
+//        return md5;
+//    }
+//
+//    public boolean sendRequest(Bundle bundle) {
+//        if(ServiceSingleton.getInstance().getService() != null){
+//            try {
+//                ServiceSingleton.getInstance().getService().sendRequest(bundle);
+//                return true;
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+//    }
 
     /**
      * @return the mMobApiVersionInfo
@@ -433,17 +439,18 @@ public class JumiaApplication extends A4SApplication {
         this.formDataRegistry = formDataRegistry;
     }
 
-    public void doBindService() {
-        if (!mIsBound) {
-            /**
-             * Establish a connection with the service. We use an explicit class
-             * name because we want a specific service implementation that we
-             * know will be running in our own process (and thus won't be
-             * supporting component replacement by other applications).
-             */
-            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
+    // TODO : REMOVE OLD FRAMEWORK
+//    public void doBindService() {
+//        if (!mIsBound) {
+//            /**
+//             * Establish a connection with the service. We use an explicit class
+//             * name because we want a specific service implementation that we
+//             * know will be running in our own process (and thus won't be
+//             * supporting component replacement by other applications).
+//             */
+//            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
+//        }
+//    }
 
     /**
      * @return the loggedIn

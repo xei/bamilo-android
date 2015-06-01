@@ -40,8 +40,8 @@ import com.mobile.helpers.cart.GetShoppingCartChangeItemQuantityHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
 import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
+import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
-import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
@@ -335,8 +335,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEventProgress(new SetVoucherHelper(), bundle, this);
+        bundle.putParcelable(AddVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
 
     /**
@@ -1162,7 +1162,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 getBaseActivity().hideKeyboard();
                 if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);

@@ -5,19 +5,15 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.forms.ShippingMethodFormBuilder;
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.interfaces.IMetaData;
-import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.app.JumiaApplication;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.Utils;
-import com.mobile.helpers.BaseHelper;
-import com.mobile.helpers.HelperPriorityConfiguration;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.checkout.GetShippingForm;
 
 import de.akquinet.android.androlog.Log;
 
@@ -25,11 +21,71 @@ import de.akquinet.android.androlog.Log;
  * Helper used to get the shipping methods 
  * @author sergiopereira
  */
-public class GetShippingMethodsHelper extends BaseHelper {
+public class GetShippingMethodsHelper extends SuperBaseHelper {
     
     private static String TAG = GetShippingMethodsHelper.class.getSimpleName();
     
-    private static final EventType EVENT_TYPE = EventType.GET_SHIPPING_METHODS_EVENT;
+    // private static final EventType EVENT_TYPE = EventType.GET_SHIPPING_METHODS_EVENT;
+
+    @Override
+    public EventType getEventType() {
+        return EventType.GET_SHIPPING_METHODS_EVENT;
+    }
+
+    @Override
+    protected EventTask setEventTask() {
+        return EventTask.NORMAL_TASK;
+    }
+
+    @Override
+    public void onRequest(RequestBundle requestBundle) {
+        new GetShippingForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Form form = (Form) baseResponse.metadata.getData();
+        form.sortForm(mEventType);
+        Bundle bundle = generateSuccessBundle(baseResponse);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
+
+        // TODO: CREATE NEW OBJECT
+//        // Get shipping methods
+//        JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
+//        Log.d(TAG, "FORM JSON: " + formJSON.toString());
+//        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
+//        if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
+//
+//        // Get cart
+//        JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
+//        if(cartJSON != null)
+//            Log.d(TAG, "CAT JSON: " + cartJSON.toString());
+////            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+////            cart.initialize(cartJSON);
+//
+//        // Get order
+//        OrderSummary orderSummary = new OrderSummary(jsonObject);
+//        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
+//
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
+//
+//    } catch (JSONException e) {
+//        Log.w(TAG, "PARSE EXCEPTION: " , e);
+//        return parseErrorBundle(bundle);
+//    }
+
+
+        mRequester.onRequestComplete(bundle);
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Bundle bundle = generateErrorBundle(baseResponse);
+        mRequester.onRequestError(bundle);
+    }
+
     
 //    {
 //        "success": true,
@@ -191,88 +247,88 @@ public class GetShippingMethodsHelper extends BaseHelper {
     
     
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle generateRequestBundle(Bundle args) {
-        Log.d(TAG, "REQUEST");
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        return bundle;
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle generateRequestBundle(Bundle args) {
+//        Log.d(TAG, "REQUEST");
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+//        return bundle;
+//    }
    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
-     */
-    @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.i(TAG, "PARSE BUNDLE");
-
-        try {
-        
-            // Get shipping methods
-            JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
-            Log.d(TAG, "FORM JSON: " + formJSON.toString());
-            ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-            if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
-            
-            // Get cart
-            JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-            if(cartJSON != null)
-                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-//            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
-//            cart.initialize(cartJSON);
-            
-            // Get order
-            OrderSummary orderSummary = new OrderSummary(jsonObject);
-            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-            
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-        
-        } catch (JSONException e) {
-            Log.w(TAG, "PARSE EXCEPTION: " , e);
-            return parseErrorBundle(bundle);
-        }
-        
-        Log.i(TAG, "PARSE JSON: SUCCESS");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        return bundle;
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
-     */
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "PARSE RESPONSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
-    }
-    
-    @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-        return parseResponseErrorBundle(bundle);
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+//     */
+//    @Override
+//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//        Log.i(TAG, "PARSE BUNDLE");
+//
+//        try {
+//
+//            // Get shipping methods
+//            JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
+//            Log.d(TAG, "FORM JSON: " + formJSON.toString());
+//            ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
+//            if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
+//
+//            // Get cart
+//            JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
+//            if(cartJSON != null)
+//                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
+////            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+////            cart.initialize(cartJSON);
+//
+//            // Get order
+//            OrderSummary orderSummary = new OrderSummary(jsonObject);
+//            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
+//
+//            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
+//
+//        } catch (JSONException e) {
+//            Log.w(TAG, "PARSE EXCEPTION: " , e);
+//            return parseErrorBundle(bundle);
+//        }
+//
+//        Log.i(TAG, "PARSE JSON: SUCCESS");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "PARSE ERROR BUNDLE");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+//     */
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "PARSE RESPONSE ERROR BUNDLE");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+//        return parseResponseErrorBundle(bundle);
+//    }
 }

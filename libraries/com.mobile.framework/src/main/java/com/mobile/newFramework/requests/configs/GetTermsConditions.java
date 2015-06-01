@@ -1,4 +1,4 @@
-package com.mobile.newFramework.requests.home;
+package com.mobile.newFramework.requests.configs;
 
 import android.content.Context;
 
@@ -9,15 +9,16 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetPromotions extends BaseRequest<BaseResponse> {
+public class GetTermsConditions extends BaseRequest<BaseResponse> {
 
-    public GetPromotions(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
+    public GetTermsConditions(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
     }
 
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.getPromotions(this);
+        service.getTermsAndConditions(mRequestBundle.getData(), this);
     }
+
 }

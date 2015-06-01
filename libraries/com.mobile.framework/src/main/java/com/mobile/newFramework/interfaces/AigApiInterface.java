@@ -51,6 +51,12 @@ public interface AigApiInterface {
     @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
 
+    @GET("/")
+    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void getPromotions(Callback<BaseResponse<BaseResponse>> callback);
+
     /*
      * ## FORMS
      */
@@ -114,7 +120,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<HomePageObject>> callback);
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     /*
      * ## CAMPAIGN
@@ -229,7 +235,7 @@ public interface AigApiInterface {
 
     @GET("/")
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
-    
+
     /*
      * ## RATINGS/REVIEWS
      */
@@ -256,5 +262,25 @@ public interface AigApiInterface {
 
     @GET("/")
     void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperOrder>> callback);
+
+    /*
+    * ## CHECKOUT
+    */
+
+    @GET("/")
+    void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void getShippingForm(Callback<BaseResponse<BaseResponse>> callback);
+
+    /*
+     * ## ADDRESSES
+     */
+
+    @GET("/")
+    void getRegions(Callback<BaseResponse<BaseResponse>> callback);
+
+    @GET("/")
+    void getCities(Callback<BaseResponse<BaseResponse>> callback);
 
 }

@@ -225,8 +225,11 @@ public abstract class BaseActivity extends ActionBarActivity {
          * @author spereira
          */
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
+
+        // TODO : REMOVE OLD FRAMEWORK
         // Bind service
-        JumiaApplication.INSTANCE.doBindService();
+        //JumiaApplication.INSTANCE.doBindService();
+
         // In case app is killed in background needs to restore font type
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
