@@ -2,7 +2,6 @@ package com.mobile.utils;
 
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.newFramework.objects.checkout.CheckoutService;
 
 import org.json.JSONObject;
 
