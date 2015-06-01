@@ -133,7 +133,7 @@ public enum EventType {
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 
-    SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
+//    SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
 
     GET_REGIONS_EVENT("https:/customer/address/regions/", RestContract.NO_CACHE),
 
