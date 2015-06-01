@@ -30,7 +30,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.forms.Form;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -46,15 +45,16 @@ import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.GetLoginHelper;
-import com.mobile.helpers.session.GetSignupFormHelper;
+import com.mobile.helpers.session.GetSignUpFormHelper;
 import com.mobile.helpers.session.SetSignupHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -763,7 +763,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private boolean triggerSignupForm() {
         Log.i(TAG, "TRIGGER: SIGNUP FORM");
         onAutoLogin = false;
-        triggerContentEvent(new GetSignupFormHelper(), null, this);
+        triggerContentEvent(new GetSignUpFormHelper(), null, this);
         return true;
     }
 

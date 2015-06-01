@@ -16,6 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.forms.FormField;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

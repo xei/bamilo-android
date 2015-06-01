@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.newFramework.objects.product;
 
 import android.os.Parcel;
@@ -41,8 +38,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	    productName = "";
 	    productSku = "";
 	    commentsCount = 0;
-	    ratingTypes = new ArrayList<RatingStar>();
-	    reviewComments = new ArrayList<ProductReviewComment>();
+	    ratingTypes = new ArrayList<>();
+	    reviewComments = new ArrayList<>();
 	    minStarSize = 1;
 	    maxStarSize = 5;
 	    average = -1;
@@ -59,7 +56,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject dataObject) throws JSONException {
-		reviewComments = new ArrayList<ProductReviewComment>();
+		reviewComments = new ArrayList<>();
 
 		// just used for seller reviews
 		 sellerName = dataObject.optString(RestConstants.JSON_NAME_TAG);
@@ -105,7 +102,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	        if(comments != null){
 	            int size = comments.length();
-	            ProductReviewComment reviewComment = null;
+	            ProductReviewComment reviewComment;
 	            for (int i = 0; i < size; i++) {
 	                reviewComment = new ProductReviewComment();
 	                reviewComment.initialize(comments.getJSONObject(i));
@@ -125,7 +122,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -189,7 +185,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
     @Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -260,10 +255,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	private ProductRatingPage(Parcel in) {
 	    productName = in.readString();
 	    productSku = in.readString();
-	    ratingTypes = new ArrayList<RatingStar>();
+	    ratingTypes = new ArrayList<>();
 	    in.readList(ratingTypes, RatingStar.class.getClassLoader());
 		commentsCount = in.readInt();
-		reviewComments = new ArrayList<ProductReviewComment>();
+		reviewComments = new ArrayList<>();
 		in.readList(reviewComments, ProductReviewComment.class.getClassLoader());
 		minStarSize = in.readInt();
 		maxStarSize = in.readInt();

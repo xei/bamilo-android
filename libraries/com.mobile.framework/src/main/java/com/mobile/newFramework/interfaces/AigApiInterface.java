@@ -1,7 +1,7 @@
 package com.mobile.newFramework.interfaces;
 
-import com.mobile.newFramework.forms.SuperForm;
-import com.mobile.newFramework.forms.SuperFormData;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperAddressCity;
@@ -13,7 +13,7 @@ import com.mobile.newFramework.objects.SuperSetBillingAddress;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.catalog.CatalogPage;
+import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
@@ -27,8 +27,9 @@ import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductOffers;
-import com.mobile.newFramework.objects.product.SuperProductRatingPage;
+import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -65,37 +66,37 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getLoginForm(Callback<BaseResponse<SuperForm>> callback);
+    void getLoginForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getFormsIndex(Callback<BaseResponse<SuperFormData>> callback);
+    void getFormsIndex(Callback<BaseResponse<FormsIndex>> callback);
 
     @GET("/")
-    void getRatingForm(Callback<BaseResponse<SuperForm>> callback);
+    void getRatingForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getReviewForm(Callback<BaseResponse<SuperForm>> callback);
+    void getReviewForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getSellerReviewForm(Callback<BaseResponse<SuperForm>> callback);
+    void getSellerReviewForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getRegisterForm(Callback<BaseResponse<SuperForm>> callback);
+    void getRegisterForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getSignupForm(Callback<BaseResponse<SuperForm>> callback);
+    void getSignUpForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getForgotPasswordForm(Callback<BaseResponse<SuperForm>> callback);
+    void getForgotPasswordForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getCreateAddressForm(Callback<BaseResponse<SuperForm>> callback);
+    void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getEditAddressForm(Callback<BaseResponse<SuperForm>> callback);
+    void getEditAddressForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
-    void getNewsletterForm(Callback<BaseResponse<SuperForm>> callback);
+    void getNewsletterForm(Callback<BaseResponse<Form>> callback);
 
     @GET("/")
     void getShippingMethodsForm(Callback<BaseResponse<SuperGetShippingMethodsForm>> callback);
@@ -108,7 +109,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<CatalogPage>> callback);
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
 
     /*
      * ## CATEGORIES
@@ -143,6 +144,9 @@ public interface AigApiInterface {
      */
 
     @GET("/")
+    void searchProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+
+    @GET("/")
     void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
 
     @GET("/")
@@ -159,8 +163,8 @@ public interface AigApiInterface {
      * ## SEARCH SUGGESTIONS
      */
 
-    @GET("/search/suggest")
-    void getSearchSuggestions(Callback<BaseResponse> callback);
+    @GET("/")
+    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
 
     /*
      * ## CART
@@ -274,7 +278,7 @@ public interface AigApiInterface {
      * ## RATINGS/REVIEWS
      */
     @GET("/")
-    void getReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperProductRatingPage>> callback);
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -283,6 +287,9 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @GET("/")
+    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
 
     /*

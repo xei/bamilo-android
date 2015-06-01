@@ -32,9 +32,9 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("TEST SUCCESS: " + response.hadSuccess());
         System.out.println("############# COUNTRY CONFIGS #############");
-        CountryConfigs configurations = (CountryConfigs) response.metadata.getData();
+        CountryConfigs configurations = (CountryConfigs) response.getMetadata().getData();
         assertNotNull(configurations);
         System.out.println(configurations.toString());
         System.out.println("######################################");
@@ -44,7 +44,7 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.success);
+        System.out.println("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

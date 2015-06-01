@@ -13,9 +13,9 @@ import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
 
@@ -32,10 +32,8 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
 
-        mEventTask = setEventTask();
-        if (args != null && args.containsKey(Constants.BUNDLE_EVENT_TASK)) {
-            mEventTask = (EventTask) args.getSerializable(Constants.BUNDLE_EVENT_TASK);
-        }
+        Serializable evenTask = args != null ? args.getSerializable(Constants.BUNDLE_EVENT_TASK) : null;
+        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
 
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);
@@ -114,7 +112,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public Bundle generateErrorBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

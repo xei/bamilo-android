@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.forms.Form;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.InputType;
 import com.mobile.view.R;
 
 import java.util.Iterator;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
+
+//import com.mobile.newFramework.forms.InputType;
 
 /**
  * This Class defines the representation of a dynamic form

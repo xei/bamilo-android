@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.RelatedItemsTableHelper;
 import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -33,8 +34,6 @@ import de.akquinet.android.androlog.Log;
 public class GetCatalogPageHelper extends SuperBaseHelper {
 
     private static String TAG = GetCatalogPageHelper.class.getSimpleName();
-
-    //private static final EventType EVENT_TYPE = EventType.GET_PRODUCTS_EVENT;
 
     public static final String SEARCH_NO_RESULTS = "SEARCH_NO_RESULTS";
 
@@ -106,13 +105,13 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
-        CatalogPage catalog = (CatalogPage) baseResponse.metadata.getData();
-        catalog.setPage(mCurrentPage);
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
+        catalog.getCatalogPage().setPage(mCurrentPage);
         // Persist related Items when initially loading products for POPULARITY tab
         if (isToSaveRelatedItems) {
-            final ArrayList<Product> aux = new ArrayList<>(catalog.getProducts());
+            final ArrayList<Product> aux = new ArrayList<>(catalog.getCatalogPage().getProducts());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -125,22 +124,26 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
             }).start();
         }
         //
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog);
+        Bundle bundle = generateSuccessBundle(baseResponse);
+
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getCatalogPage());
         mRequester.onRequestComplete(bundle);
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
-        // TODO: FeaturedBox
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.error.getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
+
+
+        Bundle bundle = generateErrorBundle(baseResponse);
+
+        if(baseResponse.getError().getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
+            bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
+        }
+
         mRequester.onRequestError(bundle);
     }
 

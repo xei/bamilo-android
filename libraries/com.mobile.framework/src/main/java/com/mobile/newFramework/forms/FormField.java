@@ -1,15 +1,3 @@
-/**
- * FormEntry.java
- * Entry of a form object. Contains name, label, if is obligatory, the type of input it expects, max size of that input, and the regular expression used to value the form.
- * 
- * @author Guilherme Silva
- * 
- * @version 1.01
- * 
- * 2012/06/18
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package com.mobile.newFramework.forms;
 
 import android.os.Bundle;
@@ -39,9 +27,9 @@ import java.util.Map;
 
 /**
  * Class that represent and entry in the form.
- * 
+ *
  * @author GuilhermeSilva
- * 
+ *
  */
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
@@ -77,7 +65,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * (e.g. for terms and conditions)
      */
     private String linkText;
-    
+
     /**
      * variable used to save the rating options
      */
@@ -86,7 +74,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      * Value that defines for each scenario the Form Field should appear
      */
     private String scenario;
-    
+
     private LinkedHashMap<String, String> dataSet;
 
     private String dataSetSource;
@@ -103,7 +91,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mRelatedFieldKey;
 
     /**
-     * value that is shown to the user. 
+     * value that is shown to the user.
      * It's empty when it is to show the label transparent instead.
      */
     private String value;
@@ -111,16 +99,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private HashMap<String, String> dataCalls;
 
     private HashMap<String, String>  dataOptions;
-    
+
     private HashMap<String, Form>  paymentFields;
-    
+
     private LinkedHashMap<Object,Object> extrasValues;
 
-    public ArrayList<NewsletterOption> newsletterOptions; 
+    public ArrayList<NewsletterOption> newsletterOptions;
 
     /**
      * FormField param constructor
-     * 
+     *
      * @param parent
      *            . Form hat encapsulates the form field.
      */
@@ -175,7 +163,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject )
      */
     @Override
@@ -445,7 +433,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
      */
     @Override
@@ -498,9 +486,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // validation
             jsonObject.put(RestConstants.JSON_RULES_TAG, validation.toJSON());
 
-            
+
             //FIXME add rating data set to Json Object
-            
+
             // dataset
             JSONArray dataSetArray = new JSONArray();
             for (String dataSetItem : dataSet.keySet()) {
@@ -520,7 +508,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getParent()
      */
     @Override
@@ -534,7 +522,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getId()
      */
     @Override
@@ -548,7 +536,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getKey()
      */
     @Override
@@ -562,7 +550,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getName()
      */
     @Override
@@ -576,7 +564,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getName()
      */
     @Override
@@ -587,10 +575,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public void setScenario(String scenario) {
         this.name = scenario;
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getInputType()
      */
     @Override
@@ -604,7 +592,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getLabel()
      */
     @Override
@@ -618,7 +606,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getDataSet()
      */
     @Override
@@ -643,7 +631,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public HashMap<String, Form> getPaymentMethodsField(){
         return this.paymentFields;
     }
-    
+
     public void setPaymentMethodsField(HashMap<String, Form> pFields){
         this.paymentFields = pFields;
     }
@@ -652,10 +640,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public Map<String, String> getDataCalls() {
         return dataCalls;
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getValidation()
      */
     @Override
@@ -669,7 +657,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.framework.forms.IFormField#getValue()
      */
     @Override
@@ -691,7 +679,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /**
      * Listener used when the data set is received.
-     * 
+     *
      * @param listener
      */
     public void setOnDataSetReceived(OnDataSetReceived listener) {
@@ -747,7 +735,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeString(linkText);
         dest.writeMap(dataSetRating);
     }
-    
+
     /**
      * Parcel constructor
      * @param in
@@ -769,7 +757,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     /**
-     * Create parcelable 
+     * Create parcelable
      */
     public static final Creator<FormField> CREATOR = new Creator<FormField>() {
         public FormField createFromParcel(Parcel in) {

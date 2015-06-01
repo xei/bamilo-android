@@ -34,9 +34,9 @@ public class GetApiInformationTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("TEST SUCCESS: " + response.hadSuccess());
         System.out.println("############# MD5 SECTIONS #############");
-        Sections sections = ((ApiInformation) response.metadata.getData()).getSections();
+        Sections sections = ((ApiInformation) response.getMetadata().getData()).getSections();
         assertNotNull(sections);
         for (Section section : sections) {
             assertNotNull(section);
@@ -49,7 +49,7 @@ public class GetApiInformationTest extends BaseTestCase {
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.success);
+        System.out.println("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

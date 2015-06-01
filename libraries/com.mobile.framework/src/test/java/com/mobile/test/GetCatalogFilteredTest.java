@@ -23,6 +23,7 @@ public class GetCatalogFilteredTest extends BaseTestCase {
         // Bundle
         requestBundle = new RequestBundle.Builder()
                 .setUrl("https://www.jumia.com.ng/mobapi/v1.7/wedding/")
+//                .setUrl("https://www.jumia.ci/mobapi/v1.7/search/?q=buogogiogio&sort=popularity&maxitems=24&page=1") //To test featured box
                 .setCache(EventType.GET_PRODUCTS_EVENT.cacheTime)
                 .setData(data)
                 .build();
@@ -41,14 +42,14 @@ public class GetCatalogFilteredTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.success);
+        System.out.println("TEST SUCCESS: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.success);
+        System.out.println("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

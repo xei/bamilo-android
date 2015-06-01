@@ -55,9 +55,9 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
+        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse. hadSuccess());
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = (ShoppingCart) baseResponse.metadata.getData();
+        ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Log.d(TAG, "ADD CART: " + cart.getCartValue());
         // Create bundle
@@ -68,7 +68,7 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

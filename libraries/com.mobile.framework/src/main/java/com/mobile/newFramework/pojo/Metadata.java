@@ -6,7 +6,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
  * Created by rsoares on 5/21/15.
  */
 public class Metadata<T> {
-    public String md5;
+    private String md5;
     private T data;
 
     public void setData(T data){
@@ -19,5 +19,13 @@ public class Metadata<T> {
 
     public T getData(){
         return this.data;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 }

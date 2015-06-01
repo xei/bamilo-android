@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.helpers.address;
 
 import android.os.Bundle;
