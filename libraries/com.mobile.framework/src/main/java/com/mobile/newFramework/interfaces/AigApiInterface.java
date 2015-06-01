@@ -2,14 +2,24 @@ package com.mobile.newFramework.interfaces;
 
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
+import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
+import com.mobile.newFramework.objects.SuperAddressCity;
+import com.mobile.newFramework.objects.SuperAddressRegion;
 import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
+import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.objects.SuperOrder;
+import com.mobile.newFramework.objects.SuperSetBillingAddress;
 import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
+import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
+import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
+import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
+import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
@@ -87,6 +97,12 @@ public interface AigApiInterface {
 
     @GET("/")
     void getNewsletterForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getShippingMethodsForm(Callback<BaseResponse<SuperGetShippingMethodsForm>> callback);
+
+    @GET("/")
+    void getPaymentMethodsForm(Callback<BaseResponse<SuperGetPaymentMethodsForm>> callback);
 
     /*
      * ## CATALOG
@@ -229,6 +245,34 @@ public interface AigApiInterface {
 
     @GET("/")
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
+
+    @GET("/")
+    void getAddressesList(Callback<BaseResponse<Addresses>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+
+    @GET("/")
+    void getBillingAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperGetBillingForm>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetBillingAddress>> callback);
+
+    @GET("/")
+    void getRegions(Callback<BaseResponse<SuperAddressRegion>> callback);
+
+    @GET("/")
+    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperAddressCity>> callback);
     
     /*
      * ## RATINGS/REVIEWS
@@ -256,5 +300,21 @@ public interface AigApiInterface {
 
     @GET("/")
     void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperOrder>> callback);
+
+    /*
+    * ## CHECKOUT
+     */
+
+    @FormUrlEncoded
+    @POST("/")
+    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetShippingMethod>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetPaymentMethod>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCheckoutFinish>> callback);
 
 }
