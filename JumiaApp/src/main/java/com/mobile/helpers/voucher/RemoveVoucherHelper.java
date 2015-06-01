@@ -55,7 +55,7 @@ public class RemoveVoucherHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Voucher voucher = (Voucher) baseResponse.getMetadata.getData();
+        Voucher voucher = (Voucher) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, voucher);
         mRequester.onRequestComplete(bundle);

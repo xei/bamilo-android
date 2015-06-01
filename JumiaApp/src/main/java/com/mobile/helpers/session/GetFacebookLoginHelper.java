@@ -65,7 +65,7 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
-        Customer customer = (Customer) baseResponse.getMetadata.getData();
+        Customer customer = (Customer) baseResponse.getMetadata().getData();
         // Save credentials
         if (saveCredentials) {
             Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");

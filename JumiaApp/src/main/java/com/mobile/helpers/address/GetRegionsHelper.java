@@ -52,7 +52,7 @@ public class GetRegionsHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        //Regions regions = (Regions) baseResponse.getMetadata.getData();
+        //Regions regions = (Regions) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
         mRequester.onRequestComplete(bundle);

@@ -160,15 +160,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Total
         mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get cart
-            mCart = JumiaApplication.INSTANCE.getCart();
-            if (mCart == null) triggerGetShoppingCart();
-            else showOrderSummary();
-        } else {
-            showFragmentErrorRetry();
-        }
+        // Get cart
+        mCart = JumiaApplication.INSTANCE.getCart();
+        if (mCart == null) triggerGetShoppingCart();
+        else showOrderSummary();
 
     }
     

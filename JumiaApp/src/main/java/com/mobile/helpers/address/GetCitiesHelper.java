@@ -67,7 +67,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        //Cities cities = (Cities) baseResponse.getMetadata.getData();
+        //Cities cities = (Cities) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
         bundle.putString(CUSTOM_TAG, customTag);

@@ -43,7 +43,7 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        Promotion promotions = (Promotion) baseResponse.getMetadata.getData();
+        Promotion promotions = (Promotion) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, promotions);
         mRequester.onRequestComplete(bundle);

@@ -164,27 +164,19 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-
         TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
-
         // Used for UG
         forceInputAlignToLeft();
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            if (JumiaApplication.INSTANCE.registerForm != null) {
-                Log.d(TAG, " ON RESUME -> load From");
-                loadForm(JumiaApplication.INSTANCE.registerForm);
-                JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-            } else {
-                triggerRegisterForm();
-            }
-            setAppContentLayout();
-            getFormComponents();
-            setFormComponents();
+        if (JumiaApplication.INSTANCE.registerForm != null) {
+            Log.d(TAG, " ON RESUME -> load From");
+            loadForm(JumiaApplication.INSTANCE.registerForm);
+            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
         } else {
-            showFragmentErrorRetry();
+            triggerRegisterForm();
         }
-      
+        setAppContentLayout();
+        getFormComponents();
+        setFormComponents();
     }
 
     /*

@@ -215,8 +215,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
         setRatingReviewFlag();
 
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
             // load complete product URL
             if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
@@ -247,9 +245,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     }
                 }
             }
-        } else {
-            showFragmentErrorRetry();
-        }
         
     }
 

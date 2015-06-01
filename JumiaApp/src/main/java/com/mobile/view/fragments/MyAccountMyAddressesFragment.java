@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -175,11 +174,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     }
 
     protected void triggerGetMyAddresses(){
-        if(JumiaApplication.mIsBound) {
-            triggerContentEvent(new GetMyAddressesHelper(), null, this);
-        } else {
-            showFragmentErrorRetry();
-        }
+        triggerContentEvent(new GetMyAddressesHelper(), null, this);
     }
 
     private void triggerSetDefaultShippingAddress(ContentValues contentValues) {

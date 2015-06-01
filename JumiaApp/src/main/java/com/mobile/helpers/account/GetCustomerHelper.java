@@ -13,6 +13,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.session.GetCustomerDetails;
 
 import de.akquinet.android.androlog.Log;
 
@@ -38,7 +39,7 @@ public class GetCustomerHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCustomerDetails(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override

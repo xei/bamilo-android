@@ -234,8 +234,6 @@ public class ReviewWriteFragment extends BaseFragment {
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
         }
         setRatingReviewFlag();
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
             // load complete product URL
             if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
@@ -266,9 +264,6 @@ public class ReviewWriteFragment extends BaseFragment {
 
                 }
             }
-        } else {
-            showRetryLayout();
-        }
         
     }
 

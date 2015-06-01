@@ -68,19 +68,13 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-                triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null && mRegions != null){
-                loadEditAddressForm(mFormResponse);
-            } else {
-                triggerEditAddressForm();
-            }
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
+            triggerInitForm();
+        } else if(mFormResponse != null && orderSummary != null && mRegions != null){
+            loadEditAddressForm(mFormResponse);
         } else {
-            showFragmentErrorRetry();
+            triggerEditAddressForm();
         }
     }
 

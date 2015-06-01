@@ -4,7 +4,6 @@ package com.mobile.newFramework.objects;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.user.CustomerNewsletterSubscription;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,11 +13,9 @@ import java.util.ArrayList;
  * Class used to save the newsletter subscription
  * @author sergiopereira
  */
-public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
+public class SuperCustomerNewsletterSubscription extends ArrayList<CustomerNewsletterSubscription> implements IJSONSerializable {
 
     private static final String TAG = SuperCustomerNewsletterSubscription.class.getSimpleName();
-
-    private CustomerNewsletterSubscription newsletter;
 
     /**
      * Empty constructor
@@ -34,17 +31,22 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-            ArrayList<CustomerNewsletterSubscription> subscriptions = new ArrayList<>();
-            // Get subscribed newsletters
-            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG);
-            if(jsonArray != null && jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    newsletter = new CustomerNewsletterSubscription();
-                    newsletter.initialize(object);
-                    subscriptions.add(newsletter);
-                }
-            }
+
+            JSONObject object = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG).getJSONObject(0);
+            CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
+            newsletter.initialize(object);
+            add(newsletter);
+
+//            // Get subscribed newsletters
+//            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG).getJSONObject(0);
+//            if(jsonArray != null && jsonArray.length() > 0) {
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject object = jsonArray.getJSONObject(i);
+//                    newsletter = new CustomerNewsletterSubscription();
+//                    newsletter.initialize(object);
+//                    add(newsletter);
+//                }
+//            }
             // Save the newsletter subscriptions
 //            if(JumiaApplication.CUSTOMER != null)
 //                JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
@@ -69,11 +71,11 @@ public class SuperCustomerNewsletterSubscription implements IJSONSerializable {
     }
 
 
-    public CustomerNewsletterSubscription getNewsletter() {
-        return newsletter;
-    }
-
-    public void setNewsletter(CustomerNewsletterSubscription newsletter) {
-        this.newsletter = newsletter;
-    }
+//    public CustomerNewsletterSubscription getNewsletter() {
+//        return newsletter;
+//    }
+//
+//    public void setNewsletter(CustomerNewsletterSubscription newsletter) {
+//        this.newsletter = newsletter;
+//    }
 }

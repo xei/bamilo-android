@@ -18,6 +18,6 @@ public class GetShopInShopPage extends BaseRequest<BaseResponse> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext,mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.getShopInShop(mRequestBundle.getData(), this);
+        service.getShopInShop(this);
     }
 }

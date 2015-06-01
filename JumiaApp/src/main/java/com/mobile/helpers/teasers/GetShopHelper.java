@@ -17,6 +17,8 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetShopInShopPage;
 
+import java.util.Map;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -42,7 +44,9 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
+        Uri uri = Uri.parse(args.getString(Constants.BUNDLE_URL_KEY));
+        Map<String, String> data = (Map<String, String>) uri.getQueryParameterNames();
+        return RemoteService.completeUri(uri).toString();
     }
 
     @Override
@@ -54,7 +58,7 @@ public class GetShopHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // TODO: CREATE NEW OBJECT
-        StaticPage staticPage = (StaticPage) baseResponse.getMetadata.getData();
+        StaticPage staticPage = (StaticPage) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
         mRequester.onRequestComplete(bundle);

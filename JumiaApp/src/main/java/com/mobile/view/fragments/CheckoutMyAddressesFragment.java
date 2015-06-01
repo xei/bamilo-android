@@ -254,12 +254,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     private void triggerGetBillingForm(){
         Log.i(TAG, "TRIGGER: LOGIN FORM");
-        //Validate is service is available
-        if(JumiaApplication.mIsBound) {
-            triggerContentEvent(new GetBillingFormHelper(), null, this);
-        } else {
-            showFragmentErrorRetry();
-        }
+        triggerContentEvent(new GetBillingFormHelper(), null, this);
     }
 
     /**

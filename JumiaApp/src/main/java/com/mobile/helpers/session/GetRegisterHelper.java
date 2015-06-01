@@ -31,8 +31,6 @@ public class GetRegisterHelper extends SuperBaseHelper {
     
     private static String TAG = GetRegisterHelper.class.getSimpleName();
     
-    private static final EventType EVENT_TYPE = EventType.REGISTER_ACCOUNT_EVENT;
-    
     public static final String REGISTER_CONTENT_VALUES = "contentValues";
     
     boolean saveCredentials = true;
@@ -79,7 +77,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata.getData();
+        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);

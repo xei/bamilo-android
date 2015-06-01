@@ -148,13 +148,16 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         // Case app is bound and has shop id and not in maintenance
-        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+        //if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+        if (!TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
             onResumeExecution();
         // Case app is not bound and has shop id and not in maintenance
-        else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
-            showFragmentErrorRetry();
+        //else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+        //    showFragmentErrorRetry();
         // Case app not bound and not shop id and in maintenance country selection
-        else JumiaApplication.INSTANCE.setResendHandler(mServiceConnectedHandler);
+        else
+            //JumiaApplication.INSTANCE.setResendHandler(mServiceConnectedHandler);
+            showFragmentErrorRetry();
     }
 
     /*

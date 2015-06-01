@@ -1,13 +1,10 @@
 package com.mobile.app;
 
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.text.TextUtils;
@@ -20,7 +17,6 @@ import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.service.IRemoteService;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -59,8 +55,6 @@ public class JumiaApplication extends A4SApplication {
     private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
     // Application
     public static JumiaApplication INSTANCE;
-    // Service flag
-    public static boolean mIsBound = false;
     // Shop
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
@@ -132,7 +126,7 @@ public class JumiaApplication extends A4SApplication {
 
         // TODO : REMOVE OLD FRAMEWORK
         // Service
-        //doBindService();
+        doBindService();
 
         // Init image loader
         RocketImageLoader.init(this);
@@ -158,7 +152,7 @@ public class JumiaApplication extends A4SApplication {
          */
         Log.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if(!TextUtils.isEmpty(currencyCode)){
+        if (!TextUtils.isEmpty(currencyCode)) {
             CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
         }
     }
@@ -197,17 +191,17 @@ public class JumiaApplication extends A4SApplication {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE ||
+        if ((eventType == EventType.INITIALIZE ||
                 errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
                 errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null ){
+                && ServiceSingleton.getInstance().getService() == null) {
             Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;
 
             // TODO : REMOVE OLD FRAMEWORK
-            //doBindService();
+            doBindService();
 
         } else {
             Log.d(TAG, "ON INIT HANDLE");
@@ -225,7 +219,7 @@ public class JumiaApplication extends A4SApplication {
 
             // Try connect with service
             // TODO : REMOVE OLD FRAMEWORK
-            //doBindService();
+            doBindService();
 
             // Save the call back
             callBackWaitingService = mCallback;
@@ -379,8 +373,7 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param mVersionInfo
-     *            the mMobApiVersionInfo to set
+     * @param mVersionInfo the mMobApiVersionInfo to set
      */
     public void setMobApiVersionInfo(VersionInfo mVersionInfo) {
         this.mMobApiVersionInfo = mVersionInfo;
@@ -396,7 +389,7 @@ public class JumiaApplication extends A4SApplication {
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
                 cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
             }
-            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
+            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie) cookieStore : null);
         }
         return mCustomerUtils;
     }
@@ -409,16 +402,14 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param cart
-     *            the cart to set
+     * @param cart the cart to set
      */
     public void setCart(ShoppingCart cart) {
         this.cart = cart;
     }
 
     /**
-     * @param itemSimpleDataRegistry
-     *            the itemSimpleDataRegistry to set
+     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
      */
     public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
         this.itemSimpleDataRegistry = itemSimpleDataRegistry;
@@ -432,15 +423,20 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param formDataRegistry
-     *            the formDataRegistry to set
+     * @param formDataRegistry the formDataRegistry to set
      */
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
     }
 
     // TODO : REMOVE OLD FRAMEWORK
-//    public void doBindService() {
+    public void doBindService() {
+
+        if (resendInitializationSignal) {
+            resendHandler.sendMessage(resendMsg);
+            resendInitializationSignal = false;
+        }
+
 //        if (!mIsBound) {
 //            /**
 //             * Establish a connection with the service. We use an explicit class
@@ -450,7 +446,7 @@ public class JumiaApplication extends A4SApplication {
 //             */
 //            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
 //        }
-//    }
+    }
 
     /**
      * @return the loggedIn
@@ -474,42 +470,42 @@ public class JumiaApplication extends A4SApplication {
         resendHandler = mHandler;
     }
 
-    /**
-     * Service Stuff
-     */
-
-    public ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.i(TAG, "onServiceDisconnected");
-            mIsBound = false;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // This is called when the connection with the service has been
-            // established, giving us the service object we can use to
-            // interact with the service. We are communicating with our
-            // service through an IDL interface, so get a client-side
-            // representation of that from the raw service object.
-            Log.i(TAG, "onServiceConnected");
-            mIsBound = true;
-            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-
-            if (resendInitializationSignal) {
-                resendHandler.sendMessage(resendMsg);
-                resendInitializationSignal = false;
-            }
-
-            if (resendMenuHandler != null) {
-                resendMenuHandler.sendEmptyMessage(0);
-                resendMenuHandler = null;
-            }
-            // Register the fragment callback
-            registerCallBackIsWaiting();
-        }
-    };
+//    /**
+//     * Service Stuff
+//     */
+//
+//    public ServiceConnection mConnection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            Log.i(TAG, "onServiceDisconnected");
+//            mIsBound = false;
+//        }
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            // This is called when the connection with the service has been
+//            // established, giving us the service object we can use to
+//            // interact with the service. We are communicating with our
+//            // service through an IDL interface, so get a client-side
+//            // representation of that from the raw service object.
+//            Log.i(TAG, "onServiceConnected");
+//            mIsBound = true;
+//            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
+//
+//            if (resendInitializationSignal) {
+//                resendHandler.sendMessage(resendMsg);
+//                resendInitializationSignal = false;
+//            }
+//
+//            if (resendMenuHandler != null) {
+//                resendMenuHandler.sendEmptyMessage(0);
+//                resendMenuHandler = null;
+//            }
+//            // Register the fragment callback
+//            registerCallBackIsWaiting();
+//        }
+//    };
 
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;

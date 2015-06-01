@@ -142,13 +142,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show addresses
-            triggerGetPaymentMethods();
-        } else {
-            showFragmentErrorRetry();
-        }
+        // Get and show addresses
+        triggerGetPaymentMethods();
     }
 
     

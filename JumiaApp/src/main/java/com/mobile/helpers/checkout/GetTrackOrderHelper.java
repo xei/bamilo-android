@@ -51,7 +51,7 @@ public class GetTrackOrderHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        OrderTracker orderTracker = (OrderTracker) baseResponse.getMetadata.getData();
+        OrderTracker orderTracker = (OrderTracker) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, orderTracker);
         mRequester.onRequestComplete(bundle);

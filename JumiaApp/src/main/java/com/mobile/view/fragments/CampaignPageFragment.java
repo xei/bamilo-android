@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.HeaderGridView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
@@ -511,15 +510,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     private void triggerGetCampaign(String id){
         Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
-        // Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Create request
-            Bundle bundle = new Bundle();
-            bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
-            triggerContentEvent(new GetCampaignHelper(), bundle, this);
-        } else {
-            showRetry();
-        }
+        // Create request
+        Bundle bundle = new Bundle();
+        bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
+        triggerContentEvent(new GetCampaignHelper(), bundle, this);
     }
     
     /**

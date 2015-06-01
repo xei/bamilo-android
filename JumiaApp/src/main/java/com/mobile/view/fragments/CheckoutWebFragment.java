@@ -143,14 +143,8 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            triggerGetCustomer();
-            triggerGetShoppingCartItems();
-        } else {
-            showFragmentErrorRetry();
-        }
-
+        triggerGetCustomer();
+        triggerGetShoppingCartItems();
     }
 
     private void triggerGetCustomer() {

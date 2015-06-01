@@ -9,6 +9,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.address.EditAddress;
 
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class SetEditedAddressHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new SetEditedAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new EditAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override

@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
@@ -147,17 +146,15 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
          * Validate product
          * If null is assumed that the system clean some data
          */
-        if(mCompleteProduct != null && mainView != null) {
+        if (mCompleteProduct != null && mainView != null) {
             getViews();
             displayProductInformation();
-        }else{
-            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mCompleteProductUrl)) {
-                Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-                triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
-            } else {
-                showFragmentErrorRetry();
-            }
+        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+        } else {
+            showFragmentErrorRetry();
         }
     }
 

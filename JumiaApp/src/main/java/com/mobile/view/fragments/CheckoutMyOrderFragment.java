@@ -192,15 +192,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
-        
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            // Get my Order
-            showMyOrder();
-        } else {
-            showFragmentErrorRetry();
-        }
-
+        // Get my Order
+        showMyOrder();
     }
 
     /*

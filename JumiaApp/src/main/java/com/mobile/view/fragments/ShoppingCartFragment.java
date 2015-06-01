@@ -199,18 +199,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            mBeginRequestMillis = System.currentTimeMillis();
-            // Case deep link
-            if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
-            // Case normal
-            else triggerGetShoppingCart();
-            // Track page
-            TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
-        } else {
-            showFragmentErrorRetry();
-        }
+        mBeginRequestMillis = System.currentTimeMillis();
+        // Case deep link
+        if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
+        // Case normal
+        else triggerGetShoppingCart();
+        // Track page
+        TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
     }
 
     @Override

@@ -220,9 +220,6 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
          */
         forceInputAlignToLeft();
 
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-          
             // Validate form
             if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                 Log.d(TAG, "FORM: TRY AUTO LOGIN");
@@ -244,10 +241,6 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 }
                 cameFromRegister = false;
             }
-            
-        } else {
-            showFragmentErrorRetry();
-        }
         
         setLoginBottomLayout();
     }
