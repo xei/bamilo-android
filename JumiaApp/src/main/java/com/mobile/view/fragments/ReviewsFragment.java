@@ -714,7 +714,7 @@ public class ReviewsFragment extends BaseFragment {
             sellerRatingBar.setRating(productRatingPage.getAverage());
 
         } else {
-            insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true,productRatingPage.getAverage());
+            insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
         }
 
 

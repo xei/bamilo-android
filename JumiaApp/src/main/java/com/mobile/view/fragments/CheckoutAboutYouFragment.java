@@ -45,7 +45,7 @@ import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.GetLoginHelper;
-import com.mobile.helpers.session.GetSignupFormHelper;
+import com.mobile.helpers.session.GetSignUpFormHelper;
 import com.mobile.helpers.session.SetSignupHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
@@ -763,7 +763,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private boolean triggerSignupForm() {
         Log.i(TAG, "TRIGGER: SIGNUP FORM");
         onAutoLogin = false;
-        triggerContentEvent(new GetSignupFormHelper(), null, this);
+        triggerContentEvent(new GetSignUpFormHelper(), null, this);
         return true;
     }
 

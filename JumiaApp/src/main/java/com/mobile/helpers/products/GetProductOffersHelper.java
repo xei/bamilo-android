@@ -32,8 +32,6 @@ import de.akquinet.android.androlog.Log;
 public class GetProductOffersHelper extends SuperBaseHelper {
 
     private static String TAG = GetProductOffersHelper.class.getSimpleName();
-    
-    // private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_OFFERS;
 
     public static final String ALL_OFFERS = "all_offers";
 

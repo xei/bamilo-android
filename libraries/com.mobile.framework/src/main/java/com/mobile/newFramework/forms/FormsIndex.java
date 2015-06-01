@@ -1,8 +1,5 @@
 package com.mobile.newFramework.forms;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -11,18 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * Defines the super object to handle data from the form.
  * @author Paulo Carvalho
  *
  */
-public class SuperFormData implements IJSONSerializable, Parcelable {
-
-    private FormData formData;
-
-    public SuperFormData() {
-    }
-
+public class FormsIndex extends HashMap<String, FormData> implements IJSONSerializable {
 
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -35,9 +28,9 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
             int dataArrayLength = dataArray.length();
             for (int i = 0; i < dataArrayLength; ++i) {
                 JSONObject formDataObject = dataArray.getJSONObject(i);
-                formData = new FormData();
+                FormData formData = new FormData();
                 formData.initialize(formDataObject);
-//                JumiaApplication.INSTANCE.getFormDataRegistry().put(formData.getAction(), formData);
+                put(formData.getAction(), formData);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -50,7 +43,6 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
      */
     @Override
     public JSONObject toJSON() {
-
         return null;
     }
 
@@ -59,43 +51,4 @@ public class SuperFormData implements IJSONSerializable, Parcelable {
         return RequiredJson.METADATA;
     }
 
-    @Override
-    public int describeContents() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(formData);
-    }
-
-    /**
-     * Parcel constructor
-     * @param in
-     */
-    private SuperFormData(Parcel in) {
-        formData = (FormData) in.readValue(FormData.class.getClassLoader());
-    }
-    
-    /**
-     * Create parcelable 
-     */
-    public static final Creator<SuperFormData> CREATOR = new Creator<SuperFormData>() {
-        public SuperFormData createFromParcel(Parcel in) {
-            return new SuperFormData(in);
-        }
-
-        public SuperFormData[] newArray(int size) {
-            return new SuperFormData[size];
-        }
-    };
-
-    public FormData getFormData() {
-        return formData;
-    }
-
-    public void setFormData(FormData formData) {
-        this.formData = formData;
-    }
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.newFramework.forms;
 
 import com.mobile.framework.utils.EventType;

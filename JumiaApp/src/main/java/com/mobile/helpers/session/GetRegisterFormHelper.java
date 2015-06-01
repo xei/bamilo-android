@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.helpers.session;
 
 import android.net.Uri;
@@ -49,7 +46,7 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
             FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(mEventType.action);
             url = formData.getUrl();
         } catch (NullPointerException e) {
-            Log.w(TAG, "FORM DATA IS NULL THEN GET LOGIN FORM FALLBACK", e);
+            Log.w(TAG, "FORM DATA IS NULL THEN GET FORM FALLBACK", e);
         }
         return RemoteService.completeUri(Uri.parse(url)).toString();
     }
@@ -63,6 +60,7 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.success);
         Form form = (Form) baseResponse.metadata.getData();
+        form.sortForm(mEventType);
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
         mRequester.onRequestComplete(bundle);
