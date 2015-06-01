@@ -10,7 +10,8 @@ import java.util.Map;
  */
 public class BaseResponse<T>{
     public boolean success;
-    public Map<String,List<String>> messages;
+    public Map<String, String> successMessages;
+    public Map<String,List<String>> errorMessages;
     //TODO remove message variable as soon as possible
     public String message;
     public Metadata<T> metadata;
