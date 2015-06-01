@@ -14,11 +14,13 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddMultipleItemsShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
@@ -85,6 +87,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+        handleSuccess(baseResponse,bundle);
         mRequester.onRequestComplete(bundle);
     }
 
@@ -92,6 +95,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.message);
         Bundle bundle = generateErrorBundle(baseResponse);
+        handleError(baseResponse, bundle);
         mRequester.onRequestError(bundle);
     }
 
@@ -174,25 +178,21 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 //        return parseResponseErrorBundle(bundle);
 //    }
 
-
-    /*
-     * TODO: Validate messages from base response
-     */
-
     //@Override
-    protected void handleSuccess(JSONObject messagesObject, Bundle bundle) {
-        JSONObject successObject = messagesObject.optJSONObject(RestConstants.JSON_SUCCESS_TAG);
-        if (successObject != null && successObject.length() > 0) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, checkAddedProducts(successObject));
+    protected void handleSuccess(BaseResponse baseResponse, Bundle bundle) {
+//        JSONObject successObject = messagesObject.optJSONObject(RestConstants.JSON_SUCCESS_TAG);
+        Map<String, String> successMessages = baseResponse.successMessages;
+        if (successMessages != null && !successMessages.isEmpty()) {
+            bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, checkAddedProducts(successMessages));
         }
-        handleError(messagesObject, bundle);
+        handleError(baseResponse, bundle);
     }
 
     //@Override
-    protected void handleError(JSONObject messagesObject, Bundle bundle) {
-        JSONObject errorObject = messagesObject.optJSONObject(RestConstants.JSON_ERROR_TAG);
-        if (errorObject != null && errorObject.length() > 0) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, checkNotAddedProducts(errorObject));
+    protected void handleError(BaseResponse baseResponse, Bundle bundle) {
+        Map<String, List<String>> errorMessages = baseResponse.errorMessages;
+        if (errorMessages != null && !errorMessages.isEmpty()) {
+            bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, checkNotAddedProducts(errorMessages));
         }
     }
     
@@ -201,12 +201,15 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
      * 
      * @return Array of products sku's
      */
-    protected ArrayList<String> checkAddedProducts(JSONObject sucessObject) {
+    protected ArrayList<String> checkAddedProducts(Map<String, String> successMessages) {
         ArrayList<String> added = new ArrayList<>();
-        Iterator<?> keys = sucessObject.keys();
 
-        while (keys.hasNext()) {
-            added.add(productBySku.get(keys.next()));
+        for (Map.Entry<String, String> entry : successMessages.entrySet())
+        {
+            String value = productBySku.get(entry.getKey());
+            if(value != null) {
+                added.add(value);
+            }
         }
         return added;
     }
@@ -216,12 +219,15 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
      * 
      * @return Array of products sku's
      */
-    protected ArrayList<String> checkNotAddedProducts(JSONObject errorObject) {
+    protected ArrayList<String> checkNotAddedProducts(Map<String, List<String>> errorMessages) {
         ArrayList<String> notAdded = new ArrayList<>();
-        Iterator<?> keys = errorObject.keys();
 
-        while (keys.hasNext()) {
-            notAdded.add(productBySku.get(keys.next()));
+        for (Map.Entry<String, List<String>> entry : errorMessages.entrySet())
+        {
+            String value = productBySku.get(entry.getKey());
+            if(value != null) {
+                notAdded.add(value);
+            }
         }
         return notAdded;
     }
