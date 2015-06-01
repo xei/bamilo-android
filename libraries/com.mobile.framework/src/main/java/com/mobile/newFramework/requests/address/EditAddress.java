@@ -8,15 +8,15 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class CreateAddress extends BaseRequest {
+public class EditAddress extends BaseRequest {
 
-    public CreateAddress(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
+    public EditAddress(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
     }
 
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.createAddress(mRequestBundle.getData(), this);
+        service.editAddress(mRequestBundle.getData(), this);
     }
 }
