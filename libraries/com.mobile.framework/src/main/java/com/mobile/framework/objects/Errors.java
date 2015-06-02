@@ -1,19 +1,19 @@
 package com.mobile.framework.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.rest.RestConstants;
 
 import de.akquinet.android.androlog.Log;
 

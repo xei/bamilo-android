@@ -664,40 +664,36 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private void triggerAutoLogin() {
         Log.i(TAG, "TRIGGER: AUTO LOGIN");
         onAutoLogin = true;
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
 
-            // Validate used has facebook credentials
-            try {
-                // Facebook flag
-                if (values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
-                    Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
-                    showFragmentLoading();
-                    triggerFacebookLogin(values, onAutoLogin);
-                    return;
-                }
-            } catch (NullPointerException e) {
-                Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
+        ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+
+        // Validate used has facebook credentials
+        try {
+            // Facebook flag
+            if (values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
+                Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
+                showFragmentLoading();
+                triggerFacebookLogin(values, onAutoLogin);
+                return;
             }
-
-            // Sign up flag
-            try {
-                if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)) {
-                    Log.i(TAG, "USER HAS SIGN UP CREDENTIALS");
-                    showFragmentLoading();
-                    triggerSignup(values, onAutoLogin);
-                    return;
-                }
-            } catch (NullPointerException e) {
-                Log.i(TAG, "USER HASN'T SIGN UP CREDENTIALS");
-            }
-
-            // Try login with saved credentials
-            triggerLogin(values, onAutoLogin);
-        } else {
-            showRetryLayout();
+        } catch (NullPointerException e) {
+            Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
         }
+
+        // Sign up flag
+        try {
+            if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)) {
+                Log.i(TAG, "USER HAS SIGN UP CREDENTIALS");
+                showFragmentLoading();
+                triggerSignup(values, onAutoLogin);
+                return;
+            }
+        } catch (NullPointerException e) {
+            Log.i(TAG, "USER HASN'T SIGN UP CREDENTIALS");
+        }
+
+        // Try login with saved credentials
+        triggerLogin(values, onAutoLogin);
 
     }
 
@@ -778,15 +774,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Trigger used to get the initialize forms
      */
     private void triggerInitForm() {
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            Log.i(TAG, "TRIGGER: INIT FORMS");
-            Bundle bundle = new Bundle();
-            triggerContentEvent(new GetInitFormHelper(), bundle, this);
-        } else {
-            showRetryLayout();
-        }
-
+        Log.i(TAG, "TRIGGER: INIT FORMS");
+        Bundle bundle = new Bundle();
+        triggerContentEvent(new GetInitFormHelper(), bundle, this);
     }
 
     /**

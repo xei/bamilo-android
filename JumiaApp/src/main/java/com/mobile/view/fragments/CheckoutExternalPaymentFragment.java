@@ -147,17 +147,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            triggerGetCustomer();
-        } else {
-            showFragmentErrorRetry();
-        }
-
+        triggerGetCustomer();
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
-
         TrackerDelegator.trackCheckoutStep(params);
     }
 

@@ -5,7 +5,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.address.GetAddressesList;
+import com.mobile.newFramework.requests.address.GetCustomerAddresses;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public class GetAddressesListTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetAddressesList(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCustomerAddresses(IS_AUTOMATED_TEST, requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

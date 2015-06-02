@@ -29,7 +29,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.checkout.CheckoutFinishHelper;
-import com.mobile.helpers.voucher.SetVoucherHelper;
+import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
@@ -192,15 +192,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
-        
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            // Get my Order
-            showMyOrder();
-        } else {
-            showFragmentErrorRetry();
-        }
-
+        // Get my Order
+        showMyOrder();
     }
 
     /*
@@ -579,7 +572,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      */
     private String getUserAgentAsExtraData(){
         String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";      
-        return "app=android&customer_device=" + device;
+        //return "app=android&customer_device=" + device;
+        return device;
     }
 
     /**
@@ -588,7 +582,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
-        triggerContentEventNoLoading(new SetVoucherHelper(), null, this);
+        triggerContentEventNoLoading(new AddVoucherHelper(), null, this);
     }
 
     /**

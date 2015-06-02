@@ -246,8 +246,6 @@ public class WriteSellerReviewFragment extends BaseFragment {
             }
         }
 
-     // Validate is service is available
-        if (JumiaApplication.mIsBound) {
 
             if (TextUtils.isEmpty(mSellerId)) {
                 if(getArguments().containsKey(ProductDetailsFragment.SELLER_ID)){
@@ -268,9 +266,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
                     triggerSellerReviewForm();
                 }
             }
-        } else {
-            showRetryLayout();
-        }
+
         
     }
 

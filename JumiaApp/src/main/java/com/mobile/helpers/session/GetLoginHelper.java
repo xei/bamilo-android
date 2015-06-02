@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.helpers.session;
 
 import android.content.ContentValues;
@@ -22,9 +19,6 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
- * @author Manuel Silva
- * 
  */
 public class GetLoginHelper extends SuperBaseHelper {
     
@@ -34,7 +28,7 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     boolean saveCredentials = true;
 
-    ContentValues contentValues;
+    private ContentValues mContentValues;
 
     @Override
     public EventType getEventType() {
@@ -48,22 +42,18 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        //
         saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
-        //
-        contentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
-        //
+        mContentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
         return super.createRequest(args);
     }
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap(contentValues);
+        return SuperBaseHelper.convertContentValuesToMap(mContentValues);
     }
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        // Request
         new LoginCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
@@ -73,8 +63,8 @@ public class GetLoginHelper extends SuperBaseHelper {
         // Save credentials
         if (saveCredentials) {
             Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-            contentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(contentValues);
+            mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
+            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer

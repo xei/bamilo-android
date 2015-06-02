@@ -32,8 +32,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetPaymentMethodsHelper;
 import com.mobile.helpers.checkout.SetPaymentMethodHelper;
+import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
-import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.pojo.DynamicForm;
@@ -142,13 +142,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show addresses
-            triggerGetPaymentMethods();
-        } else {
-            showFragmentErrorRetry();
-        }
+        // Get and show addresses
+        triggerGetPaymentMethods();
     }
 
     
@@ -312,7 +307,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 getBaseActivity().hideKeyboard();
                 if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
@@ -536,8 +531,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEventProgress(new SetVoucherHelper(), bundle, this);
+        bundle.putParcelable(AddVoucherHelper.VOUCHER_PARAM, values);
+        triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
     
     private void triggerRemoveVoucher(ContentValues values) {

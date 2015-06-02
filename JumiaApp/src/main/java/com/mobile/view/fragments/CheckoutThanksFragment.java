@@ -115,12 +115,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            prepareLayout();
-        } else {
-            showFragmentErrorRetry();
-        }
+        prepareLayout();
     }
 
     @Override

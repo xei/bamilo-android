@@ -121,14 +121,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_shipping_button_enter).setOnClickListener(this);
-        
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show addresses
-            triggerGetShippingMethods();
-        } else {
-            showFragmentErrorRetry();
-        }
+        // Get and show addresses
+        triggerGetShippingMethods();
 
     }
     

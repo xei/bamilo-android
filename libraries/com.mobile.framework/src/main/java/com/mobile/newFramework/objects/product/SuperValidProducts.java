@@ -17,11 +17,9 @@ import java.util.ArrayList;
  * Class used to save the newsletter subscription
  * @author sergiopereira
  */
-public class SuperValidProducts implements IJSONSerializable {
+public class SuperValidProducts extends ArrayList<LastViewedAddableToCart> implements IJSONSerializable {
 
     private static final String TAG = SuperValidProducts.class.getSimpleName();
-
-    private ArrayList<LastViewedAddableToCart> validProducts;
 
     /**
      * Empty constructor
@@ -41,13 +39,12 @@ public class SuperValidProducts implements IJSONSerializable {
         try {
             JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
             if (validProductsArray != null) {
-                validProducts = new ArrayList<>();
                 if (validProductsArray.length() > 0) {
                     for (int i = 0; i < validProductsArray.length(); i++) {
                         LastViewedAddableToCart lastViewedAddableToCart = new LastViewedAddableToCart();
                         status = lastViewedAddableToCart.initialize(validProductsArray.getJSONObject(i));
                         lastViewedAddableToCart.setComplete(true);
-                        validProducts.add(lastViewedAddableToCart);
+                        add(lastViewedAddableToCart);
 
                         if (!status) {
                             System.out.println("initialize"+5);
@@ -57,7 +54,7 @@ public class SuperValidProducts implements IJSONSerializable {
                         }
                     }
                 }
-                updateRecentViewedDatabaseThread(validProducts);
+                updateRecentViewedDatabaseThread(this);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -112,11 +109,11 @@ public class SuperValidProducts implements IJSONSerializable {
         }
     }
 
-    public ArrayList<LastViewedAddableToCart> getValidProducts() {
-        return validProducts;
-    }
-
-    public void setValidProducts(ArrayList<LastViewedAddableToCart> validProducts) {
-        this.validProducts = validProducts;
-    }
+//    public ArrayList<LastViewedAddableToCart> getValidProducts() {
+//        return validProducts;
+//    }
+//
+//    public void setValidProducts(ArrayList<LastViewedAddableToCart> validProducts) {
+//        this.validProducts = validProducts;
+//    }
 }

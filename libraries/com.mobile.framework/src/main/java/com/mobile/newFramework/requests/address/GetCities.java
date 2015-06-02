@@ -21,3 +21,4 @@ public class GetCities extends BaseRequest<SuperAddressCity> {
         service.getCities(mRequestBundle.getData(), this);
     }
 }
+

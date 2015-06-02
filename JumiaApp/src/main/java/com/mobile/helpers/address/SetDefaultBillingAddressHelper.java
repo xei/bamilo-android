@@ -1,38 +1,34 @@
-/**
- *
- */
-package com.mobile.helpers.teasers;
+package com.mobile.helpers.address;
 
-import android.net.Uri;
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.objects.StaticPage;
-import com.mobile.framework.service.RemoteService;
-import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.home.GetShopInShopPage;
+import com.mobile.newFramework.requests.address.SetDefaultBillingAddress;
+
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * Helper used to get the inner shop.
- *
- * @author sergiopereira
+ * Created by rsoares on 2/25/15.
  */
-public class GetShopHelper extends SuperBaseHelper {
+public class SetDefaultBillingAddressHelper extends SuperBaseHelper {
 
-    private static String TAG = GetShopHelper.class.getSimpleName();
+    public static String TAG = SetDefaultBillingAddressHelper.class.getSimpleName();
 
-    public static final String INNER_SHOP_TAG = "key";
+    public static final String ID = "id";
+
+    public static final String FORM_CONTENT_VALUES = "content_values";
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_SHOP_EVENT;
+        return EventType.SET_DEFAULT_BILLING_ADDRESS;
     }
 
     @Override
@@ -41,23 +37,19 @@ public class GetShopHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
+    protected Map<String, String> getRequestData(Bundle args) {
+        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
     }
 
     @Override
-    protected void onRequest(RequestBundle requestBundle) {
-        new GetShopInShopPage(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    public void onRequest(RequestBundle requestBundle) {
+        new SetDefaultBillingAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
-        StaticPage staticPage = (StaticPage) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
-        mRequester.onRequestComplete(bundle);
+        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 
     @Override
@@ -67,45 +59,54 @@ public class GetShopHelper extends SuperBaseHelper {
         mRequester.onRequestError(bundle);
     }
 
-
-
+//
+//
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+//     */
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
+//        Log.d(TAG, "REQUEST");
+//        Parcelable contentValues = args.getParcelable(FORM_CONTENT_VALUES);
 //        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(Constants.BUNDLE_URL_KEY));
-//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+//        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
 //        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+//        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
 //        return bundle;
 //    }
 //
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+//     */
 //    @Override
 //    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-//        Log.i(TAG, "ON PARSE RESPONSE");
-//        try {
-//            StaticPage staticPage = new StaticPage();
-//            staticPage.initialize(jsonObject);
-//            bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            return parseErrorBundle(bundle);
-//        }
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        return bundle;
 //    }
 //
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+//     */
 //    @Override
 //    public Bundle parseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "ON PARSE ERROR BUNDLE");
+//        Log.d(TAG, "PARSE ERROR BUNDLE");
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
 //        return bundle;
 //    }
 //
+//    /*
+//     * (non-Javadoc)
+//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+//     */
 //    @Override
 //    public Bundle parseResponseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "ON RESPONSE ERROR BUNDLE");
+//        Log.d(TAG, "PARSE RESPONSE BUNDLE");
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
 //        return bundle;

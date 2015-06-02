@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
@@ -117,13 +116,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            if (formResponse != null) displayForm(formResponse);
-            else triggerForgotForm();
-        } else {
-            showFragmentErrorRetry();
-        }
+        if (formResponse != null) displayForm(formResponse);
+        else triggerForgotForm();
         setAppContentLayout();
     }
 

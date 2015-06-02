@@ -666,12 +666,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-
-        if (JumiaApplication.mIsBound) {
-            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
-        } else {
-            showFragmentErrorRetry();
-        }
+        triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
     }
 
     /**

@@ -254,20 +254,17 @@ public class ReviewsFragment extends BaseFragment {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mProductUrl = contentUrl != null ? contentUrl : "";
             }
-            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mProductUrl)) {
+            if (!TextUtils.isEmpty(mProductUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showFragmentErrorRetry();
             }
-        } else if (JumiaApplication.mIsBound){
+        } else {
             checkReviewsTypeVisibility();
             showFragmentContent();
             showFragmentContentOfSeller();
-
-        } else {
-            showFragmentErrorRetry();
         }
     }
 

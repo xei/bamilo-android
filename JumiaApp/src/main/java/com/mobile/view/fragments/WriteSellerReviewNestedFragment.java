@@ -188,33 +188,27 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
 
-     // Validate is service is available
-        if (JumiaApplication.mIsBound) {
-
-            if (TextUtils.isEmpty(mSellerId)) {
-                if(getArguments().containsKey(ProductDetailsFragment.SELLER_ID)){
-                    mSellerId = getArguments().getString(ProductDetailsFragment.SELLER_ID);
-                    if(!TextUtils.isEmpty(mSellerId)){
-                        triggerSellerReviewForm();
-                    } else {
-                        showRetryLayout();
-                    }
+        if (TextUtils.isEmpty(mSellerId)) {
+            if (getArguments().containsKey(ProductDetailsFragment.SELLER_ID)) {
+                mSellerId = getArguments().getString(ProductDetailsFragment.SELLER_ID);
+                if (!TextUtils.isEmpty(mSellerId)) {
+                    triggerSellerReviewForm();
                 } else {
                     showRetryLayout();
                 }
             } else {
-                mSellerReviewForm = JumiaApplication.INSTANCE.mSellerReviewForm;
-                if(mSellerReviewForm != null){
-                    loadReviewFormValues();
-                    setReviewLayout(mSellerReviewForm);
-                } else {
-                    triggerSellerReviewForm();
-                }
+                showRetryLayout();
             }
         } else {
-            showRetryLayout();
+            mSellerReviewForm = JumiaApplication.INSTANCE.mSellerReviewForm;
+            if (mSellerReviewForm != null) {
+                loadReviewFormValues();
+                setReviewLayout(mSellerReviewForm);
+            } else {
+                triggerSellerReviewForm();
+            }
         }
-        
+
     }
 
     /*

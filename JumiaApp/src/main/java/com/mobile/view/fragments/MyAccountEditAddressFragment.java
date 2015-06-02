@@ -67,19 +67,13 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-                triggerInitForm();
-            } else if(mFormResponse != null && mRegions != null){
-                loadEditAddressForm(mFormResponse);
-            } else {
-                triggerEditAddressForm();
-            }
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
+            triggerInitForm();
+        } else if(mFormResponse != null && mRegions != null){
+            loadEditAddressForm(mFormResponse);
         } else {
-            showFragmentErrorRetry();
+            triggerEditAddressForm();
         }
     }
 

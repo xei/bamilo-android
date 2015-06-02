@@ -2,12 +2,12 @@ package com.mobile.framework.objects;
 
 import com.mobile.framework.rest.RestConstants;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class Success {
 	public static HashMap<String, String> createMap(JSONObject messages) throws JSONException {

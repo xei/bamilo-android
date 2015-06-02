@@ -72,19 +72,13 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-                triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null && regions != null){
-                loadCreateAddressForm(mFormResponse);
-            } else {
-                triggerCreateAddressForm();
-            }
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            triggerInitForm();
+        } else if(mFormResponse != null && orderSummary != null && regions != null){
+            loadCreateAddressForm(mFormResponse);
         } else {
-            showFragmentErrorRetry();
+            triggerCreateAddressForm();
         }
     }
 

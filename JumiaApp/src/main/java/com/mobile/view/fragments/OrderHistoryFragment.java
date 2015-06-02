@@ -217,13 +217,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
-        if(JumiaApplication.mIsBound){
-            triggerGetOrderList();            
-        } else {
-            showFragmentErrorRetry();
-        }
-        
+        triggerGetOrderList();
     }
 
     /*
