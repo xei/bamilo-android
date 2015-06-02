@@ -12,13 +12,13 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetPromotions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.akquinet.android.androlog.Log;
 
 /**
- * Example helper
- * 
- * @author Guilherme Silva
- * @modified Manuel Silva
+ * Get promotions
  */
 public class GetPromotionsHelper extends SuperBaseHelper {
 
@@ -35,6 +35,13 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        Map<String, String> data = new HashMap<>();
+        data.put("key", "mobile_promotions");
+        return data;
+    }
+
+    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new GetPromotions(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
@@ -42,7 +49,6 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
         Promotion promotions = (Promotion) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, promotions);

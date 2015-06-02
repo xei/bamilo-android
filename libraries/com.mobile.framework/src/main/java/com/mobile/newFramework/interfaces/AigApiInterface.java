@@ -1,5 +1,6 @@
 package com.mobile.newFramework.interfaces;
 
+import com.mobile.framework.objects.Promotion;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.Addresses;
@@ -65,7 +66,7 @@ public interface AigApiInterface {
     void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     @GET("/")
-    void getPromotions(Callback<BaseResponse<BaseResponse>> callback);
+    void getPromotions(@QueryMap Map<String, String> data, Callback<BaseResponse<Promotion>> callback);
 
     /*
      * ## FORMS

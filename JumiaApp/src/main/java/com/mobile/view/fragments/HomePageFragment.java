@@ -586,7 +586,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_HOME_EVENT:
-                Log.i(TAG, "ON GET_HOME_EVENT");
+                Log.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
                 HomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 if (homePage != null && homePage.hasTeasers()) {
                     Log.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
@@ -600,8 +600,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 }
                 break;
             case GET_PROMOTIONS:
-                Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
-                onGetPromotions(bundle);
+                Log.i(TAG, "ON SUCCESS RESPONSE: GET_PROMOTIONS");
+                Promotion promotion = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                onShowPromotions(promotion);
                 break;
             default:
                 break;
@@ -612,15 +613,17 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Show promotions
      */
-    private void onGetPromotions(Bundle bundle) {
-        if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
+    private void onShowPromotions(Promotion promotion) {
+        if (promotion != null && promotion.getIsStillValid()) {
             try {
-                DialogPromotionFragment.newInstance((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).show(getChildFragmentManager(), null);
+                DialogPromotionFragment.newInstance(promotion).show(getChildFragmentManager(), null);
             } catch (IllegalStateException e) {
-                Log.w(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
+                Log.w(TAG, "promotion expired!" + promotion.getEndDate());
             }
+        } else if (promotion != null){
+            Log.i(TAG, "PROMOTION EXPIRED! " + promotion.getEndDate());
         } else {
-            Log.i(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
+            Log.i(TAG, "PROMOTION IS NULL!");
         }
     }
 
