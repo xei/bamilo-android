@@ -96,7 +96,7 @@ public enum EventType {
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 
-    GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", RestContract.NO_CACHE),
+    GET_PROMOTIONS("http:/main/getstatic/", RestContract.NO_CACHE),
 
     TRACK_ORDER_EVENT("http:/order/trackingorder/", RestContract.NO_CACHE),
 

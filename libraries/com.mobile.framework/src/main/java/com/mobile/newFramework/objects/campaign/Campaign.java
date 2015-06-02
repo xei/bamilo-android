@@ -33,7 +33,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     private int mCount;
 
-    private ArrayList<CampaignItem> mItems = new ArrayList<CampaignItem>();
+    private ArrayList<CampaignItem> mItems = new ArrayList<>();
 
     /**
      * Empty constructor

@@ -8,10 +8,8 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 public class DeserializableFactory {
 
     public IJSONSerializable createObject(String object) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-
         Class<?> objectClass = Class.forName(object);
         Object concreteObject = objectClass.newInstance();
         return (concreteObject instanceof IJSONSerializable) ? (IJSONSerializable) concreteObject : null;
-
     }
 }

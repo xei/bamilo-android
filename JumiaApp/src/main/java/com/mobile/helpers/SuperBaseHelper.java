@@ -45,8 +45,9 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
                 .setUrl(getRequestUrl(args))
                 .setCache(mEventType.cacheTime);
         // Validate data
-        if (args != null) {
-            requestBundleBuilder.setData(getRequestData(args));
+        Map data = getRequestData(args);
+        if (data != null) {
+            requestBundleBuilder.setData(data);
         }
         // Validate priority
         if(!hasPriority()){
@@ -61,7 +62,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
-        return convertBundleToMap(args);
+        return args != null ? convertBundleToMap(args) : null;
     }
 
     public boolean hasPriority(){
