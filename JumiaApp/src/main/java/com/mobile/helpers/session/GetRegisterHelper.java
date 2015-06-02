@@ -12,7 +12,7 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
@@ -77,7 +77,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
-        com.mobile.newFramework.objects.user.LoginCustomer loginCustomer = ((com.mobile.newFramework.objects.user.LoginCustomer) baseResponse.getMetadata().getData());
+        CheckoutStepLogin loginCustomer = ((CheckoutStepLogin) baseResponse.getMetadata().getData());
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Create bundle

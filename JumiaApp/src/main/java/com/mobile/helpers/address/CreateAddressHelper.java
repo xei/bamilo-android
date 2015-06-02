@@ -7,12 +7,15 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.home.GetShopInShopPage;
+import com.mobile.newFramework.requests.address.CreateAddress;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -63,15 +66,15 @@ public class CreateAddressHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetShopInShopPage(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new CreateAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        // TODO: CREATE NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(checkoutStep.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 
