@@ -32,11 +32,11 @@ public class CheckoutStepManager {
 
             // Get the next step from json
             String nextStep = getNextCheckoutStep(jsonObject);
-                         
+
             // Validate value
             if(nextStep != null) return getNextFragment(nextStep);
             else return FragmentType.UNKNOWN;
-                    
+
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: JSON OBJECT IS NULL");
             return FragmentType.UNKNOWN;

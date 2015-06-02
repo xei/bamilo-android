@@ -17,10 +17,6 @@ public class CheckoutStepLogin extends CheckoutStepObject implements IJSONSerial
 
     }
 
-    public CheckoutStepLogin(JSONObject jsonObject) throws JSONException {
-        initialize(jsonObject);
-    }
-
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         customer = new Customer(jsonObject);

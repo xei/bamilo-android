@@ -12,7 +12,7 @@ import de.akquinet.android.androlog.Log;
  *
  */
 public class CheckoutStepManager {
-    
+
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
 
     public final static String ADDRESSES_STEP = "createAddress";
@@ -20,16 +20,16 @@ public class CheckoutStepManager {
     public final static String SHIPPING_STEP = "shippingMethod";
     public final static String PAYMENT_STEP = "paymentMethod";
     public final static String ORDER_STEP = "finish";
-    
+
     /**
      * Method used to get the next step value from JSON and return a fragment type
      * @param jsonObject The json response to get the next step
      * @return {@link FragmentType}
      */
     public static FragmentType getNextCheckoutStep(JSONObject jsonObject){
-        // Get the next step from json 
+        // Get the next step from json
         String nextStep = null;
-        
+
         try {
             // Validate data
             if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
@@ -47,19 +47,17 @@ public class CheckoutStepManager {
                 JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
                 nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
             }
-                         
             // Validate value
             if(nextStep != null) return getNextFragment(nextStep);
             else return FragmentType.UNKNOWN;
-                    
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: JSON OBJECT IS NULL");
             return FragmentType.UNKNOWN;
         }
     }
-    
+
     /**
-     * Method used to get the Fragment type from a constant 
+     * Method used to get the Fragment type from a constant
      * @param nextStep The next step
      * @return {@link FragmentType}
      */

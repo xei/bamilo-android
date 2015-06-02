@@ -17,6 +17,7 @@ import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
+import com.mobile.newFramework.objects.checkout.CheckoutStepSignUp;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
@@ -237,15 +238,15 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepSignUp>> callback);
 
     @FormUrlEncoded
     @POST("/")
     void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
-    @FormUrlEncoded
-    @POST("/")
-    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
 
     @FormUrlEncoded
     @POST("/")

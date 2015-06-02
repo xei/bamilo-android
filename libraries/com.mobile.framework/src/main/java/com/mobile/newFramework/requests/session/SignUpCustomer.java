@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.checkout.CheckoutStepSignUp;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class SignUpCustomer extends BaseRequest<Customer> {
+public class SignUpCustomer extends BaseRequest<CheckoutStepSignUp> {
 
     public SignUpCustomer(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

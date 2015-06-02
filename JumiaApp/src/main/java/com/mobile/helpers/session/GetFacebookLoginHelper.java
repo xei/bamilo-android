@@ -9,20 +9,18 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * Example helper
- * 
- * @author Guilherme Silva
- * 
+ * Facebook Login helper
  */
 public class GetFacebookLoginHelper extends SuperBaseHelper {
     
@@ -65,24 +63,22 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
-        Customer customer = (Customer) baseResponse.getMetadata().getData();
+        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        // Save customer
+        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
         if (saveCredentials) {
             Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-            mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, customer.getPassword());
-            mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, customer.getEmail());
+            mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, JumiaApplication.CUSTOMER.getPassword());
+            mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, JumiaApplication.CUSTOMER.getEmail());
             mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
-        // Save customer
-        JumiaApplication.CUSTOMER = customer;
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        // TODO: NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
-        //
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 

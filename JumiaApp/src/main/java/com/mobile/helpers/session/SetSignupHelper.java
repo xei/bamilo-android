@@ -9,10 +9,11 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.SignUpCustomer;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -76,13 +77,13 @@ public class SetSignupHelper extends SuperBaseHelper {
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
+        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        // Save customer
+        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        // TODO: NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
-        //
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 

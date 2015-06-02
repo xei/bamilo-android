@@ -68,7 +68,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
             try {
                 mJSONObject = jsonObject.getJSONObject(RestConstants.JSON_REQUIRED_TAG);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.w(TAG, "WARNING:  No value for required");
             }
 
             if (mJSONObject != null) {
