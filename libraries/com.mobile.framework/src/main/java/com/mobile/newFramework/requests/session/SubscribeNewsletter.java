@@ -4,12 +4,11 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class SubscribeNewsletter extends BaseRequest<SuperCustomerNewsletterSubscription> {
+public class SubscribeNewsletter extends BaseRequest<Void> {
 
     public SubscribeNewsletter(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

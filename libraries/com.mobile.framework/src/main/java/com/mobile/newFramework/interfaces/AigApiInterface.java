@@ -7,7 +7,6 @@ import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperAddressCity;
 import com.mobile.newFramework.objects.SuperAddressRegion;
-import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.SuperSetBillingAddress;
@@ -256,7 +255,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     @GET("/")
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
