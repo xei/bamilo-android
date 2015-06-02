@@ -321,10 +321,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         isOnStoppingProcess = false;
 
-        /**
-         * Register service callback
-         */
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        // TODO : REMOVE OLD FRAMEWORK
+//        /**
+//         * Register service callback
+//         */
+//        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+
 
         if (getBaseActivity() != null && !isNestedFragment) {
             getBaseActivity().warningFactory.hideWarning();
@@ -380,7 +382,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
+
+        // TODO : REMOVE OLD FRAMEWORK
+//        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
+
         isOnStoppingProcess = true;
     }
 
