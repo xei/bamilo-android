@@ -80,7 +80,11 @@ public class ResponseConverter implements Converter{
         JSONObject messagesJsonObject = responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);
         baseResponse.setMessage(handleSuccessMessage(messagesJsonObject));
 
-        baseResponse.setSuccessMessages(Success.createMap(messagesJsonObject));
+        try {
+            baseResponse.setSuccessMessages(Success.createMap(messagesJsonObject));
+        } catch (JSONException ex){
+            //TODO
+        }
         baseResponse.setErrorMessages(Errors.createErrorMessageMap(messagesJsonObject));
 
         //Sessions
