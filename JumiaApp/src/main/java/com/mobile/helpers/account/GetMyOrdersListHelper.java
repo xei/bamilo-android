@@ -51,8 +51,8 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
-        data.put(PAGE_NUMBER, args.getString(PAGE_NUMBER));
-        data.put(PER_PAGE, args.getString(PER_PAGE));
+        data.put(PAGE_NUMBER, ""+args.getInt(PAGE_NUMBER));
+        data.put(PER_PAGE, ""+args.getInt(PER_PAGE));
         return data;
     }
 
