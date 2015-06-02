@@ -7,7 +7,6 @@ import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
 import com.mobile.newFramework.objects.SuperAddressCity;
 import com.mobile.newFramework.objects.SuperAddressRegion;
-import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.SuperSetBillingAddress;
@@ -19,6 +18,7 @@ import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
+import com.mobile.newFramework.objects.checkout.SuperNativeCheckoutAvailability;
 import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
 import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.objects.configs.ApiInformation;
@@ -256,7 +256,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     @GET("/")
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
@@ -325,7 +325,7 @@ public interface AigApiInterface {
     */
 
     @GET("/")
-    void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse>> callback);
+    void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse<SuperNativeCheckoutAvailability>>> callback);
 
     @GET("/")
     void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);

@@ -7,7 +7,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.SuperCustomerNewsletterSubscription;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.SubscribeNewsletter;
@@ -50,11 +49,11 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        SuperCustomerNewsletterSubscription subscriptions = (SuperCustomerNewsletterSubscription) baseResponse.getMetadata().getData();
-        // Save the newsletter subscriptions
-        if (JumiaApplication.CUSTOMER != null) {
-            JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
-        }
+//        SuperCustomerNewsletterSubscription subscriptions = (SuperCustomerNewsletterSubscription) baseResponse.getMetadata().getData();
+//        // Save the newsletter subscriptions
+//        if (JumiaApplication.CUSTOMER != null) {
+//            JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
+//        }
         mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 

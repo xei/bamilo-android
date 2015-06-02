@@ -3,9 +3,11 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.checkout.SuperNativeCheckoutAvailability;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetNativeCheckoutAvailable;
@@ -38,17 +40,23 @@ public class GetNativeCheckoutAvailableHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO CREATE OBJECT
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        //bundle.putBoolean(Constants.BUNDLE_RESPONSE_KEY,  isAvailable);
-        //Log.i(TAG, "Native Checkout is available: " + isAvailable);
+
+        SuperNativeCheckoutAvailability nativeCheckoutAvailability = (SuperNativeCheckoutAvailability) baseResponse.getMetadata().getData();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_RESPONSE_KEY,  nativeCheckoutAvailability.isAvailable());
+        Log.i(TAG, "Native Checkout is available: " + nativeCheckoutAvailability.isAvailable());
         mRequester.onRequestComplete(bundle);
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 

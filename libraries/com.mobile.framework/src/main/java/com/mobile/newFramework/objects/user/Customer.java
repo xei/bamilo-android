@@ -8,7 +8,6 @@ import com.mobile.framework.objects.CustomerPrefix;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.RequiredJson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +39,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
     private ArrayList<String> addresses;
 
-    private ArrayList<CustomerNewsletterSubscription> mNewsletterSubscriptions;
+//    private ArrayList<CustomerNewsletterSubscription> mNewsletterSubscriptions;
 
     /**
      * Customer empty constructor
@@ -280,35 +279,35 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
      * @return true/false
      */
     public boolean hasAddresses(){
-        return (this.addresses != null && this.addresses.size() > 0 ) ? true : false;
+        return this.addresses != null && this.addresses.size() > 0;
     }
 
-    /**
-     * Get newsletter subscriptions
-     * @return a list of {@link CustomerNewsletterSubscription}
-     * @author sergiopereira
-     */
-    public ArrayList<CustomerNewsletterSubscription> getNewsletterSubscriptions(){
-        return mNewsletterSubscriptions;
-    }
-
-    /**
-     * Save newsletter subscriptions
-     * @param subscriptions list of {@link CustomerNewsletterSubscription}
-     * @author sergiopereira
-     */
-    public void setNewsletterSubscriptions(ArrayList<CustomerNewsletterSubscription> subscriptions){
-        this.mNewsletterSubscriptions = subscriptions;
-    }
-
-    /**
-     * Validate if exist newsletter subscription
-     * @return boolean
-     * @author sergiopereira
-     */
-    public boolean hasNewsletterSubscriptions(){
-        return mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0;
-    }
+//    /**
+//     * Get newsletter subscriptions
+//     * @return a list of {@link CustomerNewsletterSubscription}
+//     * @author sergiopereira
+//     */
+//    public ArrayList<CustomerNewsletterSubscription> getNewsletterSubscriptions(){
+//        return mNewsletterSubscriptions;
+//    }
+//
+//    /**
+//     * Save newsletter subscriptions
+//     * @param subscriptions list of {@link CustomerNewsletterSubscription}
+//     * @author sergiopereira
+//     */
+//    public void setNewsletterSubscriptions(ArrayList<CustomerNewsletterSubscription> subscriptions){
+//        this.mNewsletterSubscriptions = subscriptions;
+//    }
+//
+//    /**
+//     * Validate if exist newsletter subscription
+//     * @return boolean
+//     * @author sergiopereira
+//     */
+//    public boolean hasNewsletterSubscriptions(){
+//        return mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0;
+//    }
 
 
     /**
@@ -368,19 +367,18 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
                 }
             }
 
-            mNewsletterSubscriptions = new ArrayList<>();
-            // TODO Validate this
-            JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
-            if(newsletterArray != null) {
-                for (int i = 0; i < newsletterArray.length(); i++) {
-                    JSONObject object = newsletterArray.optJSONObject(i);
-                    if(object != null) {
-                        CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
-                        newsletter.initialize(object);
-                        mNewsletterSubscriptions.add(newsletter);
-                    }
-                }
-            }
+//            mNewsletterSubscriptions = new ArrayList<>();
+//            JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
+//            if(newsletterArray != null) {
+//                for (int i = 0; i < newsletterArray.length(); i++) {
+//                    JSONObject object = newsletterArray.optJSONObject(i);
+//                    if(object != null) {
+//                        CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
+//                        newsletter.initialize(object);
+//                        mNewsletterSubscriptions.add(newsletter);
+//                    }
+//                }
+//            }
 
         } catch (JSONException e) {
 //            Log.e( TAG, "Error parsing the jsonobject to customer", e );
