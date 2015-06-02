@@ -122,6 +122,9 @@ public interface AigApiInterface {
     @GET("/")
     void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
 
+    @GET("/")
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+
     /*
      * ## CATEGORIES
      */
