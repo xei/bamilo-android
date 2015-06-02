@@ -191,10 +191,10 @@ public class JumiaApplication extends A4SApplication {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if ((eventType == EventType.INITIALIZE ||
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
-                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null) {
+        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
+            // TODO : REMOVE OLD FRAMEWORK
+            //&& ServiceSingleton.getInstance().getService() == null) {
+
             Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;

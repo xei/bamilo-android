@@ -19,22 +19,22 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.AddressCity;
-import com.mobile.framework.objects.AddressRegion;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.helpers.address.CreateAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormAddAddressHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.address.SetNewAddressHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.objects.AddressCity;
+import com.mobile.newFramework.objects.AddressRegion;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
@@ -844,9 +844,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
-        bundle.putBoolean(SetNewAddressHelper.IS_BILLING, isBilling);
-        triggerContentEvent(new SetNewAddressHelper(), bundle, this);
+        bundle.putParcelable(CreateAddressHelper.FORM_CONTENT_VALUES, values);
+        bundle.putBoolean(CreateAddressHelper.IS_BILLING, isBilling);
+        triggerContentEvent(new CreateAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -894,7 +894,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
+        bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
         bundle.putString(GetCitiesHelper.CUSTOM_TAG, selectedTag);
         triggerContentEvent(new GetCitiesHelper(), bundle, this);
     }

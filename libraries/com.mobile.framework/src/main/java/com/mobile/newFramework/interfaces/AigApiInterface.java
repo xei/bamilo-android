@@ -3,10 +3,10 @@ package com.mobile.newFramework.interfaces;
 import com.mobile.framework.objects.Promotion;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
+import com.mobile.newFramework.objects.AddressCities;
+import com.mobile.newFramework.objects.AddressRegions;
 import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
-import com.mobile.newFramework.objects.SuperAddressCity;
-import com.mobile.newFramework.objects.SuperAddressRegion;
 import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.SuperSetBillingAddress;
@@ -270,7 +270,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -288,10 +288,10 @@ public interface AigApiInterface {
     void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetBillingAddress>> callback);
 
     @GET("/")
-    void getRegions(Callback<BaseResponse<SuperAddressRegion>> callback);
+    void getRegions(Callback<BaseResponse<AddressRegions>> callback);
 
     @GET("/")
-    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperAddressCity>> callback);
+    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
 
     /*
      * ## RATINGS/REVIEWS

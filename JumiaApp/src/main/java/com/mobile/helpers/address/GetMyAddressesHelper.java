@@ -3,7 +3,7 @@ package com.mobile.helpers.address;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -44,7 +44,7 @@ public class GetMyAddressesHelper extends SuperBaseHelper {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         Addresses addresses = (Addresses) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, addresses);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
         mRequester.onRequestComplete(bundle);
     }
 
