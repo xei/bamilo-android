@@ -24,8 +24,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.Order;
-import com.mobile.framework.objects.OrderItem;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
@@ -35,6 +33,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.Order;
+import com.mobile.newFramework.objects.OrderItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -67,7 +67,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     private TextView noOrders;
     
-    private LinearLayout productsLanscapeContainer;
+    private LinearLayout productsLandscapeContainer;
     
     private RelativeLayout productsContainer;
     
@@ -164,7 +164,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
             productsContainer = (RelativeLayout) view.findViewById(R.id.order_products_container);
-            productsLanscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
+            productsLandscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
         }
         
     }
@@ -180,7 +180,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.GONE);
                 ordersListView.setVisibility(View.GONE);
-                productsLanscapeContainer.setVisibility(View.GONE);
+                productsLandscapeContainer.setVisibility(View.GONE);
             } else {
                 ordersListView.setVisibility(View.GONE);
             }
@@ -190,7 +190,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.VISIBLE);
                 ordersListView.setVisibility(View.VISIBLE);
-                productsLanscapeContainer.setVisibility(View.VISIBLE);
+                productsLandscapeContainer.setVisibility(View.VISIBLE);
             } else {
                 ordersListView.setVisibility(View.VISIBLE);
             }
@@ -423,8 +423,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 }
                 ordersListView.setAdapter(ordersAdapter);
                 
-                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
-                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLandscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLandscapeContainer,true);
                 
                 ordersListView.setSelection(selectedProduct);
             } else{
@@ -433,8 +433,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 ordersAdapter.updateOrders(ordersList);
                 ordersListView.setSelection(selectedProduct);
                 
-                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
-                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLandscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLandscapeContainer,true);
             }
         }
         else{
@@ -490,9 +490,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(selectedProduct == -1) selectedProduct = 0;
             
             productsContainer.setVisibility(View.VISIBLE);
-            productsLanscapeContainer.setVisibility(View.VISIBLE);
+            productsLandscapeContainer.setVisibility(View.VISIBLE);
             
-            setOrderProducts(orders.get(selectedProduct),productsLanscapeContainer, true);
+            setOrderProducts(orders.get(selectedProduct),productsLandscapeContainer, true);
 //            setupProductslandScape(orders.get(selectedProduct));
         } else {
             ordersListView.setVisibility(View.VISIBLE);
@@ -524,7 +524,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         selectedProduct = selectedProd;
         
         if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
-        else setOrderProducts(order,productsLanscapeContainer,toShowInnerProds);
+        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
         
     }
     
@@ -549,9 +549,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             ordersAdapter.notifyDataSetChanged();
         }
 
-        if (toShowInnerProds && productsLanscapeContainer != null && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            if (productsLanscapeContainer.getChildCount() > 0) {
-                productsLanscapeContainer.removeAllViews();
+        if (toShowInnerProds && productsLandscapeContainer != null && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
+            if (productsLandscapeContainer.getChildCount() > 0) {
+                productsLandscapeContainer.removeAllViews();
             }
             ordersProductsPayment.setText(order.getmPayment());
             ordersProductDate.setText(order.getmDate());
