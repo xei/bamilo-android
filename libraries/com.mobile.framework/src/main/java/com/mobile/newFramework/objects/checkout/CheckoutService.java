@@ -8,7 +8,7 @@ import org.json.JSONObject;
  * Created by rsoares on 6/1/15.
  */
 public abstract class CheckoutService {
-    protected String nextStep;
+    private String nextStep;
 
     public void setCheckoutNextStep(JSONObject jsonObject){
         if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
@@ -26,5 +26,9 @@ public abstract class CheckoutService {
             JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
             nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
         }
+    }
+
+    public String getNextStep() {
+        return nextStep;
     }
 }

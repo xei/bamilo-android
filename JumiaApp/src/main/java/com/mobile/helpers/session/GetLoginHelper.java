@@ -12,6 +12,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class GetLoginHelper extends SuperBaseHelper {
     
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    private static String TAG = GetLoginHelper.class.getSimpleName();
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
 
@@ -67,14 +68,15 @@ public class GetLoginHelper extends SuperBaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
+        com.mobile.newFramework.objects.user.LoginCustomer loginCustomer = ((com.mobile.newFramework.objects.user.LoginCustomer) baseResponse.getMetadata().getData());
         // Save customer
-        JumiaApplication.CUSTOMER = ((com.mobile.newFramework.objects.user.LoginCustomer) baseResponse.getMetadata().getData()).getCustomer();
+        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
 
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         // TODO: NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
+         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
         //
         mRequester.onRequestComplete(bundle);
     }
