@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.helpers.session;
 
 import android.content.ContentValues;
@@ -15,7 +12,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.LoginCustomer;
+import com.mobile.newFramework.requests.session.RegisterCustomer;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -33,9 +30,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
     private static String TAG = GetRegisterHelper.class.getSimpleName();
     
     public static final String REGISTER_CONTENT_VALUES = "contentValues";
-    
-    boolean saveCredentials = true;
-    
+
     private ContentValues mContentValues;
 
 
@@ -51,7 +46,6 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
         mContentValues = args.getParcelable(REGISTER_CONTENT_VALUES);
         return super.createRequest(args);
     }
@@ -63,23 +57,18 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new LoginCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new RegisterCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // Save credentials
-        if (saveCredentials) {
-            Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-            // TODO: VALIDATE THIS ???
-            mContentValues.remove("Alice_Module_Mobapi_Form_Ext1m3_Customer_RegistrationForm[newsletter_categories_subscribed][]");
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-            Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        }
-        com.mobile.newFramework.objects.user.LoginCustomer loginCustomer = ((com.mobile.newFramework.objects.user.LoginCustomer) baseResponse.getMetadata().getData());
+        Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+        mContentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
+        Log.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         // Save customer
-        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
+        JumiaApplication.CUSTOMER = ((Customer) baseResponse.getMetadata().getData());
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);

@@ -220,27 +220,27 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
          */
         forceInputAlignToLeft();
 
-            // Validate form
-            if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                Log.d(TAG, "FORM: TRY AUTO LOGIN");
-                triggerAutoLogin();
-            } else if (formResponse != null) {
-                Log.d(TAG, "FORM ISN'T NULL");
-                loadForm(formResponse);
-                cameFromRegister = false;
-            } else {
-                Log.d(TAG, "FORM IS NULL");
-                // Clean the Facebook Session
-                FacebookHelper.cleanFacebookSession();
+        // Validate form
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+            Log.d(TAG, "FORM: TRY AUTO LOGIN");
+            triggerAutoLogin();
+        } else if (formResponse != null) {
+            Log.d(TAG, "FORM ISN'T NULL");
+            loadForm(formResponse);
+            cameFromRegister = false;
+        } else {
+            Log.d(TAG, "FORM IS NULL");
+            // Clean the Facebook Session
+            FacebookHelper.cleanFacebookSession();
 
-                HashMap<String, FormData> formDataRegistry = JumiaApplication.INSTANCE.getFormDataRegistry();
-                if (formDataRegistry == null || formDataRegistry.size() == 0) {
-                    triggerInitForm();
-                } else {
-                    triggerLoginForm();
-                }
-                cameFromRegister = false;
+            HashMap<String, FormData> formDataRegistry = JumiaApplication.INSTANCE.getFormDataRegistry();
+            if (formDataRegistry == null || formDataRegistry.size() == 0) {
+                triggerInitForm();
+            } else {
+                triggerLoginForm();
             }
+            cameFromRegister = false;
+        }
         
         setLoginBottomLayout();
     }

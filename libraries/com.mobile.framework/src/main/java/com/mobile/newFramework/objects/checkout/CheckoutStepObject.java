@@ -7,7 +7,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 6/1/15.
  */
-public abstract class CheckoutService {
+public abstract class CheckoutStepObject {
     private String nextStep;
 
     public void setCheckoutNextStep(JSONObject jsonObject){

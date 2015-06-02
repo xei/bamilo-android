@@ -1,24 +1,24 @@
 package com.mobile.helpers.address;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.AddressCities;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetCities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.akquinet.android.androlog.Log;
 
 /**
- * Helper used to set the shipping address 
- * @author sergiopereira
+ * Helper used to get the address cities
  */
 public class GetCitiesHelper extends SuperBaseHelper {
     
@@ -29,7 +29,6 @@ public class GetCitiesHelper extends SuperBaseHelper {
     public static String CUSTOM_TAG = "custom_tag";
 
     private String customTag;
-
 
     @Override
     public EventType getEventType() {
@@ -42,20 +41,11 @@ public class GetCitiesHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
-        // Get action
-        String action = args.getString(Constants.BUNDLE_URL_KEY);
-        if(TextUtils.isEmpty(action)) {
-            action = mEventType.action;
-        }
-        // Get region
-        int region = args.getInt(REGION_ID_TAG);
+    protected Map<String, String> getRequestData(Bundle args) {
         customTag = args.getString(CUSTOM_TAG);
-        // Validate action
-        if(action.contains("fk_customer_address_region")) action = action.replace("fk_customer_address_region", "" + region);
-        else action = action.replace("region=\\d+" , "region=" + region);
-        //
-        return RemoteService.completeUri(Uri.parse(action)).toString();
+        Map<String, String> data = new HashMap<>();
+        data.put("region", args.getString(REGION_ID_TAG));
+        return data;
     }
 
     @Override
@@ -66,10 +56,9 @@ public class GetCitiesHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
-        //Cities cities = (Cities) baseResponse.getMetadata().getData();
+        AddressCities cities = (AddressCities) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
         bundle.putString(CUSTOM_TAG, customTag);
         mRequester.onRequestComplete(bundle);
     }

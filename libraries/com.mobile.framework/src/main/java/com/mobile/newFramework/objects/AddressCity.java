@@ -14,7 +14,6 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 
 	private int id;
 	private String value;
-	private String group;
 
 	/**
 	 * Empty constructor
@@ -42,12 +41,7 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 		return value;
 	}
 
-	/**
-	 * @return the code
-	 */
-	public String getGroup() {
-		return group;
-	}
+
 
 	/**
 	 * ########### SETTERS ###########
@@ -62,20 +56,14 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param countryId
-	 *            the countryId to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	/**
-	 * @param sort
-	 *            the sort to set
-	 */
-	public void setGroup(String group) {
-		this.group = group;
-	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -98,7 +86,6 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		id = jsonObject.getInt("id");
 		value = jsonObject.getString("value");
-		group = jsonObject.getString("group");
 		return true;
 	}
 
@@ -141,7 +128,6 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
 		dest.writeString(value);
-		dest.writeString(group);
 	}
 
 	/**
@@ -152,7 +138,6 @@ public class AddressCity implements IJSONSerializable, Parcelable {
 	private AddressCity(Parcel in) {
 		id = in.readInt();
 		value = in.readString();
-		group = in.readString();
 	}
 
 	/**

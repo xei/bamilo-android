@@ -3,10 +3,10 @@ package com.mobile.newFramework.interfaces;
 import com.mobile.framework.objects.Promotion;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
+import com.mobile.newFramework.objects.AddressCities;
+import com.mobile.newFramework.objects.AddressRegions;
 import com.mobile.newFramework.objects.Addresses;
 import com.mobile.newFramework.objects.OrderTracker;
-import com.mobile.newFramework.objects.SuperAddressCity;
-import com.mobile.newFramework.objects.SuperAddressRegion;
 import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.objects.SuperOrder;
 import com.mobile.newFramework.objects.SuperSetBillingAddress;
@@ -15,6 +15,8 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
@@ -32,7 +34,6 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.user.Customer;
-import com.mobile.newFramework.objects.user.LoginCustomer;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.util.Map;
@@ -232,7 +233,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<LoginCustomer>> callback);
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -266,11 +267,11 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
 
     @FormUrlEncoded
     @POST("/")
-    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -288,10 +289,10 @@ public interface AigApiInterface {
     void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetBillingAddress>> callback);
 
     @GET("/")
-    void getRegions(Callback<BaseResponse<SuperAddressRegion>> callback);
+    void getRegions(Callback<BaseResponse<AddressRegions>> callback);
 
     @GET("/")
-    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperAddressCity>> callback);
+    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
 
     /*
      * ## RATINGS/REVIEWS

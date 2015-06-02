@@ -51,8 +51,8 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
-        data.put(PAGE_NUMBER, args.getString(PAGE_NUMBER));
-        data.put(PER_PAGE, args.getString(PER_PAGE));
+        data.put(PAGE_NUMBER, ""+args.getInt(PAGE_NUMBER));
+        data.put(PER_PAGE, ""+args.getInt(PER_PAGE));
         return data;
     }
 
@@ -77,7 +77,10 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 

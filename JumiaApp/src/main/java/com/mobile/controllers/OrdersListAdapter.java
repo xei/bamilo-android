@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Order;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.Order;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

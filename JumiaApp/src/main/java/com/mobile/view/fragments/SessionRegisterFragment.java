@@ -492,7 +492,7 @@ public class SessionRegisterFragment extends BaseFragment {
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
 
-            // Persist user email or empty that value after successfull login
+            // Persist user email or empty that value after successfully login
             CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
 
             // Finish
@@ -679,26 +679,25 @@ public class SessionRegisterFragment extends BaseFragment {
         return false;
     }
 
-    /**
-     * #### FUNTIONS NOT USED ON REGISTER ACTIVITY ####
-     */
-
-    /**
-     * Measures a text against a text textview size to determine if the text will fit
-     * 
-     * @param v
-     *            The textview to measure against
-     * @param text
-     *            The text to measure
-     * @param width
-     *            the max width it can have
-     * @return True, if the textsize is bigger than the width; False, if the textsize is smaller
-     *         than the width
-     */
-    public boolean isToBig(TextView v, String text, int width) {
-
-        return (v.getPaint().measureText(text) > width);
-    }
+//    /**
+//     * #### FUNCTIONS NOT USED ON REGISTER ACTIVITY ####
+//     */
+//
+//    /**
+//     * Measures a text against a text textview size to determine if the text will fit
+//     *
+//     * @param v
+//     *            The textview to measure against
+//     * @param text
+//     *            The text to measure
+//     * @param width
+//     *            the max width it can have
+//     * @return True, if the textsize is bigger than the width; False, if the textsize is smaller
+//     *         than the width
+//     */
+//    public boolean isToBig(TextView v, String text, int width) {
+//        return (v.getPaint().measureText(text) > width);
+//    }
 
     /**
      * TRIGGERS

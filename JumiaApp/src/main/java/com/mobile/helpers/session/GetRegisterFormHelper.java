@@ -14,7 +14,6 @@ import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.GetRegisterForm;
-import com.mobile.newFramework.requests.session.RegisterCustomer;
 
 import de.akquinet.android.androlog.Log;
 

@@ -20,7 +20,7 @@ import java.util.Iterator;
  */
 public class Addresses implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = Addresses.class.getSimpleName();
+	public static final String TAG = Addresses.class.getSimpleName();
 
 	private Address shippingAddress;
 	
@@ -90,7 +90,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO: Implement this method
 		return null;
 	}
 

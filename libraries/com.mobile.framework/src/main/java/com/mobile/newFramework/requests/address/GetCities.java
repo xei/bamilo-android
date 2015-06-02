@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.objects.SuperAddressCity;
+import com.mobile.newFramework.objects.AddressCities;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetCities extends BaseRequest<SuperAddressCity> {
+public class GetCities extends BaseRequest<AddressCities> {
 
     public GetCities(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);

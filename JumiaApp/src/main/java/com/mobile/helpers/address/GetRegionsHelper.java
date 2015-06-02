@@ -10,6 +10,7 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.TextUtils;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.AddressRegions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetRegions;
@@ -51,10 +52,9 @@ public class GetRegionsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
-        //Regions regions = (Regions) baseResponse.getMetadata().getData();
+        AddressRegions regions = (AddressRegions) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        //bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
         mRequester.onRequestComplete(bundle);
     }
 

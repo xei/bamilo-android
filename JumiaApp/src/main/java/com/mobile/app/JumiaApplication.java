@@ -191,10 +191,10 @@ public class JumiaApplication extends A4SApplication {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if ((eventType == EventType.INITIALIZE ||
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
-                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null) {
+        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
+            // TODO : REMOVE OLD FRAMEWORK
+            //&& ServiceSingleton.getInstance().getService() == null) {
+
             Log.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
@@ -209,42 +209,42 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
-    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
-        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
-        if (mCallback == null) {
-            Log.i(TAG, "mCallback is null");
-        }
-        if (ServiceSingleton.getInstance().getService() == null) {
-            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
+//    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
+//        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
+//        if (mCallback == null) {
+//            Log.i(TAG, "mCallback is null");
+//        }
+//        if (ServiceSingleton.getInstance().getService() == null) {
+//            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
+//
+//            // Try connect with service
+//            // TODO : REMOVE OLD FRAMEWORK
+//            doBindService();
+//
+//            // Save the call back
+//            callBackWaitingService = mCallback;
+//            return;
+//        }
+//        try {
+//            ServiceSingleton.getInstance().getService().registerCallback(mCallback);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            // Try connect with service
-            // TODO : REMOVE OLD FRAMEWORK
-            doBindService();
-
-            // Save the call back
-            callBackWaitingService = mCallback;
-            return;
-        }
-        try {
-            ServiceSingleton.getInstance().getService().registerCallback(mCallback);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
-        if (mCallback == null) {
-            Log.i(TAG, "mCallback is null");
-        }
-        if (ServiceSingleton.getInstance().getService() != null) {
-            try {
-                ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+//    public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
+//        if (mCallback == null) {
+//            Log.i(TAG, "mCallback is null");
+//        }
+//        if (ServiceSingleton.getInstance().getService() != null) {
+//            try {
+//                ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
     /**
      * Method used to register the call back that is waiting for service.
