@@ -13,9 +13,10 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.Addresses;
+import com.mobile.newFramework.objects.SuperGetBillingForm;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.checkout.GetBillingForm;
+import com.mobile.newFramework.requests.address.GetBillingAddressForm;
 
 import de.akquinet.android.androlog.Log;
 
@@ -41,19 +42,21 @@ public class GetBillingFormHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetBillingForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetBillingAddressForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
+
+        SuperGetBillingForm billingForm = (SuperGetBillingForm)baseResponse.getMetadata().getData();
+
         // Create form
-        Form form = new Form();
+        Form form = billingForm.getForm();
         // Create addresses
-        Addresses addresses = null;
+        Addresses addresses = billingForm.getAddresses();
         // Get order summary
-        OrderSummary orderSummary = new OrderSummary();
+        OrderSummary orderSummary = billingForm.getOrderSummary();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);

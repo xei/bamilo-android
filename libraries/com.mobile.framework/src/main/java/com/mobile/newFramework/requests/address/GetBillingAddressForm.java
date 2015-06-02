@@ -18,6 +18,6 @@ public class GetBillingAddressForm extends BaseRequest<SuperGetBillingForm> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.getBillingAddressForm(mRequestBundle.getData(), this);
+        service.getBillingAddressForm(this);
     }
 }
