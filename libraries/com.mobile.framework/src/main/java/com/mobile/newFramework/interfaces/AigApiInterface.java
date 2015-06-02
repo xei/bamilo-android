@@ -221,7 +221,7 @@ public interface AigApiInterface {
     void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<Voucher>> callback);
 
     @GET("/")
-    void removeVoucher(Callback<BaseResponse<Voucher>> callback);
+    void removeVoucher(Callback<BaseResponse<ShoppingCart>> callback);
 
     /*
      * ## SESSION

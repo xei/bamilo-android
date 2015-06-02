@@ -73,8 +73,9 @@ public class ResponseConverter implements Converter{
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         //body data
-        baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
-        //TODO change to use method getMessages when response from API is coming correctly
+        if(responseJsonObject.has(RestConstants.JSON_METADATA_TAG)) {
+            baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
+        }
 
         //Messages
         JSONObject messagesJsonObject = responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);

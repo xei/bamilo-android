@@ -12,6 +12,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.voucher.RemoveVoucher;
@@ -55,9 +56,9 @@ public class RemoveVoucherHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Voucher voucher = (Voucher) baseResponse.getMetadata().getData();
+        ShoppingCart shoppingCart = (ShoppingCart) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, voucher);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, shoppingCart);
         mRequester.onRequestComplete(bundle);
     }
 

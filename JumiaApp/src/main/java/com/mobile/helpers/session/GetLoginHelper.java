@@ -14,6 +14,8 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 import com.mobile.utils.CheckoutStepManager;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
@@ -76,7 +78,7 @@ public class GetLoginHelper extends SuperBaseHelper {
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         // TODO: NEXT STEP
-         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
         //
         mRequester.onRequestComplete(bundle);
     }
@@ -85,6 +87,7 @@ public class GetLoginHelper extends SuperBaseHelper {
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
+        bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         mRequester.onRequestError(bundle);
     }
 
