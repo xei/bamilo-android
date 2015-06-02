@@ -281,7 +281,7 @@ public interface AigApiInterface {
     void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
     @GET("/")
-    void getBillingAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperGetBillingForm>> callback);
+    void getBillingAddressForm(Callback<BaseResponse<SuperGetBillingForm>> callback);
 
     @FormUrlEncoded
     @POST("/")

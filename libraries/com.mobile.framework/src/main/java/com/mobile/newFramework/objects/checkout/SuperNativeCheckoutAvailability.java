@@ -37,11 +37,8 @@ public class SuperNativeCheckoutAvailability implements IJSONSerializable, Parce
     public boolean initialize(JSONObject jsonObject) throws JSONException {
 
         isAvailable = false;
-        JSONObject dataObject;
         try {
-
-            dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-            if(dataObject.has(RestConstants.JSON_NATIVE_CHECKOUT_AVAILABLE) && dataObject.getString(RestConstants.JSON_NATIVE_CHECKOUT_AVAILABLE).equalsIgnoreCase("1")){
+            if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_AVAILABLE) && jsonObject.getString(RestConstants.JSON_NATIVE_CHECKOUT_AVAILABLE).equalsIgnoreCase("1")){
                 isAvailable = true;
             }
 
@@ -71,7 +68,7 @@ public class SuperNativeCheckoutAvailability implements IJSONSerializable, Parce
 
     @Override
     public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.OBJECT_DATA;
     }
 
 

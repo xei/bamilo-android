@@ -15,12 +15,9 @@ public class GetBillingAddressFormTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        HashMap<String, String> data = new HashMap<>();
-
         requestBundle = new RequestBundle.Builder()
                 .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/billing/")
                 .setCache(EventType.GET_BILLING_FORM_EVENT.cacheTime)
-                .setData(data)
                 .build();
     }
 
