@@ -261,7 +261,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     @FormUrlEncoded
     @POST("/")
