@@ -18,6 +18,7 @@ import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
+import com.mobile.newFramework.objects.checkout.SuperNativeCheckoutAvailability;
 import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
 import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.objects.configs.ApiInformation;
@@ -324,7 +325,7 @@ public interface AigApiInterface {
     */
 
     @GET("/")
-    void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse>> callback);
+    void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse<SuperNativeCheckoutAvailability>>> callback);
 
     @GET("/")
     void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
