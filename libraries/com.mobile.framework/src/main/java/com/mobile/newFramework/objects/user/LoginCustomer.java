@@ -37,4 +37,12 @@ public class LoginCustomer extends CheckoutService implements IJSONSerializable{
     public RequiredJson getRequiredJson() {
         return RequiredJson.METADATA;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }
