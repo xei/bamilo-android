@@ -16,8 +16,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
-import com.mobile.framework.objects.AddressCity;
-import com.mobile.framework.objects.AddressRegion;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -27,12 +25,14 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.address.SetEditedAddressHelper;
+import com.mobile.helpers.address.UpdateAddressHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.objects.AddressCity;
+import com.mobile.newFramework.objects.AddressRegion;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
@@ -598,8 +598,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void triggerEditAddress(ContentValues values) {
         Log.i(TAG, "TRIGGER: EDIT ADDRESS");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetEditedAddressHelper.FORM_CONTENT_VALUES, values);
-        triggerContentEvent(new SetEditedAddressHelper(), bundle, this);
+        bundle.putParcelable(UpdateAddressHelper.FORM_CONTENT_VALUES, values);
+        triggerContentEvent(new UpdateAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -640,7 +640,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
+        bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
         triggerContentEvent(new GetCitiesHelper(), bundle, this);
     }
 

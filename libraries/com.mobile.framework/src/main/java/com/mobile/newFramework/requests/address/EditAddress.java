@@ -4,12 +4,11 @@ import android.content.Context;
 
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class EditAddress extends BaseRequest<BaseResponse> {
+public class EditAddress extends BaseRequest<Void> {
 
     public EditAddress(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
@@ -18,6 +17,6 @@ public class EditAddress extends BaseRequest<BaseResponse> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.createAddress(mRequestBundle.getData(), this);
+        service.editAddress(mRequestBundle.getData(), this);
     }
 }

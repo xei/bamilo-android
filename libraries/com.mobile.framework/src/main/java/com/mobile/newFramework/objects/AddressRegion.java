@@ -11,13 +11,10 @@ import org.json.JSONObject;
 
 public class AddressRegion implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = LogTagHelper.create(AddressRegion.class);
+	public static final String TAG = LogTagHelper.create(AddressRegion.class);
 
 	private int id;
-	private int countryId;
-	private String code;
 	private String name;
-	private String sort;
 
 	/**
 	 * Empty constructor
@@ -28,7 +25,7 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * ########### GETTERS ###########
+	 * ########### GETTERS ###########  
 	 */
 
 	/**
@@ -39,20 +36,6 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the countryId
-	 */
-	public int getCountryId() {
-		return countryId;
-	}
-
-	/**
-	 * @return the code
-	 */
-	public String getCode() {
-		return code;
-	}
-
-	/**
 	 * @return the name
 	 */
 	public String getName() {
@@ -60,14 +43,7 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the sort
-	 */
-	public String getSort() {
-		return sort;
-	}
-
-	/**
-	 * ########### SETTERS ###########
+	 * ########### SETTERS ###########  
 	 */
 
 	/**
@@ -79,35 +55,11 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param countryId
-	 *            the countryId to set
-	 */
-	public void setCountryId(int countryId) {
-		this.countryId = countryId;
-	}
-
-	/**
-	 * @param code
-	 *            the code to set
-	 */
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	/**
 	 * @param name
 	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @param sort
-	 *            the sort to set
-	 */
-	public void setSort(String sort) {
-		this.sort = sort;
 	}
 
 	/*
@@ -132,27 +84,23 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		id = jsonObject.getInt(RestConstants.JSON_ID_ADDRESS_REGION_TAG);
-		countryId = jsonObject.getInt(RestConstants.JSON_COUNTRY_ID_TAG);
-		code = jsonObject.getString(RestConstants.JSON_CODE_TAG);
 		name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-		sort = jsonObject.optString(RestConstants.JSON_SORT_TAG);
 		return true;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO
 		return null;
 	}
 
 	@Override
 	public RequiredJson getRequiredJson() {
-		return RequiredJson.OBJECT_DATA;
+		return RequiredJson.COMPLETE_JSON;
 	}
 
 	/**
@@ -161,7 +109,7 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.os.Parcelable#describeContents()
 	 */
 	@Override
@@ -171,16 +119,13 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
-		dest.writeInt(countryId);
-		dest.writeString(code);
 		dest.writeString(name);
-		dest.writeString(sort);
 	}
 
 	/**
@@ -190,16 +135,13 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 	 */
 	private AddressRegion(Parcel in) {
 		id = in.readInt();
-		countryId = in.readInt();
-		code = in.readString();
 		name = in.readString();
-		sort = in.readString();
 	}
 
 	/**
 	 * The creator
 	 */
-	public static final Creator<AddressRegion> CREATOR = new Creator<AddressRegion>() {
+	public static final Parcelable.Creator<AddressRegion> CREATOR = new Parcelable.Creator<AddressRegion>() {
 		public AddressRegion createFromParcel(Parcel in) {
 			return new AddressRegion(in);
 		}
