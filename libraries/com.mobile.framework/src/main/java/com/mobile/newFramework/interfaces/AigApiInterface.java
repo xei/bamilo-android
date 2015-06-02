@@ -261,15 +261,19 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCustomerNewsletterSubscription>> callback);
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
 
     @GET("/")
     void getBillingAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperGetBillingForm>> callback);
