@@ -13,6 +13,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.requests.session.GetRegisterForm;
 import com.mobile.newFramework.requests.session.RegisterCustomer;
 
 import de.akquinet.android.androlog.Log;
@@ -51,7 +52,7 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new RegisterCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetRegisterForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override

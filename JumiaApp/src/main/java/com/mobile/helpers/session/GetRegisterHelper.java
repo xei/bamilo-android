@@ -17,6 +17,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
@@ -76,8 +77,9 @@ public class GetRegisterHelper extends SuperBaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
+        com.mobile.newFramework.objects.user.LoginCustomer loginCustomer = ((com.mobile.newFramework.objects.user.LoginCustomer) baseResponse.getMetadata().getData());
         // Save customer
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
+        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
@@ -88,6 +90,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
+        bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         mRequester.onRequestError(bundle);
     }
 
