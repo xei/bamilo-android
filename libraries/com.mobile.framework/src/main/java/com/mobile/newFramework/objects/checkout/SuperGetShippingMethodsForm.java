@@ -39,31 +39,17 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        try {
-            // Get shipping methods
-            form = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
+        // Get shipping methods
+        form = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
 
-//            Log.d(TAG, "FORM JSON: " + formJSON.toString());
-            //FIXME has a lot of dependencies on the view app section including R elements and adapters. Should be parsed on the view (fragment) side
-//            ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-//            if (!form.initialize(formJSON))
-//                Log.e(TAG, "Error initializing the form using the data");
+        JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
 
-            // Get cart
-            JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-
-            if(cartJSON != null)
+        if(cartJSON != null)
 //                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
 
-            // Get order
-            orderSummary = new OrderSummary(jsonObject);
-//            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-//
-//            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
+        // Get order
+        orderSummary = new OrderSummary(jsonObject);
 
-        } catch (JSONException e) {
-            return false;
-        }
         return true;
     }
 
@@ -92,14 +78,11 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(orderSummary);
-//        dest.writeValue(formJSON);
 
     }
 
     private SuperGetShippingMethodsForm(Parcel in) {
         orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
-//        formJSON = (JSONObject) in.readValue(JSONObject.class.getClassLoader());
-
     }
 
     public static final Creator<SuperGetShippingMethodsForm> CREATOR = new Creator<SuperGetShippingMethodsForm>() {

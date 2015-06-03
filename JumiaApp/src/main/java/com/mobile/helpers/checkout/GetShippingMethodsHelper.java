@@ -53,32 +53,6 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
 
-        // TODO: CREATE NEW OBJECT
-//        // Get shipping methods
-//        JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
-//        Log.d(TAG, "FORM JSON: " + formJSON.toString());
-//        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-//        if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
-//
-//        // Get cart
-//        JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-//        if(cartJSON != null)
-//            Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-////            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
-////            cart.initialize(cartJSON);
-//
-//        // Get order
-//        OrderSummary orderSummary = new OrderSummary(jsonObject);
-//        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-//
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-//
-//    } catch (JSONException e) {
-//        Log.w(TAG, "PARSE EXCEPTION: " , e);
-//        return parseErrorBundle(bundle);
-//    }
-
-
         mRequester.onRequestComplete(bundle);
     }
 
