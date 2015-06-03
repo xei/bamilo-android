@@ -208,7 +208,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void removeAllShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -328,9 +328,6 @@ public interface AigApiInterface {
 
     @GET("/")
     void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse<SuperNativeCheckoutAvailability>>> callback);
-
-    @GET("/")
-    void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     @FormUrlEncoded
     @POST("/")

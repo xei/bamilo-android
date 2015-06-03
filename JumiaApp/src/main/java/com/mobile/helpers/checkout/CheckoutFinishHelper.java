@@ -6,9 +6,11 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -27,6 +29,8 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
     
     private static String TAG = CheckoutFinishHelper.class.getSimpleName();
     
+    private static final String PAYMENT_FORM = "payment_form";
+
     public static final String USER_AGENT = "user_agent";
 
     @Override
@@ -61,9 +65,11 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
-        Customer customer = (Customer) baseResponse.getMetadata().getData();
+//        Customer customer = (Customer) baseResponse.getMetadata().getData();
+        SuperCheckoutFinish checkoutFinish = (SuperCheckoutFinish)baseResponse.getMetadata().getData();
+        JumiaApplication.INSTANCE.setPaymentMethodForm(checkoutFinish.getPaymentMethodForm());
+        JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(checkoutFinish.getOrderNumber());
 
-        // TODO : CREATE NEW OBJECT
 //        // Parse the response
 //        try {
 //            // Get order number
@@ -109,6 +115,8 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
         // Create bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
+        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
+        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
         //bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         mRequester.onRequestComplete(bundle);
     }
