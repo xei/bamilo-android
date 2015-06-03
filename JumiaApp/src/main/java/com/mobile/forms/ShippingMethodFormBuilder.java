@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.requests.checkout.ShippingMethodSubFormHolder;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
 
@@ -34,17 +35,8 @@ public class ShippingMethodFormBuilder implements Parcelable  {
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setLayoutParams(frmParams);
-        
-        if(shippingMethodFormBuilderHolder.fields != null && shippingMethodFormBuilderHolder.fields.size() > 0){
-            for (ShippingMethodFormHolder field : shippingMethodFormBuilderHolder.fields) {
-                ShippingMethodForm shippingMethodForm = new ShippingMethodForm();
-                shippingMethodForm.shippingMethodFormHolder = field;
-                ShippingRadioGroupList mGroup = shippingMethodForm.generateForm(context);
-                groupList.add(mGroup);
-                parent.addView(mGroup);
-            }
-        }
-        
+
+        generateForm(context, parent);
                 
         return parent;
     }
@@ -55,12 +47,13 @@ public class ShippingMethodFormBuilder implements Parcelable  {
      */
     public View generateForm(Context context, ViewGroup parent){
         if(shippingMethodFormBuilderHolder.fields != null && shippingMethodFormBuilderHolder.fields.size() > 0){
-            for (ShippingMethodFormHolder field : shippingMethodFormBuilderHolder.fields) {
-                ShippingMethodForm shippingMethodForm = new ShippingMethodForm();
-                shippingMethodForm.shippingMethodFormHolder = field;
-                ShippingRadioGroupList mGroup = shippingMethodForm.generateForm(context);
+            for(int i = 0; i<shippingMethodFormBuilderHolder.fields.size(); i++){
+                ShippingMethodForm field = new ShippingMethodForm(shippingMethodFormBuilderHolder.fields.get(i));
+                ShippingRadioGroupList mGroup = field.generateForm(context);
                 groupList.add(mGroup);
                 parent.addView(mGroup);
+                shippingMethodFormBuilderHolder.fields.remove(i);
+                shippingMethodFormBuilderHolder.fields.add(i, field);
             }
         }
         return parent;
@@ -97,9 +90,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
     public ContentValues getValues(){
         ContentValues values = new ContentValues();
         for (ShippingMethodFormHolder element : shippingMethodFormBuilderHolder.fields) {
-            ShippingMethodForm shippingMethodForm = new ShippingMethodForm();
-            shippingMethodForm.shippingMethodFormHolder = element;
-            values.putAll(shippingMethodForm.getContentValues());
+            values.putAll(((ShippingMethodForm)element).getContentValues());
         }
         return values;
     }

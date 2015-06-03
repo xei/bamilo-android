@@ -18,24 +18,36 @@ import java.util.HashMap;
  * @author Manuel Silva
  * 
  */
-public class ShippingMethodForm implements Parcelable {
+public class ShippingMethodForm extends ShippingMethodFormHolder implements Parcelable {
 	private final static String TAG = LogTagHelper.create( ShippingMethodForm.class );
 
     private ShippingRadioGroupList mShippingRadioGroupList;
 
-    public ShippingMethodFormHolder shippingMethodFormHolder;
-
     public ShippingMethodForm(){}
+
+    public ShippingMethodForm(ShippingMethodFormHolder shippingMethodFormHolder){
+        this.id = shippingMethodFormHolder.id;
+        this.key = shippingMethodFormHolder.key;
+        this.label = shippingMethodFormHolder.label;
+        this.name = shippingMethodFormHolder.name;
+        this.required = shippingMethodFormHolder.required;
+        this.type = shippingMethodFormHolder.type;
+        this.value = shippingMethodFormHolder.value;
+        this.optionsShippingMethod= shippingMethodFormHolder.optionsShippingMethod;
+        this.options = shippingMethodFormHolder.options;
+        this.shippingMethodsSubForms = shippingMethodFormHolder.shippingMethodsSubForms;
+
+    }
 
     public ShippingRadioGroupList generateForm(Context context){
         this.mShippingRadioGroupList = new ShippingRadioGroupList(context);
-        this.mShippingRadioGroupList.setItems(this, shippingMethodFormHolder.value);
+        this.mShippingRadioGroupList.setItems(this, value);
         return this.mShippingRadioGroupList;
     }
     
     public ContentValues getContentValues(){
         ContentValues values = new ContentValues();
-        values.put(this.shippingMethodFormHolder.name, mShippingRadioGroupList.getSelectedFieldName());
+        values.put(this.name, mShippingRadioGroupList.getSelectedFieldName());
         values.putAll(this.mShippingRadioGroupList.getValues());
         return values;
     }
@@ -47,16 +59,16 @@ public class ShippingMethodForm implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(shippingMethodFormHolder.id);
-        dest.writeString(shippingMethodFormHolder.key);
-        dest.writeString(shippingMethodFormHolder.name);
-        dest.writeString(shippingMethodFormHolder.value);
-        dest.writeString(shippingMethodFormHolder.label);
-        dest.writeString(shippingMethodFormHolder.type);
-        dest.writeBooleanArray(new boolean[] {shippingMethodFormHolder.required});
-        dest.writeList(shippingMethodFormHolder.options);
-        dest.writeMap(shippingMethodFormHolder.optionsShippingMethod);
-        dest.writeList(shippingMethodFormHolder.shippingMethodsSubForms);
+        dest.writeString(id);
+        dest.writeString(key);
+        dest.writeString(name);
+        dest.writeString(value);
+        dest.writeString(label);
+        dest.writeString(type);
+        dest.writeBooleanArray(new boolean[] {required});
+        dest.writeList(options);
+        dest.writeMap(optionsShippingMethod);
+        dest.writeList(shippingMethodsSubForms);
     }
     
     /**
@@ -64,18 +76,18 @@ public class ShippingMethodForm implements Parcelable {
      * @param in
      */
     private ShippingMethodForm(Parcel in) {
-        shippingMethodFormHolder.id = in.readString();
-        shippingMethodFormHolder.key = in.readString();
-        shippingMethodFormHolder.name = in.readString();
-        shippingMethodFormHolder.value = in.readString();
-        shippingMethodFormHolder.label = in.readString();
-        shippingMethodFormHolder.type = in.readString();
-        in.readBooleanArray(new boolean[] {shippingMethodFormHolder.required});
-        shippingMethodFormHolder.options = new ArrayList<>();
+        id = in.readString();
+        key = in.readString();
+        name = in.readString();
+        value = in.readString();
+        label = in.readString();
+        type = in.readString();
+        in.readBooleanArray(new boolean[] {required});
+        options = new ArrayList<>();
         in.readArrayList(null);
-        shippingMethodFormHolder.optionsShippingMethod = new HashMap<>();
-        in.readMap(shippingMethodFormHolder.optionsShippingMethod, ShippingMethod.class.getClassLoader());
-        shippingMethodFormHolder.shippingMethodsSubForms = new ArrayList<>();
+        optionsShippingMethod = new HashMap<>();
+        in.readMap(optionsShippingMethod, ShippingMethod.class.getClassLoader());
+        shippingMethodsSubForms = new ArrayList<>();
         in.readArrayList(ShippingMethodSubForm.class.getClassLoader());
     }
     

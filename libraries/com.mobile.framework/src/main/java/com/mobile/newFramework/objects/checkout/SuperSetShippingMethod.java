@@ -18,12 +18,10 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetShippingMethod implements IJSONSerializable, Parcelable {
+public class SuperSetShippingMethod extends CheckoutStepLogin implements IJSONSerializable, Parcelable {
 
 
     private OrderSummary orderSummary;
-
-//    private FragmentType fragmentType;
 
     public SuperSetShippingMethod() {
     }
@@ -38,16 +36,10 @@ public class SuperSetShippingMethod implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get and set next step
-        //FIXME
-//        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
+        setCheckoutNextStep(jsonObject);
         // Get order summary from response
-        try {
-            orderSummary = new OrderSummary(jsonObject);
+        orderSummary = new OrderSummary(jsonObject);
 //            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());
-        } catch (NullPointerException | JSONException e) {
-//            Log.w(TAG, "WARNING: PARSING ORDER RESPONSE", e);
-            return false;
-        }
         return true;
     }
 
