@@ -111,13 +111,11 @@ public class ShippingMethodFormBuilder implements Parcelable  {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        /* TODO
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(method);
-        dest.writeString(action);
-        dest.writeList(fields);
-        */
+        dest.writeString(shippingMethodFormBuilderHolder.id);
+        dest.writeString(shippingMethodFormBuilderHolder.name);
+        dest.writeString(shippingMethodFormBuilderHolder.method);
+        dest.writeString(shippingMethodFormBuilderHolder.action);
+        dest.writeList(shippingMethodFormBuilderHolder.fields);
     }
     
     /**
@@ -125,14 +123,12 @@ public class ShippingMethodFormBuilder implements Parcelable  {
      * @param in
      */
     private ShippingMethodFormBuilder(Parcel in) {
-        /* TODO
-        id = in.readString();
-        name = in.readString();
-        method = in.readString();
-        action = in.readString();
-        fields = new ArrayList<>();
+        shippingMethodFormBuilderHolder.id = in.readString();
+        shippingMethodFormBuilderHolder.name = in.readString();
+        shippingMethodFormBuilderHolder.method = in.readString();
+        shippingMethodFormBuilderHolder.action = in.readString();
+        shippingMethodFormBuilderHolder.fields = new ArrayList<>();
         in.readArrayList(ShippingMethodForm.class.getClassLoader());
-        */
     }
     
     /**

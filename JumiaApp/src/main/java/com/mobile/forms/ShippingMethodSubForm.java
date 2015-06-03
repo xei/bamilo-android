@@ -141,17 +141,17 @@ public class ShippingMethodSubForm implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        /*
-        dest.writeString(key);
-        dest.writeString(scenario);
-        dest.writeList(options);
-        dest.writeString(type);
-        dest.writeBooleanArray(new boolean[] {required});
-        dest.writeString(value);
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(label);
-        */
+
+        dest.writeString(shippingMethodSubFormHolder.key);
+        dest.writeString(shippingMethodSubFormHolder.scenario);
+        dest.writeList(shippingMethodSubFormHolder.options);
+        dest.writeString(shippingMethodSubFormHolder.type);
+        dest.writeBooleanArray(new boolean[] {shippingMethodSubFormHolder.required});
+        dest.writeString(shippingMethodSubFormHolder.value);
+        dest.writeString(shippingMethodSubFormHolder.id);
+        dest.writeString(shippingMethodSubFormHolder.name);
+        dest.writeString(shippingMethodSubFormHolder.label);
+
     }
 
 
@@ -160,18 +160,16 @@ public class ShippingMethodSubForm implements Parcelable {
      * @param in
      */
     private ShippingMethodSubForm(Parcel in) {
-        /*
-        key = in.readString();
-        scenario = in.readString();
-        options = new ArrayList<>();
+        shippingMethodSubFormHolder.key = in.readString();
+        shippingMethodSubFormHolder.scenario = in.readString();
+        shippingMethodSubFormHolder.options = new ArrayList<>();
         in.readArrayList(PickUpStationObject.class.getClassLoader());
-        type = in.readString();
-        in.readBooleanArray(new boolean[] {required});
-        value = in.readString();
-        id = in.readString();
-        name = in.readString();
-        label = in.readString();
-        */
+        shippingMethodSubFormHolder.type = in.readString();
+        in.readBooleanArray(new boolean[] {shippingMethodSubFormHolder.required});
+        shippingMethodSubFormHolder.value = in.readString();
+        shippingMethodSubFormHolder.id = in.readString();
+        shippingMethodSubFormHolder.name = in.readString();
+        shippingMethodSubFormHolder.label = in.readString();
     }
 
     /**
