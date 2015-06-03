@@ -75,8 +75,11 @@ public class GetCampaignHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        mRequester.onRequestError(bundle);
     }
 
 

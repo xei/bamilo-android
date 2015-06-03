@@ -66,7 +66,6 @@ public class GetShopHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
         StaticPage staticPage = (StaticPage) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
@@ -76,7 +75,10 @@ public class GetShopHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 
