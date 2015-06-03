@@ -5,19 +5,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
 import com.mobile.utils.ShippingRadioGroupList;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represents an Shipping Method form.
@@ -25,97 +18,24 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  * 
  */
-public class ShippingMethodForm implements IJSONSerializable, Parcelable {
+public class ShippingMethodForm implements Parcelable {
 	private final static String TAG = LogTagHelper.create( ShippingMethodForm.class );
 
-    public String id;
-    public String key;
-    public String name;
-    public String value;
-    public String label;
-    public String type;
-    public boolean required;
-    public ArrayList<String> options;
-    public HashMap<String, ShippingMethod> optionsShippingMethod;
-    public ArrayList<ShippingMethodSubForm> shippingMethodsSubForms;
     private ShippingRadioGroupList mShippingRadioGroupList;
-        /**
-     * Form empty constructor.
-     */
-    public ShippingMethodForm() {
-        this.id = "";
-        this.key = "";
-        this.name = "";
-        this.value = "";
-        this.label = "";
-        this.type = "";
-        this.required = false;
-        this.options = new ArrayList<>();
-        this.optionsShippingMethod = new HashMap<>();
-        this.shippingMethodsSubForms = new ArrayList<>();
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
-     */
-    @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
-            name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
-            value = jsonObject.optString(RestConstants.JSON_VALUE_TAG);
-            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-            type = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
-            
-            if(jsonObject.has(RestConstants.JSON_RULES_TAG)){
-                required = jsonObject.getJSONObject(RestConstants.JSON_RULES_TAG).optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
-            }
-            
-            JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
-            //Log.i(TAG, "options jsonobject: " +  optionsObject.toString());
-             
-            Iterator<?> opts = optionsObject.keys();
-            while (opts.hasNext()) {
-               String key = opts.next().toString();
-               options.add(key);
-               ShippingMethod shippingMethod = new ShippingMethod();
-               shippingMethod.initialize(key, optionsObject.optJSONObject(key));
-               optionsShippingMethod.put(key, shippingMethod);
-            }
-            
-        } catch (JSONException e) {
-        	Log.e(TAG, "initialize: error parsing jsonobject", e );
-            return false;
-        }
+    public ShippingMethodFormHolder shippingMethodFormHolder;
 
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        
-        return null;
-    }
+    public ShippingMethodForm(){}
 
     public ShippingRadioGroupList generateForm(Context context){
         this.mShippingRadioGroupList = new ShippingRadioGroupList(context);
-        this.mShippingRadioGroupList.setItems(this, value);
+        this.mShippingRadioGroupList.setItems(this, shippingMethodFormHolder.value);
         return this.mShippingRadioGroupList;
     }
     
     public ContentValues getContentValues(){
         ContentValues values = new ContentValues();
-        values.put(this.name, mShippingRadioGroupList.getSelectedFieldName());
+        values.put(this.shippingMethodFormHolder.name, mShippingRadioGroupList.getSelectedFieldName());
         values.putAll(this.mShippingRadioGroupList.getValues());
         return values;
     }
@@ -127,6 +47,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        /*TODO
         dest.writeString(id);
         dest.writeString(key);
         dest.writeString(name);
@@ -136,7 +57,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         dest.writeBooleanArray(new boolean[] {required});
         dest.writeList(options);
         dest.writeMap(optionsShippingMethod);
-        dest.writeList(shippingMethodsSubForms);
+        dest.writeList(shippingMethodsSubForms);*/
     }
     
     /**
@@ -144,6 +65,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
      * @param in
      */
     private ShippingMethodForm(Parcel in) {
+        /* TODO
         id = in.readString();
         key = in.readString();        
         name = in.readString();
@@ -156,7 +78,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         optionsShippingMethod = new HashMap<>();
         in.readMap(optionsShippingMethod, ShippingMethod.class.getClassLoader());
         shippingMethodsSubForms = new ArrayList<>();
-        in.readArrayList(ShippingMethodSubForm.class.getClassLoader()); 
+        in.readArrayList(ShippingMethodSubForm.class.getClassLoader()); */
     }
     
     /**

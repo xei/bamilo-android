@@ -6,11 +6,13 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetShippingForm;
@@ -43,10 +45,13 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Form form = (Form) baseResponse.getMetadata().getData();
-        form.sortForm(mEventType);
+        SuperGetShippingMethodsForm shippingMethodsForm = (SuperGetShippingMethodsForm) baseResponse.getMetadata().getData();
+        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
+        form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
+
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
+        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
 
         // TODO: CREATE NEW OBJECT
 //        // Get shipping methods

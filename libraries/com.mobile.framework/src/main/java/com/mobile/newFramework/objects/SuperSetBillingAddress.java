@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,12 +17,9 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetBillingAddress implements IJSONSerializable, Parcelable {
-
+public class SuperSetBillingAddress extends CheckoutStepObject implements IJSONSerializable, Parcelable {
 
     private OrderSummary orderSummary;
-
-    private FragmentType fragmentType;
 
     public SuperSetBillingAddress() {
     }
@@ -35,12 +33,11 @@ public class SuperSetBillingAddress implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get and set next step
-        //FIXME
-        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
+
         // Get order summary from response
         try {
             orderSummary = new OrderSummary(jsonObject);
+            setCheckoutNextStep(jsonObject);
 //            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());
         } catch (NullPointerException | JSONException e) {
 //            Log.w(TAG, "WARNING: PARSING ORDER RESPONSE", e);
@@ -74,13 +71,11 @@ public class SuperSetBillingAddress implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(orderSummary);
-        dest.writeValue(fragmentType);
 
     }
 
     private SuperSetBillingAddress(Parcel in) {
         orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
-        fragmentType = (FragmentType) in.readValue(FragmentType.class.getClassLoader());
 
     }
 
@@ -103,12 +98,4 @@ public class SuperSetBillingAddress implements IJSONSerializable, Parcelable {
         this.orderSummary = orderSummary;
     }
 
-
-    public FragmentType getFragmentType() {
-        return fragmentType;
-    }
-
-    public void setFragmentType(FragmentType fragmentType) {
-        this.fragmentType = fragmentType;
-    }
 }

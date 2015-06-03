@@ -12,20 +12,14 @@ import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.controllers.PickupStationsAdapter;
-import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.requests.checkout.ShippingMethodSubFormHolder;
 import com.mobile.view.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represents an Shipping Method Sub form.
@@ -33,97 +27,21 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  * 
  */
-public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
+public class ShippingMethodSubForm implements Parcelable {
 	private final static String TAG = LogTagHelper.create( ShippingMethodSubForm.class );
 
 	private int lastID = 0x7f096000;
 	private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-	
-    public String key;
-    public String scenario;
-    public ArrayList<PickUpStationObject> options;
-    public String type;
-    public boolean required;
-    public String value;
-    public String name;
-    public String id;
-    public String label;
-    
+
     public View dataControl;
-    
+
     public IcsSpinner icsSpinner;
 
     public ListView pickupStationsListView;
-    /**
-     * Form empty constructor.
-     */
-    public ShippingMethodSubForm() {
-        this.key = "";
-        this.scenario = "";
-        this.options = new ArrayList<>();
-        this.type = "";
-        this.required = false;
-        this.value = "";
-        this.id = "";
-        this.name = "";
-        this.label = "";
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
-     */
-    @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
-            name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
-            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-            if(jsonObject.has(RestConstants.JSON_TYPE_TAG)){
-                type = jsonObject.optString(RestConstants.JSON_TYPE_TAG);    
-            } else {
-                type = "metadata";
-            }
-            
-            value = jsonObject.optString(RestConstants.JSON_VALUE_TAG);
-            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-            
-            /**
-             * TODO: Verify if on SubForm can be required for more then one Form
-             * jsonObject.getJSONObject(RestConstants.JSON_VALIDATION_TAG);
-             */
-            
-            required = true;
-            if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)){
-                JSONArray optionsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-                for (int i = 0; i < optionsArray.length(); i++) {
-                    PickUpStationObject mPickUpStationObject = new PickUpStationObject();
-                    mPickUpStationObject.initialize(optionsArray.getJSONObject(i));
-                    options.add(mPickUpStationObject);
-                }
-            }
-            
-        } catch (JSONException e) {
-        	Log.e(TAG, "initialize: error parsing jsonobject", e );
-            return false;
-        }
+    public ShippingMethodSubFormHolder shippingMethodSubFormHolder;
 
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        return null;
-    }
+    public ShippingMethodSubForm(){}
 
     /**
      * Gets the next available id for the creation of controls
@@ -142,7 +60,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
      */
     public View generateForm(final Context context, ViewGroup parent) {
         // Case form without options return a dummy view
-        if(this.options.size() == 0) return this.dataControl = new View(context);
+        if(this.shippingMethodSubFormHolder.options.size() == 0) return this.dataControl = new View(context);
         // Case > 0 inflate a merge layout  
         this.dataControl = View.inflate(context, R.layout.form_icsspinner_shipping, parent);
         // Get spinner
@@ -151,19 +69,19 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         // Show PUS options 
         final HashMap<String, ArrayList<PickUpStationObject>> pickupStationByRegion = new HashMap<>();
         ArrayList<String> mSpinnerOptions = new ArrayList<>();
-        for(int i = 0; i< this.options.size(); i++){
-            if(!mSpinnerOptions.contains(this.options.get(i).getRegions().get(0).getName())){
-                mSpinnerOptions.add(this.options.get(i).getRegions().get(0).getName());
+        for(int i = 0; i< this.shippingMethodSubFormHolder.options.size(); i++){
+            if(!mSpinnerOptions.contains(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName())){
+                mSpinnerOptions.add(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName());
             }
-            if(!pickupStationByRegion.containsKey(this.options.get(i).getRegions().get(0).getName())){
-                pickupStationByRegion.put(this.options.get(i).getRegions().get(0).getName(), new ArrayList<PickUpStationObject>());
+            if(!pickupStationByRegion.containsKey(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName())){
+                pickupStationByRegion.put(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName(), new ArrayList<PickUpStationObject>());
             } 
-            pickupStationByRegion.get(this.options.get(i).getRegions().get(0).getName()).add(this.options.get(i));
+            pickupStationByRegion.get(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName()).add(this.shippingMethodSubFormHolder.options.get(i));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(mSpinnerOptions));
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         icsSpinner.setAdapter(adapter);
-        icsSpinner.setPrompt(this.label);
+        icsSpinner.setPrompt(this.shippingMethodSubFormHolder.label);
         icsSpinner.setVisibility(View.VISIBLE);
 
         this.dataControl.setVisibility(View.GONE);
@@ -183,7 +101,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
                     pickupStationsListView.setVisibility(View.GONE);
                 }
                 
-                if (required) {
+                if (shippingMethodSubFormHolder.required) {
                     // mandatoryControl
                     // .setVisibility(position == Spinner.INVALID_POSITION ? View.VISIBLE
                     // : View.GONE);
@@ -200,7 +118,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
             @Override
             public void onNothingSelected(IcsAdapterView<?> parent) {
 
-                if (required) {
+                if (shippingMethodSubFormHolder.required) {
                     // mandatoryControl.setVisibility(View.VISIBLE);
                     // Toast.makeText(context, "please fill all the fields 2",
                     // Toast.LENGTH_LONG).show();
@@ -214,7 +132,8 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
 
         return this.dataControl;
     }
-    
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -222,6 +141,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        /*
         dest.writeString(key);
         dest.writeString(scenario);
         dest.writeList(options);
@@ -231,13 +151,16 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(label);
+        */
     }
-    
+
+
     /**
      * Parcel constructor
      * @param in
      */
     private ShippingMethodSubForm(Parcel in) {
+        /*
         key = in.readString();
         scenario = in.readString();
         options = new ArrayList<>();
@@ -248,11 +171,13 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         id = in.readString();
         name = in.readString();
         label = in.readString();
+        */
     }
-    
+
     /**
      * Create parcelable 
      */
+    /*
     public static final Parcelable.Creator<ShippingMethodSubForm> CREATOR = new Parcelable.Creator<ShippingMethodSubForm>() {
         public ShippingMethodSubForm createFromParcel(Parcel in) {
             return new ShippingMethodSubForm(in);
@@ -261,6 +186,6 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         public ShippingMethodSubForm[] newArray(int size) {
             return new ShippingMethodSubForm[size];
         }
-    };
+    };*/
 
 }

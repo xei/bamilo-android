@@ -62,9 +62,9 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public void setItems(ShippingMethodForm form, String defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + form.key + " defaultSelected = " + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + form.shippingMethodFormHolder.key + " defaultSelected = " + defaultSelected);
         mForm = form;
-        mItems = mForm.options;
+        mItems = mForm.shippingMethodFormHolder.options;
         mDefaultSelected = defaultSelected;
         subForms = new HashMap<>();
         updateRadioGroup();
@@ -110,25 +110,33 @@ public class ShippingRadioGroupList extends RadioGroup {
             /**
              * For each element verify if it has extras if so add them to the view
              */
-            for (int i = 0; i < mForm.shippingMethodsSubForms.size(); i++) {
+            for (int i = 0; i < mForm.shippingMethodFormHolder.shippingMethodsSubForms.size(); i++) {
+                // Get sub form
+                ShippingMethodSubForm shippingSubForm = new ShippingMethodSubForm();
+                shippingSubForm.shippingMethodSubFormHolder = mForm.shippingMethodFormHolder.shippingMethodsSubForms.get(i);
 
-                Log.i(TAG, "code1generate subForms : " + mForm.shippingMethodsSubForms.get(i).scenario);
+                Log.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.scenario);
 
-                if (mForm.shippingMethodsSubForms.get(i).scenario.equalsIgnoreCase(mItems.get(idx))) {
-                    Log.i(TAG, "code1generate subForms : " + mForm.shippingMethodsSubForms.get(i).name);
-                    tmpSubForms.add(mForm.shippingMethodsSubForms.get(i));
-                    // Get sub form
-                    ShippingMethodSubForm shippingSubForm = mForm.shippingMethodsSubForms.get(i);
+                if (shippingSubForm.shippingMethodSubFormHolder.scenario.equalsIgnoreCase(mItems.get(idx))) {
+                    Log.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.name);
+
+
+                    tmpSubForms.add(shippingSubForm);
+
                     // Validate number of options
-                    if(shippingSubForm.options.size() > 0) shippingSubForm.generateForm(mContext, extras);
-                    else shippingSubForm.dataControl = new View(mContext);
+                    if(shippingSubForm.shippingMethodSubFormHolder.options.size() > 0){
+                        shippingSubForm.generateForm(mContext, extras);
+                    } else{
+                        shippingSubForm.dataControl = new View(mContext);
+                    }
                 }
             }
 
             if (tmpSubForms != null && tmpSubForms.size() > 0) {
                 subForms.put(mItems.get(idx), tmpSubForms);
             } else {
-                ShippingMethod shippingMethod = mForm.optionsShippingMethod.get(mItems.get(idx));
+                ShippingMethod shippingMethod = new ShippingMethod();
+                shippingMethod.shippingMethodHolder = mForm.shippingMethodFormHolder.optionsShippingMethod.get(mItems.get(idx));
                 View view = shippingMethod.generateForm(mContext);
                 if(view != null){
                     extras.addView(view);
@@ -140,7 +148,8 @@ public class ShippingRadioGroupList extends RadioGroup {
 
             final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, buttonContainer, false);
             button.setId(idx);
-            ShippingMethod optionLabel = mForm.optionsShippingMethod.get(mItems.get(idx));
+            ShippingMethod optionLabel = new ShippingMethod();
+            optionLabel.shippingMethodHolder = mForm.shippingMethodFormHolder.optionsShippingMethod.get(mItems.get(idx));
             //Log.i(TAG, "options jsonobject label: " + optionLabel);
             button.setText(!TextUtils.isEmpty(optionLabel.getLabel()) ? optionLabel.getLabel() : mItems.get(idx));
             RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
@@ -235,7 +244,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     public void setSubSelection(int groupId, int subId) throws NullPointerException, IndexOutOfBoundsException {
         if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
             for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
-                if (element.options != null && element.options.size() > 0) {
+                if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
                     element.icsSpinner.setSelection(subId);
                 }
             }
@@ -245,7 +254,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     public int getSubSelection(int groupId) throws NullPointerException, IndexOutOfBoundsException {
         if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
             for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
-                if (element.options != null && element.options.size() > 0) {
+                if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
                     return element.icsSpinner.getSelectedItemPosition();
                 }
             }
@@ -316,18 +325,18 @@ public class ShippingRadioGroupList extends RadioGroup {
             PickUpStationObject selectedPickup = null;
             Log.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
-                if (element.options != null && element.options.size() > 0) {
+                if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
                     if(element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter){
                         selectedPickup = ((PickupStationsAdapter)element.pickupStationsListView.getAdapter()).getSelectedPickupStation();
                         
                     }
                     if(selectedPickup != null){
-                        mContentValues.put(element.name, selectedPickup.getPickupId());
+                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupId());
                     }
-                    Log.i(TAG, "code1values : element.name : " + element.name);
+                    Log.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
                     if (selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
-                        mContentValues.put(element.name, selectedPickup.getRegions().get(0).getId());
+                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getRegions().get(0).getId());
                     }
                 }
             }

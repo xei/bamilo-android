@@ -8,8 +8,10 @@ import android.os.Parcelable;
 
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +23,9 @@ import org.json.JSONObject;
  */
 public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelable {
 
-
     private OrderSummary orderSummary;
 
-    private JSONObject formJSON;
+    private ShippingMethodFormBuilderHolder form;
 
     public SuperGetShippingMethodsForm() {
     }
@@ -39,9 +40,9 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-
             // Get shipping methods
-            formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
+            form = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
+
 //            Log.d(TAG, "FORM JSON: " + formJSON.toString());
             //FIXME has a lot of dependencies on the view app section including R elements and adapters. Should be parsed on the view (fragment) side
 //            ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
@@ -91,13 +92,13 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(orderSummary);
-        dest.writeValue(formJSON);
+//        dest.writeValue(formJSON);
 
     }
 
     private SuperGetShippingMethodsForm(Parcel in) {
         orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
-        formJSON = (JSONObject) in.readValue(JSONObject.class.getClassLoader());
+//        formJSON = (JSONObject) in.readValue(JSONObject.class.getClassLoader());
 
     }
 
@@ -120,12 +121,11 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
         this.orderSummary = orderSummary;
     }
 
-
-    public JSONObject getFormJSON() {
-        return formJSON;
+    public ShippingMethodFormBuilderHolder getForm() {
+        return form;
     }
 
-    public void setFormJSON(JSONObject formJSON) {
-        this.formJSON = formJSON;
+    public void setForm(ShippingMethodFormBuilderHolder form) {
+        this.form = form;
     }
 }
