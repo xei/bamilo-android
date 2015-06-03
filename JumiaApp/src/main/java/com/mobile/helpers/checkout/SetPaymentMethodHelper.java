@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -12,6 +13,7 @@ import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.SetPaymentMethod;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -55,8 +57,7 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
         // Get order summary from response
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, responseData.getOrderSummary());
         Log.i(TAG, "ORDER SUMMARY: " + responseData.getOrderSummary().toString());
-        // TODO: NEXT STEP
-        // bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutFragment(jsonObject));
+         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(responseData.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 

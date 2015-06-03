@@ -411,7 +411,7 @@ public class FormFactory {
 
         DynamicFormItem ctrl;
 
-        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields(form.fields);
+        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
         MetaFormExtractor.dumpIFormField(transformedFields);
 
         for (IFormField frmEntry : transformedFields) {

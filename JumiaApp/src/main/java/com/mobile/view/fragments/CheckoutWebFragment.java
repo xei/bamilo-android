@@ -25,7 +25,11 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+<<<<<<< HEAD
 import com.mobile.forms.PaymentMethodForm;
+=======
+import com.mobile.framework.rest.RestClientSingleton;
+>>>>>>> 99181a553cb598ecb457cf0be091cdf8cfbd3562
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
@@ -35,6 +39,7 @@ import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.rest.AigHttpClient;

@@ -106,6 +106,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     public ArrayList<NewsletterOption> newsletterOptions;
 
+    public HashMap<String,PaymentInfo> paymentInfoList;
+
     /**
      * FormField param constructor
      *
@@ -129,6 +131,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.scenario = null;
         this.linkText = "";
         this.dataSetRating = new LinkedHashMap<>();
+        this.paymentInfoList = new HashMap<String,PaymentInfo>();
     }
 
     /**
@@ -159,6 +162,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.dataSetRating = new LinkedHashMap<>();
+        this.paymentInfoList = new HashMap<String,PaymentInfo>();
     }
 
     /*
@@ -368,10 +372,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 paymentFields = new HashMap<>();
                 dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
                 Iterator<?> it = dataOptionsObject.keys();
+
                 //Clean payment method info
-                //FIXME
-//                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-//                JumiaApplication.setPaymentsInfoList(new HashMap<String,PaymentInfo>());
                 while (it.hasNext()) {
 
                     String curKey = (String) it.next();
@@ -383,8 +385,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
-                    //FIXME
-//                    JumiaApplication.getPaymentsInfoList().put(label,mPaymentInfo);
+
+                    paymentInfoList.put(label,mPaymentInfo);
 
                     System.out.println("code1paymentDescription : saved : " + curKey);
                     JSONObject json = dataOptionsObject.getJSONObject(curKey);

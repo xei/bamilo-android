@@ -2,6 +2,8 @@ package com.mobile.framework.objects;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +60,11 @@ public class StaticPage implements IJSONSerializable {
     @Override
     public JSONObject toJSON() {
         return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
     }
 
 }

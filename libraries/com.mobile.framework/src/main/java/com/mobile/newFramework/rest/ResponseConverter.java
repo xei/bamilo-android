@@ -188,6 +188,8 @@ public class ResponseConverter implements Converter{
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
         } else if(requiredJson == RequiredJson.OBJECT_DATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
+        } else if(requiredJson == RequiredJson.ARRAY_DATA_FIRST){
+            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONArray(RestConstants.JSON_DATA_TAG).getJSONObject(0);
         }
         return responseJsonObject;
     }

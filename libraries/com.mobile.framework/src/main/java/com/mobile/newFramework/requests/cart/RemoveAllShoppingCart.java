@@ -18,7 +18,7 @@ public class RemoveAllShoppingCart extends BaseRequest<ShoppingCart> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.removeAllShoppingCart(this);
+        service.removeAllShoppingCart(mRequestBundle.getData(), this);
     }
 
 

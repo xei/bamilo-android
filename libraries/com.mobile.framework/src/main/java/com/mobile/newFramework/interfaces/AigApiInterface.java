@@ -1,6 +1,7 @@
 package com.mobile.newFramework.interfaces;
 
 import com.mobile.framework.objects.Promotion;
+import com.mobile.framework.objects.StaticPage;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.AddressCities;
@@ -147,7 +148,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShopInShop(Callback<BaseResponse<BaseResponse>> callback);
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
 
     /*
      * ## CAMPAIGN
@@ -208,7 +209,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void removeAllShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -328,9 +329,6 @@ public interface AigApiInterface {
 
     @GET("/")
     void getNativeCheckoutAvailable(Callback<BaseResponse<BaseResponse<SuperNativeCheckoutAvailability>>> callback);
-
-    @GET("/")
-    void checkoutFinishOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     @FormUrlEncoded
     @POST("/")

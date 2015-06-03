@@ -1,18 +1,26 @@
 package com.mobile.helpers.campaign;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+<<<<<<< HEAD
 import com.mobile.framework.objects.Campaign;
+=======
+import com.mobile.framework.service.RemoteService;
+>>>>>>> 99181a553cb598ecb457cf0be091cdf8cfbd3562
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.campaign.GetCampaign;
 import com.mobile.newFramework.rest.RestUrlUtils;
+
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -24,8 +32,6 @@ public class GetCampaignHelper extends SuperBaseHelper {
     
     private static String TAG = GetCampaignHelper.class.getSimpleName();
 
-    public static final String CAMPAIGN_ID = "campaign";
-    
     public static final String CAMPAIGN_TAG = "campaign_slug";
 
 
@@ -41,7 +47,23 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
+<<<<<<< HEAD
         return RestUrlUtils.completeUri(Uri.parse(args.getString(CAMPAIGN_ID))).toString();
+=======
+        String baseUrl = mEventType.action;
+        //
+        return RemoteService.completeUri(Uri.parse(baseUrl)).toString();
+
+    }
+
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+
+        ContentValues campaignArguments = new ContentValues();
+        campaignArguments.put(CAMPAIGN_TAG,args.getString(CAMPAIGN_TAG));
+        //
+        return convertContentValuesToMap(campaignArguments);
+>>>>>>> 99181a553cb598ecb457cf0be091cdf8cfbd3562
     }
 
     @Override
@@ -62,8 +84,11 @@ public class GetCampaignHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        mRequester.onRequestError(bundle);
     }
 
 

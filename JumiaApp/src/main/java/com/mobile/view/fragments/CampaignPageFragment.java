@@ -37,8 +37,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Campaign;
-import com.mobile.framework.objects.CampaignItem;
 import com.mobile.framework.objects.CampaignItemSize;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.tracking.TrackingPage;
@@ -51,6 +49,8 @@ import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.campaign.Campaign;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
@@ -277,7 +277,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void getAndShowCampaign() {
         Log.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
-        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getTargetUrl() : null;
+        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getCampaignId() : null;
         // Validate the current state
         if(mCampaign == null) triggerGetCampaign(id);
         else showCampaign();
@@ -512,7 +512,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
         Bundle bundle = new Bundle();
-        bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
+        bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
         triggerContentEvent(new GetCampaignHelper(), bundle, this);
     }
     

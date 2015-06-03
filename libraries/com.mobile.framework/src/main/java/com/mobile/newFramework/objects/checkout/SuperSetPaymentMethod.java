@@ -18,7 +18,7 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
+public class SuperSetPaymentMethod extends CheckoutStepLogin implements IJSONSerializable, Parcelable {
 
 
     private OrderSummary orderSummary;
@@ -41,13 +41,10 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
         //FIXME
 //        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
         // Get order summary from response
-        try {
-            orderSummary = new OrderSummary(jsonObject);
+
+        setCheckoutNextStep(jsonObject);
+        orderSummary = new OrderSummary(jsonObject);
 //            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());
-        } catch (NullPointerException | JSONException e) {
-//            Log.w(TAG, "WARNING: PARSING ORDER RESPONSE", e);
-            return false;
-        }
         return true;
     }
 

@@ -3,6 +3,7 @@
  */
 package com.mobile.helpers.teasers;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +17,8 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetShopInShopPage;
 import com.mobile.newFramework.rest.RestUrlUtils;
+
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +45,21 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
+<<<<<<< HEAD
         return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
+=======
+        String baseUrl = mEventType.action;
+        //
+        return RemoteService.completeUri(Uri.parse(baseUrl)).toString();
+    }
+
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        ContentValues staticPageArguments = new ContentValues();
+        staticPageArguments.put(INNER_SHOP_TAG, args.getString(Constants.BUNDLE_URL_KEY));
+        //
+        return convertContentValuesToMap(staticPageArguments);
+>>>>>>> 99181a553cb598ecb457cf0be091cdf8cfbd3562
     }
 
     @Override
@@ -53,7 +70,6 @@ public class GetShopHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
         StaticPage staticPage = (StaticPage) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
@@ -63,7 +79,10 @@ public class GetShopHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         mRequester.onRequestError(bundle);
     }
 
