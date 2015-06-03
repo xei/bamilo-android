@@ -3,10 +3,12 @@
  */
 package com.mobile.framework.objects;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.TextUtils;
 
 import org.json.JSONObject;
 
@@ -22,10 +24,13 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 
 	private String url;
 
+	private String campaignId;
+
 	/**
 	 * Empty constructor
 	 */
-	public TeaserCampaign() { }
+	public TeaserCampaign() {
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -49,7 +54,10 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	 * @param url
 	 * @author sergiopereira
 	 */
-	public void setUrl(String url) { this.url = url; }
+	public void setUrl(String url) {
+        this.url = url;
+        getCampaignKey();
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -59,6 +67,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public boolean initialize(JSONObject jsonObject) {
 		name = jsonObject.optString(RestConstants.JSON_CAMPAIGN_NAME_TAG);
         url = jsonObject.optString(RestConstants.JSON_CAMPAIGN_URL_TAG);
+        getCampaignKey();
 		return true;
 	}
 
@@ -89,6 +98,14 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 		return name;
 	}
 
+
+    public String getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
+    }
     /**
      * ########### Parcelable ###########
      */
@@ -109,6 +126,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
 		dest.writeString(url);
+        dest.writeString(campaignId);
 	}
 
 	/**
@@ -118,6 +136,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public TeaserCampaign(Parcel in) {
         name = in.readString();
         url = in.readString();
+        campaignId = in.readString();
 	}
 
 	/**
@@ -133,4 +152,13 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
         }
     };
 
+    /**
+     * extract campaign id from the campaign url
+     */
+    private void getCampaignKey(){
+        if(!TextUtils.isEmpty(url)){
+            Uri myUri = Uri.parse(url);
+            campaignId = myUri.getQueryParameter("campaign_slug");
+        }
+    }
 }

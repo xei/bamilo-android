@@ -1,6 +1,7 @@
 package com.mobile.newFramework.interfaces;
 
 import com.mobile.framework.objects.Promotion;
+import com.mobile.framework.objects.StaticPage;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.AddressCities;
@@ -146,7 +147,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShopInShop(Callback<BaseResponse<BaseResponse>> callback);
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
 
     /*
      * ## CAMPAIGN

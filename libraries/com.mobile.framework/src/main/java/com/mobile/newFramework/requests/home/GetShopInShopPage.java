@@ -2,14 +2,14 @@ package com.mobile.newFramework.requests.home;
 
 import android.content.Context;
 
+import com.mobile.framework.objects.StaticPage;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetShopInShopPage extends BaseRequest<BaseResponse> {
+public class GetShopInShopPage extends BaseRequest<StaticPage> {
 
     public GetShopInShopPage(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
         super(context, requestBundle, requester);
@@ -18,6 +18,6 @@ public class GetShopInShopPage extends BaseRequest<BaseResponse> {
     @Override
     public void execute() {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mContext,mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
-        service.getShopInShop(this);
+        service.getShopInShop(mRequestBundle.getData(), this);
     }
 }
