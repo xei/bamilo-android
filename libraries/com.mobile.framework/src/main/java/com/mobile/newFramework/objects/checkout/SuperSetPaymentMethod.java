@@ -7,8 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.OrderSummary;
-import com.mobile.newFramework.objects.CheckoutStepManager;
-import com.mobile.newFramework.objects.FragmentType;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
@@ -25,7 +23,7 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
 
     private OrderSummary orderSummary;
 
-    private FragmentType fragmentType;
+//    private FragmentType fragmentType;
 
     public SuperSetPaymentMethod() {
     }
@@ -41,7 +39,7 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get and set next step
         //FIXME
-        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
+//        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
         // Get order summary from response
         try {
             orderSummary = new OrderSummary(jsonObject);
@@ -78,13 +76,13 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(orderSummary);
-        dest.writeValue(fragmentType);
+//        dest.writeValue(fragmentType);
 
     }
 
     private SuperSetPaymentMethod(Parcel in) {
         orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
-        fragmentType = (FragmentType) in.readValue(FragmentType.class.getClassLoader());
+//        fragmentType = (FragmentType) in.readValue(FragmentType.class.getClassLoader());
 
     }
 
@@ -105,14 +103,5 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
 
     public void setOrderSummary(OrderSummary orderSummary) {
         this.orderSummary = orderSummary;
-    }
-
-
-    public FragmentType getFragmentType() {
-        return fragmentType;
-    }
-
-    public void setFragmentType(FragmentType fragmentType) {
-        this.fragmentType = fragmentType;
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -15,6 +16,7 @@ import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.SetShippingMethod;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -56,9 +58,8 @@ public class SetShippingMethodHelper extends SuperBaseHelper {
         SuperSetShippingMethod shipping = (SuperSetShippingMethod) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, shipping.getOrderSummary());
-        // TODO: CREATE NEXT STEP
         // Get next step
-        //bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(shipping.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -15,6 +16,7 @@ import com.mobile.newFramework.objects.SuperSetBillingAddress;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.SetBillingAddress;
+import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -57,9 +59,8 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, billing.getOrderSummary());
         Log.i(TAG, "ORDER SUMMARY: " + billing.getOrderSummary().toString());
-        // TODO: NEXT STEP
         // Get and set next step
-        //bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(billing.getNextStep()));
         mRequester.onRequestComplete(bundle);
     }
 

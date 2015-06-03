@@ -6,11 +6,13 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetShippingForm;
@@ -43,36 +45,13 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Form form = (Form) baseResponse.getMetadata().getData();
-        form.sortForm(mEventType);
+        SuperGetShippingMethodsForm shippingMethodsForm = (SuperGetShippingMethodsForm) baseResponse.getMetadata().getData();
+        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
+        form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
+
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-
-        // TODO: CREATE NEW OBJECT
-//        // Get shipping methods
-//        JSONObject formJSON = jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG);
-//        Log.d(TAG, "FORM JSON: " + formJSON.toString());
-//        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-//        if (!form.initialize(formJSON)) Log.e(TAG, "Error initializing the form using the data");
-//
-//        // Get cart
-//        JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-//        if(cartJSON != null)
-//            Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-////            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
-////            cart.initialize(cartJSON);
-//
-//        // Get order
-//        OrderSummary orderSummary = new OrderSummary(jsonObject);
-//        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-//
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-//
-//    } catch (JSONException e) {
-//        Log.w(TAG, "PARSE EXCEPTION: " , e);
-//        return parseErrorBundle(bundle);
-//    }
-
+        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
 
         mRequester.onRequestComplete(bundle);
     }
