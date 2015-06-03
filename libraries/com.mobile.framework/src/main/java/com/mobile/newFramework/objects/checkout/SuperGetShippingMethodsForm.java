@@ -8,7 +8,6 @@ import android.os.Parcelable;
 
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
@@ -60,7 +59,7 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
      */
     @Override
     public JSONObject toJSON() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

@@ -36,6 +36,7 @@ import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -47,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -55,7 +57,6 @@ import java.util.Set;
 
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
@@ -368,17 +369,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private void prepareCookieStore() {
 
-        // TODO: GET COOKIES FROM NEW FRAMEWORK
-        //List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
-        List<Cookie> cookies = new ArrayList<>();
+        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
+        List<HttpCookie> cookies = AigHttpClient.getInstance(getBaseActivity()).getCookies();
 
-                CookieManager cookieManager = CookieManager.getInstance();
+        CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());
             // sync all the cookies in the httpclient with the webview by
             // generating cookie string
 
-            for (Cookie cookie : cookies) {
+            for (HttpCookie cookie : cookies) {
                 String normDomain = prepareCookie(cookie);
                 String cookieString = cookie.getName() + "=" + cookie.getValue() + "; Domain="
                         + cookie.getDomain();
@@ -389,7 +389,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
     }
 
-    private String prepareCookie(Cookie cookie) {
+    private String prepareCookie(HttpCookie cookie) {
         String transDomain = cookie.getDomain();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             if (cookie.getDomain().startsWith(".")) {

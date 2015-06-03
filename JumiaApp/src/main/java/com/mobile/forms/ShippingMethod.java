@@ -4,11 +4,8 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.requests.checkout.ShippingMethodHolder;
 import com.mobile.view.R;
-
-import org.json.JSONObject;
 
 public class ShippingMethod {
 

@@ -25,7 +25,7 @@ public class AigRestAdapter {
     public static RestAdapter getRestAdapter(Context context, RestAdapterInit restAdapterInit) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setClient(AigHttpClient.getHttpClient(context))
+                .setClient(AigHttpClient.getInstance(context))
                 .setEndpoint(restAdapterInit.url)
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(restAdapterInit.cache));
 

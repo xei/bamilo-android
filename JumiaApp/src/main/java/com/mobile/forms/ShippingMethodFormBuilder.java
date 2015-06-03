@@ -11,7 +11,6 @@ import android.widget.RadioButton;
 
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
-import com.mobile.newFramework.requests.checkout.ShippingMethodSubFormHolder;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
 

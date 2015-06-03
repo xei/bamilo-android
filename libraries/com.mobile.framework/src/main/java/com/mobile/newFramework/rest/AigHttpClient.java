@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.HttpCookie;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.client.OkClient;
@@ -23,15 +25,30 @@ public class AigHttpClient extends OkClient {
 
     private static AigHttpClient sAigHttpClient;
 
+    private final OkHttpClient mOkHttpClient;
+
     private Context mContext;
 
-    public static AigHttpClient getHttpClient(Context context) {
+    public static AigHttpClient newInstance(Context context) {
+        return sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context));
+    }
+
+    public static AigHttpClient getInstance(Context context) {
         return sAigHttpClient == null ? sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context)) : sAigHttpClient;
     }
 
     public AigHttpClient(Context context, OkHttpClient okHttpClient) {
         super(okHttpClient);
+        this.mOkHttpClient = okHttpClient;
         this.mContext = context;
+    }
+
+    public List<HttpCookie> getCookies() {
+        return ((AigCookieManager) mOkHttpClient.getCookieHandler()).getCookies();
+    }
+
+    public void clearCookieStore() {
+        ((AigCookieManager) mOkHttpClient.getCookieHandler()).removeAll();
     }
 
     @Override
@@ -72,7 +89,7 @@ public class AigHttpClient extends OkClient {
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        //addInterceptors(okHttpClient);
+        addInterceptors(okHttpClient);
         // Return client
         return okHttpClient;
     }
@@ -87,7 +104,7 @@ public class AigHttpClient extends OkClient {
     }
 
     private static void setCookies(OkHttpClient okHttpClient, Context context) {
-//        if(context != null) {
+        if(context != null) {
 //            // TODO: COOKIES
 //            //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 //            //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
@@ -95,8 +112,12 @@ public class AigHttpClient extends OkClient {
 //            AigPersistentCookieStore cookieManager = new AigPersistentCookieStore();
 //            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 //            CookieHandler.setDefault(cookieManager);
-//        }
-//        else
+            //CookieManager cookieManager = new CookieManager();
+            AigCookieManager cookieManager = new AigCookieManager(context);
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+            CookieHandler.setDefault(cookieManager);
+        }
+        else
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
@@ -109,7 +130,7 @@ public class AigHttpClient extends OkClient {
     private static void addInterceptors(OkHttpClient okHttpClient) {
         //okHttpClient.interceptors().add(new FullUrlRequestInterceptor());
         //okHttpClient.networkInterceptors().add(new FullUrlRequestInterceptor());
-        okHttpClient.interceptors().add(new RequestInterceptor());
+        //okHttpClient.interceptors().add(new RequestInterceptor());
         okHttpClient.interceptors().add(new ResponseInterceptor());
     }
 

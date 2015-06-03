@@ -58,7 +58,6 @@ public class SuperSetPaymentMethod implements IJSONSerializable, Parcelable {
      */
     @Override
     public JSONObject toJSON() {
-        // TODO Auto-generated method stub
         return null;
     }
 

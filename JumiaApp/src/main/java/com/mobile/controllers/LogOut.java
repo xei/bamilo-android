@@ -7,6 +7,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
 
@@ -79,9 +80,9 @@ public class LogOut {
      */
     private static void cleanCartData(BaseActivity baseActivity) {
 
-        // TODO: GET COOKIES FROM NEW FRAMEWORK
+        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
         // Clear cookies, cart, credentials
-        //RestClientSingleton.getSingleton(baseActivity).clearCookieStore();
+        AigHttpClient.getInstance(baseActivity).clearCookieStore();
 
         JumiaApplication.INSTANCE.setCart(new ShoppingCart());
         JumiaApplication.INSTANCE.setLoggedIn(false);

@@ -37,6 +37,7 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -47,11 +48,10 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.net.HttpCookie;
 import java.util.EnumSet;
 import java.util.List;
 
-import ch.boye.httpclientandroidlib.cookie.Cookie;
 import de.akquinet.android.androlog.Log;
 
 //import com.mobile.framework.rest.RestClientSingleton;
@@ -155,10 +155,8 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void triggerGetShoppingCartItems() {
-        // TODO VALIDATE THIS REQUEST
         // Defining event as having no priority
         Bundle args = new Bundle();
-        args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
     }
 
@@ -286,9 +284,7 @@ public class CheckoutWebFragment extends BaseFragment {
             try {
                 webview.removeAllViews();
             } catch (IllegalArgumentException e) {
-                // TODO: handle exception
             }
-
             webview.destroy();
             webview = null;
         }
@@ -344,18 +340,15 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-
-        // TODO: GET COOKIES FROM NEW FRAMEWORK
-        //List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
-        List<Cookie> cookies = new ArrayList<>();
-
+        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
+        List<HttpCookie> cookies = AigHttpClient.getInstance(getBaseActivity()).getCookies();
+        //
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());
             // sync all the cookies in the httpclient with the webview by
             // generating cookie string
-
-            for (Cookie cookie : cookies) {
+            for (HttpCookie cookie : cookies) {
                 String normDomain = prepareCookie(cookie);
                 String cookieString = cookie.getName() + "=" + cookie.getValue() + "; Domain=" + cookie.getDomain();
                 // Log.d( TAG, "prepareCookieStore: adding cookie = " + cookieString);
@@ -366,7 +359,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
 
-    private String prepareCookie(Cookie cookie) {
+    private String prepareCookie(HttpCookie cookie) {
         String transDomain = cookie.getDomain();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             if (cookie.getDomain().startsWith(".")) {

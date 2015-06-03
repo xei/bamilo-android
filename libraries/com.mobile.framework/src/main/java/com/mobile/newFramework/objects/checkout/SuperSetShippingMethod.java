@@ -50,7 +50,6 @@ public class SuperSetShippingMethod extends CheckoutStepLogin implements IJSONSe
      */
     @Override
     public JSONObject toJSON() {
-        // TODO Auto-generated method stub
         return null;
     }
 
