@@ -1,9 +1,9 @@
 package com.mobile.view.fragments;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,6 +13,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.TextUtils;
 import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
@@ -231,8 +232,20 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void triggerGetShop(String url) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        String staticPageKey = getStaticPageKey(url);
+        bundle.putString(Constants.BUNDLE_URL_KEY, staticPageKey);
         triggerContentEvent(new GetShopHelper(), bundle, this);
+    }
+
+    /**
+     * extract static page key from the static page url
+     */
+    private String getStaticPageKey(String url){
+        if(!com.mobile.framework.utils.TextUtils.isEmpty(url)){
+            Uri myUri = Uri.parse(url);
+            return myUri.getQueryParameter(GetShopHelper.INNER_SHOP_TAG);
+        }
+        return "";
     }
 
     /*
