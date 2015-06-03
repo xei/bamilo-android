@@ -3,6 +3,7 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -11,6 +12,8 @@ import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetPaymentMethodsForm;
+
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -39,11 +42,14 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         // Create bundle
         SuperGetPaymentMethodsForm responseData = (SuperGetPaymentMethodsForm) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
+
+        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get("payment_method").paymentInfoList);
         mRequester.onRequestComplete(bundle);
     }
 

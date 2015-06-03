@@ -10,7 +10,6 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
-import com.mobile.forms.PaymentMethodForm;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
@@ -30,6 +29,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;

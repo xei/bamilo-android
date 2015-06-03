@@ -38,19 +38,15 @@ public class SuperGetPaymentMethodsForm implements IJSONSerializable, Parcelable
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        try {
 
-            // Get shipping methods
-            JSONObject formJSON = jsonObject.getJSONObject("paymentMethodForm");
+        // Get shipping methods
+        JSONObject formJSON = jsonObject.getJSONObject("paymentMethodForm");
 //            Log.d(TAG, "FORM JSON: " + formJSON.toString());
-            form = new Form();
-            if (!form.initialize(formJSON))
+        form = new Form();
+        if (!form.initialize(formJSON))
 //                Log.e(TAG, "Error initializing the form using the data");
 
-            orderSummary = new OrderSummary(jsonObject);
-        } catch (JSONException e) {
-            return false;
-        }
+        orderSummary = new OrderSummary(jsonObject);
 
         return true;
     }

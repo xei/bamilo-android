@@ -45,7 +45,7 @@ public class Form implements IJSONSerializable, Parcelable {
 
     @Override
     public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.ARRAY_DATA_FIRST;
     }
 
     /**
@@ -99,7 +99,7 @@ public class Form implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
 
-            jsonObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG).getJSONObject(0);
+//            jsonObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG).getJSONObject(0);
 
             id = jsonObject.optString(RestConstants.JSON_ID_TAG);
             name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
