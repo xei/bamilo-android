@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -17,6 +16,7 @@ import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.product.GetProductBundle;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -45,7 +45,7 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
     }
 
     @Override

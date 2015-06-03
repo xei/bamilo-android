@@ -26,7 +26,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.PaymentMethodForm;
-import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
@@ -48,11 +47,14 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import de.akquinet.android.androlog.Log;
+
+//import com.mobile.framework.rest.RestClientSingleton;
 
 /**
  * @author sergiopereira
@@ -342,7 +344,11 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
+
+        // TODO: GET COOKIES FROM NEW FRAMEWORK
+        //List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
+        List<Cookie> cookies = new ArrayList<>();
+
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());

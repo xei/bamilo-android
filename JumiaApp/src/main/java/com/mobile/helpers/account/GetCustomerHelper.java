@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.helpers.account;
 
 import android.os.Bundle;
@@ -19,9 +16,6 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
- * @author Guilherme Silva
- * @modified Manuel Silva
  */
 public class GetCustomerHelper extends SuperBaseHelper {
     

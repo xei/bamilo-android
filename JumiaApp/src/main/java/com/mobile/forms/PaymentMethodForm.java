@@ -1,15 +1,15 @@
 package com.mobile.forms;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -28,7 +28,7 @@ public class PaymentMethodForm implements Parcelable {
 
     private int payment_type;
     private String action;
-    private RequestType method; 
+    private RequestType method;
     private String id;
     private String name;
     private String redirect;

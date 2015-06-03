@@ -75,7 +75,7 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
@@ -139,11 +139,9 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
-
         // Add specific data
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
-
         mRequester.onRequestError(bundle);
     }
 

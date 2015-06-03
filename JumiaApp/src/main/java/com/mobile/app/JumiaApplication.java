@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
@@ -16,8 +15,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.rest.ICurrentCookie;
-import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
@@ -38,7 +35,6 @@ import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
-import com.mobile.utils.ServiceSingleton;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
 import java.util.ArrayList;
@@ -47,6 +43,9 @@ import java.util.Map;
 
 import ch.boye.httpclientandroidlib.client.CookieStore;
 import de.akquinet.android.androlog.Log;
+
+//import com.mobile.framework.rest.RestClientSingleton;
+//import com.mobile.framework.service.IRemoteServiceCallback;
 
 public class JumiaApplication extends A4SApplication {
 
@@ -95,10 +94,10 @@ public class JumiaApplication extends A4SApplication {
     public HashMap<String, IResponseCallback> responseCallbacks;
     boolean resendInitializationSignal = false;
     private Handler resendHandler;
-    private Handler resendMenuHandler;
+    //private Handler resendMenuHandler;
     private Message resendMsg;
 
-    private IRemoteServiceCallback callBackWaitingService;
+    //private IRemoteServiceCallback callBackWaitingService;
 
     /**
      * Payment methods Info
@@ -192,6 +191,7 @@ public class JumiaApplication extends A4SApplication {
         Message msg = new Message();
         msg.obj = bundle;
         if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
+
             // TODO : REMOVE OLD FRAMEWORK
             //&& ServiceSingleton.getInstance().getService() == null) {
 
@@ -209,6 +209,7 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
+    // TODO: REMOVE OLD FRAMEWORK
 //    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
 //        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
 //        if (mCallback == null) {
@@ -218,7 +219,6 @@ public class JumiaApplication extends A4SApplication {
 //            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
 //
 //            // Try connect with service
-//            // TODO : REMOVE OLD FRAMEWORK
 //            doBindService();
 //
 //            // Save the call back
@@ -245,23 +245,23 @@ public class JumiaApplication extends A4SApplication {
 //        }
 //
 //    }
-
-    /**
-     * Method used to register the call back that is waiting for service.
-     *
-     * @author sergiopereira
-     */
-    private void registerCallBackIsWaiting() {
-        try {
-            // Validate the current call back waiting by service
-            if (callBackWaitingService != null) {
-                ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
-                callBackWaitingService = null;
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    /**
+//     * Method used to register the call back that is waiting for service.
+//     *
+//     * @author sergiopereira
+//     */
+//    private void registerCallBackIsWaiting() {
+//        try {
+//            // Validate the current call back waiting by service
+//            if (callBackWaitingService != null) {
+//                ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
+//                callBackWaitingService = null;
+//            }
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /*
     ########################### TODO: NEW FAMEWORK
@@ -386,8 +386,10 @@ public class JumiaApplication extends A4SApplication {
         if (mCustomerUtils == null) {
             CookieStore cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
-                cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+                // TODO: GET COOKIES FROM NEW FRAMEWORK
+                //cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
             }
             mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie) cookieStore : null);
         }
@@ -464,11 +466,11 @@ public class JumiaApplication extends A4SApplication {
     }
 
 
-    public void setResendHandler(Handler mHandler) {
-        resendInitializationSignal = true;
-        resendMsg = new Message();
-        resendHandler = mHandler;
-    }
+//    public void setResendHandler(Handler mHandler) {
+//        resendInitializationSignal = true;
+//        resendMsg = new Message();
+//        resendHandler = mHandler;
+//    }
 
 //    /**
 //     * Service Stuff

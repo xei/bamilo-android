@@ -25,7 +25,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -61,6 +60,8 @@ import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
 
+//import com.mobile.framework.enums.RequestType;
+//import com.mobile.framework.rest.RestClientSingleton;
 ;
 
 /**
@@ -366,8 +367,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
-        CookieManager cookieManager = CookieManager.getInstance();
+
+        // TODO: GET COOKIES FROM NEW FRAMEWORK
+        //List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
+        List<Cookie> cookies = new ArrayList<>();
+
+                CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());
             // sync all the cookies in the httpclient with the webview by

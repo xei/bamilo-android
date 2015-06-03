@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.RelatedItemsTableHelper;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -19,6 +18,7 @@ import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.catalog.GetCatalogFiltered;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -85,7 +85,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         // Case search then url is empty
         if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
         //
-        return RemoteService.completeUri(Uri.parse(baseUrl)).toString();
+        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
     }
 
     @Override
@@ -133,17 +133,14 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-
-        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
-
-
+        // Generic error
         Bundle bundle = generateErrorBundle(baseResponse);
-
+        // Validate Featured Box
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         if(baseResponse.getError().getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
             bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
         }
-
         mRequester.onRequestError(bundle);
     }
 

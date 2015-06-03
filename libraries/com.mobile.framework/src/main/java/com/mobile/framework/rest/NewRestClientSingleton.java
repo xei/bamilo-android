@@ -17,7 +17,7 @@ package com.mobile.framework.rest;
 //import com.mobile.framework.interfaces.IMetaData;
 //import com.mobile.framework.network.ConfigurationConstants;
 //import com.mobile.framework.network.LazHttpClientAndroidLog;
-//import com.mobile.framework.service.RemoteService;
+//import com.mobile.newFramework.rest.RestUrlUtils;
 //import com.mobile.framework.tracking.NewRelicTracker;
 //import com.mobile.framework.utils.Constants;
 //import com.mobile.framework.utils.EventType;
@@ -525,7 +525,7 @@ package com.mobile.framework.rest;
 //		// Get event type
 //		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 //		// Validate if is ventures.json
-//		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
+//		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RestUrlUtils.completeUri(uri).toString();
 //		
 //		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 //			Log.d(TAG, "executeGetRestUrlString complete: " + url.toString());
@@ -557,7 +557,7 @@ package com.mobile.framework.rest;
 //		// Get event type
 //		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 //		// Validate if is ventures.json
-//		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
+//		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RestUrlUtils.completeUri(uri).toString();
 //		
 //		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 //			Log.d(TAG, "executePostRestUrlString complete: " + url.toString());
@@ -802,7 +802,7 @@ package com.mobile.framework.rest;
 //			return;
 //		}
 //
-//		Uri uri = RemoteService.completeUri(Uri.parse(url));
+//		Uri uri = RestUrlUtils.completeUri(Uri.parse(url));
 //		SchemeRegistry sr = mDarwinHttpClient.getConnectionManager().getSchemeRegistry();
 //		Scheme s = sr.getScheme(uri.getScheme());
 //		uri = uri.buildUpon().authority(uri.getAuthority() + ":" + String.valueOf(s.getDefaultPort())).build();
@@ -827,8 +827,8 @@ package com.mobile.framework.rest;
 //	public void moveEntryInCache(String url1, String url2) {
 //		try {
 //			// Create complete uri
-//			String uri1 = RemoteService.completeUri(Uri.parse(url1)).toString();
-//			String uri2 = RemoteService.completeUri(Uri.parse(url2)).toString();
+//			String uri1 = RestUrlUtils.completeUri(Uri.parse(url1)).toString();
+//			String uri2 = RestUrlUtils.completeUri(Uri.parse(url2)).toString();
 //			// Get entry from url1
 //			HttpCacheEntry entry = mCacheStore.getEntry(uri1);
 //			// Copy entry for url2

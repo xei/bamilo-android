@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.StaticPage;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -16,6 +15,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetShopInShopPage;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +42,7 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
     }
 
     @Override

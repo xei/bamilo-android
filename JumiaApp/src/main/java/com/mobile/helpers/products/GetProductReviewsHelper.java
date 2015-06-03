@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.rest.RestContract;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -14,6 +13,7 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetProductReviews;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
     }
 
     @Override

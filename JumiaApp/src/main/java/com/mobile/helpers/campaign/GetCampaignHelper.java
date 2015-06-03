@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.Campaign;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -13,6 +12,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.campaign.GetCampaign;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -41,7 +41,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(CAMPAIGN_ID))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(CAMPAIGN_ID))).toString();
     }
 
     @Override

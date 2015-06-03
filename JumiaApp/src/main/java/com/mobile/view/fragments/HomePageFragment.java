@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
@@ -221,11 +220,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         } else {
             triggerTeasers();
         }
-        // Validate promotions
-        SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
-            triggerPromotions();
-        }
+//        // Validate promotions
+//        SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
+//            triggerPromotions();
+//        }
     }
 
     /*

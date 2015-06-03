@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -14,6 +13,7 @@ import com.mobile.newFramework.objects.AddressRegions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetRegions;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -41,7 +41,7 @@ public class GetRegionsHelper extends SuperBaseHelper {
         if(TextUtils.isEmpty(action)) {
             action = mEventType.action;
         }
-        return RemoteService.completeUri(Uri.parse(action)).toString();
+        return RestUrlUtils.completeUri(Uri.parse(action)).toString();
     }
 
     @Override

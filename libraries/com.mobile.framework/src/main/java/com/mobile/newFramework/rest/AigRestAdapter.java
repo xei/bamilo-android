@@ -9,7 +9,6 @@ import org.apache.http.protocol.HTTP;
 import ch.boye.httpclientandroidlib.client.cache.HeaderConstants;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.client.OkClient;
 
 public class AigRestAdapter {
 
@@ -26,7 +25,7 @@ public class AigRestAdapter {
     public static RestAdapter getRestAdapter(Context context, RestAdapterInit restAdapterInit) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setClient(new OkClient(AigHttpClient.getOkHttpClient(context)))
+                .setClient(AigHttpClient.getHttpClient(context))
                 .setEndpoint(restAdapterInit.url)
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(restAdapterInit.cache));
 

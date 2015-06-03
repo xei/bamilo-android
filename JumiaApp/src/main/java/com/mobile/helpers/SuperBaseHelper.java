@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -12,6 +11,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -45,20 +45,23 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
                 .setUrl(getRequestUrl(args))
                 .setCache(mEventType.cacheTime);
         // Validate data
-        Map data = getRequestData(args);
+        Map<String, String> data = getRequestData(args);
         if (data != null) {
             requestBundleBuilder.setData(data);
         }
-        // Validate priority
-        if(!hasPriority()){
-            requestBundleBuilder.discardResponse();
-        }
+
+        // TODO VALIDATE THIS APPROACH
+//        // Validate priority
+//        if(!hasPriority()){
+//            requestBundleBuilder.discardResponse();
+//        }
+
         //
         return requestBundleBuilder.build();
     }
 
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(mEventType.action)).toString();
+        return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
@@ -102,12 +105,15 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected abstract EventTask setEventTask();
 
+    /*
+     * ########## VIEW RESPONSES ##########
+     */
 
     public Bundle generateSuccessBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
         bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, baseResponse.getMessage());
         return bundle;
     }
@@ -115,6 +121,8 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public Bundle generateErrorBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

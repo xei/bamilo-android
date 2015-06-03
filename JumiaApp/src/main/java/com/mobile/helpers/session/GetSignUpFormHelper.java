@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -17,6 +16,7 @@ import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.GetSignUpForm;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -48,7 +48,7 @@ public class GetSignUpFormHelper extends SuperBaseHelper {
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET FORM FALLBACK", e);
         }
-        return RemoteService.completeUri(Uri.parse(url)).toString();
+        return RestUrlUtils.completeUri(Uri.parse(url)).toString();
     }
 
     @Override

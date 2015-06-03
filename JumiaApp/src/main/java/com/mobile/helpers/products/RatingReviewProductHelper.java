@@ -5,13 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.SetProductRatingReview;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(ACTION))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(ACTION))).toString();
     }
 
     @Override

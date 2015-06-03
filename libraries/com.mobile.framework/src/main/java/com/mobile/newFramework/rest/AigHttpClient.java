@@ -3,6 +3,7 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.os.Build;
 
+import com.mobile.framework.utils.NetworkConnectivity;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -16,13 +17,44 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
-public class AigHttpClient {
+import retrofit.client.OkClient;
 
-    private static OkHttpClient sOkHttpClient;
+public class AigHttpClient extends OkClient {
 
-    public static OkHttpClient getOkHttpClient(Context context) {
-        return sOkHttpClient == null ? sOkHttpClient = newOkHttpClient(context) : sOkHttpClient;
+    private static AigHttpClient sAigHttpClient;
+
+    private Context mContext;
+
+    public static AigHttpClient getHttpClient(Context context) {
+        return sAigHttpClient == null ? sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context)) : sAigHttpClient;
     }
+
+    public AigHttpClient(Context context, OkHttpClient okHttpClient) {
+        super(okHttpClient);
+        this.mContext = context;
+    }
+
+    @Override
+    public retrofit.client.Response execute(retrofit.client.Request request) throws IOException {
+        if(mContext != null && !NetworkConnectivity.isConnected(mContext)) {
+            throw new NoConnectivityException("No network connectivity!");
+        }
+        return super.execute(request);
+    }
+
+    /**
+     * Exception
+     */
+    public class NoConnectivityException extends IOException {
+        public NoConnectivityException(String detailMessage) {
+            super(detailMessage);
+        }
+    }
+
+
+    /*
+     * ################ OK HTTP CLIENT ################
+     */
 
     private static OkHttpClient newOkHttpClient(Context context) {
         // HTTP CLIENT

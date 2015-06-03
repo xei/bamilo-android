@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
-import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -19,6 +18,9 @@ import com.mobile.framework.tracking.gtm.GTMManager;
 import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
+
+// TODO: REMOVE OLD FRAMEWORK
+//import com.mobile.framework.rest.RestClientSingleton;
 
 /**
  * <p>
@@ -57,7 +59,9 @@ public final class ShopSelector {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
-		RestClientSingleton.getSingleton(context).init();
+
+		// TODO: REMOVE OLD FRAMEWORK
+		// RestClientSingleton.getSingleton(context).init();
 
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		//ADJUST
@@ -83,7 +87,10 @@ public final class ShopSelector {
 	// NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
         RestContract.init(context);
-        RestClientSingleton.getSingleton(context).init();
+
+		// TODO: REMOVE OLD FRAMEWORK
+        //RestClientSingleton.getSingleton(context).init();
+
 	}
 
 
@@ -96,7 +103,10 @@ public final class ShopSelector {
     // NO_COUNTRY_CONFIGS_AVAILABLE
 	public static void init(Context context, String requestHost, String basePath) {
 		RestContract.init(context, requestHost, basePath);
-		RestClientSingleton.getSingleton(context).init();
+
+		// TODO: REMOVE OLD FRAMEWORK
+		//RestClientSingleton.getSingleton(context).init();
+
 	}
 
 	/**
@@ -111,7 +121,9 @@ public final class ShopSelector {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
-		RestClientSingleton.getSingleton(context).init();
+
+		// TODO: REMOVE OLD FRAMEWORK
+		//RestClientSingleton.getSingleton(context).init();
 
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);

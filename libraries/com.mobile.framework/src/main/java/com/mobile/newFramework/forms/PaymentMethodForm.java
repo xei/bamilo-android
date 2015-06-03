@@ -28,7 +28,7 @@ public class PaymentMethodForm implements Parcelable {
 
     private int payment_type;
     private String action;
-    private RequestType method; 
+    private RequestType method;
     private String id;
     private String name;
     private String redirect;

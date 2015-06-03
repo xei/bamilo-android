@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -17,6 +16,7 @@ import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.product.GetProductDetail;
+import com.mobile.newFramework.rest.RestUrlUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -46,7 +46,7 @@ public class GetProductHelper extends SuperBaseHelper {
 
     @Override
     protected String getRequestUrl(Bundle args) {
-        return RemoteService.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
     }
 
     @Override
@@ -70,12 +70,8 @@ public class GetProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        mRequester.onRequestError(bundle);
+        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getError().getErrorCode());
+        mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 
 

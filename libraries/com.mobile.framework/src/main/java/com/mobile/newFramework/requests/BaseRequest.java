@@ -59,7 +59,7 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getStatusCode());
+        System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getErrorCode());
         // Validate requester and discard flag
         if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
             System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
