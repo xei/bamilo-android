@@ -62,7 +62,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         productBySku = (HashMap<String, String>) args.getSerializable(ADD_ITEMS);
-        return createContentValues(productBySku);
+        return createValues(productBySku);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         mRequester.onRequestError(bundle);
     }
 
-    private Map<String, String> createContentValues(HashMap<String, String> values) {
+    private Map<String, String> createValues(HashMap<String, String> values) {
         int counter = 0;
         Map<String, String> data = new HashMap<>();
         for (Map.Entry<String, String> entry : values.entrySet()) {

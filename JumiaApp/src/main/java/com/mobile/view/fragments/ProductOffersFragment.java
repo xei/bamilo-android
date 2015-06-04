@@ -447,7 +447,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
         values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
         // GA OFFER TRACKING              
         Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);

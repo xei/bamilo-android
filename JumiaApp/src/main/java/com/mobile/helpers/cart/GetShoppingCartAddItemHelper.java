@@ -92,11 +92,6 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(ADD_ITEM));
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new AddItemShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

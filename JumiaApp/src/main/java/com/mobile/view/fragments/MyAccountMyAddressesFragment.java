@@ -179,13 +179,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     private void triggerSetDefaultShippingAddress(ContentValues contentValues) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetDefaultShippingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         triggerContentEvent(new SetDefaultShippingAddressHelper(), bundle, this);
     }
 
     private void triggerSetDefaultBillingAddress(ContentValues contentValues){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetDefaultBillingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         triggerContentEvent(new SetDefaultBillingAddressHelper(), bundle, this);
     }
 

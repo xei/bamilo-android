@@ -51,11 +51,6 @@ public class CreateAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
-    }
-
-    @Override
     protected RequestBundle createRequest(Bundle args) {
         // Validate origin
         if(args.getBoolean(IS_FROM_SIGNUP) && !args.getBoolean(IS_BILLING)){

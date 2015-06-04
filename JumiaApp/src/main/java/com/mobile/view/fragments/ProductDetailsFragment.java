@@ -1148,7 +1148,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
         values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
     }
 
@@ -2199,7 +2199,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddBundleHelper.ADD_BUNDLE, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), bundle, responseCallback);
     }
 

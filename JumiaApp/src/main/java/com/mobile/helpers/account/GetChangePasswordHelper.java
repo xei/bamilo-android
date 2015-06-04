@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -38,7 +39,7 @@ public class GetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        mContentValues = args.getParcelable(CONTENT_VALUES);
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
 

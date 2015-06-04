@@ -22,6 +22,8 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     private static String TAG = GetTermsConditionsHelper.class.getSimpleName();
 
+    public static final String KEY = "key";
+
     @Override
     public EventType getEventType() {
         return EventType.GET_TERMS_EVENT;
@@ -35,7 +37,7 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
-        data.put("key", "terms_mobile");
+        data.put(KEY, "terms_mobile");
         return data;
     }
 

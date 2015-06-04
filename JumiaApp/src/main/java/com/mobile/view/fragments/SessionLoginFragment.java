@@ -794,7 +794,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void triggerAutoLogin() {
         wasAutoLogin = true;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutoLogin);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
@@ -803,7 +803,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
@@ -811,7 +811,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
         triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
     }

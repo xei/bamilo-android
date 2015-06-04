@@ -410,7 +410,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
 
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
     }

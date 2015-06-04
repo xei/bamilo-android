@@ -38,11 +38,6 @@ public class AddVoucherHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return args == null ? new HashMap<String, String>() : SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(VOUCHER_PARAM));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new AddVoucher(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

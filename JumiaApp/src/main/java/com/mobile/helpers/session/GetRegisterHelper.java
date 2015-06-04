@@ -46,7 +46,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        mContentValues = args.getParcelable(REGISTER_CONTENT_VALUES);
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY );
         return super.createRequest(args);
     }
 

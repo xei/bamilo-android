@@ -37,11 +37,6 @@ public class SetDefaultBillingAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new SetDefaultBillingAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

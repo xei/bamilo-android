@@ -51,11 +51,6 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(CART_ITEMS));
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new UpdateQuantityShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

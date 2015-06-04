@@ -578,7 +578,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ContentValues values = new ContentValues();
         values.put("sku", sku);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, this);
     }
     

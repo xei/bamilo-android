@@ -307,7 +307,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             itemRemoved_price = item.getPriceVal().toString();
         }
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // only show loading when removing individual items
         if (isRemovingAllItems) {
             bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
@@ -330,7 +330,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AddVoucherHelper.VOUCHER_PARAM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
 
@@ -340,7 +340,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
     }
 
@@ -1133,7 +1133,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         for (ShoppingCartItem item : items) {
             values.put(GetShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
-        bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, this);
     }
 

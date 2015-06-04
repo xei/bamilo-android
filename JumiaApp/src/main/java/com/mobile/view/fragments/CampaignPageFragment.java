@@ -524,7 +524,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void triggerAddToCart(ContentValues values){
         Print.i(TAG, "TRIGGER ADD TO CART");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
     }
 

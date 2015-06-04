@@ -47,11 +47,6 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(RATING_REVIEW_CONTENT_VALUES));
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new SetProductRatingReview(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

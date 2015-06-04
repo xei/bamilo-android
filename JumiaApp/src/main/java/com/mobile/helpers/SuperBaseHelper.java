@@ -62,7 +62,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
-        return args != null ? convertBundleToMap(args) : null;
+        return (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY))? convertContentValuesToMap((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY)) : null;
     }
 
     public boolean hasPriority(){
@@ -76,14 +76,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     /*
      * #### TODO: FIX THIS APPROACH -> USE ONLY ONE STRUCTURE
      */
-
-    public static Map<String, String> convertBundleToMap(Bundle bundle) {
-        Map<String, String> data = new HashMap<>();
-        for (String key : bundle.keySet()) {
-            data.put(key, bundle.getString(key));
-        }
-        return data;
-    }
 
     public static Map<String, String> convertContentValuesToMap(ContentValues bundle) {
         Map<String, String> data = new HashMap<>();

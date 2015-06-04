@@ -36,11 +36,6 @@ public class UpdateAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new EditAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

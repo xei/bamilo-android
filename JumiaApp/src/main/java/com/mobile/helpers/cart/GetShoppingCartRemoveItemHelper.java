@@ -52,11 +52,6 @@ public class GetShoppingCartRemoveItemHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(ITEM));
-    }
-
-    @Override
     protected RequestBundle createRequest(Bundle args) {
         isToUpdateCart = args.getBoolean(UPDATE_CART, true);
         return super.createRequest(args);

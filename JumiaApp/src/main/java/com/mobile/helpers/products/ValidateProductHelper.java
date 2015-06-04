@@ -40,11 +40,6 @@ public class ValidateProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(Constants.CONTENT_VALUES));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new ValidateProducts(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

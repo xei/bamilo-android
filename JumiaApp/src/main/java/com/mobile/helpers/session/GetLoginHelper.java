@@ -46,7 +46,7 @@ public class GetLoginHelper extends SuperBaseHelper {
     @Override
     protected RequestBundle createRequest(Bundle args) {
         saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
-        mContentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
 

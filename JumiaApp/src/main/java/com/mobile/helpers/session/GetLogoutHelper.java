@@ -35,11 +35,6 @@ public class GetLogoutHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap(JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new LogoutCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

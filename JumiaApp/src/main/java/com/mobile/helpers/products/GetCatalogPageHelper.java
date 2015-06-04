@@ -91,7 +91,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         // Get catalog parameters
-        ContentValues catalogArguments = args.getParcelable(CATALOG_ARGUMENTS);
+        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         // Get page number
         mCurrentPage = catalogArguments.getAsInteger(PAGE);
         //

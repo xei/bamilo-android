@@ -388,7 +388,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private void triggerSubmitShippingMethod(ContentValues values) {
         Print.i(TAG, "TRIGGER: SET SHIPPING METHOD");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetShippingMethodHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SetShippingMethodHelper(), bundle, this);
     }
     

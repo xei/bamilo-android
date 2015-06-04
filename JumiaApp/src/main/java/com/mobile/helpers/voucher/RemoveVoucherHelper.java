@@ -43,11 +43,6 @@ public class RemoveVoucherHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(VOUCHER_PARAM));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new RemoveVoucher(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

@@ -382,7 +382,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
      */
     private void triggerChangePass(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
     }
 

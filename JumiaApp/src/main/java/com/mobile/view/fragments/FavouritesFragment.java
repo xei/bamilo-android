@@ -605,7 +605,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         // Request data
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
         bundle.putString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, addableToCart.getSku());
         bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceForTracking());

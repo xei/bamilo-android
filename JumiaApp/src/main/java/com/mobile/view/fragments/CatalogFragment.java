@@ -843,7 +843,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
-        bundle.putParcelable(GetCatalogPageHelper.CATALOG_ARGUMENTS, catalogValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, catalogValues);
         bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {

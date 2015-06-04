@@ -1,10 +1,12 @@
 package com.mobile.controllers;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.rest.RestClientSingleton;
+import com.mobile.framework.utils.Constants;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
@@ -50,8 +52,9 @@ public class LogOut {
         if (baseActivity != null) {
             baseActivity.showProgress();
         }
-
-        JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), bundle, new IResponseCallback() {
 
             @Override
             public void onRequestError(Bundle bundle) {

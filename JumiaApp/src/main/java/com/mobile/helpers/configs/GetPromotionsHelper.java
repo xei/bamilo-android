@@ -24,6 +24,8 @@ public class GetPromotionsHelper extends SuperBaseHelper {
 
     private static String TAG = GetPromotionsHelper.class.getSimpleName();
 
+    public static final String KEY = "key";
+
     @Override
     public EventType getEventType() {
         return EventType.GET_PROMOTIONS;
@@ -37,7 +39,7 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
-        data.put("key", "mobile_promotions");
+        data.put(KEY, "mobile_promotions");
         return data;
     }
 

@@ -35,11 +35,6 @@ public class GetForgotPasswordHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(CONTENT_VALUES));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new ForgotPassword(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

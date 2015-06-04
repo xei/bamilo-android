@@ -39,11 +39,6 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new SetPaymentMethod(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

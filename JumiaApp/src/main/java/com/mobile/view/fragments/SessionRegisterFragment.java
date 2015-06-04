@@ -707,7 +707,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void triggerRegister(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
     }
 

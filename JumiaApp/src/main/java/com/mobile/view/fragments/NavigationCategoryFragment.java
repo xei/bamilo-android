@@ -4,6 +4,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -303,12 +304,18 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void triggerGetCategories(String categoryKey) {
         Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
-        // Create bundle 
-        Bundle bundle = new Bundle();
+
+        ContentValues contentValues = new ContentValues();
+
+
         // Get per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         // Get category
-        if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        if(!TextUtils.isEmpty(categoryKey)) contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
