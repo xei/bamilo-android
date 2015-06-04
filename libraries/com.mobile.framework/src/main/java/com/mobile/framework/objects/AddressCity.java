@@ -8,7 +8,7 @@
 //
 //import com.mobile.framework.utils.LogTagHelper;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 //public class AddressCity implements IJSONSerializable, Parcelable {
 //

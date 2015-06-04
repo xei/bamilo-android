@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.mobile.constants.ConstantsSharedPrefs;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class WizardPreferences {
     
@@ -33,10 +33,10 @@ public class WizardPreferences {
     public static void changeState(Context context, WizardType type) {
         // Validate context
         if(context == null){
-            Log.w(TAG, "WIZARD SAVE PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
+            Print.w(TAG, "WIZARD SAVE PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
             return;
         }
-        Log.d(TAG, "WIZARD SAVE PREFS: TYPE " + type.toString());
+        Print.d(TAG, "WIZARD SAVE PREFS: TYPE " + type.toString());
         // Get shared prefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(ConstantsSharedPrefs.WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Save
@@ -76,10 +76,10 @@ public class WizardPreferences {
     public static Boolean isFirstTime(Context context, WizardType type) {
         // Validate context
         if(context == null){
-            Log.w(TAG, "WIZARD GET PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
+            Print.w(TAG, "WIZARD GET PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
             return false;
         }
-        Log.d(TAG, "WIZARD GET PREFS: TYPE " + type.toString());
+        Print.d(TAG, "WIZARD GET PREFS: TYPE " + type.toString());
         // Get prefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(ConstantsSharedPrefs.WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Boolean value = true;

@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Favourite on database.
@@ -276,7 +276,7 @@ public class FavouriteTableHelper extends BaseTable {
 		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("SELECT 1 FROM ").append(TABLE_NAME).append(" WHERE ").append(_FAVOURITE_SKU).append(" = ?").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		// Find item in favorite table 
 		boolean result = false;
 		try {
@@ -286,7 +286,7 @@ public class FavouriteTableHelper extends BaseTable {
 	        // Validate cursor and db
 	        if (cursor != null) cursor.close();
         } catch (IllegalStateException e) {
-            Log.w(TAG, "WARNING: ISE ON VERIFY IF FAVOURITE", e);
+            Print.w(TAG, "WARNING: ISE ON VERIFY IF FAVOURITE", e);
         }
 		// Validate cursor and db
 		if (db != null && db.isOpen()) db.close();
@@ -323,7 +323,7 @@ public class FavouriteTableHelper extends BaseTable {
 		ArrayList<Favourite> favourites = new ArrayList<Favourite>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("select * from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
@@ -363,7 +363,7 @@ public class FavouriteTableHelper extends BaseTable {
 						favourite.setSelectedSimple((simples.size() == 1) ? 0 : -1); // NO_SIMPLE_SELECTED
 						
 					} catch (JSONException e) {
-						Log.e(TAG, "JSONException on sku: " + favourite.getSku() + "\nsimplesJSON = " + simplesJSON);
+						Print.e(TAG, "JSONException on sku: " + favourite.getSku() + "\nsimplesJSON = " + simplesJSON);
 					}
 				}
 
@@ -383,7 +383,7 @@ public class FavouriteTableHelper extends BaseTable {
 						}
 						favourite.setVariations(variations);
 					} catch (JSONException e) {
-						Log.e(TAG, "JSONException on sku: " + favourite.getSku() + "\nvariationsJSON = " + variationsJSON);
+						Print.e(TAG, "JSONException on sku: " + favourite.getSku() + "\nvariationsJSON = " + variationsJSON);
 					}
 				}
 
@@ -419,7 +419,7 @@ public class FavouriteTableHelper extends BaseTable {
         ArrayList<String> favourites = new ArrayList<String>();
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
         String query = new StringBuilder("select ").append(_FAVOURITE_SKU).append(" from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
-        Log.i(TAG, "SQL RESULT query :  " + query);
+        Print.i(TAG, "SQL RESULT query :  " + query);
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -446,7 +446,7 @@ public class FavouriteTableHelper extends BaseTable {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		String query = new StringBuilder("delete from ").append(TABLE_NAME)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		db.execSQL(query);
 		db.close();
 	}
@@ -460,13 +460,13 @@ public class FavouriteTableHelper extends BaseTable {
 		int result = 0;
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = "select count(*) from " + TABLE_NAME;
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			result = cursor.getInt(0);
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + result);
+			Print.i(TAG, "SQL RESULT: " + result);
 		}
 		// Validate cursor
 		if (cursor != null) {

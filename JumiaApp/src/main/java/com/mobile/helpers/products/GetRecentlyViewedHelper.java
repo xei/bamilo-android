@@ -10,7 +10,7 @@ import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class GetRecentlyViewedHelper {
      * @param requester
      */
     public GetRecentlyViewedHelper(IResponseCallback requester) {
-        Log.d(TAG, "ON CONSTRUCTOR");
+        Print.d(TAG, "ON CONSTRUCTOR");
         // Get all items on database
         getRecentlyViewedList(requester);
     }
@@ -37,7 +37,7 @@ public class GetRecentlyViewedHelper {
      * TODO
      */
     private void getRecentlyViewedList(IResponseCallback requester) {
-        Log.d(TAG, "ON GET FAVOURITE LIST");
+        Print.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<LastViewedAddableToCart> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);

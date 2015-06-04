@@ -15,7 +15,7 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetEditAddressForm;
 import com.mobile.newFramework.rest.RestUrlUtils;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper used to get the form to edit an address 
@@ -42,7 +42,7 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
             FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(mEventType.action);
             url = formData.getUrl();
         } catch (NullPointerException e) {
-            Log.w(TAG, "FORM DATA IS NULL THEN GET FORM FALLBACK", e);
+            Print.w(TAG, "FORM DATA IS NULL THEN GET FORM FALLBACK", e);
         }
         return RestUrlUtils.completeUri(Uri.parse(url)).toString();
     }
@@ -54,7 +54,7 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         Form form = (Form) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
@@ -63,7 +63,7 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

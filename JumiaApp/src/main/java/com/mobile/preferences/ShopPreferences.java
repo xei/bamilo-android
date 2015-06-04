@@ -16,7 +16,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to save the shared preferences for a shop
@@ -36,7 +36,7 @@ public class ShopPreferences {
     public static String getShopId(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, SHOP_NOT_SELECTED);
-        Log.d(TAG, "SHOP ID: " + shopId);
+        Print.d(TAG, "SHOP ID: " + shopId);
         return shopId;
     }
 
@@ -48,7 +48,7 @@ public class ShopPreferences {
     public static String getShopName(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String name = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-        Log.i(TAG, "SHOP NAME: " + name);
+        Print.i(TAG, "SHOP NAME: " + name);
         return name;
     }
 
@@ -60,7 +60,7 @@ public class ShopPreferences {
     public static String getShopCountryCurrencyIso(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String currency = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        Log.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
+        Print.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
         return currency;
     }
 
@@ -70,7 +70,7 @@ public class ShopPreferences {
     public static String getShopCountryISO(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
-        Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
+        Print.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
         return shopCountryISO;
     }
     
@@ -90,7 +90,7 @@ public class ShopPreferences {
          * Save the Selected Country Configs 
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
          */
-        Log.i(TAG, "code1DarwinComponent : selected : "+JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
+        Print.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryFlag());

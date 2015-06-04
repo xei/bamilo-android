@@ -13,7 +13,7 @@
 //import com.mobile.framework.utils.CurrencyFormatter;
 //import com.mobile.framework.utils.LogTagHelper;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represents the product offers

@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class PaymentMethodForm implements Parcelable {
 
@@ -108,7 +108,7 @@ public class PaymentMethodForm implements Parcelable {
                     mContentValues.put(key, element.getString(RestConstants.JSON_VALUE_TAG));
                 }
             }
-            Log.i(TAG, "code1content : " + mContentValues.toString());
+            Print.i(TAG, "code1content : " + mContentValues.toString());
             setContentValues(mContentValues);
 
         } catch (JSONException e) {

@@ -26,7 +26,7 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  *
@@ -119,7 +119,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Get next step
         FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
         if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
-            Log.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
+            Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.MY_ADDRESSES;
         }
         Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
@@ -159,7 +159,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
         }
     }

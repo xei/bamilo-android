@@ -3,7 +3,7 @@ package com.mobile.utils;
 //
 //import com.mobile.view.HomeFragmentActivity;
 //import android.app.Activity;
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //import android.view.MotionEvent;
 //import android.view.View;
 //

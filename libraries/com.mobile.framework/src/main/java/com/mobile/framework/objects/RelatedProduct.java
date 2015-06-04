@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -67,7 +67,7 @@ public class RelatedProduct extends LastViewed {
             }
 
         } catch (JSONException e) {
-            Log.e(TAG, "Error initializing the related product", e);
+            Print.e(TAG, "Error initializing the related product", e);
             return false;
         }
         return true;

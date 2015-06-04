@@ -18,7 +18,7 @@
 //import java.util.Iterator;
 //import java.util.Map;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * @author nutzer2

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 
 /**
@@ -84,16 +84,16 @@ public class Errors implements Parcelable {
 
 	public static void dumpMessages() {
 		if (errorMessages != null) {
-			Log.d(TAG, "dumpMessages: error ");
+			Print.d(TAG, "dumpMessages: error ");
 			for (String error : errorMessages) {
-				Log.d(TAG, "dumpMessages: error = " + error);
+				Print.d(TAG, "dumpMessages: error = " + error);
 			}
 		}
 
 		if (validateMessages != null) {
-			Log.d(TAG, "dumpMessages: validate");
+			Print.d(TAG, "dumpMessages: validate");
 			for (String validate : validateMessages) {
-				Log.d(TAG, "dumpMessages: validates = " + validate);
+				Print.d(TAG, "dumpMessages: validates = " + validate);
 			}
 		}
 	}
@@ -131,7 +131,7 @@ public class Errors implements Parcelable {
 	private static boolean parseErrorArrayWithObject(JSONObject messagesObject) {
 		JSONArray errorArray = messagesObject.optJSONArray(RestConstants.JSON_ERROR_TAG);
 		if (errorArray == null) {
-			Log.d(TAG, "tried to parse messages error array with object - not successful - ignoring");
+			Print.d(TAG, "tried to parse messages error array with object - not successful - ignoring");
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class Errors implements Parcelable {
 	private static boolean parseValidateObjectWithObject(JSONObject messagesObject) {
 		JSONObject validateObject = messagesObject.optJSONObject(RestConstants.JSON_VALIDATE_TAG);
 		if (validateObject == null) {
-			Log.d( TAG, "tried to parse messages validate object with object - not successful - ignoring" );
+			Print.d(TAG, "tried to parse messages validate object with object - not successful - ignoring");
 			return false;
 		}
 

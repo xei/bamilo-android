@@ -39,7 +39,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Fragment used on SplashScreen on First Use
@@ -87,7 +87,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -98,7 +98,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }
 
@@ -109,7 +109,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         
         // Validate the current shop
         if(ShopSelector.getShopId() != null) {
@@ -133,7 +133,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");  
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -144,7 +144,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -155,7 +155,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -166,7 +166,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -177,7 +177,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -186,7 +186,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onDestroy() {
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         super.onDestroy();
         // Clean memory
         countryAdapter = null;
@@ -227,7 +227,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         } 
         
         int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
-        Log.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
+        Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
         int count = 0;
         countries = new String[countriesAvailable];
@@ -322,7 +322,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
-            Log.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
+            Print.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
@@ -382,7 +382,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void onClickRetryButton(){
-        Log.d(TAG, "ON CLICK: RETRY BUTTON");
+        Print.d(TAG, "ON CLICK: RETRY BUTTON");
         triggerGetJumiaCountries();
     }
     
@@ -396,10 +396,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED SUCCESS EVENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED SUCCESS EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type
@@ -407,7 +407,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         // Validate event type
         switch (eventType) {
         case GET_GLOBAL_CONFIGURATIONS:
-            Log.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
             // Get countries
             JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Show countries
@@ -415,7 +415,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             showFragmentContentContainer();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }
@@ -428,25 +428,25 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onRequestError(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type and error type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         if(super.handleErrorEvent(bundle)) return;
         
         // Validate event type
         switch (eventType) {
         case GET_GLOBAL_CONFIGURATIONS:
-            Log.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
             // Show retry view
             showFragmentErrorRetry();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }

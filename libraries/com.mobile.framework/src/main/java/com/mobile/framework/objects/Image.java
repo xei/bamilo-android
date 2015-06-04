@@ -9,7 +9,7 @@ import android.os.Parcelable;
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Image for products, brands, and categories. contains path, width, height, format
@@ -104,14 +104,14 @@ public class Image implements IJSONSerializable, Parcelable {
 
             try {
                 for (int i = 0; i < jsonObject.names().length(); ++i) {
-                    Log.d(TAG, jsonObject.names().getString(i));
+                    Print.d(TAG, jsonObject.names().getString(i));
                 }
 
             } catch (JSONException e1) {
-                Log.e(TAG, "error during debug output", e1);
+                Print.e(TAG, "error during debug output", e1);
             }
 
-            Log.e(TAG, "error during debug output", e);
+            Print.e(TAG, "error during debug output", e);
             return false;
         }
         return true;

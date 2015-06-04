@@ -25,7 +25,7 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -65,18 +65,18 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
         ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.save_label));
 
@@ -100,7 +100,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     protected void onClickEditAddressButton(View view) {
         // Get tag that contains the address id
         int addressId = Integer.parseInt(view.getTag().toString());
-        Log.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+        Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
         // Selected address
         Address selectedAddress = null;
         // Get addresses
@@ -117,7 +117,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             bundle.putParcelable(EditAddressFragment.SELECTED_ADDRESS, selectedAddress);
             getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            Log.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
+            Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
         }
     }
 
@@ -130,7 +130,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
      * @author ricardosoares
      */
     protected void submitForm(String shippingAddressId, String billingAddressId, String isDifferent){
-        Log.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
+        Print.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
 
 
         //Verification to check if submitted shipping address isn't already the default one
@@ -197,19 +197,19 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     protected boolean onErrorEvent(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         // Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch(eventType){
             case GET_CUSTOMER_ADDRESSES_EVENT:
@@ -237,12 +237,12 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
 
         switch(eventType){

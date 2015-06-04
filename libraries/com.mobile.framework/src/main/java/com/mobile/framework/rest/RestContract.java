@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * The Interface Defines important constants to access the SQLite DB and the Rest Methods
@@ -58,11 +58,11 @@ public class RestContract {
 	// private static Context context;
 
 	public static void init(Context context, String selectedId) {
-		Log.i(TAG, "code1configs initializing RestContract : " + selectedId);
+		Print.i(TAG, "code1configs initializing RestContract : " + selectedId);
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
 		REQUEST_HOST = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
-		Log.i(TAG, "code1configs REQUEST_HOST : " + REQUEST_HOST);
+		Print.i(TAG, "code1configs REQUEST_HOST : " + REQUEST_HOST);
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
@@ -75,7 +75,7 @@ public class RestContract {
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
-		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
+		Print.d(TAG, "Initilizing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
 		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
 		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
@@ -83,7 +83,7 @@ public class RestContract {
 
 	// NO_COUNTRIES_CONFIGS
 	public static void init(Context context) {
-		Log.i(TAG, "initializing RestContract");
+		Print.i(TAG, "initializing RestContract");
 
 		REQUEST_HOST = context.getResources().getString(R.string.global_server_host);
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
@@ -94,7 +94,7 @@ public class RestContract {
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
-		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
+		Print.d(TAG, "Initilizing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
 		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
 		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
@@ -102,7 +102,7 @@ public class RestContract {
 
 	// NO_COUNTRY_CONFIGS_AVAILABLE        KEY_SELECTED_COUNTRY_URL
 	public static void init(Context context, String requestHost, String basePath) {
-		Log.i(TAG, "initializing RestContract");
+		Print.i(TAG, "initializing RestContract");
 
 		REQUEST_HOST = requestHost;
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
@@ -113,7 +113,7 @@ public class RestContract {
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
-		Log.d(TAG, "Initilizing RestContract with " +  REQUEST_HOST + "/" + REST_BASE_PATH);
+		Print.d(TAG, "Initilizing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
 		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
 		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);

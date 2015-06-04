@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author nutzer2
@@ -49,7 +49,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-        Log.d(TAG, "FILTER: PRODUCT PAGE");
+        Print.d(TAG, "FILTER: PRODUCT PAGE");
         
         products = new ArrayList<String>();
         mFilters = new ArrayList<CatalogFilter>();
@@ -76,7 +76,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
             if(categoriesArray != null && categoriesArray.length() > 0)
                 parseCategoryFilter(categoriesArray);
             else
-                Log.d(TAG, "THERE IS NO CATEGORY FILTER");
+                Print.d(TAG, "THERE IS NO CATEGORY FILTER");
         }
         // Get the other filters
         if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
@@ -101,25 +101,25 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
      * @author sergiopereira
      */
     private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
-        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
+        Print.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
         JSONArray categoryArray = null;
         // Get the first position
         JSONObject parentObject = categoriesArray.optJSONObject(0);
         JSONArray leafObject = categoriesArray.optJSONArray(0);
         // IS PARENT    - If first item is a JSON object
         if(parentObject != null) {
-            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
+            Print.d(TAG, "CURRENT CATEGORY IS PARENT");
             categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
         }
         // IS LEAF      - If first item is a JSON array
         else if(leafObject != null) {
-            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
+            Print.d(TAG, "CURRENT CATEGORY IS LEAF");
             categoryArray = leafObject;
         }
         // Create category option and save it 
         ArrayList<CatalogFilterOption> options = new ArrayList<CatalogFilterOption>();
         if(categoryArray != null) {
-            Log.d(TAG, "PARSE ADD TO CATALOG");
+            Print.d(TAG, "PARSE ADD TO CATALOG");
             for (int i = 0; i < categoryArray.length(); ++i) {
                 JSONObject json = categoryArray.optJSONObject(i);
                 if(json != null) {

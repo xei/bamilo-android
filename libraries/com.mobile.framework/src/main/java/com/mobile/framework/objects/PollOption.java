@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class PollOption implements IJSONSerializable, Parcelable {
 		option = jsonObject.optString("option");
 		value = jsonObject.optString("value");
 		group = jsonObject.optString("group");
-		Log.d(TAG, "POLL OPTION: " + value);
+		Print.d(TAG, "POLL OPTION: " + value);
 		return true;
 	}
 	

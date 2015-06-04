@@ -13,7 +13,7 @@ import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is used to create the image URL with a new image resolution
@@ -45,21 +45,21 @@ public class ImageResolutionHelper {
     	ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
     	int memoryHeapSize = am.getMemoryClass();
     	
-    	Log.i(TAG, "INITIALIZE: HEAP:" + Integer.toString(memoryHeapSize) + " SCREEN:" + wm.arg1 + "x" + wm.arg2);
+    	Print.i(TAG, "INITIALIZE: HEAP:" + Integer.toString(memoryHeapSize) + " SCREEN:" + wm.arg1 + "x" + wm.arg2);
     	
     	// Validate heap size
     	if(memoryHeapSize <= 32) {
-    		Log.d(TAG, "DEVICE WITH WEAK RESOURCES");
+    		Print.d(TAG, "DEVICE WITH WEAK RESOURCES");
     		disableHelper(context);
     		return DEVICE_WEAK_RESOURCES;
     	} 
     	else if(memoryHeapSize <= 48 && !context.getResources().getBoolean(R.bool.isTablet)) {
-    		Log.d(TAG, "DEVICE WITH NORMAL RESOURCES");
+    		Print.d(TAG, "DEVICE WITH NORMAL RESOURCES");
     		enableHelper(context);
     		return DEVICE_NORMAL_RESOURCES;
     	}
     	else {
-    		Log.d(TAG, "DEVICE WITH HIGH RESOURCES");
+    		Print.d(TAG, "DEVICE WITH HIGH RESOURCES");
     		enableHelper(context);
     		return DEVICE_HIGH_RESOURCES;
     	}
@@ -94,10 +94,10 @@ public class ImageResolutionHelper {
     		imageResolution = ImageResolutionTableHelper.getBestImageResolution(width, height);
     		// Save resolution
     		resolutionMap.put(width + "x" + height, imageResolution);
-    		if(imageResolution != null) Log.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + imageResolution.getIdentifier() + " FOR: " + width + "x" + height);
-    		else Log.i(TAG, "GET BEST RESOLUTION FROM CACHE: IS NULL");
+    		if(imageResolution != null) Print.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + imageResolution.getIdentifier() + " FOR: " + width + "x" + height);
+    		else Print.i(TAG, "GET BEST RESOLUTION FROM CACHE: IS NULL");
     	} else {
-    		Log.i(TAG, "GET RESOLUTION MAP: IS NULL");
+    		Print.i(TAG, "GET RESOLUTION MAP: IS NULL");
     	}
     	return imageResolution;
     }
@@ -116,11 +116,11 @@ public class ImageResolutionHelper {
     	ImageResolution imageResolution = null;
     	// Check cache
     	if (resolutionMap.containsKey(resolutionTag)) {
-    		Log.i(TAG, "GET BEST RESOLUTION FROM CACHE: " + resolutionTag);
+    		Print.i(TAG, "GET BEST RESOLUTION FROM CACHE: " + resolutionTag);
     		// Get resolution from cache
         	imageResolution = resolutionMap.get(resolutionTag);
     	} else {
-    		Log.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + resolutionTag);
+    		Print.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + resolutionTag);
     		// Get resolution from database
     		imageResolution = ImageResolutionTableHelper.getBestImageResolution(resolutionTag);
     		// Save resolution on cache
@@ -128,9 +128,9 @@ public class ImageResolutionHelper {
     	}
     	// Validate resolution
     	if (imageResolution != null)
-    		Log.i(TAG, "RESULT RESOLUTION: " + imageResolution.getIdentifier());
+    		Print.i(TAG, "RESULT RESOLUTION: " + imageResolution.getIdentifier());
     	else
-    		Log.i(TAG, "THE CURRENT IS THE BEST OF RESOLUTIONS");
+    		Print.i(TAG, "THE CURRENT IS THE BEST OF RESOLUTIONS");
     	
     	return imageResolution;
     }
@@ -208,7 +208,7 @@ public class ImageResolutionHelper {
 		Matcher matcher = pattern.matcher(url);
 		if(matcher.find()) {
 			resolution = matcher.group(0).replace("-", "").replace(".", "");
-			Log.i(TAG, "DEFAULT RESOLUTION: " + resolution);
+			Print.i(TAG, "DEFAULT RESOLUTION: " + resolution);
 		}
 		return resolution;
 	}

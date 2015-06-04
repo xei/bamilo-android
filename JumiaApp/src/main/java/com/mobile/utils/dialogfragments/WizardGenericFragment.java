@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class WizardGenericFragment extends DialogFragment implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         //setRetainInstance(true);
     }
@@ -71,7 +71,7 @@ public class WizardGenericFragment extends DialogFragment implements OnClickList
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
+        Print.i(TAG, "ON CREATE VIEW");
         return inflater.inflate(mWizardLayout, container);
     }
 
@@ -92,7 +92,7 @@ public class WizardGenericFragment extends DialogFragment implements OnClickList
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE DIALOG");
+        Print.i(TAG, "ON CREATE DIALOG");
         // The content
         final RelativeLayout root = new RelativeLayout(getActivity());
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
@@ -112,20 +112,20 @@ public class WizardGenericFragment extends DialogFragment implements OnClickList
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         dismissAllowingStateLoss();
     }
     
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /*

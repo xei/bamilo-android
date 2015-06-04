@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -34,7 +34,7 @@ public class DialogProgressFragment extends DialogFragment {
      * @return
      */
     public static DialogProgressFragment newInstance() {
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         return new DialogProgressFragment();
     }
     

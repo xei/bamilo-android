@@ -13,6 +13,7 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.PaymentInfo;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -119,8 +120,8 @@ public class JumiaApplication extends A4SApplication {
      */
     @Override
     public void onApplicationCreate() {
-        Log.i(TAG, "ON APPLICATION CREATE");
-        Log.init(getApplicationContext());
+        Print.initializeAndroidMode(getApplicationContext());
+        Print.i(TAG, "ON APPLICATION CREATE");
         INSTANCE = this;
 
         // TODO : REMOVE OLD FRAMEWORK
@@ -149,7 +150,7 @@ public class JumiaApplication extends A4SApplication {
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */
-        Log.i(TAG, "INIT CURRENCY");
+        Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
         if (!TextUtils.isEmpty(currencyCode)) {
             CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
@@ -157,14 +158,14 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public synchronized void init(Handler initializationHandler) {
-        Log.d(TAG, "ON INIT");
+        Print.d(TAG, "ON INIT");
         // isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
 
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
-                Log.i(TAG, "code1configs : " + result);
+                Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -172,7 +173,7 @@ public class JumiaApplication extends A4SApplication {
 
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+        Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
         // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         // Disabled for Samsung and Blackberry (check_version_enabled) 
@@ -182,12 +183,12 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
-        Log.d(TAG, "ON HANDLE");
+        Print.d(TAG, "ON HANDLE");
         // isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-        Log.d(TAG, "Handle initialization result: " + errorType);
+        Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
         if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
@@ -195,7 +196,7 @@ public class JumiaApplication extends A4SApplication {
             // TODO : REMOVE OLD FRAMEWORK
             //&& ServiceSingleton.getInstance().getService() == null) {
 
-            Log.d(TAG, "ON HANDLE WITH ERROR");
+            Print.d(TAG, "ON HANDLE WITH ERROR");
             resendInitializationSignal = true;
             resendHandler = initializationHandler;
             resendMsg = msg;
@@ -204,7 +205,7 @@ public class JumiaApplication extends A4SApplication {
             doBindService();
 
         } else {
-            Log.d(TAG, "ON INIT HANDLE");
+            Print.d(TAG, "ON INIT HANDLE");
             initializationHandler.sendMessage(msg);
         }
     }

@@ -12,7 +12,7 @@ import com.mobile.newFramework.objects.product.Product;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Related Items on database.
@@ -87,7 +87,7 @@ public class RelatedItemsTableHelper extends BaseTable {
     public static void insertRelatedItem(SQLiteDatabase db, String sku, String brand, String name, String price, String url, String image){
     	// Validate sku
     	if(TextUtils.isEmpty(sku)) {
-    		Log.w(TAG, "WARNING ON INSERT RELATED ITEM: SKU IS EMPTY");
+    		Print.w(TAG, "WARNING ON INSERT RELATED ITEM: SKU IS EMPTY");
     		return;
     	}
     	// Insert
@@ -147,7 +147,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 	 * @throws InterruptedException 
 	 */
 	public synchronized static void insertRelatedItemsAndClear(ArrayList<Product> mProducts) throws InterruptedException {
-		Log.d(TAG, "ON CLEAN AND INSERT: START");
+		Print.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
 		
 		DarwinDatabaseSemaphore.getInstance().getLock();
@@ -162,7 +162,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Log.d(TAG, "ON CLEAN AND INSERT: FINISH");
+			Print.d(TAG, "ON CLEAN AND INSERT: FINISH");
 			// Validate helper
 			if (db != null) {
 				db.endTransaction();
@@ -175,9 +175,9 @@ public class RelatedItemsTableHelper extends BaseTable {
 	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
 		clearRelatedItems(db);
 		int count = 1;
-		Log.d(TAG, "RELATED ITEMS COUNT: " + mProducts.size());
+		Print.d(TAG, "RELATED ITEMS COUNT: " + mProducts.size());
 		for (Product product : mProducts) {
-			Log.d(TAG, "RELATED ITEM: " + product.getBrand());
+			Print.d(TAG, "RELATED ITEM: " + product.getBrand());
 			insertRelatedItem(db, 
 							product.getSKU(), 
 							product.getBrand(),
@@ -239,7 +239,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 	  * @param db
 	  */
 	 public static void clearRelatedItems(SQLiteDatabase db) {
-		 Log.d(TAG, "ON CLEAN TABLE");
+		 Print.d(TAG, "ON CLEAN TABLE");
 		 db.delete(TABLE_NAME, null, null);
 	 }
     

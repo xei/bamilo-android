@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 /**
  * Class that Represents a Pickup station
  * 
@@ -233,7 +233,7 @@ public class PickUpStationObject implements Parcelable {
 			Iterator<?> keys = arrayRegions.keys();
 			while(keys.hasNext()) {
 				String key = keys.next().toString();
-				Log.i(TAG, "code1adding key : "+key);
+				Print.i(TAG, "code1adding key : " + key);
 				Region mRegion = new Region(key,arrayRegions.getString(key));
 				this.regions.add(mRegion);
 			}

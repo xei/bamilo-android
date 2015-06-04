@@ -62,7 +62,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show campaign page
@@ -141,7 +141,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -152,12 +152,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
         if(savedInstanceState != null ) {
-            Log.i(TAG, "ON GET SAVED STATE");
+            Print.i(TAG, "ON GET SAVED STATE");
             if(savedInstanceState.containsKey(TAG))
                 mCampaign = savedInstanceState.getParcelable(TAG);
             // Restore startTime
@@ -179,8 +179,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        Log.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
+        Print.i(TAG, "ON VIEW CREATED");
+        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
@@ -196,7 +196,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -207,7 +207,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         isScrolling = false;
         // Track page
         TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS, getLoadTime(), false);
@@ -220,7 +220,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
+        Print.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
         outState.putSerializable(BANNER_STATE, bannerState);
@@ -234,7 +234,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         isScrolling = true;
     }
 
@@ -246,7 +246,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -255,7 +255,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
 
     }
@@ -267,7 +267,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /**
@@ -275,7 +275,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void getAndShowCampaign() {
-        Log.i(TAG, "VALIDATE CAMPAIGN STATE");
+        Print.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
         String id = (mTeaserCampaign != null) ? mTeaserCampaign.getCampaignId() : null;
         // Validate the current state
@@ -288,7 +288,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void showCampaign() {
-        Log.i(TAG, "LOAD CAMPAIGN");
+        Print.i(TAG, "LOAD CAMPAIGN");
 //        // Get banner
 //        View mBannerView = getBannerView();
 //		// Add banner to header
@@ -420,7 +420,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     @Override
     protected void onClickRetryButton(View view) {
-        Log.i(TAG, "ON CLICK ERROR BUTTON");
+        Print.i(TAG, "ON CLICK ERROR BUTTON");
         super.onClickRetryButton(view);
         getAndShowCampaign();
     }
@@ -440,7 +440,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         double price = (Double) view.getTag(PRICE);
         double discount = (Double) view.getTag(DISCOUNT);
         
-        Log.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
+        Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
         if(!hasStock)
             Toast.makeText(getBaseActivity(), getString(R.string.campaign_stock_alert), Toast.LENGTH_LONG).show();
@@ -489,7 +489,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void onClickProduct(View view){
         String prod = (String) view.getTag(PROD);
         String size = (String) view.getTag(SIZE);
-        Log.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
+        Print.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(GetSearchProductHelper.SKU_TAG, prod);
@@ -509,7 +509,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void triggerGetCampaign(String id){
-        Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
+        Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
         Bundle bundle = new Bundle();
         bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
@@ -522,7 +522,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void triggerAddToCart(ContentValues values){
-        Log.i(TAG, "TRIGGER ADD TO CART");
+        Print.i(TAG, "TRIGGER ADD TO CART");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
@@ -540,11 +540,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     @Override
     public void onRequestComplete(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -553,7 +553,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
-            Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
+            Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
             mCampaign = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             /*--
@@ -564,7 +564,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             showCampaign();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
+            Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
             if(getBaseActivity() != null) {
@@ -585,11 +585,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onRequestError(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -617,7 +617,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
-            Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
+            Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Show retry
             showRetry();
             break;
@@ -871,9 +871,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * @param remainingTime
          */
         private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime, View imageContainer) {
-            Log.d(TAG, "updateTimer");
+            Print.d(TAG, "updateTimer");
             if (remainingTime > 0) {
-                Log.d(TAG, "Product with remainingTime");
+                Print.d(TAG, "Product with remainingTime");
                 // calculate remaining time relatively to mStartTime
                 String remaingTimeString = getRemainingTime(remainingTime);
                 // Set remaing time on Timer
@@ -888,7 +888,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     UIUtils.setAlpha(image, 1F);
                 // show "Offer Ended" and disable product
                 } else {
-                    Log.d(TAG, "Product expired!");
+                    Print.d(TAG, "Product expired!");
                     showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image, imageContainer);
                 }
             // show product normally without timers
@@ -913,7 +913,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         private String getRemainingTime(int remainingTime) {
             long currentTimeInMilliseconds = SystemClock.elapsedRealtime();
             int remainingSeconds = (int) (remainingTime - ((currentTimeInMilliseconds - mStartTimeInMilliseconds) / 1000));
-            Log.d(TAG, "Remaining seconds: " + remainingSeconds);
+            Print.d(TAG, "Remaining seconds: " + remainingSeconds);
 
             if (remainingSeconds > 0) {
                 // Format remaingSeconds to "dd:hh:mm:ss"
@@ -1125,9 +1125,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 try {
                     size = item.getSizes().get(0);
                 } catch (IndexOutOfBoundsException e) {
-                    Log.w(TAG, "WARNING: IOBE ON SET SIZE SELECTION: 0");
+                    Print.w(TAG, "WARNING: IOBE ON SET SIZE SELECTION: 0");
                 } catch (NullPointerException e) {
-                    Log.w(TAG, "WARNING: NPE ON SET SELECTED SIZE: 0");
+                    Print.w(TAG, "WARNING: NPE ON SET SELECTED SIZE: 0");
                 }
                 item.setSelectedSizePosition(0);
                 item.setSelectedSize(size);

@@ -9,7 +9,7 @@
 //
 //import com.mobile.framework.rest.RestConstants;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class used to represent a search suggestion

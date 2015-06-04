@@ -6,7 +6,7 @@ import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.tracking.NewRelicTracker;
 import com.mobile.framework.utils.ShopSelector;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This Singleton class defines the entry point for the framework. Every
@@ -100,10 +100,10 @@ public class Darwin {
 	 *         intialized
 	 */
 	public static boolean initialize(Context ctx, String shopId) {
-		Log.d(TAG, "Initializing Darwin with id " + shopId);
+		Print.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
-			Log.d(TAG, "Already initialized for id " + shopId);
+			Print.d(TAG, "Already initialized for id " + shopId);
 			ShopSelector.updateLocale(ctx, shopId);
 			return true;
 		}
@@ -113,14 +113,14 @@ public class Darwin {
 		ShopSelector.init(context, shopId);
 		// New relic
 		NewRelicTracker.init(context);
-		Log.i(TAG, "Darwin is initialized with id " + shopId);
+		Print.i(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		return true;
 	}
 	
 	// FOR NO_COUNTRIES_CONFIGS
 	public static boolean initialize(Context ctx) {
-		Log.d(TAG, "Initializing Darwin to get global ");
+		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
@@ -131,7 +131,7 @@ public class Darwin {
 	
 	// FOR NO_COUNTRY_CONFIGS_AVAILABLE
 	public static boolean initialize(Context ctx, String requestHost, String basePath) {
-		Log.d(TAG, "Initializing Darwin to get global ");
+		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);

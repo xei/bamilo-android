@@ -5,7 +5,7 @@ import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to manage the checkout steps
@@ -38,7 +38,7 @@ public class CheckoutStepManager {
             else return FragmentType.UNKNOWN;
 
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: JSON OBJECT IS NULL");
+            Print.w(TAG, "WARNING: JSON OBJECT IS NULL");
             return FragmentType.UNKNOWN;
         }
     }
@@ -71,7 +71,7 @@ public class CheckoutStepManager {
      * @return {@link FragmentType}
      */
     public static FragmentType getNextFragment(String nextStep) {
-        Log.i(TAG, "NEXT STEP STRING: " + nextStep);
+        Print.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
         // Create addresses step
@@ -85,7 +85,7 @@ public class CheckoutStepManager {
         // Order step
         else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.MY_ORDER;
         // Return next fragment type
-        Log.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
+        Print.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
         return fragmentType;
     }
 

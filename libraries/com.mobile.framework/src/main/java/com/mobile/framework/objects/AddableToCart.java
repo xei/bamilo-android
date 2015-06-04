@@ -11,7 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class that manages the full representation of an object that can be added to
@@ -261,8 +261,8 @@ public class AddableToCart extends BaseProduct {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		Print.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Print.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
 		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 	

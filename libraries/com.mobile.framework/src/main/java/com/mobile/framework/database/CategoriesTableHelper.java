@@ -11,7 +11,7 @@ import com.mobile.newFramework.objects.category.Category;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Category table helper.
@@ -83,7 +83,7 @@ public class CategoriesTableHelper extends BaseTable {
         try {
             saveCategories(db, categories);
         } catch (SQLException e) {
-            Log.e(e.getMessage());
+            Print.e(e.getMessage());
             e.printStackTrace();
         } finally {
             db.close();
@@ -117,7 +117,7 @@ public class CategoriesTableHelper extends BaseTable {
         values.put(Columns.ID_CATALOG, category.getId());
         values.put(Columns.NAME, category.getName());
         db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-        Log.i(TAG, "ON SAVE CATEGORY: " + values.toString());
+        Print.i(TAG, "ON SAVE CATEGORY: " + values.toString());
     }
 
     /**
@@ -150,9 +150,9 @@ public class CategoriesTableHelper extends BaseTable {
             .toString();
             // Execute
             db.execSQL(insertOrReplace);
-            Log.i(TAG, "ON INCREASE COUNTER: " + categoryId);
+            Print.i(TAG, "ON INCREASE COUNTER: " + categoryId);
         } catch (SQLException e) {
-            Log.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
+            Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
         } finally {
             db.close();
         }
@@ -194,12 +194,12 @@ public class CategoriesTableHelper extends BaseTable {
             if(cursor != null) cursor.close();
             
         } catch (SQLException e) {
-            Log.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
+            Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
         } finally {
             db.close();
         }
         DarwinDatabaseSemaphore.getInstance().releaseLock();
-        Log.i(TAG, "TOP CATEGORY: " + category + " " + counter);
+        Print.i(TAG, "TOP CATEGORY: " + category + " " + counter);
         // Return name
         return category;
     }
@@ -210,7 +210,7 @@ public class CategoriesTableHelper extends BaseTable {
      *            writeable database
      */
     public static void clearCategories() {
-        Log.d(TAG, "ON CLEAN TABLE");
+        Print.d(TAG, "ON CLEAN TABLE");
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
         db.delete(TABLE_NAME, null, null);
     }

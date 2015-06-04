@@ -20,7 +20,7 @@ import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper used to set the shipping address 
@@ -54,11 +54,11 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         SuperSetBillingAddress billing = (SuperSetBillingAddress) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, billing.getOrderSummary());
-        Log.i(TAG, "ORDER SUMMARY: " + billing.getOrderSummary().toString());
+        Print.i(TAG, "ORDER SUMMARY: " + billing.getOrderSummary().toString());
         // Get and set next step
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(billing.getNextStep()));
         mRequester.onRequestComplete(bundle);
@@ -66,7 +66,7 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

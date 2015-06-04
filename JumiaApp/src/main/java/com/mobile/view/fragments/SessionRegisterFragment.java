@@ -56,7 +56,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira
@@ -117,7 +117,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -128,7 +128,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -152,7 +152,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -163,12 +163,12 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
         // Used for UG
         forceInputAlignToLeft();
         if (JumiaApplication.INSTANCE.registerForm != null) {
-            Log.d(TAG, " ON RESUME -> load From");
+            Print.d(TAG, " ON RESUME -> load From");
             loadForm(JumiaApplication.INSTANCE.registerForm);
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
         } else {
@@ -187,7 +187,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -198,7 +198,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
 
         if (container != null) {
             try {
@@ -211,7 +211,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
+        Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         if (null != serverForm) {
 
             for (DynamicFormItem item : serverForm) {
@@ -226,7 +226,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     public void saveFormState() {
         if (null != serverForm) {
-            Log.d(TAG, "  -----> SAVE FORM STATE <--------- ");
+            Print.d(TAG, "  -----> SAVE FORM STATE <--------- ");
 
             if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
@@ -283,7 +283,7 @@ public class SessionRegisterFragment extends BaseFragment {
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Log.d(TAG, "registerButton onClick");
+                Print.d(TAG, "registerButton onClick");
 
 //                if (serverForm != null && !serverForm.checkRequired()) {
 //                    registerRequiredText.setVisibility(View.VISIBLE);
@@ -320,7 +320,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-                Log.d(TAG, "register canceled via login click");
+                Print.d(TAG, "register canceled via login click");
             }
         });
     }
@@ -420,7 +420,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void checkInputFields() {
         if (getView() == null) {
-            Log.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
+            Print.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
             return;
         }
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
@@ -461,7 +461,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -497,12 +497,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
             // Finish
             getActivity().onBackPressed();
-            Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
+            Print.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
             showFragmentContentContainer();
             Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            Log.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
+            Print.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
             if (null != form) {
                 JumiaApplication.INSTANCE.registerForm = form;
                 loadForm(form);
@@ -617,10 +617,10 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        Log.d(TAG, "ON ERROR EVENT");
+        Print.d(TAG, "ON ERROR EVENT");
         
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 

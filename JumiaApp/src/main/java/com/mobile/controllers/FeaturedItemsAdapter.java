@@ -23,7 +23,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * PagerAdapter used on a ViewPager for featured items
@@ -60,7 +60,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         int count = 0;
 
         int featureListSize = this.mFeaturedList.size();
-        Log.d(TAG, "featureListSize: " + featureListSize);
+        Print.d(TAG, "featureListSize: " + featureListSize);
         int pageIndex = featureListSize / this.partialSize;
 
         if (featureListSize % this.partialSize == 0) {
@@ -68,7 +68,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         } else {
             count = pageIndex + 1;
         }
-        Log.d(TAG, "count: " + count);
+        Print.d(TAG, "count: " + count);
         return count;
     }
 
@@ -205,7 +205,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
             RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
-            Log.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
+            Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }
     }
 

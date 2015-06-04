@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the image resolution on database.
@@ -98,7 +98,7 @@ public class ImageResolutionTableHelper extends BaseTable {
 	        values.put(ImageResolutionTableHelper._EXTENSION, extension);
 	        // Insert resolution
 	        db.insert(ImageResolutionTableHelper.TABLE_NAME, null, values);
-			Log.i(TAG, "RESOLUTION: " + identifier + " " + width + " " + height + " " + extension);
+			Print.i(TAG, "RESOLUTION: " + identifier + " " + width + " " + height + " " + extension);
 		}
 		db.close();
     }
@@ -155,7 +155,7 @@ public class ImageResolutionTableHelper extends BaseTable {
 							"ORDER BY mul ASC, " + _EXTENSION + " DESC " +
 							"LIMIT 1";
 		// Print query
-		Log.i(TAG, "SQL QUERY: " + query);
+		Print.i(TAG, "SQL QUERY: " + query);
 		// Perform query
 		Cursor cursor = db.rawQuery(query, new String[] { resolutionTag , exceptResolutions[0], exceptResolutions[1], exceptResolutions[2] });
 		// Get result
@@ -166,7 +166,7 @@ public class ImageResolutionTableHelper extends BaseTable {
 			imageResolution = new ImageResolution(	cursor.getString(0), Integer.parseInt(cursor.getString(1)),
 													Integer.parseInt(cursor.getString(2)), cursor.getString(3));
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
+			Print.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
 		}
 		// Validate cursor
 		if(cursor != null)
@@ -195,7 +195,7 @@ public class ImageResolutionTableHelper extends BaseTable {
 			 			"GROUP BY calc " +
 			 			"ORDER BY calc ASC " +
 			 			"LIMIT 1";
-		Log.i(TAG, "SQL QUERY: " + query);
+		Print.i(TAG, "SQL QUERY: " + query);
 		// Perform query
 		Cursor cursor = db.rawQuery(query, new String[] { String.valueOf(width), String.valueOf(heigth) });
 		// Get result
@@ -206,11 +206,11 @@ public class ImageResolutionTableHelper extends BaseTable {
 					cursor.getString(0), Integer.parseInt(cursor.getString(1)),
 					Integer.parseInt(cursor.getString(2)), cursor.getString(3));
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
+			Print.i(TAG, "SQL RESULT: " + imageResolution.getIdentifier());
 			// Validate cursor
 			cursor.close();
 		} else {
-			Log.i(TAG, "NO SQL RESULT");
+			Print.i(TAG, "NO SQL RESULT");
 		}
 		// Return
 		return imageResolution;
@@ -222,7 +222,7 @@ public class ImageResolutionTableHelper extends BaseTable {
 	  * @param db
 	  */
 	 public static void clearImageResolutions() {
-		 Log.d(TAG, "ON CLEAN TABLE");
+		 Print.d(TAG, "ON CLEAN TABLE");
 		 SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		 db.delete(TABLE_NAME, null, null);
 	 }    

@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 //import com.mobile.framework.rest.RestClientSingleton;
 
@@ -61,7 +61,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Get api info
         ApiInformation apiInformation = (ApiInformation) baseResponse.getMetadata().getData();
         // Save mob api version
@@ -88,7 +88,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
@@ -153,7 +153,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
      * @param bundle 
      */
     private void clearOutDatedMainSections(List<Section> sections, Bundle bundle) {
-        Log.d(TAG, "ON CLEAR OUT DATED SECTIONS");
+        Print.d(TAG, "ON CLEAR OUT DATED SECTIONS");
         // Update each outdated section
         for (Section section : sections) {
             // Case teasers
@@ -204,7 +204,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
      * @return The list of section
      */
     private ArrayList<Section> parseSections(JSONArray jsonArray) {
-        Log.d(TAG, "ON PARSE SECTIONS");
+        Print.d(TAG, "ON PARSE SECTIONS");
         int arrayLength = jsonArray.length();
         ArrayList<Section> sections = new ArrayList<>();
         for (int i = 0; i < arrayLength; ++i) {
@@ -225,7 +225,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
      * @return
      */
     public ArrayList<Section> checkSections(List<Section> oldSections, List<Section> newSections) {
-        Log.i(TAG, "ON CHECK SECTIONS");
+        Print.i(TAG, "ON CHECK SECTIONS");
         ArrayList<Section> outdatedSections = new ArrayList<>();
         // Case is first time
         if (CollectionUtils.isEmpty(oldSections)) {
@@ -239,12 +239,12 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                 Section savedSection = getSection(newSection.getName(), oldSections);
                 // Case MD5 is different
                 if (savedSection != null && !savedSection.getMd5().equals(newSection.getMd5())) {
-                    Log.i(TAG, "SECTION IS OUT DATED: " + newSection.getName() + " " + newSection.getMd5());
+                    Print.i(TAG, "SECTION IS OUT DATED: " + newSection.getName() + " " + newSection.getMd5());
                     outdatedSections.add(newSection);
                 }
                 // Case section is not present
                 else if (savedSection == null) {
-                    Log.i(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
+                    Print.i(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
                     ArrayList<Section> temp = new ArrayList<>();
                     temp.add(newSection);
                     SectionsTablesHelper.saveSections(temp);
@@ -253,7 +253,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                 }
                 // Case section MD5 is the same
                 else {
-                    Log.i(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
+                    Print.i(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
                 }
             }
         }

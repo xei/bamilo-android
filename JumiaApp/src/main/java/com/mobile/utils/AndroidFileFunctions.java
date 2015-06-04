@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class AndroidFileFunctions {
     File myFile;
@@ -20,7 +20,7 @@ public class AndroidFileFunctions {
         try {
             myFile.createNewFile();
         } catch (IOException e) {
-            Log.i("REQUEST", "FAILED CREATING FILE!!!");
+            Print.i("REQUEST", "FAILED CREATING FILE!!!");
             e.printStackTrace();
         }
     }
@@ -36,7 +36,7 @@ public class AndroidFileFunctions {
         } 
         catch (Exception e) 
         {
-            Log.i("REQUEST", "FAILED WRITING TO FILE!!!");
+            Print.i("REQUEST", "FAILED WRITING TO FILE!!!");
         }
     }
     

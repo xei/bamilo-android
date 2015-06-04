@@ -10,7 +10,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Created by spereira on 5/27/15.
@@ -75,7 +75,7 @@ public class CountryPersistentConfigs {
     public static String getCountryPhoneNumber(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
-        Log.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
+        Print.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
         return mPhone2Call;
     }
 

@@ -21,7 +21,7 @@
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represents the server side product. Contains id, name,

@@ -22,7 +22,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class ShippingRadioGroupList extends RadioGroup {
     private final static String TAG = LogTagHelper.create(ShippingRadioGroupList.class);
@@ -62,7 +62,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public void setItems(ShippingMethodForm form, String defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + form.key + " defaultSelected = " + defaultSelected);
+        Print.d(TAG, "setItems: items size = " + form.key + " defaultSelected = " + defaultSelected);
         mForm = form;
         mItems = mForm.options;
         mDefaultSelected = defaultSelected;
@@ -81,7 +81,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         int numberItems = mItems.size();
         for (int idx = 0; idx < numberItems; idx++) {
 
-            Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+            Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
 
             /**
              * Global Container
@@ -115,10 +115,10 @@ public class ShippingRadioGroupList extends RadioGroup {
                 ShippingMethodSubForm shippingSubForm = new ShippingMethodSubForm();
                 shippingSubForm.shippingMethodSubFormHolder = mForm.shippingMethodsSubForms.get(i);
 
-                Log.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.scenario);
+                Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.scenario);
 
                 if (shippingSubForm.shippingMethodSubFormHolder.scenario.equalsIgnoreCase(mItems.get(idx))) {
-                    Log.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.name);
+                    Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.name);
 
 
                     tmpSubForms.add(shippingSubForm);
@@ -216,7 +216,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
         int idx = mGroup.indexOfChild(radioButton);
-        Log.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
+        Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
         return idx;
     }
 
@@ -230,11 +230,11 @@ public class ShippingRadioGroupList extends RadioGroup {
 
     public void setSelection(int idx) {
         if (idx >= 0) {
-            Log.i(TAG, "code1selection : id is : " + idx);
+            Print.i(TAG, "code1selection : id is : " + idx);
             if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
                 button.setChecked(true);
-                Log.i(TAG, "code1selection : id is : " + idx + " second");
+                Print.i(TAG, "code1selection : id is : " + idx + " second");
             }
             cleanOtherSelections(idx);
         }
@@ -263,14 +263,14 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     private void cleanOtherSelections(int idx) {
-        Log.i(TAG, "code1selection : id is : " + idx + " cleaning");
+        Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
         for (int i = 0; i < mGroup.getChildCount(); i++) {
             if (i != idx) {
                 if (mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i) instanceof RadioButton) {
                     RadioButton button = (RadioButton) mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
                     button.setChecked(false);
                     mGroup.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
-                    Log.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
+                    Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
                 }
             }
         }
@@ -314,7 +314,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public ContentValues getValues() {
-        Log.i(TAG, "code1values : adding valeus " + subForms.toString());
+        Print.i(TAG, "code1values : adding valeus " + subForms.toString());
         ContentValues mContentValues = new ContentValues();
         int idx = mGroup.getCheckedRadioButtonId();
         if (idx < 0) {
@@ -323,7 +323,7 @@ public class ShippingRadioGroupList extends RadioGroup {
 
         if (subForms.containsKey(mItems.get(idx)) && subForms.get(mItems.get(idx)).size() > 0) {
             PickUpStationObject selectedPickup = null;
-            Log.i(TAG, "code1values : adding ");
+            Print.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
                     if(element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter){
@@ -333,7 +333,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                     if(selectedPickup != null){
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupId());
                     }
-                    Log.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
+                    Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
                     if (selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getRegions().get(0).getId());

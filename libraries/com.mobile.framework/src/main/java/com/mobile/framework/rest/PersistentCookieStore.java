@@ -15,7 +15,7 @@ import java.util.Locale;
 import ch.boye.httpclientandroidlib.androidextra.Base64;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is an extend of the class BasicCookieStore, used to manage the session cookie using shared preferences.
@@ -44,7 +44,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      * @author spereira
      */
     public PersistentCookieStore(Context context) {
-        Log.i(TAG, "ON CONSTRUCTOR");
+        Print.i(TAG, "ON CONSTRUCTOR");
         // Load the session cookie
         loadSessionCookie(context);
     }
@@ -55,7 +55,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      */
     @Override
     public void clear() {
-        Log.i(TAG, "ON CLEAR COOKIE");
+        Print.i(TAG, "ON CLEAR COOKIE");
         // Clear cookies from local store
         super.clear();
         // Clear cookies from persistent store
@@ -96,7 +96,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
         List<Cookie> cookies =  getCookies();
         for (Cookie cookie : cookies) {
             if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(domain)) {
-                Log.i(TAG, "ON PERSIST COOKIE SESSION");
+                Print.i(TAG, "ON PERSIST COOKIE SESSION");
                 SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
                 String str = encodeCookie(new PersistentCookie(cookie));
                 prefsWriter.putString(COOKIE_PREFS_TAG, str);
@@ -104,7 +104,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
                 return;
             }
         }
-        Log.w(TAG, "WARNING: NO PERSIST COOKIE SESSION");
+        Print.w(TAG, "WARNING: NO PERSIST COOKIE SESSION");
     }
     
     /**
@@ -113,7 +113,7 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      * @author spereira
      */
     private void loadSessionCookie(Context context) {
-        Log.i(TAG, "ON LOAD SESSION COOKIE");
+        Print.i(TAG, "ON LOAD SESSION COOKIE");
         // Get preferences
         mCookiePrefs = context.getSharedPreferences(PERSISTENT_COOKIES_FILE, Context.MODE_PRIVATE);
         // Get stored encoded cookie
@@ -136,13 +136,13 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      */
     private String encodeCookie(PersistentCookie cookie) {
         if (cookie == null) return null;
-        Log.i(TAG, "ON ENCODE COOKIE: " + cookie.toString());
+        Print.i(TAG, "ON ENCODE COOKIE: " + cookie.toString());
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);
             outputStream.writeObject(cookie);
         } catch (IOException e) {
-            Log.d(TAG, "IOException in encodeCookie", e);
+            Print.d(TAG, "IOException in encodeCookie", e);
             return null;
         }
         return Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
@@ -155,18 +155,18 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      * @author spereira
      */
     private Cookie decodeCookie(String cookieString) {
-        Log.i(TAG, "ON DECODE COOKIE: " + cookieString);
+        Print.i(TAG, "ON DECODE COOKIE: " + cookieString);
         byte[] bytes = Base64.decode(cookieString, Base64.DEFAULT);
-        Log.i(TAG, "ON DECODE COOKIE: " + new String(bytes));
+        Print.i(TAG, "ON DECODE COOKIE: " + new String(bytes));
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
         Cookie cookie = null;
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             cookie = ((PersistentCookie) objectInputStream.readObject()).getCookie();
         } catch (IOException e) {
-            Log.d(TAG, "IOException in decodeCookie", e);
+            Print.d(TAG, "IOException in decodeCookie", e);
         } catch (ClassNotFoundException e) {
-            Log.d(TAG, "ClassNotFoundException in decodeCookie", e);
+            Print.d(TAG, "ClassNotFoundException in decodeCookie", e);
         }
         return cookie;
     }

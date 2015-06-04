@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 import oak.ObscuredSharedPreferences;
 
 public class CustomerUtils {
@@ -54,7 +54,7 @@ public class CustomerUtils {
 				}
 			}
 		} catch (RuntimeException e) {
-			Log.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
+			Print.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
 			e.printStackTrace();
 		}
 		return cv;
@@ -86,13 +86,13 @@ public class CustomerUtils {
 	 * @param values
 	 */
 	public void storeCredentials(ContentValues values) {
-		Log.i(TAG, "STORE CREDENTIALS");
+		Print.i(TAG, "STORE CREDENTIALS");
 		Editor editor = obscuredPreferences.edit();
 		for (Entry<String, ?> entry : values.valueSet()) {
 			if (entry.getKey() != null && entry.getValue() != null && entry.getValue().toString() != null) {
 				editor.putString(entry.getKey(), entry.getValue().toString());
 			} else {
-				Log.e(TAG, "MISSING PARAMETERS FROM API!");
+				Print.e(TAG, "MISSING PARAMETERS FROM API!");
 			}
 		}
 		// Put logged flag
@@ -106,7 +106,7 @@ public class CustomerUtils {
 	 * @modified sergiopereira
 	 */
 	public void clearCredentials() {
-		Log.i(TAG, "CLEAR CREDENTIALS");
+		Print.i(TAG, "CLEAR CREDENTIALS");
 		try {
 			Editor editor = obscuredPreferences.edit();
 			for (Entry<String, ?> entry : obscuredPreferences.getAll().entrySet()) {
@@ -117,7 +117,7 @@ public class CustomerUtils {
 			}
 			editor.commit();
 		} catch (RuntimeException e) {
-			Log.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
+			Print.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
 			obscuredPreferences.edit().clear().commit();
 		}
 	}
@@ -130,7 +130,7 @@ public class CustomerUtils {
 	 */
 	public boolean userNeverLoggedIn() {
 		boolean loggedOnce = getCredentials().containsKey(USER_LOGGED_ONCE_FLAG);
-		Log.i(TAG, "USER LOGGED ONCE: " + loggedOnce);
+		Print.i(TAG, "USER LOGGED ONCE: " + loggedOnce);
 		return !loggedOnce;
 	}
 	

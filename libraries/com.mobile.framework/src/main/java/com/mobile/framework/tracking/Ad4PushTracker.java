@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author nunocastro
@@ -145,7 +145,7 @@ public class Ad4PushTracker {
      * @author sergiopereira
      */
     public static void startup(Context context) {
-        Log.d(TAG, "ON STARTUP");
+        Print.d(TAG, "ON STARTUP");
         sInstance = new Ad4PushTracker(context);
     }
 
@@ -190,7 +190,7 @@ public class Ad4PushTracker {
     private void init() {
         // Create screen map
         if (isEnabled) {
-            Log.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
+            Print.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(mContext);
             boolean isActive = getActiveAd4Push(mContext);
             // setPushNotificationLocked(!isActive);
@@ -212,7 +212,7 @@ public class Ad4PushTracker {
      */
     public void startActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.i(TAG, "Started Activity -> " + activity.getLocalClassName());
+            Print.i(TAG, "Started Activity -> " + activity.getLocalClassName());
             mA4S.startActivity(activity);
         }
     }
@@ -223,7 +223,7 @@ public class Ad4PushTracker {
      */
     public void stopActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
+            Print.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
             mA4S.stopActivity(activity);
         }
     }
@@ -236,11 +236,11 @@ public class Ad4PushTracker {
      */
     public void startActivityForInAppMessages(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
+            Print.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
             startActivity(activity);
             setPushNotificationLocked(true);
         } else
-            Log.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
+            Print.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
     }
 
     /**
@@ -251,7 +251,7 @@ public class Ad4PushTracker {
      */
     public void setPushNotificationLocked(boolean bool) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
+            Print.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
             mA4S.setPushNotificationLocked(bool);
         }
     }
@@ -264,14 +264,14 @@ public class Ad4PushTracker {
      */
     public void setInAppDisplayLocked(boolean bool) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "LOCK IN APP MESSAGE: " + bool);
+            Print.d(TAG, "LOCK IN APP MESSAGE: " + bool);
             mA4S.setInAppDisplayLocked(bool);
         }
     }
 
     private void trackView(String view) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "View state tracked -> " + VIEW_STATE + "=" + view);
+            Print.d(TAG, "View state tracked -> " + VIEW_STATE + "=" + view);
             mA4S.putState(VIEW_STATE, view);
         }
     }
@@ -284,7 +284,7 @@ public class Ad4PushTracker {
      */
     private void stopingSDK(Context context, boolean isToStop) {
         if (null != mA4S) {
-            Log.d(TAG, "Stop SDK:" + isToStop);
+            Print.d(TAG, "Stop SDK:" + isToStop);
             mA4S.setDoNotTrackEnabled(context, isToStop);
         }
     }
@@ -298,7 +298,7 @@ public class Ad4PushTracker {
      */
     private void setGCMEnabled(boolean enabled) {
         if (null != mA4S) {
-            Log.d(TAG, "setGCMEnabled:" + enabled);
+            Print.d(TAG, "setGCMEnabled:" + enabled);
             mA4S.setGCMEnabled(enabled);
         }
     }
@@ -326,7 +326,7 @@ public class Ad4PushTracker {
      */
     public void trackEmptyUserId(boolean userNeverLoggedIn) {
         if (isEnabled && userNeverLoggedIn) {
-            Log.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
+            Print.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
             Bundle prefs = new Bundle();
             prefs.putString(USER_ID, "0");
             mA4S.updateDeviceInfo(prefs);
@@ -347,7 +347,7 @@ public class Ad4PushTracker {
             bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
             bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
             mA4S.updateDeviceInfo(bundle);
-            Log.i(TAG, "SET DEVICE INFO: " + bundle.toString());
+            Print.i(TAG, "SET DEVICE INFO: " + bundle.toString());
         }
     }
 
@@ -402,7 +402,7 @@ public class Ad4PushTracker {
             mA4S.updateDeviceInfo(prefs);
             // Track event
             mA4S.trackEvent(EVENT_LOGIN, "loginUserID=" + customerId);
-            Log.d(TAG, "TRACK LOGIN: " + prefs.toString());
+            Print.d(TAG, "TRACK LOGIN: " + prefs.toString());
         }
     }
 
@@ -428,7 +428,7 @@ public class Ad4PushTracker {
      */
     public void trackSignupStarted() {
         if (isEnabled) {
-            Log.i(TAG, "TRACK SIGNUP: STARTED");
+            Print.i(TAG, "TRACK SIGNUP: STARTED");
             Bundle prefs = new Bundle();
             prefs.putString(REGISTRATION, REGISTRATION_STARTED);
             mA4S.updateDeviceInfo(prefs);
@@ -457,7 +457,7 @@ public class Ad4PushTracker {
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(STATUS_IN_APP, userStatus);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK SIGNUP: " + prefs.toString());
+            Print.i(TAG, "TRACK SIGNUP: " + prefs.toString());
         }
     }
 
@@ -474,7 +474,7 @@ public class Ad4PushTracker {
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartQt);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK CHECKOUT STARTED: " + prefs.toString());
+            Print.i(TAG, "TRACK CHECKOUT STARTED: " + prefs.toString());
         }
     }
 
@@ -484,7 +484,7 @@ public class Ad4PushTracker {
         String currency = CurrencyFormatter.EURO_CODE;
 
         if (isEnabled) {
-            Log.d(TAG, "trackBuyNowPurchase: grandTotal = " + grandTotal + " cartValue = " + cartValue + " currency = " + currency);
+            Print.d(TAG, "trackBuyNowPurchase: grandTotal = " + grandTotal + " cartValue = " + cartValue + " currency = " + currency);
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
 
             // Get purchases data
@@ -516,7 +516,7 @@ public class Ad4PushTracker {
             // Clean other values
             prefs.putInt(FAVORITES_CART_COUNT, 0);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
+            Print.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
             // Purchase purchase = new Purchase(transactionId,
             // CurrencyFormatter.getCurrencyCode(), cartValue);
             // mA4S.trackPurchase(purchase);
@@ -542,7 +542,7 @@ public class Ad4PushTracker {
             prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
+            Print.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
         }
     }
 
@@ -565,7 +565,7 @@ public class Ad4PushTracker {
             prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
+            Print.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
         }
     }
 
@@ -586,7 +586,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(FAVORITES_CART_COUNT, wishlistNumber);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK ADD TO CART FROM FAV: " + prefs.toString());
+            Print.i(TAG, "TRACK ADD TO CART FROM FAV: " + prefs.toString());
             // Track add to cart
             trackAddToCart(sku, price, name, category);
         }
@@ -602,7 +602,7 @@ public class Ad4PushTracker {
      */
     public void trackAddToCart(String sku, double price, String name, String category) {
         if (isEnabled) {
-            Log.i(TAG, "trackAddToCart: productSKU = " + sku);
+            Print.i(TAG, "trackAddToCart: productSKU = " + sku);
             String currency = CurrencyFormatter.getCurrencyCode();
             Item productAdded = new Item(sku, name, category, currency, price, 1);
             Cart cart = new Cart("1", productAdded);
@@ -626,7 +626,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(SHARED_PRODUCT_COUNT, shareNumber);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
+            Print.i(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
         }
     }
 
@@ -646,7 +646,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(REVIEW_COUNT, shareNumber);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
+            Print.i(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
         }
     }
 
@@ -667,7 +667,7 @@ public class Ad4PushTracker {
             if (!TextUtils.isEmpty(countryCode))
                 prefs.putString(COUNTRY_CODE, countryCode);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
+            Print.i(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
         }
     }
 
@@ -678,7 +678,7 @@ public class Ad4PushTracker {
             prefs.putString(LAST_SEARCH, searchTerm);
             prefs.putString(LAST_SEARCH_DATE, currentDateAndTime);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK SEARCH: " + prefs.toString());
+            Print.i(TAG, "TRACK SEARCH: " + prefs.toString());
         }
     }
 
@@ -692,7 +692,7 @@ public class Ad4PushTracker {
                 String category = new String(CategoriesTableHelper.getTopCategory().getBytes(), "UTF-8");
                 prefs.putString(MOST_VISITED_CATEGORY, category);
                 mA4S.updateDeviceInfo(prefs);
-                Log.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
+                Print.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
             } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
                 e.printStackTrace();
             }
@@ -719,7 +719,7 @@ public class Ad4PushTracker {
             prefs.putString(FILTER_PRICE, TextUtils.isEmpty(price) ? "" : price);
             prefs.putString(FILTER_SIZE, TextUtils.isEmpty(size) ? "" : size);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK CATALOG FILTER: " + prefs.toString());
+            Print.i(TAG, "TRACK CATALOG FILTER: " + prefs.toString());
         }
     }
 
@@ -761,7 +761,7 @@ public class Ad4PushTracker {
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartCount);
             mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK CART VALUE: " + prefs.toString());
+            Print.i(TAG, "TRACK CART VALUE: " + prefs.toString());
         }
     }
 

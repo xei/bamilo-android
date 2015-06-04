@@ -13,7 +13,7 @@
 //import java.util.ArrayList;
 //import java.util.Iterator;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste

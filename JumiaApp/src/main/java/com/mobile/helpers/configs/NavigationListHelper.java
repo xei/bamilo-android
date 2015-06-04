@@ -17,7 +17,7 @@
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 //public class NavigationListHelper extends BaseHelper {
 //

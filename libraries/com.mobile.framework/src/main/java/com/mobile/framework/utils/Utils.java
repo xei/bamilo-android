@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import android.annotation.SuppressLint;
 import android.util.Base64;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Utils class that contains global methods to be used through out development
@@ -47,7 +47,7 @@ public class Utils {
             
            key = key + "_" + System.nanoTime();
            
-           Log.i(TAG, "UNIQUE MD5: " + key);
+           Print.i(TAG, "UNIQUE MD5: " + key);
 
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -121,7 +121,7 @@ public class Utils {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             
             iv = new byte[cipher.getBlockSize()];
-            Log.i(TAG,"IV size => "+iv.length);
+            Print.i(TAG, "IV size => " + iv.length);
             randomb.nextBytes(iv);
             IvParameterSpec ivParams = new IvParameterSpec(iv);
             
@@ -161,7 +161,7 @@ public class Utils {
 //            Log.i(TAG," salt decrypt IV size => "+salt.length);
 //            byte[] iv = fields[2].getBytes();
             
-            Log.i(TAG,"decrypt IV size => "+iv.length);
+            Print.i(TAG, "decrypt IV size => " + iv.length);
 
 //            KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
 //            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");

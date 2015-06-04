@@ -23,7 +23,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Shops in shop Fragment. Created by Sergio Pereira on 3/4/15.
@@ -94,13 +94,13 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get data from arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            Log.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
+            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -113,7 +113,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get web view
         mWebView = (WebView) view.findViewById(R.id.shop_web_view);
         // Set the client
@@ -125,19 +125,19 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVED INSTANCE STATE");
+        Print.i(TAG, "ON SAVED INSTANCE STATE");
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putString(ConstantsIntentExtra.CONTENT_URL, mUrl);
         outState.putString(ConstantsIntentExtra.CONTENT_DATA, mHtml);
@@ -146,7 +146,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         /*
          * Save the web view scroll position only for back workflow and not for rotation.
          * On rotation some devices need a different delay to scroll until the saved position.
@@ -157,19 +157,19 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -270,16 +270,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.i(TAG, "ON PAGE STARTED: " + url);
+            Print.i(TAG, "ON PAGE STARTED: " + url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.i(TAG, "ON PAGE FINISHED: " + url);
+            Print.i(TAG, "ON PAGE FINISHED: " + url);
             // Restore the saved position
             if (mWebViewScrollPosition > 0) {
-                Log.i(TAG, "ON SCROLL TO SAVED POSITION: " + mWebViewScrollPosition);
+                Print.i(TAG, "ON SCROLL TO SAVED POSITION: " + mWebViewScrollPosition);
                 view.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -292,13 +292,13 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-            Log.i(TAG, "ON PAGE RECEIVED ERROR: " + failingUrl);
+            Print.i(TAG, "ON PAGE RECEIVED ERROR: " + failingUrl);
             showContinueShopping();
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.i(TAG, "SHOULD OVERRIDE URL LOADING: " + url);
+            Print.i(TAG, "SHOULD OVERRIDE URL LOADING: " + url);
             // Parse, validate and goto the deep link
             processDeepLink(url);
             // Return link processed
@@ -334,7 +334,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             }
             // Case unknown
             else {
-                Log.w(TAG, "WARNING UNKNOWN TARGET: " + target + " " + url);
+                Print.w(TAG, "WARNING UNKNOWN TARGET: " + target + " " + url);
             }
         }
     }
@@ -345,7 +345,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param url The product url
      */
     private void gotoProduct(String url) {
-        Log.i(TAG, "PDV: " + url);
+        Print.i(TAG, "PDV: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
@@ -358,7 +358,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param url The catalog url
      */
     private void gotoCatalog(String url) {
-        Log.i(TAG, "CATALOG: " + url);
+        Print.i(TAG, "CATALOG: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
@@ -372,7 +372,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param url The campaign url
      */
     private void gotoCampaign(String url) {
-        Log.i(TAG, "CAMPAIGN: " + url);
+        Print.i(TAG, "CAMPAIGN: " + url);
         Bundle bundle = new Bundle();
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
@@ -391,10 +391,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS");
+        Print.i(TAG, "ON SUCCESS");
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get the html
@@ -416,15 +416,15 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR");
+        Print.i(TAG, "ON ERROR");
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Case network errors
         if (super.handleErrorEvent(bundle)) {
-            Log.i(TAG, "RECEIVED NETWORK ERROR!");
+            Print.i(TAG, "RECEIVED NETWORK ERROR!");
         }
         // Case other errors
         else {

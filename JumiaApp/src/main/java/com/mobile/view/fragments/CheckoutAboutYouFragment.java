@@ -68,7 +68,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to perform the login or sign up
@@ -142,7 +142,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -153,7 +153,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Retain the fragment
         setRetainInstance(true);
         // Init the helper
@@ -174,7 +174,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Login toggle
         loginToogle = view.findViewById(R.id.checkout_login_toogle);
         loginToogle.setOnClickListener(this);
@@ -210,15 +210,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            Log.d(TAG, "TRIGGER: AUTO LOGIN");
+            Print.d(TAG, "TRIGGER: AUTO LOGIN");
             triggerAutoLogin();
         } else if (JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0) {
-            Log.d(TAG, "TRIGGER: INIT FORM");
+            Print.d(TAG, "TRIGGER: INIT FORM");
             triggerInitForm();
         } else {
             boolean temp1 = (formResponse != null) ? loadForm(formResponse) : triggerLoginForm();
             boolean temp2 = (signupFormResponse != null) ? loadSignUpForm(signupFormResponse) : triggerSignupForm();
-            Log.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
+            Print.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
         }
     }
 
@@ -230,7 +230,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -243,7 +243,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         super.onResume();
 
         retryForms = 0;
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Resume helper
         uiHelper.onResume();
 
@@ -262,7 +262,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
         uiHelper.onPause();
     }
@@ -275,7 +275,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         uiHelper.onStop();
     }
 
@@ -285,7 +285,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
         //if (loginFormContainer != null) loginFormContainer.removeAllViews();
     }
@@ -297,7 +297,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         formResponse = null;
         uiHelper.onDestroy();
     }
@@ -372,7 +372,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         }
         // Unknown view
         else {
-            Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
@@ -391,7 +391,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      *
      */
     private void onClickLoginToogle() {
-        Log.i(TAG, "ON CLICK: LOGIN TOOGLE");
+        Print.i(TAG, "ON CLICK: LOGIN TOOGLE");
         // Validate view
         if (loginMainContainer != null && signupMainContainer != null) {
             // Validate visibility
@@ -414,7 +414,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      *
      */
     private void onClickSignupToogle() {
-        Log.i(TAG, "ON CLICK: SIGNUP TOOGLE");
+        Print.i(TAG, "ON CLICK: SIGNUP TOOGLE");
         // Validate view
         if (signupMainContainer != null && loginMainContainer != null) {
             // Validate visibility
@@ -436,7 +436,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Process the click on login button
      */
     private void onClickLoginButton() {
-        Log.i(TAG, "ON CLICK: LOGIN");
+        Print.i(TAG, "ON CLICK: LOGIN");
         try {
             // Validate form
             if (loginForm.validate()) {
@@ -447,7 +447,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.CHECKOUT, GTMValues.EMAILAUTH);
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "LOGIN FORM IS NULL", e);
+            Print.w(TAG, "LOGIN FORM IS NULL", e);
             triggerLoginForm();
         }
     }
@@ -456,13 +456,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Process the click on sign up button
      */
     private void onClickSignupButton() {
-        Log.i(TAG, "ON CLICK: SIGNUP");
+        Print.i(TAG, "ON CLICK: SIGNUP");
         try {
             if (signupForm.validate()) {
                 requestSignUp();
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "SIGNUP FORM IS NULL", e);
+            Print.w(TAG, "SIGNUP FORM IS NULL", e);
             triggerSignupForm();
         }
     }
@@ -471,7 +471,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Process the click on forgot password
      */
     private void onClickForgotPassword() {
-        Log.i(TAG, "ON CLICK: FORGOT PASS");
+        Print.i(TAG, "ON CLICK: FORGOT PASS");
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -485,7 +485,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
     @Override
     public void onCompleted(GraphUser user, Response response) {
-        Log.i(TAG, "ON COMPLETED GRAPH USER");
+        Print.i(TAG, "ON COMPLETED GRAPH USER");
         if (user != null) {
             requestFacebookLogin(user);
         }
@@ -511,7 +511,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @author sergiopereira
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
+        Print.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
         if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
@@ -537,7 +537,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         }
         // Other cases
         else if (state.isClosed()) {
-            Log.i(TAG, "USER Logged out!");
+            Print.i(TAG, "USER Logged out!");
             showFragmentContentContainer();
         }
     }
@@ -552,7 +552,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param form The login form
      */
     private boolean loadForm(Form form) {
-        Log.i(TAG, "LOAD FORM: " + form.name);
+        Print.i(TAG, "LOAD FORM: " + form.name);
         loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
@@ -586,7 +586,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         }
         loginFormContainer.refreshDrawableState();
         showFragmentContentContainer();
-        Log.i(TAG, "code1 loading form completed : " + loginForm.getControlsCount());
+        Print.i(TAG, "code1 loading form completed : " + loginForm.getControlsCount());
 
 
         return true;
@@ -598,7 +598,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param form The sign up form
      */
     private boolean loadSignUpForm(Form form) {
-        Log.i(TAG, "LOAD SIGN UP FORM: " + form.name);
+        Print.i(TAG, "LOAD SIGN UP FORM: " + form.name);
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
@@ -619,7 +619,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Method used to trigger the login
      */
     private void requestLogin() {
-        Log.i(TAG, "TRIGGER: LOGIN EVENT");
+        Print.i(TAG, "TRIGGER: LOGIN EVENT");
         getBaseActivity().hideKeyboard();
         ContentValues values = loginForm.save();
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
@@ -630,7 +630,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Method used to trigger the sign up
      */
     private void requestSignUp() {
-        Log.i(TAG, "TRIGGER: SIGN UP EVENT");
+        Print.i(TAG, "TRIGGER: SIGN UP EVENT");
         getBaseActivity().hideKeyboard();
         ContentValues values = signupForm.save();
         triggerSignup(values, true);
@@ -642,7 +642,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param user The Facebook response
      */
     private void requestFacebookLogin(GraphUser user) {
-        Log.d(TAG, "REQUEST FACEBOOK LOGIN");
+        Print.d(TAG, "REQUEST FACEBOOK LOGIN");
         ContentValues values = new ContentValues();
         values.put("email", (String) user.getProperty("email"));
         values.put("first_name", user.getFirstName());
@@ -662,7 +662,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Trigger used to perform an auto login
      */
     private void triggerAutoLogin() {
-        Log.i(TAG, "TRIGGER: AUTO LOGIN");
+        Print.i(TAG, "TRIGGER: AUTO LOGIN");
         onAutoLogin = true;
 
         ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
@@ -671,25 +671,25 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         try {
             // Facebook flag
             if (values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
-                Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
+                Print.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
                 showFragmentLoading();
                 triggerFacebookLogin(values, onAutoLogin);
                 return;
             }
         } catch (NullPointerException e) {
-            Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
+            Print.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
         }
 
         // Sign up flag
         try {
             if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)) {
-                Log.i(TAG, "USER HAS SIGN UP CREDENTIALS");
+                Print.i(TAG, "USER HAS SIGN UP CREDENTIALS");
                 showFragmentLoading();
                 triggerSignup(values, onAutoLogin);
                 return;
             }
         } catch (NullPointerException e) {
-            Log.i(TAG, "USER HASN'T SIGN UP CREDENTIALS");
+            Print.i(TAG, "USER HASN'T SIGN UP CREDENTIALS");
         }
 
         // Try login with saved credentials
@@ -704,7 +704,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param saveCredentials
      */
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
-        Log.i(TAG, "TRIGGER: LOGIN");
+        Print.i(TAG, "TRIGGER: LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -718,7 +718,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param saveCredentials
      */
     private void triggerSignup(ContentValues values, boolean saveCredentials) {
-        Log.i(TAG, "TRIGGER: SIGNUP " + values.toString());
+        Print.i(TAG, "TRIGGER: SIGNUP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetSignupHelper.FORM_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -732,7 +732,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param saveCredentials
      */
     private void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
-        Log.i(TAG, "TRIGGER: FACEBOOK LOGIN");
+        Print.i(TAG, "TRIGGER: FACEBOOK LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -745,7 +745,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @return true
      */
     private boolean triggerLoginForm() {
-        Log.i(TAG, "TRIGGER: LOGIN FORM");
+        Print.i(TAG, "TRIGGER: LOGIN FORM");
         onAutoLogin = false;
         triggerContentEvent(new GetLoginFormHelper(), null, this);
         return true;
@@ -757,7 +757,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @return true
      */
     private boolean triggerSignupForm() {
-        Log.i(TAG, "TRIGGER: SIGNUP FORM");
+        Print.i(TAG, "TRIGGER: SIGNUP FORM");
         onAutoLogin = false;
         triggerContentEvent(new GetSignUpFormHelper(), null, this);
         return true;
@@ -774,7 +774,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Trigger used to get the initialize forms
      */
     private void triggerInitForm() {
-        Log.i(TAG, "TRIGGER: INIT FORMS");
+        Print.i(TAG, "TRIGGER: INIT FORMS");
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetInitFormHelper(), bundle, this);
     }
@@ -783,7 +783,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Trigger used to force the cart update if user not in auto login
      */
     private void triggerGetShoppingCart() {
-        Log.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
+        Print.i(TAG, "TRIGGER: GET CART AFTER LOGGED IN");
         showFragmentLoading();
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
@@ -800,10 +800,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private void gotoNextStep() {
         // Get next step
         if (mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
-            Log.w(TAG, "NEXT STEP IS NULL");
+            Print.w(TAG, "NEXT STEP IS NULL");
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
         } else {
-            Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
+            Print.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Clean stack for new native checkout on the back stack (auto login)
             getBaseActivity().removeAllNativeCheckoutFromBackStack();
             getBaseActivity().onSwitchFragment(mNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -814,7 +814,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Before going to next step after Sign Up we need to get the customer information.
      */
     private void goToNextStepAfterSignUp() {
-        Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
+        Print.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
         JumiaApplication.INSTANCE.setLoggedIn(true);
         // Set guest user
         if (JumiaApplication.CUSTOMER != null) {
@@ -837,15 +837,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @return true/false
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT");
 
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
             case INIT_FORMS:
@@ -904,7 +904,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 }
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
-                Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
+                Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
                 // Cart updated goto next step
                 gotoNextStep();
                 break;
@@ -946,23 +946,23 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     protected boolean onErrorEvent(Bundle bundle) {
 
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         // Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case GET_LOGIN_FORM_EVENT:
-                Log.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
+                Print.w(TAG, "ON ERRER RECEIVED: GET_LOGIN_FORM_EVENT");
                 if (errorCode == ErrorCode.UNKNOWN_ERROR && null == loginForm) {
                     restartAllFragments();
                     return true;
@@ -1004,7 +1004,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 }
                 break;
             case SET_SIGNUP_EVENT:
-                Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
+                Print.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
                 TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
@@ -1017,7 +1017,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 }
                 break;
             case GET_SIGNUP_FORM_EVENT:
-                Log.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
+                Print.w(TAG, "ON ERRER RECEIVED: GET_SIGNUP_FORM_EVENT");
                 if (retryForms < 3) {
                     triggerInitForm();
                     retryForms++;
@@ -1025,12 +1025,12 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
-                Log.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");
+                Print.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");
                 // Ignore the cart event
                 gotoNextStep();
                 break;
             default:
-                Log.w(TAG, "WARNING: UNEXPECTED ERROR EVENT: " + eventType.toString() + " " + errorCode);
+                Print.w(TAG, "WARNING: UNEXPECTED ERROR EVENT: " + eventType.toString() + " " + errorCode);
                 break;
         }
         return true;
@@ -1102,7 +1102,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param errors
      */
     private boolean showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
-        Log.d(TAG, "SHOW ERROR DIALOG");
+        Print.d(TAG, "SHOW ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);

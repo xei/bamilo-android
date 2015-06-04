@@ -8,7 +8,7 @@ import android.widget.AutoCompleteTextView;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -62,7 +62,7 @@ public class SearchSuggestionText extends AutoCompleteTextView {
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-            Log.d(TAG, "SEARCH ON IME PRESSED BACK");
+            Print.d(TAG, "SEARCH ON IME PRESSED BACK");
             if (mOnImeBack != null)
                 mOnImeBack.onImeBackPressed(this, this.getText().toString());
         }

@@ -8,7 +8,7 @@ import android.view.View;
 import com.mobile.framework.utils.LogTagHelper;
 import com.viewpagerindicator.IconPagerAdapter;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
     private final static String TAG = LogTagHelper.create(NormalizingViewPagerWrapper.class);
@@ -171,7 +171,7 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
         @Override
         public void onPageSelected(int position) {
             int virtualPosition = calcVirtualPosition(position);
-            Log.d(TAG, "onPageSelected: position = " + position + " virtualPosition = "
+            Print.d(TAG, "onPageSelected: position = " + position + " virtualPosition = "
                     + virtualPosition);
             if (mListener != null)
                 mListener.onPageSelected(virtualPosition);

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -86,13 +86,13 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get the main scroll view that can be null
         mMainScrollView = (ScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
         // Get containers
@@ -114,7 +114,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Flag
         sameAddress = "";
     }
@@ -122,13 +122,13 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Get and show addresses
         triggerGetForm();
     }
@@ -136,25 +136,25 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Check box
         else if(id == R.id.checkout_address_billing_checkbox) onClickCheckBox((CheckBox) view);
             // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW " + view.getTag());
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW " + view.getTag());
     }
 
     /*
@@ -213,7 +213,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     protected void onClickCheckBox(final CheckBox view){
-        Log.d(TAG, "SAME ADDRESS CLICK: " + view.isChecked());
+        Print.d(TAG, "SAME ADDRESS CLICK: " + view.isChecked());
         // Show loading
         showFragmentLoading();
         // Validate the current selection
@@ -252,7 +252,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      */
     private void onClickDeleteAddressButton(View view){
         String addressId = view.getTag().toString();
-        Log.i(TAG, "ON CLICK: DELETE ADDRESS " + addressId);
+        Print.i(TAG, "ON CLICK: DELETE ADDRESS " + addressId);
     }
 
     /**
@@ -267,7 +267,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * Process the click on submit button.</br>
      */
     private void onClickSubmitAddressesButton() {
-        Log.i(TAG, "ON CLICK: SUBMIT");
+        Print.i(TAG, "ON CLICK: SUBMIT");
         // Validate the is same check box
         if (mIsSameCheckBox.isChecked()) submitSameAddresses();
         else submitDifferentAddresses();
@@ -332,7 +332,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedPos) {
-        Log.d(TAG, "CHECKED RADIO TAG: " + ((GenericRadioGroup) group).getCheckedTag());
+        Print.d(TAG, "CHECKED RADIO TAG: " + ((GenericRadioGroup) group).getCheckedTag());
         // Is address is same for all
         if(mIsSameCheckBox.isChecked()) switchBetweenRadioGroups((GenericRadioGroup) group);
     }
@@ -361,7 +361,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     protected void showAddresses(boolean isSameAddress) {
-        Log.d(TAG, "SHOW ADDRESSES: " + isSameAddress);
+        Print.d(TAG, "SHOW ADDRESSES: " + isSameAddress);
         // Clear containers before adding to them
         if(mBottomRadioGroup != null){
             mBottomRadioGroup.removeAllViews();
@@ -454,7 +454,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     private void addAddress(GenericRadioGroup container, Address address){
-        Log.d(TAG, "ADD ADDRESS: " + address.getId());
+        Print.d(TAG, "ADD ADDRESS: " + address.getId());
         View addressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
         setAddressView(addressView, address, "" + address.getId());
         container.addView(addressView, "" + address.getId());
@@ -502,8 +502,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         // Validate addresses at this point the user should have addresses
         try {
             if(addresses.hasBillingAddress() && addresses.hasShippingAddress()){ return true; }
-            else { Log.w(TAG, "WARNING: CUSTOMER SHIPPING OR BILLING ADDRESS IS NULL"); return false; }
-        } catch (NullPointerException e) { Log.w(TAG, "WARNING: ADDRESSES IS NULL"); return false; }
+            else { Print.w(TAG, "WARNING: CUSTOMER SHIPPING OR BILLING ADDRESS IS NULL"); return false; }
+        } catch (NullPointerException e) { Print.w(TAG, "WARNING: ADDRESSES IS NULL"); return false; }
     }
 
     /**
@@ -550,7 +550,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @param errors
      */
     protected void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
-        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
+        Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);

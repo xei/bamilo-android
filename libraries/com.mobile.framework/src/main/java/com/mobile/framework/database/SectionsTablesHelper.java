@@ -11,7 +11,7 @@ import com.mobile.newFramework.objects.Section;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author ivanschuetz
@@ -89,7 +89,7 @@ public class SectionsTablesHelper extends BaseTable {
 	    	db.setTransactionSuccessful();
 
     	} catch (SQLException e) {
-    		Log.e(e.getMessage());
+    		Print.e(e.getMessage());
     		e.printStackTrace();
     		
     	}

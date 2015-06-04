@@ -43,7 +43,7 @@
 //import android.widget.AdapterView;
 //import android.widget.ListAdapter;
 //import android.widget.Scroller;
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 //public class HorizontalListView extends AdapterView<ListAdapter> {
 //

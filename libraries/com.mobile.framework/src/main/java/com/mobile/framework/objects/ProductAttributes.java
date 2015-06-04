@@ -20,7 +20,7 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class that holds the attributes of the product
@@ -121,8 +121,8 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		Print.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Print.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
 		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 	
@@ -192,7 +192,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 			*/
 
 		} catch (JSONException e) {
-			Log.e(TAG, "Error Parsing the product json", e);
+			Print.e(TAG, "Error Parsing the product json", e);
 			return false;
 		}
 

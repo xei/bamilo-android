@@ -11,7 +11,7 @@
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Defines a teaser as it is represented in the mobile api.

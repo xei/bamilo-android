@@ -22,7 +22,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This Class is used to create an adapter for the list of items addableToCart.
@@ -126,7 +126,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        Log.i(TAG, "ON DATA SET CHANGED");
+        Print.i(TAG, "ON DATA SET CHANGED");
     }
     
     /**

@@ -17,7 +17,7 @@ import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -65,16 +65,16 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save credentials
         if (saveCredentials) {
-            Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+            Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
             mContentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
             mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mContentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-            Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
@@ -89,7 +89,7 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

@@ -20,7 +20,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class DialogPromotionFragment extends DialogFragment {
      * @return
      */
     public static DialogPromotionFragment newInstance(Promotion promo) {
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         DialogPromotionFragment dialogProgressFragment = new DialogPromotionFragment();
         dialogProgressFragment.mPromotion = promo;
         return dialogProgressFragment;

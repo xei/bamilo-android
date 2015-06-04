@@ -14,7 +14,7 @@ import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class that represent a campaign page
@@ -61,7 +61,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		Log.d(TAG, "ON INITIALIZE");
+		Print.d(TAG, "ON INITIALIZE");
 		// Get banner
 		JSONObject cmsO = jsonObject.optJSONObject(RestConstants.JSON_CMS_TAG);
 		// Get mobile and tablet banners

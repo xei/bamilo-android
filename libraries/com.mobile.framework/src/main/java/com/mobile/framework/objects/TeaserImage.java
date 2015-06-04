@@ -11,7 +11,7 @@
 //import org.json.JSONArray;
 //import org.json.JSONObject;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Defines an images of a given teaser.

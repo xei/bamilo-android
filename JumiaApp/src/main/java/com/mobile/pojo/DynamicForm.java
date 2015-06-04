@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 //import com.mobile.newFramework.forms.InputType;
 
@@ -284,7 +284,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             } else if (null != control) {
                 model.put(control.getName(), "");
             } else {
-                Log.e(TAG, "control is null");
+                Print.e(TAG, "control is null");
             }
         }
 

@@ -23,7 +23,7 @@ import com.mobile.preferences.ShopPreferences;
 import java.util.List;
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to perform the automatic country selection
@@ -103,11 +103,11 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromNetwork(TelephonyManager deviceManager){
         String networkCountry = deviceManager.getNetworkCountryIso();
         if(isCountryAvailable(networkCountry)){
-            Log.i(TAG, "MATCH COUNTRY FROM NETWORK: " + networkCountry);
+            Print.i(TAG, "MATCH COUNTRY FROM NETWORK: " + networkCountry);
             sendInitializeMessage();
             return true;
         }
-        Log.i(TAG, "NO MATCH COUNTRY FROM NETWORK: " + networkCountry);
+        Print.i(TAG, "NO MATCH COUNTRY FROM NETWORK: " + networkCountry);
         return false;
     }
     
@@ -120,11 +120,11 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromSim(TelephonyManager deviceManager) {
         String simCountry = deviceManager.getSimCountryIso();
         if(isCountryAvailable(simCountry)) {
-            Log.i(TAG, "MATCH COUNTRY FROM SIM: " + simCountry);
+            Print.i(TAG, "MATCH COUNTRY FROM SIM: " + simCountry);
             sendInitializeMessage();
             return true;
         }
-        Log.i(TAG, "NO MATCH COUNTRY FROM SIM: " + simCountry);
+        Print.i(TAG, "NO MATCH COUNTRY FROM SIM: " + simCountry);
         return false;
     }
     
@@ -140,7 +140,7 @@ public class LocationHelper implements LocationListener {
             
             String bestProvider = getBestLocationProvider(locationManager);
             if(bestProvider == null) {
-                Log.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: BEST PROVIDER IS NULL");
+                Print.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: BEST PROVIDER IS NULL");
                 return false;
             }
             
@@ -149,15 +149,15 @@ public class LocationHelper implements LocationListener {
             double lng = lastKnownLocation.getLongitude();
             String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
             if(isCountryAvailable(geoCountry)) {
-                Log.i(TAG, "MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
+                Print.i(TAG, "MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
                 sendInitializeMessage();
                 return true;
             }
-            Log.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
+            Print.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
             return false;
 
         } catch (Exception e) {
-            Log.w(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: LAST KNOWN LOCATION IS NULL " + e.getMessage());
+            Print.w(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: LAST KNOWN LOCATION IS NULL " + e.getMessage());
             return false;
         }
         
@@ -172,18 +172,18 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromCurrentLocation(LocationManager locationManager) {
         try {
             
-            Log.i(TAG, "GET COUNTRY FROM CURRENT GEOLOCATION");
+            Print.i(TAG, "GET COUNTRY FROM CURRENT GEOLOCATION");
             String bestProvider = getBestLocationProvider(locationManager);
             if(bestProvider != null) {
                 locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
                 timeoutHandle.postDelayed(timeoutRunnable, TIMEOUT);
                 return true;
             }
-            Log.i(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION");
+            Print.i(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION");
             return false;
             
         } catch (Exception e) {
-            Log.w(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION", e);
+            Print.w(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION", e);
             return false;
         }
         
@@ -214,7 +214,7 @@ public class LocationHelper implements LocationListener {
             bestProvider = LocationManager.GPS_PROVIDER;
         
         // Return provider
-        Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
+        Print.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
     
@@ -236,7 +236,7 @@ public class LocationHelper implements LocationListener {
     Runnable timeoutRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
+            Print.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
             // Valdiate flag
             if(!locationReceived) {
                 // Remove the listener previously added
@@ -270,7 +270,7 @@ public class LocationHelper implements LocationListener {
                 String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (supportedCountry.equalsIgnoreCase(countryCode.toLowerCase())){
-                    Log.d(TAG, "MATCH: SHOP ID " + i);
+                    Print.d(TAG, "MATCH: SHOP ID " + i);
                     ShopPreferences.setShopId(context, i);
                     return SELECTED;
                 }
@@ -289,7 +289,7 @@ public class LocationHelper implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "ON LOCATION CHANGED");
+        Print.d(TAG, "ON LOCATION CHANGED");
                 
         // Set the flag
         locationReceived = true;
@@ -303,10 +303,10 @@ public class LocationHelper implements LocationListener {
         double lng = location.getLongitude();
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
         if(isCountryAvailable(geoCountry)) {
-        	Log.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
+        	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
         } else {
-        	Log.i(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" +lng + ")");
+        	Print.i(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         }
         
@@ -318,7 +318,7 @@ public class LocationHelper implements LocationListener {
      */
     @Override
     public void onProviderDisabled(String provider) { 
-        Log.d(TAG, "ON PROVIDER DISABLED: " + provider);
+        Print.d(TAG, "ON PROVIDER DISABLED: " + provider);
         
         // Requires user interaction
         sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
@@ -334,7 +334,7 @@ public class LocationHelper implements LocationListener {
      */
     @Override
     public void onProviderEnabled(String provider) { 
-        Log.d(TAG, "ON PROVIDER ENABLED: " + provider); 
+        Print.d(TAG, "ON PROVIDER ENABLED: " + provider);
     }
 
     /*
@@ -343,7 +343,7 @@ public class LocationHelper implements LocationListener {
      */
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { 
-        Log.d(TAG, "ON STATUS CHANGED"); 
+        Print.d(TAG, "ON STATUS CHANGED");
     }
     
     /**
@@ -365,9 +365,9 @@ public class LocationHelper implements LocationListener {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address address = addresses.get(0);
             countryCode =  address.getCountryCode();
-            Log.d(TAG, "GET COUNTRY FROM GEOCODER: " + countryCode);
+            Print.d(TAG, "GET COUNTRY FROM GEOCODER: " + countryCode);
         } catch (Exception e) {
-            Log.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
+            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
         }
         return countryCode;
     }
@@ -384,7 +384,7 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     private void sendUserInteractionMessage(EventType eventType, ErrorCode errorType){
-        Log.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
+        Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
@@ -398,7 +398,7 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     private void sendInitializeMessage(){
-        Log.d(TAG, "SEND MESSAGE: INITIALIZE");
+        Print.d(TAG, "SEND MESSAGE: INITIALIZE");
         JumiaApplication.INSTANCE.init(callback);
     }
 }

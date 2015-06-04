@@ -23,7 +23,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Countries Configurations helper
@@ -49,22 +49,22 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
 
         AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
 
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        Log.i(TAG, "COUNTRIES SIZE IN MEM: " + JumiaApplication.INSTANCE.countriesAvailable.size());
+        Print.i(TAG, "COUNTRIES SIZE IN MEM: " + JumiaApplication.INSTANCE.countriesAvailable.size());
         // deletes the old entries
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();
         // Validate available countries
         if (CollectionUtils.isNotEmpty(availableCountries)) {
             JumiaApplication.INSTANCE.countriesAvailable = availableCountries;
             CountriesConfigsTableHelper.insertCountriesConfigs(availableCountries);
-            Log.i(TAG, "INSERT INTO DB FROM JSON");
+            Print.i(TAG, "INSERT INTO DB FROM JSON");
         } else if (CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)) {
-            Log.i(TAG, "INSERT INTO DB FROM MEM");
+            Print.i(TAG, "INSERT INTO DB FROM MEM");
             CountriesConfigsTableHelper.insertCountriesConfigs(JumiaApplication.INSTANCE.countriesAvailable);
         }
 
@@ -80,7 +80,7 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
 
         Bundle bundle = generateErrorBundle(baseResponse);
 

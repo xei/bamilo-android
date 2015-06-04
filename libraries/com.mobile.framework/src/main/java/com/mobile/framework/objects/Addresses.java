@@ -12,7 +12,7 @@
 //import java.util.HashMap;
 //import java.util.Iterator;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class used to save the customer addresses

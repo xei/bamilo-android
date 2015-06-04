@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );
@@ -37,9 +37,9 @@ public class MetaFormExtractor {
 			if ( field.getKey().equals( metaFieldKey))
 				foundMetaField = field;
 		}
-		Log.i(TAG, "code1checked MetaFormExtractor");
+		Print.i(TAG, "code1checked MetaFormExtractor");
 		if ( foundMetaField == null) {
-		    Log.i(TAG, "code1checked foundMetaField == null");
+		    Print.i(TAG, "code1checked foundMetaField == null");
 			return straightCopyFields(fields);
 		}
 		
@@ -51,7 +51,7 @@ public class MetaFormExtractor {
 		ArrayList<IFormField> transformedFields = new ArrayList<>();
 		
 		for( IFormField field: fields ) {	
-		    Log.i(TAG, "code1checked  field.getKey() : "+ field.getKey());
+		    Print.i(TAG, "code1checked  field.getKey() : " + field.getKey());
 			if ( field.getKey().equals( newMetaField.getKey()))
 				transformedFields.add( newMetaField );
 			else if ( subFieldKeys.contains( field.getKey()))
@@ -83,9 +83,9 @@ public class MetaFormExtractor {
 	
 	public static void dumpIFormField( ArrayList<IFormField> formFields ) {
 		for( IFormField field: formFields ) {
-			Log.d( TAG, "dumpIFormField: key = " + field.getKey());
+			Print.d(TAG, "dumpIFormField: key = " + field.getKey());
 			if ( field instanceof FormFieldMeta ){
-				Log.d( TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta)field).subFieldKeyString());
+				Print.d(TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta) field).subFieldKeyString());
 			}
 		}
 		

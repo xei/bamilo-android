@@ -13,7 +13,7 @@ import com.mobile.framework.R;
 
 import java.io.InputStream;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to render the loading_bar animation.
@@ -76,7 +76,7 @@ public class LoadingBarView extends ImageView {
 	@Override
 	protected void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		Log.i(TAG, "ON ATTACH TO WINDOW: START RENDERING");
+		Print.i(TAG, "ON ATTACH TO WINDOW: START RENDERING");
 		// TODO: Validate this approach
 		startRendering();
 	}
@@ -84,7 +84,7 @@ public class LoadingBarView extends ImageView {
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
-		Log.i(TAG, "ON DETACHED FROM WINDOW: STOP RENDERING");
+		Print.i(TAG, "ON DETACHED FROM WINDOW: STOP RENDERING");
 		// TODO: Validate this approach
 		stopRendering();
 	}
@@ -107,9 +107,9 @@ public class LoadingBarView extends ImageView {
 	 * Plays the an input stream
 	 */
 	public synchronized void startRendering() {
-		Log.d( TAG, "startRendering" );
+		Print.d(TAG, "startRendering");
 		if (mThread != null && mThread.isAlive()) {
-			Log.d( TAG, "startRendering: thread already running" );
+			Print.d(TAG, "startRendering: thread already running");
 			return;
 		}
 
@@ -152,7 +152,7 @@ public class LoadingBarView extends ImageView {
 	 * Stops the rendering
 	 */
 	public synchronized void stopRendering() {
-		Log.d( TAG, "stopRendering" );
+		Print.d(TAG, "stopRendering");
 		if (mThread != null) {
 			mThread.interrupt();
 			mThread = null;
