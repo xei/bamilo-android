@@ -3,7 +3,6 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -12,8 +11,6 @@ import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetPaymentMethodsForm;
-
-import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 

@@ -32,6 +32,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -41,7 +42,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.boye.httpclientandroidlib.client.CookieStore;
 import de.akquinet.android.androlog.Log;
 
 //import com.mobile.framework.rest.RestClientSingleton;
@@ -384,14 +384,13 @@ public class JumiaApplication extends A4SApplication {
      */
     public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
-            CookieStore cookieStore = null;
+            ICurrentCookie cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
-                // TODO: GET COOKIES FROM NEW FRAMEWORK
-                //cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+                // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
+                cookieStore = AigHttpClient.getInstance(getApplicationContext()).getCurrentCookie();
             }
-            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie) cookieStore : null);
+            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore);
         }
         return mCustomerUtils;
     }

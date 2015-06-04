@@ -23,7 +23,7 @@ import oak.ObscuredSharedPreferences;
  * @version 1.0
  * @date 2015/04/22
  */
-public class PersistentSessionStore extends CustomerUtils{
+public class PersistentSessionStore extends CustomerUtils {
 
     public static final String CURRENT_COOKIE = "current_cookie";
 
@@ -72,15 +72,11 @@ public class PersistentSessionStore extends CustomerUtils{
     public void storeCredentials(ContentValues values) {
         if(values.size() > 0) {
             this.values.putAll(values);
-
             Gson gson = new Gson();
             String json = gson.toJson(this.values);
-
             ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
-
             editor.putString(country, json);
             editor.putBoolean(USER_LOGGED_ONCE_FLAG, true);
-
             editor.commit();
         }
     }

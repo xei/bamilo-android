@@ -3,6 +3,7 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.os.Build;
 
+import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.utils.NetworkConnectivity;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -41,6 +42,11 @@ public class AigHttpClient extends OkClient {
         super(okHttpClient);
         this.mOkHttpClient = okHttpClient;
         this.mContext = context;
+    }
+
+
+    public ICurrentCookie getCurrentCookie() {
+        return (AigCookieManager) mOkHttpClient.getCookieHandler();
     }
 
     public List<HttpCookie> getCookies() {

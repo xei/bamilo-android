@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestContract;
 
 import java.io.ByteArrayInputStream;
@@ -24,7 +25,7 @@ import oak.Base64;
 /**
  * Created by spereira on 6/3/15.
  */
-public class AigCookieManager extends CookieManager {
+public class AigCookieManager extends CookieManager implements ICurrentCookie {
 
     private static final String TAG = AigCookieManager.class.getSimpleName();
 
@@ -35,6 +36,8 @@ public class AigCookieManager extends CookieManager {
     private static final String PHPSESSID_TAG = "PHPSESSID";
 
     private SharedPreferences mCookiePrefs;
+
+    private HttpCookie mCurrentCookie;
 
     public AigCookieManager(Context context) {
         Log.i(TAG, "CONSTRUCTOR");
@@ -70,7 +73,7 @@ public class AigCookieManager extends CookieManager {
         // Save cookie into persistent store
         List<HttpCookie> cookies = getCookieStore().getCookies();
         for (HttpCookie cookie : cookies) {
-            if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(".jumia.com.ng")) {
+            if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(RestContract.REQUEST_HOST.replace("www",""))) { //".jumia.com.ng"
                 Log.i(TAG, "ON PERSIST COOKIE SESSION : " + RestContract.REQUEST_HOST);
                 Log.i(TAG, "DOMAIN: " + cookie.getDomain() + " NAME: "  + cookie.getName());
                 SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
@@ -99,8 +102,9 @@ public class AigCookieManager extends CookieManager {
             // Get
             HttpCookie cookie = decodeCookie(encodedCookie);
             // Save
-            if(cookie != null) {
+            if(cookie != null && cookie.getName().contains(PHPSESSID_TAG)) {
                 Log.i(TAG, "DOMAIN: " + cookie.getDomain() + " NAME: "  + cookie.getName());
+                mCurrentCookie = cookie;
                 try {
                     getCookieStore().add(new URI(cookie.getDomain()), cookie);
                 } catch (URISyntaxException e) {
@@ -153,5 +157,18 @@ public class AigCookieManager extends CookieManager {
     }
 
 
+    @Override
+    public void addCookie(String encodedCookie) {
+        try {
+            HttpCookie cookie = decodeCookie(encodedCookie);
+            getCookieStore().add(new URI(cookie.getDomain()), cookie);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public String getCurrentCookie() {
+        return mCurrentCookie != null ? encodeCookie(new PersistentCookieNew(mCurrentCookie)) : null;
+    }
 }
