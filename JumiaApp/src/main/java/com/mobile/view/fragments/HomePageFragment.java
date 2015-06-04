@@ -18,6 +18,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.objects.Promotion;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
@@ -45,8 +46,6 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the home page.

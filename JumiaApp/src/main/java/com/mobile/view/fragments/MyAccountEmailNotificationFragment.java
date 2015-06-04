@@ -18,6 +18,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
@@ -37,8 +38,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the newsletter form

@@ -18,6 +18,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventTask;
@@ -33,8 +34,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author Manuel Silva

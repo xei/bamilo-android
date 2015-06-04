@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.constants.FormConstants;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
@@ -16,8 +17,6 @@ import com.mobile.pojo.MetaFormExtractor;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>

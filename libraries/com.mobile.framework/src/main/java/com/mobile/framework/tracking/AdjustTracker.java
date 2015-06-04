@@ -27,6 +27,7 @@ import com.mobile.framework.R;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.CustomerGender;
 import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.gtm.GTMKeys;
 import com.mobile.framework.tracking.gtm.GTMManager;
 import com.mobile.framework.utils.Constants;
@@ -45,8 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author nunocastro

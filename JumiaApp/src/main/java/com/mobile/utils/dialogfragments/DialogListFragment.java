@@ -19,12 +19,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * 

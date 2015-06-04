@@ -22,6 +22,7 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -38,8 +39,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Fragment used on SplashScreen on First Use

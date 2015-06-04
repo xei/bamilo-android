@@ -26,6 +26,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -51,8 +52,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class represents the write product review screen and manages all interactions about it's form.

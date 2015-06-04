@@ -39,6 +39,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CampaignItemSize;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
@@ -61,8 +62,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show campaign page

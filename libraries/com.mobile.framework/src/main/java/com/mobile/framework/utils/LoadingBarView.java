@@ -10,10 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.framework.R;
+import com.mobile.framework.output.Print;
 
 import java.io.InputStream;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to render the loading_bar animation.

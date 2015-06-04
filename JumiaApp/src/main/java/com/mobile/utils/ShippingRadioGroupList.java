@@ -16,13 +16,12 @@ import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
 import com.mobile.framework.objects.PickUpStationObject;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.mobile.framework.output.Print;
 
 public class ShippingRadioGroupList extends RadioGroup {
     private final static String TAG = LogTagHelper.create(ShippingRadioGroupList.class);

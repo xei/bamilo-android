@@ -22,6 +22,7 @@ import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.Errors;
 import com.mobile.framework.objects.ProductSimple;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
@@ -53,8 +54,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show all favourite items from database

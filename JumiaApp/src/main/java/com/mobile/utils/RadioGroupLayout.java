@@ -10,14 +10,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 public class RadioGroupLayout extends LinearLayout {
 

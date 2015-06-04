@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -14,8 +15,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.GetForgotPasswordForm;
 import com.mobile.newFramework.rest.RestUrlUtils;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Helper to get the forgot password form

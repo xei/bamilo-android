@@ -7,11 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.category.Category;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Category table helper.

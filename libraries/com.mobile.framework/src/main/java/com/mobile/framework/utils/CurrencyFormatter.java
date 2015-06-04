@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
+import com.mobile.framework.output.Print;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -13,8 +14,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Static class responsible for formatting the currency.

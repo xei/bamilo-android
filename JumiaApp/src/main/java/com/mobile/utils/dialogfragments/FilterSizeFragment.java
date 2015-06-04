@@ -12,9 +12,8 @@ import android.widget.ListView;
 
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
-
 import com.mobile.framework.output.Print;
+import com.mobile.view.R;
 
 /**
  * 

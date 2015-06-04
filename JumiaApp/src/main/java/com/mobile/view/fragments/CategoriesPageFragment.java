@@ -16,6 +16,7 @@ import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.CategoriesTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
@@ -27,8 +28,6 @@ import com.mobile.view.R;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the categories in the main container

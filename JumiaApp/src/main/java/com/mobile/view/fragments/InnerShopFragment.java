@@ -12,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.TextUtils;
 import com.mobile.helpers.teasers.GetShopHelper;
@@ -22,8 +23,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Shops in shop Fragment. Created by Sergio Pereira on 3/4/15.

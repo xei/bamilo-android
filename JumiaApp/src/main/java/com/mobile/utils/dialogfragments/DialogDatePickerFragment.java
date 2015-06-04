@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
@@ -19,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import com.mobile.framework.output.Print;
 //import org.holoeverywhere.widget.DatePicker;
 
 /**

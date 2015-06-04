@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
@@ -14,8 +15,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 public class PurchaseItem implements Parcelable {
 	

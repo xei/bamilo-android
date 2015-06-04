@@ -18,13 +18,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ListView;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.view.R;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import com.mobile.framework.output.Print;
 
 public class PreferenceListFragment extends ListFragment implements OnPreferenceClickListener{
     

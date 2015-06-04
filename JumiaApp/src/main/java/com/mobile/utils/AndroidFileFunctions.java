@@ -2,12 +2,12 @@ package com.mobile.utils;
 
 import android.os.Environment;
 
+import com.mobile.framework.output.Print;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-
-import com.mobile.framework.output.Print;
 
 public class AndroidFileFunctions {
     File myFile;

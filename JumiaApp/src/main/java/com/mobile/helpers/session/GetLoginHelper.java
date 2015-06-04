@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
@@ -17,8 +18,6 @@ import com.mobile.utils.CheckoutStepManager;
 
 import java.io.Serializable;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Example helper

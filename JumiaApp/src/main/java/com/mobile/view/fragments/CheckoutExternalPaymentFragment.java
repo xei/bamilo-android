@@ -25,6 +25,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.enums.RequestType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -59,7 +60,6 @@ import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
-import com.mobile.framework.output.Print;
 
 //import com.mobile.framework.enums.RequestType;
 //import com.mobile.framework.rest.RestClientSingleton;

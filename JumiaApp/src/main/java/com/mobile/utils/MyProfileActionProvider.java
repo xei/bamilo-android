@@ -18,13 +18,12 @@ import android.widget.SpinnerAdapter;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * ActionProvider to present a Menu on ActionBar. used on main_menu.xml

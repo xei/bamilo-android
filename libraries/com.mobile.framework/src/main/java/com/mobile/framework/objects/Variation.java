@@ -3,14 +3,13 @@ package com.mobile.framework.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 public class Variation implements IJSONSerializable, Parcelable{
 	private static final String TAG = LogTagHelper.create(Variation.class);

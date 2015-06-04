@@ -3,6 +3,7 @@ package com.mobile.helpers.address;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -14,8 +15,6 @@ import com.mobile.newFramework.requests.address.GetCities;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Helper used to get the address cities

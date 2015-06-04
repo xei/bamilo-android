@@ -16,6 +16,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.objects.PaymentInfo;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.pojo.DynamicForm;
@@ -24,8 +25,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.mobile.framework.output.Print;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);

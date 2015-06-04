@@ -18,6 +18,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
@@ -35,8 +36,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 

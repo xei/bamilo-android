@@ -12,10 +12,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
-
-import com.mobile.framework.output.Print;
 
 /**
  * 

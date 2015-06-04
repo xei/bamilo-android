@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.Address;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -28,8 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

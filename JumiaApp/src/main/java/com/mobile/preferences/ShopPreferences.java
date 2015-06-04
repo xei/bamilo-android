@@ -10,13 +10,12 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to save the shared preferences for a shop

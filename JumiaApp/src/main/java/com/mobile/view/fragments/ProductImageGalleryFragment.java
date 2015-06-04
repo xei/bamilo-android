@@ -16,6 +16,7 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.JumiaViewPagerWithZoom;
 import com.mobile.utils.MyMenuItem;
@@ -28,8 +29,6 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author manuelsilva

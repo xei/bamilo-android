@@ -1,15 +1,13 @@
 package com.mobile.preferences;
 
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.utils.Constants;
-
 import com.mobile.framework.output.Print;
+import com.mobile.framework.utils.Constants;
 
 /**
  * Class used to save the shared preferences for customer            

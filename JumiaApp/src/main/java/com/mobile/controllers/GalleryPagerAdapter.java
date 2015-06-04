@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
@@ -17,8 +18,6 @@ import com.mobile.utils.photoview.PhotoViewAttacher;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 

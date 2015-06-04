@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -17,8 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is responsible to controller the fragment transition, to switch fragments on UI with back stack support.

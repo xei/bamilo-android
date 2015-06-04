@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.Favourite;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
@@ -21,8 +22,6 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This Class is used to create an adapter for the list of items addableToCart.

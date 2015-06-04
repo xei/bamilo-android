@@ -5,14 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.search.Suggestion;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is an helper to manage the recent search queries on the database.

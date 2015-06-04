@@ -43,8 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
-
 //import com.mobile.framework.rest.RestClientSingleton;
 //import com.mobile.framework.service.IRemoteServiceCallback;
 

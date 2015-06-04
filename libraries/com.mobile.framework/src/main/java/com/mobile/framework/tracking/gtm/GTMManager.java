@@ -18,6 +18,7 @@ import com.google.android.gms.tagmanager.TagManager;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.ContainerHolderSingleton;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
@@ -29,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import com.mobile.framework.output.Print;
 
 
 public class GTMManager {

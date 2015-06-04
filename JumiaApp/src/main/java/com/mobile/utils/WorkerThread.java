@@ -1,11 +1,10 @@
 package com.mobile.utils;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

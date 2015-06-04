@@ -6,6 +6,7 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -17,8 +18,6 @@ import com.mobile.newFramework.requests.checkout.CheckoutFinishOrder;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Helper used to ...

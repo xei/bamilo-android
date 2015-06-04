@@ -8,11 +8,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 
 /**

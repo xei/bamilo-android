@@ -6,6 +6,7 @@ package com.mobile.helpers.configs;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
@@ -14,8 +15,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
 import com.mobile.preferences.CountryPersistentConfigs;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Get Countries Configurations helper from {@link EventType#GET_COUNTRY_CONFIGURATIONS}

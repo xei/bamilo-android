@@ -13,6 +13,7 @@ import android.widget.RatingBar;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.RatingStar;
 import com.mobile.utils.MyMenuItem;
@@ -21,8 +22,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

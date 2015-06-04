@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
@@ -14,8 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to fill the sugestions screen when no results are found after a

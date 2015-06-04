@@ -10,6 +10,7 @@ import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 
@@ -20,8 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Last Viewed products on database.

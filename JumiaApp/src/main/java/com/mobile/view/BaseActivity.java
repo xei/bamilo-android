@@ -48,6 +48,7 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -83,8 +84,6 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * All activities extend this activity, in order to access methods that are shared and used in all activities.

@@ -3,6 +3,7 @@ package com.mobile.helpers.cart;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 

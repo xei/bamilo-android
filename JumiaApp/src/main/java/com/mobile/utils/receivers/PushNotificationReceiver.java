@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.Constants;
-import com.mobile.utils.GWearManager;
-
 import com.mobile.framework.output.Print;
+import com.mobile.utils.GWearManager;
 
 /**
  * Class used to receive the push notification from Accengage for GoogleWear.

@@ -12,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.Form;
@@ -22,8 +23,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * 

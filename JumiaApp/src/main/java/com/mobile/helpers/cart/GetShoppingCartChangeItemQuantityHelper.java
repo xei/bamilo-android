@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -20,8 +21,6 @@ import com.mobile.newFramework.requests.cart.UpdateQuantityShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Get Shopping Cart Items helper
@@ -73,7 +72,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         mRequester.onRequestComplete(bundle);

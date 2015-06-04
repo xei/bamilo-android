@@ -7,14 +7,13 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show categories with support for multi levels.

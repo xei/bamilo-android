@@ -34,6 +34,7 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
@@ -64,8 +65,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This Class defines the representation of each control on a dynamic form

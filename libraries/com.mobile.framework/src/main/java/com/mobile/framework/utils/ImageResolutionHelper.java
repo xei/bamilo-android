@@ -8,12 +8,11 @@ import android.os.Message;
 import com.mobile.framework.R;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.objects.ImageResolution;
+import com.mobile.framework.output.Print;
 
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is used to create the image URL with a new image resolution

@@ -15,6 +15,7 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -34,8 +35,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class represents the write seller review screen framgent when the user uses landscape view on Review fragment and manages all interactions about it's form.

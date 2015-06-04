@@ -26,6 +26,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Errors;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
@@ -55,8 +56,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

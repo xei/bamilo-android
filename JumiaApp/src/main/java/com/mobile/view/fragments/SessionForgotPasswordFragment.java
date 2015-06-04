@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -33,8 +34,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

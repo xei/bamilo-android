@@ -16,12 +16,11 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.mobile.framework.R;
+import com.mobile.framework.output.Print;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to get the device info.

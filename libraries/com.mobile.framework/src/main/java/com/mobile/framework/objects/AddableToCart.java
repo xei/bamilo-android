@@ -3,6 +3,7 @@ package com.mobile.framework.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.TextUtils;
 import com.mobile.newFramework.objects.product.CompleteProduct;
@@ -10,8 +11,6 @@ import com.mobile.newFramework.objects.product.CompleteProduct;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class that manages the full representation of an object that can be added to

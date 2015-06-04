@@ -1,6 +1,7 @@
 package com.mobile.pojo;
 
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormFieldMeta;
@@ -12,8 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 public class MetaFormExtractor {
 	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );

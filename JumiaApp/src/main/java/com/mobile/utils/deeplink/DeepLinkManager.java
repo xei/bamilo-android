@@ -12,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
@@ -29,8 +30,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 
 /**

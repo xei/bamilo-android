@@ -11,12 +11,11 @@ import android.text.TextUtils;
 import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.AdjustReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.gtm.GTMManager;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 public class InstallReceiver extends BroadcastReceiver {
     

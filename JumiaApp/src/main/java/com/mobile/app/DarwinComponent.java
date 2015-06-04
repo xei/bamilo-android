@@ -11,11 +11,10 @@ import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author nutzer2

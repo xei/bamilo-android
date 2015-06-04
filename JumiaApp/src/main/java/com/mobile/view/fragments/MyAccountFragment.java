@@ -17,6 +17,7 @@ import com.mobile.controllers.AppSharingAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.LogTagHelper;
@@ -25,8 +26,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

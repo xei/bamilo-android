@@ -6,11 +6,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.configs.CountryObject;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Countries Configurations on the database.

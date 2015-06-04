@@ -11,6 +11,7 @@ import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.JumiaViewPagerWithZoom;
@@ -19,8 +20,6 @@ import com.mobile.view.fragments.ProductImageGalleryFragment;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Activity to show the the product images gallery.

@@ -3,9 +3,8 @@ package com.mobile.framework.tracking;
 import android.content.Context;
 
 import com.mobile.framework.R;
-import com.mobile.framework.utils.LogTagHelper;
-
 import com.mobile.framework.output.Print;
+import com.mobile.framework.utils.LogTagHelper;
 
 //import com.apptimize.Apptimize;
 

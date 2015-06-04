@@ -17,6 +17,7 @@ import com.mobile.controllers.SearchSuggestionsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.SearchRecentQueriesTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -31,8 +32,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show recent searches

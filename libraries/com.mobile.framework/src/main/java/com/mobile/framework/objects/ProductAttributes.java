@@ -14,13 +14,12 @@ import android.os.Parcelable;
 
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.interfaces.IJSONSerializable;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class that holds the attributes of the product

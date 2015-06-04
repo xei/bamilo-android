@@ -23,6 +23,7 @@ import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilter.RangeValuesFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
@@ -32,8 +33,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show filters for catalog

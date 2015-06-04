@@ -13,6 +13,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
@@ -68,8 +69,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

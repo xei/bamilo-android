@@ -14,6 +14,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
@@ -25,8 +26,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  *

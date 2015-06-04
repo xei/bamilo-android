@@ -1,5 +1,6 @@
 package com.mobile.framework.objects;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 
@@ -8,8 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

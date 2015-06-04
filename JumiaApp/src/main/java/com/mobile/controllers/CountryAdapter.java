@@ -8,10 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This Class is used to create an adapter for the list of countries.

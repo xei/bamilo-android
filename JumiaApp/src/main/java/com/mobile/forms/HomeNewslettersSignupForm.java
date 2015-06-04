@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.FieldValidation;
@@ -14,8 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
-
-import com.mobile.framework.output.Print;
 
 public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable {
     private final static String TAG = LogTagHelper.create( HomeNewslettersSignupForm.class );

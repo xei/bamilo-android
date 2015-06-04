@@ -11,11 +11,10 @@ package com.mobile.framework.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 /**
  * #################### ADDRESS ####################  

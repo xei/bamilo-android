@@ -21,6 +21,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
@@ -31,8 +32,6 @@ import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to shoe the categories in the navigation container

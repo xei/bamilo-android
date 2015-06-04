@@ -27,6 +27,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -41,8 +42,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

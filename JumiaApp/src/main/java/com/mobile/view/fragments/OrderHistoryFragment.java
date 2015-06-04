@@ -24,6 +24,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Errors;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
@@ -44,8 +45,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author Paulo Carvalho

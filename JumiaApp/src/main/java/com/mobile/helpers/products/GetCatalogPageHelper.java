@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.RelatedItemsTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -22,8 +23,6 @@ import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Get Catalog Page helper
@@ -132,7 +131,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         // Generic error
         Bundle bundle = generateErrorBundle(baseResponse);
         // Validate Featured Box

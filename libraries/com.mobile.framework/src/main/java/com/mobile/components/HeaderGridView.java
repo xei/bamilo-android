@@ -16,8 +16,6 @@
 
 package com.mobile.components;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -35,7 +33,10 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
+
 import com.mobile.framework.output.Print;
+
+import java.util.ArrayList;
 
 /**
  * A {@link GridView} that supports adding header rows in a

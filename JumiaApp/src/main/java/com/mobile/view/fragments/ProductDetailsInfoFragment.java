@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
@@ -26,8 +27,6 @@ import com.mobile.view.R;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class that show a Product information, as in descriptions and specifications.

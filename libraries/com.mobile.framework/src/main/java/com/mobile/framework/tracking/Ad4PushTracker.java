@@ -21,6 +21,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.mobile.framework.R;
 import com.mobile.framework.database.CategoriesTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DateTimeUtils;
@@ -30,8 +31,6 @@ import com.mobile.framework.utils.ShopSelector;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author nunocastro

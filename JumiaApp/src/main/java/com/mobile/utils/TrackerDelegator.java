@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -41,8 +42,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.mobile.framework.output.Print;
 
 public class TrackerDelegator {
     private final static String TAG = TrackerDelegator.class.getSimpleName();

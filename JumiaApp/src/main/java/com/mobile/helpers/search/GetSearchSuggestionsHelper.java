@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.database.SearchRecentQueriesTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -22,8 +23,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Get Search Suggestion  helper

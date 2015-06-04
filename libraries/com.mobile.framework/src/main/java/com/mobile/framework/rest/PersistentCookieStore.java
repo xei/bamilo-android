@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.mobile.framework.output.Print;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,7 +17,6 @@ import java.util.Locale;
 import ch.boye.httpclientandroidlib.androidextra.Base64;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
-import com.mobile.framework.output.Print;
 
 /**
  * This class is an extend of the class BasicCookieStore, used to manage the session cookie using shared preferences.

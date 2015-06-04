@@ -6,12 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.ImageResolution;
+import com.mobile.framework.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the image resolution on database.

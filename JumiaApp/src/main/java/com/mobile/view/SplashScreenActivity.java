@@ -26,6 +26,7 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.Ad4PushTracker;
@@ -50,8 +51,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import com.mobile.framework.output.Print;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved

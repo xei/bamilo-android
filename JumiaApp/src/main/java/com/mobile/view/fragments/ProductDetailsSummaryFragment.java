@@ -13,6 +13,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -26,8 +27,6 @@ import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class that represents the fragment that shows the product information, related to description and key features.

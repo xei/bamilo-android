@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -16,8 +17,6 @@ import com.mobile.newFramework.rest.RestUrlUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Helper used to get a campaign
@@ -70,7 +69,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 

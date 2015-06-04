@@ -12,14 +12,13 @@ import com.google.android.gms.analytics.Tracker;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Helper singleton class for the Google Analytics tracking library.

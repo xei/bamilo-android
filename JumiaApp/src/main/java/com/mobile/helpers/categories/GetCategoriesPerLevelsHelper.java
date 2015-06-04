@@ -3,6 +3,7 @@ package com.mobile.helpers.categories;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -11,8 +12,6 @@ import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to get categories from API:<br>

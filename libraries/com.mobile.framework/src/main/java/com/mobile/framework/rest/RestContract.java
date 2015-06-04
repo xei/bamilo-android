@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
-
 import com.mobile.framework.output.Print;
 
 /**

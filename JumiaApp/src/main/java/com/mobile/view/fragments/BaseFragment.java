@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -35,8 +34,8 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -66,8 +65,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira
@@ -619,50 +616,52 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
     }
 
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
 
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Print.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-    /**
-     * Handles correct responses
-     */
-    private void handleResponse(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-    }
-
-    /**
-     * Handles error responses
-     */
-    private void handleError(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-    }
+    // TODO: REMOVE OLD FRAMEWORK
+//    /**
+//     * Callback which deals with the IRemoteServiceCallback
+//     */
+//    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
+//
+//        @Override
+//        public void getError(Bundle response) throws RemoteException {
+//            Print.i(TAG, "Set target to handle error");
+//            handleError(response);
+//        }
+//
+//        @Override
+//        public void getResponse(Bundle response) throws RemoteException {
+//            handleResponse(response);
+//        }
+//    };
+//
+//    /**
+//     * Handles correct responses
+//     */
+//    private void handleResponse(Bundle bundle) {
+//        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
+//        // Log.i(TAG, "code1removing callback with id : "+ id);
+//        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            // Log.i(TAG, "code1removing removed callback with id : "+ id);
+//            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
+//        }
+//        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+//    }
+//
+//    /**
+//     * Handles error responses
+//     */
+//    private void handleError(Bundle bundle) {
+//        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
+//        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+//        // Log.i(TAG, "code1removing callback with id : "+ id);
+//        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
+//            // Log.i(TAG, "code1removing removed callback with id : "+ id);
+//            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
+//        }
+//        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
+//    }
 
     /**
      * Method used to redirect the native checkout to the old checkout method

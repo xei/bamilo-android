@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
@@ -15,8 +16,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

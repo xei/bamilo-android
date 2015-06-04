@@ -8,11 +8,10 @@ import android.text.TextUtils;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.LastViewed;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.product.Product;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Related Items on database.

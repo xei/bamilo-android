@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -16,8 +17,6 @@ import com.mobile.framework.tracking.FacebookTracker;
 import com.mobile.framework.tracking.gtm.GTMManager;
 
 import java.util.Locale;
-
-import com.mobile.framework.output.Print;
 
 // TODO: REMOVE OLD FRAMEWORK
 //import com.mobile.framework.rest.RestClientSingleton;

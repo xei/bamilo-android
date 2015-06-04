@@ -5,10 +5,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.viewpagerindicator.IconPagerAdapter;
-
-import com.mobile.framework.output.Print;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
     private final static String TAG = LogTagHelper.create(NormalizingViewPagerWrapper.class);

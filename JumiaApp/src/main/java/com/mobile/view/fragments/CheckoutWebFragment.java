@@ -25,6 +25,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
@@ -51,9 +52,6 @@ import org.json.JSONObject;
 import java.net.HttpCookie;
 import java.util.EnumSet;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
-import com.mobile.framework.output.Print;
 
 //import com.mobile.framework.rest.RestClientSingleton;
 

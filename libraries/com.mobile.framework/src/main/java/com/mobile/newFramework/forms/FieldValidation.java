@@ -4,13 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 
 /**
@@ -68,7 +67,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
             try {
                 mJSONObject = jsonObject.getJSONObject(RestConstants.JSON_REQUIRED_TAG);
             } catch (JSONException e) {
-                Log.w(TAG, "WARNING:  No value for required");
+                Print.w(TAG, "WARNING:  No value for required");
             }
 
             if (mJSONObject != null) {

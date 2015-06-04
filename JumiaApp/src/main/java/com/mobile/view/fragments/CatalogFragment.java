@@ -21,6 +21,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -58,8 +59,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Catalog fragment.

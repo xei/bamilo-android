@@ -1,5 +1,10 @@
 package com.mobile.framework.utils;
 
+import android.annotation.SuppressLint;
+import android.util.Base64;
+
+import com.mobile.framework.output.Print;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -11,10 +16,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import android.annotation.SuppressLint;
-import android.util.Base64;
-import com.mobile.framework.output.Print;
 
 /**
  * Utils class that contains global methods to be used through out development

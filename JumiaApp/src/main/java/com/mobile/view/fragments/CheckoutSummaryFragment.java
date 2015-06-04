@@ -22,6 +22,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -39,8 +40,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the order summary in the checkout process

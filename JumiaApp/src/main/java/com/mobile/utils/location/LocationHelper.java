@@ -16,14 +16,13 @@ import android.telephony.TelephonyManager;
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.preferences.ShopPreferences;
 
 import java.util.List;
 import java.util.Locale;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to perform the automatic country selection

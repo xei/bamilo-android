@@ -1,11 +1,10 @@
 package com.mobile.utils;
 
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to manage the checkout steps

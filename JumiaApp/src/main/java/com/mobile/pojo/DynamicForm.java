@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.InputType;
@@ -18,8 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 //import com.mobile.newFramework.forms.InputType;
 

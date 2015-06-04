@@ -3,10 +3,9 @@ package com.mobile.framework;
 import android.content.Context;
 
 import com.mobile.framework.database.DarwinDatabaseHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.NewRelicTracker;
 import com.mobile.framework.utils.ShopSelector;
-
-import com.mobile.framework.output.Print;
 
 /**
  * This Singleton class defines the entry point for the framework. Every

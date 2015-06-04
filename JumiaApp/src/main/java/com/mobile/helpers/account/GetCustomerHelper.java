@@ -3,6 +3,7 @@ package com.mobile.helpers.account;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -11,8 +12,6 @@ import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.GetCustomerDetails;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Example helper

@@ -11,6 +11,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -24,8 +25,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

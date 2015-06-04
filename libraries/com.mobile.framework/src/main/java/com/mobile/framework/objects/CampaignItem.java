@@ -6,14 +6,13 @@ package com.mobile.framework.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to represent an item associated a campaign

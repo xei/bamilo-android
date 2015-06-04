@@ -27,6 +27,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
@@ -64,8 +65,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira

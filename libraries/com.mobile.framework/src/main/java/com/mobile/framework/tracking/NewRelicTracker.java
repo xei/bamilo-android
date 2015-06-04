@@ -4,10 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.mobile.framework.R;
+import com.mobile.framework.output.Print;
 import com.newrelic.agent.android.NewRelic;
 import com.newrelic.agent.android.util.NetworkFailure;
-
-import com.mobile.framework.output.Print;
 
 /**
  * NewRelic class.<br>

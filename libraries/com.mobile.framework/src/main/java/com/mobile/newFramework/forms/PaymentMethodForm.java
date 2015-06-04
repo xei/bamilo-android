@@ -5,13 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.enums.RequestType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.mobile.framework.output.Print;
 
 public class PaymentMethodForm implements Parcelable {
 

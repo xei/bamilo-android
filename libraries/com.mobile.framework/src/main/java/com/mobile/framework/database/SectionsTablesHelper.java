@@ -6,12 +6,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.Section;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mobile.framework.output.Print;
 
 /**
  * @author ivanschuetz

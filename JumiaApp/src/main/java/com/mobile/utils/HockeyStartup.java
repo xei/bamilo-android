@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.mobile.framework.output.Print;
 import com.mobile.view.R;
 
 import net.hockeyapp.android.CrashManager;
@@ -34,8 +35,6 @@ import java.security.cert.X509Certificate;
 import java.util.Locale;
 
 import javax.security.auth.x500.X500Principal;
-
-import com.mobile.framework.output.Print;
 
 public class HockeyStartup {
     private static final String TAG = HockeyStartup.class.getSimpleName();

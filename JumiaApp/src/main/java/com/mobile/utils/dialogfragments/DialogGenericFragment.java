@@ -12,10 +12,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
-
-import com.mobile.framework.output.Print;
 
 /**
  * 

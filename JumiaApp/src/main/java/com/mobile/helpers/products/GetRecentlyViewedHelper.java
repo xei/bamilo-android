@@ -3,14 +3,13 @@ package com.mobile.helpers.products;
 import android.os.Bundle;
 
 import com.mobile.framework.database.LastViewedTableHelper;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 /**
  * 

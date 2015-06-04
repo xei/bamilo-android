@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -20,8 +21,6 @@ import com.mobile.newFramework.requests.cart.RemoveItemShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
 import java.util.Map;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Get Shopping Cart Items helper

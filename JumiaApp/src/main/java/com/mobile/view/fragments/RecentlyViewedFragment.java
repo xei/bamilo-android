@@ -12,6 +12,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.AddableToCartListAdapter;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.AddableToCart;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -30,8 +31,6 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Class used to show all last viewed items from database

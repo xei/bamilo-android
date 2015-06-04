@@ -3,6 +3,7 @@ package com.mobile.framework.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
@@ -14,8 +15,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-
-import com.mobile.framework.output.Print;
 
 
 /**

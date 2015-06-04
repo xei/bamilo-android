@@ -10,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mobile.framework.objects.Variation;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import com.mobile.framework.output.Print;
 
 @Deprecated
 public class ProductImagesAdapter extends BaseAdapter {

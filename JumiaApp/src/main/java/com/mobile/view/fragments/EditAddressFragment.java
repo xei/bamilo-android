@@ -17,6 +17,7 @@ import com.mobile.factories.FormFactory;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
@@ -49,8 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

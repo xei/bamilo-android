@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
@@ -12,8 +13,6 @@ import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
-
-import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
