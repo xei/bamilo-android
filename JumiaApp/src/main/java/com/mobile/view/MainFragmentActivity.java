@@ -14,6 +14,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.tracking.Ad4PushTracker;
+import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -121,6 +122,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Invalid deep link
             if (!isDeepLinkLaunch) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                // Adjust reattribution
+                if(getIntent() != null && getIntent().getData() != null){
+                    AdjustTracker.deepLinkReattribution(getIntent().getData());
+                }
             }
 
         } else {

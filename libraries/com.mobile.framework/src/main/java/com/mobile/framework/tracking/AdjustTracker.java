@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -1074,6 +1075,16 @@ public class AdjustTracker {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
         editor.apply();
+    }
+
+    /**
+     * function that handles deeplinking reattributions
+     * @param data
+     */
+    public static void deepLinkReattribution(Uri data){
+        Adjust.appWillOpenUrl(data);
+        //http://app.adjust.io/3tjw0j_7k6u7c?deep_link=DARAZ://pk/c/nike&adjust_tracker=f0ob4r&adjust_campaign=CampaignName&adjust_adgroup=AdGroupName&adjust_creative=CreativeName
+        //data:DARAZ://pk/c/nike?adjust_reftag=c2z2rOt
     }
 
 }
