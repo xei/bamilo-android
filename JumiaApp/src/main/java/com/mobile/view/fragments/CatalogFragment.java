@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -56,6 +57,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -823,7 +825,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         catalogValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
         catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
+        if(getArguments() != null && getArguments().getParcelable(ConstantsIntentExtra.CATALOG_QUERIE) != null){
+            Uri data = getArguments().getParcelable(ConstantsIntentExtra.CATALOG_QUERIE);
+
+            // Get filters
+            Set<String> filters = data.getQueryParameterNames();
+            // Get all params
+            if (filters.size() > 0) {
+                for (String key : filters) {
+                    mCurrentFilterValues.put(key, data.getQueryParameter(key));
+                }
+            }
+        }
         catalogValues.putAll(mCurrentFilterValues);
+
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);

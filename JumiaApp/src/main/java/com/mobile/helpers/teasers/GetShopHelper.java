@@ -3,7 +3,6 @@
  */
 package com.mobile.helpers.teasers;
 
-import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -18,6 +17,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetShopInShopPage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
@@ -51,11 +51,16 @@ public class GetShopHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        ContentValues staticPageArguments = new ContentValues();
-        staticPageArguments.put(INNER_SHOP_TAG, args.getString(Constants.BUNDLE_URL_KEY));
-        //
-        return convertContentValuesToMap(staticPageArguments);
+    protected Map<String, String> getRequestData(final Bundle args) {
+//        ContentValues staticPageArguments = new ContentValues();
+//        staticPageArguments.put(INNER_SHOP_TAG, args.getString(Constants.BUNDLE_URL_KEY));
+//        /
+//        return convertContentValuesToMap(staticPageArguments);
+
+        Map<String,String> staticPageArguments = new HashMap<String, String>(){{
+            put(INNER_SHOP_TAG, args.getString(Constants.BUNDLE_URL_KEY));}};
+
+        return staticPageArguments;
     }
 
     @Override
