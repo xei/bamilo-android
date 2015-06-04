@@ -10,7 +10,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Countries Configurations on the database.
@@ -120,7 +120,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
     		while (cursor.moveToNext()) {
     			CountryObject mCountry = new CountryObject();
     			mCountry.setCountryName(cursor.getString(1));
-    			Log.i(TAG, "code1mcountry : "+mCountry.getCountryName());
+    			Print.i(TAG, "code1mcountry : " + mCountry.getCountryName());
     			mCountry.setCountryUrl(cursor.getString(2));
     			mCountry.setCountryFlag(cursor.getString(3));
     			mCountry.setCountryIso(cursor.getString(4));

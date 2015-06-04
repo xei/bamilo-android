@@ -17,7 +17,7 @@
 //import com.mobile.helpers.HelperPriorityConfiguration;
 //import com.mobile.utils.CheckoutStepManager;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Helper used to ...

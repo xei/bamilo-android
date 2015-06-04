@@ -23,7 +23,7 @@ import com.mobile.utils.TrackerDelegator;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Shopping Cart Items helper
@@ -103,10 +103,10 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
-        Log.d(TAG, "ADD CART: " + cart.getCartValue());
+        Print.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
 
@@ -137,7 +137,7 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
 
         // Add specific data

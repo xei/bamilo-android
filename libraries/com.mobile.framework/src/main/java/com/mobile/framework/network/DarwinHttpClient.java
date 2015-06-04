@@ -34,7 +34,7 @@ import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.CharArrayBuffer;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Defines the the certificated enabled http client used to communicate with the
@@ -80,7 +80,7 @@ public class DarwinHttpClient extends DefaultHttpClient {
                 // Add header to accept gzip content
                 if (ConfigurationConstants.ACTIVATE_GZIP) {
                     if (!request.containsHeader(ConfigurationConstants.HEADER_ACCEPT_ENCODING)) {
-                        Log.i(TAG,"Adding GZIP encoding");
+                        Print.i(TAG, "Adding GZIP encoding");
                         request.addHeader(ConfigurationConstants.HEADER_ACCEPT_ENCODING, ConfigurationConstants.ENCODING_GZIP);
                     }
                 }
@@ -152,10 +152,10 @@ public class DarwinHttpClient extends DefaultHttpClient {
 
                         int maxAge = 0;
                         try {
-                            Log.d(TAG, "header element: value = " + element.getValue());
+                            Print.d(TAG, "header element: value = " + element.getValue());
                             maxAge = Integer.parseInt(element.getValue());
                         } catch (NumberFormatException e) {
-                            Log.e("max-age content could not be parsed - ignored);");
+                            Print.e("max-age content could not be parsed - ignored);");
                             String newMaxAge = calcMaxAge(context);
                             HeaderElement newElement = new BasicHeaderElement(HeaderConstants.CACHE_CONTROL_MAX_AGE, newMaxAge);
                             appendToBuffer(buffer, newElement.getName(), newElement.getValue(), delim);
@@ -165,7 +165,7 @@ public class DarwinHttpClient extends DefaultHttpClient {
 
                         if (maxAge > ConfigurationConstants.CACHE_CONTROL_MAX_AGE_RESTRICTION) {
                             if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-                                Log.d(TAG, "rewrite header: detected maxAge = " + maxAge + " above = "
+                                Print.d(TAG, "rewrite header: detected maxAge = " + maxAge + " above = "
                                         + ConfigurationConstants.CACHE_CONTROL_MAX_AGE_RESTRICTION);
                             }
                             String newMaxAge = calcMaxAge(context);
@@ -179,8 +179,8 @@ public class DarwinHttpClient extends DefaultHttpClient {
                     if (headerWasRewritten) {
                         BufferedHeader rewrittenHeader = new BufferedHeader(buffer);
                         response.setHeader(rewrittenHeader);
-                        Log.d(TAG, "process: cache-control header was rewritten");
-                        Log.d(TAG, "new content: " + rewrittenHeader.toString());
+                        Print.d(TAG, "process: cache-control header was rewritten");
+                        Print.d(TAG, "new content: " + rewrittenHeader.toString());
                     }
                 }
 
@@ -247,7 +247,7 @@ public class DarwinHttpClient extends DefaultHttpClient {
         @Override
         public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
             // TODO Auto-generated method stub
-            Log.i(TAG, " Retry number => " + executionCount);
+            Print.i(TAG, " Retry number => " + executionCount);
             if (executionCount >= ConfigurationConstants.RETRY) { // Retry 3
                                                                   // times
                 return false;

@@ -20,7 +20,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Activity to show the the product images gallery.
@@ -44,7 +44,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         setContentView(R.layout.product_gallery_fragment);
 
         // control whether to allow the activity to rotate or not
@@ -84,7 +84,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -95,7 +95,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         if(mViewPager != null) mViewPager.setCurrentItem(mSharedSelectedPosition);
     }
 
@@ -107,7 +107,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         mSharedSelectedPosition = getViewPagerPosition();
         ProductImageGalleryFragment.sSharedSelectedPosition = mSharedSelectedPosition;
     }
@@ -120,7 +120,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -131,7 +131,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -199,7 +199,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mImagesList);
         outState.putInt(ConstantsIntentExtra.PRODUCT_GALLERY_POS, mSharedSelectedPosition);
     }
@@ -211,7 +211,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Case close button
         if (id == R.id.gallery_button_close) onClickCloseButton();
             // Unknown
-        else Log.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
+        else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
 
     /**
@@ -219,7 +219,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      * @author sergiopereira
      */
     private void onClickCloseButton() {
-        Log.i(TAG, "ON CLICK CLOSE BUTTON");
+        Print.i(TAG, "ON CLICK CLOSE BUTTON");
         mSharedSelectedPosition = getViewPagerPosition();
         ProductImageGalleryFragment.sSharedSelectedPosition = mSharedSelectedPosition;
         finish();
@@ -236,10 +236,10 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
                     ? ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(mViewPager.getCurrentItem())
                     : mViewPager.getCurrentItem();
         } catch (NullPointerException e) {
-            Log.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
+            Print.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
             return 0;
         } catch (ClassCastException e) {
-            Log.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
+            Print.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
             return 0;
         }
     }

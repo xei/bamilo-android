@@ -33,7 +33,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show filters for catalog
@@ -91,7 +91,7 @@ public class DialogFilterFragment extends DialogFragment {
      * @return
      */
     public static DialogFilterFragment newInstance(Bundle bundle, OnDialogFilterListener mParentFragment) {
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
         dialogListFragment.setArguments(bundle);
         dialogListFragment.mParentFrament = mParentFragment;
@@ -144,37 +144,37 @@ public class DialogFilterFragment extends DialogFragment {
     private void onSwitchChildFragment(int filterType, Bundle bundle) {
         switch (filterType) {
         case FILTER_MAIN_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_MAIN");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_MAIN");
             FilterMainFragment fragmentOne = FilterMainFragment.newInstance(this);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentOne, false, true);
             break;
         case FILTER_CATEGORY_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_CATEGORY");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_CATEGORY");
             FilterCategoryFragment fragmentCategory = FilterCategoryFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentCategory, true, true);
             break;
         case FILTER_BRAND_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_BRAND");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_BRAND");
             FilterBrandFragment fragmentBrand = FilterBrandFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentBrand, true, true);
             break;
         case FILTER_SIZE_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_SIZE");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_SIZE");
             FilterSizeFragment fragmentSize = FilterSizeFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentSize, true, true);
             break;
         case FILTER_PRICE_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_PRICE");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_PRICE");
             FilterPriceFragment fragmentPrice = FilterPriceFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentPrice, true, true);
             break;
         case FILTER_COLOR_TYPE:
-            Log.i(TAG, "ON SWITCH FILTER: FILTER_COLOR");
+            Print.i(TAG, "ON SWITCH FILTER: FILTER_COLOR");
             FilterColorFragment fragmentColor = FilterColorFragment.newInstance(this, bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentColor, true, true);
             break;
         default:
-            Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
+            Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
             break;
         }
     }
@@ -204,7 +204,7 @@ public class DialogFilterFragment extends DialogFragment {
      * Process the back
      */
     public void allowBackPressed() {
-        Log.d(TAG, "ALLOW BACK PRESSED");
+        Print.d(TAG, "ALLOW BACK PRESSED");
         getChildFragmentManager().popBackStack();
     }
 
@@ -353,7 +353,7 @@ public class DialogFilterFragment extends DialogFragment {
          * @return
          */
         public static FilterMainFragment newInstance(DialogFilterFragment parent) {
-            Log.d(TAG, "NEW INSTANCE: MAIN");
+            Print.d(TAG, "NEW INSTANCE: MAIN");
             FilterMainFragment frag = new FilterMainFragment();
             frag.mParent = parent;
             return frag;
@@ -399,7 +399,7 @@ public class DialogFilterFragment extends DialogFragment {
          */
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            Log.d(TAG, "ON ITEM CLICK: " + position);
+            Print.d(TAG, "ON ITEM CLICK: " + position);
             // Get selected filter
             CatalogFilter selectedFilter = mFilters.get(position);
             mParent.addToInitialFilterValues(position, selectedFilter);
@@ -424,7 +424,7 @@ public class DialogFilterFragment extends DialogFragment {
             else if(filterId.contains(COLOR_ID)){
                 ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR_TYPE, bundle);
             }
-            else { Log.w(TAG, "UNKNOWN FILTER ID");}
+            else { Print.w(TAG, "UNKNOWN FILTER ID");}
         }
 
 
@@ -462,7 +462,7 @@ public class DialogFilterFragment extends DialogFragment {
          * @author sergiopereira
          */
         private void processOnClickDone(){
-            Log.d(TAG, "CLICKED ON: DONE");
+            Print.d(TAG, "CLICKED ON: DONE");
             // Create query
             mContentValues = createContentValues();
             // Validate and send to catalog fragment
@@ -541,7 +541,7 @@ public class DialogFilterFragment extends DialogFragment {
             CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
             if(selectedOption instanceof CategoryFilterOption){
                 String url = ((CategoryFilterOption) selectedOption).getUrl();
-                Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
+                Print.d(TAG, "SELECTED A NEW CATEGORY: " + url);
                 if(url != null)
                     contentValues.put(URL, url);
             } else {
@@ -607,7 +607,7 @@ public class DialogFilterFragment extends DialogFragment {
          * @author sergiopereira
          */
         private void processOnClickClean(){
-            Log.d(TAG, "CLICKED ON: CLEAR");
+            Print.d(TAG, "CLICKED ON: CLEAR");
 
             mParent.initAllInitialFilterValues();
 

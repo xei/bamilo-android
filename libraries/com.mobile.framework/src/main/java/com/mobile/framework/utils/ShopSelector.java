@@ -18,7 +18,7 @@ import com.mobile.framework.tracking.gtm.GTMManager;
 
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * <p>
@@ -141,7 +141,7 @@ public final class ShopSelector {
 	 * @modified sergiopereira
 	 */
 	private static void setLocale(Context context, String language) {
-		Log.i(TAG, "ON SET LOCALE: language " + language);
+		Print.i(TAG, "ON SET LOCALE: language " + language);
 		// Get language and country code
 		String[] languageCountry = language.split("_");
 		// Create new locale
@@ -153,7 +153,7 @@ public final class ShopSelector {
 		config.locale = locale;
 		Resources res = context.getResources();
 		res.updateConfiguration(config, res.getDisplayMetrics());
-        Log.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
+        Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}
 
 	/**

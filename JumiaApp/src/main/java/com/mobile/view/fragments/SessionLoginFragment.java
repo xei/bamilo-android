@@ -67,7 +67,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira
@@ -140,7 +140,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -151,7 +151,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -180,7 +180,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signInButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
@@ -199,7 +199,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -210,7 +210,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
         
         uiHelper.onResume();
@@ -222,14 +222,14 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
         // Validate form
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            Log.d(TAG, "FORM: TRY AUTO LOGIN");
+            Print.d(TAG, "FORM: TRY AUTO LOGIN");
             triggerAutoLogin();
         } else if (formResponse != null) {
-            Log.d(TAG, "FORM ISN'T NULL");
+            Print.d(TAG, "FORM ISN'T NULL");
             loadForm(formResponse);
             cameFromRegister = false;
         } else {
-            Log.d(TAG, "FORM IS NULL");
+            Print.d(TAG, "FORM IS NULL");
             // Clean the Facebook Session
             FacebookHelper.cleanFacebookSession();
 
@@ -251,7 +251,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "code1facebook onActivityResult");
+        Print.i(TAG, "code1facebook onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data);
     }
@@ -283,7 +283,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
         uiHelper.onPause();
     }
@@ -296,7 +296,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         if (container != null) {
             try {
                 container.removeAllViews();
@@ -314,7 +314,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -325,7 +325,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         formResponse = null;
         uiHelper.onDestroy();
     }
@@ -350,7 +350,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * @author sergiopereira
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
+        Print.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
         if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException ) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
@@ -373,7 +373,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         }
         // Other cases
         else if (state.isClosed()) {
-            Log.i(TAG, "USER Logged out!");
+            Print.i(TAG, "USER Logged out!");
             //this only happens opening the screen for the first time with no connection after a fresh install
             if(!NetworkConnectivity.isConnected(getBaseActivity())){
                 showFragmentNoNetworkRetry();
@@ -461,10 +461,10 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * @return
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -483,7 +483,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             return true;
         case FACEBOOK_LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
-            Log.d(TAG, "facebookloginCompletedEvent : success");
+            Print.d(TAG, "facebookloginCompletedEvent : success");
             // Get Customer
             baseActivity.hideKeyboard();
             // NullPointerException on orientation change
@@ -533,7 +533,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 return false;
             }
 
-            Log.d(TAG, "Form Loaded");
+            Print.d(TAG, "Form Loaded");
             loadForm(form);
             formResponse = form;
         default:
@@ -543,7 +543,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     }
 
     protected void onLoginSuccessEvent(Bundle bundle){
-        Log.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
 
         BaseActivity baseActivity = getBaseActivity();
         JumiaApplication.INSTANCE.setLoggedIn(true);
@@ -568,7 +568,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         cameFromRegister = false;
         // Validate the next step
         if (nextFragmentType != null && baseActivity != null) {
-            Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
+            Print.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             Bundle oldArgs = getArguments();
             Bundle args;
@@ -580,7 +580,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
             baseActivity.onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            Log.d(TAG, "NEXT STEP: BACK");
+            Print.d(TAG, "NEXT STEP: BACK");
             baseActivity.onBackPressed();
         }
     }
@@ -655,7 +655,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     protected boolean onErrorEvent(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -665,7 +665,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {
             if (errorCode == ErrorCode.UNKNOWN_ERROR && null == dynamicForm) {
@@ -688,7 +688,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                         LogOut.performLogOut(new WeakReference<Activity>(getBaseActivity()));
                     }
                 } else {
-                    Log.d(TAG, "SHOW DIALOG");
+                    Print.d(TAG, "SHOW DIALOG");
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     List<String> errorMessages = null;
                     if (errors != null) {
@@ -714,7 +714,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 return true;
             }
         } else if(eventType == EventType.FACEBOOK_LOGIN_EVENT){
-            Log.i(TAG, "SHOW ERROR MESSAGE FOR FACEBOOK_LOGIN_EVENT");
+            Print.i(TAG, "SHOW ERROR MESSAGE FOR FACEBOOK_LOGIN_EVENT");
             // Clear credentials case auto login failed
             clearCredentials();
             // Clean the Facebook Session
@@ -726,7 +726,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = null;
             if (errors != null) {
-                Log.i(TAG, "ERRORS: " + errors.toString());
+                Print.i(TAG, "ERRORS: " + errors.toString());
                 errorMessages = errors.get(RestConstants.JSON_ERROR_TAG);
             }
             
@@ -763,7 +763,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * Request auto login
      */
     private void requestLogin() {
-        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
+        Print.d(TAG, "requestLogin: triggerEvent LogInEvent");
         getBaseActivity().hideKeyboard();
         ContentValues values = dynamicForm.save();
         values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
@@ -775,7 +775,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * @param user
      */
     private void requestFacebookLogin(GraphUser user) {
-        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
+        Print.d(TAG, "requestLogin: triggerEvent LogInEvent");
         ContentValues values = new ContentValues();
         values.put("email", (String) user.getProperty("email"));
         values.put("first_name", user.getFirstName());

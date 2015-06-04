@@ -13,7 +13,7 @@
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that manages the full representation of a given product bundle.

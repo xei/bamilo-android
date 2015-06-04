@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to get the device info.
@@ -88,7 +88,7 @@ public class DeviceInfoHelper {
     	 */
     	// Validate the system flag
         if ((ApplicationInfo.FLAG_SYSTEM & app.flags) != 0) {
-            Log.i(TAG, "PRE INSTALLED: YES");
+            Print.i(TAG, "PRE INSTALLED: YES");
             return true;
         }
     	
@@ -118,7 +118,7 @@ public class DeviceInfoHelper {
         // Case find the pre-install file    
         else if (existPreInstallFile(context)) return true;
         
-        Log.i(TAG, "PRE INSTALLED: NO");
+        Print.i(TAG, "PRE INSTALLED: NO");
     	return false;
     }
     
@@ -130,7 +130,7 @@ public class DeviceInfoHelper {
     private static boolean existSpecificFile(String path) {
 	 	File file = new File(path);
 	 	if (file.exists()) {
-            Log.i(TAG, "PRE INSTALLED: YES IN " + file.getAbsolutePath());
+            Print.i(TAG, "PRE INSTALLED: YES IN " + file.getAbsolutePath());
             return true;
 	 	}
 	 	return false;
@@ -145,7 +145,7 @@ public class DeviceInfoHelper {
     	// Validate if exist pre-install file as flag
     	File file = new File(context.getFilesDir(), PRE_INSTALL_FILE);
 	 	if (file.exists()) {
-            Log.i(TAG, "FIND PRE INSTALLED: YES IN " + file.getAbsolutePath());
+            Print.i(TAG, "FIND PRE INSTALLED: YES IN " + file.getAbsolutePath());
             return true;
 	 	}
 	 	return false;
@@ -161,7 +161,7 @@ public class DeviceInfoHelper {
 		try {
     		File file = new File(context.getFilesDir(), PRE_INSTALL_FILE);
     		file.createNewFile();
-    		Log.i(TAG, "CREATE PRE INSTALLED: YES IN " + file.getAbsolutePath());
+    		Print.i(TAG, "CREATE PRE INSTALLED: YES IN " + file.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -178,7 +178,7 @@ public class DeviceInfoHelper {
      * @author sergiopereira
      */
     private static String getBrand() {
-    	Log.i(TAG, "GET BRAND: " + Build.BRAND);
+    	Print.i(TAG, "GET BRAND: " + Build.BRAND);
     	return Build.BRAND;
     }
     
@@ -195,7 +195,7 @@ public class DeviceInfoHelper {
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        Log.i(TAG, "GET VERSION NAME: " + versionName);
+        Print.i(TAG, "GET VERSION NAME: " + versionName);
         return versionName;
     }
     
@@ -212,7 +212,7 @@ public class DeviceInfoHelper {
      */
     private static String getSimOperator(Context context) {
     	TelephonyManager tel = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-    	Log.i(TAG, "GET SIM OPERATOR: " + tel.getSimOperatorName());
+    	Print.i(TAG, "GET SIM OPERATOR: " + tel.getSimOperatorName());
     	return tel.getSimOperatorName();
     }
     
@@ -225,7 +225,7 @@ public class DeviceInfoHelper {
     public static String getSimCountryIso(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String iso = tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA ? tm.getSimOperatorName().toUpperCase(Locale.getDefault()) : "";
-        Log.i(TAG, "GET SIM CONTRY CODE: " + iso);
+        Print.i(TAG, "GET SIM CONTRY CODE: " + iso);
         return iso;
     }
     
@@ -242,7 +242,7 @@ public class DeviceInfoHelper {
     public static String getNetworkCountryIso(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String iso = tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA ? tm.getNetworkCountryIso().toUpperCase(Locale.getDefault()) : "";
-        Log.i(TAG, "GET NETWORK COUNTRY CODE: " + iso);
+        Print.i(TAG, "GET NETWORK COUNTRY CODE: " + iso);
         return iso;
     }
     
@@ -256,7 +256,7 @@ public class DeviceInfoHelper {
 	 */
 	public static int getWidth(Context context){
 		int width = getMeasures(context).arg1;
-		Log.d(TAG, "GET WINDOW MEASURE: WIDTH " + width);
+		Print.d(TAG, "GET WINDOW MEASURE: WIDTH " + width);
 		return width;
 	}
 	
@@ -266,7 +266,7 @@ public class DeviceInfoHelper {
 	 */
 	public static int getHeight(Context context){
 		int height = getMeasures(context).arg2;
-		Log.d(TAG, "GET WINDOW MEASURE: HEIGHT " + height);
+		Print.d(TAG, "GET WINDOW MEASURE: HEIGHT " + height);
 		return height;
 	}	
 	
@@ -287,11 +287,11 @@ public class DeviceInfoHelper {
             display.getSize(size);
             width = size.x;
             height = size.y;
-            Log.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
+            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
         } else {
             width = display.getWidth();
             height = display.getHeight();
-            Log.i(TAG, "GET WINDOW MEASURES FROM SYSTEM: " + width + " " + height);
+            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM: " + width + " " + height);
         }
         // Create
         Message msg = new Message();
@@ -328,7 +328,7 @@ public class DeviceInfoHelper {
     public static void setOrientationForHandsetDevices(Activity activity) {
         // Validate if is phone and force portrait orientation
         if (!activity.getResources().getBoolean(R.bool.isTablet)) {
-            Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
+            Print.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }

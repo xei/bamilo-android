@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Search Suggestion  helper
@@ -81,7 +81,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Get recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         try {
@@ -91,9 +91,9 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
                 suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
         } catch (SQLiteException e) {
-            Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
+            Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
         } catch (InterruptedException e) {
-            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
         //
         Suggestions searchSuggestions = (Suggestions) baseResponse.getMetadata().getData();
@@ -107,7 +107,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         // Get the recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         // Get recent queries
@@ -118,11 +118,11 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
                 suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
         } catch (SQLiteException e) {
-            Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
+            Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
         } catch (InterruptedException e) {
-            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
-        Log.d(TAG, "SUGGESTION: " + suggestions.size());
+        Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
         // Add error if no match
         Bundle bundle = generateErrorBundle(baseResponse);
@@ -142,7 +142,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * @param requester
      */
     public GetSearchSuggestionsHelper(IResponseCallback requester) {
-        Log.d(TAG, "ON CONSTRUCTOR");
+        Print.d(TAG, "ON CONSTRUCTOR");
         // Get all items on database
         getSearchSuggestionList(requester);
     }
@@ -153,13 +153,13 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * @param requester
      */
     private void getSearchSuggestionList(IResponseCallback requester) {
-        Log.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
+        Print.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
 
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         try {
             suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
         } catch (InterruptedException e) {
-            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
 
         Bundle bundle = new Bundle();
@@ -174,7 +174,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * @author sergiopereira
      */
     public static void saveSearchQuery(final String query){
-        Log.d(TAG, "SAVE SEARCH QUERY: " + query);
+        Print.d(TAG, "SAVE SEARCH QUERY: " + query);
         new Thread(new Runnable() {
             @Override
             public void run() {

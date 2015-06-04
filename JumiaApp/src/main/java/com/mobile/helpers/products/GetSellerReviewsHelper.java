@@ -17,7 +17,7 @@ import com.mobile.newFramework.requests.reviews.GetSellerReviews;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Seller reviews
@@ -68,7 +68,7 @@ public class GetSellerReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
         ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
         //
@@ -79,7 +79,7 @@ public class GetSellerReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 

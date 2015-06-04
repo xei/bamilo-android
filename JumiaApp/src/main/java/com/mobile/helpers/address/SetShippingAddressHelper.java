@@ -15,7 +15,7 @@
 //
 //import org.json.JSONObject;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Helper used to set the shipping address

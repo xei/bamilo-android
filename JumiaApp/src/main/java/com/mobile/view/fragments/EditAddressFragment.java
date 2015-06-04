@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -98,7 +98,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -109,7 +109,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         setRetainInstance(true);
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
@@ -125,7 +125,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 
         // Create address form
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
@@ -147,7 +147,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -158,7 +158,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -168,7 +168,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "ON SAVE SATE");
+        Print.d(TAG, "ON SAVE SATE");
         try {
             // Save values on current address
             if(mEditFormGenerator != null && mCurrentAddress != null) {
@@ -186,14 +186,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                         else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
                         else if (entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mCurrentAddress.setCity((String) entry.getValue());
                     } catch (NumberFormatException e) {
-                        Log.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
+                        Print.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
                     }
                 }
             }
         } catch (ClassCastException e) {
-            Log.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
+            Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
         } catch (NullPointerException e) {
-            Log.w(TAG, "SOME VIEW IS NULL", e);
+            Print.w(TAG, "SOME VIEW IS NULL", e);
         }
     }
 
@@ -205,7 +205,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -216,7 +216,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -225,7 +225,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -236,7 +236,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         mRegions = null;
     }
 
@@ -246,7 +246,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param form
      */
     protected void loadEditAddressForm(Form form) {
-        Log.i(TAG, "LOAD EDIT ADDRESS FORM");
+        Print.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
         mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
@@ -258,7 +258,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
             triggerGetRegions(url);
         } else {
-            Log.d(TAG, "REGIONS ISN'T NULL");
+            Print.d(TAG, "REGIONS ISN'T NULL");
             setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
         }
         // Define if CITY is a List or Text
@@ -332,7 +332,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param selectedAddress
      */
     private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, Address selectedAddress){
-        Log.d(TAG, "SET REGIONS REGIONS: ");
+        Print.d(TAG, "SET REGIONS REGIONS: ");
         // Get region item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
         // Clean group
@@ -426,7 +426,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Next button
         else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
             // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     @Override
@@ -445,10 +445,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Process the click on the next step button
      */
     private void onClickEditAddressButton() {
-        Log.i(TAG, "ON CLICK: EDIT");
+        Print.i(TAG, "ON CLICK: EDIT");
 
         if (!mEditFormGenerator.validate()) {
-            Log.i(TAG, "INVALID FORM");
+            Print.i(TAG, "INVALID FORM");
             return;
         }
 
@@ -473,7 +473,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Process the click on the cancel button
      */
     private void onClickCancelAddressButton() {
-        Log.i(TAG, "ON CLICK: CANCEL");
+        Print.i(TAG, "ON CLICK: CANCEL");
         getBaseActivity().onBackPressed();
     }
 
@@ -489,7 +489,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem();
-        Log.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
+        Print.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
 
         // Save city
         String mCityId = "";
@@ -501,7 +501,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
             // Get selected city
             AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem();
-            Log.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId());
+            Print.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId());
             mCityId = "" + mSelectedCity.getId();
             mCityName = mSelectedCity.getValue();
         }
@@ -516,7 +516,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
         // Unexpected
         else {
-            Log.w(TAG, "WARNING: THE " + RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW");
+            Print.w(TAG, "WARNING: THE " + RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW");
         }
 
         // Get some values
@@ -535,7 +535,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             else if(!isCityIdAnEditText && entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(entry.getKey(), mCityName);
         }
 
-        Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
+        Print.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
         // return the new content values
         return mContentValues;
     }
@@ -556,14 +556,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM SELECTED");
+        Print.d(TAG, "ON ITEM SELECTED");
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
             if (InputType.list == field.getInputType()) {
                 // Get API call
                 String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-                Log.d(TAG, "API CALL: " + url);
+                Print.d(TAG, "API CALL: " + url);
                 if (url != null) {
                     // Request the cities for this region id
                     int regionId = ((AddressRegion) object).getId();
@@ -572,7 +572,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 } else {
                     // Show
                     showFragmentContentContainer();
-                    Log.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on "+ RestConstants.JSON_CITY_ID_TAG);
+                    Print.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on " + RestConstants.JSON_CITY_ID_TAG);
                 }
             } else if (InputType.text == field.getInputType()) {
                 // Show
@@ -582,7 +582,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             } else {
                 // Show
                 showFragmentContentContainer();
-                Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
+                Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
             }
         }
@@ -596,7 +596,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param values
      */
     private void triggerEditAddress(ContentValues values) {
-        Log.i(TAG, "TRIGGER: EDIT ADDRESS");
+        Print.i(TAG, "TRIGGER: EDIT ADDRESS");
         Bundle bundle = new Bundle();
         bundle.putParcelable(UpdateAddressHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new UpdateAddressHelper(), bundle, this);
@@ -608,7 +608,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Trigger to get the address form
      */
     protected void triggerEditAddressForm(){
-        Log.i(TAG, "TRIGGER: EDIT FORM");
+        Print.i(TAG, "TRIGGER: EDIT FORM");
         triggerContentEvent(new GetFormEditAddressHelper(), null, this);
     }
 
@@ -616,7 +616,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Trigger to initialize forms
      */
     protected void triggerInitForm(){
-        Log.i(TAG, "TRIGGER: INIT FORMS");
+        Print.i(TAG, "TRIGGER: INIT FORMS");
         triggerContentEvent(new GetInitFormHelper(), null, this);
     }
 
@@ -625,7 +625,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param apiCall
      */
     private void triggerGetRegions(String apiCall){
-        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
+        Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
         triggerContentEventNoLoading(new GetRegionsHelper(), bundle, this);
@@ -637,7 +637,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param region id
      */
     private void triggerGetCities(String apiCall, int region){
-        Log.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
+        Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
         bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
@@ -657,19 +657,19 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected boolean onSuccessEvent(Bundle bundle) {
 
         if(isOnStoppingProcess){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case INIT_FORMS:
-                Log.d(TAG, "RECEIVED INIT_FORMS");
+                Print.d(TAG, "RECEIVED INIT_FORMS");
                 triggerEditAddressForm();
                 break;
             case GET_EDIT_ADDRESS_FORM_EVENT:
-                Log.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+                Print.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
                 // Get order summary
                 orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Form
@@ -679,24 +679,24 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 loadEditAddressForm(form);
                 break;
             case GET_REGIONS_EVENT:
-                Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
+                Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
-                    Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
+                    Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
                 }
                 break;
             case GET_CITIES_EVENT:
-                Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
+                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 setCitiesOnSelectedRegion(cities, mCurrentAddress);
                 // Show
                 showFragmentContentContainer();
                 break;
             case EDIT_ADDRESS_EVENT:
-                Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
+                Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
                 Toast.makeText(getBaseActivity(), getString(R.string.edit_address_success), Toast.LENGTH_SHORT).show();
                 getBaseActivity().onBackPressed();
                 break;
@@ -715,19 +715,19 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected boolean onErrorEvent(Bundle bundle) {
 
         if(isOnStoppingProcess){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         // Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:
@@ -753,23 +753,23 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     protected void onInitFormsErrorEvent(){
-        Log.d(TAG, "RECEIVED INIT_FORMS");
+        Print.d(TAG, "RECEIVED INIT_FORMS");
     }
 
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
-        Log.w(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+        Print.w(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
     }
 
     protected void onGetRegionsErrorEvent(Bundle bundle){
-        Log.w(TAG, "RECEIVED GET_REGIONS_EVENT");
+        Print.w(TAG, "RECEIVED GET_REGIONS_EVENT");
     }
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
-        Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
+        Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
     protected void onEditAddressErrorEvent(Bundle bundle){
-        Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
+        Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
     }
 
     /**
@@ -801,7 +801,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @param errors
      */
     protected void showErrorDialog(HashMap<String, List<String>> errors) {
-        Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
+        Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
             errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);

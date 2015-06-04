@@ -15,7 +15,7 @@ import com.mobile.newFramework.requests.address.GetCities;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper used to get the address cities
@@ -55,7 +55,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         AddressCities cities = (AddressCities) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
@@ -65,7 +65,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

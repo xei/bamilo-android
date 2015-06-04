@@ -11,7 +11,7 @@ import com.mobile.newFramework.objects.cart.ShoppingCart;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * The OrderSummary class representation.<br/>
@@ -84,7 +84,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         JSONObject jsonOrder = null;
         if (!jsonObject.isNull(RestConstants.JSON_ORDER_TAG)) {
             jsonOrder = jsonObject.optJSONObject(RestConstants.JSON_ORDER_TAG);
-            Log.d(TAG, "ORDER: " + jsonOrder.toString());
+            Print.d(TAG, "ORDER: " + jsonOrder.toString());
             mGrandTotal = jsonOrder.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
             mGrandTotalConverted = jsonOrder.optDouble(RestConstants.JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG);
             mShippingAmount = jsonOrder.optDouble(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
@@ -98,7 +98,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         // Get cart
         if (jsonOrder != null && !jsonObject.isNull(RestConstants.JSON_CART_TAG)) {
             JSONObject jsonCart = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-            Log.d(TAG, "CART: " + jsonCart.toString());
+            Print.d(TAG, "CART: " + jsonCart.toString());
             ShoppingCart cart = new ShoppingCart();
             cart.initialize(jsonCart);
             mCart = cart;
@@ -106,7 +106,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         // Get shipping method
         if (jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_MET_TAG)) {
             JSONObject jsonShip = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_MET_TAG);
-            Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
+            Print.d(TAG, "SHIP METHOD: " + jsonShip.toString());
             mShippingMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
             mShippingMethodLabel = jsonShip.optString(RestConstants.JSON_LABEL_TAG);
             if (TextUtils.isEmpty(mShippingMethodLabel)) {
@@ -117,7 +117,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         if (jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG)) {
             JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
             if (jsonPay != null) {
-                Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
+                Print.d(TAG, "PAY METHOD: " + jsonPay.toString());
                 // String payId = jsonPay.optString("id");
                 mPaymentMethod = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
                 mPaymentMethodLabel = jsonPay.optString(RestConstants.JSON_LABEL_TAG);
@@ -126,19 +126,19 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
                 }
             } else {
                 mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
-                Log.d(TAG, "PAY METHOD: " + mPaymentMethod);
+                Print.d(TAG, "PAY METHOD: " + mPaymentMethod);
             }
         }
         // Get billing address
         if (jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG)) {
             JSONObject jsonBilAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
-            Log.d(TAG, "BILLING ADDRESS: " + jsonBilAddress.toString());
+            Print.d(TAG, "BILLING ADDRESS: " + jsonBilAddress.toString());
             mBillingAddress = new Address(jsonBilAddress);
         }
         // Get shipping address
         if (jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG)) {
             JSONObject jsonShipAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
-            Log.d(TAG, "SHIPPING ADDRESS: " + jsonShipAddress.toString());
+            Print.d(TAG, "SHIPPING ADDRESS: " + jsonShipAddress.toString());
             mShippingAddress = new Address(jsonShipAddress);
         }
         //
@@ -286,12 +286,12 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
     }
 
     public boolean hasCouponCode() {
-        Log.d(TAG, "DISCOUNT CODE: " + mDiscountCouponCode);
+        Print.d(TAG, "DISCOUNT CODE: " + mDiscountCouponCode);
         return !TextUtils.isEmpty(mDiscountCouponCode);
     }
 
     public boolean hasCouponDiscount() {
-        Log.d(TAG, "DISCOUNT VALUE: " + mDiscountCouponValue);
+        Print.d(TAG, "DISCOUNT VALUE: " + mDiscountCouponValue);
         return !TextUtils.isEmpty(mDiscountCouponValue) && !mDiscountCouponValue.equals("0");
     }
 

@@ -21,7 +21,7 @@ import com.mobile.newFramework.requests.product.GetProductOffers;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Product Offers
@@ -67,7 +67,7 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
         ProductOffers productOffers = (ProductOffers) baseResponse.getMetadata().getData();
         //
@@ -81,7 +81,7 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);

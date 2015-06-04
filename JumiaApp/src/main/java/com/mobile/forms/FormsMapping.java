@@ -12,7 +12,7 @@
 //import java.util.HashMap;
 //import java.util.Map;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * This Singleton Class defines the mapping for the order which the fields are displayed on the UI

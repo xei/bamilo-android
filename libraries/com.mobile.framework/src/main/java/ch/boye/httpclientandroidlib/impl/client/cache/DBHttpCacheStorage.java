@@ -11,7 +11,7 @@ import java.io.IOException;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheUpdateCallback;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Extended {@link ManagedHttpCacheStorage} implementation that saves
@@ -49,7 +49,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public HttpCacheEntry getEntry(String url) throws IOException {
 		if (logDebugEnabled) {
-			Log.d(TAG, "Searching entry for key " + url);
+			Print.d(TAG, "Searching entry for key " + url);
 		}
 		HttpCacheEntry entry = entries.get(url);
 		if (entry == null) {
@@ -75,7 +75,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public void putEntry(String url, HttpCacheEntry entry) throws IOException {
 		if (logDebugEnabled) {
-			Log.d(TAG, "Putting entry for key " + url + "\n" + entry);
+			Print.d(TAG, "Putting entry for key " + url + "\n" + entry);
 		}
 		if (entries.put(url, entry) == null) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -94,7 +94,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public void removeEntry(String url) throws IOException {
 		if (logDebugEnabled) {
-			Log.d(TAG, "Removing entry for key " + url);
+			Print.d(TAG, "Removing entry for key " + url);
 		}
 		if (entries.remove(url) != null) {
             dbHelper.delete(url);
@@ -103,7 +103,7 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 
     public void removeEntryDB(String url) throws IOException{
         if (logDebugEnabled) {
-            Log.d(TAG, "Removing entry from DB for key " + url);
+            Print.d(TAG, "Removing entry from DB for key " + url);
         }
         entries.remove(url);
         dbHelper.delete(url);
@@ -119,13 +119,13 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 	@Override
 	public void updateEntry(String url, HttpCacheUpdateCallback callback) throws IOException {
 		if (logDebugEnabled) {
-			Log.d(TAG, "Updating entry for key " + url);
+			Print.d(TAG, "Updating entry for key " + url);
 		}
 		HttpCacheEntry exitingEntry = getEntry(url);
 		HttpCacheEntry updatedEntry = callback.update(exitingEntry);
 		if (exitingEntry != updatedEntry) {
 			if (logDebugEnabled) {
-				Log.d(TAG, "Updating entry for key " + url + "\nexiting: " + exitingEntry + "\nupdated: "
+				Print.d(TAG, "Updating entry for key " + url + "\nexiting: " + exitingEntry + "\nupdated: "
 						+ updatedEntry);
 			}
 			putEntry(url, updatedEntry);

@@ -11,7 +11,6 @@ import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
-import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.CheckoutFinishOrder;
@@ -19,7 +18,7 @@ import com.mobile.newFramework.requests.checkout.CheckoutFinishOrder;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper used to ...
@@ -63,7 +62,7 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
 //        Customer customer = (Customer) baseResponse.getMetadata().getData();
         SuperCheckoutFinish checkoutFinish = (SuperCheckoutFinish)baseResponse.getMetadata().getData();
@@ -123,7 +122,7 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 

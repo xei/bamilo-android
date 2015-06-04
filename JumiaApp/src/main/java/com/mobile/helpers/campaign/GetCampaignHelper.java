@@ -17,7 +17,7 @@ import com.mobile.newFramework.requests.campaign.GetCampaign;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper used to get a campaign
@@ -64,7 +64,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         Campaign campaign = (Campaign) baseResponse.getMetadata().getData();
         // Add to bundle
         Bundle bundle = generateSuccessBundle(baseResponse);
@@ -74,7 +74,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);

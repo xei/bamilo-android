@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  *
@@ -138,7 +138,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -149,7 +149,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -161,7 +161,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         JumiaApplication.INSTANCE.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -180,7 +180,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
         
     }
 
@@ -192,7 +192,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
 
         // Get arguments
         Bundle arguments = getArguments();
@@ -256,7 +256,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         JumiaApplication.INSTANCE.setIsSellerReview(false);
         saveReview();
 
@@ -273,7 +273,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
 
     }
 
@@ -285,7 +285,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -467,7 +467,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     try {
                         item.loadState(savedRatingReviewValues);
                     } catch (NullPointerException e) {
-                        Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
+                        Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                     }
                 }
             }
@@ -497,19 +497,19 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
-        Log.i(TAG, "onSuccessEvent eventType : " + eventType);
+        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
         case REVIEW_RATING_PRODUCT_EVENT:
 
-            Log.d(TAG, "review product completed: success");
+            Print.d(TAG, "review product completed: success");
             // Clean options after success
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
@@ -551,7 +551,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             return false;
 
         case GET_FORM_RATING_EVENT:
-            Log.i(TAG, "GET_FORM_RATING_EVENT");
+            Print.i(TAG, "GET_FORM_RATING_EVENT");
             ratingForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setRatingLayout(ratingForm);
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
@@ -562,7 +562,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             return true;
             
         case GET_FORM_REVIEW_EVENT:
-            Log.i(TAG, "GET_FORM_REVIEW_EVENT");
+            Print.i(TAG, "GET_FORM_REVIEW_EVENT");
             reviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if(ratingForm == null)
                 setRatingLayout(reviewForm);
@@ -570,7 +570,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             return true;
 
         case GET_PRODUCT_EVENT:
-            Log.d(TAG, "GOT GET_PRODUCT_EVENT");
+            Print.d(TAG, "GOT GET_PRODUCT_EVENT");
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
@@ -598,11 +598,11 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         
@@ -803,7 +803,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
+        Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         saveReview();
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
         super.onSaveInstanceState(outState);

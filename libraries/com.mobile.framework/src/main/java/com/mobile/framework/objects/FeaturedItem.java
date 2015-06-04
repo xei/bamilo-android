@@ -12,7 +12,7 @@ import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class that represents the server-side featured item. Contains id, url, name
@@ -83,7 +83,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 		}
 
 		if (name.trim().equals("") || url.trim().equals("")) {
-			Log.d("Featured Items", "Item name = " + name + "\r\nItem url = " + url);
+			Print.d("Featured Items", "Item name = " + name + "\r\nItem url = " + url);
 			return false;
 		}
 

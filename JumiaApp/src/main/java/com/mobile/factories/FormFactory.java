@@ -17,7 +17,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>
@@ -112,7 +112,7 @@ public class FormFactory {
         if (context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null) {
             scale = context.getResources().getDisplayMetrics().density;
         }
-        Log.i(TAG, "code1register CREATING FORM : "+formType);
+        Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
                 parent = createAddressForm(context, form, ctrlParams);
@@ -385,7 +385,7 @@ public class FormFactory {
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
         LinearLayout parent;
-        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
+        Print.i(TAG, "code1form id : " + form.id + " name: " + form.name);
         if(context == null){
             return null;
         }
@@ -415,12 +415,12 @@ public class FormFactory {
         MetaFormExtractor.dumpIFormField(transformedFields);
 
         for (IFormField frmEntry : transformedFields) {
-            Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
+            Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             ctrl = new DynamicFormItem(userForm, context, frmEntry);
 
             if (ctrl.isMeta() || ctrl.hasNoType()) {
                 // Don't waste space with meta fields nor field without type
-                Log.i(TAG, "Meta or no type field");
+                Print.i(TAG, "Meta or no type field");
                 userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             } else if ( ! ctrl.isDatePart() ) {
                 userForm.addControl(ctrl, ctrlParams);

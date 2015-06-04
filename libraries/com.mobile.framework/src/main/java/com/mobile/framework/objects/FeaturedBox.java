@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to fill the sugestions screen when no results are found after a
@@ -50,7 +50,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-        Log.d(TAG, "FILTER: FEATURED BOX");
+        Print.d(TAG, "FILTER: FEATURED BOX");
 
         JSONObject data = metadataObject.optJSONObject(RestConstants.JSON_DATA_TAG);
         if (data != null) {
@@ -83,7 +83,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 	                }
 	            }
             } catch(JSONException ex){
-            	Log.e(TAG, "ERROR PARSING FEATURE BOX");
+            	Print.e(TAG, "ERROR PARSING FEATURE BOX");
             }
             // one list for all brands
             brands = new ArrayList<FeaturedItem>();
@@ -115,7 +115,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                 }
             }
             } catch(JSONException ex){
-            	Log.e(TAG, "ERROR PARSING FEATURE BRAND BOX");
+            	Print.e(TAG, "ERROR PARSING FEATURE BRAND BOX");
             }
             
             JSONObject searchTipsObject = data.optJSONObject(RestConstants.JSON_FEATURED_SEARCH_TIPS_TAG);

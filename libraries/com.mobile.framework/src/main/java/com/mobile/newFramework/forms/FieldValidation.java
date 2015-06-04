@@ -10,7 +10,7 @@ import com.mobile.framework.utils.TextUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 
 /**
@@ -61,7 +61,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
         //
         required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
-        Log.i(TAG, "code1message :  jsonObject : " + jsonObject.toString() + " required : " + required);
+        Print.i(TAG, "code1message :  jsonObject : " + jsonObject.toString() + " required : " + required);
         if (!required) {
             JSONObject mJSONObject = null;
 
@@ -73,9 +73,9 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
             if (mJSONObject != null) {
                 required = mJSONObject.optBoolean(RestConstants.JSON_REQUIRED_VALUE_TAG, false);
-                Log.i(TAG, "code1message : " + required);
+                Print.i(TAG, "code1message : " + required);
                 message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG, "");
-                Log.i(TAG, "code1message : " + message);
+                Print.i(TAG, "code1message : " + message);
 
                 // TODO : If contains message is required
                 if (message != null && !message.equals("")) required = true;

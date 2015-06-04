@@ -37,7 +37,7 @@
 //import java.util.LinkedHashMap;
 //import java.util.Map;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represent and entry in the form.

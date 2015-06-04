@@ -22,7 +22,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the cart info and a navigation container, menu or categories
@@ -70,7 +70,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -81,7 +81,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
 
@@ -96,7 +96,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         mCategoryBack = (RelativeLayout) view.findViewById(R.id.categories_back_navigation);
         ((TextView)mCategoryBack.findViewById(R.id.text)).setText(getString(R.string.back_label));
         mCategoryBack.setOnClickListener(this);
@@ -108,7 +108,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         }
 
         if (mSavedStateType == null) {
-            Log.d(TAG, "SAVED IS NULL");
+            Print.d(TAG, "SAVED IS NULL");
             addListItems();
         }
 
@@ -127,7 +127,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -138,7 +138,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -148,7 +148,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
     }
 
@@ -160,7 +160,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -171,7 +171,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -181,7 +181,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -191,7 +191,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /**
@@ -250,7 +250,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public void onUpdateMenu(NavigationAction page) {
-        Log.i(TAG, "ON UPDATE NAVIGATION MENU");
+        Print.i(TAG, "ON UPDATE NAVIGATION MENU");
         // Update items
         if (!isOnStoppingProcess)
             updateNavigationItems(page);
@@ -261,7 +261,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public void onUpdateCategorySelected(String categoryId) {
-        Log.i(TAG, "ON UPDATE NAVIGATION MENU");
+        Print.i(TAG, "ON UPDATE NAVIGATION MENU");
         // Update items
         // TODO
 //        if (!isOnStoppingProcess)
@@ -277,7 +277,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
         switch (page){
             case Home:
-                Log.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
+                Print.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(true);
                     // TODO
@@ -285,7 +285,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 }
                 break;
             default:
-                Log.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
+                Print.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
                     // TODO
@@ -303,7 +303,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
-        Log.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
+        Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
         case NAVIGATION_CATEGORIES_SUB_LEVEL:
             // No tag fragment on back stack
@@ -313,7 +313,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
             break;
         default:
-            Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
+            Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
             break;
         }
     }
@@ -370,7 +370,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     @Override
     public void onClick(View view) {
-        Log.d(TAG, "ON CLICK");
+        Print.d(TAG, "ON CLICK");
         int id = view.getId();
 
         switch (id) {
@@ -378,11 +378,11 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             case R.id.component_text:
                 int tag = (int) view.getTag();
                 if(tag == R.string.home_label){
-                    Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
+                    Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
                     getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     getBaseActivity().closeNavigationDrawer();
                 } else {
-                    Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: CATALOG");
+                    Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: CATALOG");
                 }
                 break;
             // Case Back button
@@ -394,7 +394,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 break;
             // Case unknown
             default:
-                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
+                Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
                 getBaseActivity().closeNavigationDrawer();
                 break;
         }

@@ -17,7 +17,7 @@ import com.mobile.newFramework.requests.session.RegisterCustomer;
 import java.io.Serializable;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Example helper
@@ -62,11 +62,11 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
         mContentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-        Log.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
+        Print.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         // Save customer
         JumiaApplication.CUSTOMER = ((Customer) baseResponse.getMetadata().getData());
         // Create bundle
@@ -77,7 +77,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         mRequester.onRequestError(bundle);

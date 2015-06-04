@@ -6,7 +6,7 @@
 //import com.mobile.framework.interfaces.IJSONSerializable;
 //import com.mobile.framework.rest.RestConstants;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 //public class Version implements IJSONSerializable {
 //	private final static String TAG = Version.class.getSimpleName();

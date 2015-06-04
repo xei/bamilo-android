@@ -24,7 +24,7 @@ package com.mobile.utils.dialogfragments;
 //import com.viewpagerindicator.IconPagerAdapter;
 //import com.viewpagerindicator.PageIndicator;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * 

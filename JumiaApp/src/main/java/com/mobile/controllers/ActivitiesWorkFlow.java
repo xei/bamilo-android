@@ -8,7 +8,7 @@ import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This Class is responsible by all the application workflow. Contains all
@@ -36,7 +36,7 @@ public class ActivitiesWorkFlow {
 
 	
 	public static void splashActivityNewTask(Activity activity ) {
-	    Log.i(TAG, "START ACTIVITY: splashActivity");
+	    Print.i(TAG, "START ACTIVITY: splashActivity");
 	    Intent intent = new Intent(activity.getApplicationContext(), SplashScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         activity.startActivity(intent);

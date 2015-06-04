@@ -7,7 +7,7 @@ import com.mobile.framework.R;
 import com.newrelic.agent.android.NewRelic;
 import com.newrelic.agent.android.util.NetworkFailure;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * NewRelic class.<br>
@@ -27,11 +27,11 @@ public class NewRelicTracker {
 	public static void init(Context context){
 		// Validate context
 		if(context != null) {
-			Log.i(TAG, "ON INIT NEW RELIC");
+			Print.i(TAG, "ON INIT NEW RELIC");
 	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(true);
 	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
 		} else {
-			Log.w(TAG, "WARNING NPE ON INIT NEW RELIC");
+			Print.w(TAG, "WARNING NPE ON INIT NEW RELIC");
 		}
 	}
 
@@ -45,7 +45,7 @@ public class NewRelicTracker {
 	 * @author sergiopereira
 	 */
 	public static void noticeSuccessTransaction(String url, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
-		Log.i(TAG, "ON SUCCESS TRANSACTION: " + url);
+		Print.i(TAG, "ON SUCCESS TRANSACTION: " + url);
 		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
 	}
 
@@ -57,7 +57,7 @@ public class NewRelicTracker {
 	 * @author sergiopereira
 	 */
 	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis){
-		Log.i(TAG, "ON FAILURE TRANSACTION: " + url);
+		Print.i(TAG, "ON FAILURE TRANSACTION: " + url);
 		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", startTimeMillis, System.currentTimeMillis(), NetworkFailure.BadServerResponse);
 	}
 

@@ -12,7 +12,7 @@ import com.mobile.newFramework.requests.session.LogoutCustomer;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Example helper
@@ -46,14 +46,14 @@ public class GetLogoutHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         mRequester.onRequestError(generateErrorBundle(baseResponse));
     }

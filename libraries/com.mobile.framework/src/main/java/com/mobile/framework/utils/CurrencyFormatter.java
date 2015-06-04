@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Static class responsible for formatting the currency.
@@ -67,7 +67,7 @@ public class CurrencyFormatter {
         Currency currency = Currency.getInstance(currCode);
         formatter = getNumberFormatter();
         
-        Log.i( TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
+        Print.i(TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
     }
     
     /**
@@ -114,10 +114,10 @@ public class CurrencyFormatter {
         	return String.format(currencyUnitPattern, formatter.format(valueDouble));
         } catch (NumberFormatException e) {
             //In case of bad formatting, return the parsed value with no currency sign
-        	Log.e( TAG, "bad formatting for value = " + value, e );
+        	Print.e(TAG, "bad formatting for value = " + value, e);
             return value + "";
         } catch (ParseException e) {
-        	Log.d( TAG, "parse exception: cannot parse value = " + value, e );
+        	Print.d(TAG, "parse exception: cannot parse value = " + value, e);
             return value + "";
         }
     }

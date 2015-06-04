@@ -2,6 +2,7 @@ package com.mobile.test;
 
 import android.content.Context;
 
+import com.mobile.framework.output.Print;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -21,6 +22,7 @@ public class BaseTestCase extends TestCase implements AigResponseCallback {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        Print.initializeTestingMode();
         mCountDownLatch = new CountDownLatch(1);
     }
 

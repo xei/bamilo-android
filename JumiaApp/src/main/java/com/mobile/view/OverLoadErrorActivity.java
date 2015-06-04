@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Activity to show the Server Overload error.
@@ -24,7 +24,7 @@ public class OverLoadErrorActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         setContentView(R.layout.kickout_page);
 
         // control whether to allow the activity to rotate or not
@@ -41,7 +41,7 @@ public class OverLoadErrorActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -62,7 +62,7 @@ public class OverLoadErrorActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
 
@@ -94,18 +94,18 @@ public class OverLoadErrorActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
     }
 
     @Override
     public void onBackPressed() {
-        Log.i(TAG, "ON BACK PRESSED");
+        Print.i(TAG, "ON BACK PRESSED");
     }
 }

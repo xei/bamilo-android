@@ -21,7 +21,7 @@ import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class CheckVersion {
 
@@ -65,16 +65,16 @@ public class CheckVersion {
         isEnabled  = context.getResources().getBoolean(R.bool.check_version_enabled);
         // Validate flag
         if(isEnabled) {
-            Log.i(TAG, "CHECK VERSION: ENABLED");
+            Print.i(TAG, "CHECK VERSION: ENABLED");
             sLastUpdate = 0;
             runEvents();
-        } else Log.i(TAG, "CHECK VERSION: DISABLED");
+        } else Print.i(TAG, "CHECK VERSION: DISABLED");
     }
 
     public static boolean run(Context context) {
         // Validate check version
         if(!isEnabled) return false;
-        else Log.i(TAG, "RUN CHECK VERSION"); 
+        else Print.i(TAG, "RUN CHECK VERSION");
         
         sContext = context;
         if (runEvents())
@@ -85,7 +85,7 @@ public class CheckVersion {
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
             return false;
-        Log.i(TAG, "code1checkversion checkResult : "+checkResult);
+        Print.i(TAG, "code1checkversion checkResult : " + checkResult);
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
@@ -128,7 +128,7 @@ public class CheckVersion {
                 }, 1000l);
             }
         } catch (IllegalStateException e) {
-            Log.w(TAG, "WARNING: ISE ON SHOW VERSION DIALOG", e);
+            Print.w(TAG, "WARNING: ISE ON SHOW VERSION DIALOG", e);
         } 
         
     }
@@ -142,9 +142,9 @@ public class CheckVersion {
 
     private static boolean runEvents() {
         long now = System.currentTimeMillis();
-        Log.d( TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
+        Print.d(TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
         if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVALL_MILLIS) {
-            Log.d( TAG, "runEvents: init or intervall passed - triggering" );
+            Print.d(TAG, "runEvents: init or intervall passed - triggering");
             sLastUpdate = now;
             return true;
         }
@@ -177,14 +177,14 @@ public class CheckVersion {
         try {
             packageInfo = sContext.getPackageManager().getPackageInfo(sContext.getPackageName(), 0);
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "No package name for the current package. This should not occur");
+            Print.e(TAG, "No package name for the current package. This should not occur");
             return false;
         }
         int crrAppVersion = packageInfo.versionCode;
 
         Version infoVersion = getVersion(sContext);
         if (infoVersion == null) {
-            Log.w( TAG, "No version info available - terminating version check" );
+            Print.w(TAG, "No version info available - terminating version check");
             return false;
         }
 
@@ -200,12 +200,12 @@ public class CheckVersion {
             checkResult = UpdateStatus.NOT_AVAILBLE;
         }
 
-        Log.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
-        Log.d(TAG, "provided minimumVersion = " + infoVersion.getMinimumVersion()
+        Print.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
+        Print.d(TAG, "provided minimumVersion = " + infoVersion.getMinimumVersion()
                 + " currentVersion = " + infoVersion.getCurrentVersion());
-        Log.d(TAG, "customer preference: "
+        Print.d(TAG, "customer preference: "
                 + (unwantedVersion == infoVersion.getCurrentVersion() ? "Ignore" : "Accept"));
-        Log.d(TAG, "checkResult = " + checkResult);
+        Print.d(TAG, "checkResult = " + checkResult);
         return true;
     }
 

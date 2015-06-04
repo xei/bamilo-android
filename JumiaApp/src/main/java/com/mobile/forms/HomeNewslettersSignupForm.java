@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable {
     private final static String TAG = LogTagHelper.create( HomeNewslettersSignupForm.class );
@@ -75,7 +75,7 @@ public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable 
                                     if (isAnOption) {
                                         categories.put(key, value);
                                     } else {
-                                        Log.i(TAG, "Option: " + value + " (" + key + ") will not be used!");
+                                        Print.i(TAG, "Option: " + value + " (" + key + ") will not be used!");
                                     }
                                 }
                             }
@@ -91,14 +91,14 @@ public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable 
                         }
                     }
                 } else {
-                    Log.e(TAG, "initialize: error parsing jsonobject - No fields!" );
+                    Print.e(TAG, "initialize: error parsing jsonobject - No fields!");
                     return false;
                 }
                 // set after initialization
                 isValid = true;
             }
         } catch (JSONException e) {
-            Log.e(TAG, "initialize: error parsing jsonobject", e);
+            Print.e(TAG, "initialize: error parsing jsonobject", e);
             return false;
         }
 

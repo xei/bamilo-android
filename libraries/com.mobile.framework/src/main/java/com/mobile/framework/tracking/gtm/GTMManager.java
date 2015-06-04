@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 
 public class GTMManager {
@@ -77,7 +77,7 @@ public class GTMManager {
 
     @SuppressLint("NewApi")
     private GTMManager(Context context) {
-        Log.i(TAG, " STARTING GTM TRACKING");
+        Print.i(TAG, " STARTING GTM TRACKING");
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
@@ -87,7 +87,7 @@ public class GTMManager {
 
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         CONTAINER_ID = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
-        Log.e(TAG,"init id:"+CONTAINER_ID);
+        Print.e(TAG, "init id:" + CONTAINER_ID);
         PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,0);
         
         // The onResult method will be called as soon as one of the following happens:
@@ -100,7 +100,7 @@ public class GTMManager {
                 ContainerHolderSingleton.setContainerHolder(containerHolder);
                 mContainer = containerHolder.getContainer();
                 if (!containerHolder.getStatus().isSuccess()) {
-                    Log.e(TAG, "failure loading container");
+                    Print.e(TAG, "failure loading container");
                     return;
                 }
                 ContainerHolderSingleton.setContainerHolder(containerHolder);
@@ -109,7 +109,7 @@ public class GTMManager {
                     
                     @Override
                     public void onContainerAvailable(ContainerHolder arg0, String arg1) {
-                        Log.e(TAG, "onContainerAvailable");
+                        Print.e(TAG, "onContainerAvailable");
                         isContainerAvailable = true;      
                         processPendingEvents();
                     }
@@ -125,10 +125,10 @@ public class GTMManager {
      * notification or if the app was started directly
      */
     public void gtmTrackAppOpen(Bundle deviceInfo, String countryIso, String campaignId, String source, String medium, boolean isFromPush) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
-        Log.d(TAG, "gtmTrackAppOpen campaignId:" + campaignId);
-        Log.d(TAG, "gtmTrackAppOpen source:"+source);
-        Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
+        Print.d(TAG, "gtmTrackAppOpen campaignId:" + campaignId);
+        Print.d(TAG, "gtmTrackAppOpen source:" + source);
+        Print.d(TAG, "gtmTrackAppOpen medium:" + medium);
 
         if(countryIso == null){
             //for the first ever app open event when theres no selected country
@@ -151,7 +151,7 @@ public class GTMManager {
         
         boolean isPreInstall = false;
         isPreInstall = deviceInfo.getBoolean(Constants.INFO_PRE_INSTALL, false);
-        Log.d(TAG, "gtmTrackAppOpen isPreInstall:"+isPreInstall);
+        Print.d(TAG, "gtmTrackAppOpen isPreInstall:" + isPreInstall);
         if(isPreInstall) source = GTMValues.PRE_INSTALL;
         else source = GTMValues.ORGANIC;
 
@@ -159,7 +159,7 @@ public class GTMManager {
             source = GTMValues.PUSH;
         }
             
-            Log.d(TAG, "gtmTrackAppOpen"+" campaignId:"+campaignId+" source:"+source+" countryIso:"+countryIso+" version:"+version+" deviceBrand:"+deviceBrand);
+            Print.d(TAG, "gtmTrackAppOpen" + " campaignId:" + campaignId + " source:" + source + " countryIso:" + countryIso + " version:" + version + " deviceBrand:" + deviceBrand);
 //            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.CAMPAIGN, campaignId, GTMKeys.SOURCE, source, GTMKeys.SHOPCOUNTRY,
 //                  countryIso, GTMKeys.APPVERSION, version,GTMKeys.DEVICEBRAND, deviceBrand);
             
@@ -237,12 +237,12 @@ public class GTMManager {
        
         long milliseconds = System.currentTimeMillis();
         if ( milliseconds < loadTime || loadTime <= 0 ) {
-            Log.d( TAG, "trackTiming ERROR : start -> " + loadTime );
+            Print.d(TAG, "trackTiming ERROR : start -> " + loadTime);
             return;
         }
         milliseconds = milliseconds - loadTime;
         
-        Log.i(TAG, " GTM TRACKING -> gtmTrackViewScreen - " + screenName +" "+  milliseconds);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackViewScreen - " + screenName + " " + milliseconds);
         
         Map<String, Object> message = null;
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_SCREEN, GTMKeys.SCREENNAME, screenName, GTMKeys.LOADTIME, milliseconds);
@@ -251,7 +251,7 @@ public class GTMManager {
     }
 
     public void gtmTrackLogin(Customer customer, TrackingEvent event, String location) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackLogin -> ");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackLogin -> ");
         
         String method = GTMValues.EMAILAUTH;
         if(event == TrackingEvent.LOGIN_FB_SUCCESS) method = GTMValues.FACEBOOK;
@@ -261,7 +261,7 @@ public class GTMManager {
 //                customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
 //
 //        sendEvent(message);
-        Log.d(TAG, "gtmTrackLogin"+" method:"+method+" location:"+location+" customer.getIdAsString():"+customer.getIdAsString()+" customer.getCreatedAt():"+customer.getCreatedAt()+" customer.getGender():"+customer.getGender());
+        Print.d(TAG, "gtmTrackLogin" + " method:" + method + " location:" + location + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getCreatedAt():" + customer.getCreatedAt() + " customer.getGender():" + customer.getGender());
       
       //working
       Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
@@ -271,8 +271,8 @@ public class GTMManager {
     }
     
     public void gtmTrackLoginFailed(String location, String method) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackLoginFailed -> location " + location);
-        Log.d(TAG, "gtmTrackLoginFailed"+" method:"+method+" location:"+location);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackLoginFailed -> location " + location);
+        Print.d(TAG, "gtmTrackLoginFailed" + " method:" + method + " location:" + location);
 
         Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN_FAILED, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
                 location);
@@ -281,14 +281,14 @@ public class GTMManager {
     }
 
     public void gtmTrackAutoLogin(Customer customer) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAutoLogin -> (created at: " + customer.getCreatedAt() + ") " );
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAutoLogin -> (created at: " + customer.getCreatedAt() + ") ");
 //TODO  
 //        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(),
 //                GTMKeys.USERAGE,customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
 //
 //        sendEvent(message);
         
-        Log.d(TAG, "gtmTrackAutoLogin"+" customer.getIdAsString():"+customer.getIdAsString()+" customer.getCreatedAt():"+customer.getCreatedAt()+" customer.getGender():"+customer.getGender());
+        Print.d(TAG, "gtmTrackAutoLogin" + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getCreatedAt():" + customer.getCreatedAt() + " customer.getGender():" + customer.getGender());
 
       Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(),
               GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERGENDER, customer.getGender().toString());
@@ -298,7 +298,7 @@ public class GTMManager {
     
     
     public void gtmTrackAutoLoginFailed() {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAutoLoginFailed -> ");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAutoLoginFailed -> ");
         
         Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN_FAILED);
 
@@ -307,8 +307,8 @@ public class GTMManager {
     
     
     public void gtmTrackLogout(String customerId) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackLogout");
-        Log.d(TAG, "gtmTrackLogout"+"  GTMValues.LOGOUT:"+ GTMValues.LOGOUT+" customerId:"+customerId);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackLogout");
+        Print.d(TAG, "gtmTrackLogout" + "  GTMValues.LOGOUT:" + GTMValues.LOGOUT + " customerId:" + customerId);
 
         Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGOUT, GTMKeys.LOGOUTLOCATION, GTMValues.LOGOUT,
                 GTMKeys.CUSTOMERID, customerId);
@@ -317,9 +317,9 @@ public class GTMManager {
     }
 
     public void gtmTrackRegister(String customerId, String location) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackRegister");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackRegister");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackRegister"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location+" customerId:"+customerId);
+        Print.d(TAG, "gtmTrackRegister" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location + " customerId:" + customerId);
 
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH,
                     GTMKeys.REGISTRATIONLOCATION, location, GTMKeys.CUSTOMERID, customerId);
@@ -329,9 +329,9 @@ public class GTMManager {
     }
     
     public void gtmTrackRegisterFailed(String location) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackRegisterFailed");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackRegisterFailed");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackRegisterFailed"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location);
+        Print.d(TAG, "gtmTrackRegisterFailed" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location);
 
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER_FAILED, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH, GTMKeys.REGISTRATIONLOCATION, location);
         
@@ -340,9 +340,9 @@ public class GTMManager {
     }
     
     public void gtmTrackSignUp(String subscriberId, String location) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackSignUp ");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackSignUp ");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackSignUp"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location+" subscriberId:"+subscriberId);
+        Print.d(TAG, "gtmTrackSignUp" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location + " subscriberId:" + subscriberId);
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SIGNUP, GTMKeys.SUBSCRIBERID, subscriberId, GTMKeys.SIGNUPLOCATION, location);
         
         sendEvent(message);
@@ -350,9 +350,9 @@ public class GTMManager {
     }
     
     public void gtmTrackSearch(String searchTerm, long numberItems) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackSearch");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackSearch");
 
-        Log.d(TAG, "gtmTrackSearch"+" searchTerm:"+searchTerm+" numberItems:"+numberItems);
+        Print.d(TAG, "gtmTrackSearch" + " searchTerm:" + searchTerm + " numberItems:" + numberItems);
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SEARCH, GTMKeys.SEARCHTERM, searchTerm, GTMKeys.RESULTSNUMBER, numberItems);
 
@@ -363,7 +363,7 @@ public class GTMManager {
     
     public void gtmTrackTransaction(List<PurchaseItem> items,String currencyName, double transactionValue, String transactionId, String coupon,
             String paymentMethod, String shippingAmount, String taxAmount) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackTransaction ");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackTransaction ");
 
         ArrayList<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
         for (PurchaseItem item : items) {
@@ -397,9 +397,9 @@ public class GTMManager {
     }
     
     public void gtmTrackShare(String location, String productSKU, String category) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackShare " + " categoy " + category  + " SHARELOCATION " + location+" productSku "+productSKU);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackShare " + " categoy " + category + " SHARELOCATION " + location + " productSku " + productSKU);
 
-        Log.d(TAG, "gtmTrackShare"+" productSKU:"+productSKU);
+        Print.d(TAG, "gtmTrackShare" + " productSKU:" + productSKU);
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SHARE_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.SHARELOCATION, GTMValues.PRODUCTDETAILPAGE);
@@ -413,8 +413,8 @@ public class GTMManager {
 
 
     public void gtmTrackChangeCountry(String country) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackChangeCountry");
-        Log.d(TAG, "gtmTrackChangeCountry"+" country:"+country);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackChangeCountry");
+        Print.d(TAG, "gtmTrackChangeCountry" + " country:" + country);
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMKeys.SHOPCOUNTRY, country);
 
@@ -424,11 +424,11 @@ public class GTMManager {
 
     public void gtmTrackViewProduct(String productSKU, double productPrice, String productBrand, String currencyName, double discount, double productRating,
             String productCategory, String productSubCategory) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackViewProduct [productSKU: " + productSKU + ", productPrice:" + productPrice + "] currencyName " + currencyName);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackViewProduct [productSKU: " + productSKU + ", productPrice:" + productPrice + "] currencyName " + currencyName);
         
 
-        Log.d(TAG, "gtmTrackViewProduct"+" productSKU:"+productSKU+" productBrand:"+productBrand
-                +" productPrice:"+productPrice+" currencyName:"+currencyName+" discount:"+discount);
+        Print.d(TAG, "gtmTrackViewProduct" + " productSKU:" + productSKU + " productBrand:" + productBrand
+                + " productPrice:" + productPrice + " currencyName:" + currencyName + " discount:" + discount);
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTBRAND, productBrand,
@@ -451,12 +451,12 @@ public class GTMManager {
     
     public void gtmTrackAddToCart(String productSKU, double productPrice, String productBrand, String currencyName, double discount, double productRating,
             String productCategory, String productSubCategory, String location) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAddToCart (categ: " + productSKU + "; subcateg: " + productPrice + ")");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAddToCart (categ: " + productSKU + "; subcateg: " + productPrice + ")");
         
 
         
-        Log.d(TAG, "gtmTrackAddToCart"+" productSKU:"+productSKU+" productBrand:"+productBrand
-                +" productPrice:"+productPrice+" currencyName:"+currencyName+" discount:"+discount);
+        Print.d(TAG, "gtmTrackAddToCart" + " productSKU:" + productSKU + " productBrand:" + productBrand
+                + " productPrice:" + productPrice + " currencyName:" + currencyName + " discount:" + discount);
         Map<String, Object> message = null;
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_CART, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currencyName,
                 GTMKeys.DISCOUNT, discount, GTMKeys.PRODUCTQUANTITY, 1, GTMKeys.LOCATION, location);
@@ -477,10 +477,10 @@ public class GTMManager {
     
     public void gtmTrackRemoveFromCart(String productSku, double averageRatingTotal, double productPrice, long quantity, String cartValue, String currencyName) {
 
-        Log.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromCart (categ: " + productSku + "; subcateg: " + productPrice + ")");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromCart (categ: " + productSku + "; subcateg: " + productPrice + ")");
         Map<String, Object> message = null;
 
-        Log.d(TAG, "gtmTrackRemoveFromCart"+" productPrice:"+productPrice+" currencyName:"+currencyName+" productSku:"+productSku+" productPrice:"+productPrice+" cartValue:"+cartValue+" quantity:"+quantity);
+        Print.d(TAG, "gtmTrackRemoveFromCart" + " productPrice:" + productPrice + " currencyName:" + currencyName + " productSku:" + productSku + " productPrice:" + productPrice + " cartValue:" + cartValue + " quantity:" + quantity);
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_CART, GTMKeys.PRODUCTSKU, productSku, GTMKeys.PRODUCTPRICE, productPrice,
                 GTMKeys.QUANTITYCART, quantity, GTMKeys.CARTVALUE, cartValue, GTMKeys.CURRENCY, currencyName);
 
@@ -492,7 +492,7 @@ public class GTMManager {
     
     
     public void gtmTrackRateProduct(CompleteProduct product,String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
         Map<String, Object> message = null;
         String category = "";
         String subCategory = "";
@@ -504,8 +504,8 @@ public class GTMManager {
         }
         
         
-        Log.d(TAG, "gtmTrackRateProduct"+" currencyName:"+currencyName+" product.getSku():"+product.getSku()+
-                " PRODUCTPRICE:"+product.getPriceForTracking()+" currencyName:"+currencyName+" PRODUCTRATING:"+product.getRatingsAverage());
+        Print.d(TAG, "gtmTrackRateProduct" + " currencyName:" + currencyName + " product.getSku():" + product.getSku() +
+                " PRODUCTPRICE:" + product.getPriceForTracking() + " currencyName:" + currencyName + " PRODUCTRATING:" + product.getRatingsAverage());
 //        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTCATEGORY,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.RATINGPRICE, notPresent,
 //                GTMKeys.RATINGAPPEARANCE, notPresent,GTMKeys.RATINGQUALITY, notPresent, GTMKeys.PRODUCTRATING, product.getRatingsAverage());
         
@@ -524,7 +524,7 @@ public class GTMManager {
     }
     
     public void gtmTrackViewRating(CompleteProduct product, String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
 
         Map<String, Object> message = null;
         String category = "";
@@ -537,7 +537,7 @@ public class GTMManager {
         }
         
         
-        Log.d(TAG, "gtmTrackViewRating"+" productSku:"+product.getSku()+" AVERAGERATINGTOTAL:"+product.getRatingsAverage()+" productPrice:"+product.getPriceForTracking()+" currencyName:"+currencyName);
+        Print.d(TAG, "gtmTrackViewRating" + " productSku:" + product.getSku() + " AVERAGERATINGTOTAL:" + product.getRatingsAverage() + " productPrice:" + product.getPriceForTracking() + " currencyName:" + currencyName);
 
 //      message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.AVERAGERATINGPRICE, notPresent,
 //              GTMKeys.AVERAGERATINGAPPEARANCE, notPresent, GTMKeys.AVERAGERATINGQUALITY, notPresent, GTMKeys.AVERAGERATINGTOTAL, product.getRatingsAverage());
@@ -558,11 +558,11 @@ public class GTMManager {
     
     
     public void gtmTrackCatalog(String category, String subCategory,int pageNumber) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackViewCatalog (" + category + "; " + subCategory + "; ) "+pageNumber);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackViewCatalog (" + category + "; " + subCategory + "; ) " + pageNumber);
 
         
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackCatalog"+" pageNumber:"+pageNumber);
+        Print.d(TAG, "gtmTrackCatalog" + " pageNumber:" + pageNumber);
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CATALOG, GTMKeys.PAGENUMBER, pageNumber);
 
         if(!TextUtils.isEmpty(category)) 
@@ -576,25 +576,25 @@ public class GTMManager {
     }
 
     public void gtmTrackFilterCatalog(String filterType) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackFilterCatalog");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackFilterCatalog");
 
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackFilterCatalog"+" filterType:"+filterType);
+        Print.d(TAG, "gtmTrackFilterCatalog" + " filterType:" + filterType);
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FILTER_CATALOG, GTMKeys.FILTERTYPE, filterType);
         sendEvent(message);
     }
 
     public void gtmTrackSortCatalog(String sortType) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackSortCatalog "+sortType);
+        Print.i(TAG, " GTM TRACKING -> gtmTrackSortCatalog " + sortType);
 
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackSortCatalog"+" sortType:"+sortType);
+        Print.d(TAG, "gtmTrackSortCatalog" + " sortType:" + sortType);
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SORT_CATALOG, GTMKeys.SORTTYPE, sortType);
         sendEvent(message);
     }
 
     public void gtmTrackAddToWishList(String productSku,String productBrand,double productPrice, double productRating,double productDiscount, String currency, String location, String category, String subCategory) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAddToWishList ");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAddToWishList ");
         
 
         
@@ -615,7 +615,7 @@ public class GTMManager {
 
 
     public void gtmTrackRemoveFromWishList(String productSKU, double productPrice, double averageRatingTotal, String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromWishList");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromWishList");
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_WL, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice,
@@ -625,7 +625,7 @@ public class GTMManager {
     }
 
     public void gtmTrackViewCart(int quantityCart, double cartValue, String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackViewCart");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackViewCart");
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.CARTVALUE, cartValue, GTMKeys.QUANTITYCART, quantityCart, GTMKeys.CURRENCY, currencyName);
@@ -634,7 +634,7 @@ public class GTMManager {
     }
     
     public void gtmTrackStartCheckout(int quantityCart, double cartValue,String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackStartCheckout");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackStartCheckout");
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.CARTVALUE, cartValue, GTMKeys.QUANTITYCART, quantityCart, GTMKeys.CURRENCY, currencyName);
@@ -643,7 +643,7 @@ public class GTMManager {
     }
     
     public void gtmTrackEnterAddress(boolean isCorrect) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackEnterAddress");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackEnterAddress");
 
         Map<String, Object> message = null;
         
@@ -653,7 +653,7 @@ public class GTMManager {
     }
     
     public void gtmTrackChoosePayment(String paymentMethod) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackChoosePayment");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackChoosePayment");
 
         Map<String, Object> message = null;
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHOOSE_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod);
@@ -662,7 +662,7 @@ public class GTMManager {
     }
     
     public void gtmTrackFailedPayment(String paymentMethod, double transactionTotal, String currencyName) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackFailedPayment");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackFailedPayment");
 
         Map<String, Object> message = null;
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FAILED_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod, GTMKeys.TRANSACTIONTOTAL, transactionTotal, GTMKeys.CURRENCY, currencyName);
@@ -671,7 +671,7 @@ public class GTMManager {
     }
     
     public void gtmTrackAppClose() {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackAppClose");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackAppClose");
 
         Map<String, Object> message = null;
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CLOSE_APP, GTMKeys.SCREENNAME, GTMValues.HOME);
@@ -680,7 +680,7 @@ public class GTMManager {
     }
 
     public void gtmTrackFreshInstall(String type, String source, String medium, String campaign) {
-        Log.i(TAG, " GTM TRACKING -> gtmTrackFreshInstall");
+        Print.i(TAG, " GTM TRACKING -> gtmTrackFreshInstall");
 
 //        Map<Object, Object> message = null;
 //        Log.i(TAG, " GTM TRACKING type-> " + type);
@@ -705,10 +705,10 @@ public class GTMManager {
 
 
     private void sendEvent(Map<String, Object> event) {
-        Log.i(TAG, " sendEvent");
+        Print.i(TAG, " sendEvent");
         if (isContainerAvailable) {
-            Log.i(TAG, " PUSH DATA:"+event.get(EVENT_TYPE));
-            Log.i(TAG, " PUSH DATA PENDING SIZE:"+pendingEvents.size());
+            Print.i(TAG, " PUSH DATA:" + event.get(EVENT_TYPE));
+            Print.i(TAG, " PUSH DATA PENDING SIZE:" + pendingEvents.size());
 
             if(pendingEvents != null && pendingEvents.size() > 0){
                 processPendingEvents();
@@ -716,19 +716,19 @@ public class GTMManager {
             }
             dataLayer.push(event);
         } else {
-            Log.i(TAG, " PENDING");
+            Print.i(TAG, " PENDING");
             pendingEvents.add(event);
         }
 
     }
 
     private void processPendingEvents() {
-        Log.i(TAG, " GTM TRACKING -> processPendingEvents()");
+        Print.i(TAG, " GTM TRACKING -> processPendingEvents()");
         try {
             if (pendingEvents != null) {
 
                 for (Map<String, Object> event : pendingEvents) {
-                    Log.i(TAG, " GTM TRACKING -> processPendingEvents() -> Event : " + event.get(EVENT_TYPE));
+                    Print.i(TAG, " GTM TRACKING -> processPendingEvents() -> Event : " + event.get(EVENT_TYPE));
                     if (dataLayer == null)
                         dataLayer = mTagManager.getDataLayer();
                     dataLayer.push(event);
@@ -793,7 +793,7 @@ public class GTMManager {
         @Override
         public void execute(String tagName, Map<String, Object> parameters) {
             // The code for firing this custom tag.
-            Log.i(TAG, "Custom function call tag :" + tagName + " is fired.");
+            Print.i(TAG, "Custom function call tag :" + tagName + " is fired.");
         }
     }
     
@@ -834,7 +834,7 @@ public class GTMManager {
     }
 
     public static void saveUtmParameters(Context context, String key, String value) {
-        Log.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
+        Print.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);

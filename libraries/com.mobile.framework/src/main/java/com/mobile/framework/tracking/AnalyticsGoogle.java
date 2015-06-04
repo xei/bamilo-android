@@ -19,7 +19,7 @@ import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Helper singleton class for the Google Analytics tracking library.
@@ -110,7 +110,7 @@ public class AnalyticsGoogle {
 		// Enable Display Advertising features
 		enableAdvertisingCollection(context); 
 		
-		Log.i(TAG, "TRACKING SUCCESSFULLY SETUP");
+		Print.i(TAG, "TRACKING SUCCESSFULLY SETUP");
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
         // Manually start a dispatch (Unnecessary if the tracker has a dispatch interval)
         GoogleAnalytics.getInstance(mContext).dispatchLocalHits();
-        Log.i(TAG, "TRACK DISPATCH LOCAL HITS MANUALLY");
+        Print.i(TAG, "TRACK DISPATCH LOCAL HITS MANUALLY");
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class AnalyticsGoogle {
 	private void validateDebugMode(boolean debugMode) {
 		// Case debug mode
 		if(debugMode) {
-			Log.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+			Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
 			mAnalytics.setDryRun(true);
 			mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
 		}
@@ -151,7 +151,7 @@ public class AnalyticsGoogle {
 		// Load keys
 		SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
-		Log.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
+		Print.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
 	}
 
 
@@ -163,12 +163,12 @@ public class AnalyticsGoogle {
 	private void updateTracker() {
 		if (TextUtils.isEmpty(mCurrentKey)) {
 			isEnabled = false;
-			Log.e("WARNING: NO TRACKING ID KEY " + mCurrentKey);
+			Print.e("WARNING: NO TRACKING ID KEY " + mCurrentKey);
 			return;
 		}
 		mTracker = mAnalytics.newTracker(mCurrentKey);
 		mTracker.setAnonymizeIp(true);
-		Log.i(TAG, "UPDATED TRACKER WITH KEY: " + mCurrentKey);
+		Print.i(TAG, "UPDATED TRACKER WITH KEY: " + mCurrentKey);
 	}
 	
 	/**
@@ -181,7 +181,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackPage(String path) {
-		Log.i(TAG, "TRACK PAGE: " + path);
+		Print.i(TAG, "TRACK PAGE: " + path);
 		mTracker.setScreenName(path);
 		mTracker.send(new HitBuilders.AppViewBuilder()
 		.setCampaignParamsFromUrl(getGACampaign())
@@ -199,7 +199,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackEvent(String category, String action, String label, long value) {
-		Log.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
+		Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
 		mTracker.send(new HitBuilders.EventBuilder()
     	.setCategory(category)
     	.setAction(action)
@@ -219,7 +219,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackShare(String category, String action, String target) {
-		Log.i(TAG, "TRACK SHARE: category->" + category + " action->" + action + " target->" + target);
+		Print.i(TAG, "TRACK SHARE: category->" + category + " action->" + action + " target->" + target);
 		mTracker.send(new HitBuilders.SocialBuilder()
 		.setNetwork(category)
         .setAction(action)
@@ -239,7 +239,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackTiming(String category, String name, long milliSeconds, String label) {
-		Log.i(TAG, "TRACK TIMING: category->" + category + " name->" + name + " ms->" + milliSeconds + " label->" + label);
+		Print.i(TAG, "TRACK TIMING: category->" + category + " name->" + name + " ms->" + milliSeconds + " label->" + label);
 		mTracker.send(new HitBuilders.TimingBuilder()
 		.setCategory(category)
         .setValue(milliSeconds)
@@ -259,7 +259,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackTransaction(String order, long revenue, String currencyCode) {
-		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + revenue + " currency->" + currencyCode);
+		Print.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + revenue + " currency->" + currencyCode);
 		mTracker.send(new HitBuilders.TransactionBuilder()
 		.setTransactionId(order)
 		.setRevenue(revenue)
@@ -282,7 +282,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
-		Log.i(TAG, "TRACK TRANSACTION ITEM: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
+		Print.i(TAG, "TRACK TRANSACTION ITEM: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
 		mTracker.send(new HitBuilders.ItemBuilder()
 		.setTransactionId(order)
 	    .setName(name)
@@ -371,7 +371,7 @@ public class AnalyticsGoogle {
 		// Data
 		long milliseconds = System.currentTimeMillis();
 		if ( milliseconds < beginMillis || beginMillis <= 0 ) {
-			Log.d( TAG, "trackTiming ERROR : start -> " + beginMillis );
+			Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
 			return;
 		}
 		milliseconds = milliseconds - beginMillis;
@@ -507,7 +507,7 @@ public class AnalyticsGoogle {
 		// Get data
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gsocialshare);
-		Log.d(TAG, "TRACK SHARE EVENT: Cat " + category + ", Action " + action + ", Sku " + sku);
+		Print.d(TAG, "TRACK SHARE EVENT: Cat " + category + ", Action " + action + ", Sku " + sku);
 		trackShare(category, action, sku);
 	}
 	
@@ -572,7 +572,7 @@ public class AnalyticsGoogle {
 		if (!TextUtils.isEmpty(campaignString)) {
 			// Track
 			String utmURI = (!campaignString.contains("utm_campaign")) ? "utm_campaign=" + campaignString + "&utm_source=push&utm_medium=referrer" : campaignString;
-			Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
+			Print.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
 			mGACampaign = utmURI;
 		}
 	}

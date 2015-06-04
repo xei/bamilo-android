@@ -84,7 +84,7 @@ package com.mobile.framework.rest;
 //import ch.boye.httpclientandroidlib.protocol.HttpContext;
 //import ch.boye.httpclientandroidlib.util.CharArrayBuffer;
 //import ch.boye.httpclientandroidlib.util.EntityUtils;
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * The RestClientSingleton takes care of the whole rest communication. Its a

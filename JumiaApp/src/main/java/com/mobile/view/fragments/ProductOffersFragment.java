@@ -44,7 +44,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the product offers
@@ -102,7 +102,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -113,7 +113,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get product URL from arguments
         mCompleteProductUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
         // Get product name from arguments
@@ -135,7 +135,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get views
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
         mOffersCount = (TextView) view.findViewById(R.id.offer_product_count);
@@ -150,7 +150,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -161,7 +161,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         Bundle arg = new Bundle();
         if(productOffers == null){
             arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
@@ -193,7 +193,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -204,7 +204,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -214,7 +214,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -224,7 +224,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -278,11 +278,11 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onRequestComplete(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -314,7 +314,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         hideActivityProgress();
@@ -324,7 +324,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
@@ -396,7 +396,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICK");
+        Print.d(TAG, "ON ITEM CLICK");
         Offer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
@@ -450,7 +450,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
         // GA OFFER TRACKING              
-        Log.d(TAG,"SIMLPE SKU:" + simpleSKU+ " PRICE:" + price);
+        Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
         TrackerDelegator.trackAddOfferToCart(simpleSKU,price);
     }
 }

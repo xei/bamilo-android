@@ -10,7 +10,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class Variation implements IJSONSerializable, Parcelable{
 	private static final String TAG = LogTagHelper.create(Variation.class);
@@ -29,7 +29,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
 			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 		} catch (JSONException e) {
-			Log.e(TAG, "Error initializing the variation ", e);
+			Print.e(TAG, "Error initializing the variation ", e);
 			return false;
 		}
 
@@ -49,7 +49,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
 			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 		} catch (JSONException e) {
-			Log.e(TAG, "Error initializing the variation ", e);
+			Print.e(TAG, "Error initializing the variation ", e);
 		}
 		return true;
 	}

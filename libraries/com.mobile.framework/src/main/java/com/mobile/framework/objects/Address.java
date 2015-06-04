@@ -15,7 +15,7 @@ import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * #################### ADDRESS ####################  
@@ -65,7 +65,7 @@ public class Address implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject dataObject) {
-        Log.d(TAG, "INITIALIZE");
+        Print.d(TAG, "INITIALIZE");
         id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
         if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2))
             id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG_2);

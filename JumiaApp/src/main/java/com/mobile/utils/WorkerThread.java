@@ -5,7 +5,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -52,9 +52,9 @@ public class WorkerThread extends Thread{
                         wait();
                     }
                 } catch (InterruptedException e) {
-                    Log.e(TAG, "InterruptedException on worker thread: wait()");
+                    Print.e(TAG, "InterruptedException on worker thread: wait()");
                 } catch(IllegalMonitorStateException ex){
-                    Log.e(TAG, "IllegalMonitorStateException on worker thread: wait()");
+                    Print.e(TAG, "IllegalMonitorStateException on worker thread: wait()");
                 }
 
             } else {
@@ -85,7 +85,7 @@ public class WorkerThread extends Thread{
         while(itr.hasNext()){
             string += " " + itr.next().toString();
         }
-        Log.e(TAG, "Queue: " + string);
+        Print.e(TAG, "Queue: " + string);
     }
 
     /**
@@ -99,7 +99,7 @@ public class WorkerThread extends Thread{
                 notify();
             }
         }catch(IllegalMonitorStateException ex){
-            Log.e(TAG, "IllegalMonitorStateException: notify()");
+            Print.e(TAG, "IllegalMonitorStateException: notify()");
         }
     }
 
@@ -137,7 +137,7 @@ public class WorkerThread extends Thread{
                 auxThread.notify();
             }
         }catch(IllegalMonitorStateException ex){
-            Log.e(auxThread.TAG, "IllegalMonitorStateException: notify()");
+            Print.e(auxThread.TAG, "IllegalMonitorStateException: notify()");
         }
 
     }

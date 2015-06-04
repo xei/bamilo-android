@@ -15,7 +15,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author nutzer2
@@ -58,41 +58,41 @@ public class DarwinComponent extends ApplicationComponent {
         boolean countryConfigsAvailable = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         boolean isChangeShop = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CHANGED, false);
         
-        Log.i(TAG, "DarwinComponent shopId :  "+shopId+ " countriesConfigs : "+countriesConfigs + " " + isChangeShop);
+        Print.i(TAG, "DarwinComponent shopId :  " + shopId + " countriesConfigs : " + countriesConfigs + " " + isChangeShop);
         
         if (shopId == null && countriesConfigs && !isChangeShop) {
-            Log.i(TAG, "DarwinComponent AUTO_COUNTRY_SELECTION");
+            Print.i(TAG, "DarwinComponent AUTO_COUNTRY_SELECTION");
             return ErrorCode.AUTO_COUNTRY_SELECTION;
         }
         
         if(!countriesConfigs && !countryConfigsAvailable) {
-            Log.i(TAG, "DarwinComponent NO_COUNTRIES_CONFIGS");
+            Print.i(TAG, "DarwinComponent NO_COUNTRIES_CONFIGS");
             if(Darwin.initialize(context)){
                 return ErrorCode.NO_COUNTRIES_CONFIGS;    
             }
-            Log.i(TAG, "DarwinComponent NO_COUNTRIES_CONFIGS UNKNOWN_ERROR");
+            Print.i(TAG, "DarwinComponent NO_COUNTRIES_CONFIGS UNKNOWN_ERROR");
             return ErrorCode.UNKNOWN_ERROR;
         }
         
         if(!countryConfigsAvailable){
-            Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
+            Print.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
             
             if(Darwin.initialize(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), null)) {
                 return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;   
             }
-            Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE UNKNOWN_ERROR");
+            Print.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE UNKNOWN_ERROR");
             return ErrorCode.UNKNOWN_ERROR;
             
         }
-        Log.i(TAG, "DarwinComponent shop id is : "+ shopId);
+        Print.i(TAG, "DarwinComponent shop id is : " + shopId);
         if (Darwin.initialize(context, shopId)) {
-            Log.i(TAG, "DarwinComponent NO_ERROR");
+            Print.i(TAG, "DarwinComponent NO_ERROR");
             Editor editor = sharedPrefs.edit();
             editor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
             editor.apply();
             return ErrorCode.NO_ERROR;
         }
-        Log.i(TAG, "DarwinComponent NO_ERROR UNKNOWN_ERROR");
+        Print.i(TAG, "DarwinComponent NO_ERROR UNKNOWN_ERROR");
         return ErrorCode.UNKNOWN_ERROR;
     }
 
@@ -108,11 +108,11 @@ public class DarwinComponent extends ApplicationComponent {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         boolean hasCountryConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-        Log.i(TAG, "SINGLE SHOP ID: " + shopId + " HAS COUNTRY CONFIGS: " + hasCountryConfigs);
+        Print.i(TAG, "SINGLE SHOP ID: " + shopId + " HAS COUNTRY CONFIGS: " + hasCountryConfigs);
         
         // Case first time
         if (TextUtils.isEmpty(shopId) || !hasCountryConfigs) {
-            Log.i(TAG, "SINGLE SHOP: IS FIRST TIME SO NO COUNTRY CONFIGS AVAILABLE");
+            Print.i(TAG, "SINGLE SHOP: IS FIRST TIME SO NO COUNTRY CONFIGS AVAILABLE");
             // Set shop from configs
             ShopPreferences.setShopFromConfigs(context);
             // Partial framework initialization 
@@ -121,7 +121,7 @@ public class DarwinComponent extends ApplicationComponent {
             return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;
         // Case default
         } else {
-            Log.i(TAG, "SINGLE SHOP: NO_ERROR");
+            Print.i(TAG, "SINGLE SHOP: NO_ERROR");
             // Full framework initialization 
             Darwin.initialize(context, shopId);
             // Set the error code for Splash screen

@@ -65,7 +65,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira
@@ -165,13 +165,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -192,13 +192,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
         // Case deep link
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
@@ -211,33 +211,33 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE");
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         releaseVars();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         releaseVars();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -267,7 +267,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void addItemsToCart(String items) {
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
-        Log.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
+        Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
         HashMap<String, String> productBySku = new HashMap<>();
         for (String sku : itemsToCart) {
@@ -437,7 +437,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -448,7 +448,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
-        Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
+        Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
@@ -467,16 +467,16 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         case NATIVE_CHECKOUT_AVAILABLE:
             boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
             if (isAvailable) {
-                Log.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
+                Print.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
                 Bundle mBundle = new Bundle();
                 getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
-                Log.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
+                Print.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
                 goToWebCheckout();
             }
             return true;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            Log.i(TAG, "code1removing and tracking" + itemRemoved_price);
+            Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
             params = new Bundle();
             params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -622,7 +622,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -636,7 +636,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case NATIVE_CHECKOUT_AVAILABLE:
-            Log.d(TAG, "ON ERROR EVENT: NATIVE_CHECKOUT_AVAILABLE");
+            Print.d(TAG, "ON ERROR EVENT: NATIVE_CHECKOUT_AVAILABLE");
             goToWebCheckout();
             break;
         case ADD_VOUCHER:
@@ -670,7 +670,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
      */
     private void displayShoppingCart(ShoppingCart cart) {
-        Log.d(TAG, "displayShoppingCart");
+        Print.d(TAG, "displayShoppingCart");
         if(cart == null){
             showNoItems();
             return;
@@ -756,7 +756,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.variation = item.getVariation();
                 values.productUrl = item.getProductUrl();
 
-                Log.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
+                Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
                 itemsValues.add(values);
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
@@ -767,7 +767,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 // Fix NAFAMZ-7848
                 unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal()
                         * item.getQuantity()));
-                Log.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
+                Print.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
@@ -811,7 +811,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * @param voucher
      */
     private void changeVoucher(String voucher) {
-        Log.d(TAG, "changeVoucher to " + voucher);
+        Print.d(TAG, "changeVoucher to " + voucher);
         mVoucher = voucher;
         removeVoucher = true;
         prepareCouponView();
@@ -821,7 +821,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Clean Voucher field
      */
     private void removeVoucher() {
-        Log.d(TAG, "removeVoucher");
+        Print.d(TAG, "removeVoucher");
         mVoucher = null;
         removeVoucher = false;
         // Clean Voucher field
@@ -836,7 +836,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void setTotal(ShoppingCart cart) {
-        Log.d(TAG, "SET THE TOTAL VALUE");
+        Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
@@ -846,7 +846,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             totalValue.setText(CurrencyFormatter.formatCurrency(cartValue));
             totalMain.setVisibility(View.VISIBLE);
         } else {
-            Log.w(TAG, "CART VALUES IS EMPTY");
+            Print.w(TAG, "CART VALUES IS EMPTY");
         }
     }
 
@@ -978,7 +978,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 try {
                     goToProductDetails((String) v.getTag(R.id.target_url));
                 } catch (NullPointerException e) {
-                    Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
+                    Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
             }
         });
@@ -1020,7 +1020,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     private void goToWebCheckout() {
-        Log.d(TAG, "GOTO WEB CHECKOUT");
+        Print.d(TAG, "GOTO WEB CHECKOUT");
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
                 FragmentType.CHECKOUT_BASKET);
@@ -1158,7 +1158,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
-                    Log.i(TAG, "code1coupon : " + mVoucher);
+                    Print.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {

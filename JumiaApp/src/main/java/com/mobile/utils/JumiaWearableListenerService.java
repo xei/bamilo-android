@@ -26,7 +26,7 @@ import com.mobile.view.SplashScreenActivity;
 
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class responsible for listening to the wearable service on the hadnheld app side, and also for handling all the information sent
@@ -57,20 +57,20 @@ public class JumiaWearableListenerService extends WearableListenerService {
      */
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d(TAG, "APP code1wear onDataChanged ");
+        Print.d(TAG, "APP code1wear onDataChanged ");
 
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         for (DataEvent event : events) {
             Uri uri = event.getDataItem().getUri();
-            Log.d(TAG, "APP code1wear onDataChanged uri is : " + uri);
-            Log.d(TAG, "APP code1wear onDataChanged : " + uri.getPath());
+            Print.d(TAG, "APP code1wear onDataChanged uri is : " + uri);
+            Print.d(TAG, "APP code1wear onDataChanged : " + uri.getPath());
             final DataMap dataMap = DataMapItem.fromDataItem(event.getDataItem()).getDataMap();
-            Log.d(TAG, "APP code1wear dataMap : " + dataMap.toString());
+            Print.d(TAG, "APP code1wear dataMap : " + dataMap.toString());
             if ("/wearnotification".equals(uri.getPath())) {
                 NotificationManagerCompat.from(this).cancelAll();
                 Bundle bundle = buildBundleForNotification(dataMap);
-                Log.d(TAG, "APP code1bundle : " + bundle);
-                Log.d(TAG, "APP code1error : Ups! error while loading information!");
+                Print.d(TAG, "APP code1bundle : " + bundle);
+                Print.d(TAG, "APP code1error : Ups! error while loading information!");
 
                 if (bundle != null) {
                     Intent newIntent = new Intent(this, SplashScreenActivity.class);
@@ -90,9 +90,9 @@ public class JumiaWearableListenerService extends WearableListenerService {
 
 
             } else if ("/wearperformsearch".equals(uri.getPath())) {
-                Log.e(TAG, "PERFORMED VOICE SEARCH");
+                Print.e(TAG, "PERFORMED VOICE SEARCH");
                 String searchTerm = dataMap.getString(EXTRA_SEARCH_TERM);
-                Log.i(TAG, "code1search : searchterm : " + searchTerm);
+                Print.i(TAG, "code1search : searchterm : " + searchTerm);
                 String countryISO = ShopPreferences.getShopCountryISO(getApplicationContext());
                 if (countryISO == null) {
 //                    sendErrorToWear("Ups! error while loading information!");
@@ -100,11 +100,11 @@ public class JumiaWearableListenerService extends WearableListenerService {
                     return;
                 }
                 String deepLinkUrl = countryISO + "/s/" + searchTerm;
-                Log.e(TAG, "deepLinkUrl:" + deepLinkUrl);
+                Print.e(TAG, "deepLinkUrl:" + deepLinkUrl);
                 Uri data = Uri.parse(deepLinkUrl);
                 Bundle gcmBundle = new Bundle();
                 gcmBundle.putString(DeepLinkManager.DEEP_LINK_PAGE_INDICATION, deepLinkUrl);
-                Log.e(TAG, "gcmBundle:" + gcmBundle);
+                Print.e(TAG, "gcmBundle:" + gcmBundle);
                 Intent newIntent = new Intent(this, SplashScreenActivity.class);
                 newIntent.putExtra(DeepLinkManager.EXTRA_GCM_PAYLOAD, gcmBundle);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -162,22 +162,22 @@ public class JumiaWearableListenerService extends WearableListenerService {
      */
     public static class SendFilesTask extends AsyncTask<PutDataMapRequest, Integer, Integer> {
         protected Integer doInBackground(PutDataMapRequest... requests) {
-            Log.e("WEAR", "doInBackground");
+            Print.e("WEAR", "doInBackground");
             long token = Binder.clearCallingIdentity();
             try {
-                Log.e("WEAR", "doInBackground 1");
+                Print.e("WEAR", "doInBackground 1");
                 NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(sGoogleApiClient).await();
                 for (Node node : nodes.getNodes()) {
-                    Log.e("WEAR", "doInBackground 2");
+                    Print.e("WEAR", "doInBackground 2");
 
                     DataApi.DataItemResult result = Wearable.DataApi.putDataItem(sGoogleApiClient, requests[0].asPutDataRequest()).await();
                     if (result.getStatus().isSuccess()) {
-                        Log.e("WEAR", "doInBackground 3");
-                        Log.i(TAG, "code1DataMap: success! " + requests[0].getDataMap() + " sent to: " + node.getDisplayName());
+                        Print.e("WEAR", "doInBackground 3");
+                        Print.i(TAG, "code1DataMap: success! " + requests[0].getDataMap() + " sent to: " + node.getDisplayName());
                     } else {
-                        Log.e("WEAR", "doInBackground 4");
+                        Print.e("WEAR", "doInBackground 4");
                         // Log an error
-                        Log.i(TAG, "code1DataMap ERROR: failed to send DataMap");
+                        Print.i(TAG, "code1DataMap ERROR: failed to send DataMap");
                     }
                 }
 
@@ -190,7 +190,7 @@ public class JumiaWearableListenerService extends WearableListenerService {
         }
 
         protected void onProgressUpdate(Integer... progress) {
-            Log.e("WEAR", "onProgressUpdate");
+            Print.e("WEAR", "onProgressUpdate");
         }
 
     }

@@ -16,7 +16,7 @@ import com.mobile.newFramework.requests.session.LoginCustomer;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Example helper
@@ -63,17 +63,17 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save customer
         Customer customer = (Customer) baseResponse.getMetadata().getData();
         // Save credentials
         if (saveCredentials) {
-            Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+            Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
             mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, customer.getPassword());
             mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, customer.getEmail());
             mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-            Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
         JumiaApplication.CUSTOMER = customer;
@@ -88,7 +88,7 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

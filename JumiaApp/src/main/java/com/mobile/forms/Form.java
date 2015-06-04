@@ -30,7 +30,7 @@
 //import java.util.Map;
 //import java.util.Set;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represents an input form.

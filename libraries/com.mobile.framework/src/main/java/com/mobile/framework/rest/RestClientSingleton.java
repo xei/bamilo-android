@@ -67,7 +67,7 @@ import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * The RestClientSingleton takes care of the whole rest communication. Its a
@@ -124,7 +124,7 @@ public final class RestClientSingleton {
 	 * @author spereira
 	 */
 	private RestClientSingleton(Context context) {
-		Log.i(TAG, "CONSTRUCTOR");
+		Print.i(TAG, "CONSTRUCTOR");
 		// Save context
 		this.mContext = context;
 		// Save connectivity manager
@@ -138,7 +138,7 @@ public final class RestClientSingleton {
 	 * @author spereira
 	 */
 	public void init(){
-		Log.i(TAG, "ON INITIALIZE");
+		Print.i(TAG, "ON INITIALIZE");
 
 		CacheConfig cacheConfig = new CacheConfig();
 		cacheConfig.setMaxCacheEntries(100);
@@ -178,7 +178,7 @@ public final class RestClientSingleton {
 	private void setHttpUserAgent(){
 		// CASE Default user agent
 		String defaultUserAgent = System.getProperty("http.agent");
-		Log.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
+		Print.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
 		if(!TextUtils.isEmpty(defaultUserAgent)) {
 			mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
 		}
@@ -236,7 +236,7 @@ public final class RestClientSingleton {
 	public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "executeGetRestUrlString original: " + uri.toString());
+			Print.d(TAG, "executeGetRestUrlString original: " + uri.toString());
 		}
 
 		// Get event type
@@ -245,14 +245,14 @@ public final class RestClientSingleton {
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.i(TAG, "executeGetRestUrlString complete: " + url);
+			Print.i(TAG, "executeGetRestUrlString complete: " + url);
 		}
 		try {
 			HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
 			return executeHttpRequest(httpRequest, mHandler, metaData);
 		} catch (IllegalArgumentException ex){
 			// Catch error in case of malformed url
-			Log.e(TAG, ex.getLocalizedMessage(), ex);
+			Print.e(TAG, ex.getLocalizedMessage(), ex);
 			return executeHttpRequest(new HttpGet(""), mHandler,metaData);
 		}
 	}
@@ -265,7 +265,7 @@ public final class RestClientSingleton {
 	public String executePostRestUrlString(Uri uri, ContentValues formData, Handler mHandler, Bundle metaData) {
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "executePostRestUrlString original: " + uri.toString());
+			Print.d(TAG, "executePostRestUrlString original: " + uri.toString());
 		}
 
 		// Get event type
@@ -274,7 +274,7 @@ public final class RestClientSingleton {
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.i(TAG, "executePostRestUrlString complete: " + url);
+			Print.i(TAG, "executePostRestUrlString complete: " + url);
 		}
 
 		try {
@@ -285,13 +285,13 @@ public final class RestClientSingleton {
 				for (Entry<String, Object> entry : formData.valueSet()) {
 					Object value = entry.getValue();
 					if (value == null) {
-						Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
+						Print.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
 						continue;
 					}
 
 					params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
 					if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-						Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
+						Print.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
 					}
 				}
 			}
@@ -300,7 +300,7 @@ public final class RestClientSingleton {
 			return executeHttpRequest(httpRequest, mHandler, metaData);
 		} catch(IllegalArgumentException ex){
 			// Catch error in case of malformed url
-			Log.e(TAG, ex.getLocalizedMessage(), ex);
+			Print.e(TAG, ex.getLocalizedMessage(), ex);
 			return executeHttpRequest(new HttpPost(""), mHandler,metaData);
 		}
 	}
@@ -310,7 +310,7 @@ public final class RestClientSingleton {
 	 * @return the response as String e.g. json string
 	 */
 	private String executeHttpRequest(HttpUriRequest httpRequest, Handler mHandler, Bundle metaData) {
-		Log.i("TRACK", "ON EXECUTE HTTP REQUEST");
+		Print.i("TRACK", "ON EXECUTE HTTP REQUEST");
 
 		String result = "";
 		String md5 = metaData.getString(Constants.BUNDLE_MD5_KEY);
@@ -335,10 +335,10 @@ public final class RestClientSingleton {
 		// CASE NORMAL
 		else{
 			if (metaData.getBoolean(IMetaData.MD_IGNORE_CACHE) || eventType.cacheTime == RestContract.NO_CACHE) {
-				Log.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
+				Print.d(TAG, "executeHttpRequest: received ignore cache flag - bypassing cache");
 				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
 			} else {
-				Log.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
+				Print.d(TAG, "executeHttpRequest: received cache flag - cache time " + eventType.cacheTime);
 				String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + eventType.cacheTime + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;
 				httpRequest.addHeader(HeaderConstants.CACHE_CONTROL, value);
 			}
@@ -369,7 +369,7 @@ public final class RestClientSingleton {
 				}
 
 				EntityUtils.consumeQuietly(response.getEntity());
-				Log.w(TAG, "Got bad status code for request: " + httpRequest.getURI() + " -> " + statusCode);
+				Print.w(TAG, "Got bad status code for request: " + httpRequest.getURI() + " -> " + statusCode);
 
 				return null;
 			}
@@ -377,16 +377,16 @@ public final class RestClientSingleton {
 			CacheResponseStatus responseStatus = (CacheResponseStatus) mHttpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
 			switch (responseStatus) {
 				case CACHE_HIT:
-					Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
+					Print.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
 					break;
 				case CACHE_MODULE_RESPONSE:
-					Log.d(TAG, "CACHE RESPONSE STATUS: The response came directly by the caching module");
+					Print.d(TAG, "CACHE RESPONSE STATUS: The response came directly by the caching module");
 					break;
 				case CACHE_MISS:
-					Log.d(TAG, "CACHE RESPONSE STATUS: The response came from an upstream server");
+					Print.d(TAG, "CACHE RESPONSE STATUS: The response came from an upstream server");
 					break;
 				case VALIDATED:
-					Log.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
+					Print.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
 					break;
 			}
 
@@ -423,7 +423,7 @@ public final class RestClientSingleton {
 				mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority,eventTask));
 				Exception e = new Exception();
 				trackError(mContext, e, httpRequest.getURI(), ErrorCode.EMPTY_ENTITY, null, false, startTimeMillis);
-				Log.w(TAG, "Got empty entity for request: " + httpRequest.getURI() + " -> " + statusCode);
+				Print.w(TAG, "Got empty entity for request: " + httpRequest.getURI() + " -> " + statusCode);
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
@@ -432,7 +432,7 @@ public final class RestClientSingleton {
 			persistSessionCookie();
 
 			result = EntityUtils.toString(entity, Consts.UTF_8);
-			Log.i(TAG, "API RESPONSE : " + result);
+			Print.i(TAG, "API RESPONSE : " + result);
 
 			// Get the byte count response
 			int byteCountResponse = result.getBytes().length;
@@ -444,49 +444,49 @@ public final class RestClientSingleton {
 			return result;
 
 		} catch (ClientProtocolException e) {
-			Log.d("TRACK", "ClientProtocolException");
-			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "ClientProtocolException");
+			Print.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false, startTimeMillis);
 		} catch (HttpHostConnectException e) {
-			Log.d("TRACK", "HttpHostConnectException");
-			Log.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "HttpHostConnectException");
+			Print.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (ConnectTimeoutException e) {
-			Log.d("TRACK", "ConnectTimeoutException");
-			Log.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "ConnectTimeoutException");
+			Print.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (SocketTimeoutException e) {
-			Log.d("TRACK", "SocketTimeoutException");
-			Log.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "SocketTimeoutException");
+			Print.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (UnknownHostException e) {
-			Log.d("TRACK", "UnknownHostException");
-			Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "UnknownHostException");
+			Print.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (SSLException e) {
-			Log.d("TRACK", "SSLException");
-			Log.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "SSLException");
+			Print.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);
 		} catch (IOException e) {
-			Log.d("TRACK", "IOException");
-			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "IOException");
+			Print.e(TAG, "IO error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (OutOfMemoryError e) {
-			Log.d("TRACK", "OutOfMemoryError");
-			Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
+			Print.d("TRACK", "OutOfMemoryError");
+			Print.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
 			trackError(mContext, null, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (Exception e) {
-			Log.d("TRACK", "Exception");
+			Print.d("TRACK", "Exception");
 			e.printStackTrace();
-			Log.e(TAG, "Anormal exception " + e.getMessage(), e);
+			Print.e(TAG, "Anormal exception " + e.getMessage(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.UNKNOWN_ERROR, null, false, startTimeMillis);
 		}
@@ -601,7 +601,7 @@ public final class RestClientSingleton {
 		// Get the elpsed time
 		long elapsed = endTimeMillis - startTimeMillis;
 		// Log.i(TAG, (uri != null) ? uri.toString() : "n.a." + "--------- executeHttpRequest------------: request took " + elapsed + "ms bytes: " + bytesReceived);
-		Log.i(TAG, "executeHttpRequest took " + elapsed + "ms | " + ((uri != null) ? uri.toString() : "n.a."));
+		Print.i(TAG, "executeHttpRequest took " + elapsed + "ms | " + ((uri != null) ? uri.toString() : "n.a."));
 		// Track http transaction
 		NewRelicTracker.noticeSuccessTransaction((uri != null) ? uri.toString() : "n.a.", status, startTimeMillis, endTimeMillis, bytesReceived);
 		// Create a message

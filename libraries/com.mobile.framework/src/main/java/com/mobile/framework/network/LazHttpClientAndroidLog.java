@@ -2,7 +2,7 @@ package com.mobile.framework.network;
 
 
 import ch.boye.httpclientandroidlib.androidextra.HttpClientAndroidLog;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 
 public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
@@ -34,13 +34,13 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 
 	public void debug(Object message) {
 		if(isDebugEnabled()) {
-			Log.d(logTag, message.toString());
+			Print.d(logTag, message.toString());
 		}
 	}
 
 	public void debug(Object message, Throwable t) {
 		if(isDebugEnabled()) {
-			Log.d(logTag, message.toString(), t);
+			Print.d(logTag, message.toString(), t);
 		}
 	}
 
@@ -54,13 +54,13 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 
 	public void error(Object message) {
 		if(isErrorEnabled()) {
-			Log.e(logTag, message.toString());
+			Print.e(logTag, message.toString());
 		}
 	}
 
 	public void error(Object message, Throwable t) {
 		if(isErrorEnabled()) {
-			Log.e(logTag, message.toString(), t);
+			Print.e(logTag, message.toString(), t);
 		}
 	}
 
@@ -74,13 +74,13 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 
 	public void warn(Object message) {
 		if(isWarnEnabled()) {
-			Log.w(logTag, message.toString());
+			Print.w(logTag, message.toString());
 		}
 	}
 
 	public void warn(Object message, Throwable t) {
 		if(isWarnEnabled()) {
-			Log.w(logTag, message.toString(), t);
+			Print.w(logTag, message.toString(), t);
 		}
 	}
 
@@ -94,13 +94,13 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 
 	public void info(Object message) {
 		if(isInfoEnabled()) {
-			Log.i(logTag, message.toString());
+			Print.i(logTag, message.toString());
 		}
 	}
 
 	public void info(Object message, Throwable t) {
 		if(isInfoEnabled()) {
-			Log.i(logTag, message.toString(), t);
+			Print.i(logTag, message.toString(), t);
 		}
 	}
 
@@ -114,13 +114,13 @@ public class LazHttpClientAndroidLog extends HttpClientAndroidLog {
 
 	public void trace(Object message) {
 		if(isTraceEnabled()) {
-			Log.i(logTag, message.toString());
+			Print.i(logTag, message.toString());
 		}
 	}
 
 	public void trace(Object message, Throwable t) {
 		if(isTraceEnabled()) {
-			Log.i(logTag, message.toString(), t);
+			Print.i(logTag, message.toString(), t);
 		}
 	}
 

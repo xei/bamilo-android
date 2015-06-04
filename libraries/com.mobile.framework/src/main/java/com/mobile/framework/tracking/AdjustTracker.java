@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author nunocastro
@@ -184,7 +184,7 @@ public class AdjustTracker {
     }
     
     public static void startup(Context context) {
-        Log.d(TAG, "Adjust Startup");
+        Print.d(TAG, "Adjust Startup");
         sInstance = new AdjustTracker(context);
     }    
     
@@ -229,7 +229,7 @@ public class AdjustTracker {
 //            isupdate = true;
 //        }
         
-        Log.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
+        Print.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
 
     /**
@@ -290,7 +290,7 @@ public class AdjustTracker {
         if (!isEnabled) {
             return;
         }
-        Log.i(TAG, " Tracked Screen --> " + screen);
+        Print.i(TAG, " Tracked Screen --> " + screen);
         switch (screen) {
         case HOME:
             AdjustEvent eventHomeScreen = new AdjustEvent(mContext.getString(R.string.adjust_token_home));
@@ -380,7 +380,7 @@ public class AdjustTracker {
             break;
             
         case PRODUCT_LIST_SORTED:  //View Listing
-            Log.d("ADJUST","PRODUCT_LIST_SORTED");
+            Print.d("ADJUST", "PRODUCT_LIST_SORTED");
             AdjustEvent eventCatalogSorted = new AdjustEvent(mContext.getString(R.string.adjust_token_view_listing));
             eventCatalogSorted = getBaseParameters(eventCatalogSorted, bundle);
             if (bundle.getParcelable(CUSTOMER) != null) {
@@ -510,13 +510,13 @@ public class AdjustTracker {
         if (!isEnabled) {
             return;
         }
-        Log.i(TAG, " Tracked Event --> " + eventTracked);
+        Print.i(TAG, " Tracked Event --> " + eventTracked);
 
         switch (eventTracked) {
 
             case APP_OPEN:
-                Log.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
-                Log.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
+                Print.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
+                Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
                 AdjustEvent eventAppOpen = new AdjustEvent(mContext.getString(R.string.adjust_token_launch));
 
                 eventAppOpen.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());
@@ -561,7 +561,7 @@ public class AdjustTracker {
             case CHECKOUT_FINISHED: // Sale
                 try {
 
-                    Log.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
+                    Print.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
                     increaseTransactionCount();
 
                     if (bundle.getBoolean(IS_FIRST_CUSTOMER)) {
@@ -847,11 +847,11 @@ public class AdjustTracker {
      * @param mp
      */
     public static void printParameters(Map mp) {
-        Log.e("Adjust", "init ----------");
+        Print.e("Adjust", "init ----------");
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
-            Log.e("Adjust","key="+pairs.getKey() + " value=" + pairs.getValue());
+            Print.e("Adjust", "key=" + pairs.getKey() + " value=" + pairs.getValue());
         }
     }
     
@@ -1024,7 +1024,7 @@ public class AdjustTracker {
             }
             
         } catch (Exception e) {
-            Log.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
+            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
         }
         
         return address;
@@ -1040,7 +1040,7 @@ public class AdjustTracker {
                 geoAddress = addresses.get(0);
             }
         } catch (Exception e) {
-            Log.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
+            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
         }
         
         return geoAddress;
@@ -1065,7 +1065,7 @@ public class AdjustTracker {
             bestProvider = LocationManager.GPS_PROVIDER;
         }
         // Return provider
-        Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
+        Print.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
 

@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is a helper to manage the Last Viewed products on database.
@@ -196,7 +196,7 @@ public class LastViewedTableHelper extends BaseTable {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		String query = new StringBuilder("select count(*) from ").append(TABLE_NAME)
 				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -206,7 +206,7 @@ public class LastViewedTableHelper extends BaseTable {
 				result = false;
 			}
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
+			Print.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
 		}
 
 		// Validate cursor
@@ -233,7 +233,7 @@ public class LastViewedTableHelper extends BaseTable {
 			cursor.moveToFirst();
 			result = cursor.getInt(0);
 			// Log result
-			Log.i(TAG, "SQL RESULT: " + result);
+			Print.i(TAG, "SQL RESULT: " + result);
 		}
 		// Validate cursor
 		if (cursor != null) {
@@ -293,7 +293,7 @@ public class LastViewedTableHelper extends BaseTable {
 		ArrayList<LastViewedAddableToCart> listLastViewed = new ArrayList<LastViewedAddableToCart>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("select * from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
@@ -333,7 +333,7 @@ public class LastViewedTableHelper extends BaseTable {
 						lastViewed.setSelectedSimple((simples.size() == 1) ? 0 : -1); // NO_SIMPLE_SELECTED
 
 					} catch (JSONException e) {
-						Log.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nsimplesJSON = " + simplesJSON);
+						Print.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nsimplesJSON = " + simplesJSON);
 					}
 				}
 
@@ -352,7 +352,7 @@ public class LastViewedTableHelper extends BaseTable {
 						}
 						lastViewed.setVariations(variations);
 					} catch (JSONException e) {
-						Log.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nvariationsJSON = " + variationsJSON);
+						Print.e(TAG, "JSONException on sku: " + lastViewed.getSku() + "\nvariationsJSON = " + variationsJSON);
 					}
 				}
 
@@ -405,7 +405,7 @@ public class LastViewedTableHelper extends BaseTable {
 			db.setTransactionSuccessful();
 			success = true;
 		} catch (SQLException e) {
-			Log.e(e.getMessage());
+			Print.e(e.getMessage());
 			e.printStackTrace();
 			success = false;
 		}
@@ -492,7 +492,7 @@ public class LastViewedTableHelper extends BaseTable {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		String query = new StringBuilder("delete from ").append(TABLE_NAME)
 				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
+		Print.i(TAG, "SQL RESULT query :  " + query);
 		db.execSQL(query);
 		db.close();
 	}

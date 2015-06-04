@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to represent an item associated a campaign
@@ -69,7 +69,7 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
-		Log.i(TAG, "ON INITIALIZE");
+		Print.i(TAG, "ON INITIALIZE");
 		mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG, 0d);
         specialPriceDouble = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG, 0d);
 		specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
@@ -200,8 +200,8 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		Print.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Print.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
 		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 

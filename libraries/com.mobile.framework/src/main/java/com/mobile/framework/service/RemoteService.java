@@ -27,7 +27,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import ch.boye.httpclientandroidlib.client.utils.URIBuilder;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class RemoteService extends Service {
 
@@ -120,7 +120,7 @@ public class RemoteService extends Service {
 
         public synchronized void execute(Runnable command) {
             if (executions.contains(command)) {
-                Log.w(TAG, "Duplicate requests for: " + command);
+                Print.w(TAG, "Duplicate requests for: " + command);
                 return;
             }
             super.execute(command);
@@ -150,7 +150,7 @@ public class RemoteService extends Service {
         }
 
         if (Darwin.logDebugEnabled) {
-            Log.d(TAG, "completeUriWithPort: uri = " + completeUrl);
+            Print.d(TAG, "completeUriWithPort: uri = " + completeUrl);
         }
 
         return completeUrl;
@@ -158,18 +158,18 @@ public class RemoteService extends Service {
 
     public static Uri completeUri(Uri uri) {
         if (Darwin.logDebugEnabled) {
-            Log.d(TAG, "completeUri: host= " + RestContract.REQUEST_HOST + " base= " + RestContract.REST_BASE_PATH + " service= " + uri);
+            Print.d(TAG, "completeUri: host= " + RestContract.REQUEST_HOST + " base= " + RestContract.REST_BASE_PATH + " service= " + uri);
         }
         Builder builder = uri.buildUpon();
 
         if (uri.getAuthority() == null) {
             builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
-            Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
+            Print.w(TAG, "Url " + uri + " should include authority, authority and base path added");
         }
 
         if(RestContract.USE_ONLY_HTTPS){
             if ( Darwin.logDebugEnabled) {
-                Log.d(TAG, "Request type changed to https.");
+                Print.d(TAG, "Request type changed to https.");
             }
             builder.scheme("https");
         }
@@ -179,13 +179,13 @@ public class RemoteService extends Service {
          * TODO: Remove me if Bamilo supports https.
          */
         if(RestContract.USE_ONLY_HTTP) {
-            Log.i(TAG, "BAMILO REQUEST: force http.");
+            Print.i(TAG, "BAMILO REQUEST: force http.");
             builder.scheme("http");
         }
 
         uri = builder.build();
         if ( Darwin.logDebugEnabled) {
-            Log.d(TAG, "Rebuilded uri: " + uri);
+            Print.d(TAG, "Rebuilded uri: " + uri);
         }
         return uri;
     }

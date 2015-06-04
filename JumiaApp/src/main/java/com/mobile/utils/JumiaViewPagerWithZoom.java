@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import com.mobile.components.infiniteviewpager.InfiniteViewPager;
 import com.mobile.framework.utils.LogTagHelper;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class JumiaViewPagerWithZoom extends InfiniteViewPager {
     private boolean isPagingEnabled = true;
@@ -28,7 +28,7 @@ public class JumiaViewPagerWithZoom extends InfiniteViewPager {
             try {
                 return super.onTouchEvent(event);
             } catch (IllegalArgumentException e) {
-                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onTouchEvent");
+                Print.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onTouchEvent");
             }
         }
 
@@ -42,7 +42,7 @@ public class JumiaViewPagerWithZoom extends InfiniteViewPager {
             try {
                 return super.onInterceptTouchEvent(event);
             } catch (IllegalArgumentException e) {
-                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onInterceptTouchEvent");
+                Print.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onInterceptTouchEvent");
             }
         }
 

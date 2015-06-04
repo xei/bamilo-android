@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class RocketImageLoader {
 
@@ -367,7 +367,7 @@ public class RocketImageLoader {
 
     public void stopProcessingQueue(String tag) {        
         if (isVolleyRequestQueueRunning) {
-            Log.i("RocketImageLoader", " --- > STOP ProcessingQueue");
+            Print.i("RocketImageLoader", " --- > STOP ProcessingQueue");
             isVolleyRequestQueueRunning = false;
             volleyRequestQueue.stop();
             if (null != tag)
@@ -379,7 +379,7 @@ public class RocketImageLoader {
     public void startProcessingQueue() {
         if (!isVolleyRequestQueueRunning) {
             isVolleyRequestQueueRunning = true;
-            Log.i("RocketImageLoader", " --- > START ProcessingQueue");        
+            Print.i("RocketImageLoader", " --- > START ProcessingQueue");
             volleyRequestQueue.start();
         }
     }

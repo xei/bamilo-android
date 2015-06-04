@@ -11,7 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This Class is used to create an adapter for the list of countries.
@@ -56,7 +56,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("Country List", "Position: " + position);
+        Print.i("Country List", "Position: " + position);
         View rowView = convertView;
         if (rowView == null) {
             rowView = mInflater.inflate(R.layout.change_country_row, parent, false);
@@ -85,7 +85,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
                 rowView.setBackground(ctx.getResources().getDrawable(R.drawable.selector_item_bottom));
             }          
         } else if(values.length > 0 && position == 0 && null != ctx){
-            Log.d("SELECTOR","TOP:"+position);
+            Print.d("SELECTOR", "TOP:" + position);
             if(-1 != sdk && sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 rowView.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.selector_item_top));
             } else {
@@ -93,7 +93,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
             }     
             
         } else {
-            Log.d("SELECTOR","MIDDLE:"+position);
+            Print.d("SELECTOR", "MIDDLE:" + position);
             if(-1 != sdk && sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 rowView.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.selector_listitem_rounded_margin_highlight));
             } else {

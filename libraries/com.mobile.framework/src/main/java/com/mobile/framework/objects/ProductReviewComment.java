@@ -11,7 +11,7 @@
 //
 //import com.mobile.framework.rest.RestConstants;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class that represents the product review comment

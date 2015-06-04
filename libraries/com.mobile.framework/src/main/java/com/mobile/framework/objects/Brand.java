@@ -17,7 +17,7 @@ import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class that represents the server-side product brand. Contains id, name and
@@ -80,7 +80,7 @@ public class Brand implements IJSONSerializable, Parcelable {
             url = innerObject.getString(RestConstants.JSON_URL_TAG);
             name = innerObject.getString(RestConstants.JSON_NAME_TAG);
             if(name.trim().equals("") || url.trim().equals("")){
-                Log.d("brands","Brand name = " + name + "\r\nbrand url = " + url);
+                Print.d("brands", "Brand name = " + name + "\r\nbrand url = " + url);
                 return false;
             }
             

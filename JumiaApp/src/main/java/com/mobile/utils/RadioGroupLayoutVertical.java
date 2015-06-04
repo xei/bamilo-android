@@ -25,7 +25,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
@@ -57,7 +57,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
+        Print.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         formsMap = map;
         mDefaultSelected = defaultSelected;
@@ -74,14 +74,14 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int idx;
         generatedForms = new HashMap<>();
         for (idx = 0; idx < mItems.size(); idx++) {
-            Log.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
+            Print.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
             HashMap<String, PaymentInfo> paymentsInfoList = JumiaApplication.getPaymentsInfoList();
             if (formsMap.containsKey(mItems.get(idx))) {
                 createRadioButton(idx, paymentsInfoList, true);
             } else if (paymentsInfoList != null && paymentsInfoList.size() > 0 && paymentsInfoList.containsKey(mItems.get(idx))) {
                 createRadioButton(idx, paymentsInfoList, false);
             } else {
-                Log.d(TAG, "code1subForms updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+                Print.d(TAG, "code1subForms updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
                 RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null, false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
@@ -117,7 +117,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
 
         if (addInnerForm) {
-            Log.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
+            Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
 
             // Generate an inner form with this LayoutParams
             LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -130,9 +130,9 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 
             extras.addView(formGenerator.getContainer());
 
-            Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+            Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
         } else {
-            Log.i(TAG, "code1subForms updateRadioGroup does not contains : " + mItems.get(idx));
+            Print.i(TAG, "code1subForms updateRadioGroup does not contains : " + mItems.get(idx));
         }
 
         // Hide first divider
@@ -200,7 +200,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
         int idx = mGroup.indexOfChild(radioButton);
-        Log.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
+        Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
         return idx;
     }
 

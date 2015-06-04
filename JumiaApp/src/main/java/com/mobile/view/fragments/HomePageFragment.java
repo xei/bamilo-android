@@ -47,7 +47,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show the home page.
@@ -101,7 +101,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -112,13 +112,13 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            Log.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
         }
     }
 
@@ -131,7 +131,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
         mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
         // Get recycler view
@@ -168,7 +168,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -179,7 +179,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
     }
@@ -200,7 +200,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @author sergiopereira
      */
     public void onReloadContent() {
-        Log.i(TAG, "ON RELOAD CONTENT");
+        Print.i(TAG, "ON RELOAD CONTENT");
         onResumeExecution();
     }
 
@@ -210,7 +210,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @author sergiopereira
      */
     public void onResumeExecution() {
-        Log.i(TAG, "ON RESUME EXECUTION");
+        Print.i(TAG, "ON RESUME EXECUTION");
         // Disabled for Samsung and Blackberry (check_version_enabled)
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(getActivity());
@@ -237,7 +237,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         // Save the scroll state for rotation
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
@@ -252,7 +252,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         // Save the scroll state
         saveScrollState();
     }
@@ -265,7 +265,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -276,7 +276,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         // Remove parent from views
         TeaserViewFactory.onDetachedViewHolder(mViewHolders);
     }
@@ -289,7 +289,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         // Clean data
         mHomePage = null;
         mViewHolders = null;
@@ -316,7 +316,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Warning: To perform this method is necessary detached view from parent.
      */
     private void rebuildHomePage(ArrayList<BaseTeaserViewHolder> mViewHolders) {
-        Log.i(TAG, "REBUILD HOME PAGE");
+        Print.i(TAG, "REBUILD HOME PAGE");
         // Update each view older
         for (BaseTeaserViewHolder viewHolder : mViewHolders) {
             // Update view
@@ -334,7 +334,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Create the home page
      */
     private void buildHomePage(HomePageObject homePage) {
-        Log.i(TAG, "BUILD HOME PAGE");
+        Print.i(TAG, "BUILD HOME PAGE");
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
@@ -360,7 +360,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @return int[]
      */
     private boolean saveScrollState() {
-        Log.i(TAG, "ON SAVE SCROLL STATE");
+        Print.i(TAG, "ON SAVE SCROLL STATE");
         // Validate view
         if (mScrollView != null) {
             mScrollSavedPosition = new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()};
@@ -374,13 +374,13 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @author sergiopereira
      */
     private void restoreScrollState() {
-        Log.i(TAG, "ON RESTORE SCROLL SAVED STATE");
+        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
         // Validate state
         if (mScrollSavedPosition != null) {
             // Scroll to saved position
             mScrollView.post(new Runnable() {
                 public void run() {
-                    Log.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+                    Print.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
                     mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
                 }
             });
@@ -407,7 +407,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Process the click on teaser
      */
     private boolean onClickTeaserItem(View view) {
-        Log.i(TAG, "ON CLICK TEASER ITEM");
+        Print.i(TAG, "ON CLICK TEASER ITEM");
         // Flag to mark as intercepted
         boolean intercepted = true;
         // Get type
@@ -424,7 +424,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         int origin = (int) view.getTag(R.id.target_teaser_origin);
         // Get teaser group type
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
-        Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
+        Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
@@ -443,7 +443,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             case UNKNOWN:
             default:
                 intercepted = false;
-                Log.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
+                Print.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
                 break;
         }
         return intercepted;
@@ -453,7 +453,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto catalog page
      */
     private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
-        Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+        Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
@@ -467,7 +467,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto product detail
      */
     private void gotoProductDetail(String url, TeaserGroupType groupType) {
-        Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
+        Print.i(TAG, "GOTO PRODUCT DETAIL: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
@@ -479,7 +479,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto static page
      */
     private void gotoStaticPage(String title, String url, TeaserGroupType groupType) {
-        Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
+        Print.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
@@ -491,7 +491,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto campaign page
      */
     private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
-        Log.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
+        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
         // Get group
         BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin
@@ -556,7 +556,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @author sergiopereira
      */
     private void triggerTeasers() {
-        Log.d(TAG, "ON TRIGGER: GET TEASERS");
+        Print.d(TAG, "ON TRIGGER: GET TEASERS");
         // Get teaser collection
         triggerContentEvent(new GetHomeHelper(), null, this);
     }
@@ -567,7 +567,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @author sergiopereira
      */
     private void triggerPromotions() {
-        Log.d(TAG, "ON TRIGGER: GET PROMOTIONS");
+        Print.d(TAG, "ON TRIGGER: GET PROMOTIONS");
         triggerContentEventNoLoading(new GetPromotionsHelper(), null, this);
     }
 
@@ -577,30 +577,30 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS");
+        Print.i(TAG, "ON SUCCESS");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_HOME_EVENT:
-                Log.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
+                Print.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
                 HomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 if (homePage != null && homePage.hasTeasers()) {
-                    Log.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
+                    Print.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
                     // Save home page
                     mHomePage = homePage;
                     // Build home page
                     buildHomePage(homePage);
                 } else {
-                    Log.i(TAG, "SHOW FALL BAK");
+                    Print.i(TAG, "SHOW FALL BAK");
                     showFragmentFallBack();
                 }
                 break;
             case GET_PROMOTIONS:
-                Log.i(TAG, "ON SUCCESS RESPONSE: GET_PROMOTIONS");
+                Print.i(TAG, "ON SUCCESS RESPONSE: GET_PROMOTIONS");
                 Promotion promotion = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 onShowPromotions(promotion);
                 break;
@@ -618,12 +618,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             try {
                 DialogPromotionFragment.newInstance(promotion).show(getChildFragmentManager(), null);
             } catch (IllegalStateException e) {
-                Log.w(TAG, "promotion expired!" + promotion.getEndDate());
+                Print.w(TAG, "promotion expired!" + promotion.getEndDate());
             }
         } else if (promotion != null){
-            Log.i(TAG, "PROMOTION EXPIRED! " + promotion.getEndDate());
+            Print.i(TAG, "PROMOTION EXPIRED! " + promotion.getEndDate());
         } else {
-            Log.i(TAG, "PROMOTION IS NULL!");
+            Print.i(TAG, "PROMOTION IS NULL!");
         }
     }
 
@@ -635,10 +635,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR RESPONSE");
+        Print.i(TAG, "ON ERROR RESPONSE");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Check base errors
@@ -647,11 +647,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_HOME_EVENT:
-                Log.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
+                Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
                 break;
             case GET_PROMOTIONS:
-                Log.i(TAG, "ON ERROR RESPONSE: GET_PROMOTIONS");
+                Print.i(TAG, "ON ERROR RESPONSE: GET_PROMOTIONS");
                 break;
             default:
                 break;
@@ -688,7 +688,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
             }
         } catch (IllegalStateException e) {
-            Log.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
+            Print.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
         }
     }
 

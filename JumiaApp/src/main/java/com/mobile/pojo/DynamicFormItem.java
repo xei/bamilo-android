@@ -65,7 +65,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This Class defines the representation of each control on a dynamic form
@@ -285,7 +285,7 @@ public class DynamicFormItem {
                     buildRatingOptionsTerms(params, controlWidth);
                     break;
                 default:
-                    Log.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
+                    Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
                     break;
             }
         }
@@ -727,7 +727,7 @@ public class DynamicFormItem {
                                 }
                             }
                         }
-                        Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
+                        Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
                         if (valid) {
@@ -744,7 +744,7 @@ public class DynamicFormItem {
                             }
                         }
                     } else {
-                        Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
+                        Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
                         valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
 
@@ -1008,7 +1008,7 @@ public class DynamicFormItem {
         ((LinearLayout) this.dataControl).addView(mCheckBox);
 
         TextView mLinkTextView = new TextView(this.context);
-        Log.i(TAG, "code1link : " + this.entry.getLinkText());
+        Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setId(parent.getNextId());
         mLinkTextView.setTag(this.entry.getKey());
@@ -1128,10 +1128,10 @@ public class DynamicFormItem {
         }
 
         if (this.entry.getDataSet().size() > 2 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
-            Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
+            Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
         } else {
-            Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_HORIZONTAL");
+            Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_HORIZONTAL");
             createRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
         }
 
@@ -1200,7 +1200,7 @@ public class DynamicFormItem {
             ((Button) this.dataControl).setText(text);
             ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
         } else if (this.entry.getKey().equals("birthday")) {
-            Log.i("ENTERED BIRTHDAY", " HERE ");
+            Print.i("ENTERED BIRTHDAY", " HERE ");
             String text = context.getString(R.string.register_birthday);
             ((Button) this.dataControl).setHint(text);
             ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
@@ -1221,12 +1221,12 @@ public class DynamicFormItem {
 
             @Override
             public void onDatePickerDialogSelect(int year, int month, int day) {
-                Log.i(TAG, "code1date : year : " + year);
+                Print.i(TAG, "code1date : year : " + year);
                 GregorianCalendar cal = new GregorianCalendar(year, month, day);
                 Date d = new Date(cal.getTimeInMillis());
                 String date = DateFormat.getDateInstance(DateFormat.LONG).format(d);
                 ((Button) DynamicFormItem.this.dataControl).setText(date);
-                Log.i(TAG, "code1date : date : " + date);
+                Print.i(TAG, "code1date : date : " + date);
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         };
@@ -1541,7 +1541,7 @@ public class DynamicFormItem {
      * TODO: This is a temporary solution
      */
     private void createRelatedRadioGroup() {
-        Log.i(TAG, "CREATE RELATED RADIO GROUP");
+        Print.i(TAG, "CREATE RELATED RADIO GROUP");
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
         radioGroup.setItems(this.entry.getRelatedFieldOptions(), RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -1596,7 +1596,7 @@ public class DynamicFormItem {
             if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
-                    Log.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
+                    Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).fields.size() > 0 || paymentMethodsField.get(key).subForms.size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
@@ -1769,7 +1769,7 @@ public class DynamicFormItem {
             } catch (ParseException e) {
                 // if the date has the wrong format
                 // there cant be more done
-                Log.d(TAG, "setDate: cant parse date: " + dateString);
+                Print.d(TAG, "setDate: cant parse date: " + dateString);
                 return;
             }
             Calendar cal = new GregorianCalendar();

@@ -10,7 +10,7 @@ import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.utils.Constants;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 /**
  * Worker class that deals with the request call of the RestClientSingleton
  * @author josedourado
@@ -31,7 +31,7 @@ public class RequestWorker implements Runnable {
 	public RequestWorker(Bundle bundle,Handler handler, Context context){
 		this.context = context;
 		uri = Uri.parse(bundle.getString(Constants.BUNDLE_URL_KEY));
-		Log.i(TAG,"Executing => " + uri.toString());
+		Print.i(TAG, "Executing => " + uri.toString());
 		type = (RequestType) bundle.getSerializable(Constants.BUNDLE_TYPE_KEY);
 		if(type == RequestType.POST) formData = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
 		mHandler = handler;

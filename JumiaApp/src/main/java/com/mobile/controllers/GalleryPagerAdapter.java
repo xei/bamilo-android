@@ -18,7 +18,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
@@ -66,7 +66,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     public void replaceAll(ArrayList<String> images) {
         this.mImageUrls = images;
         notifyDataSetChanged();
-        Log.d(TAG, "replaceAll: done - notfied");
+        Print.d(TAG, "replaceAll: done - notfied");
     }
 
     /*
@@ -88,7 +88,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         View view = null;
         try {
             if (this.isZoomAvailable) {
-                Log.i(TAG, " full_screen_gallery: " + position);
+                Print.i(TAG, " full_screen_gallery: " + position);
                 view = mInflater.inflate(R.layout.full_screen_gallery, container, false);
             } else {
                 view = mInflater.inflate(R.layout.image_loadable, container, false);
@@ -157,7 +157,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 mAttacher.setScaleType(ScaleType.FIT_CENTER);
                 mAttacher = null;
             } catch (IllegalStateException | NullPointerException e) {
-                Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
+                Print.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
             }
         }
     }

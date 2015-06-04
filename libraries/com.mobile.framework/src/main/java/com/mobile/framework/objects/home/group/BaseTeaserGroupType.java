@@ -16,7 +16,7 @@
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 ///**
 // * Class used to represent the base of a group of teasers.

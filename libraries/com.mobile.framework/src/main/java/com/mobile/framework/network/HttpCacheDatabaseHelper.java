@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author nutzer2
@@ -90,8 +90,8 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		 Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                 + newVersion + ", which will destroy all old data");
+		 Print.w(TAG, "Upgrading database from version " + oldVersion + " to "
+				 + newVersion + ", which will destroy all old data");
 		 db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 		 onCreate(db);
 	}
@@ -146,6 +146,6 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	public void delete(String key) {
 		SQLiteDatabase writableDatabase = getWritableDatabase();
 		int result = writableDatabase.delete(TABLE_NAME, COLUMN_ID + " = " + key.hashCode(), null);
-        Log.d(TAG, "KEY: "+ key + " DELETE RESULT : " + result);
+        Print.d(TAG, "KEY: " + key + " DELETE RESULT : " + result);
 	}
 }

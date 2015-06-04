@@ -45,7 +45,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author Paulo Carvalho
@@ -120,7 +120,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -131,7 +131,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         
         if(savedInstanceState != null) {
             selectedProduct = savedInstanceState.getInt("selectedPos");
@@ -140,7 +140,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
             
-                Log.i("ORDER", "ON LOAD SAVED STATE ordersList size:"+ordersList.size());
+                Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
         }
         
     }
@@ -154,7 +154,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
@@ -205,7 +205,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -216,7 +216,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         triggerGetOrderList();
     }
 
@@ -228,7 +228,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -239,7 +239,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -250,7 +250,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
 
@@ -268,11 +268,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT");
         mReceivedError = false;
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -347,10 +347,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        Log.d(TAG, "ON ERROR EVENT");
+        Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -364,11 +364,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         switch (eventType) {
         case GET_MY_ORDERS_LIST_EVENT:
             if(isVisible && !errorHandled){
-                Log.w("ORDER","ERROR Visible");
+                Print.w("ORDER", "ERROR Visible");
                     if(null == JumiaApplication.CUSTOMER){
                         triggerLogin();
                     } else {
-                        Log.w("ORDER","ERROR Visible");
+                        Print.w("ORDER", "ERROR Visible");
                         //used for when the user session expires on the server side
                         try{
                             boolean isNotLoggedIn = false;
@@ -391,7 +391,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                         }
                     }
             } else {
-                Log.w("ORDER","ERROR notVisible");
+                Print.w("ORDER", "ERROR notVisible");
                 mReceivedError = true;
             }
 
@@ -600,7 +600,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState");
+        Print.i(TAG, "onSaveInstanceState");
         if(ordersAdapter != null){
             outState.putInt("selectedPos", ordersAdapter.getSelectedPosition());
             outState.putInt("currentPage", pageIndex);
@@ -635,7 +635,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                         @Override
                         public void run() {
                             mIsLoadingMore = true;
-                            Log.w("ORDER","LOAD MORE");
+                            Print.w("ORDER", "LOAD MORE");
                             showProductsLoading(true);
                             getMoreProducts();
                         }

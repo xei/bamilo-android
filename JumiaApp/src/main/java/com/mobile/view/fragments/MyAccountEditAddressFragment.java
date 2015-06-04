@@ -16,7 +16,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -106,7 +106,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
             onErrorOccurred();
         }
     }

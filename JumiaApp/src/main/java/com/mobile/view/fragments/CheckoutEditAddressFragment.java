@@ -23,7 +23,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -121,7 +121,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
         }
     }

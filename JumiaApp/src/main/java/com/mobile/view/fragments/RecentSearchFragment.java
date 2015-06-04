@@ -32,7 +32,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Class used to show recent searches
@@ -85,7 +85,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         setAppContentLayout(view);
         init();
     }
@@ -97,7 +97,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.RECENT_SEARCHES, getLoadTime(), false);
     }
@@ -107,10 +107,10 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      */
     
     private void init() {
-        Log.d(TAG, "INIT");
+        Print.d(TAG, "INIT");
         mContext = getBaseActivity();
         // Get Recent Searches
-        Log.i(TAG, "LOAD RECENT SEARCHES");
+        Print.i(TAG, "LOAD RECENT SEARCHES");
         showFragmentLoading();
         new GetSearchSuggestionsHelper(this);
     }
@@ -137,7 +137,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
 
                 showEmpty();
                 mClearAllButton.setVisibility(View.GONE);
-                Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
+                Print.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
                 mClearAllButton.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -181,7 +181,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      * @author Andre Lopes
      */
     protected void onClickContinueShopping() {
-        Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
+        Print.i(TAG, "ON CLICK CONTINUE SHOPPING");
         getBaseActivity().onBackPressed();
     }
 
@@ -194,7 +194,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      * @param searchText
      */
     protected void executeSearchRequest(String searchText) {
-        Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
@@ -214,17 +214,17 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.d(TAG, "ON RESPONSE COMPLETE:");
+        Print.d(TAG, "ON RESPONSE COMPLETE:");
 
         if (isOnStoppingProcess) return;
 
         super.handleSuccessEvent(bundle);
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
-            Log.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
+            Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
             ArrayList<Suggestion> response = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             if (response != null) {
@@ -235,7 +235,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                     mRecentSearchesList.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
+                            Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
                             Suggestion selectedSuggestion = (Suggestion) mRecentSearchesList.getItemAtPosition(position);
                             String text = selectedSuggestion.getResult();
                             GetSearchSuggestionsHelper.saveSearchQuery(text);
@@ -253,11 +253,11 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                 showEmpty();
             }
 
-            Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
+            Print.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
             break;
         default:
-            Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
+            Print.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
             break;
         }
     }    
@@ -268,18 +268,18 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.d(TAG, "ON RESPONSE ERROR:");
+        Print.d(TAG, "ON RESPONSE ERROR:");
 
         if (isOnStoppingProcess) return;
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
-            Log.d(TAG, "ON RESPONSE ERROR: GET_SEARCH_SUGGESTIONS_EVENT");
+            Print.d(TAG, "ON RESPONSE ERROR: GET_SEARCH_SUGGESTIONS_EVENT");
             showFragmentContentContainer();
             break;
         default:
-            Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
+            Print.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
             break;
         }
     }

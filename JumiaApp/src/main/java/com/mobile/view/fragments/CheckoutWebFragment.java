@@ -52,7 +52,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import ch.boye.httpclientandroidlib.cookie.Cookie;
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * @author sergiopereira
@@ -107,9 +107,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public boolean allowBackPressed() {
         if (webview == null) {
-            Log.d(TAG, "onBackPressed");
+            Print.d(TAG, "onBackPressed");
         } else {
-            Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
         }
         boolean result = false;
         if (webview != null) {
@@ -130,7 +130,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
 
     }
 
@@ -142,7 +142,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         triggerGetCustomer();
         triggerGetShoppingCartItems();
     }
@@ -183,7 +183,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 
         webview = (WebView) view.findViewById(R.id.webview);
         // webview = new WebView(getActivity());
@@ -211,7 +211,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -222,7 +222,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
@@ -247,7 +247,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -261,7 +261,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -273,7 +273,7 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -297,7 +297,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.e(getTag(), "LOW MEM");
+        Print.e(getTag(), "LOW MEM");
         System.gc();
     }
 
@@ -322,7 +322,7 @@ public class CheckoutWebFragment extends BaseFragment {
         }
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy();
-        Log.d(TAG, "Loading Url: " + checkoutUrl);
+        Print.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }
@@ -365,10 +365,10 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             if (cookie.getDomain().startsWith(".")) {
                 transDomain = transDomain.substring(1);
-                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
+                Print.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
                         + transDomain);
             } else {
-                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
+                Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
             }
         }
         return transDomain;
@@ -401,7 +401,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, int errorCode,
                                     String description, final String failingUrl) {
-            Log.e(TAG, "Received error: " + errorCode + " " + description + " "
+            Print.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
 
             failedPageRequest = failingUrl;
@@ -438,13 +438,13 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d(TAG, "onPageFinished: url = " + url);
+            Print.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
-                Log.d(TAG, "onPageFinished: resetting error page inforamtion");
+                Print.d(TAG, "onPageFinished: resetting error page inforamtion");
                 wasLoadingErrorPage = false;
                 failedPageRequest = null;
             } else if (url.equals(failedPageRequest)) {
-                Log.d(TAG, "onPageFinished: page was saved failed page");
+                Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
@@ -458,7 +458,7 @@ public class CheckoutWebFragment extends BaseFragment {
                  * This line causes a JNI exception only in the emulators 2.3.X.
                  * @see http://code.google.com/p/android/issues/detail?id=12987
                  */
-                Log.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
+                Print.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
                 view.loadUrl(JAVASCRIPT_PROCESS);
                 //view.loadUrl(JAVASCRIPT_PRINT);
             }
@@ -471,9 +471,9 @@ public class CheckoutWebFragment extends BaseFragment {
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
             try {
-                Log.d(TAG, "onLoadResource: url = " + url);
+                Print.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
-                Log.d(TAG, "onLoadResource: url = OOF");
+                Print.d(TAG, "onLoadResource: url = OOF");
                 e.printStackTrace();
             }
 
@@ -485,7 +485,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d(TAG, "onPageStarted: url = " + url);
+            Print.d(TAG, "onPageStarted: url = " + url);
             if (url.equals(failedPageRequest)) {
                 return;
             }
@@ -510,7 +510,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
                                        SslError error) {
-            Log.w(TAG, "Received ssl error: " + error);
+            Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
                 Toast.makeText(
                         getActivity(),
@@ -532,7 +532,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @JavascriptInterface
         public void processContent(String content) {
             try {
-                Log.d(TAG, "Got checkout response: " + content);
+                Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
 
@@ -566,9 +566,9 @@ public class CheckoutWebFragment extends BaseFragment {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             } catch (ParseException e) {
-                Log.e(TAG, "parse exception:", e);
+                Print.e(TAG, "parse exception:", e);
             } catch (JSONException e) {
-                Log.e(TAG, "json parse exception:", e);
+                Print.e(TAG, "json parse exception:", e);
             }
         }
     }

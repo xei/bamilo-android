@@ -11,7 +11,7 @@ package com.mobile.app;
 //import android.app.Application;
 //import android.content.Context;
 //import android.graphics.Bitmap.Config;
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.output.Log;
 //
 //import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 //import com.nostra13.universalimageloader.core.DisplayImageOptions;

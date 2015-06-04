@@ -13,7 +13,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * 
@@ -47,7 +47,7 @@ class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChange
      * @return
      */
     public static FilterPriceFragment newInstance(DialogFilterFragment parent, Bundle bundle) {
-        Log.d(TAG, "NEW INSTANCE: PRICE");
+        Print.d(TAG, "NEW INSTANCE: PRICE");
         FilterPriceFragment frag = new FilterPriceFragment();
         frag.mParent = parent;
         frag.setArguments(bundle);
@@ -87,7 +87,7 @@ class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChange
         mCurrMinValue = mMin = filterOption.getMin();
         mCurrMaxValue = mMax = filterOption.getMax();
         mInterval = filterOption.getInterval();
-        Log.d(TAG, "FILTER RANGE: " + mMin + " " +  mMax + " " + mInterval);
+        Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
         
         // Title
         ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mCatalogFilter.getName());
@@ -123,7 +123,7 @@ class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChange
         // Set discount box
         mDiscountBox.setChecked(mCatalogFilter.isRangeWithDiscount());
         
-        Log.d(TAG, "FILTER CURRENT RANGE: " + mCurrMinValue + " " +  mCurrMaxValue);
+        Print.d(TAG, "FILTER CURRENT RANGE: " + mCurrMinValue + " " + mCurrMaxValue);
     }
     
     /*
@@ -171,7 +171,7 @@ class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChange
         // Clean saved values
         mCatalogFilter.cleanRangeValues();
         mCatalogFilter.setRangeWithDiscount(false);
-        Log.d(TAG, "FILTER: CLEAN " + mMin + " " + mMax + " " + mCurrMinValue + " " + mCurrMaxValue);
+        Print.d(TAG, "FILTER: CLEAN " + mMin + " " + mMax + " " + mCurrMinValue + " " + mCurrMaxValue);
     }
 
     /**
@@ -179,7 +179,7 @@ class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChange
      * @author sergiopereira
      */
     private void processOnClickDone() {
-        Log.d(TAG, "FILTER: DONE " + mCurrMinValue + " " + mCurrMaxValue);
+        Print.d(TAG, "FILTER: DONE " + mCurrMinValue + " " + mCurrMaxValue);
         // Validate current values
         if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
             // Clean saved values

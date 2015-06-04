@@ -23,7 +23,7 @@ import com.mobile.newFramework.requests.catalog.GetCatalogFiltered;
 import java.util.ArrayList;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Catalog Page helper
@@ -105,7 +105,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         //
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         catalog.getCatalogPage().setPage(mCurrentPage);
@@ -118,7 +118,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
                     try {
                         RelatedItemsTableHelper.insertRelatedItemsAndClear(aux);
                     } catch (IllegalStateException | InterruptedException e) {
-                        Log.w(TAG, "WARNING: IE ON SAVE RELATED ITEMS FROM CATALOG");
+                        Print.w(TAG, "WARNING: IE ON SAVE RELATED ITEMS FROM CATALOG");
                     }
                 }
             }).start();
@@ -132,7 +132,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
 
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 public class PurchaseItem implements Parcelable {
 	
@@ -53,7 +53,7 @@ public class PurchaseItem implements Parcelable {
 		}
 
 		for (PurchaseItem item : items) {
-			Log.d(TAG, "parseItems: sku = " + item.sku + " name = " + item.name + " category = " + item.category + " paidprice = "
+			Print.d(TAG, "parseItems: sku = " + item.sku + " name = " + item.name + " category = " + item.category + " paidprice = "
 					+ item.paidprice + " quantity = " + item.quantity);
 		}
 
@@ -88,7 +88,7 @@ public class PurchaseItem implements Parcelable {
 			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);
 			quantityAsInt = qtObj.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
 		} catch (JSONException e) {
-			Log.e(TAG, "parsing purchase item failed" + e);
+			Print.e(TAG, "parsing purchase item failed" + e);
 			return false;
 		}
 		return true;
@@ -112,10 +112,10 @@ public class PurchaseItem implements Parcelable {
             mPurchaseItem.quantityAsInt = (int) mShoppingCartItem.getQuantity();
             items.add(mPurchaseItem);
             
-			Log.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku + 
-					" name = " + mPurchaseItem.name + 
-					" category = " + mPurchaseItem.category + 
-					" paidprice = " + mPurchaseItem.paidprice + 
+			Print.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku +
+					" name = " + mPurchaseItem.name +
+					" category = " + mPurchaseItem.category +
+					" paidprice = " + mPurchaseItem.paidprice +
 					" quantity = " + mPurchaseItem.quantity +
 					" quantityAsInt = " + mPurchaseItem.quantityAsInt);
         }

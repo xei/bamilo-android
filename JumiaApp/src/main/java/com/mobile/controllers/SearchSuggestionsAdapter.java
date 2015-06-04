@@ -12,7 +12,7 @@ import com.mobile.view.R;
 
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Adapter used on RecentSearchFragment
@@ -35,7 +35,7 @@ public class SearchSuggestionsAdapter extends ArrayAdapter<Suggestion> {
         } else {
             view = convertView;
         }
-        Log.d("ITEM on position " + position);
+        Print.d("ITEM on position " + position);
 
         TextView tV = (TextView) view.findViewById(R.id.item_text_suggestion);
         tV.setText(getItem(position).getResult());

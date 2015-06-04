@@ -13,7 +13,7 @@ import com.mobile.newFramework.requests.session.ChangePassword;
 
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Example helper
@@ -54,19 +54,19 @@ public class GetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         // Save credentials
-        Log.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+        Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
         mContentValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-        Log.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         // Create bundle
         mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Log.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }

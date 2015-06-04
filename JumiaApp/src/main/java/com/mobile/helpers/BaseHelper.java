@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * Base helper for the test app. The helper is responsible for generating the bundle for the api
@@ -67,7 +67,7 @@ public abstract class BaseHelper  {
         String response = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
-        Log.d(TAG, "checkResponseForStatus : " + eventType);
+        Print.d(TAG, "checkResponseForStatus : " + eventType);
         try {
 
             // full object in order

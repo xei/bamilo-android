@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
+import com.mobile.framework.output.Print;
 
 /**
  * This class is an helper to manage the recent search queries on the database.
@@ -74,7 +74,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @author sergiopereira
      */
     public static synchronized boolean insertQuery(String query) {
-    	Log.d(TAG, "INSERT INTO SEARCH RECENT: " + query);
+    	Print.d(TAG, "INSERT INTO SEARCH RECENT: " + query);
     	// Validate arguments
     	if(query == null) return false;
     	// Insert
@@ -96,13 +96,13 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public static synchronized ArrayList<Suggestion> getAllRecentQueries() throws InterruptedException{
-		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
+		Print.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
 			    		"FROM " + TABLE_NAME + " " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
-		Log.i(TAG, "SQL QUERY: " + query);
+		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
 		return getRecentQueries(query);
     }
@@ -114,14 +114,14 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public static synchronized ArrayList<Suggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
-		Log.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
+		Print.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
 			    		"FROM " + TABLE_NAME + " " +
 			    		"WHERE " + _QUERY + " LIKE '%" + searchText + "%' " + 
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
-		Log.i(TAG, "SQL QUERY: " + query);
+		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
 		return getRecentQueries(query);
     }
@@ -131,13 +131,13 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @author sergiopereira
      */
     public static synchronized boolean updateRecentQuery(String query) {
-    	Log.d(TAG, "UPDATE RECENT QUERIES FOR: " + query);
+    	Print.d(TAG, "UPDATE RECENT QUERIES FOR: " + query);
     	// Validate arguments
     	if(query == null) return false;
     	// Get current time stamp
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     	String timestamp = dateFormat.format(new Date());
-    	Log.d(TAG, "UPDATE RECENT TIMESTAMP: " + timestamp);
+    	Print.d(TAG, "UPDATE RECENT TIMESTAMP: " + timestamp);
     	// Update
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -155,7 +155,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public static synchronized ArrayList<Suggestion> getRecentQueries(String query) throws InterruptedException{
-    	Log.i(TAG, "SQL QUERY: " + query);
+    	Print.i(TAG, "SQL QUERY: " + query);
     	// Lock access
     	DarwinDatabaseSemaphore.getInstance().getLock();
 		// Permission
@@ -166,13 +166,13 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         try {
             Cursor cursor = db.rawQuery(query, null);
             if (cursor != null && cursor.getCount() > 0) {
-                Log.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
+                Print.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
                 // Move to first position
                 cursor.moveToFirst();
                 // Get items
                 while (!cursor.isAfterLast()) {
                     String recentSuggestion = cursor.getString(0);
-                    Log.d(TAG, "QUERY: " + recentSuggestion);
+                    Print.d(TAG, "QUERY: " + recentSuggestion);
                     Suggestion searchSuggestion = new Suggestion();
                     searchSuggestion.setResult(recentSuggestion);
                     searchSuggestion.setIsRecentSearch(true);
@@ -185,7 +185,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
             // Validate cursor
             if (cursor != null) cursor.close();
         } catch (IllegalStateException e) {
-            Log.w(TAG, "WARNING: ISE ON GET RECENT QUERIES", e);
+            Print.w(TAG, "WARNING: ISE ON GET RECENT QUERIES", e);
         }
         // Unlock access
 		DarwinDatabaseSemaphore.getInstance().releaseLock();
@@ -206,7 +206,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 	    cursor.moveToFirst();
 	    int count = cursor.getInt(0);
 		cursor.close();
-	    Log.d(TAG, "COUNT: " + count);
+	    Print.d(TAG, "COUNT: " + count);
 	    return count;
 	}
     
