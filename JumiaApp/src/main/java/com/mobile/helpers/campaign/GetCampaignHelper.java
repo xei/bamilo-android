@@ -1,6 +1,5 @@
 package com.mobile.helpers.campaign;
 
-import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +14,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.campaign.GetCampaign;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.mobile.framework.output.Print;
@@ -49,12 +49,12 @@ public class GetCampaignHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
+    protected Map<String, String> getRequestData(final Bundle args) {
 
-        ContentValues campaignArguments = new ContentValues();
-        campaignArguments.put(CAMPAIGN_TAG,args.getString(CAMPAIGN_TAG));
-        //
-        return convertContentValuesToMap(campaignArguments);
+        Map<String,String> campaignArguments = new HashMap<String, String>(){{
+            put(CAMPAIGN_TAG, args.getString(CAMPAIGN_TAG));}};
+
+        return campaignArguments;
     }
 
     @Override

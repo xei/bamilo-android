@@ -491,15 +491,6 @@ public class DeepLinkManager {
             }
         }
 
-        // Get filters
-        Set<String> filters = getQueryParameterNames(data);
-        // Get all params
-        if (filters.size() > 0) {
-            catalogUrlKey += "?";
-            for (String key : filters) {
-                catalogUrlKey += key + "=" + data.getQueryParameter(key) + "&";
-            }
-        }
         // Log
         Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
         // Create bundle
@@ -507,6 +498,7 @@ public class DeepLinkManager {
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        bundle.putParcelable(ConstantsIntentExtra.CATALOG_QUERIE, data);
         bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
