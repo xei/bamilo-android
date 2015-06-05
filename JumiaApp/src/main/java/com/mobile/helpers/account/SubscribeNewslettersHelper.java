@@ -25,7 +25,6 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
     
     public static final String FORM_CONTENT_VALUES = "form_content_values";
 
-
     @Override
     public EventType getEventType() {
         return EventType.SUBSCRIBE_NEWSLETTERS_EVENT;
@@ -33,7 +32,7 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override

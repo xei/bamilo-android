@@ -62,7 +62,7 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
@@ -1144,12 +1144,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void triggerAddItemToCart(String sku, String simpleSKU) {
         ContentValues values = new ContentValues();
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, responseCallback);
     }
 
     private void displayProduct(CompleteProduct product) {

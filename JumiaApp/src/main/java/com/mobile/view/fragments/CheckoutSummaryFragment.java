@@ -27,7 +27,7 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
+import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
@@ -579,7 +579,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         values.put("sku", sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, this);
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), bundle, this);
     }
     
     /**

@@ -33,8 +33,6 @@ public class SetSignupHelper extends SuperBaseHelper {
     
     private ContentValues mContentValues;
 
-
-
     @Override
     public EventType getEventType() {
         return EventType.SET_SIGNUP_EVENT;
@@ -42,7 +40,7 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override

@@ -40,11 +40,6 @@ public class GetProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected String getRequestUrl(Bundle args) {
         return RemoteService.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
     }
@@ -60,10 +55,7 @@ public class GetProductHelper extends SuperBaseHelper {
         //
         CompleteProduct product = (CompleteProduct) baseResponse.getMetadata().getData();
         //
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
         mRequester.onRequestComplete(bundle);
     }
@@ -71,10 +63,7 @@ public class GetProductHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
 

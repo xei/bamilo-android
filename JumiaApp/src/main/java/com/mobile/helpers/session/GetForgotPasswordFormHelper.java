@@ -29,10 +29,7 @@ public class GetForgotPasswordFormHelper extends SuperBaseHelper {
         return EventType.GET_FORGET_PASSWORD_FORM_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {

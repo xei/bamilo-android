@@ -38,10 +38,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         return EventType.GET_COUNTRY_CONFIGURATIONS;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {

@@ -27,11 +27,6 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new GetPaymentMethodsForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }

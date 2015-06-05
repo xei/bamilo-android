@@ -31,10 +31,7 @@ public class GetRatingFormHelper extends SuperBaseHelper {
         return EventType.GET_FORM_RATING_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {

@@ -35,10 +35,10 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DarwinRegex;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddMultipleItemsHelper;
-import com.mobile.helpers.cart.GetShoppingCartChangeItemQuantityHelper;
+import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
+import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
+import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
@@ -310,10 +310,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // only show loading when removing individual items
         if (isRemovingAllItems) {
-            bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
-            triggerContentEventNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
+            bundle.putBoolean(ShoppingCartRemoveItemHelper.UPDATE_CART, false);
+            triggerContentEventNoLoading(new ShoppingCartRemoveItemHelper(), bundle, null);
         } else {
-            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, this);
+            triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), bundle, this);
         }
     }
 
@@ -350,8 +350,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerAddAllItems(HashMap<String, String> values) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
-        triggerContentEventProgress(new GetShoppingCartAddMultipleItemsHelper(), bundle, this);
+        bundle.putSerializable(ShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
+        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
     }
 
     /**
@@ -1131,10 +1131,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (ShoppingCartItem item : items) {
-            values.put(GetShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, this);
+        triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);
     }
 
 

@@ -34,7 +34,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetTermsConditionsHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
-import com.mobile.helpers.session.GetRegisterHelper;
+import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.InputType;
@@ -708,7 +708,7 @@ public class SessionRegisterFragment extends BaseFragment {
     private void triggerRegister(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
+        triggerContentEvent(new RegisterHelper(), bundle, mCallBack);
     }
 
     private void triggerRegisterForm() {

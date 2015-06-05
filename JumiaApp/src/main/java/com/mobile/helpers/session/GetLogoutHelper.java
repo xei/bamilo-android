@@ -29,10 +29,7 @@ public class GetLogoutHelper extends SuperBaseHelper {
         return EventType.LOGOUT_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     public void onRequest(RequestBundle requestBundle) {

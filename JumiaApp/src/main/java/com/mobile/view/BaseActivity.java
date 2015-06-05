@@ -286,7 +286,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         Print.i(TAG, "ON RESUME");
 
         // Disabled for Samsung and Blackberry (check_version_enabled)
-        CheckVersion.run(getApplicationContext());
+//        CheckVersion.run(getApplicationContext());
 
         /**
          * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
@@ -1962,7 +1962,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void triggerAutoLogin() {
         Print.i(TAG, "ON TRIGGER: AUTO LOGIN");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
         JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
             @Override

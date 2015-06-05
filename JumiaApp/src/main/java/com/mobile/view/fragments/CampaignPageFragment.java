@@ -46,7 +46,7 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.campaign.GetCampaignHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
@@ -448,9 +448,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         else if(!isAddingProductToCart) {
             // Create values to add to cart
             ContentValues values = new ContentValues();
-            values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, prod);
-            values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-            values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+            values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, prod);
+            values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+            values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
             // Tracking
             trackAddToCart(sku, name, brand, price, discount);
@@ -525,7 +525,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.i(TAG, "TRIGGER ADD TO CART");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
     }
 
     /**

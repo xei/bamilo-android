@@ -66,11 +66,6 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected RequestBundle createRequest(Bundle args) {
         // Is to save related items in case popularity sort, first page and not filter applied
         isToSaveRelatedItems = args.getBoolean(SAVE_RELATED_ITEMS);

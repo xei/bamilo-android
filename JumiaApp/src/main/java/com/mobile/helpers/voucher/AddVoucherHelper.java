@@ -33,13 +33,13 @@ public class AddVoucherHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+    protected void onRequest(RequestBundle requestBundle) {
+        new AddVoucher(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
-    protected void onRequest(RequestBundle requestBundle) {
-        new AddVoucher(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
     }
 
     @Override

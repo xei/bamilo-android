@@ -20,7 +20,7 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.account.GetChangePasswordHelper;
+import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.utils.MyMenuItem;
@@ -383,7 +383,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     private void triggerChangePass(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
+        triggerContentEvent(new SetChangePasswordHelper(), bundle, mCallBack);
     }
 
     /**

@@ -1,34 +1,35 @@
-package com.mobile.helpers.address;
+package com.mobile.helpers.account;
 
 import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.address.SetDefaultShippingAddress;
+import com.mobile.newFramework.requests.session.ChangePassword;
 
 import java.util.Map;
 
 import com.mobile.framework.output.Print;
 
 /**
- * Created by rsoares on 2/25/15.
+ * Example helper
  */
-public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
-
-    private static String TAG = SetDefaultShippingAddressHelper.class.getSimpleName();
-
-    public static final String ID = "id";
-
-    public static final String FORM_CONTENT_VALUES = "content_values";
+public class SetChangePasswordHelper extends SuperBaseHelper {
+    
+    private static String TAG = SetChangePasswordHelper.class.getSimpleName();
+    
+    public static final String CONTENT_VALUES = "contentValues";
+    
+    private ContentValues mContentValues;
 
     @Override
     public EventType getEventType() {
-        return EventType.SET_DEFAULT_SHIPPING_ADDRESS;
+        return EventType.CHANGE_PASSWORD_EVENT;
     }
 
     @Override
@@ -37,13 +38,30 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequest(RequestBundle requestBundle) {
-        new SetDefaultShippingAddress(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+    protected RequestBundle createRequest(Bundle args) {
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
+        return super.createRequest(args);
+    }
+
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        return SuperBaseHelper.convertContentValuesToMap(mContentValues);
+    }
+
+    @Override
+    protected void onRequest(RequestBundle requestBundle) {
+        new ChangePassword(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        // Save credentials
+        Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+        mContentValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
+        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
+        Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        // Create bundle
         mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
 
@@ -54,33 +72,33 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
         mRequester.onRequestError(bundle);
     }
 
-
-
-
 //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
 //     */
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
-//        Log.d(TAG, "REQUEST");
-//        Parcelable contentValues = args.getParcelable(FORM_CONTENT_VALUES);
+//        savedValues = args.getParcelable(CONTENT_VALUES);
 //        Bundle bundle = new Bundle();
 //        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
-//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
 //        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
+//        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, savedValues);
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-//        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
 //        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
 //        return bundle;
 //    }
 
-//    /*
+//    /*Bom
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
 //     */
 //    @Override
 //    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//    	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
+//    	savedValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
+//        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(savedValues);
+//    	bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        return bundle;
 //    }
 //
@@ -90,7 +108,7 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
 //     */
 //    @Override
 //    public Bundle parseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "PARSE ERROR BUNDLE");
+//        Log.d(TAG, "parseErrorBundle GetChangePassHelper");
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
 //        return bundle;
@@ -102,7 +120,6 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
 //     */
 //    @Override
 //    public Bundle parseResponseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "PARSE RESPONSE BUNDLE");
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
 //        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
 //        return bundle;
@@ -112,5 +129,4 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
 //    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
 //        return parseResponseErrorBundle(bundle);
 //    }
-
 }
