@@ -18,7 +18,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -222,7 +222,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     protected synchronized void triggerAddProductToCart(AddableToCart addableToCart, int position) {
-        triggerAddProductToCart(addableToCart, position, GetShoppingCartAddItemHelper.REMOVE_RECENTLYVIEWED_TAG);
+        triggerAddProductToCart(addableToCart, position, ShoppingCartAddItemHelper.REMOVE_RECENTLYVIEWED_TAG);
     }
 
     /**
@@ -273,8 +273,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 // Update counter
                 mAddedItemsCounter++;
                 // Get data
-                int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
-                String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+                int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
+                String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
                 // Validate current counter
                 validateResponseCounter(true, pos, NO_ERROR);
@@ -329,8 +329,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 // Inc counter
                 mAddedItemsCounter++;
                 // Get item set stock error
-                int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
-                String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+                int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
+                String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
                 Print.i(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
                 // Save the position
                 if (mItemsNotAddedToCart != null) {
@@ -409,7 +409,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
 
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
     }

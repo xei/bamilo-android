@@ -38,13 +38,13 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
         saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
-        mContentValues = args.getParcelable(LOGIN_CONTENT_VALUES);
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
 

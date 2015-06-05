@@ -40,17 +40,12 @@ public class CreateAddressHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
     protected String getRequestUrl(Bundle args) {
         return super.getRequestUrl(args);
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
     }
 
     @Override

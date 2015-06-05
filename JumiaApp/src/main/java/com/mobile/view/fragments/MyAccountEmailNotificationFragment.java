@@ -347,7 +347,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private void triggerSubscribeNewsletters(ContentValues values) {
         Print.i(TAG, "TRIGGER: SUBSCRIBE");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SubscribeNewslettersHelper(), bundle, this);
     }
 

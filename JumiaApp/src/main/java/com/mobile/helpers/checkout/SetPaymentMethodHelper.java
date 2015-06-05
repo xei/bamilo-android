@@ -33,12 +33,7 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
+        return EventTask.SMALL_TASK;
     }
 
     @Override

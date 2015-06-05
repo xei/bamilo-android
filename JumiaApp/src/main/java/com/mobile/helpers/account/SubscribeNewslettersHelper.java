@@ -23,7 +23,6 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
     
     public static final String FORM_CONTENT_VALUES = "form_content_values";
 
-
     @Override
     public EventType getEventType() {
         return EventType.SUBSCRIBE_NEWSLETTERS_EVENT;
@@ -31,12 +30,7 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
+        return EventTask.SMALL_TASK;
     }
 
     @Override

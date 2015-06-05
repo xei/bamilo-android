@@ -37,11 +37,6 @@ public class GetShopHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected String getRequestUrl(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
     }

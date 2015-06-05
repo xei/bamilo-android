@@ -37,12 +37,7 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(FORM_CONTENT_VALUES));
+        return EventTask.SMALL_TASK;
     }
 
     @Override

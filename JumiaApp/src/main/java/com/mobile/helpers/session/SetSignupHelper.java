@@ -33,8 +33,6 @@ public class SetSignupHelper extends SuperBaseHelper {
     
     private ContentValues mContentValues;
 
-
-
     @Override
     public EventType getEventType() {
         return EventType.SET_SIGNUP_EVENT;
@@ -42,13 +40,13 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
         saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
-        mContentValues = args.getParcelable(FORM_CONTENT_VALUES);
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
 

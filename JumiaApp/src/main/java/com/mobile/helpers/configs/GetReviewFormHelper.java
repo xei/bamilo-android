@@ -27,11 +27,6 @@ public class GetReviewFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected String getRequestUrl(Bundle args) {
         return super.getRequestUrl(args);
     }

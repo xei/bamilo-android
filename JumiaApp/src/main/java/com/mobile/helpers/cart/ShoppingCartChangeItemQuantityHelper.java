@@ -4,7 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -20,7 +19,7 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.UpdateQuantityShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
-import java.util.Map;
+import com.mobile.framework.output.Print;
 
 /**
  * Get Shopping Cart Items helper
@@ -28,9 +27,9 @@ import java.util.Map;
  * @author Manuel Silva
  * 
  */
-public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
+public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     
-    private static String TAG = GetShoppingCartChangeItemQuantityHelper.class.getSimpleName();
+    private static String TAG = ShoppingCartChangeItemQuantityHelper.class.getSimpleName();
     
     //private static final EventType EVENT_TYPE = EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT;
     
@@ -46,12 +45,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(CART_ITEMS));
+        return EventTask.SMALL_TASK;
     }
 
     @Override
@@ -70,10 +64,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
         // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         mRequester.onRequestComplete(bundle);
     }
@@ -81,11 +72,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        mRequester.onRequestError(bundle);
+        mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 
 

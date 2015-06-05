@@ -30,8 +30,8 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddMultipleItemsHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.products.GetFavouriteHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.user.Customer;
@@ -569,9 +569,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     private void triggerAddAllItems(HashMap<String, String> values) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
+        bundle.putSerializable(ShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
         // Trigger
-        triggerContentEventNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle, this);
+        triggerContentEventNoLoading(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
     }
     
     /**
@@ -582,7 +582,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected synchronized void triggerAddProductToCart(AddableToCart addableToCart, int position) {
-        triggerAddProductToCart(addableToCart, position, GetShoppingCartAddItemHelper.REMOVE_FAVOURITE_TAG);
+        triggerAddProductToCart(addableToCart, position, ShoppingCartAddItemHelper.REMOVE_FAVOURITE_TAG);
     }
 
     /**
@@ -599,19 +599,19 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
         // Item data
         ContentValues values = new ContentValues();
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, addableToCart.getSku());
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, addableToCart.getSku());
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         // Request data
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        bundle.putInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
-        bundle.putString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, addableToCart.getSku());
-        bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceForTracking());
-        bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_RATING_TAG, addableToCart.getRatingsAverage());
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
+        bundle.putString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, addableToCart.getSku());
+        bundle.putDouble(ShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceForTracking());
+        bundle.putDouble(ShoppingCartAddItemHelper.PRODUCT_RATING_TAG, addableToCart.getRatingsAverage());
         bundle.putBoolean(keyRemoveTable, true);
         // Trigger
-        triggerContentEventNoLoading(new GetShoppingCartAddItemHelper(), bundle, this);
+        triggerContentEventNoLoading(new ShoppingCartAddItemHelper(), bundle, this);
         // Tracking
         trackAddtoCart(sku, addableToCart);
     }
@@ -710,8 +710,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Update counter
             mAddedItemsCounter++;
             // Get data
-            int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
-            String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+            int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
+            String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
             Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
             // Validate current counter
             validateResponseCounter(true, pos, NO_ERROR);
@@ -758,8 +758,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Inc counter
             mAddedItemsCounter++;
             // Get item set stock error
-            int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
-            String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+            int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
+            String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
             Print.i(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
             // Save the position
             if (mItemsNotAddedToCart != null) {

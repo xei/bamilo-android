@@ -44,11 +44,6 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected String getRequestUrl(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
     }

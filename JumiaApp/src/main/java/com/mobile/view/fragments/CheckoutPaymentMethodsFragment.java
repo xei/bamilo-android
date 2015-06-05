@@ -524,19 +524,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     private void triggerSubmitPaymentMethod(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetPaymentMethodHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SetPaymentMethodHelper(), bundle, this);
     }
     
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AddVoucherHelper.VOUCHER_PARAM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
     
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
     }
     

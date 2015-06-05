@@ -4,7 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -24,15 +23,17 @@ import com.mobile.utils.TrackerDelegator;
 
 import java.util.Map;
 
+import com.mobile.framework.output.Print;
+
 /**
  * Get Shopping Cart Items helper
  * 
  * @author Manuel Silva
  * 
  */
-public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
+public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     
-    private static String TAG = GetShoppingCartAddItemHelper.class.getSimpleName();
+    private static String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
     
     //private static final EventType EVENT_TYPE = EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT;
     
@@ -88,11 +89,6 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
         isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLYVIEWED_TAG, false);
 
         return super.createRequest(args);
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(ADD_ITEM));
     }
 
     @Override

@@ -30,10 +30,7 @@ public class GetFormAddAddressHelper extends SuperBaseHelper {
         return EventType.GET_CREATE_ADDRESS_FORM_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {

@@ -32,8 +32,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
 
-        Serializable evenTask = args != null ? args.getSerializable(Constants.BUNDLE_EVENT_TASK) : null;
-        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
+        setEventTask(args);
 
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);
@@ -65,7 +64,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
-        return args != null ? convertBundleToMap(args) : null;
+        return (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY))? convertContentValuesToMap((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY)) : null;
     }
 
     public boolean hasPriority(){
@@ -76,18 +75,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public abstract EventType getEventType();
 
-    /*
-     * #### TODO: FIX THIS APPROACH -> USE ONLY ONE STRUCTURE
-     */
-
-    public static Map<String, String> convertBundleToMap(Bundle bundle) {
-        Map<String, String> data = new HashMap<>();
-        for (String key : bundle.keySet()) {
-            data.put(key, bundle.getString(key));
-        }
-        return data;
-    }
-
     public static Map<String, String> convertContentValuesToMap(ContentValues bundle) {
         Map<String, String> data = new HashMap<>();
         for (String key : bundle.keySet()) {
@@ -96,24 +83,17 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return data;
     }
 
-    public EventTask getEventTask(){
-        if(mEventTask == null){
+    public EventTask getEventTask() {
+        if (mEventTask == null) {
             mEventTask = setEventTask();
         }
         return mEventTask;
     }
 
-    protected abstract EventTask setEventTask();
-
-    /*
-     * ########## VIEW RESPONSES ##########
-     */
-
     public Bundle generateSuccessBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
         bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, baseResponse.getMessage());
         return bundle;
     }
@@ -127,6 +107,21 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
+    }
+
+    protected EventTask setEventTask(){
+        return EventTask.NORMAL_TASK;
+    }
+
+    /**
+     * Method to define event task on request helper init.
+     * If args hasn't value at BUNDLE_EVENT_TASK, default is defined.
+     *
+     * @param args arguments with event task.
+     */
+    private void setEventTask(Bundle args){
+        Serializable evenTask = args != null ? args.getSerializable(Constants.BUNDLE_EVENT_TASK) : null;
+        mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
     }
 
 }

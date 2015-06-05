@@ -38,6 +38,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     public static final String SEACH_PARAM = "searchParam";
 
+    public static final String QUERY = "q";
+
     private String mQuery;
 
     /*
@@ -53,10 +55,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         return EventType.GET_SEARCH_SUGGESTIONS_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {
@@ -68,7 +67,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         // Get the current query
         mQuery = args.getString(SEACH_PARAM);
         Map<String, String> data = new HashMap<>();
-        data.put("q", mQuery);
+        data.put(QUERY, mQuery);
         return data;
     }
 

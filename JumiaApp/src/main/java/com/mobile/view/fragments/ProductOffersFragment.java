@@ -23,7 +23,7 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.Offer;
@@ -442,12 +442,12 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
      */
     private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
         ContentValues values = new ContentValues();
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
         // GA OFFER TRACKING              
         Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
         TrackerDelegator.trackAddOfferToCart(simpleSKU,price);

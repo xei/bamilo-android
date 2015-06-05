@@ -38,11 +38,6 @@ public class GetSearchProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
         data.put(SKU_TAG, args.getString(SKU_TAG));

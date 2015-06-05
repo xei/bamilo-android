@@ -19,7 +19,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.session.GetForgotPasswordFormHelper;
-import com.mobile.helpers.session.GetForgotPasswordHelper;
+import com.mobile.helpers.session.SetForgotPasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -336,8 +336,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
 
     private void triggerForgot(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetForgotPasswordHelper.CONTENT_VALUES, values);
-        triggerContentEvent(new GetForgotPasswordHelper(), bundle, mCallBack);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEvent(new SetForgotPasswordHelper(), bundle, mCallBack);
         getBaseActivity().hideKeyboard();
     }
 

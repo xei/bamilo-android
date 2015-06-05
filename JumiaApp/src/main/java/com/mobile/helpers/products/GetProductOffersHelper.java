@@ -41,10 +41,7 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         return EventType.GET_PRODUCT_OFFERS;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {
@@ -69,21 +66,14 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         //
         ProductOffers productOffers = (ProductOffers) baseResponse.getMetadata().getData();
         //
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productOffers);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         mRequester.onRequestComplete(bundle);
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
 

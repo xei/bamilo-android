@@ -29,11 +29,6 @@ public class GetNewslettersFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     protected String getRequestUrl(Bundle args) {
         String url = EventType.GET_NEWSLETTERS_FORM_FALLBACK_EVENT.action;
         try {

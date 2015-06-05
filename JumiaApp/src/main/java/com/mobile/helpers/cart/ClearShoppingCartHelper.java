@@ -41,13 +41,13 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+    protected Map<String, String> getRequestData(Bundle args) {
+        return new HashMap<>();
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return new HashMap<>();
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
     }
 
     @Override

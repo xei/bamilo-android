@@ -31,18 +31,13 @@ public class AddVoucherHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return args == null ? new HashMap<String, String>() : SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(VOUCHER_PARAM));
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new AddVoucher(requestBundle, this).execute();
+    }
+
+    @Override
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
     }
 
     @Override

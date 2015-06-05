@@ -19,20 +19,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
+import com.mobile.framework.output.Print;
 
-    private static String TAG = GetShoppingCartAddMultipleItemsHelper.class.getSimpleName();
+public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
+
+    private static String TAG = ShoppingCartAddMultipleItemsHelper.class.getSimpleName();
 
     public static String PRODUCT_LIST_TAG = "productList";
 
     public static String getProductListSkuTag(int counter) {
         return PRODUCT_LIST_TAG + "["
-                + counter + "]" + "[" + GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG + "]";
+                + counter + "]" + "[" + ShoppingCartAddItemHelper.PRODUCT_SKU_TAG + "]";
     }
 
     public static String getProductListPTag(int counter) {
         return PRODUCT_LIST_TAG + "["
-                + counter + "]" + "[" + GetShoppingCartAddItemHelper.PRODUCT_TAG + "]";
+                + counter + "]" + "[" + ShoppingCartAddItemHelper.PRODUCT_TAG + "]";
     }
 
     public static String ADD_ITEMS = "add_items";
@@ -55,13 +57,13 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         productBySku = (HashMap<String, String>) args.getSerializable(ADD_ITEMS);
-        return createContentValues(productBySku);
+        return createValues(productBySku);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         mRequester.onRequestError(bundle);
     }
 
-    private Map<String, String> createContentValues(HashMap<String, String> values) {
+    private Map<String, String> createValues(HashMap<String, String> values) {
         int counter = 0;
         Map<String, String> data = new HashMap<>();
         for (Map.Entry<String, String> entry : values.entrySet()) {

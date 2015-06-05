@@ -31,10 +31,7 @@ public class GetLoginFormHelper extends SuperBaseHelper {
         return EventType.GET_LOGIN_FORM_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected String getRequestUrl(Bundle args) {

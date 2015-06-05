@@ -244,7 +244,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.d(TAG, "TRIGGER SET BILLING");
         // Submit values
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetBillingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         triggerContentEvent(new SetBillingAddressHelper(), bundle, this);
     }
 

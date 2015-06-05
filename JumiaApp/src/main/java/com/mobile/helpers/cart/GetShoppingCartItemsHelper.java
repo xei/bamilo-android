@@ -32,10 +32,7 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
         return EventType.GET_SHOPPING_CART_ITEMS_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     public void onRequest(RequestBundle requestBundle) {

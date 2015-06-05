@@ -25,10 +25,7 @@ public class GetCustomerHelper extends SuperBaseHelper {
         return EventType.GET_CUSTOMER;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
+
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {

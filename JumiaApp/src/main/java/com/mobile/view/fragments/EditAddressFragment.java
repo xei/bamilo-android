@@ -597,7 +597,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void triggerEditAddress(ContentValues values) {
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(UpdateAddressHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new UpdateAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();

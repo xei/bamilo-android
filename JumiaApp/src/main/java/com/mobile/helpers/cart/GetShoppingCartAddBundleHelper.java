@@ -53,12 +53,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(ADD_BUNDLE));
+        return EventTask.SMALL_TASK;
     }
 
     @Override

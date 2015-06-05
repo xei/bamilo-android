@@ -36,17 +36,12 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
     protected String getRequestUrl(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(args.getString(ACTION))).toString();
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap((ContentValues) args.getParcelable(RATING_REVIEW_CONTENT_VALUES));
     }
 
     @Override

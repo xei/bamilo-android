@@ -669,7 +669,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
         getRatingFormValues(values,form);
         
         bundle.putString(RatingReviewProductHelper.ACTION, action);
-        bundle.putParcelable(RatingReviewProductHelper.RATING_REVIEW_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         
         triggerContentEventProgress(new RatingReviewProductHelper(), bundle, mCallBack);
         

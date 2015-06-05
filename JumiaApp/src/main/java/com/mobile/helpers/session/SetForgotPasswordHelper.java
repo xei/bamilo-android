@@ -1,6 +1,5 @@
 package com.mobile.helpers.session;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
@@ -13,12 +12,14 @@ import com.mobile.newFramework.requests.session.ForgotPassword;
 
 import java.util.Map;
 
+import com.mobile.framework.output.Print;
+
 /**
  * Forgot Password Helper
  */
-public class GetForgotPasswordHelper extends SuperBaseHelper {
+public class SetForgotPasswordHelper extends SuperBaseHelper {
     
-    private static String TAG = GetForgotPasswordHelper.class.getSimpleName();
+    private static String TAG = SetForgotPasswordHelper.class.getSimpleName();
     
     public static final String CONTENT_VALUES = "contentValues";
 
@@ -29,12 +30,7 @@ public class GetForgotPasswordHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap((ContentValues) args.getParcelable(CONTENT_VALUES));
+        return EventTask.SMALL_TASK;
     }
 
     @Override

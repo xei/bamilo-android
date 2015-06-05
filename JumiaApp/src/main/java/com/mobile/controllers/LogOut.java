@@ -13,8 +13,6 @@ import com.mobile.view.BaseActivity;
 
 import java.lang.ref.WeakReference;
 
-//import com.mobile.framework.rest.RestClientSingleton;
-
 /**
  * This Class is responsible to show the log out dialog.
  * <p/>

@@ -28,15 +28,7 @@ public class GetLogoutHelper extends SuperBaseHelper {
         return EventType.LOGOUT_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
 
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return convertContentValuesToMap(JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-    }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {

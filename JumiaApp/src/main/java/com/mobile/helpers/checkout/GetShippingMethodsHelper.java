@@ -30,11 +30,6 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new GetShippingForm(requestBundle, this).execute();
     }

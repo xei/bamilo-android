@@ -26,11 +26,6 @@ public class GetNativeCheckoutAvailableHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
-    }
-
-    @Override
     public void onRequest(RequestBundle requestBundle) {
         new GetNativeCheckoutAvailable(requestBundle, this).execute();
     }
@@ -41,8 +36,7 @@ public class GetNativeCheckoutAvailableHelper extends SuperBaseHelper {
 
         SuperNativeCheckoutAvailability nativeCheckoutAvailability = (SuperNativeCheckoutAvailability) baseResponse.getMetadata().getData();
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
+        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putBoolean(Constants.BUNDLE_RESPONSE_KEY,  nativeCheckoutAvailability.isAvailable());
         Print.i(TAG, "Native Checkout is available: " + nativeCheckoutAvailability.isAvailable());
         mRequester.onRequestComplete(bundle);
@@ -51,11 +45,7 @@ public class GetNativeCheckoutAvailableHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        mRequester.onRequestError(bundle);
+        mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 
 
