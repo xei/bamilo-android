@@ -3,7 +3,6 @@
  */
 package com.mobile.helpers.address;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
@@ -16,8 +15,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.CreateAddress;
 import com.mobile.utils.CheckoutStepManager;
-
-import java.util.Map;
 
 /**
  * Helper used to create an address 

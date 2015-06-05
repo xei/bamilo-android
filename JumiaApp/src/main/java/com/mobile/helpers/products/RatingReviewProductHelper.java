@@ -1,6 +1,5 @@
 package com.mobile.helpers.products;
 
-import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,8 +11,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.SetProductRatingReview;
 import com.mobile.newFramework.rest.RestUrlUtils;
-
-import java.util.Map;
 
 /**
  * Send Rating and/or Review to API

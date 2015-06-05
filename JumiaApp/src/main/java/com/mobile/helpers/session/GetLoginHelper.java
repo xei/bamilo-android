@@ -16,7 +16,6 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 import com.mobile.utils.CheckoutStepManager;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -65,6 +64,7 @@ public class GetLoginHelper extends SuperBaseHelper {
         // Save credentials
         if (saveCredentials) {
             Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+            mContentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, false);
             mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
@@ -82,9 +82,7 @@ public class GetLoginHelper extends SuperBaseHelper {
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
-        mRequester.onRequestError(bundle);
+        mRequester.onRequestError(generateErrorBundle(baseResponse));
     }
 
 

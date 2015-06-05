@@ -4,7 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -18,8 +17,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddBundleShoppingCart;
 import com.mobile.utils.TrackerDelegator;
-
-import java.util.Map;
 
 /**
  * Get Shopping Cart Items helper

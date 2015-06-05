@@ -1,8 +1,5 @@
 package com.mobile.helpers.address;
 
-import android.content.ContentValues;
-import android.os.Bundle;
-
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -10,8 +7,6 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.EditAddress;
-
-import java.util.Map;
 
 /**
  * Helper used to create an address 

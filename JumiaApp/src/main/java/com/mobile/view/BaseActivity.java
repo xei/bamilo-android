@@ -67,7 +67,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.user.Customer;
-import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;

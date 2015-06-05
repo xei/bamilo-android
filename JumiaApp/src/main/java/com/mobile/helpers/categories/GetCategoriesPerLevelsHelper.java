@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.category.Categories;

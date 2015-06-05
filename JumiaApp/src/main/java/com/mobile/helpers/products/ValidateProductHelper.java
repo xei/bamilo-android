@@ -1,6 +1,5 @@
 package com.mobile.helpers.products;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
@@ -12,8 +11,6 @@ import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.product.ValidateProducts;
-
-import java.util.Map;
 
 /**
  * Validate one or more products on the API and actualize their information

@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mobile.framework.output.Print;
-
 public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     private static String TAG = ShoppingCartAddMultipleItemsHelper.class.getSimpleName();

@@ -21,10 +21,6 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddItemShoppingCart;
 import com.mobile.utils.TrackerDelegator;
 
-import java.util.Map;
-
-import com.mobile.framework.output.Print;
-
 /**
  * Get Shopping Cart Items helper
  * 

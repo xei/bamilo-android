@@ -3,7 +3,6 @@
  */
 package com.mobile.helpers.checkout;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.constants.ConstantsIntentExtra;
@@ -17,8 +16,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.SetShippingMethod;
 import com.mobile.utils.CheckoutStepManager;
-
-import java.util.Map;
 
 /**
  * Helper used to set the shipping address 

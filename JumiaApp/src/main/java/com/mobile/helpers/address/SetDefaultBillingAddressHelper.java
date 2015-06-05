@@ -1,6 +1,5 @@
 package com.mobile.helpers.address;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
@@ -10,8 +9,6 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.SetDefaultBillingAddress;
-
-import java.util.Map;
 
 /**
  * Created by rsoares on 2/25/15.

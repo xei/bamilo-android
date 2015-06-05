@@ -45,7 +45,6 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
         mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
@@ -70,6 +69,7 @@ public class SetSignupHelper extends SuperBaseHelper {
             mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mContentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
+            mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }

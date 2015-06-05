@@ -1,6 +1,5 @@
 package com.mobile.helpers.account;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
@@ -10,8 +9,6 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.SubscribeNewsletter;
-
-import java.util.Map;
 
 /**
  * Helper used to create an address 
