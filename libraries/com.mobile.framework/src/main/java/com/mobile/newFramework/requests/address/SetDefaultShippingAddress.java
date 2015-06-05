@@ -1,7 +1,5 @@
 package com.mobile.newFramework.requests.address;
 
-import android.content.Context;
-
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -10,13 +8,13 @@ import com.mobile.newFramework.rest.AigRestAdapter;
 
 public class SetDefaultShippingAddress extends BaseRequest {
 
-    public SetDefaultShippingAddress(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
-        super(context, requestBundle, requester);
+    public SetDefaultShippingAddress(RequestBundle requestBundle, AigResponseCallback requester) {
+        super(requestBundle, requester);
     }
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter( mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.setDefaultShippingAddress(mRequestBundle.getData(), this);
     }
 }

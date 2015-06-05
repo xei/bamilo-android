@@ -49,7 +49,7 @@ public class GetFormAddAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetCreateAddressForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCreateAddressForm(requestBundle, this).execute();
     }
 
     @Override

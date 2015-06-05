@@ -7,10 +7,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.DarwinRegex;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.configs;
 
 public class AigConfigurations {
 
@@ -23,13 +23,13 @@ public class AigConfigurations {
     /**
      * Header Domain Profile
      */
-    public static final String HEADER_DOMAIN_PROFILE = "X-JOVAGO-DOMAIN-PROFILE";
+    public static final String HEADER_DOMAIN_PROFILE = "X-DOMAIN-PROFILE";
 
 
     /**
      * Header User token
      */
-    public static final String HEADER_USER_TOKEN = "X-JOVAGO-USER-TOKEN";
+    public static final String HEADER_USER_TOKEN = "X-USER-TOKEN";
 
     /**
      * Header Accept-Language
@@ -64,11 +64,12 @@ public class AigConfigurations {
      */
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String DEFAULT_REQUEST_CONTENT_TYPE = "text/plain; charset=UTF-8";
+
     /**
      * the number of seconds we should wait before timing out the connection
      */
-
     private static final int TIME_OUT_SECONDS = 20;
+
     /**
      * Sets the timeout until a connection is established. A value of zero means the timeout is not used. The default value is zero.
      */

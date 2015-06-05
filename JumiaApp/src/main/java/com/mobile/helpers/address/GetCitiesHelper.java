@@ -2,7 +2,6 @@ package com.mobile.helpers.address;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -49,7 +48,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetCities(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCities(requestBundle, this).execute();
     }
 
     @Override

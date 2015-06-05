@@ -3,9 +3,7 @@ package com.mobile.helpers.products;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -15,6 +13,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetProductReviews;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = new HashMap<>();
-        String ratingType = args.getBoolean(RATING_TYPE) ? RestContract.REST_PARAM_RATING : RestContract.REST_PARAM_SELLER_RATING;
+        String ratingType = args.getBoolean(RATING_TYPE) ? AigRestContract.REST_PARAM_RATING : AigRestContract.REST_PARAM_SELLER_RATING;
         data.put(ratingType, "1");
         data.put(PER_PAGE, args.getString(PER_PAGE));
         data.put(PAGE, args.getString(PAGE));
@@ -66,7 +65,7 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetProductReviews(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetProductReviews(requestBundle, this).execute();
     }
 
     @Override

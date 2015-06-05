@@ -22,7 +22,7 @@ public class LogoutCustomerTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new LogoutCustomer(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new LogoutCustomer(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

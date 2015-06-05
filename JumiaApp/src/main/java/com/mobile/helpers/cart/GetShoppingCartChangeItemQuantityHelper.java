@@ -56,7 +56,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new UpdateQuantityShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new UpdateQuantityShoppingCart(requestBundle, this).execute();
     }
 
     @Override

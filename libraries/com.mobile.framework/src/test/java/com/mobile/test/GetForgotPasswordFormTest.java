@@ -23,7 +23,7 @@ public class GetForgotPasswordFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetForgotPasswordForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetForgotPasswordForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

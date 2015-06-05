@@ -26,7 +26,7 @@ public class GetProductOffersTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetProductOffers(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductOffers(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

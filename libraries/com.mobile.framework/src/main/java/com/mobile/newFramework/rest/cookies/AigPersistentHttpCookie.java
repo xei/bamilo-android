@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.cookies;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,27 +7,20 @@ import java.io.Serializable;
 import java.net.HttpCookie;
 
 
-public class PersistentCookieNew implements Serializable {
+public class AigPersistentHttpCookie implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8567141964901776111L;
 
     private transient final HttpCookie mCookie;
-    
-    private transient HttpCookie clientCookie;
 
-    public PersistentCookieNew(HttpCookie cookie) {
+    private transient HttpCookie mSerializableCookie;
+
+    public AigPersistentHttpCookie(HttpCookie cookie) {
         this.mCookie = cookie;
     }
 
     public HttpCookie getCookie() {
-        HttpCookie bestCookie = mCookie;
-        if (clientCookie != null) {
-            bestCookie = clientCookie;
-        }
-        return bestCookie;
+        return mSerializableCookie != null ? mSerializableCookie : mCookie;
     }
     
     /*
@@ -53,12 +46,12 @@ public class PersistentCookieNew implements Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         String name = (String) in.readObject();
         String value = (String) in.readObject();
-        clientCookie = new HttpCookie(name, value);
-        clientCookie.setComment((String) in.readObject());
-        clientCookie.setDomain((String) in.readObject());
-        clientCookie.setMaxAge((Long) in.readObject());
-        clientCookie.setPath((String) in.readObject());
-        clientCookie.setVersion(in.readInt());
-        clientCookie.setSecure(in.readBoolean());
+        mSerializableCookie = new HttpCookie(name, value);
+        mSerializableCookie.setComment((String) in.readObject());
+        mSerializableCookie.setDomain((String) in.readObject());
+        mSerializableCookie.setMaxAge((Long) in.readObject());
+        mSerializableCookie.setPath((String) in.readObject());
+        mSerializableCookie.setVersion(in.readInt());
+        mSerializableCookie.setSecure(in.readBoolean());
     }
 }

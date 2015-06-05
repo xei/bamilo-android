@@ -3,7 +3,6 @@ package com.mobile.helpers.products;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -62,7 +61,7 @@ public class GetSellerReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetSellerReviews(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetSellerReviews(requestBundle, this).execute();
     }
 
     @Override

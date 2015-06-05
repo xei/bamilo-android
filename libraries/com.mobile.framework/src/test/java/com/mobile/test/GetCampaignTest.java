@@ -26,7 +26,7 @@ public class GetCampaignTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCampaign(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCampaign(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

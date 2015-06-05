@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.errors;
 
 import com.mobile.framework.ErrorCode;
 

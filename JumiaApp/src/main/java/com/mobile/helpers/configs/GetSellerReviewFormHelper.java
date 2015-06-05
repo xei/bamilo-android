@@ -5,7 +5,6 @@ package com.mobile.helpers.configs;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -45,7 +44,7 @@ public class GetSellerReviewFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetReviewForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetReviewForm(requestBundle, this).execute();
     }
 
     @Override

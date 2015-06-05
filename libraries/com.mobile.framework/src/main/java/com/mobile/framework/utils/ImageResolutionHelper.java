@@ -34,7 +34,6 @@ public class ImageResolutionHelper {
     
     /**
      * Initialize helper
-     * @param context
      */
     public static int init(Context context) {
 
@@ -49,7 +48,7 @@ public class ImageResolutionHelper {
     	// Validate heap size
     	if(memoryHeapSize <= 32) {
     		Print.d(TAG, "DEVICE WITH WEAK RESOURCES");
-    		disableHelper(context);
+    		disableHelper();
     		return DEVICE_WEAK_RESOURCES;
     	} 
     	else if(memoryHeapSize <= 48 && !context.getResources().getBoolean(R.bool.isTablet)) {
@@ -70,21 +69,18 @@ public class ImageResolutionHelper {
     	CONTEXT = context;
     }
     
-    private static void disableHelper(Context context) {
+    private static void disableHelper() {
     	CONTEXT = null;
     }
     
     /**
      * Get the best resolution from cache or database using the screen resolution
-     * @param context
-     * @param width
-     * @param height
      * @return ImageResolution
      * @deprecated
      */
     private static ImageResolution getBestResolution(int width, int height) {
     	// Validate hash map
-    	if(resolutionMap == null) resolutionMap = new WeakHashMap<String, ImageResolution>();
+    	if(resolutionMap == null) resolutionMap = new WeakHashMap<>();
     	// Get from hash map
     	ImageResolution imageResolution = resolutionMap.get(width + "x" + height);
     	// Validate resolution
@@ -103,16 +99,13 @@ public class ImageResolutionHelper {
     
     /**
      * Get the best resolution from cache or database using the current resolution tag
-     * @param context
-     * @param width
-     * @param height
      * @return ImageResolution
      */
     private static ImageResolution getBestResolution(String resolutionTag) {
     	// Validate hash map
-    	if(resolutionMap == null) resolutionMap = new WeakHashMap<String, ImageResolution>();
+    	if(resolutionMap == null) resolutionMap = new WeakHashMap<>();
     	// Resolution
-    	ImageResolution imageResolution = null;
+    	ImageResolution imageResolution;
     	// Check cache
     	if (resolutionMap.containsKey(resolutionTag)) {
     		Print.i(TAG, "GET BEST RESOLUTION FROM CACHE: " + resolutionTag);
@@ -137,7 +130,6 @@ public class ImageResolutionHelper {
     
     /**
      * Get the tag of the best resolution from the current resolution
-     * @param resolutionTag
      * @return Tag or null
      */
     public static String getResolutionIdentifier(String resolutionTag){
@@ -153,9 +145,6 @@ public class ImageResolutionHelper {
     
     /**
      * Method used to return the identifier and extension of the best image resolution
-     * @param context
-     * @param width
-     * @param height
      * @return String
      * @deprecated
      */
@@ -169,15 +158,12 @@ public class ImageResolutionHelper {
     
     /**
      * Creates a new image URL replacing the current resolution with the best resolution
-     * @param url
      * @return String or null
      */
 	public static String replaceResolution(String url) {
-		//TODO uncomment logs
-//		Log.i(TAG, "######### REPLACING RESOLUTION ...");
 		// Validate Helper
 		if(CONTEXT == null){
-//			Log.i(TAG, "IMAGE RESOLUTION NOT INITIALIZED");
+			Print.i(TAG, "IMAGE RESOLUTION NOT INITIALIZED");
 			return null;
 		}
 		// Get the current resolution
@@ -189,16 +175,12 @@ public class ImageResolutionHelper {
 		// Create new URL with the new resolution
 		Pattern pattern = Pattern.compile(REGEX_RESOLUTION);
 		Matcher matcher = pattern.matcher(url);
-		String newUrl = matcher.replaceAll("-" + resolutionTag);
-//		Log.i(TAG, "CURRENT URL: " + url);
-//		Log.i(TAG, "MODIFIED URL: " + newUrl);
-		return newUrl;
+		return matcher.replaceAll("-" + resolutionTag);
 	}
 	
 	/**
 	 * Get the current resolution from the URL
 	 * FIXME - Update pattern compile to get only the resolution tag
-	 * @param url
 	 * @return String or null
 	 */
 	private static String getCurrentResolution(String url) {

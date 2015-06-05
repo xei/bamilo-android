@@ -66,7 +66,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new AddMultipleItemsShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddMultipleItemsShoppingCart(requestBundle, this).execute();
     }
 
     @Override

@@ -58,7 +58,7 @@ public class EditAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new EditAddress(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new EditAddress(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

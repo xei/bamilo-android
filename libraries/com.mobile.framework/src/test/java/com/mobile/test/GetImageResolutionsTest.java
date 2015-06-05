@@ -21,7 +21,7 @@ public class GetImageResolutionsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetImageResolutions(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetImageResolutions(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

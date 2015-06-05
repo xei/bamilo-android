@@ -9,10 +9,10 @@ import com.mobile.framework.objects.Banner;
 import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

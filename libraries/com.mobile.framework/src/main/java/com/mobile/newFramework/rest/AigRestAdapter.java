@@ -1,8 +1,7 @@
 package com.mobile.newFramework.rest;
 
-import android.content.Context;
-
-import com.mobile.framework.rest.RestContract;
+import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.rest.errors.AigErrorHandler;
 
 import org.apache.http.protocol.HTTP;
 
@@ -22,18 +21,17 @@ public class AigRestAdapter {
      *
      * @return BaseRequest
      */
-    public static RestAdapter getRestAdapter(Context context, RestAdapterInit restAdapterInit) {
+    public static RestAdapter getRestAdapter(RestAdapterInit restAdapterInit) {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setClient(AigHttpClient.getInstance(context))
+                .setClient(AigHttpClient.getInstance())
                 .setEndpoint(restAdapterInit.url)
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(restAdapterInit.cache));
 
         if(!restAdapterInit.discardResponse) {
-            builder.setConverter(new ResponseConverter())
+            builder.setConverter(new AigResponseConverter())
                 .setErrorHandler(new AigErrorHandler());
         }
-
         return builder.build();
     }
 
@@ -42,7 +40,7 @@ public class AigRestAdapter {
      */
     private static class HttpHeaderRequestInterceptor implements RequestInterceptor {
 
-        Integer cache = RestContract.NO_CACHE;
+        Integer cache = AigRestContract.NO_CACHE;
 
         String agent;
 
@@ -59,7 +57,7 @@ public class AigRestAdapter {
             // MOBAPI YII_CSRF_TOKEN
             // DEVICE
             // CACHE
-            if (cache == RestContract.NO_CACHE) {
+            if (cache == AigRestContract.NO_CACHE) {
                 request.addHeader(HeaderConstants.CACHE_CONTROL, HeaderConstants.CACHE_CONTROL_NO_CACHE);
             } else {
                 String value = HeaderConstants.CACHE_CONTROL_MAX_AGE + "=" + cache + "; " + HeaderConstants.CACHE_CONTROL_MUST_REVALIDATE;

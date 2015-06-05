@@ -23,7 +23,7 @@ public class GetCustomerDetailsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCustomerDetails(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCustomerDetails(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

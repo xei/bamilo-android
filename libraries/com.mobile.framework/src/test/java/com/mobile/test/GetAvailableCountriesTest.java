@@ -24,7 +24,7 @@ public class GetAvailableCountriesTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetAvailableCountries(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetAvailableCountries(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

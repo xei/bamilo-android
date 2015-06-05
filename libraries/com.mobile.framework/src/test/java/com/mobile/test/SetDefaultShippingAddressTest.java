@@ -29,7 +29,7 @@ public class SetDefaultShippingAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetDefaultShippingAddress(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetDefaultShippingAddress(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

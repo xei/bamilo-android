@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.FieldValidation;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

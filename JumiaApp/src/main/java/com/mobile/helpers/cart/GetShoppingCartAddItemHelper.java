@@ -97,7 +97,7 @@ public class GetShoppingCartAddItemHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new AddItemShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddItemShoppingCart(requestBundle, this).execute();
     }
 
     @Override

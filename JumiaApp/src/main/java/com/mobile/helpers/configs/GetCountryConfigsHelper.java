@@ -29,7 +29,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
-        new GetCountryConfigurations(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCountryConfigurations(requestBundle, this).execute();
     }
 
     @Override

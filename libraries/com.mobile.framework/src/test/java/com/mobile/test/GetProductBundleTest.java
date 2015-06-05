@@ -21,7 +21,7 @@ public class GetProductBundleTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetProductBundle(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductBundle(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

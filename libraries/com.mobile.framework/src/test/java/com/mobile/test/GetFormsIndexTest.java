@@ -23,7 +23,7 @@ public class GetFormsIndexTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetFormsIndex(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetFormsIndex(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

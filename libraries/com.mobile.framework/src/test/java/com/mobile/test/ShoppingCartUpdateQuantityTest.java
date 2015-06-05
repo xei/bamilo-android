@@ -26,7 +26,7 @@ public class ShoppingCartUpdateQuantityTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new UpdateQuantityShoppingCart(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new UpdateQuantityShoppingCart(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

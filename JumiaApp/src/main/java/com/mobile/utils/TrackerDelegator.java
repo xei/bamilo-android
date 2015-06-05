@@ -12,7 +12,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -24,11 +23,11 @@ import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
-import com.mobile.framework.utils.Utils;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -411,7 +410,7 @@ public class TrackerDelegator {
             String email = params.getString(EMAIL_KEY);
             TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? email : userId, 0l);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
@@ -421,7 +420,7 @@ public class TrackerDelegator {
         try {
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
             // GA
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? email : userId, 0l);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
         }
@@ -433,7 +432,7 @@ public class TrackerDelegator {
     public static void trackPaymentMethod(String userId, String email, String payment) {
         try {
             // GA
-            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, payment);
+            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? email : userId, payment);
             // GTM
             GTMManager.get().gtmTrackChoosePayment(payment);
         } catch (NullPointerException e) {
@@ -444,7 +443,7 @@ public class TrackerDelegator {
     public static void trackNativeCheckoutError(String userId, String email, String error) {
         try {
             // GA
-            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, error);
+            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? email : userId, error);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON TRACK NC ERROR");
         }

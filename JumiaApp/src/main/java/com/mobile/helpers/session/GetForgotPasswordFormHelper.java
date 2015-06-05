@@ -47,7 +47,7 @@ public class GetForgotPasswordFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetForgotPasswordForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetForgotPasswordForm(requestBundle, this).execute();
     }
 
     @Override

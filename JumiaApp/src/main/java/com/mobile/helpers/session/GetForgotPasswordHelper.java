@@ -3,7 +3,6 @@ package com.mobile.helpers.session;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -40,7 +39,7 @@ public class GetForgotPasswordHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new ForgotPassword(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new ForgotPassword(requestBundle, this).execute();
     }
 
     @Override

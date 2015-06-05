@@ -6,7 +6,6 @@ package com.mobile.helpers.teasers;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.StaticPage;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -56,7 +55,7 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetShopInShopPage(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetShopInShopPage(requestBundle, this).execute();
     }
 
     @Override

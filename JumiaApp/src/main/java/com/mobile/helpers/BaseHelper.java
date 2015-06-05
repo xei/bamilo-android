@@ -10,8 +10,8 @@
 //import com.mobile.framework.enums.RequestType;
 //import com.mobile.framework.objects.Errors;
 ////import com.mobile.framework.rest.RestClientSingleton;
-//import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.rest.RestContract;
+//import com.mobile.newFramework.rest.RestConstants;
+//import com.mobile.newFramework.rest.configs.RestContract;
 //import com.mobile.framework.utils.Constants;
 //import com.mobile.framework.utils.EventTask;
 //import com.mobile.framework.utils.EventType;

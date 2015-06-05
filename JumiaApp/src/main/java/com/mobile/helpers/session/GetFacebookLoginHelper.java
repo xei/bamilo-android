@@ -55,7 +55,7 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new LoginCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new LoginCustomer(requestBundle, this).execute();
     }
 
     @Override

@@ -3,8 +3,13 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.os.Build;
 
-import com.mobile.framework.rest.ICurrentCookie;
+import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.NetworkConnectivity;
+import com.mobile.newFramework.rest.configs.AigAuthenticator;
+import com.mobile.newFramework.rest.configs.AigConfigurations;
+import com.mobile.newFramework.rest.cookies.AigCookieManager;
+import com.mobile.newFramework.rest.cookies.ISessionCookie;
+import com.mobile.newFramework.rest.errors.NoConnectivityException;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -24,61 +29,122 @@ import retrofit.client.OkClient;
 
 public class AigHttpClient extends OkClient {
 
+    public static final String TAG = AigHttpClient.class.getSimpleName();
+
     private static AigHttpClient sAigHttpClient;
 
     private final OkHttpClient mOkHttpClient;
 
     private Context mContext;
 
-    public static AigHttpClient newInstance(Context context) {
-        return sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context));
+    /*
+     * ###### TEST CONSTRUCTOR ######
+     */
+
+    /**
+     * Initialize rest client in test mode
+     */
+    public static void initializeTestingMode() {
+        sAigHttpClient = new AigHttpClient(newOkHttpClient(null));
     }
 
+    /**
+     * Create rest client with specific OkHttpClient in test mode
+     */
+    private AigHttpClient(OkHttpClient okHttpClient) {
+        super(okHttpClient);
+        this.mOkHttpClient = okHttpClient;
+    }
+
+
+    /*
+     * ###### NORMAL CONSTRUCTOR ######
+     */
+
+
+    /**
+     * Initialize rest client
+     */
     public static AigHttpClient getInstance(Context context) {
-        return sAigHttpClient == null ? sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context)) : sAigHttpClient;
+        if(sAigHttpClient == null) {
+            init(context);
+        }
+        return sAigHttpClient;
     }
 
-    public AigHttpClient(Context context, OkHttpClient okHttpClient) {
+    /**
+     * Initialize rest client
+     */
+    private static void init(Context context) {
+        sAigHttpClient = new AigHttpClient(context, newOkHttpClient(context));
+    }
+
+    /**
+     * Create rest client with specific OkHttpClient
+     */
+    private AigHttpClient(Context context, OkHttpClient okHttpClient) {
         super(okHttpClient);
         this.mOkHttpClient = okHttpClient;
         this.mContext = context;
     }
 
+    /*
+     * ###### GET SINGLETON INSTANCE ######
+     */
 
-    public ICurrentCookie getCurrentCookie() {
-        return (AigCookieManager) mOkHttpClient.getCookieHandler();
+    /**
+     * Get the current instance of http client
+     * @return AigHttpClient
+     */
+    public static AigHttpClient getInstance() {
+        return sAigHttpClient;
     }
 
-    public List<HttpCookie> getCookies() {
-        return ((AigCookieManager) mOkHttpClient.getCookieHandler()).getCookies();
-    }
-
-    public void clearCookieStore() {
-        ((AigCookieManager) mOkHttpClient.getCookieHandler()).removeAll();
-    }
-
+    /**
+     * Intercept request execution to validate the network connectivity.
+     */
     @Override
     public retrofit.client.Response execute(retrofit.client.Request request) throws IOException {
         if(mContext != null && !NetworkConnectivity.isConnected(mContext)) {
-            throw new NoConnectivityException("No network connectivity!");
+            throw new NoConnectivityException();
         }
         return super.execute(request);
     }
 
-    /**
-     * Exception
+    /*
+     * ################ COOKIES ################
      */
-    public class NoConnectivityException extends IOException {
-        public NoConnectivityException(String detailMessage) {
-            super(detailMessage);
-        }
+
+    /**
+     * Get the current cookie
+     * @return AigCookieManager that implements ISessionCookie
+     */
+    public ISessionCookie getCurrentCookie() {
+        return (AigCookieManager) mOkHttpClient.getCookieHandler();
     }
 
+    /**
+     * Get a list cookies from CookieManager for WebViews
+     * @return List<HttpCookie>
+     */
+    public List<HttpCookie> getCookies() {
+        return ((AigCookieManager) mOkHttpClient.getCookieHandler()).getCookies();
+    }
+
+    /**
+     * Remove all cookies from Cookie Manager
+     */
+    public void clearCookieStore() {
+        ((AigCookieManager) mOkHttpClient.getCookieHandler()).removeAll();
+    }
 
     /*
      * ################ OK HTTP CLIENT ################
      */
 
+    /**
+     * Create a specific OkHttpClient
+     */
     private static OkHttpClient newOkHttpClient(Context context) {
         // HTTP CLIENT
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -95,11 +161,14 @@ public class AigHttpClient extends OkClient {
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        addInterceptors(okHttpClient);
+        //addInterceptors(okHttpClient);
         // Return client
         return okHttpClient;
     }
 
+    /**
+     * Set cache case not in test mode.
+     */
     private static void setCache(OkHttpClient okHttpClient, Context context) {
         if (context != null) {
             // CACHE
@@ -109,84 +178,48 @@ public class AigHttpClient extends OkClient {
         }
     }
 
+    /**
+     * Set the cookie manager.
+     */
     private static void setCookies(OkHttpClient okHttpClient, Context context) {
+        // Case not in test mode
         if(context != null) {
-//            // TODO: COOKIES
-//            //PersistentCookieStore cookieStore = new PersistentCookieStore(context);
-//            //CookieManager cookieManager = new CookieManager((CookieStore) cookieStore, CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-//            //okHttpClient.setCookieHandler(cookieManager);
-//            AigPersistentCookieStore cookieManager = new AigPersistentCookieStore();
-//            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-//            CookieHandler.setDefault(cookieManager);
-            //CookieManager cookieManager = new CookieManager();
             AigCookieManager cookieManager = new AigCookieManager(context);
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
             CookieHandler.setDefault(cookieManager);
         }
-        else
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+        // Case in test mode
+        else if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
         }
-        //
         okHttpClient.setCookieHandler(CookieHandler.getDefault());
     }
 
+    /**
+     * Add some http interceptors to debug.
+     */
+    @SuppressWarnings("unused")
+
     private static void addInterceptors(OkHttpClient okHttpClient) {
-        //okHttpClient.interceptors().add(new FullUrlRequestInterceptor());
-        //okHttpClient.networkInterceptors().add(new FullUrlRequestInterceptor());
-        //okHttpClient.interceptors().add(new RequestInterceptor());
+        okHttpClient.interceptors().add(new RequestInterceptor());
         okHttpClient.interceptors().add(new ResponseInterceptor());
-    }
-
-    private static class FullUrlRequestInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            // Remove the "/" from request because the interface requires an end point as "/{end_point}"
-            Request request = chain.request();
-            String url = request.urlString();
-            if(url != null && url.charAt(url.length() -1) == '/') {
-                String newUrl =  url.substring(0, url.length() -1);
-                request = request.newBuilder().url(newUrl).build();
-            }
-            System.out.println("############ OK HTTP: REQUEST INTERCEPTOR ############");
-            System.out.println("Headers:      \n" + request.headers());
-            System.out.println("Url:            " + request.url());
-            System.out.println("UrI:            " + request.uri());
-            System.out.println("Https:          " + request.isHttps());
-            System.out.println("Method:         " + request.method());
-            System.out.println("Body:           " + request.body());
-            System.out.println("Cache:          " + request.cacheControl());
-            System.out.println("####################################################\n");
-
-            Response response = chain.proceed(request);
-            System.out.println("############ OK HTTP: RESPONSE INTERCEPTOR ############");
-            System.out.println("Headers:          \n" + response.headers());
-            System.out.println("Message:            " + response.message());
-            System.out.println("Redirect:           " + response.isRedirect());
-            System.out.println("Cache response:     " + response.cacheResponse());
-            System.out.println("Network response:   " + response.networkResponse());
-            System.out.println("> Request:          " + response.request().toString());
-            System.out.println("######################################################\n");
-
-            return response;
-        }
     }
 
     private static class RequestInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            System.out.println("############ OK HTTP: REQUEST INTERCEPTOR ############");
+            Print.d(TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
             Request request = chain.request();
-            System.out.println("Headers:      \n" + request.headers());
-            System.out.println("Url:            " + request.url());
-            System.out.println("UrI:            " + request.uri());
-            System.out.println("Https:          " + request.isHttps());
-            System.out.println("Method:         " + request.method());
-            System.out.println("Body:           " + request.body());
-            System.out.println("Cache:          " + request.cacheControl());
-            System.out.println("####################################################\n");
+            Print.d(TAG, "Headers:      \n" + request.headers());
+            Print.d(TAG, "Url:            " + request.url());
+            Print.d(TAG, "UrI:            " + request.uri());
+            Print.d(TAG, "Https:          " + request.isHttps());
+            Print.d(TAG, "Method:         " + request.method());
+            Print.d(TAG, "Body:           " + request.body());
+            Print.d(TAG, "Cache:          " + request.cacheControl());
+            Print.d(TAG, "####################################################\n");
             return chain.proceed(request);
         }
     }
@@ -194,15 +227,15 @@ public class AigHttpClient extends OkClient {
     private static class ResponseInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            System.out.println("############ OK HTTP: RESPONSE INTERCEPTOR ############");
+            Print.d(TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
             Response response = chain.proceed(chain.request());
-            System.out.println("Headers:          \n" + response.headers());
-            System.out.println("Message:            " + response.message());
-            System.out.println("Redirect:           " + response.isRedirect());
-            System.out.println("Cache response:     " + response.cacheResponse());
-            System.out.println("Network response:   " + response.networkResponse());
-            System.out.println("> Request:          " + response.request().toString());
-            System.out.println("######################################################\n");
+            Print.d(TAG, "Headers:          \n" + response.headers());
+            Print.d(TAG, "Message:            " + response.message());
+            Print.d(TAG, "Redirect:           " + response.isRedirect());
+            Print.d(TAG, "Cache response:     " + response.cacheResponse());
+            Print.d(TAG, "Network response:   " + response.networkResponse());
+            Print.d(TAG, "> Request:          " + response.request().toString());
+            Print.d(TAG, "######################################################\n");
             return response;
         }
     }

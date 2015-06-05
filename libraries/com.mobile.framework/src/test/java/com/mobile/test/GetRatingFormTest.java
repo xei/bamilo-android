@@ -23,7 +23,7 @@ public class GetRatingFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetRatingForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetRatingForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

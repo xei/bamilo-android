@@ -5,8 +5,8 @@ import android.os.Parcelable;
 
 import com.mobile.framework.objects.CustomerGender;
 import com.mobile.framework.objects.CustomerPrefix;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

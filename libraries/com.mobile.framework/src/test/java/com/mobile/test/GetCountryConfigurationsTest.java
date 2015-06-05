@@ -22,7 +22,7 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCountryConfigurations(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCountryConfigurations(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

@@ -75,8 +75,6 @@ public class ShopPreferences {
     
     /**
      * Method used to set the shop with the position
-     * @param context
-     * @param shopPosition
      * @author sergiopereira
      */
     public static void setShopId(Context context, int shopPosition) {
@@ -108,7 +106,6 @@ public class ShopPreferences {
     
     /**
      * Method used to set a shop country from xml
-     * @param context
      * @author sergiopereira
      */
     public static void setShopFromConfigs(Context context) {

@@ -57,7 +57,7 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new RemoveAllShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new RemoveAllShoppingCart(requestBundle, this).execute();
     }
 
     @Override

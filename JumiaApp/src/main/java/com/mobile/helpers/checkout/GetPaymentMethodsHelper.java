@@ -32,7 +32,7 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetPaymentMethodsForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetPaymentMethodsForm(requestBundle, this).execute();
     }
 
     @Override

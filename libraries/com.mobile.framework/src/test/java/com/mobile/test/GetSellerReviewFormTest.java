@@ -23,7 +23,7 @@ public class GetSellerReviewFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetSellerReviewForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetSellerReviewForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

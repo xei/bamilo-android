@@ -1,7 +1,5 @@
 package com.mobile.newFramework.requests.cart;
 
-import android.content.Context;
-
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
@@ -11,13 +9,13 @@ import com.mobile.newFramework.rest.AigRestAdapter;
 
 public class AddItemShoppingCart extends BaseRequest<ShoppingCart> {
 
-    public AddItemShoppingCart(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
-        super(context, requestBundle, requester);
+    public AddItemShoppingCart(RequestBundle requestBundle, AigResponseCallback requester) {
+        super(requestBundle, requester);
     }
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter( mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.addItemShoppingCart(mRequestBundle.getData(), this);
     }
 

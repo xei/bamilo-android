@@ -30,7 +30,7 @@ public class SetPaymentMethodTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetPaymentMethod(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetPaymentMethod(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

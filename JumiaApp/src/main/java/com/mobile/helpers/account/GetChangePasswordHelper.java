@@ -48,7 +48,7 @@ public class GetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new ChangePassword(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new ChangePassword(requestBundle, this).execute();
     }
 
     @Override

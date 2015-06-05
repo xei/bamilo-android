@@ -56,7 +56,7 @@ public class GetRegisterHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new RegisterCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new RegisterCustomer(requestBundle, this).execute();
     }
 
     @Override

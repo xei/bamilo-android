@@ -2,7 +2,6 @@ package com.mobile.helpers.configs;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -40,7 +39,7 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetTermsConditions(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetTermsConditions(requestBundle, this).execute();
     }
 
     @Override

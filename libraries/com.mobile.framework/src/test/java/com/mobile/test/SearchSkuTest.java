@@ -30,7 +30,7 @@ public class SearchSkuTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SearchSku(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SearchSku(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

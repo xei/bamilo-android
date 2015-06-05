@@ -1,7 +1,5 @@
 package com.mobile.newFramework.requests.reviews;
 
-import android.content.Context;
-
 import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
@@ -13,13 +11,13 @@ public class GetSellerReviewForm extends BaseRequest {
 
     EventType type = EventType.GET_FORM_SELLER_REVIEW_EVENT;
 
-    public GetSellerReviewForm(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
-        super(context, requestBundle, requester);
+    public GetSellerReviewForm(RequestBundle requestBundle, AigResponseCallback requester) {
+        super(requestBundle, requester);
     }
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext,mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.getSellerReviewForm(this);
     }
 }

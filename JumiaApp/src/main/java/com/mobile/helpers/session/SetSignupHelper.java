@@ -59,7 +59,7 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new SignUpCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new SignUpCustomer(requestBundle, this).execute();
     }
 
     @Override

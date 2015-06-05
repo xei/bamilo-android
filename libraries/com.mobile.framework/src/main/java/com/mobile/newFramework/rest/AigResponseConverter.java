@@ -2,10 +2,10 @@ package com.mobile.newFramework.rest;
 
 import com.mobile.framework.objects.Errors;
 import com.mobile.framework.objects.Success;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -28,7 +28,7 @@ import retrofit.mime.TypedOutput;
 /**
  * Created by rsoares on 5/21/15.
  */
-public class ResponseConverter implements Converter{
+public class AigResponseConverter implements Converter{
 
     @Override
     public Object fromBody(TypedInput body, Type type) throws ConversionException {

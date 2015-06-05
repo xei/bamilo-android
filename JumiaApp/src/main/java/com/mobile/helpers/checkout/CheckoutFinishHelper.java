@@ -56,7 +56,7 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new CheckoutFinishOrder(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new CheckoutFinishOrder(requestBundle, this).execute();
     }
 
     @Override

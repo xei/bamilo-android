@@ -2,7 +2,6 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -44,7 +43,7 @@ public class GetTrackOrderHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new TrackOrder(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new TrackOrder(requestBundle, this).execute();
     }
 
     @Override

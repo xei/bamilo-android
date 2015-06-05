@@ -5,9 +5,9 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.objects.Address;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

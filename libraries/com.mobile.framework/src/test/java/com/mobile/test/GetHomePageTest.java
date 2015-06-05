@@ -21,7 +21,7 @@ public class GetHomePageTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetHomePage(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetHomePage(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

@@ -35,7 +35,7 @@ public class GetReviewsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetProductReviews(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetProductReviews(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

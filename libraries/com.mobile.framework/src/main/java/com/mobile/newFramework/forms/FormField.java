@@ -7,12 +7,12 @@ import android.os.Parcelable;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

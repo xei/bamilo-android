@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.errors;
 
 import com.mobile.framework.ErrorCode;
 
@@ -44,7 +44,7 @@ public class AigErrorHandler implements ErrorHandler {
         switch (cause.getKind()) {
             case NETWORK:
                 // Validate cause
-                ErrorCode code = cause.getCause() instanceof AigHttpClient.NoConnectivityException ? ErrorCode.NO_NETWORK : ErrorCode.CONNECT_ERROR;
+                ErrorCode code = cause.getCause() instanceof NoConnectivityException ? ErrorCode.NO_NETWORK : ErrorCode.CONNECT_ERROR;
                 // handle an IOException occurred while communicating to the server.
                 System.out.println("Network error. Cause: " + cause.getMessage());
                 jumiaError.setErrorCode(code);

@@ -7,8 +7,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetBillingAddressForm;
 
-import java.util.HashMap;
-
 public class GetBillingAddressFormTest extends BaseTestCase {
 
     @Override
@@ -24,7 +22,7 @@ public class GetBillingAddressFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetBillingAddressForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetBillingAddressForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

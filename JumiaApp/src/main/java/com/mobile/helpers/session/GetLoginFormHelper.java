@@ -50,7 +50,7 @@ public class GetLoginFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetLoginForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetLoginForm(requestBundle, this).execute();
     }
 
     @Override

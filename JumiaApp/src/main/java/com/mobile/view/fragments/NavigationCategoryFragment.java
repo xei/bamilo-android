@@ -124,7 +124,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
         // Case recover from background
         else {
-            Print.w(TAG, "APPLICATION IS ON BIND PROCESS");
             showRetry();
         }
     }

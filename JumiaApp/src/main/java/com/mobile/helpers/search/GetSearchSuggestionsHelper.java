@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.database.SearchRecentQueriesTableHelper;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -75,7 +74,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SearchSuggestions(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new SearchSuggestions(requestBundle, this).execute();
     }
 
     @Override

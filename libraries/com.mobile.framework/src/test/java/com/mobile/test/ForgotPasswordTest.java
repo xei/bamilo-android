@@ -28,7 +28,7 @@ public class ForgotPasswordTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new ForgotPassword(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new ForgotPassword(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

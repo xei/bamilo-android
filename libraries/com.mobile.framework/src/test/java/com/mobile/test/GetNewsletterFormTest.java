@@ -23,7 +23,7 @@ public class GetNewsletterFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetNewsletterForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetNewsletterForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

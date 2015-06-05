@@ -5,10 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

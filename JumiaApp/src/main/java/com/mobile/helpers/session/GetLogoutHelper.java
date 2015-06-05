@@ -40,7 +40,7 @@ public class GetLogoutHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new LogoutCustomer(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new LogoutCustomer(requestBundle, this).execute();
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
@@ -34,6 +33,7 @@ import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -43,8 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.mobile.framework.rest.RestClientSingleton;
-//import com.mobile.framework.service.IRemoteServiceCallback;
 
 public class JumiaApplication extends A4SApplication {
 
@@ -90,13 +88,9 @@ public class JumiaApplication extends A4SApplication {
     /**
      * The md5 registry
      */
-    public HashMap<String, IResponseCallback> responseCallbacks;
     boolean resendInitializationSignal = false;
     private Handler resendHandler;
-    //private Handler resendMenuHandler;
     private Message resendMsg;
-
-    //private IRemoteServiceCallback callBackWaitingService;
 
     /**
      * Payment methods Info
@@ -109,7 +103,6 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-    //    private ArrayList<String> bannerSkus = new ArrayList<>();
     private HashMap<String, TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
@@ -121,26 +114,21 @@ public class JumiaApplication extends A4SApplication {
         Print.initializeAndroidMode(getApplicationContext());
         Print.i(TAG, "ON APPLICATION CREATE");
         INSTANCE = this;
-
-        // TODO : REMOVE OLD FRAMEWORK
-        // Service
-        doBindService();
-
         // Init image loader
         RocketImageLoader.init(this);
         // Init apptimize
         ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
-        countriesAvailable = new ArrayList<>();
-        responseCallbacks = new HashMap<>();
+        // Init image resolution
+        ImageResolutionHelper.init(this);
         // Get the current shop id and name
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        //
+        // Init cached data
+        countriesAvailable = new ArrayList<>();
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-        ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
 
         /**
@@ -153,6 +141,14 @@ public class JumiaApplication extends A4SApplication {
         if (!TextUtils.isEmpty(currencyCode)) {
             CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
         }
+
+        /**
+         * When app try recover from background
+         */
+        if(!TextUtils.isEmpty(SHOP_ID)) {
+            Darwin.initialize(getApplicationContext(), SHOP_ID);
+        }
+
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -174,7 +170,7 @@ public class JumiaApplication extends A4SApplication {
         Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
         // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        // Disabled for Samsung and Blackberry (check_version_enabled) 
+        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
@@ -383,11 +379,11 @@ public class JumiaApplication extends A4SApplication {
      */
     public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
-            ICurrentCookie cookieStore = null;
+            ISessionCookie cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
                 // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
-                cookieStore = AigHttpClient.getInstance(getApplicationContext()).getCurrentCookie();
+                cookieStore = AigHttpClient.getInstance().getCurrentCookie();
             }
             mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore);
         }
@@ -614,7 +610,6 @@ public class JumiaApplication extends A4SApplication {
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
-        responseCallbacks.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;

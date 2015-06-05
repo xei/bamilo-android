@@ -28,7 +28,7 @@ public class SetDefaultBillingAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetDefaultBillingAddress(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetDefaultBillingAddress(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -52,7 +51,7 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SetProductRatingReview(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new SetProductRatingReview(requestBundle, this).execute();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.mobile.newFramework.pojo;
 
-import com.mobile.newFramework.rest.JumiaError;
+import com.mobile.newFramework.rest.errors.JumiaError;
 
 import java.util.List;
 import java.util.Map;

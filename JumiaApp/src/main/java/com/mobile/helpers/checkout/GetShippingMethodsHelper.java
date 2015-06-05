@@ -5,7 +5,6 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -37,7 +36,7 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetShippingForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetShippingForm(requestBundle, this).execute();
     }
 
     @Override

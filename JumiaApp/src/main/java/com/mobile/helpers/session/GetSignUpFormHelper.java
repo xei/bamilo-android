@@ -52,7 +52,7 @@ public class GetSignUpFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetSignUpForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetSignUpForm(requestBundle, this).execute();
     }
 
     @Override

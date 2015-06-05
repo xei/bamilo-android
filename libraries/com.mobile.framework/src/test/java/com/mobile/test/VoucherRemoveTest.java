@@ -21,7 +21,7 @@ public class VoucherRemoveTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new RemoveVoucher(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new RemoveVoucher(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

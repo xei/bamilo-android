@@ -23,7 +23,7 @@ public class GetEditAddressFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetEditAddressForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetEditAddressForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

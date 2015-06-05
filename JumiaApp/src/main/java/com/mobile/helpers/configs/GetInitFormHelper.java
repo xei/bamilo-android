@@ -36,7 +36,7 @@ public class GetInitFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetFormsIndex(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetFormsIndex(requestBundle, this).execute();
     }
 
     @Override

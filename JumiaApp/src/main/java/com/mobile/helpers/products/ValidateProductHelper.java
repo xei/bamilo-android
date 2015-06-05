@@ -3,7 +3,6 @@ package com.mobile.helpers.products;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -45,7 +44,7 @@ public class ValidateProductHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new ValidateProducts(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new ValidateProducts(requestBundle, this).execute();
     }
 
     @Override

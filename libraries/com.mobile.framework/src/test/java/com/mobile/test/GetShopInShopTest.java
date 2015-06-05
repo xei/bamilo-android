@@ -26,7 +26,7 @@ public class GetShopInShopTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetShopInShopPage(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetShopInShopPage(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

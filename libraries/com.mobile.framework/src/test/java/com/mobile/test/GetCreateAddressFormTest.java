@@ -23,7 +23,7 @@ public class GetCreateAddressFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCreateAddressForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCreateAddressForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

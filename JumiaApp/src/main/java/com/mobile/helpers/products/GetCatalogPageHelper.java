@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.RelatedItemsTableHelper;
 import com.mobile.framework.output.Print;
@@ -99,7 +98,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetCatalogFiltered(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCatalogFiltered(requestBundle, this).execute();
     }
 
     @Override

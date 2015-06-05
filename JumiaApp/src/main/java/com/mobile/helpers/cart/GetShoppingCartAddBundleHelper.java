@@ -63,7 +63,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new AddBundleShoppingCart(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddBundleShoppingCart(requestBundle, this).execute();
     }
 
     @Override

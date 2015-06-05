@@ -6,9 +6,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.utils.CustomerUtils;
+import com.mobile.newFramework.rest.cookies.ISessionCookie;
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import oak.ObscuredSharedPreferences;
@@ -31,7 +32,7 @@ public class PersistentSessionStore extends CustomerUtils {
 
     private ContentValues values;
 
-    private ICurrentCookie cookieStore;
+    private ISessionCookie cookieStore;
 
     /**
      * Constructor
@@ -40,7 +41,7 @@ public class PersistentSessionStore extends CustomerUtils {
      * @param country
      * @param cookieStore
      */
-    public PersistentSessionStore(Context ctx, String country, ICurrentCookie cookieStore) {
+    public PersistentSessionStore(Context ctx, String country, ISessionCookie cookieStore) {
         super(ctx);
         this.country = country;
         this.cookieStore = cookieStore;
@@ -88,7 +89,12 @@ public class PersistentSessionStore extends CustomerUtils {
      */
     protected void storeCookie(String cookie){
         if(!TextUtils.isEmpty(cookie) && cookieStore != null){
-            cookieStore.addCookie(cookie);
+            try {
+                cookieStore.addEncodedSessionCookie(cookie);
+            } catch (NullPointerException | URISyntaxException e) {
+                e.printStackTrace();
+                clearCredentials();
+            }
         }
     }
 
@@ -123,7 +129,7 @@ public class PersistentSessionStore extends CustomerUtils {
      */
     public void save(){
         if(cookieStore != null) {
-            String cookie = cookieStore.getCurrentCookie();
+            String cookie = cookieStore.getEncodedSessionCookie();
             this.values.put(CURRENT_COOKIE, cookie);
         }
         storeCredentials(this.values);

@@ -5,9 +5,9 @@ import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.TextUtils;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

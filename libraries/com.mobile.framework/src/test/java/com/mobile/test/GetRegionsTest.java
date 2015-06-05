@@ -23,7 +23,7 @@ public class GetRegionsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetRegions(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetRegions(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

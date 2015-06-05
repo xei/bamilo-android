@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.BaseProduct;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

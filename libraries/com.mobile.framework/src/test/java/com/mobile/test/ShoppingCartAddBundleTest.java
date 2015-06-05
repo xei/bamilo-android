@@ -35,7 +35,7 @@ public class ShoppingCartAddBundleTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new AddBundleShoppingCart(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new AddBundleShoppingCart(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

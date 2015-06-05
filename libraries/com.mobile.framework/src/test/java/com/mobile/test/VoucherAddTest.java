@@ -26,7 +26,7 @@ public class VoucherAddTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new AddVoucher(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new AddVoucher(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

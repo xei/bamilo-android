@@ -2,7 +2,6 @@ package com.mobile.helpers.configs;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.Promotion;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -42,7 +41,7 @@ public class GetPromotionsHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetPromotions(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetPromotions(requestBundle, this).execute();
     }
 
     @Override

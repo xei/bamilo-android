@@ -47,7 +47,7 @@ public class GetNewslettersFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetNewsletterForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetNewsletterForm(requestBundle, this).execute();
     }
 
     @Override

@@ -79,11 +79,8 @@ public class LogOut {
      * @author sergiopereira
      */
     private static void cleanCartData(BaseActivity baseActivity) {
-
-        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
         // Clear cookies, cart, credentials
-        AigHttpClient.getInstance(baseActivity).clearCookieStore();
-
+        AigHttpClient.getInstance().clearCookieStore();
         JumiaApplication.INSTANCE.setCart(new ShoppingCart());
         JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();

@@ -2,9 +2,9 @@ package com.mobile.newFramework.objects.product;
 
 
 import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

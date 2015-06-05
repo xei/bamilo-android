@@ -28,7 +28,7 @@ public class CheckoutFinishTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new CheckoutFinish(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new CheckoutFinish(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

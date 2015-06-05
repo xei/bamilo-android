@@ -23,7 +23,7 @@ public class GetPaymentMethodsFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetShippingMethodsForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetShippingMethodsForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

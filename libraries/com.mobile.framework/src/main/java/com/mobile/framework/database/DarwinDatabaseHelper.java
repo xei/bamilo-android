@@ -33,7 +33,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     private static final String INFO_TABLE = "PRAGMA table_info('%1$s')";
     
-    public enum TableType { CACHE, PERSIST, FREEZE };
+    public enum TableType { CACHE, PERSIST, FREEZE }
     
     private static DarwinDatabaseHelper db;
 
@@ -52,7 +52,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Initialize
-	 * @param context
 	 */
 	public static void init(Context context) {
 		DarwinDatabaseHelper.CONTEXT = context;
@@ -60,7 +59,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get instance
-	 * @return
+	 * @return DarwinDatabaseHelper
 	 */
     public static DarwinDatabaseHelper getInstance() {
         int version = DATABASE_VERSION;
@@ -71,12 +70,11 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 		}
     
     	return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
-    	//return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
     }
     
     /**
 	 * Get instance
-	 * @return
+	 * @return DarwinDatabaseHelper
 	 */
     public static DarwinDatabaseHelper getInstance(Context ctx) {
         int version = DATABASE_VERSION;
@@ -90,7 +88,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         if(CONTEXT == null) CONTEXT = ctx;
         
         return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
-    	//return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
     }
     
     /**
@@ -135,7 +132,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Not upgrade table.
-     * @param table
      * @author sergiopereira
      */
     private void onUpgradeFreezeTable(BaseTable table){
@@ -144,8 +140,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     /**
      * Create a new empty table. (Drop and Create)
-     * @param db
-     * @param table
      * @author sergiopereira
      */
     private void onUpgradeCacheTable(SQLiteDatabase db, BaseTable table) {
@@ -161,9 +155,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Upgrade the table trying copy the old content for the new table schema.<br>
      * WARNING: Not support table rename, change table type.<br>
-     * @param db
-     * @param newVersion
-     * @param table
      */
     private void onUpgradePersistTable(SQLiteDatabase db, int newVersion, BaseTable table) {
         // Get table name
@@ -185,10 +176,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     /**
      * Copy data from table2 to table1.
-     * @param db
-     * @param common
-     * @param table1
-     * @param table2
      * @author sergiopereira
      */
     private void copyContent(SQLiteDatabase db, ArrayList<String> common, String table1, String table2) {
@@ -208,9 +195,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     /**
      * Compare tables and return a list of same columns.
-     * @param db
-     * @param table1
-     * @param trable2
      * @return ArrayList<String>
      * @author sergiopereira
      */
@@ -222,8 +206,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     /**
      * Get table columns.
-     * @param db
-     * @param table
      * @return ArrayList<String>
      * @author sergiopereira
      */

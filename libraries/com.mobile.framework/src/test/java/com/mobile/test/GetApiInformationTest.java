@@ -24,7 +24,7 @@ public class GetApiInformationTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetApiInformation(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetApiInformation(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

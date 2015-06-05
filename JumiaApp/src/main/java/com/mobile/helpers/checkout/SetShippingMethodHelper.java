@@ -6,7 +6,6 @@ package com.mobile.helpers.checkout;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -48,7 +47,7 @@ public class SetShippingMethodHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SetShippingMethod(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new SetShippingMethod(requestBundle, this).execute();
     }
 
     @Override

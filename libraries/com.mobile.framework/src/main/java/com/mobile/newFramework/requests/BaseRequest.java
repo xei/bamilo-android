@@ -1,21 +1,18 @@
 package com.mobile.newFramework.requests;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mobile.framework.ErrorCode;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.AigBaseException;
-import com.mobile.newFramework.rest.JumiaError;
+import com.mobile.newFramework.rest.errors.AigBaseException;
+import com.mobile.newFramework.rest.errors.JumiaError;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
-
-    protected final Context mContext;
 
     protected final RequestBundle mRequestBundle;
 
@@ -25,8 +22,7 @@ public abstract class BaseRequest<T> implements Callback<BaseResponse<T>> {
      * ############## REQUEST ##############
      */
 
-    public BaseRequest(@NonNull Context context, @NonNull RequestBundle requestBundle, AigResponseCallback requester) {
-        this.mContext = context;
+    public BaseRequest(@NonNull RequestBundle requestBundle, AigResponseCallback requester) {
         this.mRequestBundle = requestBundle;
         this.mRequester = requester;
     }

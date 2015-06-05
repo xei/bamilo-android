@@ -37,7 +37,7 @@ public class RegisterCustomerTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new RegisterCustomer(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new RegisterCustomer(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

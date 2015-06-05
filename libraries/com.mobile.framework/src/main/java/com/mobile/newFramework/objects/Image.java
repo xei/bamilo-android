@@ -1,14 +1,14 @@
 package com.mobile.newFramework.objects;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.interfaces.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Image for products, brands, and categories. contains path, width, height, format

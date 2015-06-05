@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.configs;
 
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.Request;
@@ -16,7 +16,7 @@ public class AigAuthenticator implements com.squareup.okhttp.Authenticator {
     String credentials;
 
     public AigAuthenticator() {
-        this.credentials = Credentials.basic(AigConfigurations.AUTHENTICATION_USER, AigConfigurations.AUTHENTICATION_PASS);
+        this.credentials = Credentials.basic(AigRestContract.AUTHENTICATION_USER, AigRestContract.AUTHENTICATION_PASS);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetEditAddressForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetEditAddressForm(requestBundle, this).execute();
     }
 
     @Override

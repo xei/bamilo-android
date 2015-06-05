@@ -2,7 +2,7 @@ package com.mobile.utils;
 
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONObject;
 

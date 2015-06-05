@@ -1,6 +1,6 @@
 package com.mobile.newFramework.requests.checkout;
 
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONObject;
 

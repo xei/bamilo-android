@@ -3,7 +3,6 @@ package com.mobile.helpers.voucher;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -43,7 +42,7 @@ public class AddVoucherHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new AddVoucher(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new AddVoucher(requestBundle, this).execute();
     }
 
     @Override

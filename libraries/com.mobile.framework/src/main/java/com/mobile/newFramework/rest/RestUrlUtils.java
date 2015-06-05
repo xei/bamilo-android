@@ -3,7 +3,7 @@ package com.mobile.newFramework.rest;
 import android.net.Uri;
 
 import com.mobile.framework.Darwin;
-import com.mobile.framework.rest.RestContract;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -42,17 +42,17 @@ public class RestUrlUtils {
     public static Uri completeUri(Uri uri) {
         //
         if (Darwin.logDebugEnabled) {
-            Log.d(TAG, "completeUri: host= " + RestContract.REQUEST_HOST + " base= " + RestContract.REST_BASE_PATH + " service= " + uri);
+            Log.d(TAG, "completeUri: host= " + AigRestContract.REQUEST_HOST + " base= " + AigRestContract.REST_BASE_PATH + " service= " + uri);
         }
         //
         Uri.Builder builder = uri.buildUpon();
         //
         if (uri.getAuthority() == null) {
-            builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
+            builder.authority(AigRestContract.REQUEST_HOST).path(AigRestContract.REST_BASE_PATH + uri.getPath());
             Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
         }
         //
-        if(RestContract.USE_ONLY_HTTPS){
+        if(AigRestContract.USE_ONLY_HTTPS){
             if ( Darwin.logDebugEnabled) {
                 Log.d(TAG, "Request type changed to https.");
             }
@@ -62,7 +62,7 @@ public class RestUrlUtils {
          * Temporary: Force http for Bamilo.
          * TODO: Remove me if Bamilo supports https.
          */
-        if(RestContract.USE_ONLY_HTTP) {
+        if(AigRestContract.USE_ONLY_HTTP) {
             Log.i(TAG, "BAMILO REQUEST: force http.");
             builder.scheme("http");
         }

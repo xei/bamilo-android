@@ -9,17 +9,15 @@ import android.text.TextUtils;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.FacebookTracker;
 import com.mobile.framework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 
 import java.util.Locale;
-
-// TODO: REMOVE OLD FRAMEWORK
-//import com.mobile.framework.rest.RestClientSingleton;
 
 /**
  * <p>
@@ -48,97 +46,82 @@ public final class ShopSelector {
 	private static String sShopName;
 
 	/**
+	 * Hidden default constructor for utility class.
+	 */
+	private ShopSelector() {
+		// empty
+	}
+
+	/**
 	 * Initializing the country selector to a certain country code. This also
 	 * initializes the currency formatter to the related currency code.
-	 * 
-	 * @param context
-	 * @param shopId
 	 */
 	public static void init(Context context, String shopId) {
+		// Init
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
-		RestContract.init(context, shopId);
-
-		// TODO: REMOVE OLD FRAMEWORK
-		// RestClientSingleton.getSingleton(context).init();
-
+		sShopId = shopId;
+		sShopName = context.getResources().getString(R.string.global_server_shop_name);
+		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+		// Rest client
+		AigRestContract.init(context, shopId);
+		AigHttpClient.getInstance(context);
+		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-		//ADJUST
+		CurrencyFormatter.initialize(context, currencyCode);
+		// Trackers
 		AdjustTracker.startup(context);
 		AdjustTracker.initializeAdjust(context);
-
-		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context);
 		Ad4PushTracker.startup(context);
         GTMManager.init(context);
         FacebookTracker.startup(context);
-        
-        sShopId = shopId;
-        sShopName = context.getResources().getString( R.string.global_server_shop_name);
-        sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
     }
     
     /**
      * Initializing To General Requests
-     * 
-     * @param context
      */
 	// NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
-        RestContract.init(context);
-
-		// TODO: REMOVE OLD FRAMEWORK
-        //RestClientSingleton.getSingleton(context).init();
-
+		// Rest client
+        AigRestContract.init(context);
+		AigHttpClient.getInstance(context);
 	}
-
-
 
 	/**
 	 * Initializing the country selector to a certain Country host.
-	 * 
-	 * @param context
 	 */
     // NO_COUNTRY_CONFIGS_AVAILABLE
 	public static void init(Context context, String requestHost, String basePath) {
-		RestContract.init(context, requestHost, basePath);
-
-		// TODO: REMOVE OLD FRAMEWORK
-		//RestClientSingleton.getSingleton(context).init();
-
+		// Rest client
+		AigRestContract.init(context, requestHost, basePath);
+		AigHttpClient.getInstance(context);
 	}
 
 	/**
 	 * Update the country selector to a certain country code. This also
 	 * updates the currency formatter to the related currency code.
-	 * 
-	 * @param context
-	 * @param shopId
 	 */
 	public static void updateLocale(Context context, String shopId) {
-	    //Log.i(TAG, "UPDATE LOCALE");
+	    //Print.i(TAG, "UPDATE LOCALE");
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
-		RestContract.init(context, shopId);
-
-		// TODO: REMOVE OLD FRAMEWORK
-		//RestClientSingleton.getSingleton(context).init();
-
-		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-		CurrencyFormatter.initialize(context, currencyCode);
-		
 		sShopId = shopId;
 		sShopName = context.getResources().getString( R.string.global_server_shop_name);
 		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+		// Rest client
+		AigRestContract.init(context, shopId);
+		AigHttpClient.getInstance(context);
+		// Currency formatter
+		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+		CurrencyFormatter.initialize(context, currencyCode);
 	}
 	
 	/**
 	 * These method forces the saved locale used before the rotation.
-	 * @param context
-	 * @author spereira
 	 */
 	public static void setLocaleOnOrientationChanged(Context context) {
-	    //Log.i(TAG, "SET LOCALE ON ORIENTATION CHANGED");
+	    //Print.i(TAG, "SET LOCALE ON ORIENTATION CHANGED");
 	    SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 	    String language = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null);
 	    if(!TextUtils.isEmpty(language)) setLocale(context, language);
@@ -146,13 +129,9 @@ public final class ShopSelector {
 	
 	/**
 	 * Sets the locale for the app by using the language code.
-	 * 
-	 * @param context
-	 * @param language
-	 * @modified sergiopereira
 	 */
 	private static void setLocale(Context context, String language) {
-		Print.i(TAG, "ON SET LOCALE: language " + language);
+		//Print.i(TAG, "ON SET LOCALE: language " + language);
 		// Get language and country code
 		String[] languageCountry = language.split("_");
 		// Create new locale
@@ -165,13 +144,6 @@ public final class ShopSelector {
 		Resources res = context.getResources();
 		res.updateConfiguration(config, res.getDisplayMetrics());
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
-	}
-
-	/**
-	 * Hidden default constructor for utility class.
-	 */
-	private ShopSelector() {
-		// empty
 	}
 	
 	public static String getShopId() {

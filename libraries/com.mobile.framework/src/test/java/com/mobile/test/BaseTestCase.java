@@ -1,11 +1,10 @@
 package com.mobile.test;
 
-import android.content.Context;
-
 import com.mobile.framework.output.Print;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.AigHttpClient;
 
 import junit.framework.TestCase;
 
@@ -15,14 +14,13 @@ public class BaseTestCase extends TestCase implements AigResponseCallback {
 
     protected CountDownLatch mCountDownLatch;
 
-    protected final static Context IS_AUTOMATED_TEST = null;
-
     RequestBundle requestBundle;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         Print.initializeTestingMode();
+        AigHttpClient.initializeTestingMode();
         mCountDownLatch = new CountDownLatch(1);
     }
 

@@ -1,6 +1,6 @@
 package com.mobile.framework.objects;
 
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

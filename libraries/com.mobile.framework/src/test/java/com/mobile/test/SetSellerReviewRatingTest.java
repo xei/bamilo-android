@@ -37,7 +37,7 @@ public class SetSellerReviewRatingTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetSellerRatingReview(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetSellerRatingReview(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

@@ -27,7 +27,7 @@ public class GetCategoryPaginatedTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCategoriesPaginated(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCategoriesPaginated(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

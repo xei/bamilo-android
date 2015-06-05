@@ -30,7 +30,7 @@ public class ValidateProductsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new ValidateProducts(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new ValidateProducts(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

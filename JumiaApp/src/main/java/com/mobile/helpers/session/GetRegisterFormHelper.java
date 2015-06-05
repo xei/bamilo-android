@@ -50,7 +50,7 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetRegisterForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetRegisterForm(requestBundle, this).execute();
     }
 
     @Override

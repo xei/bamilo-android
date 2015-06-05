@@ -27,8 +27,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
@@ -39,6 +37,8 @@ import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.Section;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
@@ -308,7 +308,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } catch (Exception e) {
             e.printStackTrace();
         }
-        devText.append("\nServer: " + RestContract.REQUEST_HOST);
+        devText.append("\nServer: " + AigRestContract.REQUEST_HOST);
         // Device info
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);

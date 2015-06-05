@@ -5,7 +5,6 @@ package com.mobile.helpers.search;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -52,7 +51,7 @@ public class GetSearchProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SearchProductDetail(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new SearchProductDetail(requestBundle, this).execute();
     }
 
     @Override

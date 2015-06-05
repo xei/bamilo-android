@@ -30,7 +30,7 @@ public class GetCitiesTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCities(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCities(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

@@ -1,4 +1,4 @@
-package com.mobile.newFramework.rest;
+package com.mobile.newFramework.rest.errors;
 
 /**
  * Created by pcarvalho on 5/22/15.

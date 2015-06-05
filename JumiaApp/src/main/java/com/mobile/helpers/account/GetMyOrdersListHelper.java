@@ -5,7 +5,6 @@ package com.mobile.helpers.account;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
@@ -57,7 +56,7 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetOrdersList(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetOrdersList(requestBundle, this).execute();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class GetSignUpFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetSignUpForm(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetSignUpForm(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

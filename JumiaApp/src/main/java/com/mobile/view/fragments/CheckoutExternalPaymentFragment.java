@@ -26,8 +26,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -37,7 +35,9 @@ import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -370,7 +370,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void prepareCookieStore() {
 
         // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
-        List<HttpCookie> cookies = AigHttpClient.getInstance(getBaseActivity()).getCookies();
+        List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
 
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
@@ -439,7 +439,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
             Print.i(TAG, "code1payment : onReceivedHttpAuthRequest");
-            handler.proceed(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS);
+            handler.proceed(AigRestContract.AUTHENTICATION_USER, AigRestContract.AUTHENTICATION_PASS);
         }
 
         /*

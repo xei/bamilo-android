@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

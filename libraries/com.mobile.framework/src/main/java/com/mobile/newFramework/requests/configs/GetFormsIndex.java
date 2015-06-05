@@ -1,7 +1,5 @@
 package com.mobile.newFramework.requests.configs;
 
-import android.content.Context;
-
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
@@ -11,13 +9,13 @@ import com.mobile.newFramework.rest.AigRestAdapter;
 
 public class GetFormsIndex extends BaseRequest<FormsIndex> {
 
-    public GetFormsIndex(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
-        super(context, requestBundle, requester);
+    public GetFormsIndex(RequestBundle requestBundle, AigResponseCallback requester) {
+        super(requestBundle, requester);
     }
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter( mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.getFormsIndex(this);
     }
 

@@ -1,7 +1,7 @@
 package com.mobile.newFramework.objects;
 
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

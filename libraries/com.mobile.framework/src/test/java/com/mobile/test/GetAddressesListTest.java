@@ -31,7 +31,7 @@ public class GetAddressesListTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new GetCustomerAddresses(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new GetCustomerAddresses(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

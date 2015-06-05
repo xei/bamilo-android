@@ -29,7 +29,7 @@ public class SubscribeNewsletterTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SubscribeNewsletter(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SubscribeNewsletter(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

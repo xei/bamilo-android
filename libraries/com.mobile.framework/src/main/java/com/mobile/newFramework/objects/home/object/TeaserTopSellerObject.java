@@ -2,7 +2,7 @@ package com.mobile.newFramework.objects.home.object;
 
 import android.os.Parcel;
 
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

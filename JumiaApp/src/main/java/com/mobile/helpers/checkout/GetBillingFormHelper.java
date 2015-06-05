@@ -5,7 +5,6 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
@@ -41,7 +40,7 @@ public class GetBillingFormHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetBillingAddressForm(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetBillingAddressForm(requestBundle, this).execute();
     }
 
     @Override

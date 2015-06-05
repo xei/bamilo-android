@@ -31,7 +31,7 @@ public class SetBillingAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
-        new SetBillingAddress(IS_AUTOMATED_TEST, requestBundle, this).execute();
+        new SetBillingAddress(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

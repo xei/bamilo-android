@@ -1,4 +1,4 @@
-package com.mobile.framework.rest;
+package com.mobile.newFramework.rest.configs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,29 +13,21 @@ import com.mobile.framework.output.Print;
  *
  * @author Jacob Zschunke
  */
-public class RestContract {
+public class AigRestContract {
 
-	private final static String TAG = RestContract.class.getSimpleName();
+	private final static String TAG = AigRestContract.class.getSimpleName();
 
-	private RestContract() {
-
+	private AigRestContract() {
+		// ...
 	}
 
 	public final static Integer NO_CACHE = null;
-	//public final static int MIN_CACHE_TIME = 0;
 	public final static int DEFAULT_CACHE_TIME = 1800;
 	public final static int MAX_CACHE_TIME = 3600;
 
-	// Table Rows
-	public static final String _ID = "id";
-	public static final String _URI = "uri";
-	public static final String _STATE = "state";
-	public static final String _RESULT_CODE = "resultcode";
-	public static final String _PAYLOAD = "payload";
-	public static final String _TIMESTAMP = "timestamp";
-
 	public static String REST_BASE_PATH = null;
 	public static String REQUEST_HOST = null;
+	public static String COOKIE_SHOP_DOMAIN = null;
 	public static Boolean USE_ONLY_HTTPS = false;
 
 	// Authentication
@@ -43,18 +35,12 @@ public class RestContract {
 	public static String AUTHENTICATION_USER = null;
 	public static String AUTHENTICATION_PASS = null;
 
-	// AUTH CONSTANTS										//false
-	public static boolean RUNNING_TESTS = false;
+	// AUTH CONSTANTS
 	public static boolean USE_ONLY_HTTP = false;
-	public static final boolean USE_AUTHENTICATION_TEST = true;
-	public static final String AUTHENTICATION_USER_TEST = "rocket";
-	public static final String AUTHENTICATION_PASS_TEST = "rock4me";
 
 	public static final String REST_PARAM_RATING =                      "rating";
-	public static final String REST_PARAM_PAGE =                        "page";
 	public static final String REST_PARAM_SELLER_RATING =               "seller_rating";
 
-	// private static Context context;
 
 	public static void init(Context context, String selectedId) {
 		Print.i(TAG, "code1configs initializing RestContract : " + selectedId);
@@ -65,6 +51,8 @@ public class RestContract {
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
+
+		setCookieShopDomain();
 
 		USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
 		// 
@@ -89,6 +77,8 @@ public class RestContract {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
 
+		setCookieShopDomain();
+
 		REST_BASE_PATH = context.getResources().getString(R.string.global_server_restbase_path);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
@@ -108,6 +98,8 @@ public class RestContract {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
 
+		setCookieShopDomain();
+
 		REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
@@ -117,4 +109,13 @@ public class RestContract {
 		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
 	}
+
+	private static void setCookieShopDomain() {
+		COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replace("www.", "") : "";
+	}
+
+	public static String getShopDomain() {
+		return COOKIE_SHOP_DOMAIN;
+	}
+
 }

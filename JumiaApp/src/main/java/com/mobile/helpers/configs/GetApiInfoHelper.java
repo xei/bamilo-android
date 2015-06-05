@@ -45,7 +45,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {;
         // Request
-        new GetApiInformation(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetApiInformation(requestBundle, this).execute();
     }
 
     @Override

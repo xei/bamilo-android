@@ -1,11 +1,11 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.pojo.RestConstants;
+
+import org.json.JSONObject;
 /**
  * 
  * @author sergiopereira

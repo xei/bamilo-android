@@ -32,7 +32,7 @@ public class GetCustomerHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetCustomerDetails(JumiaApplication.INSTANCE.getApplicationContext(), requestBundle, this).execute();
+        new GetCustomerDetails(requestBundle, this).execute();
     }
 
     @Override

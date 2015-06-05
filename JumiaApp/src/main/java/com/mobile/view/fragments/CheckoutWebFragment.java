@@ -26,7 +26,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.output.Print;
-import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -39,6 +38,7 @@ import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -317,7 +317,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
+        checkoutUrl = "https://" + AigRestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy();
         Print.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);
@@ -340,7 +340,7 @@ public class CheckoutWebFragment extends BaseFragment {
 
     private void prepareCookieStore() {
         // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
-        List<HttpCookie> cookies = AigHttpClient.getInstance(getBaseActivity()).getCookies();
+        List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
         //
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
@@ -423,8 +423,8 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
                                               HttpAuthHandler handler, String host, String realm) {
-            handler.proceed(RestContract.AUTHENTICATION_USER,
-                    RestContract.AUTHENTICATION_PASS);
+            handler.proceed(AigRestContract.AUTHENTICATION_USER,
+                    AigRestContract.AUTHENTICATION_PASS);
         }
 
         /*

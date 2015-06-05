@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.mobile.framework.rest;
+package com.mobile.newFramework.pojo;
 
 /**
  * @author nunocastro

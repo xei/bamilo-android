@@ -1,25 +1,21 @@
 package com.mobile.newFramework.requests.voucher;
 
-import android.content.Context;
-
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.interfaces.AigResponseCallback;
-import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
 public class RemoveVoucher extends BaseRequest<ShoppingCart> {
 
-    public RemoveVoucher(Context context, RequestBundle requestBundle, AigResponseCallback requester) {
-        super(context, requestBundle, requester);
+    public RemoveVoucher(RequestBundle requestBundle, AigResponseCallback requester) {
+        super(requestBundle, requester);
     }
 
     @Override
     public void execute() {
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mContext, mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter( mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         service.removeVoucher(this);
     }
 }
