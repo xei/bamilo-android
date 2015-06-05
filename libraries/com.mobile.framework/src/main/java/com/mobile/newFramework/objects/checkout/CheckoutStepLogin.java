@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects.checkout;
 
-import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.user.Customer;
 
@@ -10,7 +9,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 6/1/15.
  */
-public class CheckoutStepLogin extends CheckoutStepObject implements IJSONSerializable{
+public class CheckoutStepLogin extends CheckoutStepObject {
     private Customer customer;
 
     public CheckoutStepLogin(){

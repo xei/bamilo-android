@@ -7,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.OrderSummary;
-import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONException;
@@ -18,7 +17,7 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetShippingMethod extends CheckoutStepLogin implements IJSONSerializable, Parcelable {
+public class SuperSetShippingMethod extends CheckoutStepObject implements Parcelable {
 
 
     private OrderSummary orderSummary;

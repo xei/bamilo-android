@@ -17,7 +17,7 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetBillingAddress extends CheckoutStepObject implements IJSONSerializable, Parcelable {
+public class SuperSetBillingAddress extends CheckoutStepObject implements Parcelable {
 
     private OrderSummary orderSummary;
 

@@ -1,13 +1,17 @@
 package com.mobile.newFramework.objects.checkout;
 
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by rsoares on 6/1/15.
  */
-public abstract class CheckoutStepObject {
+public class CheckoutStepObject implements IJSONSerializable{
+
     private String nextStep;
 
     public void setCheckoutNextStep(JSONObject jsonObject){
@@ -31,4 +35,21 @@ public abstract class CheckoutStepObject {
     public String getNextStep() {
         return nextStep;
     }
+
+    @Override
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        setCheckoutNextStep(jsonObject);
+        return true;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
 }

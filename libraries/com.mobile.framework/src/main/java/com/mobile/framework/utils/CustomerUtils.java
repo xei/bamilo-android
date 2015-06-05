@@ -28,7 +28,7 @@ public class CustomerUtils {
 	
 	public static final String INTERNAL_SIGNUP_FLAG = "signup";
 	
-    private static final String CRED_PREFS = "cred";
+    private static final String CRED_PREFS = "persistent_credentials";
     // Flag used for Accengage tracking
     public static final String USER_LOGGED_ONCE_FLAG = "user_logged_once";
 
