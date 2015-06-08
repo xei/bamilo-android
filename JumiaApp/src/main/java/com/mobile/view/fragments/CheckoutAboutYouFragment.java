@@ -621,7 +621,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Print.i(TAG, "TRIGGER: LOGIN EVENT");
         getBaseActivity().hideKeyboard();
         ContentValues values = loginForm.save();
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerLogin(values, true);
     }
 
@@ -648,7 +648,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         values.put("last_name", user.getLastName());
         values.put("birthday", user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerFacebookLogin(values, true);
     }
 
@@ -681,7 +681,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
         // Sign up flag
         try {
-            if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)) {
+            if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGN_UP_FLAG)) {
                 Print.i(TAG, "USER HAS SIGN UP CREDENTIALS");
                 showFragmentLoading();
                 triggerSignup(values, onAutoLogin);
@@ -706,7 +706,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Print.i(TAG, "TRIGGER: LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEvent(new GetLoginHelper(), bundle, this);
     }
 
@@ -720,7 +720,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Print.i(TAG, "TRIGGER: SIGNUP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEvent(new SetSignupHelper(), bundle, this);
     }
 
@@ -734,7 +734,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Print.i(TAG, "TRIGGER: FACEBOOK LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, this);
     }
 

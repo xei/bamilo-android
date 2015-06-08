@@ -18,7 +18,7 @@ public class CustomerUtils {
 	
 	protected ObscuredSharedPreferences obscuredPreferences;
 	
-	public static final String INTERNAL_AUTOLOGIN_FLAG = "__autologin_requested__";
+	public static final String INTERNAL_AUTO_LOGIN_FLAG = "__autologin_requested__";
 	
 	public static final String INTERNAL_PASSWORD_VALUE = "Alice_Module_Customer_Model_LoginForm[password]";
 	
@@ -26,7 +26,7 @@ public class CustomerUtils {
 	
 	public static final String INTERNAL_FACEBOOK_FLAG = "facebook_login";
 	
-	public static final String INTERNAL_SIGNUP_FLAG = "signup";
+	public static final String INTERNAL_SIGN_UP_FLAG = "signup";
 	
     private static final String CRED_PREFS = "persistent_credentials";
     // Flag used for Accengage tracking
@@ -34,7 +34,6 @@ public class CustomerUtils {
 
     /**
      * Constructor
-     * @param ctx
      */
 	public CustomerUtils(Context ctx) {
 		if(obscuredPreferences == null){
@@ -44,7 +43,6 @@ public class CustomerUtils {
 	
 	/**
 	 * Get credentials
-	 * @return
 	 */
 	public ContentValues getCredentials() {
 		ContentValues cv = new ContentValues();
@@ -79,7 +77,7 @@ public class CustomerUtils {
 	 * @return
 	 */
 	public boolean hasCredentials() {
-		return obscuredPreferences.contains(INTERNAL_AUTOLOGIN_FLAG);
+		return obscuredPreferences.contains(INTERNAL_AUTO_LOGIN_FLAG);
 	}
 
 	/**

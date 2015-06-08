@@ -1961,7 +1961,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         Print.i(TAG, "ON TRIGGER: AUTO LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(Bundle bundle) {

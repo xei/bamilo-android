@@ -30,7 +30,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
 
     private static final String PERSISTENT_COOKIES_FILE = "persistent_cookies";
 
-    private static final String COOKIE_PREFS_TAG = "cookie_jumia";
+    private static final String COOKIE_PREFIX_TAG = "cookie.";
 
     private static final String PHP_SESSION_ID_TAG = "PHPSESSID";
 
@@ -43,7 +43,14 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      */
     public AigCookieManager(Context context) {
         // Load session cookie from prefs
-        mCurrentCookie = loadSessionCookie(context);
+        loadSessionCookie(context);
+    }
+
+    /**
+     * Get persistent cookie key.
+     */
+    private String getCookieKey() {
+        return COOKIE_PREFIX_TAG + AigRestContract.getShopDomain();
     }
 
     /**
@@ -66,7 +73,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         // Get cookies not expired
         List<HttpCookie> cookies = getCookieStore().getCookies();
         for (HttpCookie cookie : cookies) {
-            if(cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
+            if(!cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
                 store(cookie);
                 return;
             }
@@ -78,38 +85,40 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      */
     private void store(HttpCookie cookie) {
         // Validate the cookie and the current
-        if(mCurrentCookie == null || !mCurrentCookie.equals(cookie)) {
-            Log.i(TAG, "STORED COOKIE: " + cookie.getDomain() + " "  + cookie.getName());
+        if (mCurrentCookie == null || !mCurrentCookie.getValue().equals(cookie.getValue())) {
             mCurrentCookie = cookie;
             SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
             String str = encodeCookie(new AigPersistentHttpCookie(cookie));
-            prefsWriter.putString(COOKIE_PREFS_TAG, str);
+            prefsWriter.putString(getCookieKey(), str);
             prefsWriter.apply();
+            Log.i(TAG, "STORED COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
         }
     }
 
     /**
      * Load the session cookie from shared preferences.
      */
-    private HttpCookie loadSessionCookie(Context context) {
+    private void loadSessionCookie(Context context) {
         // Get shop domain
         String shop = AigRestContract.getShopDomain();
         // Get preferences
         mCookiePrefs = context.getSharedPreferences(PERSISTENT_COOKIES_FILE, Context.MODE_PRIVATE);
         // Get stored encoded cookie
-        String encodedCookie = mCookiePrefs.getString(COOKIE_PREFS_TAG, null);
+        String encodedCookie = mCookiePrefs.getString(getCookieKey(), null);
         // Decode
         HttpCookie cookie = decodeCookie(encodedCookie);
         // Save
-        if (cookie != null && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
-            Log.i(TAG, "LOADED COOKIE FROM PERFS: " + cookie.getDomain() + " " + cookie.getName());
+        if (cookie != null && !cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
+            Log.i(TAG, "LOADED COOKIE FROM PERFS: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
             getCookieStore().add(URI.create(cookie.getDomain()), cookie);
+            mCurrentCookie = cookie;
+        } else if(cookie != null && !cookie.hasExpired()){
+            Log.i(TAG, "LOADED COOKIE FROM PERFS: EXPIRED COOKIE" + cookie.getDomain() + " " + cookie.getName());
         } else if(cookie != null && !cookie.getDomain().contains(shop) ){
             Log.i(TAG, "LOADED COOKIE FROM PERFS: NO MATCH " + shop + " != " + cookie.getDomain());
         } else {
             Log.i(TAG, "LOADED COOKIE FROM PERFS: IS EMPTY");
         }
-        return cookie;
     }
 
     /**
@@ -117,14 +126,15 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      * @return String or null
      */
     private String encodeCookie(AigPersistentHttpCookie cookie) {
-        if (cookie == null) return null;
-        Log.i(TAG, "ON ENCODE COOKIE: " + cookie.toString());
+        if (cookie == null) {
+            return null;
+        }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);
             outputStream.writeObject(cookie);
         } catch (IOException e) {
-            Log.d(TAG, "IOException in encodeCookie", e);
+            Log.w(TAG, "WARNING: EXCEPTION IN ENCODE COOKIE", e);
             return null;
         }
         return Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
@@ -144,7 +154,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                 cookie = ((AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
             } catch (IOException | ClassNotFoundException e) {
-                Log.d(TAG, "Exception in decodeCookie", e);
+                Log.w(TAG, "WARNING: EXCEPTION IN DECODE COOKIE", e);
             }
         }
         return cookie;
@@ -181,8 +191,12 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
     @Override
     public void addEncodedSessionCookie(String encodedCookie) throws NullPointerException, URISyntaxException {
         HttpCookie cookie = decodeCookie(encodedCookie);
-        getCookieStore().add(new URI(cookie.getDomain()), cookie);
-        Log.i(TAG, "STORE SESSION FROM PERSISTENT COOKIE: " + cookie.getDomain() + " " + cookie.getName());
+        if (cookie != null && !cookie.hasExpired()) {
+            getCookieStore().add(new URI(cookie.getDomain()), cookie);
+            Log.i(TAG, "STORED SESSION FROM PERSISTENT COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
+        } else {
+            throw new NullPointerException("INVALID STORED SESSION FROM PERSISTENT COOKIE");
+        }
     }
 
     /**

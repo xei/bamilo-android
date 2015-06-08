@@ -63,7 +63,7 @@ public class RegisterHelper extends SuperBaseHelper {
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-        mContentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        mContentValues.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
         Print.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         // Save customer

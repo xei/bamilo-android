@@ -65,10 +65,10 @@ public class SetSignupHelper extends SuperBaseHelper {
         // Save credentials
         if (saveCredentials) {
             Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-            mContentValues.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+            mContentValues.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
             mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
-            mContentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, true);
+            mContentValues.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, true);
             mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());

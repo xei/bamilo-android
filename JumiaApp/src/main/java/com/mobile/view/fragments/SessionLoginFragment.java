@@ -765,7 +765,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         Print.d(TAG, "requestLogin: triggerEvent LogInEvent");
         getBaseActivity().hideKeyboard();
         ContentValues values = dynamicForm.save();
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerLogin(values, true);
     }
 
@@ -781,7 +781,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         values.put("last_name", user.getLastName());
         values.put("birthday", user.getBirthday());
         values.put("gender", (String) user.getProperty("gender"));
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerFacebookLogin(values, true);
     }
     
@@ -794,7 +794,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         wasAutoLogin = true;
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutoLogin);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, wasAutoLogin);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
@@ -803,7 +803,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         wasAutoLogin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
 
@@ -811,7 +811,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         wasAutoLogin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
     }
 

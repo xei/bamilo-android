@@ -41,6 +41,9 @@ public class AigPersistentHttpCookie implements Serializable {
         out.writeObject(mCookie.getPath());
         out.writeInt(mCookie.getVersion());
         out.writeBoolean(mCookie.getSecure());
+        out.writeBoolean(mCookie.getDiscard());
+        out.writeObject(mCookie.getCommentURL());
+        out.writeObject(mCookie.getPortlist());
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -53,5 +56,9 @@ public class AigPersistentHttpCookie implements Serializable {
         mSerializableCookie.setPath((String) in.readObject());
         mSerializableCookie.setVersion(in.readInt());
         mSerializableCookie.setSecure(in.readBoolean());
+        mSerializableCookie.setDiscard(in.readBoolean());
+        mSerializableCookie.setCommentURL((String) in.readObject());
+        mSerializableCookie.setPortlist((String) in.readObject());
     }
+
 }

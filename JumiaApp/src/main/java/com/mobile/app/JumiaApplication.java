@@ -147,6 +147,7 @@ public class JumiaApplication extends A4SApplication {
          */
         if(!TextUtils.isEmpty(SHOP_ID)) {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
+            getCustomerUtils();
         }
 
     }
@@ -382,7 +383,6 @@ public class JumiaApplication extends A4SApplication {
             ISessionCookie cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
-                // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
                 cookieStore = AigHttpClient.getInstance().getCurrentCookie();
             }
             mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore);

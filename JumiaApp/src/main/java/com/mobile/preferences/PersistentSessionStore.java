@@ -26,7 +26,9 @@ import oak.ObscuredSharedPreferences;
  */
 public class PersistentSessionStore extends CustomerUtils {
 
-    public static final String CURRENT_COOKIE = "current_cookie";
+    public static final String SESSION_COOKIE_TAG = "session_cookie";
+
+    public static final String SESSION_EMAIL_TAG = "email";
 
     private String country;
 
@@ -36,10 +38,6 @@ public class PersistentSessionStore extends CustomerUtils {
 
     /**
      * Constructor
-     *
-     * @param ctx
-     * @param country
-     * @param cookieStore
      */
     public PersistentSessionStore(Context ctx, String country, ISessionCookie cookieStore) {
         super(ctx);
@@ -47,7 +45,7 @@ public class PersistentSessionStore extends CustomerUtils {
         this.cookieStore = cookieStore;
         this.values = getValues();
 
-        Object cookieObj = values.get(CURRENT_COOKIE);
+        Object cookieObj = values.get(SESSION_COOKIE_TAG);
         if(cookieObj instanceof String) {
             storeCookie((String) cookieObj);
         }
@@ -59,16 +57,40 @@ public class PersistentSessionStore extends CustomerUtils {
     }
 
     @Override
+    public boolean hasCredentials() {
+        return getValues().containsKey(INTERNAL_AUTO_LOGIN_FLAG);
+    }
+
+    @Override
+    public void clearCredentials() {
+        ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
+        editor.remove(country).commit();
+        values.clear();
+    }
+
+    @Override
+    public boolean userNeverLoggedIn() {
+        return !obscuredPreferences.contains(USER_LOGGED_ONCE_FLAG);
+    }
+
+    @Override
     public String getEmail() {
         ContentValues values = getValues();
         for(Map.Entry<String, Object> entry : values.valueSet()){
-            if(entry.getValue() instanceof CharSequence && entry.getKey().contains("email")){
+            if(entry.getValue() instanceof CharSequence && entry.getKey().contains(SESSION_EMAIL_TAG)){
                 return entry.getValue().toString();
             }
         }
         return null;
     }
 
+    /*
+     * ############# PERSISTENT SESSION #############
+     */
+
+    /**
+     * Store session
+     */
     @Override
     public void storeCredentials(ContentValues values) {
         if(values.size() > 0) {
@@ -98,23 +120,10 @@ public class PersistentSessionStore extends CustomerUtils {
         }
     }
 
-    @Override
-    public boolean hasCredentials() {
-        return getValues().containsKey(INTERNAL_AUTOLOGIN_FLAG);
-    }
-
-    @Override
-    public void clearCredentials() {
-        ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
-        editor.remove(country).commit();
-        values.clear();
-    }
-
-    @Override
-    public boolean userNeverLoggedIn() {
-        return !obscuredPreferences.contains(USER_LOGGED_ONCE_FLAG);
-    }
-
+    /**
+     * Get session from obscured preferences
+     * @return ContentValues
+     */
     private ContentValues getValues() {
         if(values == null) {
             Gson gson = new Gson();
@@ -130,7 +139,7 @@ public class PersistentSessionStore extends CustomerUtils {
     public void save(){
         if(cookieStore != null) {
             String cookie = cookieStore.getEncodedSessionCookie();
-            this.values.put(CURRENT_COOKIE, cookie);
+            this.values.put(SESSION_COOKIE_TAG, cookie);
         }
         storeCredentials(this.values);
     }

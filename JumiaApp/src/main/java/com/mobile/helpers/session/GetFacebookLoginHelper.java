@@ -43,7 +43,7 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
 
     @Override
     protected RequestBundle createRequest(Bundle args) {
-        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG);
+        saveCredentials = args.getBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG);
         mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
         return super.createRequest(args);
     }
@@ -71,7 +71,7 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
             mContentValues.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, JumiaApplication.CUSTOMER.getPassword());
             mContentValues.put(CustomerUtils.INTERNAL_EMAIL_VALUE, JumiaApplication.CUSTOMER.getEmail());
             mContentValues.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
-            mContentValues.put(CustomerUtils.INTERNAL_SIGNUP_FLAG, false);
+            mContentValues.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
