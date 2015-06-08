@@ -7,8 +7,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetProductReviews;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -59,8 +61,9 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetProductReviews(requestBundle, this).execute();
-    }
+//        new GetProductReviews(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
+   }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {

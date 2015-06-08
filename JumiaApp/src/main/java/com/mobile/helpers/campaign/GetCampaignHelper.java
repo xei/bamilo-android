@@ -7,8 +7,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.campaign.GetCampaign;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -47,7 +49,8 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetCampaign(requestBundle, this).execute();
+//        new GetCampaign(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCampaign);
     }
 
     @Override

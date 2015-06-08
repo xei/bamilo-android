@@ -10,7 +10,9 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.GetEditAddressForm;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -28,8 +30,6 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
         return EventType.GET_EDIT_ADDRESS_FORM_EVENT;
     }
 
-
-
     @Override
     protected String getRequestUrl(Bundle args) {
         String url = EventType.GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT.action;
@@ -44,7 +44,8 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetEditAddressForm(requestBundle, this).execute();
+//        new GetEditAddressForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getEditAddressForm);
     }
 
     @Override

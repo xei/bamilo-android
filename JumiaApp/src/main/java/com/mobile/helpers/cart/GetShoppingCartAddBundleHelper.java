@@ -12,8 +12,10 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddBundleShoppingCart;
 import com.mobile.utils.TrackerDelegator;
@@ -55,7 +57,8 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new AddBundleShoppingCart(requestBundle, this).execute();
+//        new AddBundleShoppingCart(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.addBundleShoppingCart);
     }
 
     @Override

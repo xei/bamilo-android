@@ -7,7 +7,9 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetPromotions;
 
@@ -37,7 +39,8 @@ public class GetPromotionsHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetPromotions(requestBundle, this).execute();
+//        new GetPromotions(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getPromotions);
     }
 
     @Override

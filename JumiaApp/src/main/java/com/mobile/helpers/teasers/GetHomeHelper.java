@@ -6,8 +6,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetHomePage;
 
@@ -24,7 +26,8 @@ public class GetHomeHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
-        new GetHomePage(requestBundle, this).execute();
+//        new GetHomePage(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getHome);
     }
 
     @Override

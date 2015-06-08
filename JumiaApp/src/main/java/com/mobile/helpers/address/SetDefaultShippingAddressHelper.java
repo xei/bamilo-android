@@ -6,7 +6,9 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.address.SetDefaultShippingAddress;
 
@@ -33,7 +35,8 @@ public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SetDefaultShippingAddress(requestBundle, this).execute();
+//        new SetDefaultShippingAddress(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setDefaultShippingAddress);
     }
 
     @Override

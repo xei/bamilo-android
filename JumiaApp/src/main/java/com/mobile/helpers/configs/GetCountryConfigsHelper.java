@@ -9,8 +9,10 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -28,7 +30,8 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
-        new GetCountryConfigurations(requestBundle, this).execute();
+//        new GetCountryConfigurations(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCountryConfigurations);
     }
 
     @Override

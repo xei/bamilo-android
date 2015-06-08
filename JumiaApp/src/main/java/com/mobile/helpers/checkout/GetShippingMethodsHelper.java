@@ -10,8 +10,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.GetShippingForm;
 
@@ -31,6 +33,7 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         new GetShippingForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getShippingMethodsForm);
     }
 
     @Override

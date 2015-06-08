@@ -10,8 +10,10 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.user.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.RegisterCustomer;
 
@@ -31,7 +33,6 @@ public class RegisterHelper extends SuperBaseHelper {
     public static final String REGISTER_CONTENT_VALUES = "contentValues";
 
     private ContentValues mContentValues;
-
 
     @Override
     public EventType getEventType() {
@@ -56,7 +57,8 @@ public class RegisterHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new RegisterCustomer(requestBundle, this).execute();
+//        new RegisterCustomer(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.registerCustomer);
     }
 
     @Override

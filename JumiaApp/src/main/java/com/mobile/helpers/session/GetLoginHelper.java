@@ -10,8 +10,10 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 import com.mobile.utils.CheckoutStepManager;
@@ -55,7 +57,8 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new LoginCustomer(requestBundle, this).execute();
+//        new LoginCustomer(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.loginCustomer);
     }
 
     @Override

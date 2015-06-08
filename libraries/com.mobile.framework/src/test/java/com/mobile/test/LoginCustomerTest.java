@@ -3,7 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 
@@ -31,6 +33,12 @@ public class LoginCustomerTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
+//        new BaseRequest<CheckoutStepLogin>(IS_AUTOMATED_TEST,requestBundle,this){
+//            @Override
+//            public void execute() {
+//
+//            }
+//        }.executeUseReflection("loginCustomer");
         new LoginCustomer(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
