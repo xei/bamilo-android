@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.EventType;
+import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -26,6 +27,11 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_TERMS_EVENT;
+    }
+
+    @Override
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
     }
 
     @Override

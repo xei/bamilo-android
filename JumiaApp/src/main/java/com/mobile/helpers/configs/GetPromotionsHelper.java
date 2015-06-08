@@ -6,6 +6,7 @@ import com.mobile.framework.objects.Promotion;
 import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
+import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -28,6 +29,11 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_PROMOTIONS;
+    }
+
+    @Override
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
     }
 
     @Override
@@ -58,9 +64,6 @@ public class GetPromotionsHelper extends SuperBaseHelper {
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
-
-
-
 
 //
 //    @Override
