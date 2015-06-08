@@ -85,12 +85,12 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-    /**
-     * The md5 registry
-     */
-    boolean resendInitializationSignal = false;
-    private Handler resendHandler;
-    private Message resendMsg;
+//    /**
+//     * The md5 registry
+//     */
+//    boolean resendInitializationSignal = false;
+//    private Handler resendHandler;
+//    private Message resendMsg;
 
     /**
      * Payment methods Info
@@ -188,16 +188,17 @@ public class JumiaApplication extends A4SApplication {
         msg.obj = bundle;
         if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
 
-            // TODO : REMOVE OLD FRAMEWORK
-            //&& ServiceSingleton.getInstance().getService() == null) {
+//            //&& ServiceSingleton.getInstance().getService() == null) {
+//
+//            Print.d(TAG, "ON HANDLE WITH ERROR");
+//            resendInitializationSignal = true;
+//            resendHandler = initializationHandler;
+//            resendMsg = msg;
+//
+//            doBindService();
 
-            Print.d(TAG, "ON HANDLE WITH ERROR");
-            resendInitializationSignal = true;
-            resendHandler = initializationHandler;
-            resendMsg = msg;
+            initializationHandler.sendMessage(msg);
 
-            // TODO : REMOVE OLD FRAMEWORK
-            doBindService();
 
         } else {
             Print.d(TAG, "ON INIT HANDLE");
@@ -205,7 +206,6 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
-    // TODO: REMOVE OLD FRAMEWORK
 //    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
 //        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
 //        if (mCallback == null) {
@@ -260,7 +260,7 @@ public class JumiaApplication extends A4SApplication {
 //    }
 
     /*
-    ########################### TODO: NEW FAMEWORK
+    ###########################
      */
 
     public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
@@ -298,7 +298,7 @@ public class JumiaApplication extends A4SApplication {
 //
 //                        /**
 //                         * ###################################################
-//                         * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
+//                         * # WARNING - THIS IS RUNNING IN MAIN THREAD #
 //                         * # - Alternative -> ParseSuccessAsyncTask          #
 //                         * # @author sergiopereira                           #
 //                         * ###################################################
@@ -425,14 +425,13 @@ public class JumiaApplication extends A4SApplication {
         this.formDataRegistry = formDataRegistry;
     }
 
-    // TODO : REMOVE OLD FRAMEWORK
-    public void doBindService() {
-
-        if (resendInitializationSignal) {
-            resendHandler.sendMessage(resendMsg);
-            resendInitializationSignal = false;
-        }
-
+//    public void doBindService() {
+//
+//        if (resendInitializationSignal) {
+//            resendHandler.sendMessage(resendMsg);
+//            resendInitializationSignal = false;
+//        }
+//
 //        if (!mIsBound) {
 //            /**
 //             * Establish a connection with the service. We use an explicit class
@@ -442,7 +441,7 @@ public class JumiaApplication extends A4SApplication {
 //             */
 //            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
 //        }
-    }
+//    }
 
     /**
      * @return the loggedIn
