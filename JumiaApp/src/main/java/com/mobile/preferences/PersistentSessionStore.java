@@ -8,11 +8,10 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.utils.CustomerUtils;
+import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 
 import java.net.URISyntaxException;
 import java.util.Map;
-
-import oak.ObscuredSharedPreferences;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

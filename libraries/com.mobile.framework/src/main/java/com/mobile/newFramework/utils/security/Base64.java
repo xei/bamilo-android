@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package oak;
-
-import java.io.UnsupportedEncodingException;
+package com.mobile.newFramework.utils.security;
 
 import android.util.Base64OutputStream;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Utilities for encoding and decoding the Base64 representation of

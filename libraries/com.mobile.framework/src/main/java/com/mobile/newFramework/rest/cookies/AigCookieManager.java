@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.utils.security.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
-import oak.Base64;
 
 /**
  * Class used to manage cookies.

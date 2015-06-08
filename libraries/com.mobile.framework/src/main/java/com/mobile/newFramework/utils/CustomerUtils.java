@@ -6,11 +6,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 
 import java.util.Map.Entry;
 import java.util.Set;
-
-import oak.ObscuredSharedPreferences;
 
 public class CustomerUtils {
 	

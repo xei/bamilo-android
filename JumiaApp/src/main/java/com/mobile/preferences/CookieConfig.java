@@ -11,7 +11,7 @@
 //
 //import java.util.Map;
 //
-//import oak.ObscuredSharedPreferences;
+//import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 //
 ///**
 // * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

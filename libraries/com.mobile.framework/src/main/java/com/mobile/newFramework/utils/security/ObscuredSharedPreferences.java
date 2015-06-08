@@ -1,9 +1,13 @@
-package oak;
+package com.mobile.newFramework.utils.security;
 
 /**
  * User: mlake Date: 12/16/11 Time: 4:05 PM
  */
 
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.provider.Settings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +18,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.provider.Settings;
 
 /**
  * Warning, this gives a false sense of security.  If an attacker has enough access to acquire your
@@ -46,8 +46,6 @@ public abstract class ObscuredSharedPreferences implements SharedPreferences {
 
     /**
      * Implement this method to supply your char array with your password
-     *
-     * @return
      */
 
     protected abstract char[] getSpecialCode();
@@ -132,7 +130,7 @@ public abstract class ObscuredSharedPreferences implements SharedPreferences {
     @Override
     public Map<String, ?> getAll() {
     	Set<String> keySet = delegate.getAll().keySet();
-    	HashMap<String, String> all = new HashMap<String, String>(keySet.size());
+    	HashMap<String, String> all = new HashMap<>(keySet.size());
 		for(String key : keySet) {
     		all.put(key, getString(key, null));
     	}
