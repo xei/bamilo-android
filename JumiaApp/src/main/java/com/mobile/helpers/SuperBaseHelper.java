@@ -25,6 +25,8 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     private EventTask mEventTask;
 
+    private boolean prioritary;
+
     public SuperBaseHelper(){
         mEventType = getEventType();
     }
@@ -33,6 +35,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         mRequester = requester;
 
         setEventTask(args);
+        setPriority(args);
 
         RequestBundle requestBundle = createRequest(args);
         onRequest(requestBundle);
@@ -67,6 +70,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY))? convertContentValuesToMap((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY)) : null;
     }
 
+    /**
+     *  Returns the helper's priority
+     * @return
+     */
     public boolean hasPriority(){
         return HelperPriorityConfiguration.IS_PRIORITARY;
     }
@@ -101,7 +108,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public Bundle generateErrorBundle(BaseResponse baseResponse){
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, hasPriority());
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, prioritary);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
@@ -122,6 +129,16 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     private void setEventTask(Bundle args){
         Serializable evenTask = args != null ? args.getSerializable(Constants.BUNDLE_EVENT_TASK) : null;
         mEventTask = evenTask instanceof EventTask ? (EventTask)evenTask : setEventTask();
+    }
+
+    /**
+     * Method to define priority on request helper init.
+     * If args hasn't value at BUNDLE_PRIORITY_KEY, helper's default is defined.
+     *
+     * @param args arguments with priority.
+     */
+    private void setPriority(Bundle args){
+        prioritary = args != null ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false) : hasPriority();
     }
 
 }

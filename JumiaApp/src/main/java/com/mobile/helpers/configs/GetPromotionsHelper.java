@@ -2,6 +2,7 @@ package com.mobile.helpers.configs;
 
 import android.os.Bundle;
 
+import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.statics.Promotion;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -27,6 +28,11 @@ public class GetPromotionsHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_PROMOTIONS;
+    }
+
+    @Override
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
     }
 
     @Override
@@ -57,9 +63,6 @@ public class GetPromotionsHelper extends SuperBaseHelper {
         Bundle bundle = generateErrorBundle(baseResponse);
         mRequester.onRequestError(bundle);
     }
-
-
-
 
 //
 //    @Override

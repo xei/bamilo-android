@@ -6,6 +6,7 @@ package com.mobile.helpers.products;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -38,6 +39,11 @@ public class GetProductBundleHelper extends SuperBaseHelper {
     @Override
     protected String getRequestUrl(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
+    }
+
+    @Override
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
     }
 
     @Override
