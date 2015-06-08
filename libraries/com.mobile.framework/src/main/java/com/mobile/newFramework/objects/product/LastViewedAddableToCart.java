@@ -1,12 +1,10 @@
 package com.mobile.newFramework.objects.product;
 
 
-import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.objects.ProductSimple;
-import com.mobile.framework.objects.Variation;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.TextUtils;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -129,6 +127,11 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
 
     @Override
     public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
         return null;
     }
 

@@ -7,16 +7,16 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.constants.ConstantsSharedPrefs;
-//import com.mobile.framework.Darwin;
+//import com.mobile.newFramework.Darwin;
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.Constants;
+//import com.mobile.newFramework.utils.Constants;
 //import com.mobile.view.R;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
 //import org.json.JSONObject;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class used to handle country configs.

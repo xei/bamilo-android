@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.mobile.components.infiniteviewpager.InfiniteViewPager;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 public class JumiaViewPagerWithZoom extends InfiniteViewPager {
     private boolean isPagingEnabled = true;

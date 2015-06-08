@@ -4,8 +4,8 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.CurrencyFormatter;
-//import com.mobile.framework.utils.ImageResolutionHelper;
+//import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+//import com.mobile.newFramework.utils.ImageResolutionHelper;
 //
 //import org.json.JSONException;
 //import org.json.JSONObject;
@@ -13,7 +13,7 @@
 //import java.util.HashMap;
 //import java.util.Map;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Shopping Cart Item used when an item is added to the shopping cart

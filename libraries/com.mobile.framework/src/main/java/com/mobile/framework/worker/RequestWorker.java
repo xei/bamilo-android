@@ -6,9 +6,9 @@
 //import android.os.Bundle;
 //import android.os.Handler;
 //
-//import com.mobile.framework.enums.RequestType;
+//import com.mobile.newFramework.enums.RequestType;
 //import com.mobile.framework.rest.RestClientSingleton;
-//import com.mobile.framework.utils.Constants;
+//import com.mobile.newFramework.utils.Constants;
 //
 //import de.akquinet.android.androlog.Log;
 ///**

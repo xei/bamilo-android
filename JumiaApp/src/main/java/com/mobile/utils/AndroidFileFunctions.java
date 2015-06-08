@@ -2,7 +2,7 @@ package com.mobile.utils;
 
 import android.os.Environment;
 
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.io.File;
 import java.io.FileOutputStream;

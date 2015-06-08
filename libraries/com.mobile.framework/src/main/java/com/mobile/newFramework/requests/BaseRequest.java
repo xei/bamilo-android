@@ -2,14 +2,13 @@ package com.mobile.newFramework.requests;
 
 import android.support.annotation.NonNull;
 
-import com.mobile.framework.ErrorCode;
-import com.mobile.newFramework.interfaces.AigApiInterface;
-import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigRestAdapter;
 import com.mobile.newFramework.rest.errors.AigBaseException;
 import com.mobile.newFramework.rest.errors.JumiaError;
-
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

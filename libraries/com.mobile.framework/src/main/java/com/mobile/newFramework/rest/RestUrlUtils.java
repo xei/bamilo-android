@@ -2,7 +2,7 @@ package com.mobile.newFramework.rest;
 
 import android.net.Uri;
 
-import com.mobile.framework.Darwin;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 
 import java.net.MalformedURLException;

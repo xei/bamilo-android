@@ -11,9 +11,9 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.WizardPreferences;

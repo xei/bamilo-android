@@ -3,8 +3,8 @@ package com.mobile.controllers;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;

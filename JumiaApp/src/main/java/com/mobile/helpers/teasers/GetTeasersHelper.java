@@ -5,12 +5,12 @@
 //
 //import android.os.Bundle;
 //
-//import com.mobile.framework.enums.RequestType;
+//import com.mobile.newFramework.enums.RequestType;
 //import com.mobile.framework.objects.Homepage;
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.Constants;
-//import com.mobile.framework.utils.EventType;
-//import com.mobile.framework.utils.Utils;
+//import com.mobile.newFramework.utils.Constants;
+//import com.mobile.newFramework.utils.EventType;
+//import com.mobile.newFramework.utils.Utils;
 //import com.mobile.helpers.BaseHelper;
 //import com.mobile.helpers.HelperPriorityConfiguration;
 //
@@ -20,7 +20,7 @@
 //
 //import java.util.ArrayList;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Example helper

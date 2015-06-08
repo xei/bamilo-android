@@ -11,17 +11,17 @@
 //import android.os.Message;
 //import android.text.TextUtils;
 //
-//import com.mobile.framework.Darwin;
-//import com.mobile.framework.ErrorCode;
+//import com.mobile.newFramework.Darwin;
+//import com.mobile.newFramework.ErrorCode;
 //import com.mobile.framework.interfaces.IMetaData;
 //import com.mobile.framework.network.ConfigurationConstants;
 //import com.mobile.framework.network.DarwinHttpClient;
 //import com.mobile.framework.network.LazHttpClientAndroidLog;
 //import com.mobile.newFramework.rest.RestUrlUtils;
-//import com.mobile.framework.tracking.NewRelicTracker;
-//import com.mobile.framework.utils.Constants;
-//import com.mobile.framework.utils.EventTask;
-//import com.mobile.framework.utils.EventType;
+//import com.mobile.newFramework.tracking.NewRelicTracker;
+//import com.mobile.newFramework.utils.Constants;
+//import com.mobile.newFramework.utils.EventTask;
+//import com.mobile.newFramework.utils.EventType;
 //
 //import java.io.IOException;
 //import java.net.SocketTimeoutException;

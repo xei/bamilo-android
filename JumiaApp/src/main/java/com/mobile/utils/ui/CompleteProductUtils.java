@@ -1,6 +1,6 @@
 package com.mobile.utils.ui;
 
-import com.mobile.framework.objects.Variation;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 
 import java.util.ArrayList;

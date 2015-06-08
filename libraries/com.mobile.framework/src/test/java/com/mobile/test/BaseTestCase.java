@@ -1,7 +1,7 @@
 package com.mobile.test;
 
-import com.mobile.framework.output.Print;
-import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigHttpClient;

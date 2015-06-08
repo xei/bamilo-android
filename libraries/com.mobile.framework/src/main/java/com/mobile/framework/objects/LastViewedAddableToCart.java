@@ -3,7 +3,7 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.CurrencyFormatter;
+//import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;

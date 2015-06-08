@@ -11,13 +11,13 @@ import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Address;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.Addresses;
+import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;

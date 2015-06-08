@@ -3,17 +3,16 @@ package com.mobile.helpers.checkout;
 import android.os.Bundle;
 
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.checkout.SetPaymentMethod;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 
 /**

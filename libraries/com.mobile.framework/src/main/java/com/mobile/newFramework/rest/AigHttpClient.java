@@ -3,13 +3,13 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.os.Build;
 
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.NetworkConnectivity;
 import com.mobile.newFramework.rest.configs.AigAuthenticator;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.rest.errors.NoConnectivityException;
+import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.output.Print;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;

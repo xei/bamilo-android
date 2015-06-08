@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.CatalogPage;

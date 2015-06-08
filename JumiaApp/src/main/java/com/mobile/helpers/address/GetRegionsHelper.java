@@ -3,18 +3,17 @@ package com.mobile.helpers.address;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.TextUtils;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.interfaces.AigApiInterface;
-import com.mobile.newFramework.objects.AddressRegions;
+import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.address.GetRegions;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Helper used to set the shipping address 

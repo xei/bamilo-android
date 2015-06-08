@@ -1,7 +1,7 @@
 package com.mobile.newFramework.forms;
 
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;

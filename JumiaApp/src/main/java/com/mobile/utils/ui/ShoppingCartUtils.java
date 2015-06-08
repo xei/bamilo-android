@@ -3,7 +3,7 @@ package com.mobile.utils.ui;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 
 import java.math.BigDecimal;

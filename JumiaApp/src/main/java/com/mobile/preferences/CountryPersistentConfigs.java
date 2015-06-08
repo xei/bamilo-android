@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.mobile.framework.Darwin;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 /**

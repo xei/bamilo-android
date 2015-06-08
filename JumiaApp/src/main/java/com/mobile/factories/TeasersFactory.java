@@ -14,9 +14,9 @@
 //import com.mobile.components.customfontviews.TextView;
 //import com.mobile.components.recycler.HorizontalListView;
 //import com.mobile.controllers.TeaserProductsAdapter;
-//import com.mobile.framework.objects.ITargeting;
+//import com.mobile.newFramework.objects.catalog.ITargeting;
 //import com.mobile.framework.objects.TeaserBrand;
-//import com.mobile.framework.objects.TeaserCampaign;
+//import com.mobile.newFramework.objects.home.TeaserCampaign;
 //import com.mobile.framework.objects.TeaserGroupBrands;
 //import com.mobile.framework.objects.TeaserGroupCampaigns;
 //import com.mobile.framework.objects.TeaserGroupCategories;
@@ -29,7 +29,7 @@
 //import com.mobile.framework.objects.TeaserGroupType;
 //import com.mobile.framework.objects.TeaserImage;
 //import com.mobile.framework.objects.TeaserSpecification;
-//import com.mobile.framework.utils.DeviceInfoHelper;
+//import com.mobile.newFramework.utils.DeviceInfoHelper;
 //import com.mobile.utils.imageloader.RocketImageLoader;
 //import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 //import com.mobile.view.R;
@@ -38,7 +38,7 @@
 //
 //import java.util.ArrayList;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Object that generates the Teasers based on the Teaser specification

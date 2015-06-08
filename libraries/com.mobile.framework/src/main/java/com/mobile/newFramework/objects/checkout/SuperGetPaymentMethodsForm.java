@@ -6,10 +6,10 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.OrderSummary;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.orders.OrderSummary;
 
 import org.json.JSONException;
 import org.json.JSONObject;

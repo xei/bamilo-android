@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.objects.Promotion;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.statics.Promotion;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 

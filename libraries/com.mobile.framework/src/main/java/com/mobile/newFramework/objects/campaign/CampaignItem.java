@@ -4,10 +4,9 @@ package com.mobile.newFramework.objects.campaign;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.BaseProduct;
-import com.mobile.framework.objects.CampaignItemSize;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.BaseProduct;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;

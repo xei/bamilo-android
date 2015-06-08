@@ -4,14 +4,14 @@ package com.mobile.app;
 // */
 //package com.mobile.app;
 //
-//import com.mobile.framework.ErrorCode;
-//import com.mobile.framework.utils.ImageResolutionHelper;
-//import com.mobile.framework.utils.WindowHelper;
+//import com.mobile.newFramework.ErrorCode;
+//import com.mobile.newFramework.utils.ImageResolutionHelper;
+//import com.mobile.newFramework.utils.WindowHelper;
 //import com.mobile.view.R;
 //import android.app.Application;
 //import android.content.Context;
 //import android.graphics.Bitmap.Config;
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 //import com.nostra13.universalimageloader.core.DisplayImageOptions;

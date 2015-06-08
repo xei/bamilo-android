@@ -8,7 +8,7 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.DarwinRegex;
+//import com.mobile.newFramework.utils.DarwinRegex;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
@@ -18,7 +18,7 @@
 //import java.util.Iterator;
 //import java.util.Map;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * @author nutzer2

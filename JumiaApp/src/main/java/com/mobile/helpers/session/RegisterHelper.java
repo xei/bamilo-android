@@ -4,18 +4,17 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CustomerUtils;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.interfaces.AigApiInterface;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.RegisterCustomer;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.CustomerUtils;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.Map;

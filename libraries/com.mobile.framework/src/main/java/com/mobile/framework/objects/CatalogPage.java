@@ -3,7 +3,7 @@
 //import android.os.Parcel;
 //import android.os.Parcelable;
 //
-//import com.mobile.framework.Darwin;
+//import com.mobile.newFramework.Darwin;
 //import com.mobile.framework.R;
 //import com.mobile.framework.rest.RestConstants;
 //
@@ -14,7 +14,7 @@
 //
 //import java.util.ArrayList;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class used to represent a catalog page.<br>

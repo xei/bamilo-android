@@ -14,11 +14,11 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.CountriesConfigsTableHelper;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 
 import java.util.List;

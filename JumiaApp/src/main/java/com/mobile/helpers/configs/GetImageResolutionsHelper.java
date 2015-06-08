@@ -11,13 +11,13 @@
 //
 //import android.os.Bundle;
 //
-//import com.mobile.framework.database.ImageResolutionTableHelper;
-//import com.mobile.framework.enums.RequestType;
+//import com.mobile.newFramework.database.ImageResolutionTableHelper;
+//import com.mobile.newFramework.enums.RequestType;
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.Constants;
-//import com.mobile.framework.utils.EventType;
-//import com.mobile.framework.utils.LogTagHelper;
-//import com.mobile.framework.utils.Utils;
+//import com.mobile.newFramework.utils.Constants;
+//import com.mobile.newFramework.utils.EventType;
+//import com.mobile.newFramework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.Utils;
 //import com.mobile.helpers.BaseHelper;
 //import com.mobile.helpers.HelperPriorityConfiguration;
 //

@@ -2,13 +2,13 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.framework.utils.EventType;
-import com.mobile.newFramework.objects.Section;
-import com.mobile.newFramework.objects.Sections;
 import com.mobile.newFramework.objects.configs.ApiInformation;
+import com.mobile.newFramework.objects.configs.Section;
+import com.mobile.newFramework.objects.configs.Sections;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetApiInformation;
+import com.mobile.newFramework.utils.EventType;
 
 public class GetApiInformationTest extends BaseTestCase {
 

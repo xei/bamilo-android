@@ -26,7 +26,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.io.File;

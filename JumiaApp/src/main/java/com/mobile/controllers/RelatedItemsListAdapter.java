@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.LastViewed;
-import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.objects.product.LastViewed;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 

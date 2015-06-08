@@ -6,8 +6,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
+import com.mobile.newFramework.utils.CustomerUtils;
 
 import java.net.URISyntaxException;
 import java.util.Map;

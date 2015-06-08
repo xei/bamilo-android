@@ -1,7 +1,7 @@
 package com.mobile.newFramework.objects.product;
 
 
-import com.mobile.framework.database.LastViewedTableHelper;
+import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;

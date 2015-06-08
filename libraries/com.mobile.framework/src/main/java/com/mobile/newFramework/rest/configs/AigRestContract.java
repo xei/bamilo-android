@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.mobile.framework.Darwin;
+import com.mobile.newFramework.Darwin;
 import com.mobile.framework.R;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 
 /**
  * The Interface Defines important constants to access the SQLite DB and the Rest Methods

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.AutoCompleteTextView;
 
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 

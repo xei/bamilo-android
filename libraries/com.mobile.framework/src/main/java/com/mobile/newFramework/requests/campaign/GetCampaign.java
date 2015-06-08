@@ -1,7 +1,7 @@
 package com.mobile.newFramework.requests.campaign;
 
-import com.mobile.newFramework.interfaces.AigApiInterface;
-import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;

@@ -20,9 +20,9 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that represents an Category. Composed by id, name and

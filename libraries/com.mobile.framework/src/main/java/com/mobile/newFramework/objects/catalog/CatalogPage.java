@@ -3,12 +3,8 @@ package com.mobile.newFramework.objects.catalog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
-import com.mobile.framework.objects.Banner;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.framework.objects.CategoryFilterOption;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.Product;

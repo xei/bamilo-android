@@ -3,9 +3,10 @@ package com.mobile.newFramework.objects.home.object;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.utils.DateTimeUtils;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.DateTimeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -126,6 +127,11 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
         return null;
     }
 

@@ -5,21 +5,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.RelatedItemsTableHelper;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.interfaces.AigApiInterface;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.RelatedItemsTableHelper;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.catalog.GetCatalogFiltered;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -94,7 +93,6 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-//        new GetCatalogFiltered(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getCatalogFiltered);
     }
 

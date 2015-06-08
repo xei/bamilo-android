@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 

@@ -10,10 +10,10 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.CurrencyFormatter;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that manages the full representation of a given product bundle.

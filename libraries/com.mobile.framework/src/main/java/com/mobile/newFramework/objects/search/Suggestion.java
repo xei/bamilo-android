@@ -4,7 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -59,6 +60,11 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public JSONObject toJSON() {
+		return null;
+	}
+
+	@Override
+	public RequiredJson getRequiredJson() {
 		return null;
 	}
 

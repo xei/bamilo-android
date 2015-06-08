@@ -3,7 +3,7 @@ package com.mobile.utils.dialogfragments;
 
 import android.content.Context;
 
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 
 public class WizardFactory {

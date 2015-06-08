@@ -12,11 +12,11 @@
 //import android.os.Parcel;
 //import android.os.Parcelable;
 //
-//import com.mobile.framework.database.FavouriteTableHelper;
+//import com.mobile.newFramework.database.FavouriteTableHelper;
 //import com.mobile.framework.interfaces.IJSONSerializable;
-//import com.mobile.framework.output.Print;
+//import com.mobile.newFramework.utils.output.Print;
 //import com.mobile.newFramework.pojo.JsonConstants;
-//import com.mobile.framework.utils.CurrencyFormatter;
+//import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 //
 //import org.json.JSONException;
 //import org.json.JSONObject;

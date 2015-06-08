@@ -1,7 +1,7 @@
 package com.mobile.newFramework.objects.checkout;
 
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.objects.customer.Customer;
 
 import org.json.JSONException;
 import org.json.JSONObject;

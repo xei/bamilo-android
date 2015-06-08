@@ -2,12 +2,10 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.framework.utils.EventType;
-import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
+import com.mobile.newFramework.utils.EventType;
 
 import java.util.HashMap;
 

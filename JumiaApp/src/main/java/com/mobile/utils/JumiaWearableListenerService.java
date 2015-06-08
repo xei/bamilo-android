@@ -20,7 +20,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.SplashScreenActivity;

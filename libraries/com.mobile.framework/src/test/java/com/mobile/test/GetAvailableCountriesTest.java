@@ -2,12 +2,12 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.framework.utils.EventType;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetAvailableCountries;
+import com.mobile.newFramework.utils.EventType;
 
 public class GetAvailableCountriesTest extends BaseTestCase {
 

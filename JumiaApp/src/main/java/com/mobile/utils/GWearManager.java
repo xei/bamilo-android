@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Class that parses the notification received by the handheld app, and sends it to the wear app through the

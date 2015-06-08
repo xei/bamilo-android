@@ -12,7 +12,7 @@
 //import java.util.HashMap;
 //import java.util.Iterator;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class used to save the customer addresses

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 
 public class WizardPreferences {
     

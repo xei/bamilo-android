@@ -1,11 +1,11 @@
 package com.mobile.newFramework.rest;
 
-import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.Success;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.pojo.Success;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;

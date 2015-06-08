@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.objects.PaymentInfo;
-import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.newFramework.interfaces.AigResponseCallback;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -506,6 +505,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return null;
     }
 
     /*

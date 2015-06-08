@@ -18,12 +18,12 @@
 //
 //import com.mobile.app.JumiaApplication;
 //import com.mobile.framework.objects.IJSONSerializable;
-//import com.mobile.framework.objects.PaymentInfo;
-//import com.mobile.framework.objects.PickUpStationObject;
+//import com.mobile.newFramework.forms.PaymentInfo;
+//import com.mobile.newFramework.forms.PickUpStationObject;
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.Constants;
-//import com.mobile.framework.utils.EventType;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.Constants;
+//import com.mobile.newFramework.utils.EventType;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //import com.mobile.interfaces.IResponseCallback;
 //import com.mobile.newFramework.forms.InputType;
 //
@@ -37,7 +37,7 @@
 //import java.util.LinkedHashMap;
 //import java.util.Map;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that represent and entry in the form.

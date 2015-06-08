@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.ShippingRadioGroupList;
 
 import java.util.ArrayList;

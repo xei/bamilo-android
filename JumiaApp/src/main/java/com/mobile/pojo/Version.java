@@ -6,7 +6,7 @@
 //import com.mobile.framework.interfaces.IJSONSerializable;
 //import com.mobile.framework.rest.RestConstants;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //public class Version implements IJSONSerializable {
 //	private final static String TAG = Version.class.getSimpleName();

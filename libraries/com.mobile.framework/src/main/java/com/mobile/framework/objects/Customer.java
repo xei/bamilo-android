@@ -4,7 +4,7 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
@@ -13,7 +13,7 @@
 //import java.util.ArrayList;
 //import java.util.Iterator;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste

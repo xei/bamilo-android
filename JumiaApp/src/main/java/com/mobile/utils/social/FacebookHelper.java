@@ -19,8 +19,8 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.LoginButton;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.utils.ui.UIUtils;
 
 import java.security.MessageDigest;

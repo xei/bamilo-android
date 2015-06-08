@@ -11,10 +11,10 @@ import android.webkit.WebViewClient;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.TextUtils;
+import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
@@ -240,7 +240,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * extract static page key from the static page url
      */
     private String getStaticPageKey(String url){
-        if(!com.mobile.framework.utils.TextUtils.isEmpty(url)){
+        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(url)){
             Uri myUri = Uri.parse(url);
             return myUri.getQueryParameter(GetShopHelper.INNER_SHOP_TAG);
         }

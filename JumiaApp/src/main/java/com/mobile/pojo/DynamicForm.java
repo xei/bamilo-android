@@ -9,10 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.Iterator;

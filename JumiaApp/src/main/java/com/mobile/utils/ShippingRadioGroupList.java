@@ -15,9 +15,9 @@ import com.mobile.controllers.PickupStationsAdapter;
 import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
-import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.forms.PickUpStationObject;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

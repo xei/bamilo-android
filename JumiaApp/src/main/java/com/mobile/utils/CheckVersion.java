@@ -15,10 +15,10 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
 import com.mobile.newFramework.objects.configs.Version;
 import com.mobile.newFramework.objects.configs.VersionInfo;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 

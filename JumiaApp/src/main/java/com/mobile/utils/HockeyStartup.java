@@ -17,7 +17,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import net.hockeyapp.android.CrashManager;

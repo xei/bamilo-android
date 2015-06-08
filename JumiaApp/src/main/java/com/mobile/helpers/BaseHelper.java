@@ -6,15 +6,15 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.app.JumiaApplication;
-//import com.mobile.framework.ErrorCode;
-//import com.mobile.framework.enums.RequestType;
-//import com.mobile.framework.objects.Errors;
+//import com.mobile.newFramework.ErrorCode;
+//import com.mobile.newFramework.enums.RequestType;
+//import com.mobile.newFramework.pojo.Errors;
 ////import com.mobile.framework.rest.RestClientSingleton;
 //import com.mobile.newFramework.rest.RestConstants;
 //import com.mobile.newFramework.rest.configs.RestContract;
-//import com.mobile.framework.utils.Constants;
-//import com.mobile.framework.utils.EventTask;
-//import com.mobile.framework.utils.EventType;
+//import com.mobile.newFramework.utils.Constants;
+//import com.mobile.newFramework.utils.EventTask;
+//import com.mobile.newFramework.utils.EventType;
 //import com.mobile.utils.JSONConstants;
 //
 //import org.json.JSONArray;

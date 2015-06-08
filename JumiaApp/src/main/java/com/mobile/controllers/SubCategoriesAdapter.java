@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

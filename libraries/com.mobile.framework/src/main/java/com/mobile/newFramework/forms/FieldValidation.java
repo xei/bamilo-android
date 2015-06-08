@@ -3,10 +3,11 @@ package com.mobile.newFramework.forms;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.TextUtils;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -149,6 +150,11 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return null;
     }
 
 

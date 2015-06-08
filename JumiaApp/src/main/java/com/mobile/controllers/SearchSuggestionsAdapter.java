@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.output.Print;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;

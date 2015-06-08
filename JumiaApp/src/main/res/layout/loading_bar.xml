@@ -10,7 +10,7 @@
     android:gravity="center"
     android:orientation="horizontal" >
 
-    <com.mobile.framework.utils.LoadingBarView
+    <com.mobile.newFramework.utils.LoadingBarView
         android:id="@+id/fragment_root_loading_gif"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="@dimen/loading_gif_layout"

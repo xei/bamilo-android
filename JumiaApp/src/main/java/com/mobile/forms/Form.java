@@ -17,8 +17,8 @@
 //
 //import com.mobile.framework.objects.IJSONSerializable;
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.EventType;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.EventType;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
@@ -30,7 +30,7 @@
 //import java.util.Map;
 //import java.util.Set;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that represents an input form.

@@ -21,7 +21,7 @@
 //
 //import java.util.ArrayList;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that represents the server side product. Contains id, name,

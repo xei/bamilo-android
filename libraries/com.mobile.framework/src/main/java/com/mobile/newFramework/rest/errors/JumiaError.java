@@ -1,6 +1,6 @@
 package com.mobile.newFramework.rest.errors;
 
-import com.mobile.framework.ErrorCode;
+import com.mobile.newFramework.ErrorCode;
 
 import retrofit.RetrofitError.Kind;
 

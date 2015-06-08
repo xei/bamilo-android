@@ -3,8 +3,8 @@
 // */
 //package com.mobile.forms;
 //
-//import com.mobile.framework.utils.EventType;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.EventType;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //import com.mobile.newFramework.forms.InputType;
 //
 //import java.util.ArrayList;
@@ -12,7 +12,7 @@
 //import java.util.HashMap;
 //import java.util.Map;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * This Singleton Class defines the mapping for the order which the fields are displayed on the UI

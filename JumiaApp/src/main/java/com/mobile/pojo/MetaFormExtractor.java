@@ -1,8 +1,8 @@
 package com.mobile.pojo;
 
 
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormFieldMeta;
 import com.mobile.newFramework.forms.IFormField;

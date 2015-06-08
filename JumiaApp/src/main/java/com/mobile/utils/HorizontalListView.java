@@ -30,7 +30,7 @@
 //import java.util.LinkedList;
 //import java.util.Queue;
 //
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //import com.mobile.view.R;
 //import android.content.Context;
 //import android.database.DataSetObserver;
@@ -43,7 +43,7 @@
 //import android.widget.AdapterView;
 //import android.widget.ListAdapter;
 //import android.widget.Scroller;
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //public class HorizontalListView extends AdapterView<ListAdapter> {
 //

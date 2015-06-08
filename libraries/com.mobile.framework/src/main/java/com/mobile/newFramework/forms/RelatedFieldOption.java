@@ -3,7 +3,8 @@ package com.mobile.newFramework.forms;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -84,6 +85,11 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
      */
     @Override
     public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
         return null;
     }
 

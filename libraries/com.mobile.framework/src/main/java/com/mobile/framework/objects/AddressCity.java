@@ -6,9 +6,9 @@
 //import android.os.Parcel;
 //import android.os.Parcelable;
 //
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //public class AddressCity implements IJSONSerializable, Parcelable {
 //

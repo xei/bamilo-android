@@ -4,7 +4,8 @@ package com.mobile.newFramework.objects.home.group;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
@@ -110,6 +111,11 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
 
     @Override
     public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
         return null;
     }
 

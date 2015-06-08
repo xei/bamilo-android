@@ -16,7 +16,7 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.newFramework.pojo.JsonConstants;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
 ///**
 // * Class that represents an Order Tracked Item

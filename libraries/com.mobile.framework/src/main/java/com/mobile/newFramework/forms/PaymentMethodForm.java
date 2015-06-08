@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.output.Print;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +35,11 @@ public class PaymentMethodForm implements Parcelable {
     private String customer_first_name;
     private String customer_last_name;
     private boolean cameFromWebCheckout;
+
+    public enum RequestType {
+        GET, POST, DELETE, PUT
+    }
+
     public PaymentMethodForm() {
 
     }

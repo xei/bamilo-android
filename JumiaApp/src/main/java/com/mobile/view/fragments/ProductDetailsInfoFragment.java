@@ -16,10 +16,10 @@ import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;

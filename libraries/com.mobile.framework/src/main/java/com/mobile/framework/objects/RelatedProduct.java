@@ -1,8 +1,8 @@
 //package com.mobile.framework.objects;
 //
-//import com.mobile.framework.output.Print;
+//import com.mobile.newFramework.utils.output.Print;
 //import com.mobile.newFramework.pojo.JsonConstants;
-//import com.mobile.framework.utils.CurrencyFormatter;
+//import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;

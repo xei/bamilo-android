@@ -11,7 +11,7 @@
 //import java.util.HashMap;
 //import java.util.Iterator;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //public class VersionInfo implements IJSONSerializable, Parcelable {
 //

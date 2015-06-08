@@ -11,7 +11,7 @@
 //import org.json.JSONArray;
 //import org.json.JSONObject;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Defines an images of a given teaser.
@@ -174,7 +174,7 @@
 //    /*
 //     * (non-Javadoc)
 //     *
-//     * @see com.mobile.framework.objects.ITargeting#getTargetType()
+//     * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetType()
 //     */
 //    @Override
 //    public TargetType getTargetType() {
@@ -184,7 +184,7 @@
 //    /*
 //     * (non-Javadoc)
 //     *
-//     * @see com.mobile.framework.objects.ITargeting#getTargetTitle()
+//     * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetTitle()
 //     */
 //    @Override
 //    public String getTargetTitle() {

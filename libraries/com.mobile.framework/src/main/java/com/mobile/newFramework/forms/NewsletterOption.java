@@ -3,7 +3,8 @@ package com.mobile.newFramework.forms;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.interfaces.IJSONSerializable;
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 
 import org.json.JSONObject;
 
@@ -46,7 +47,17 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
         isSubscrided = object.optBoolean("user_subscribed");
         return true;
     }
-    
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return null;
+    }
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()

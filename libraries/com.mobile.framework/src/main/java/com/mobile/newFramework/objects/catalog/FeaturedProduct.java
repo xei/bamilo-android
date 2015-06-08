@@ -4,7 +4,7 @@ package com.mobile.newFramework.objects.catalog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;

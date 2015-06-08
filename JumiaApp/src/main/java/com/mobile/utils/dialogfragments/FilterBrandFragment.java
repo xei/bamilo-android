@@ -14,9 +14,9 @@ import com.mobile.components.PinnedSectionListView;
 import com.mobile.components.PinnedSectionListView.PinnedSectionListAdapter;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.objects.catalog.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;

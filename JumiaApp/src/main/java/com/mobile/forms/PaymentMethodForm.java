@@ -8,10 +8,10 @@
 //import android.os.Parcel;
 //import android.os.Parcelable;
 //
-//import com.mobile.framework.enums.RequestType;
+//import com.mobile.newFramework.enums.RequestType;
 //import com.mobile.framework.rest.RestConstants;
 //
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 //public class PaymentMethodForm implements Parcelable {
 //

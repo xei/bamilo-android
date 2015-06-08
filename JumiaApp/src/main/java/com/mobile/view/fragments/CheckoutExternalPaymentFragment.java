@@ -24,20 +24,20 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.user.Customer;
+import com.mobile.newFramework.forms.PaymentMethodForm;
+import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -61,7 +61,7 @@ import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 
-//import com.mobile.framework.enums.RequestType;
+//import com.mobile.newFramework.enums.RequestType;
 //import com.mobile.framework.rest.RestClientSingleton;
 ;
 
@@ -314,7 +314,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
                 && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == RequestType.POST) {
+                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == PaymentMethodForm.RequestType.POST) {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {

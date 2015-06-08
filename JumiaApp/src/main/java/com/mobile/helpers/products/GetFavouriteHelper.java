@@ -3,13 +3,13 @@ package com.mobile.helpers.products;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.Favourite;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 

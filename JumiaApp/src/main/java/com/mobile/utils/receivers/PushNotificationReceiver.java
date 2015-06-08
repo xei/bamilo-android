@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.Constants;
-import com.mobile.framework.output.Print;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GWearManager;
 
 /**

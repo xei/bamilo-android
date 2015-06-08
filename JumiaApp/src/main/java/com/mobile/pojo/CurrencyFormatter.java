@@ -11,7 +11,7 @@ package com.mobile.pojo;
 //import com.mobile.view.R;
 //import android.content.Context;
 //import android.text.TextUtils;
-//import com.mobile.framework.output.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Static class responsible for formatting the currency.

@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.output.Print;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.product.AddableToCart;
+import com.mobile.newFramework.objects.product.Favourite;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
