@@ -7,10 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.framework.output.Print;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.product.ProductOffers;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.product.GetProductOffers;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -38,8 +41,6 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         return EventType.GET_PRODUCT_OFFERS;
     }
 
-
-
     @Override
     protected String getRequestUrl(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
@@ -54,7 +55,8 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetProductOffers(requestBundle, this).execute();
+//        new GetProductOffers(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductOffers);
     }
 
     @Override
@@ -64,6 +66,7 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         ProductOffers productOffers = (ProductOffers) baseResponse.getMetadata().getData();
         //
         Bundle bundle = generateSuccessBundle(baseResponse);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productOffers);
         mRequester.onRequestComplete(bundle);
     }
 

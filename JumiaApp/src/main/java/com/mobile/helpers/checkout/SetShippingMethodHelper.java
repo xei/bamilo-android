@@ -11,8 +11,10 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.SetShippingMethod;
 import com.mobile.utils.CheckoutStepManager;
@@ -39,7 +41,8 @@ public class SetShippingMethodHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new SetShippingMethod(requestBundle, this).execute();
+//        new SetShippingMethod(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setShippingMethod);
     }
 
     @Override

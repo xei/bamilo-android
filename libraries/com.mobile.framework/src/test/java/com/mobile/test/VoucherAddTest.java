@@ -3,7 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.objects.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.voucher.AddVoucher;
 
@@ -26,6 +28,13 @@ public class VoucherAddTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         System.out.println("TEST REQUEST");
+//        new BaseRequest<Voucher>(IS_AUTOMATED_TEST,requestBundle,this){
+//            @Override
+//            public void execute() {
+//
+//            }
+//        }.executeUseReflection("addVoucher");
+
         new AddVoucher(requestBundle, this).execute();
         try {
             mCountDownLatch.await();

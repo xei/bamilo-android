@@ -11,7 +11,9 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.home.GetShopInShopPage;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -49,7 +51,8 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new GetShopInShopPage(requestBundle, this).execute();
+//        new GetShopInShopPage(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getShopInShop);
     }
 
     @Override

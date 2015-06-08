@@ -7,7 +7,9 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetRatingForm;
 
@@ -28,8 +30,6 @@ public class GetRatingFormHelper extends SuperBaseHelper {
         return EventType.GET_FORM_RATING_EVENT;
     }
 
-
-
     @Override
     protected String getRequestUrl(Bundle args) {
         return super.getRequestUrl(args);
@@ -37,7 +37,8 @@ public class GetRatingFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetRatingForm(requestBundle, this).execute();
+//        new GetRatingForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getRatingForm);
     }
 
     @Override

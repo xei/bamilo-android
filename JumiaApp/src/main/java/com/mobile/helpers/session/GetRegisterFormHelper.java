@@ -10,7 +10,9 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.GetRegisterForm;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -30,8 +32,6 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
         return EventType.GET_REGISTRATION_FORM_EVENT;
     }
 
-
-
     @Override
     protected String getRequestUrl(Bundle args) {
         String url = EventType.GET_REGISTRATION_FORM_FALLBACK_EVENT.action;
@@ -46,7 +46,8 @@ public class GetRegisterFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetRegisterForm(requestBundle, this).execute();
+//        new GetRegisterForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getRegisterForm);
     }
 
     @Override

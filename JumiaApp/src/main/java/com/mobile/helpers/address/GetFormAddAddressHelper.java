@@ -10,9 +10,10 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.address.GetCreateAddressForm;
 import com.mobile.newFramework.rest.RestUrlUtils;
 
 /**
@@ -29,8 +30,6 @@ public class GetFormAddAddressHelper extends SuperBaseHelper {
         return EventType.GET_CREATE_ADDRESS_FORM_EVENT;
     }
 
-
-
     @Override
     protected String getRequestUrl(Bundle args) {
         String url = EventType.GET_CREATE_ADDRESS_FORM_FALLBACK_EVENT.action;
@@ -45,7 +44,8 @@ public class GetFormAddAddressHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetCreateAddressForm(requestBundle, this).execute();
+//        new GetCreateAddressForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCreateAddressForm);
     }
 
     @Override

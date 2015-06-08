@@ -11,8 +11,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.GetShoppingCart;
 
@@ -31,11 +33,10 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
         return EventType.GET_SHOPPING_CART_ITEMS_EVENT;
     }
 
-
-
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetShoppingCart(requestBundle, this).execute();
+//        new GetShoppingCart(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getShoppingCart);
     }
 
     @Override

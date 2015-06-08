@@ -8,7 +8,7 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.AigRestAdapter;
 
-public class GetNativeCheckoutAvailable extends BaseRequest<BaseResponse<SuperNativeCheckoutAvailability>> {
+public class GetNativeCheckoutAvailable extends BaseRequest<SuperNativeCheckoutAvailability> {
 
     public GetNativeCheckoutAvailable(RequestBundle requestBundle, AigResponseCallback requester) {
         super(requestBundle, requester);

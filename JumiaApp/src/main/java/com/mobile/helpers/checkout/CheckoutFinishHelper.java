@@ -11,8 +11,10 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.checkout.CheckoutFinishOrder;
 
@@ -56,7 +58,8 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new CheckoutFinishOrder(requestBundle, this).execute();
+//        new CheckoutFinishOrder(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.checkoutFinish);
     }
 
     @Override

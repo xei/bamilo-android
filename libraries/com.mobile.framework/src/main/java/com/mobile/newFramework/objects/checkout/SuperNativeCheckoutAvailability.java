@@ -18,7 +18,7 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperNativeCheckoutAvailability implements IJSONSerializable, Parcelable {
+public class SuperNativeCheckoutAvailability extends Object implements IJSONSerializable, Parcelable {
 
 
     private boolean isAvailable;

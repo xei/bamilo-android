@@ -6,8 +6,10 @@ import com.mobile.framework.output.Print;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.categories.GetCategoriesPaginated;
 
@@ -33,7 +35,8 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
-        new GetCategoriesPaginated(requestBundle, this).execute();
+//        new GetCategoriesPaginated(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCategoriesPaginated);
     }
 
     @Override
