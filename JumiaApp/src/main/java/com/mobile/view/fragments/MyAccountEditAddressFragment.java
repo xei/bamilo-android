@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -15,8 +16,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -67,19 +66,13 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-                triggerInitForm();
-            } else if(mFormResponse != null && mRegions != null){
-                loadEditAddressForm(mFormResponse);
-            } else {
-                triggerEditAddressForm();
-            }
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
+            triggerInitForm();
+        } else if(mFormResponse != null && mRegions != null){
+            loadEditAddressForm(mFormResponse);
         } else {
-            showFragmentErrorRetry();
+            triggerEditAddressForm();
         }
     }
 
@@ -112,7 +105,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
             onErrorOccurred();
         }
     }

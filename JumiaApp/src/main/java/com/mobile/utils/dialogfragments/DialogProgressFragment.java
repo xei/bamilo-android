@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class DialogProgressFragment extends DialogFragment {
      * @return
      */
     public static DialogProgressFragment newInstance() {
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         return new DialogProgressFragment();
     }
     

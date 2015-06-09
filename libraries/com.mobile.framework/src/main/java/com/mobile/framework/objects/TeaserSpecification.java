@@ -4,14 +4,14 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //
 //import org.json.JSONArray;
 //import org.json.JSONObject;
 //
 //import java.util.ArrayList;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Defines a teaser as it is represented in the mobile api.

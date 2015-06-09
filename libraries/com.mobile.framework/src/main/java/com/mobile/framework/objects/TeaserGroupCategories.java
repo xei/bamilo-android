@@ -52,7 +52,7 @@
 //        /*
 //         * (non-Javadoc)
 //         *
-//         * @see com.mobile.framework.objects.ITargeting#getTargetType()
+//         * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetType()
 //         */
 //        @Override
 //        public TargetType getTargetType() {
@@ -60,7 +60,7 @@
 //        }
 //
 //        /* (non-Javadoc)
-//         * @see com.mobile.framework.objects.ITargeting#getTargetTitle()
+//         * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetTitle()
 //         */
 //        @Override
 //        public String getTargetTitle() {

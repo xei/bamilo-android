@@ -3,8 +3,8 @@ package com.mobile.utils.dialogfragments;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
 import com.mobile.view.R;
 
 /**

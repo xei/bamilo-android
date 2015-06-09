@@ -9,121 +9,24 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
+import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
-public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable  {
+public class ShippingMethodFormBuilder implements Parcelable  {
     private final static String TAG = ShippingMethodFormBuilder.class.getName();
 
-    public String id;
-    public String name;
-    public String method;
-    public String action;
-    // private float scale = 1;
-
-    public ArrayList<ShippingMethodForm> fields;
     private ArrayList<ShippingRadioGroupList> groupList;
-    /**
-     * Empty constructor.
-     */
-    public ShippingMethodFormBuilder() {
-        this.id = "";
-        this.name = "";
-        this.method = "";
-        this.action = "";
+    public ShippingMethodFormBuilderHolder shippingMethodFormBuilderHolder;
+
+    public ShippingMethodFormBuilder(){
+        super();
         this.groupList = new ArrayList<>();
-        this.fields = new ArrayList<>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
-     */
-    @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
-            name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
-            method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
-            action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
-
-            fields.clear();
-
-
-            
-            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
-            if(fieldsArray != null){
-                for (int i = 0; i < fieldsArray.length(); ++i) {
-                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG)){
-                        ShippingMethodForm field = new ShippingMethodForm();
-                        if (field.initialize(fieldsArray.getJSONObject(i))) {
-                            fields.add(field);
-                        }
-                    } else {
-                        ShippingMethodSubForm subForm = new ShippingMethodSubForm();
-                        subForm.initialize(fieldsArray.getJSONObject(i));
-                        
-                        Log.i(TAG, "code1subForms : subForm :  "+subForm.name+" "+subForm.toString());
-                        for ( int j = 0; j < fields.size(); j++) {
-                            if(fields.get(j).options.contains(subForm.scenario)){
-                                fields.get(j).shippingMethodsSubForms.add(subForm);   
-                            }
-                        }
-                    }
-                }
-            }
-                         
-        } catch (JSONException e) {
-            Log.e(TAG, "initialize: error parsing jsonobject", e );
-            return false;
-        }
-
-        return true;
-    }
-
-    
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
-            jsonObject.put(RestConstants.JSON_FORM_TAG, name);
-            jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
-            jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
-
-            JSONArray fieldArray = new JSONArray();
-            for (ShippingMethodForm field : fields) {
-                fieldArray.put(field.toJSON());
-            }
-
-            jsonObject.put(RestConstants.JSON_FIELDS_TAG, fieldArray);
-
-        } catch (JSONException e) {
-            Log.e(TAG, "trying to create json objects failed", e );
-        }
-        return jsonObject;
-    }
-    
-    
     public View generateForm(Context context){
         LinearLayout parent;
 
@@ -131,15 +34,8 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setLayoutParams(frmParams);
-        
-        if(fields != null && fields.size() > 0){
-            for (ShippingMethodForm field : fields) {
-                ShippingRadioGroupList mGroup = field.generateForm(context);
-                groupList.add(mGroup);
-                parent.addView(mGroup);
-            }
-        }
-        
+
+        generateForm(context, parent);
                 
         return parent;
     }
@@ -149,11 +45,14 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
      * Generate a form using the view parent
      */
     public View generateForm(Context context, ViewGroup parent){
-        if(fields != null && fields.size() > 0){
-            for (ShippingMethodForm field : fields) {
+        if(shippingMethodFormBuilderHolder.fields != null && shippingMethodFormBuilderHolder.fields.size() > 0){
+            for(int i = 0; i<shippingMethodFormBuilderHolder.fields.size(); i++){
+                ShippingMethodForm field = new ShippingMethodForm(shippingMethodFormBuilderHolder.fields.get(i));
                 ShippingRadioGroupList mGroup = field.generateForm(context);
                 groupList.add(mGroup);
                 parent.addView(mGroup);
+                shippingMethodFormBuilderHolder.fields.remove(i);
+                shippingMethodFormBuilderHolder.fields.add(i, field);
             }
         }
         return parent;
@@ -189,8 +88,8 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     
     public ContentValues getValues(){
         ContentValues values = new ContentValues();
-        for (ShippingMethodForm element : fields) {
-            values.putAll(element.getContentValues());
+        for (ShippingMethodFormHolder element : shippingMethodFormBuilderHolder.fields) {
+            values.putAll(((ShippingMethodForm)element).getContentValues());
         }
         return values;
     }
@@ -202,12 +101,11 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(method);
-        dest.writeString(action);
-        dest.writeList(fields);
-        
+        dest.writeString(shippingMethodFormBuilderHolder.id);
+        dest.writeString(shippingMethodFormBuilderHolder.name);
+        dest.writeString(shippingMethodFormBuilderHolder.method);
+        dest.writeString(shippingMethodFormBuilderHolder.action);
+        dest.writeList(shippingMethodFormBuilderHolder.fields);
     }
     
     /**
@@ -215,13 +113,12 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
      * @param in
      */
     private ShippingMethodFormBuilder(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        method = in.readString();
-        action = in.readString();
-        fields = new ArrayList<>();
+        shippingMethodFormBuilderHolder.id = in.readString();
+        shippingMethodFormBuilderHolder.name = in.readString();
+        shippingMethodFormBuilderHolder.method = in.readString();
+        shippingMethodFormBuilderHolder.action = in.readString();
+        shippingMethodFormBuilderHolder.fields = new ArrayList<>();
         in.readArrayList(ShippingMethodForm.class.getClassLoader());
-        
     }
     
     /**

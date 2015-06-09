@@ -2,7 +2,6 @@ package com.mobile.utils.catalog;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.Animation;
@@ -14,6 +13,8 @@ import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Created by spereira on 3/2/15.

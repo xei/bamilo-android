@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
 import com.mobile.utils.home.holder.HomeCampaignTeaserHolder;

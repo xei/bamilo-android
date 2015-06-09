@@ -10,24 +10,24 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.PurchaseItem;
-import com.mobile.framework.objects.ShoppingCartItem;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.FacebookTracker;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.gtm.GTMManager;
-import com.mobile.framework.tracking.gtm.GTMValues;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.ShopSelector;
-import com.mobile.framework.utils.Utils;
+import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.checkout.PurchaseItem;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.FacebookTracker;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -41,8 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import de.akquinet.android.androlog.Log;
 
 public class TrackerDelegator {
     private final static String TAG = TrackerDelegator.class.getSimpleName();
@@ -142,7 +140,7 @@ public class TrackerDelegator {
         }
 
         boolean loginAfterRegister = checkLoginAfterSignup(customer);
-        Log.d(TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin);
+        Print.d(TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin);
 
         if (wasFacebookLogin) {
             Ad4PushTracker.get().trackFacebookConnect(customer.getIdAsString());
@@ -173,7 +171,7 @@ public class TrackerDelegator {
      * @param wasAutologin
      */
     public static void trackLoginFailed(boolean wasAutologin, String location, String method) {
-        Log.i(TAG, "trackLoginFailed: autologin " + wasAutologin);
+        Print.i(TAG, "trackLoginFailed: autologin " + wasAutologin);
         // Case login
         TrackingEvent event = TrackingEvent.LOGIN_FAIL;
         // Case autologin
@@ -412,9 +410,9 @@ public class TrackerDelegator {
             String email = params.getString(EMAIL_KEY);
             TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? email : userId, 0l);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
+            Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
     }
 
@@ -422,9 +420,9 @@ public class TrackerDelegator {
         try {
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
             // GA
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? email : userId, 0l);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
+            Print.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
         }
     }
 
@@ -434,20 +432,20 @@ public class TrackerDelegator {
     public static void trackPaymentMethod(String userId, String email, String payment) {
         try {
             // GA
-            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, payment);
+            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? email : userId, payment);
             // GTM
             GTMManager.get().gtmTrackChoosePayment(payment);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON TRACK PAYMENT METHOD");
+            Print.w(TAG, "WARNING: NPE ON TRACK PAYMENT METHOD");
         }
     }
 
     public static void trackNativeCheckoutError(String userId, String email, String error) {
         try {
             // GA
-            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, error);
+            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? email : userId, error);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON TRACK NC ERROR");
+            Print.w(TAG, "WARNING: NPE ON TRACK NC ERROR");
         }
     }
 
@@ -475,14 +473,14 @@ public class TrackerDelegator {
         }
         Customer customer = params.getParcelable(CUSTOMER_KEY);
 
-        Log.i(TAG, "TRACK SALE: STARTED");
+        Print.i(TAG, "TRACK SALE: STARTED");
         if (result == null) {
             return;
         }
 
-        Log.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
+        Print.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
 
-        Log.d(TAG, "TRACK SALE: JSON " + result.toString());
+        Print.d(TAG, "TRACK SALE: JSON " + result.toString());
 
         String orderNr;
         double value;
@@ -494,9 +492,9 @@ public class TrackerDelegator {
             value = result.getDouble(JSON_TAG_GRAND_TOTAL);
             itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
             valueConverted = result.optDouble(JSON_TAG_GRAND_TOTAL_CONVERTED, 0d);
-            Log.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
+            Print.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
-            Log.e(TAG, "TRACK SALE: json parsing error: ", e);
+            Print.e(TAG, "TRACK SALE: json parsing error: ", e);
             return;
         }
 
@@ -518,7 +516,7 @@ public class TrackerDelegator {
         boolean isFirstCustomer = false;
         
         if (customer == null) {
-            Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
+            Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
             // Send the track sale without customer id
             isFirstCustomer = false;
         } else {
@@ -575,9 +573,9 @@ public class TrackerDelegator {
             averageValue = 0d;
         }
 
-        Log.i(TAG, "TRACK SALE: STARTED");
-        Log.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
-        Log.d(TAG, "TRACK SALE: JSON " + orderNr);
+        Print.i(TAG, "TRACK SALE: STARTED");
+        Print.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
+        Print.d(TAG, "TRACK SALE: JSON " + orderNr);
 
         List<PurchaseItem> items = PurchaseItem.parseItems(mItems);
         ArrayList<String> skus = new ArrayList<>();
@@ -588,7 +586,7 @@ public class TrackerDelegator {
 
         boolean isFirstCustomer = false;
         if (customer == null) {
-            Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
+            Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
             // Send the track sale without customer id
             isFirstCustomer = false;
         } else {
@@ -623,24 +621,24 @@ public class TrackerDelegator {
     }
 
     public static void storeSignupProcess(Customer customer) {
-        Log.d(TAG, "storing signup tags");
+        Print.d(TAG, "storing signup tags");
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).apply();
     }
     
     public static void removeFirstCustomer(Customer customer) {
-        Log.d(TAG, "remove first customer");
+        Print.d(TAG, "remove first customer");
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(customer.getEmail(), false).apply();
     }
 
     public static void storeFirstCustomer(Customer customer) {
-        Log.d(TAG, "store first customer");
+        Print.d(TAG, "store first customer");
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         
         boolean isNewCustomer = prefs.getBoolean(customer.getEmail(), true);
         if (isNewCustomer) {
-            Log.d(TAG, "store first customer1");
+            Print.d(TAG, "store first customer1");
             prefs.edit().putBoolean(customer.getEmail(),true).apply();
         }
         
@@ -974,7 +972,7 @@ public class TrackerDelegator {
                 if (!TextUtils.isEmpty(activeFilters)) {
                     String[] filters = activeFilters.split(",");
                     for (String activefilter : filters) {
-                        Log.d("GTM FILTER",":"+activefilter);
+                        Print.d("GTM FILTER", ":" + activefilter);
                         GTMManager.get().gtmTrackFilterCatalog(activefilter);
                     }
                 }
@@ -1167,9 +1165,9 @@ public class TrackerDelegator {
         long savedTimeStamp = settings.getLong(LAST_SESSION_SAVED, 0);
         long currentTimeStamp = System.currentTimeMillis();
         long diff = currentTimeStamp - savedTimeStamp;
-        Log.i("TIME", " DIFF " + diff + " 30L * 60 * 1000 " + 2L * 60 * 1000 + " currentTimeStamp " + currentTimeStamp + " savedTimeStamp " + savedTimeStamp);
+        Print.i("TIME", " DIFF " + diff + " 30L * 60 * 1000 " + 2L * 60 * 1000 + " currentTimeStamp " + currentTimeStamp + " savedTimeStamp " + savedTimeStamp);
         if (diff >= 30 * 60 * 1000) {
-            Log.i("TIME", " A MINUTE HAS PASSED");
+            Print.i("TIME", " A MINUTE HAS PASSED");
             Editor editor = settings.edit();
             editor.putLong(LAST_SESSION_SAVED, currentTimeStamp);
             sessionCount++;
@@ -1177,7 +1175,7 @@ public class TrackerDelegator {
             editor.apply();
 
         } else {
-            Log.i("TIME", " STILL TICKING");
+            Print.i("TIME", " STILL TICKING");
         }
 
     }
@@ -1227,7 +1225,7 @@ public class TrackerDelegator {
                                 Map.Entry pair = (Map.Entry)it.next();
 
                                 if (pair.getKey().equals(item.sku)) {
-                                    Log.e(TAG,"BANNER KEY:"+pair.getKey() +" VALUE:"+pair.getValue());
+                                    Print.e(TAG, "BANNER KEY:" + pair.getKey() + " VALUE:" + pair.getValue());
                                     trackBannerType(item, (TeaserGroupType) pair.getValue());
                                     it.remove();
                                 }
@@ -1274,7 +1272,7 @@ public class TrackerDelegator {
             AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
             break;
         case UNKNOWN:
-            Log.w(TAG,"UNKNOWN TEASER GROUP");
+            Print.w(TAG, "UNKNOWN TEASER GROUP");
             break;
         default:
             break;

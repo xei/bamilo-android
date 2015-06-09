@@ -11,12 +11,14 @@
 
         <!-- Injoo: 6ohr47 -->
         <!-- Tigo: mkcqip -->
+        <!-- Tigo: f7juys : GH -->
         <!-- Infinix: qwj7o2 -->
+
 
         <!-- PRE INSTALL -->
         <meta-data
             android:name="AdjustDefaultTracker"
-            android:value="qwj7o2" />
+            android:value="f7juys" />
 
     </application>
 

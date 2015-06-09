@@ -31,20 +31,22 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.ProductRatingPage;
-import com.mobile.framework.objects.ProductReviewComment;
-import com.mobile.framework.objects.RatingStar;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetProductReviewsHelper;
 import com.mobile.helpers.products.GetSellerReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.ProductRatingPage;
+import com.mobile.newFramework.objects.product.ProductReviewComment;
+import com.mobile.newFramework.objects.product.RatingStar;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -53,8 +55,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
@@ -162,7 +162,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -173,7 +173,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if(arguments != null) {
@@ -192,7 +192,7 @@ public class ReviewsFragment extends BaseFragment {
         }
         // Load saved state
         if(savedInstanceState != null) {
-            Log.i(TAG, "ON LOAD SAVED STATE");
+            Print.i(TAG, "ON LOAD SAVED STATE");
             mProductUrl = savedInstanceState.getString("url");
             pageNumber = savedInstanceState.getInt("page", 1);
             totalPages = savedInstanceState.getInt("current_page", -1);
@@ -208,7 +208,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get views
         productName = (TextView) view.findViewById(R.id.product_detail_name);
         productPriceNormal = (TextView) view.findViewById(R.id.product_price_normal);
@@ -245,7 +245,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
 
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
@@ -253,20 +253,17 @@ public class ReviewsFragment extends BaseFragment {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mProductUrl = contentUrl != null ? contentUrl : "";
             }
-            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mProductUrl)) {
+            if (!TextUtils.isEmpty(mProductUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showFragmentErrorRetry();
             }
-        } else if (JumiaApplication.mIsBound){
+        } else {
             checkReviewsTypeVisibility();
             showFragmentContent();
             showFragmentContentOfSeller();
-
-        } else {
-            showFragmentErrorRetry();
         }
     }
 
@@ -311,7 +308,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -321,7 +318,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE: ");
+        Print.i(TAG, "ON SAVE INSTANCE STATE: ");
         outState.putString("url", mProductUrl);
         outState.putInt("page", pageNumber);
         outState.putInt("current_page", totalPages);
@@ -341,7 +338,7 @@ public class ReviewsFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         removeWriteReviewFragment();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -352,7 +349,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -363,7 +360,7 @@ public class ReviewsFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /**
@@ -454,12 +451,12 @@ public class ReviewsFragment extends BaseFragment {
     private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial, String unitPrice, String specialPrice) {
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
             // display only the special price
-            productPriceSpecial.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.GONE);
         } else {
             // display special and normal price
-            productPriceSpecial.setText(specialPrice);
-            productPriceNormal.setText(unitPrice);
+            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
             productPriceNormal.setVisibility(View.VISIBLE);
             productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
@@ -544,7 +541,7 @@ public class ReviewsFragment extends BaseFragment {
             @Override
             public void OnScrollBottomReached() {
 
-                Log.i(TAG, "onScrollBottomReached: isLoadingMore = " + isLoadingMore);
+                Print.i(TAG, "onScrollBottomReached: isLoadingMore = " + isLoadingMore);
                 if (!isLoadingMore && pageNumber < totalPages) {
                     
                     isLoadingMore = true;
@@ -565,7 +562,7 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void getMoreReviews() {
         if (selectedProduct.getUrl() != null) {
-            Log.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
+            Print.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
             pageNumber++;
             triggerReviews(selectedProduct.getUrl(), pageNumber);
         }
@@ -574,10 +571,10 @@ public class ReviewsFragment extends BaseFragment {
 
     protected void onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -623,11 +620,11 @@ public class ReviewsFragment extends BaseFragment {
     protected void onErrorEvent(Bundle bundle){
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic errors
@@ -665,7 +662,7 @@ public class ReviewsFragment extends BaseFragment {
     private void displayReviews(ProductRatingPage productRatingPage, boolean isFromApi) {
         if(!isFromApi){
             if(productRatingPage != null && reviews != null){
-                Log.d("POINT","DO NOTHING");    
+                Print.d("POINT", "DO NOTHING");
             } else if(productRatingPage == null ){
                 reviews = new ArrayList<>();
                 triggerReviews(selectedProduct.getUrl(), 1);
@@ -713,7 +710,7 @@ public class ReviewsFragment extends BaseFragment {
             sellerRatingBar.setRating(productRatingPage.getAverage());
 
         } else {
-            insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true,productRatingPage.getAverage());
+            insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
         }
 
 
@@ -793,7 +790,7 @@ public class ReviewsFragment extends BaseFragment {
 
                             @Override
                             public void onClick(View v) {
-                                Log.d(TAG, "review clicked: username = " + userName.getText().toString());
+                                Print.d(TAG, "review clicked: username = " + userName.getText().toString());
 
                                 Bundle bundle = new Bundle();
                                 bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
