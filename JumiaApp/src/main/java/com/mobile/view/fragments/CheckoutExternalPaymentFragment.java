@@ -44,7 +44,11 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,14 +60,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.util.EntityUtils;
-
-//import com.mobile.newFramework.enums.RequestType;
-//import com.mobile.framework.rest.RestClientSingleton;
-;
 
 /**
  * Webview to execute an external Payment
@@ -264,7 +260,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             try {
                 webview.removeAllViews();
             } catch (IllegalArgumentException e) {
-                // TODO: handle exception
+                e.printStackTrace();
             }
             webview.destroy();
             webview = null;
@@ -368,8 +364,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-
-        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
+        // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
 
         CookieManager cookieManager = CookieManager.getInstance();
@@ -551,7 +546,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
 
-                    // TODO VALIDATE THIS REQUEST
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
@@ -566,11 +560,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     });
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
-                    /**
-                     * TODO: Verify if we need to send customer email
-                     */
-                    // bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ?
-                    // customer.getEmail() : "");
+
                     String order_number = "";
                     String grandTotal = "";
                     if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
@@ -599,9 +589,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_CUSTOMER:
-                /**
-                 * TODO: Verify if we need to fill customer
-                 */
                 customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 break;

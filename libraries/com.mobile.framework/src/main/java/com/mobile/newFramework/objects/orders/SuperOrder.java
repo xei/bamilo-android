@@ -4,6 +4,7 @@ package com.mobile.newFramework.objects.orders;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +45,7 @@ public class SuperOrder implements IJSONSerializable {
             numPages = paginationObject.optInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG, 0);
 
             totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
-            System.out.println( "ORDERS TOTAL: " + totalOrders);
+            Print.d( "ORDERS TOTAL: " + totalOrders);
             orders = new ArrayList<>();
             // Get order history
             JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.JSON_ORDERS_TAG);
@@ -57,7 +58,7 @@ public class SuperOrder implements IJSONSerializable {
                 }
 
         } catch (JSONException e) {
-            System.out.println("ERROR ON PARSE: " + e.getMessage());
+            Print.d("ERROR ON PARSE: " + e.getMessage());
 
         }
 

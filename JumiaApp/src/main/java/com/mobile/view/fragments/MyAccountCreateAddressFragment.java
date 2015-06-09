@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -21,6 +20,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

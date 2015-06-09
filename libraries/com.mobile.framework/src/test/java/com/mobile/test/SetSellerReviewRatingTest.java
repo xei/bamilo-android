@@ -6,6 +6,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.SetSellerRatingReview;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
@@ -16,8 +17,6 @@ public class SetSellerReviewRatingTest extends BaseTestCase {
         super.setUp();
 
         HashMap<String, String> data = new HashMap<>();
-// TODO this test should be temporary and for test porpouse only.
-// TODO This helper should be merged with SetReviewRatingTest where th data is passed as parameters and the url should be the action on the form
         data.put("review[ratings][1]", "4");
 //        data.put("review[ratings][2]", "4");
 //        data.put("review[ratings][3]", "4");
@@ -36,7 +35,7 @@ public class SetSellerReviewRatingTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new SetSellerRatingReview(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
@@ -47,14 +46,14 @@ public class SetSellerReviewRatingTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

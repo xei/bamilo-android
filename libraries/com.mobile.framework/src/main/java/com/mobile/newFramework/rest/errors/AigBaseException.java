@@ -7,23 +7,10 @@ public class AigBaseException extends Exception {
 
     private JumiaError error;
 
-//    public AigBaseException(String msg, JumiaError error) {
-//        super(msg);
-//        this.error = error;
-//    }
-
     public AigBaseException(JumiaError error) {
         super();
         this.error = error;
     }
-
-//    public AigBaseException(String msg) {
-//        super(msg);
-//    }
-//
-//    public AigBaseException() {
-//        super();
-//    }
 
     public JumiaError getError() {
         return error;

@@ -2,11 +2,12 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetCountryConfigurations;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 public class GetCountryConfigurationsTest extends BaseTestCase {
 
@@ -21,7 +22,7 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new GetCountryConfigurations(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
@@ -32,19 +33,19 @@ public class GetCountryConfigurationsTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
-        System.out.println("############# COUNTRY CONFIGS #############");
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("############# COUNTRY CONFIGS #############");
         CountryConfigs configurations = (CountryConfigs) response.getMetadata().getData();
         assertNotNull(configurations);
-        System.out.println(configurations.toString());
-        System.out.println("######################################");
+        Print.d(configurations.toString());
+        Print.d("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

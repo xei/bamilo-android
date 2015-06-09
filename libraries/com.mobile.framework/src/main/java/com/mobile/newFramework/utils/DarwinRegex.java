@@ -19,8 +19,6 @@ public class DarwinRegex {
 	public static final String REGEX_IMAGE_RESOLUTION = "(\\-[a-zA-Z]*\\.[a-zA-Z]*)";
 	
 	/**
-	 * FIXME - REGEX only for the resolution name 
-	 * 
 	 * // "(\\-[a-zA-Z]*\\.(?i)(jpg|png|gif|bmp|webp))"
 	 * // "(.*?\\-)"
 	 * // [^\\s]+(\\.(?i)(jpg|png|gif|bmp))$

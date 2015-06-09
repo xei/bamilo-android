@@ -8,6 +8,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetAvailableCountries;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 public class GetAvailableCountriesTest extends BaseTestCase {
 
@@ -23,7 +24,7 @@ public class GetAvailableCountriesTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new GetAvailableCountries(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
@@ -34,22 +35,22 @@ public class GetAvailableCountriesTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
-        System.out.println("############# COUNTRIES #############");
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("############# COUNTRIES #############");
         AvailableCountries countries = (AvailableCountries) response.getMetadata().getData();
         assertNotNull(countries);
         for (CountryObject country : countries) {
             assertNotNull(country);
-            System.out.println(country.toString());
+            Print.d(country.toString());
         }
-        System.out.println("######################################");
+        Print.d("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

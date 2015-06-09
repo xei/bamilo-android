@@ -33,7 +33,6 @@ import com.mobile.newFramework.objects.product.ProductOffers;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
-import com.mobile.newFramework.objects.statics.Promotion;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -52,19 +51,19 @@ import retrofit.http.QueryMap;
 
 public interface AigApiInterface {
 
-    Map<String,Method> methods = new HashMap();
+    Map<String, Method> methods = new HashMap<>();
 
-    class Service{
-        public static void init(){
+    class Service {
+        public static void init() {
 
-            if(methods.isEmpty()){
-            for(Method method: AigApiInterface.class.getMethods()){
-                methods.put(method.getName(), method);
+            if (methods.isEmpty()) {
+                for (Method method : AigApiInterface.class.getMethods()) {
+                    methods.put(method.getName(), method);
                 }
             }
         }
 
-        public static Method getMethod(String name){
+        public static Method getMethod(String name) {
             return methods.get(name);
         }
     }
@@ -97,11 +96,6 @@ public interface AigApiInterface {
     void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     String getTermsAndConditions = "getTermsAndConditions";
-
-    @GET("/")
-    void getPromotions(@QueryMap Map<String, String> data, Callback<BaseResponse<Promotion>> callback);
-
-    String getPromotions = "getPromotions";
 
     /*
      * ## FORMS
@@ -379,7 +373,6 @@ public interface AigApiInterface {
     String subscribeNewsletter = "subscribeNewsletter";
 
     @GET("/")
-
     void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
 
     String getCustomerDetails = "getCustomerDetails";

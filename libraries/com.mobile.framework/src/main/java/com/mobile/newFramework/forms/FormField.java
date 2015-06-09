@@ -12,6 +12,7 @@ import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -234,9 +235,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
-            System.out.println("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
+            Print.d("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
 
-            // Case RULES TODO
+            // Case RULES
             JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
             if(validationObject != null) {
                 if (!validation.initialize(validationObject)) {
@@ -387,17 +388,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
                     paymentInfoList.put(label,mPaymentInfo);
 
-                    System.out.println("code1paymentDescription : saved : " + curKey);
+                    Print.d("code1paymentDescription : saved : " + curKey);
                     JSONObject json = dataOptionsObject.getJSONObject(curKey);
                     Form mForm = new Form();
                     mForm.initialize(json);
                     paymentFields.put(label, mForm);
-                    System.out.println("code1paymentDescription : initialized form : " + curKey);
+                    Print.d("code1paymentDescription : initialized form : " + curKey);
                 }
             }
 
         } catch (JSONException e) {
-            System.out.println("Error parsing the json fields"+ e);
+            Print.d("Error parsing the json fields"+ e);
             result = false;
         }
 
@@ -696,9 +697,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_FORMS_DATA_SET_LIST_EVENT:
-            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT");
+            Print.d("Received GET_FORMS_DATASET_LIST_EVENT");
 
-            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
+            Print.d("Received GET_FORMS_DATASET_LIST_EVENT  ==> SUCCESS");
 
             dataSet = (LinkedHashMap<String, String>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
@@ -714,7 +715,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case GET_FORMS_DATA_SET_LIST_EVENT:
-            System.out.println("Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
+            Print.d("Received GET_FORMS_DATASET_LIST_EVENT  ==> FAIL");
         default:
             break;
         }

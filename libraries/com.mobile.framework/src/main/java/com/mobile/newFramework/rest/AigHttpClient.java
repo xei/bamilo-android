@@ -27,6 +27,10 @@ import java.util.concurrent.TimeUnit;
 
 import retrofit.client.OkClient;
 
+/**
+ * Class used to represent an http client.
+ * @author sergiopereira
+ */
 public class AigHttpClient extends OkClient {
 
     public static final String TAG = AigHttpClient.class.getSimpleName();

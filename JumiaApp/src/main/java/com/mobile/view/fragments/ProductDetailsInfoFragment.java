@@ -309,7 +309,6 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
 
     }
 

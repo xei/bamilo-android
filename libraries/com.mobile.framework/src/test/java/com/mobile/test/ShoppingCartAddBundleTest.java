@@ -7,6 +7,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.cart.AddBundleShoppingCart;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ public class ShoppingCartAddBundleTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new AddBundleShoppingCart(requestBundle, this).execute();
         try {
             mCountDownLatch.await();

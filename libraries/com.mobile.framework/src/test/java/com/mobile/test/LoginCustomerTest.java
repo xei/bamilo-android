@@ -6,6 +6,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.session.LoginCustomer;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class LoginCustomerTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
 //        new BaseRequest<CheckoutStepLogin>(IS_AUTOMATED_TEST,requestBundle,this){
 //            @Override
 //            public void execute() {
@@ -47,14 +48,14 @@ public class LoginCustomerTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

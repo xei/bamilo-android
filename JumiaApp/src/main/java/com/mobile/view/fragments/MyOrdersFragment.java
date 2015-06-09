@@ -255,8 +255,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

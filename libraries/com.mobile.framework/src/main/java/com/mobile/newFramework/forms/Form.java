@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,7 +127,7 @@ public class Form implements IJSONSerializable, Parcelable {
             // Case OPTIONS
             else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-                System.out.println("code1subForms: fieldsArray :  "+fieldsArray.length()+" name : "+name);
+                Print.d("code1subForms: fieldsArray :  " + fieldsArray.length() + " name : " + name);
             }
             // Validate array
             if(fieldsArray != null){
@@ -140,7 +141,7 @@ public class Form implements IJSONSerializable, Parcelable {
                     } else {
                         Form subForm = new Form();
                         subForm.initialize(fieldsArray.getJSONObject(i));
-                        System.out.println("code1subForms : subForm :  " + subForm.name + " " + subForm.toString());
+                        Print.d("code1subForms : subForm :  " + subForm.name + " " + subForm.toString());
                         subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.JSON_SCENARIO_TAG), subForm);
                     }
                 }
@@ -153,7 +154,7 @@ public class Form implements IJSONSerializable, Parcelable {
                         fields.get(i).setPaymentMethodsField(new HashMap<String, Form>());
                         for (String key : keys) {
                             if(subForms.containsKey(key)){
-                                System.out.println("code1subForms : " + key + " : " + subForms.get(key).toString());
+                                Print.d("code1subForms : " + key + " : " + subForms.get(key).toString());
                                 fields.get(i).getPaymentMethodsField().put(key, subForms.get(key));
                             }
                         }
@@ -167,13 +168,13 @@ public class Form implements IJSONSerializable, Parcelable {
             if (null != fieldMapping) {
                 // Remove unsorted fields.
                 FormsMapping.removeUnsortedFields(this, fieldMapping);
-                System.out.println("initialize: Sorting fields");
+                Print.d("initialize: Sorting fields");
                 Collections.sort(fields, new FormsMapping.byFieldOrder());
             }
             */
             
         } catch (JSONException e) {
-            System.out.println("initialize: error parsing jsonobject"+ e);
+            Print.d("initialize: error parsing jsonobject" + e);
             return false;
         }
 
@@ -203,7 +204,7 @@ public class Form implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.JSON_FIELDS_TAG, fieldArray);
 
         } catch (JSONException e) {
-            System.out.println("trying to create json objects failed"+ e);
+            Print.d("trying to create json objects failed" + e);
         }
         return jsonObject;
     }
@@ -232,7 +233,7 @@ public class Form implements IJSONSerializable, Parcelable {
         if (null != fieldMapping) {
             // Remove unsorted fields.
             FormsMapping.removeUnsortedFields(this, fieldMapping);
-            System.out.println("initialize: Sorting fields");
+            Print.d("initialize: Sorting fields");
             Collections.sort(fields, new FormsMapping.byFieldOrder());
         }
     }

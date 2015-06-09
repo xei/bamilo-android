@@ -335,7 +335,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to remove the submitted voucher.
-     * @param values - TODO
+     * @param values
      */
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
@@ -345,7 +345,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to add all items to cart (Deep link).
-     * @param values - TODO
+     * @param values
      */
     private void triggerAddAllItems(HashMap<String, String> values) {
         Bundle bundle = new Bundle();
@@ -376,7 +376,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     if (items != null && items.size() > 0) {
                         checkMinOrderAmount();
                     } else {
-                        // TODO Validate if it is necessary
                         String title = getString(R.string.shoppingcart_alert_header);
                         String message = getString(R.string.shoppingcart_alert_message_no_items);
                         String buttonText = getString(R.string.ok_label);

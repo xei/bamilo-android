@@ -7,7 +7,6 @@ import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.pojo.Success;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import okio.Okio;
 import retrofit.converter.ConversionException;
 import retrofit.converter.Converter;
 import retrofit.mime.TypedInput;
@@ -28,12 +28,15 @@ import retrofit.mime.TypedOutput;
 /**
  * Created by rsoares on 5/21/15.
  */
-public class AigResponseConverter implements Converter{
+public class AigResponseConverter implements Converter {
 
+    /**
+     * Convert json response
+     */
     @Override
     public Object fromBody(TypedInput body, Type type) throws ConversionException {
         try {
-            String bodyJson = IOUtils.toString(body.in());
+            String bodyJson = Okio.buffer(Okio.source(body.in())).readUtf8();
             JSONObject responseJsonObject = new JSONObject(bodyJson);
             return parseResponse(responseJsonObject, type);
         } catch (Exception e) {
@@ -46,6 +49,9 @@ public class AigResponseConverter implements Converter{
         return null;
     }
 
+    /**
+     * Get object type
+     */
     protected String getType(Object type){
         if(type instanceof Class){
             return ((Class) type).getName();
@@ -56,6 +62,9 @@ public class AigResponseConverter implements Converter{
         return null;
     }
 
+    /**
+     * Parse response
+     */
     protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 
@@ -69,13 +78,16 @@ public class AigResponseConverter implements Converter{
         return response;
     }
 
+    /**
+     * Parse success response
+     */
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         // Data
+        //TODO change to use method getMessages when response from API is coming correctly
         if (responseJsonObject.has(RestConstants.JSON_METADATA_TAG)) {
             baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
-            //TODO change to use method getMessages when response from API is coming correctly
         }
 
         // Messages
@@ -95,21 +107,25 @@ public class AigResponseConverter implements Converter{
         baseResponse.getMetadata().setMd5(getMd5(responseJsonObject));
     }
 
+
+    /**
+     * Get unsuccess messages
+     */
     protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
         //body data
         try{
             baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
-        } catch (ClassNotFoundException | InstantiationException | NullPointerException | JSONException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | NullPointerException | JSONException e) {
             e.printStackTrace();
         }
-
         //TODO change to use method getMessages when response from API is coming correctly
         baseResponse.setErrorMessages(Errors.createErrorMessageMap(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG)));
         baseResponse.setSessions(getSessions(responseJsonObject));
     }
 
+    /**
+     * Get data
+     */
     protected IJSONSerializable getData(JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
@@ -123,7 +139,9 @@ public class AigResponseConverter implements Converter{
         return null;
     }
 
-    //TODO temporary method
+    /**
+     * Get success messages
+     */
     protected String handleSuccessMessage(JSONObject messagesObject){
         String successMessage = null;
         try {
@@ -139,6 +157,9 @@ public class AigResponseConverter implements Converter{
         return successMessage;
     }
 
+    /**
+     * Get messages
+     */
     protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
         Map<String, List<String>> messages = new HashMap<>();
         try {
@@ -163,6 +184,9 @@ public class AigResponseConverter implements Converter{
         }
     }
 
+    /**
+     * Get session
+     */
     protected Map<String, String> getSessions(JSONObject responseJsonObject) {
         Map<String, String> sessions = new HashMap<>();
         try {
@@ -182,6 +206,11 @@ public class AigResponseConverter implements Converter{
         }
     }
 
+    /**
+     * Get data from:</br>
+     * -  metadata</br>
+     * -  metadata -> data</br>
+     */
     protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
         RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
         if(requiredJson == RequiredJson.METADATA){
@@ -194,6 +223,9 @@ public class AigResponseConverter implements Converter{
         return responseJsonObject;
     }
 
+    /**
+     * Md5 from metadata
+     */
     public String getMd5(JSONObject responseJsonObject) {
         if(responseJsonObject.has(RestConstants.JSON_METADATA_TAG)){
             return responseJsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG).optString(RestConstants.JSON_MD5_TAG, null);

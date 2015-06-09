@@ -2,12 +2,13 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.reviews.GetProductReviews;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ public class GetReviewsTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new GetProductReviews(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
@@ -45,22 +46,22 @@ public class GetReviewsTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
-        System.out.println("############# REVIEWS #############");
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("############# REVIEWS #############");
         ProductRatingPage rating = (ProductRatingPage) response.getMetadata().getData();
         assertNotNull(rating);
         for (ProductReviewComment review : rating.getReviewComments()) {
             assertNotNull(review);
-            System.out.println(review.toString());
+            Print.d(review.toString());
         }
-        System.out.println("######################################");
+        Print.d("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

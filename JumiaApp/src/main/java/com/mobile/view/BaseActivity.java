@@ -47,8 +47,14 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
+import com.mobile.helpers.search.GetSearchSuggestionsHelper;
+import com.mobile.helpers.session.GetLoginHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.FavouriteTableHelper;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -59,14 +65,9 @@ import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.search.GetSearchSuggestionsHelper;
-import com.mobile.helpers.session.GetLoginHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.search.Suggestion;
-import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
@@ -223,11 +224,6 @@ public abstract class BaseActivity extends ActionBarActivity {
          * @author spereira
          */
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
-
-        // TODO : REMOVE OLD FRAMEWORK
-        // Bind service
-        //JumiaApplication.INSTANCE.doBindService();
-
         // In case app is killed in background needs to restore font type
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
@@ -284,7 +280,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         Print.i(TAG, "ON RESUME");
 
         // Disabled for Samsung and Blackberry (check_version_enabled)
-//        CheckVersion.run(getApplicationContext());
+        CheckVersion.run(getApplicationContext());
 
         /**
          * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState

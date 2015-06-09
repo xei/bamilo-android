@@ -2,6 +2,7 @@ package com.mobile.newFramework.forms;
 
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -143,7 +144,7 @@ public class FormsMapping {
         
         // Log.d(TAG,"removeUnsortedFields: going to remove fields.");
         for(IFormField field : fieldsToRemove) {
-            System.out.println("removeUnsortedFields: removing field: " + field.getKey());
+            Print.d("removeUnsortedFields: removing field: " + field.getKey());
             form.fields.remove(field);
         }
     }

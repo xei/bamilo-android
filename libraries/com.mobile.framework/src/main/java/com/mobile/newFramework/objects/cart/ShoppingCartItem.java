@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONException;
@@ -94,7 +95,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
-		System.out.println("ON INITIALIZE");
+		Print.d("ON INITIALIZE");
 
 		try {
 			imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
@@ -120,7 +121,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 				//price = CurrencyFormatter.formatCurrency(priceJSON);
 			} else {
 				// throw new JSONException("Price is not a number!");
-				System.out.println("WARNING: Price is not a number!");
+				Print.d("WARNING: Price is not a number!");
 				price = "";
 			}
 
@@ -368,8 +369,8 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		System.out.println("ORIGIN PRICE VALUES: " + priceVal + " " + specialPriceVal);
-		System.out.println("PRICE VALUE FOR TRACKING: " + mPriceValueConverted + " " + mSpecialPriceConverted);
+		Print.d("ORIGIN PRICE VALUES: " + priceVal + " " + specialPriceVal);
+		Print.d("PRICE VALUE FOR TRACKING: " + mPriceValueConverted + " " + mSpecialPriceConverted);
 		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceValueConverted;
 	}
 

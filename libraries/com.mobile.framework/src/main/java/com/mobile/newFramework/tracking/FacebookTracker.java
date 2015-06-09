@@ -2,11 +2,12 @@ package com.mobile.newFramework.tracking;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.AppEventsConstants;
 import com.facebook.AppEventsLogger;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+
+import de.akquinet.android.androlog.Log;
 
 
 /**

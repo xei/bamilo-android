@@ -17,54 +17,6 @@ public class AigConfigurations {
      */
     public static final String HEADER_API_AUTHORIZATION = "Authorization";
 
-    public static final String AUTHENTICATION_USER = "rocket";
-    public static final String AUTHENTICATION_PASS = "z7euN7qfRD769BP";
-
-    /**
-     * Header Domain Profile
-     */
-    public static final String HEADER_DOMAIN_PROFILE = "X-DOMAIN-PROFILE";
-
-
-    /**
-     * Header User token
-     */
-    public static final String HEADER_USER_TOKEN = "X-USER-TOKEN";
-
-    /**
-     * Header Accept-Language
-     */
-    public static final String HEADER_ACCEPT_LANGUAGE = "Accept-Language";
-
-    /**
-     * Header If-None-Match
-     */
-    public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
-
-    /**
-     * Header ETag
-     */
-    public static final String HEADER_ETAG = "ETag";
-
-    /**
-     * Header Expires
-     */
-    public static final String HEADER_EXPIRES = "Expires";
-
-    /**
-     * Header Cache
-     */
-    public static final String HEADER_CACHE_CONTROL = "Cache-Control";
-    public static final String HEADER_NO_CACHE_VALUE = "no-cache, no-store, must-revalidate";
-    public static final String HEADER_CACHE_CONTROL_MAX_AGE = "max-age";
-    public static final String HEADER_CACHE_CONTROL_REVALIDATE = "must-revalidate";
-
-    /**
-     * Header Content-Type
-     */
-    public static final String HEADER_CONTENT_TYPE = "Content-Type";
-    public static final String DEFAULT_REQUEST_CONTENT_TYPE = "text/plain; charset=UTF-8";
-
     /**
      * the number of seconds we should wait before timing out the connection
      */

@@ -15,15 +15,15 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
-import com.mobile.newFramework.Darwin;
 import com.mobile.framework.R;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.tracking.ContainerHolderSingleton;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,7 +254,6 @@ public class GTMManager {
         
         String method = GTMValues.EMAILAUTH;
         if(event == TrackingEvent.LOGIN_FB_SUCCESS) method = GTMValues.FACEBOOK;
-//TODO       
 //        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
 //                location, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERAGE,
 //                customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
@@ -281,7 +280,6 @@ public class GTMManager {
 
     public void gtmTrackAutoLogin(Customer customer) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackAutoLogin -> (created at: " + customer.getCreatedAt() + ") ");
-//TODO  
 //        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(),
 //                GTMKeys.USERAGE,customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
 //
@@ -350,12 +348,8 @@ public class GTMManager {
     
     public void gtmTrackSearch(String searchTerm, long numberItems) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackSearch");
-
         Print.d(TAG, "gtmTrackSearch" + " searchTerm:" + searchTerm + " numberItems:" + numberItems);
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SEARCH, GTMKeys.SEARCHTERM, searchTerm, GTMKeys.RESULTSNUMBER, numberItems);
-
-        //FIXME if search term if from dropdown, is sending empty
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SEARCH, GTMKeys.SEARCHTERM, searchTerm, GTMKeys.RESULTSNUMBER, numberItems);
         sendEvent(message);
     }
 

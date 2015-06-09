@@ -23,6 +23,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to manage cookies.
+ * @author sergiopereira
  */
 public class AigCookieManager extends CookieManager implements ISessionCookie {
 

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +56,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		System.out.println("INITIALIZE");
+		Print.d("INITIALIZE");
 
 		// Get shipping address and save it
 		JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.JSON_SHIPPING_TAG);
@@ -156,7 +157,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 * @return true/false
 	 */
 	public boolean hasDefaultShippingAndBillingAddress(){
-		System.out.println("SHIPPING ID:" + shippingAddress.getId() + " BILLING ID:" + billingAddress.getId());
+		Print.d("SHIPPING ID:" + shippingAddress.getId() + " BILLING ID:" + billingAddress.getId());
 		return shippingAddress.getId() == billingAddress.getId();
 	}
 	
@@ -184,7 +185,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 			addresses.remove( "" + selectedAddress.getId());
 			array = null;
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Exception on switch shipping address" + e);
+			Print.d("Exception on switch shipping address" + e);
 		}
 	}
 	

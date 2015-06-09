@@ -3,7 +3,6 @@ package com.mobile.utils.catalog;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -16,6 +15,8 @@ import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the featured box.

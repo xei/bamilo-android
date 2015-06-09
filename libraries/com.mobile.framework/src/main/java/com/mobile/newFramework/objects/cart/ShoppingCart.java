@@ -7,10 +7,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.DarwinRegex;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,7 +101,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			for (int i = 0; i < priceRules.length(); i++) {
 				JSONObject pRulesElement = priceRules.optJSONObject(i);
 				if (pRulesElement != null) {
-					System.out.println("code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
+					Print.d("code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
 							+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
 					mPriceRules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG),
 							pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
@@ -108,7 +109,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			}
 		}
 
-		System.out.println("CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
+		Print.d("CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
 
 		return true;
 	}
@@ -119,7 +120,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	private void fillCartHashMap(JSONObject cartObject) {
 		JSONObject itemObject;
-		System.out.println("ON SAVE CART ITEM");
+		Print.d("ON SAVE CART ITEM");
 
 		@SuppressWarnings("rawtypes")
 		Iterator iter = cartObject.keys();
@@ -131,7 +132,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				item.initialize(itemObject);
 				mCartItems.put(key, item);
 			} catch (JSONException e) {
-				System.out.println("fillCartHashMap: error" +e.toString());
+				Print.d("fillCartHashMap: error" +e.toString());
 			}
 		}
 	}
@@ -337,7 +338,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		System.out.println("PRICE VALUE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueConverted);
+		Print.d("PRICE VALUE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueConverted);
 		return mCartValueConverted;
 	}
 

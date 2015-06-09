@@ -1000,12 +1000,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-    @Override
     protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
         // Tracking event
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
         // Create campaign using the URL
-        ArrayList<TeaserCampaign> campaigns = createSignleCampaign(targetTitle, targetUrl);
+        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
         bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);

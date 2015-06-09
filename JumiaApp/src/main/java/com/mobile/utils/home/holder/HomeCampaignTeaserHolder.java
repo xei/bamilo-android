@@ -2,7 +2,6 @@ package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,6 +18,8 @@ import com.mobile.view.R;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Campaign teaser

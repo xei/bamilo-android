@@ -186,180 +186,42 @@ public class JumiaApplication extends A4SApplication {
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
+        // Send result message
+        initializationHandler.sendMessage(msg);
 
-//            //&& ServiceSingleton.getInstance().getService() == null) {
+//        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
 //
-//            Print.d(TAG, "ON HANDLE WITH ERROR");
-//            resendInitializationSignal = true;
-//            resendHandler = initializationHandler;
-//            resendMsg = msg;
+////            //&& ServiceSingleton.getInstance().getService() == null) {
+////
+////            Print.d(TAG, "ON HANDLE WITH ERROR");
+////            resendInitializationSignal = true;
+////            resendHandler = initializationHandler;
+////            resendMsg = msg;
+////
+////            doBindService();
 //
-//            doBindService();
-
-            initializationHandler.sendMessage(msg);
-
-
-        } else {
-            Print.d(TAG, "ON INIT HANDLE");
-            initializationHandler.sendMessage(msg);
-        }
+//            initializationHandler.sendMessage(msg);
+//
+//
+//        } else {
+//            Print.d(TAG, "ON INIT HANDLE");
+//            initializationHandler.sendMessage(msg);
+//        }
     }
-
-//    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
-//        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
-//        if (mCallback == null) {
-//            Log.i(TAG, "mCallback is null");
-//        }
-//        if (ServiceSingleton.getInstance().getService() == null) {
-//            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
-//
-//            // Try connect with service
-//            doBindService();
-//
-//            // Save the call back
-//            callBackWaitingService = mCallback;
-//            return;
-//        }
-//        try {
-//            ServiceSingleton.getInstance().getService().registerCallback(mCallback);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
-//        if (mCallback == null) {
-//            Log.i(TAG, "mCallback is null");
-//        }
-//        if (ServiceSingleton.getInstance().getService() != null) {
-//            try {
-//                ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//    }
-//
-//    /**
-//     * Method used to register the call back that is waiting for service.
-//     *
-//     * @author sergiopereira
-//     */
-//    private void registerCallBackIsWaiting() {
-//        try {
-//            // Validate the current call back waiting by service
-//            if (callBackWaitingService != null) {
-//                ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
-//                callBackWaitingService = null;
-//            }
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     /*
     ###########################
      */
 
+    /**
+     * Triggers the request for a new api call
+     */
     public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         helper.sendRequest(args, responseCallback);
     }
     /*
     #################################
      */
-
-//    /**
-//     * Triggers the request for a new api call
-//     * @return the md5 of the reponse
-//     */
-//    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-//
-//        if (helper == null) {
-//            return "";
-//        }
-//        final Bundle requestBundle = helper.newRequestBundle(args);
-//
-//        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
-//
-//        Log.d("TRACK", "sendRequest");
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
-//                //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-//
-//                JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
-//
-//                    @Override
-//                    public void onRequestComplete(Bundle bundle) {
-//
-//                        /**
-//                         * ###################################################
-//                         * # WARNING - THIS IS RUNNING IN MAIN THREAD #
-//                         * # - Alternative -> ParseSuccessAsyncTask          #
-//                         * # @author sergiopereira                           #
-//                         * ###################################################
-//                         */
-//                        //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
-//                        //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-//                        //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
-//
-//                        Log.d("TRACK", "onRequestComplete BaseActivity");
-//                        // We have to parse this bundle to the final one
-//                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
-//                        if (responseCallback != null) {
-//                            // CASE: Error parsing
-//                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-//                                // Remove request from cache
-//                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
-//                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-//                                helper.removeRequestFromHttpCache(url, type);
-//                                // Callback
-//                                responseCallback.onRequestError(responseBundle);
-//                            }
-//                            // CASE: Success
-//                            else {
-//                                responseCallback.onRequestComplete(responseBundle);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onRequestError(Bundle bundle) {
-//                        Log.d("TRACK", "onRequestError  BaseActivity");
-//                        // We have to parse this bundle to the final one
-//                        Bundle responseBundle = helper.parseErrorBundle(bundle);
-//                        if (responseCallback != null) {
-//                            responseCallback.onRequestError(responseBundle);
-//                        }
-//                    }
-//                });
-//
-//                if (!sendRequest(requestBundle)) {
-//                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-//                }
-//            }
-//        }).start();
-//
-//        return md5;
-//    }
-//
-//    public boolean sendRequest(Bundle bundle) {
-//        if(ServiceSingleton.getInstance().getService() != null){
-//            try {
-//                ServiceSingleton.getInstance().getService().sendRequest(bundle);
-//                return true;
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//                return false;
-//            }
-//        } else {
-//            return false;
-//        }
-//    }
 
     /**
      * @return the mMobApiVersionInfo

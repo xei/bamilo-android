@@ -43,35 +43,35 @@ import com.mobile.controllers.TipsPagerAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.ViewGroupFactory;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.database.FavouriteTableHelper;
-import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.database.RelatedItemsTableHelper;
-import com.mobile.newFramework.pojo.Errors;
-import com.mobile.newFramework.objects.product.LastViewed;
-import com.mobile.newFramework.objects.product.ProductSimple;
-import com.mobile.newFramework.objects.product.Variation;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.tracking.AdjustTracker;
-import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.tracking.gtm.GTMValues;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.database.RelatedItemsTableHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.LastViewed;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductBundleProduct;
 import com.mobile.newFramework.objects.product.ProductBundleSimple;
+import com.mobile.newFramework.objects.product.ProductSimple;
+import com.mobile.newFramework.objects.product.Variation;
+import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -384,7 +384,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onPause() {
         super.onPause();
         dialogListFragment = null;
-        // Hide dialog progress TODO: Test this call in BaseFragment
+        // Hide dialog progress
         hideActivityProgress();
     }
 
@@ -573,7 +573,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 //     * sections of the PDV
 //     * 
 //     * @param hasBundle
-//     *            // TODO : Other approach
 //     */
 //    private void updateImageSize(boolean hasBundle) {
 //
@@ -2099,7 +2098,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     @Override
     public void SelectedItem() {
-        // TODO TO BE IMPLEMENTED
         Print.d("BUNDLE", "GO TO PDV");
     }
 

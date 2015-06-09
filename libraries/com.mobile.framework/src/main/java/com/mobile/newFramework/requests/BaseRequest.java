@@ -9,6 +9,7 @@ import com.mobile.newFramework.rest.errors.AigBaseException;
 import com.mobile.newFramework.rest.errors.JumiaError;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -48,15 +49,12 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         try {
             method.invoke(service, parameters.toArray());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
         long tEnd = System.currentTimeMillis();
         long tDelta = tEnd - tStart;
-        System.out.println("elapsed time: " + tDelta);
+        Print.d("elapsed time: " + tDelta);
     }
 
     /*
@@ -65,10 +63,10 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void success(BaseResponse baseResponse, Response response) {
-        System.out.println("BASE SUCCESS: " + response.getBody() + " " + baseResponse.hadSuccess());
+        Print.d("BASE SUCCESS: " + response.getBody() + " " + baseResponse.hadSuccess());
         // Validate requester and discard flag
         if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
-            System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
+            Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Validate success response
         else if (baseResponse.hadSuccess()) {
@@ -85,10 +83,10 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getErrorCode());
+        Print.d("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getErrorCode());
         // Validate requester and discard flag
         if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
-            System.out.println("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
+            Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Error response
         else {

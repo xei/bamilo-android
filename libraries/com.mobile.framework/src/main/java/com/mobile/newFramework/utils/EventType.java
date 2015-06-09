@@ -96,8 +96,6 @@ public enum EventType {
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PROMOTIONS("http:/main/getstatic/", AigRestContract.NO_CACHE),
-
     TRACK_ORDER_EVENT("http:/order/trackingorder/", AigRestContract.NO_CACHE),
 
     /**

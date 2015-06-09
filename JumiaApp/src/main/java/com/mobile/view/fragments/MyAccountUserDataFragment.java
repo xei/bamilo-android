@@ -228,10 +228,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
             return;
         }
 
-        /**
-         * TODO: CREATE A TICKET TO FIX THIS METHOD
-         * @author sergiopereira
-         */
         ContentValues values = new ContentValues();
         values.put("Alice_Module_Customer_Model_PasswordForm[password]", newPassword);
         values.put("Alice_Module_Customer_Model_PasswordForm[password2]", newPassword2);

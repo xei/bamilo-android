@@ -339,7 +339,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-        // TODO: GET COOKIES FROM NEW FRAMEWORK : TEST IT
+        // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
         //
         CookieManager cookieManager = CookieManager.getInstance();
@@ -533,8 +533,6 @@ public class CheckoutWebFragment extends BaseFragment {
                 Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-
-                    // TODO VALIDATE THIS REQUEST
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);

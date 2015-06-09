@@ -5,39 +5,34 @@ import android.net.Uri;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import ch.boye.httpclientandroidlib.client.utils.URIBuilder;
 import de.akquinet.android.androlog.Log;
 
 public class RestUrlUtils {
 
     private final static String TAG = RestUrlUtils.class.getSimpleName();
 
-    /**
-     *
-     *  Return the complete url of uri. Port is added if possible.
-     *
-     */
-    public static String completeUrlWithPort(Uri uri) {
-        String completeUrl = completeUri(uri).toString();
-        try {
-            URL url = new URL(completeUrl);
-            URIBuilder uriBuilder = new URIBuilder(completeUrl);
-            uriBuilder.setPort(url.getDefaultPort());
-            completeUrl = uriBuilder.toString();
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        if (Darwin.logDebugEnabled) {
-            Log.d(TAG, "completeUriWithPort: uri = " + completeUrl);
-        }
-
-        return completeUrl;
-    }
+//    /**
+//     *
+//     *  Return the complete url of uri. Port is added if possible.
+//     *
+//     */
+//    public static String completeUrlWithPort(Uri uri) {
+//        String completeUrl = completeUri(uri).toString();
+//        try {
+//            URL url = new URL(completeUrl);
+//            URIBuilder uriBuilder = new URIBuilder(completeUrl);
+//            uriBuilder.setPort(url.getDefaultPort());
+//            completeUrl = uriBuilder.toString();
+//        } catch (MalformedURLException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (Darwin.logDebugEnabled) {
+//            Log.d(TAG, "completeUriWithPort: uri = " + completeUrl);
+//        }
+//
+//        return completeUrl;
+//    }
 
     public static Uri completeUri(Uri uri) {
         //

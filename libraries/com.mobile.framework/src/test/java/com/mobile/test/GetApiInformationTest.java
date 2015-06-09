@@ -9,6 +9,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.requests.configs.GetApiInformation;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 public class GetApiInformationTest extends BaseTestCase {
 
@@ -23,7 +24,7 @@ public class GetApiInformationTest extends BaseTestCase {
 
     @SmallTest
     public void testRequest() {
-        System.out.println("TEST REQUEST");
+        Print.d("TEST REQUEST");
         new GetApiInformation(requestBundle, this).execute();
         try {
             mCountDownLatch.await();
@@ -34,22 +35,22 @@ public class GetApiInformationTest extends BaseTestCase {
 
     @Override
     public void onRequestComplete(BaseResponse response) {
-        System.out.println("TEST SUCCESS: " + response.hadSuccess());
-        System.out.println("############# MD5 SECTIONS #############");
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
+        Print.d("############# MD5 SECTIONS #############");
         Sections sections = ((ApiInformation) response.getMetadata().getData()).getSections();
         assertNotNull(sections);
         for (Section section : sections) {
             assertNotNull(section);
-            System.out.println("SECTION: " + section.getName() + " " + section.getMd5());
+            Print.d("SECTION: " + section.getName() + " " + section.getMd5());
         }
-        System.out.println("######################################");
+        Print.d("######################################");
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
-        System.out.println("TEST ERROR: " + response.hadSuccess());
+        Print.d("TEST ERROR: " + response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }

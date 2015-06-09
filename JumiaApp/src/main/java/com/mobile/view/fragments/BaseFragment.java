@@ -30,19 +30,18 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
-import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -71,11 +70,9 @@ import java.util.Set;
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener, ViewStub.OnInflateListener {
 
-    protected static final String TAG = LogTagHelper.create(BaseFragment.class);
+    protected static final String TAG = BaseFragment.class.getSimpleName();
 
     public static final int RESTART_FRAGMENTS_DELAY = 500;
-
-    // private static Field sChildFragmentManagerField;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
@@ -318,13 +315,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         isOnStoppingProcess = false;
 
-        // TODO : REMOVE OLD FRAMEWORK
-//        /**
-//         * Register service callback
-//         */
-//        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-
-
         if (getBaseActivity() != null && !isNestedFragment) {
             getBaseActivity().warningFactory.hideWarning();
         }
@@ -379,10 +369,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        // TODO : REMOVE OLD FRAMEWORK
-//        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-
         isOnStoppingProcess = true;
     }
 
@@ -434,7 +420,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-
         // TODO - Validate this is necessary
         if (getView() != null && isHidden()) {
             unbindDrawables(getView());
@@ -495,8 +480,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * #### TRIGGER EVENT ####
      */
 
-    /*
-    ########################### TODO: NEW FAMEWORK
+    /**
+     * Send request showing the loading
      */
     protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         // Show loading
@@ -509,7 +494,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Send request and show progress view
      */
     protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Show progress
         showActivityProgress();
+        // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
@@ -517,39 +504,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Send request
      */
     protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
-
-    /*
-    ###########################
-     */
-
-    // TODO : REMOVE OLD FRAMEWORK
-
-//    /**
-//     * Send request
-//     */
-//    protected final void triggerContentEventNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-//        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-//    }
-//
-//    /**
-//     * Send request and show loading
-//     */
-//    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-//        // Show loading
-//        showFragmentLoading();
-//        // Request
-//        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-//    }
-//
-//    /**
-//     * Send request and show progress view
-//     */
-//    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-//        showActivityProgress();
-//        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-//    }
 
     /**
      * Receive an update from other fragment
@@ -582,86 +539,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         return mainActivity;
     }
-
-    // TODO : Validate if is necessary
-    /**
-     * FIXES 
-     * FATAL EXCEPTION: main
-     * java.lang.IllegalStateException: No activity
-     * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
-     static {
-     Field f = null;
-     try {
-     f = Fragment.class.getDeclaredField("ChildFragmentManager");
-     f.setAccessible(true);
-     } catch (NoSuchFieldException e) {
-     Log.w(TAG, "Error getting ChildFragmentManager field", e);
-     }
-     sChildFragmentManagerField = f;
-     }
-     */
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        /**
-         // TODO : Validate if is necessary
-         if (sChildFragmentManagerField != null) {
-         try {
-         sChildFragmentManagerField.set(this, null);
-         } catch (Exception e) {
-         Log.e(TAG, "Error setting mChildFragmentManager field", e);
-         }
-         }
-         */
-    }
-
-
-    // TODO: REMOVE OLD FRAMEWORK
-//    /**
-//     * Callback which deals with the IRemoteServiceCallback
-//     */
-//    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-//
-//        @Override
-//        public void getError(Bundle response) throws RemoteException {
-//            Print.i(TAG, "Set target to handle error");
-//            handleError(response);
-//        }
-//
-//        @Override
-//        public void getResponse(Bundle response) throws RemoteException {
-//            handleResponse(response);
-//        }
-//    };
-//
-//    /**
-//     * Handles correct responses
-//     */
-//    private void handleResponse(Bundle bundle) {
-//        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-//        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
-//        // Log.i(TAG, "code1removing callback with id : "+ id);
-//        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-//            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-//            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-//        }
-//        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-//    }
-//
-//    /**
-//     * Handles error responses
-//     */
-//    private void handleError(Bundle bundle) {
-//        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-//        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-//        // Log.i(TAG, "code1removing callback with id : "+ id);
-//        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-//            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-//            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-//        }
-//        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-//    }
 
     /**
      * Method used to redirect the native checkout to the old checkout method
@@ -1305,9 +1182,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Process the product click
-     *
-     * @param targetUrl
-     * @param bundle
      * @author sergiopereira
      */
     protected void onClickProduct(String targetUrl, Bundle bundle) {
@@ -1336,24 +1210,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Process the category click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
-     */
-    protected void onClickCategory(String targetUrl, Bundle bundle) {
-        Print.i(TAG, "ON CLICK CATEGORY");
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
-        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
      * Process the catalog click
-     *
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
      */
     protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
         Print.i(TAG, "ON CLICK CATALOG");
@@ -1369,48 +1226,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-
-
-    /**
-     * Process the brand click
-     *
-     * @param targetUrl
-     * @param bundle
-     */
-    protected void onClickBrand(String targetUrl, Bundle bundle) {
-        Print.i(TAG, "ON CLICK BRAND");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Print.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the campaign click.
-     *
-     * @param view
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
-     */
-    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
-    }
-
     /**
      * Create an array with a single campaign
-     *
-     * @param targetTitle
-     * @param targetUrl
-     * @return ArrayList with one campaign
-     * @author sergiopereira
      */
-    protected ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(targetTitle);

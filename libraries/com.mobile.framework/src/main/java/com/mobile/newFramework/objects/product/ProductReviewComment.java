@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +58,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             JSONArray stars = jsonObject.optJSONArray(RestConstants.JSON_STARS_TAG);
             if (stars != null) {
                 int size = stars.length();
-                System.out.println("STAR " + size);
+                Print.d("STAR " + size);
                 rating = 0;
                 for (int i = 0; i < size; i++) {
                     RatingStar option = new RatingStar();
@@ -67,7 +68,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
                 }
                 rating /= size;
                 //rating = rating * 5 / 100;
-                System.out.println("RATING" + rating);
+                Print.d("RATING" + rating);
             }
 
         } catch (JSONException e) {

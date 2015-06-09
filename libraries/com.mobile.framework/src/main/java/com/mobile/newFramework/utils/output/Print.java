@@ -1,123 +1,130 @@
 package com.mobile.newFramework.utils.output;
 
 import android.content.Context;
+
+import de.akquinet.android.androlog.Log;
+
 /**
  * Created by rsoares on 6/4/15.
  */
 public class Print {
 
     public static final int TESTING_MODE = 1;
+
     public static final int ANDROID_MODE = 2;
 
-    private int mode;
+    private static int defaultLogMode = ANDROID_MODE;
 
-    private static Print log;
+    private static boolean isLoggable = true;
 
-    private Print(int mode){
-        this.mode = mode;
+    public static void initializeTestingMode() {
+        defaultLogMode = TESTING_MODE;
     }
 
-    public static void initializeTestingMode(){
-        log = new Print(TESTING_MODE);
+    public static void initializeAndroidMode(Context context) {
+        Log.init(context);
+        setIsLoggable(context);
     }
 
-    public static void initializeAndroidMode(Context context){
-        log = new Print(ANDROID_MODE);
-        de.akquinet.android.androlog.Log.init(context);
+    private static void setIsLoggable(Context context) {
+       isLoggable = context.getPackageName().contains(".live") || context.getPackageName().contains(".dev");
     }
 
-    public static void i(String tag, String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.i(tag,message);
+    public static boolean isLoggable() {
+        return isLoggable;
+    }
+
+    public static void i(String tag, String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.i(tag, message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void i(String tag, String message, Throwable exception){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.i(tag, message, exception);
+    public static void i(String tag, String message, Throwable exception) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.i(tag, message, exception);
         } else {
             System.out.println(message);
-            System.out.println(exception);
-
+            System.err.println(exception.toString());
         }
     }
 
-    public static void d( String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.d(message);
-        } else {
-            System.out.println(message);
-        }
-    }
-
-    public static void d(String tag, String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.d(tag, message);
+    public static void d(String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.d(message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void d(String tag, String message, Throwable exception){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.d(tag, message, exception);
-        } else {
-            System.out.println(message);
-            System.out.println(exception);
-
-        }
-    }
-
-    public static void w( String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.w(message);
+    public static void d(String tag, String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.d(tag, message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void w(String tag, String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.w(tag, message);
+    public static void d(String tag, String message, Throwable exception) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.d(tag, message, exception);
+        } else {
+            System.out.println(message);
+            System.err.println(exception.toString());
+
+        }
+    }
+
+    public static void w(String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.w(message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void w(String tag, String message, Throwable exception){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.w(tag, message, exception);
-        } else {
-            System.out.println(message);
-            System.out.println(exception);
-
-        }
-    }
-
-    public static void e( String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.e(message);
+    public static void w(String tag, String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.w(tag, message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void e(String tag, String message){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.e(tag, message);
+    public static void w(String tag, String message, Throwable exception) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.w(tag, message, exception);
+        } else {
+            System.out.println(message);
+            System.err.println(exception.toString());
+
+        }
+    }
+
+    public static void e(String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.e(message);
         } else {
             System.out.println(message);
         }
     }
 
-    public static void e(String tag, String message, Throwable exception){
-        if(log.mode == ANDROID_MODE){
-            de.akquinet.android.androlog.Log.e(tag, message, exception);
+    public static void e(String tag, String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.e(tag, message);
         } else {
             System.out.println(message);
-            System.out.println(exception);
+        }
+    }
+
+    public static void e(String tag, String message, Throwable exception) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.e(tag, message, exception);
+        } else {
+            System.out.println(message);
+            System.err.println(exception.toString());
         }
     }
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.configs.GetPromotionsHelper;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -25,19 +23,16 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
-import com.mobile.newFramework.objects.statics.Promotion;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogPromotionFragment;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.view.R;
@@ -54,7 +49,7 @@ import java.util.EnumSet;
  */
 public class HomePageFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(HomePageFragment.class);
+    private static final String TAG = HomePageFragment.class.getSimpleName();
 
     private ViewGroup mContainer;
 
@@ -116,7 +111,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
         }
     }
 
@@ -135,27 +130,19 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
 
-        /**
-         * TODO: Validate this method is necessary to recover the app from
-         * strange behavior In case Application is connected and has shop id
-         * show HomePage Otherwise, waiting for connection and shop id WARNING:
-         * THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> COUNTRY)
-         * 
-         * @author sergiopereira
-         */
+
+        // Validate shared prefs
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-        // Case app is bound and has shop id and not in maintenance
-        //if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
-        if (!TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+        // Case app has shop id and not in maintenance
+        if (!TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry()) {
             onResumeExecution();
-        // Case app is not bound and has shop id and not in maintenance
-        //else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
-        //    showFragmentErrorRetry();
-        // Case app not bound and not shop id and in maintenance country selection
-        else
-            //JumiaApplication.INSTANCE.setResendHandler(mServiceConnectedHandler);
+        }
+        // Case app not shop id and in maintenance country selection
+        else {
             showFragmentErrorRetry();
+        }
+
     }
 
     /*
@@ -183,26 +170,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     }
 
     /**
-     * Handler used to receive a message from application
-     */
-    private Handler mServiceConnectedHandler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            onReloadContent();
-        }
-    };
-
-    /**
-     * Method used to reload the collection in case some child is null
-     *
-     * @author sergiopereira
-     */
-    public void onReloadContent() {
-        Print.i(TAG, "ON RELOAD CONTENT");
-        onResumeExecution();
-    }
-
-    /**
      * Method used to resume the content for Home Fragment
      *
      * @author sergiopereira
@@ -219,11 +186,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         } else {
             triggerTeasers();
         }
-//        // Validate promotions
-//        SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
-//            triggerPromotions();
-//        }
     }
 
     /*
@@ -291,7 +253,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Clean data
         mHomePage = null;
         mViewHolders = null;
-        mServiceConnectedHandler = null;
     }
 
     /*
@@ -541,7 +502,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // You must call removeView() on the child's parent first.
         TeaserViewFactory.onDetachedViewHolder(mViewHolders);
         // Reload
-        onReloadContent();
+        onResumeExecution();
     }
 
     /*
@@ -557,16 +518,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.d(TAG, "ON TRIGGER: GET TEASERS");
         // Get teaser collection
         triggerContentEvent(new GetHomeHelper(), null, this);
-    }
-
-    /**
-     * Trigger to get promotions
-     *
-     * @author sergiopereira
-     */
-    private void triggerPromotions() {
-        Print.d(TAG, "ON TRIGGER: GET PROMOTIONS");
-        triggerContentEventNoLoading(new GetPromotionsHelper(), null, this);
     }
 
     /*
@@ -597,32 +548,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                     showFragmentFallBack();
                 }
                 break;
-            case GET_PROMOTIONS:
-                Print.i(TAG, "ON SUCCESS RESPONSE: GET_PROMOTIONS");
-                Promotion promotion = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                onShowPromotions(promotion);
-                break;
             default:
                 break;
         }
 
-    }
-
-    /**
-     * Show promotions
-     */
-    private void onShowPromotions(Promotion promotion) {
-        if (promotion != null && promotion.getIsStillValid()) {
-            try {
-                DialogPromotionFragment.newInstance(promotion).show(getChildFragmentManager(), null);
-            } catch (IllegalStateException e) {
-                Print.w(TAG, "promotion expired!" + promotion.getEndDate());
-            }
-        } else if (promotion != null){
-            Print.i(TAG, "PROMOTION EXPIRED! " + promotion.getEndDate());
-        } else {
-            Print.i(TAG, "PROMOTION IS NULL!");
-        }
     }
 
     /*
@@ -647,9 +576,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
-                break;
-            case GET_PROMOTIONS:
-                Print.i(TAG, "ON ERROR RESPONSE: GET_PROMOTIONS");
                 break;
             default:
                 break;

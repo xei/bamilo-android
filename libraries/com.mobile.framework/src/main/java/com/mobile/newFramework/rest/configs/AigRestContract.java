@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.mobile.newFramework.Darwin;
 import com.mobile.framework.R;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -110,10 +110,21 @@ public class AigRestContract {
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
 	}
 
+	/*
+	 * ######### COOKIE #########
+	 */
+
+	/**
+	 * Set the cookie domain based in the host.
+	 */
 	private static void setCookieShopDomain() {
 		COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replace("www.", "") : "";
 	}
 
+	/**
+	 * Get the shop domain for cookie
+	 * @return String
+	 */
 	public static String getShopDomain() {
 		return COOKIE_SHOP_DOMAIN;
 	}

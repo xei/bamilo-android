@@ -262,7 +262,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onUpdateCategorySelected(String categoryId) {
         Print.i(TAG, "ON UPDATE NAVIGATION MENU");
         // Update items
-        // TODO
 //        if (!isOnStoppingProcess)
 //            setNavigationCategorySelection(categoryId);
     }
@@ -279,7 +278,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 Print.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(true);
-                    // TODO
 //                    clearNavigationCategorySelection();
                 }
                 break;
@@ -287,7 +285,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 Print.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
-                    // TODO
 //                    clearNavigationCategorySelection();
                 }
                 break;
@@ -386,7 +383,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 break;
             // Case Back button
             case R.id.categories_back_navigation:
-                // TODO
                 // should I clear the selected category?
 //                clearNavigationCategorySelection();
                 goToParentCategory();
@@ -410,7 +406,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         }
         mCategoryBack.setVisibility(visibility);
     }
-// TODO
+
 //    /**
 //     * Clear selected Category
 //     */
