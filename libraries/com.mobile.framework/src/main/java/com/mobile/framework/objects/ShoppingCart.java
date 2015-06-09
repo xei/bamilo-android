@@ -48,6 +48,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     private String mSubTotal;
 	private double mSubTotalDouble = 0d;
     private double mSubTotalConvertedDouble = 0d;
+	private boolean mVatLabelEnable;
 
 	/**
 	 * Constructor
@@ -106,7 +107,9 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				}
 			}
 		}
-		
+
+		mVatLabelEnable = (jsonObject.optInt(RestConstants.JSON_CART_VAT_LABEL_ENABLE, 0) == 1);
+
 		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
 		
 		return true;
@@ -445,4 +448,12 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     public void setShippingValue(double mShippingValue) {
         this.mShippingValue = mShippingValue;
     }
+
+	public boolean isVatLabelEnable() {
+		return mVatLabelEnable;
+	}
+
+	public void setVatLabelEnable(boolean mVatLabelEnable) {
+		this.mVatLabelEnable = mVatLabelEnable;
+	}
 }
