@@ -3,9 +3,9 @@ package com.mobile.newFramework.objects.addresses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

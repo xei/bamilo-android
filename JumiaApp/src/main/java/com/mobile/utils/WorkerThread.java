@@ -1,7 +1,7 @@
 package com.mobile.utils;
 
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;

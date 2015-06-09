@@ -5,18 +5,18 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.newFramework.objects.orders.OrderSummary;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.checkout.SuperGetBillingForm;
+import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 
 /**

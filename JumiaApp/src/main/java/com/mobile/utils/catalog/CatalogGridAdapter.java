@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.database.FavouriteTableHelper;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;

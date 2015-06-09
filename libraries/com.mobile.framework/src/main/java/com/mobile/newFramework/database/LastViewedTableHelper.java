@@ -8,11 +8,11 @@ import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.product.AddableToCart;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;

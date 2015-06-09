@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:tools="http://schemas.android.com/tools">
+<resources>
     
     <string-array name="formatter_currency_codes">
    	    <item>@string/currency_code_ngn</item>

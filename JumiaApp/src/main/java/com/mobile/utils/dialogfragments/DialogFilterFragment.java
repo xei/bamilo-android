@@ -19,15 +19,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.newFramework.objects.catalog.CatalogFilter;
 import com.mobile.newFramework.objects.catalog.CatalogFilter.RangeValuesFilter;
 import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.CategoryFilterOption;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
-import com.mobile.helpers.products.GetCatalogPageHelper;
-import com.mobile.interfaces.OnDialogFilterListener;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 

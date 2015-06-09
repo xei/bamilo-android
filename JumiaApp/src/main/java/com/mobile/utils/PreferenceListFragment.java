@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ListView;
 
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.lang.reflect.Constructor;

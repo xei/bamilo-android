@@ -15,9 +15,9 @@ import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.objects.product.ProductBundleProduct;
 import com.mobile.newFramework.objects.product.ProductBundleSimple;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 

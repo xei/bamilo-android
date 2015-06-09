@@ -1,8 +1,8 @@
 package com.mobile.utils;
 
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONObject;
 
