@@ -1,10 +1,10 @@
-package com.mobile.newFramework.utils;
-
-import java.io.InputStream;
-import java.util.Vector;
+package com.mobile.components.loading;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+
+import java.io.InputStream;
+import java.util.Vector;
 
 /**
  * Class used to decode gif images.

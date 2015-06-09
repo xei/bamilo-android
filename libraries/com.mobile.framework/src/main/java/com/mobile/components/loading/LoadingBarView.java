@@ -1,4 +1,4 @@
-package com.mobile.newFramework.utils;
+package com.mobile.components.loading;
 
 import android.content.Context;
 import android.content.res.TypedArray;
