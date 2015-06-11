@@ -8,9 +8,11 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -23,10 +25,12 @@ import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetBillingFormHelper;
 import com.mobile.helpers.checkout.SetBillingAddressHelper;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -53,7 +57,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public static CheckoutMyAddressesFragment getInstance() {
         return new CheckoutMyAddressesFragment();
     }
-
 
     /**
      * Empty constructor
@@ -104,6 +107,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.next_button));
+        View totalPriceView = view.findViewById(R.id.total_view_stub);
     }
     
     /*
@@ -202,6 +206,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Get order summary
         OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
+
+        CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
 
     }
 

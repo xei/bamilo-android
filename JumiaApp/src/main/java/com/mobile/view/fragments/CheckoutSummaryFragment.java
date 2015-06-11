@@ -164,8 +164,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         if(JumiaApplication.mIsBound){
             // Get cart
             mCart = JumiaApplication.INSTANCE.getCart();
-            if (mCart == null) triggerGetShoppingCart();
-            else showOrderSummary();
+            if (mCart == null){
+                triggerGetShoppingCart();
+            } else{
+                showOrderSummary();
+            }
         } else {
             showFragmentErrorRetry();
         }
@@ -251,8 +254,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         }
 
         // Validate order summary
-        if(mOrderSummary == null)  Log.w(TAG, "ORDER SUMMARY IS NULL");
-        else Log.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        if(mOrderSummary == null) {
+            Log.w(TAG, "ORDER SUMMARY IS NULL");
+        } else {
+            Log.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        }
 
         // Validate the current checkout step
         switch (mCheckoutStep) {

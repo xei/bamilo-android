@@ -6,8 +6,10 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -17,7 +19,9 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -38,6 +42,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
 
     private OrderSummary orderSummary;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -73,7 +78,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Validate is service is available
+        //Validate if service is available
         if(JumiaApplication.mIsBound){
             // Get and show form
             if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
@@ -93,6 +98,8 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.loadCreateAddressForm(form);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
+
+        CheckoutStepManager.showTotal((ViewStub)getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     @Override

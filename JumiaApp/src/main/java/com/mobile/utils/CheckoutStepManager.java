@@ -1,7 +1,16 @@
 package com.mobile.utils;
 
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewStub;
+
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.view.R;
 
 import org.json.JSONObject;
 
@@ -99,6 +108,20 @@ public class CheckoutStepManager {
                 FragmentType.MY_ORDER.toString(),
                 FragmentType.CHECKOUT_THANKS.toString()
         };
+    }
+
+    public static void showTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
+        String value = null;
+        if(orderSummary != null){
+            value = orderSummary.getTotal();
+        } else if(cart != null){
+            value = cart.getCartValue();
+        }
+
+        if(!TextUtils.isEmpty(value) && viewStub != null){
+            View inflatedView = viewStub.inflate();
+            ((TextView)inflatedView.findViewById(R.id.checkout_total_label)).append(" " + CurrencyFormatter.formatCurrency(value));
+        }
     }
 
 }

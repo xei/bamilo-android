@@ -30,14 +30,24 @@
     <!-- NEXT BUTTON -->
 
     <LinearLayout
-        android:id="@id/checkout_addresses_button_container"
+        android:id="@+id/checkout_addresses_button_container"
         style="@style/button_container"
         android:layout_alignParentBottom="true" >
+
+        <ViewStub
+            android:id="@+id/total_view_stub"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout="@layout/cart_total" />
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/checkout_addresses_button_enter"
             style="@style/button_orange_bottom"
-            android:text="@string/next_button" />
+            android:layout_width="0dp"
+            android:text="@string/next_button"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </RelativeLayout>
