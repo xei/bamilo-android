@@ -221,6 +221,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 setVisibilityTopButton(mGridView);
             }
         });
+        //track most viewed category
+        TrackerDelegator.trackCategoryView();
     }
 
     /*

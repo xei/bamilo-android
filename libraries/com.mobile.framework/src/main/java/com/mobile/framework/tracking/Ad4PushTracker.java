@@ -58,9 +58,7 @@ public class Ad4PushTracker {
     private static final String WISHLIST_NUMBER = "aggregatedNumberOfWishlistItems";
 
     private static final String STATUS_IN_APP = "statusInApp";
-    private static final String SHARED_PRODUCT_COUNT = "shareCount";
     private static final String WISHLIST_STATUS = "wishlistStatus";
-    private static final String WISHLIST_DATE = "lastFavouritesProductDate";
     private static final String WISHLIST_PRODUCT = "lastFavouritesProduct";
     private static final String SHOP_COUNTRY = "shopCountry";
     private static final String COUNTRY_CODE = "countryCode";
@@ -82,10 +80,8 @@ public class Ad4PushTracker {
     private static final String CART_AVERAGE_VALUE = "avgCartValue";
     private static final String PURCHASE_COUPON_STATUS = "couponStatus";
     private static final String PURCHASE_LAST_DATE = "lastOrderDate";
-    private static final String FAVORITES_CART_COUNT = "lastMovedFromFavtoCart";
+    private static final String FAVORITES_TO_CART_SKU = "lastMovedFromFavtoCart";
     private static final String MOST_VISITED_CATEGORY = "mostVisitedCategory";
-    private static final String CAMPAIGN_PAGEVIEW_COUNT = "campaignPageViewCount";
-    private static final String REVIEW_COUNT = "reviewCount";
     private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
     private static final String BRAND = Constants.INFO_BRAND;
     private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
@@ -514,7 +510,8 @@ public class Ad4PushTracker {
             prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
             prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
             // Clean other values
-            prefs.putInt(FAVORITES_CART_COUNT, 0);
+            //XXX
+//            prefs.putInt(FAVORITES_TO_CART_SKU, 0);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
             // Purchase purchase = new Purchase(transactionId,
@@ -539,7 +536,6 @@ public class Ad4PushTracker {
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
-            prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
@@ -562,7 +558,6 @@ public class Ad4PushTracker {
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
-            prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
@@ -584,7 +579,7 @@ public class Ad4PushTracker {
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             // Track add to cart from fav
             Bundle prefs = new Bundle();
-            prefs.putInt(FAVORITES_CART_COUNT, wishlistNumber);
+            prefs.putString(FAVORITES_TO_CART_SKU, sku);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK ADD TO CART FROM FAV: " + prefs.toString());
             // Track add to cart
@@ -610,45 +605,6 @@ public class Ad4PushTracker {
         }
     }
 
-    /**
-     * Track share counter.
-     */
-    public void trackSocialShare() {
-        if (isEnabled) {
-            // Get from prefs
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int shareNumber = settings.getInt(SHARED_PRODUCT_COUNT, 0);
-            // Increment and save
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(SHARED_PRODUCT_COUNT, ++shareNumber);
-            editor.apply();
-            // Track
-            Bundle prefs = new Bundle();
-            prefs.putInt(SHARED_PRODUCT_COUNT, shareNumber);
-            mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
-        }
-    }
-
-    /**
-     * Track review counter.
-     */
-    public void trackReviewCounter() {
-        if (isEnabled) {
-            // Get from prefs
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int shareNumber = settings.getInt(REVIEW_COUNT, 0);
-            // Increment and save
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(REVIEW_COUNT, ++shareNumber);
-            editor.apply();
-            // Track
-            Bundle prefs = new Bundle();
-            prefs.putInt(REVIEW_COUNT, shareNumber);
-            mA4S.updateDeviceInfo(prefs);
-            Log.i(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
-        }
-    }
 
     /**
      * Track shop country.
@@ -723,22 +679,6 @@ public class Ad4PushTracker {
         }
     }
 
-    public void trackCampaignsView() {
-        if (isEnabled) {
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int campaignNumber = settings.getInt(CAMPAIGN_PAGEVIEW_COUNT, 0);
-
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(CAMPAIGN_PAGEVIEW_COUNT, ++campaignNumber);
-            editor.apply();
-
-            Bundle prefs = new Bundle();
-            prefs.putInt(CAMPAIGN_PAGEVIEW_COUNT, campaignNumber);
-
-            mA4S.updateDeviceInfo(prefs);
-
-        }
-    }
 
     public void trackScreen(TrackingPage screen) {
         if (null != screens && screens.containsKey(screen)) {

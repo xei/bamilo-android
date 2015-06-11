@@ -332,7 +332,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	public double getPriceForTracking() {
 		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueConverted);
-		return mCartValueConverted;
+		return mCartValueConverted != 0 ? mCartValueConverted : mCartValueAsDouble;
 	}
 
     public double getSubTotalDouble() {
