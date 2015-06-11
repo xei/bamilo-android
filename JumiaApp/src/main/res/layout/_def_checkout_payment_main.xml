@@ -31,10 +31,19 @@
         style="@style/button_container"
         android:layout_alignParentBottom="true" >
 
+        <ViewStub
+            android:id="@+id/total_view_stub"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout="@layout/cart_total" />
+
         <com.mobile.components.customfontviews.Button
             android:id="@+id/checkout_payment_button_enter"
             style="@style/button_orange_bottom"
-            android:layout_width="@dimen/inner_container_width"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="@string/next_button" />
     </LinearLayout>
 

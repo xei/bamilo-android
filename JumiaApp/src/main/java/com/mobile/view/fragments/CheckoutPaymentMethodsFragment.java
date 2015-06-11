@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -39,6 +40,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -430,6 +432,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
+            CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
             if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
