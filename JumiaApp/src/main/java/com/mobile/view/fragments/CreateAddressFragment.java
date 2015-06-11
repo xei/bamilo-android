@@ -111,11 +111,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-        super(enabledMenuItems, action, R.layout._def_checkout_create_address_main, titleResId, adjust_state);
+        super(enabledMenuItems, action, R.layout.checkout_create_address_main, titleResId, adjust_state);
     }
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state, int titleCheckout) {
-        super(enabledMenuItems, action, R.layout._def_checkout_create_address_main, titleResId, adjust_state, titleCheckout);
+        super(enabledMenuItems, action, R.layout.checkout_create_address_main, titleResId, adjust_state, titleCheckout);
     }
 
     /*
