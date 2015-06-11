@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -26,6 +27,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -67,7 +69,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public CheckoutShippingMethodsFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                R.layout.checkout_shipping_main,
+                R.layout._def_checkout_shipping_main,
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_SHIPPING);
@@ -97,9 +99,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         if(savedInstanceState != null) {
             mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE, -1);
             mSubSelectionSaved = savedInstanceState.getInt(SUB_SELECTION_STATE, -1);
-        }
-        else
+        } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
+        }
         
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
@@ -214,8 +216,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         super.onActivityResult(requestCode, resultCode, data);
     }
     
-    
-    
     /**
      * Load the dynamic form
      * 
@@ -290,8 +290,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
             triggerSubmitShippingMethod(values);
         }
     }
-    
-   
+
     /**
      * ############# RESPONSE #############
      */
@@ -314,20 +313,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
-            Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            // Get order summary
-            OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
-            super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
-            // Form
-            ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            loadForm(form);
+            onSuccessGetShippingMethods(bundle);
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            Print.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-            // Get next step
-            FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
-            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+            onSuccessSetShippingMethods(bundle);
             break;
         default:
             break;
@@ -361,12 +350,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
-            Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            onErrorGetShippingMethods(bundle);
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
+            onErrorSetShippingMethods(bundle);
             break;
         default:
             break;
@@ -374,7 +361,39 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         
         return false;
     }
-    
+
+    public void onSuccessGetShippingMethods(Bundle bundle){
+        Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        // Get order summary
+        OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
+        // Form
+        ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        loadForm(form);
+
+        //Total price
+        CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+    }
+
+    public void onSuccessSetShippingMethods(Bundle bundle){
+        Print.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+        // Get next step
+        FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+        nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
+        getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    public void onErrorGetShippingMethods(Bundle bundle){
+        Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+    }
+
+    public void onErrorSetShippingMethods(Bundle bundle){
+        Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
+        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
+
+    }
+
     /**
      * ############# REQUESTS #############
      */

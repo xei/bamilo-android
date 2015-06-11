@@ -6,7 +6,12 @@ import android.view.ViewStub;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.view.R;
 
 import org.json.JSONObject;
 
@@ -30,10 +35,7 @@ public class CheckoutStepManager {
      * @param jsonObject The json response to get the next step
      * @return {@link FragmentType}
      */
-    public static FragmentType getNextCheckoutStep(JSONObject jsonObject){
-        // Get the next step from json 
-        String nextStep = null;
-        
+    public static FragmentType getNextCheckoutFragment(JSONObject jsonObject){
         try {
 
             // Get the next step from json
