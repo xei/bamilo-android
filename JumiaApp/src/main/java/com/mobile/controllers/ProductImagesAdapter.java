@@ -9,14 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mobile.framework.objects.Variation;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.product.Variation;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 @Deprecated
 public class ProductImagesAdapter extends BaseAdapter {
@@ -47,7 +46,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 	public void replaceAll(ArrayList<String> images) {
 		this.images = images;
 		this.notifyDataSetChanged();
-		Log.d(TAG, "replaceAll: done - notfied");
+		Print.d(TAG, "replaceAll: done - notfied");
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-	    Log.d(TAG, "codeImage position is : "+position);
+	    Print.d(TAG, "codeImage position is : " + position);
 		return images.get(position);
 	}
 
@@ -100,7 +99,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 			h = (Holder) view.getTag();
 		
 		String imageUrl = images.get(position);
-		Log.d(TAG, "getView: loading imageUrl = " + imageUrl);
+		Print.d(TAG, "getView: loading imageUrl = " + imageUrl);
 		h.itemProgress.setVisibility(View.VISIBLE);
 		h.itemImage.setImageResource(R.drawable.no_image_small);
 		

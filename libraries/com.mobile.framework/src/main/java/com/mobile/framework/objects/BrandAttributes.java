@@ -12,14 +12,14 @@
 //import android.os.Parcel;
 //import android.os.Parcelable;
 //
-//import com.mobile.framework.objects.ITargeting.TargetType;
+//import com.mobile.newFramework.objects.catalog.ITargeting.TargetType;
 //import com.mobile.framework.rest.RestConstants;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
 //import org.json.JSONObject;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class that holds the attributes of the product

@@ -17,19 +17,19 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.FormField;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Address;
-import com.mobile.framework.objects.Addresses;
-import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetBillingFormHelper;
 import com.mobile.helpers.checkout.SetBillingAddressHelper;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.FormField;
+import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -39,8 +39,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 
@@ -77,7 +75,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -88,7 +86,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         setRetainInstance(true);
         // Get arguments
         Bundle params = new Bundle();        
@@ -105,9 +103,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.next_button));
-        View totalPriceView = view.findViewById(R.id.total_view_stub);
     }
     
     /*
@@ -117,7 +114,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -128,7 +125,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.ADDRESS_SCREEN, getLoadTime(), true);
 
     }
@@ -141,7 +138,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -152,7 +149,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -161,7 +158,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
     
@@ -172,14 +169,14 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
      * Goto web checkout case received a form error event.
      */
     protected void onGetBillingFormEventErrorEvent() {
-        Log.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
+        Print.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
     }
 
@@ -188,7 +185,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * @param bundle
      */
     protected void onGetBillingFormEventSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
+        Print.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
         hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
         Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         this.addresses = addresses;
@@ -212,7 +209,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     }
 
     protected void onSetBillingAddressErrorEvent(Bundle bundle) {
-        Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
+        Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
         showFragmentContentContainer();
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode == ErrorCode.REQUEST_ERROR) {
@@ -220,13 +217,13 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
         }else{
-            Log.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
         }
     }
 
     protected void onSetBillingAddressSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
+        Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
         // Get next step
         FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
@@ -248,10 +245,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * @param contentValues
      */
     private void triggerSetBilling(ContentValues contentValues) {
-        Log.d(TAG, "TRIGGER SET BILLING");
+        Print.d(TAG, "TRIGGER SET BILLING");
         // Submit values
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetBillingAddressHelper.FORM_CONTENT_VALUES, contentValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         triggerContentEvent(new SetBillingAddressHelper(), bundle, this);
     }
 
@@ -259,13 +256,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * Trigger to get the billing form
      */
     private void triggerGetBillingForm(){
-        Log.i(TAG, "TRIGGER: LOGIN FORM");
-        //Validate is service is available
-        if(JumiaApplication.mIsBound) {
-            triggerContentEvent(new GetBillingFormHelper(), null, this);
-        } else {
-            showFragmentErrorRetry();
-        }
+        Print.i(TAG, "TRIGGER: LOGIN FORM");
+        triggerContentEvent(new GetBillingFormHelper(), null, this);
     }
 
     /**
@@ -281,12 +273,12 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
             case GET_BILLING_FORM_EVENT:
@@ -310,19 +302,19 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     protected boolean onErrorEvent(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         // Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case GET_BILLING_FORM_EVENT:
@@ -361,7 +353,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * @author sergiopereira
      */
     protected void onClickCreateAddressButton() {
-        Log.i(TAG, "ON CLICK: LOGIN");
+        Print.i(TAG, "ON CLICK: LOGIN");
         getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -369,7 +361,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     protected void onClickEditAddressButton(View view) {
         // Get tag that contains the address id
         int addressId = Integer.parseInt(view.getTag().toString());
-        Log.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+        Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
         // Selected address
         Address selectedAddress = null;
         // Get addresses
@@ -386,13 +378,13 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             bundle.putParcelable(EditAddressFragment.SELECTED_ADDRESS, selectedAddress);
             getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            Log.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
+            Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
         }
     }
 
     @Override
     protected void submitForm(String shippingAddressId, String billingAddressId, String isDifferent) {
-        Log.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
+        Print.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
         // Create content values from form
         ContentValues contentValues = new ContentValues();
         for (FormField field : hiddenForm.fields) {

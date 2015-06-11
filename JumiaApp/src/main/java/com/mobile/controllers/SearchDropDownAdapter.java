@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -15,8 +13,10 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.SearchSuggestion;
+import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.view.R;
+
+import java.util.List;
 
 
 /**
@@ -24,7 +24,7 @@ import com.mobile.view.R;
  * @author sergiopereira
  *
  */
-public class SearchDropDownAdapter extends ArrayAdapter<SearchSuggestion> implements Filterable {
+public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements Filterable {
 
     public static final String TAG = SearchDropDownAdapter.class.getSimpleName();
 
@@ -39,7 +39,7 @@ public class SearchDropDownAdapter extends ArrayAdapter<SearchSuggestion> implem
      * @param query - the current query
      * @author sergiopereira
      */
-    public SearchDropDownAdapter(Context context, List<SearchSuggestion> objects, String query) {
+    public SearchDropDownAdapter(Context context, List<Suggestion> objects, String query) {
         super(context, 0, 0, objects);
         mInflater = LayoutInflater.from(context);
         mQuery = query;
@@ -50,7 +50,7 @@ public class SearchDropDownAdapter extends ArrayAdapter<SearchSuggestion> implem
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override
-    public SearchSuggestion getItem(int position) {
+    public Suggestion getItem(int position) {
         return super.getItem(position);
     }
     
@@ -66,7 +66,7 @@ public class SearchDropDownAdapter extends ArrayAdapter<SearchSuggestion> implem
         if (convertView == null) view = mInflater.inflate(R.layout.search_suggestion_list_item, null);
         else view = convertView;
         // Get current suggestion
-        SearchSuggestion sug = getItem(position);
+        Suggestion sug = getItem(position);
         // Get views
         TextView sugText = (TextView) view.findViewById(R.id.item_text_suggestion);
         TextView sugItems = (TextView) view.findViewById(R.id.item_text_n_items);

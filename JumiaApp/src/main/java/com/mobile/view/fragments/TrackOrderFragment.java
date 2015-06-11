@@ -17,24 +17,23 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.loading.LoadingBarView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.framework.objects.OrderTracker;
-import com.mobile.framework.objects.OrderTrackerItem;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.LoadingBarView;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetTrackOrderHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.orders.OrderTracker;
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author Manuel Silva
@@ -88,7 +87,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -99,7 +98,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if(arguments != null) {
@@ -111,7 +110,7 @@ public class TrackOrderFragment extends BaseFragment {
             if(TextUtils.isEmpty(order_number)){
                 mOrderTracker = savedInstanceState.getParcelable("track");
                 instanceOrder = savedInstanceState.getString("order_num");
-                Log.i(TAG, "onCreate mOrderTracker: " + mOrderTracker.getId());
+                Print.i(TAG, "onCreate mOrderTracker: " + mOrderTracker.getId());
             }
         }
 
@@ -126,7 +125,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 //        if(parentFragment != null)
 //            MyOrdersFragment.mPositionToStart = 0;
     }
@@ -139,7 +138,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -150,7 +149,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         setupView();
     }
 
@@ -162,7 +161,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         if(mEditText != null){
             text = mEditText.getText();
             instanceOrder = text.toString();
@@ -177,7 +176,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -188,7 +187,7 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     private void setupView() {
@@ -365,7 +364,7 @@ public class TrackOrderFragment extends BaseFragment {
     }
 
     private void processError() {
-        Log.e(TAG,"processError");
+        Print.e(TAG, "processError");
         showStatusContainer();
         setTipVisibility(false);
         mOrderTracker = null;
@@ -381,10 +380,10 @@ public class TrackOrderFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        Log.d(TAG, "ON SUCCESS EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT");
         mOrderTracker = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         showFragmentContentContainer();
         processSuccess();
@@ -393,10 +392,10 @@ public class TrackOrderFragment extends BaseFragment {
 
     protected boolean onErrorEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        Log.d(TAG, "ON ERROR EVENT");
+        Print.d(TAG, "ON ERROR EVENT");
         mOrderTrackerError = true;
         if(TextUtils.isEmpty(order_number))
             processError();
@@ -413,7 +412,7 @@ public class TrackOrderFragment extends BaseFragment {
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState TRACK");
+        Print.i(TAG, "onSaveInstanceState TRACK");
         if(null != mOrderTracker){
             if(text != null && text.toString().length() > 0)
                 outState.putString("order_num",text.toString());

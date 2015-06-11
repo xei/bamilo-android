@@ -1,7 +1,5 @@
 package com.mobile.components;
 
-import java.math.BigDecimal;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +15,8 @@ import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
 import com.mobile.framework.R;
+
+import java.math.BigDecimal;
 
 /**
  * Widget that lets users select a minimum and maximum value on a given numerical range. The range value types can be one of Long, Double, Integer, Float, Short, Byte or BigDecimal.<br />

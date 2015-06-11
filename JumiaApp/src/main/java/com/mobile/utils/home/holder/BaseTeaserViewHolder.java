@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 

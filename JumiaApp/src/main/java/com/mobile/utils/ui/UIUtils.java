@@ -9,7 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 /**

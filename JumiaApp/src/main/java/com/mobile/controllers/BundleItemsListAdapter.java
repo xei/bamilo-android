@@ -15,8 +15,9 @@ import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.ProductBundleProduct;
-import com.mobile.framework.objects.ProductBundleSimple;
+import com.mobile.newFramework.objects.product.ProductBundleProduct;
+import com.mobile.newFramework.objects.product.ProductBundleSimple;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -84,8 +85,6 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param productTeaserGroup
-     * @param parentClickListener
      * @author paulocarvalho
      */
     public BundleItemsListAdapter(ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,
@@ -124,9 +123,9 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
         if(item.hasDiscount() ){
-            holder.mPrice.setText(item.getBundleProductMaxSpecialPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxSpecialPrice()));
         } else {
-            holder.mPrice.setText(item.getBundleProductMaxPrice());
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxPrice()));
         }
         
         // Set listener and tags

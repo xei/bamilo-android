@@ -1,12 +1,12 @@
 
 package com.mobile.components.customfontviews;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.text.method.TransformationMethod;
 import android.view.View;
+
+import java.util.Locale;
 
 public class AllCapsTransformationMethod implements TransformationMethod {
     private boolean mEnabled = true;

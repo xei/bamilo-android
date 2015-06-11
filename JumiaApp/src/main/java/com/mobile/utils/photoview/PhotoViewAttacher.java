@@ -22,7 +22,6 @@ import android.graphics.Matrix.ScaleToFit;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +39,8 @@ import com.mobile.utils.photoview.log.LogManager;
 import com.mobile.utils.photoview.scrollerproxy.ScrollerProxy;
 
 import java.lang.ref.WeakReference;
+
+import de.akquinet.android.androlog.Log;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;

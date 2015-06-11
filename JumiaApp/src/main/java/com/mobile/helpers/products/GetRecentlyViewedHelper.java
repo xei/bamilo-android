@@ -2,15 +2,14 @@ package com.mobile.helpers.products;
 
 import android.os.Bundle;
 
-import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.LastViewedAddableToCart;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -28,7 +27,7 @@ public class GetRecentlyViewedHelper {
      * @param requester
      */
     public GetRecentlyViewedHelper(IResponseCallback requester) {
-        Log.d(TAG, "ON CONSTRUCTOR");
+        Print.d(TAG, "ON CONSTRUCTOR");
         // Get all items on database
         getRecentlyViewedList(requester);
     }
@@ -37,7 +36,7 @@ public class GetRecentlyViewedHelper {
      * TODO
      */
     private void getRecentlyViewedList(IResponseCallback requester) {
-        Log.d(TAG, "ON GET FAVOURITE LIST");
+        Print.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<LastViewedAddableToCart> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
