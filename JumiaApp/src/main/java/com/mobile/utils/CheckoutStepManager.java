@@ -1,14 +1,16 @@
 package com.mobile.utils;
 
-import android.text.TextUtils;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewStub;
 
-import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
@@ -125,7 +127,24 @@ public class CheckoutStepManager {
 
         if(!TextUtils.isEmpty(value) && viewStub != null){
             View inflatedView = viewStub.inflate();
-            ((TextView)inflatedView.findViewById(R.id.checkout_total_label)).append(" " + CurrencyFormatter.formatCurrency(value));
+            Resources resources = inflatedView.getResources();
+            final String title = resources.getString(R.string.order_summary_total_label);
+            final String finalValue = CurrencyFormatter.formatCurrency(value);
+            final int greyColor = resources.getColor(R.color.grey_middledark);
+            final int redColor = resources.getColor(R.color.red_cc0000);
+            final AutoResizeTextView titleTextView = ((AutoResizeTextView) inflatedView.findViewById(R.id.checkout_total_label));
+
+            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
+                    greyColor, redColor));
+            titleTextView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(titleTextView.getLineCount() == 2){
+                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, greyColor, redColor));
+                    }
+                }
+            });
+
         }
     }
 
