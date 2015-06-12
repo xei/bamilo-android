@@ -6,6 +6,6 @@
         android:layout_height="match_parent"
         android:text="@string/order_summary_total_label"
         android:gravity="start|center_vertical"
-        android:textSize="@dimen/text_l"
+        android:textSize="@dimen/text_m"
         android:maxLines="2"
         android:ellipsize="none"/>
