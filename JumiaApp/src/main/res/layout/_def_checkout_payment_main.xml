@@ -26,6 +26,14 @@
 
     <!-- NEXT BUTTON -->
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_light"
+        android:layout_above="@+id/checkout_button_container"
+        android:layout_marginLeft="@dimen/dimen_30px"
+        android:layout_marginRight="@dimen/dimen_30px"/>
+
     <include layout="@layout/_def_checkout_total_layout"/>
 
 </RelativeLayout>
