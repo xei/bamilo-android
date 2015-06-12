@@ -42,6 +42,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -781,7 +782,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                if(ShopSelector.isRtl()){
                     getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -838,7 +839,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateMaintenance(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
@@ -858,7 +859,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @see {@link CheckoutAboutYouFragment#onResume()} <br> {@link SessionLoginFragment#onResume()}
      */
     protected void forceInputAlignToLeft() {
-        if (getBaseActivity() != null && !getBaseActivity().getApplicationContext().getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (getBaseActivity() != null && !ShopSelector.isRtl()) {
             // Save the default locale
             mLocale = Locale.getDefault();
             // Force align to left

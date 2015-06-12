@@ -11,6 +11,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.MetaFormExtractor;
@@ -400,7 +401,7 @@ public class FormFactory {
         LinearLayout groupLayout = new LinearLayout(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+        if(ShopSelector.isRtl()){
             groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
         }
 

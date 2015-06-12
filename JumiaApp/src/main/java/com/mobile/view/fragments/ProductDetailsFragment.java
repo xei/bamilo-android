@@ -72,6 +72,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -1169,7 +1170,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         // Set Title
         // #RTL
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getName() + " " + mCompleteProduct.getBrand() : "");
         } else {
             mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
@@ -1276,8 +1277,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             int position = CompleteProductUtils.findIndexOfSelectedVariation(mCompleteProduct);
             ProductVariationsListAdapter adapter = new ProductVariationsListAdapter(mCompleteProduct.getVariations());
             mVariationsListView.setHasFixedSize(true);
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if(isRTL) mVariationsListView.enableReverseLayout();
+            mVariationsListView.enableRtlSupport(ShopSelector.isRtl());
             mVariationsListView.setAdapter(adapter);
             mVariationsListView.setSelectedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
@@ -1359,9 +1359,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             // Use this setting to improve performance if you know that changes in content do not change
             // the layout size of the RecyclerView
             mRelatedListView.setHasFixedSize(true);
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if(isRTL) mRelatedListView.enableReverseLayout();
-
+            mRelatedListView.enableRtlSupport(ShopSelector.isRtl());
             mRelatedListView.setAdapter(new RelatedItemsListAdapter(relatedItemsList,
                     new OnClickListener() {
                         @Override
@@ -2045,8 +2043,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Use this setting to improve performance
         mBundleListView.setHasFixedSize(true);
         // RTL
-        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-        if(isRTL) mBundleListView.enableReverseLayout();
+        mBundleListView.enableRtlSupport(ShopSelector.isRtl());
         // Content
         Print.e("BUNDLE", "bundleProducts size:" + bundleProducts.size());
         mBundleListView.setAdapter(new BundleItemsListAdapter(bundleProducts, this, this, this, this));

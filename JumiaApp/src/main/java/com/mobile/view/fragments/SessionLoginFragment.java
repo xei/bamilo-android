@@ -49,6 +49,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;
@@ -595,7 +596,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific) ||
                     getResources().getBoolean(R.bool.is_shop_specific) ||
-                    getResources().getBoolean(R.bool.is_bamilo_specific) ){
+                    ShopSelector.isRtl() ){
                 getBaseActivity().hideActionBarTitle();
                 getBaseActivity().setTitle(R.string.login_label);
             } else {

@@ -1,24 +1,35 @@
 package com.mobile.view.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ScrollView;
 
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.teasers.GetShopHelper;
+import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
+import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -51,15 +62,17 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private static final String TARGET_TYPE_CAMPAIGN = "campaign";
 
-    private static final int WEB_VIEW_SCROLL_DELAY = 100;
+    private static final int WEB_VIEW_LOAD_DELAY = 300;
 
     private String mTitle;
 
     private String mUrl;
 
-    private String mHtml;
+    private ViewGroup mMainContainer;
 
     private WebView mWebView;
+
+    private ScrollView mScrollView;
 
     private int mWebViewScrollPosition = 0;
 
@@ -105,18 +118,24 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
-            mHtml = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_DATA);
         }
     }
 
+    @SuppressLint({"SetJavaScriptEnabled"})
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        // Get scroll
+        mScrollView = (ScrollView) view.findViewById(R.id.shop_scroll);
+        // Get main container
+        mMainContainer = (ViewGroup) view.findViewById(R.id.shop_main_container);
         // Get web view
         mWebView = (WebView) view.findViewById(R.id.shop_web_view);
         // Set the client
         mWebView.setWebViewClient(InnerShopWebClient);
+        // Enable java script
+        mWebView.getSettings().setJavaScriptEnabled(true);
         // Validate the data (load/request/continue)
         onValidateDataState();
     }
@@ -139,7 +158,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Print.i(TAG, "ON SAVED INSTANCE STATE");
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putString(ConstantsIntentExtra.CONTENT_URL, mUrl);
-        outState.putString(ConstantsIntentExtra.CONTENT_DATA, mHtml);
     }
 
     @Override
@@ -150,7 +168,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
          * Save the web view scroll position only for back workflow and not for rotation.
          * On rotation some devices need a different delay to scroll until the saved position.
          */
-        mWebViewScrollPosition = mWebView != null ? mWebView.getScrollY() : 0;
+        mWebViewScrollPosition = mScrollView != null ? mScrollView.getScrollY() : 0;
     }
 
     @Override
@@ -179,12 +197,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * Validate the current data.
      */
     private void onValidateDataState() {
-        // Show saved data
-        if (!TextUtils.isEmpty(mHtml)) {
-            onLoadShopData(mHtml);
-        }
         // Get data
-        else if (!TextUtils.isEmpty(mUrl)) {
+        if (!TextUtils.isEmpty(mUrl)) {
             triggerGetShop(mUrl);
         }
         // Case unexpected error
@@ -196,18 +210,49 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Load the escaped html.<br> The method used to load is the loadDataWithBaseURL, because the loadData not works correctly for FROYO version.<br>
      *
-     * @param html The escaped html
+     * @param staticPage The static page for inner shop
      * @see <a href="http://stackoverflow.com/questions/3961589/android-webview-and-loaddata?answertab=active#tab-top">http://stackoverflow.com/android-webview-and-loaddata</a>
      */
-    private void onLoadShopData(String html) {
+    private void onLoadShopData(StaticPage staticPage) {
         // Set title
         getBaseActivity().setTitle(mTitle);
-        // Strip html response two times
-        String displayableHtml = stripHtml(html);
-        // Load data
-        mWebView.loadDataWithBaseURL(null, displayableHtml, HTML_TYPE, HTML_ENCODING, null);
-        // Show container
-        showFragmentContentContainer();
+        // Validate
+        if (staticPage.hasHtml() || staticPage.hasFeaturedBoxes()) {
+            // Load featured box
+            loadFeaturedBox(staticPage);
+            // Load html and show container
+            loadHtml(staticPage);
+            // Show container after load delay
+            mScrollView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Restore the saved scroll position
+                    mScrollView.scrollTo(0, mWebViewScrollPosition);
+                    // Show container
+                    showFragmentContentContainer();
+                }
+            }, WEB_VIEW_LOAD_DELAY);
+
+        } else {
+            // Show continue shopping
+            showContinueShopping();
+        }
+    }
+
+    /**
+     * Load the Html.<br/>
+     */
+    private void loadHtml(StaticPage staticPage) {
+        // Validate html
+        if (staticPage.hasHtml()) {
+            // Strip html response two times
+            String displayableHtml = stripHtml(staticPage.getHtml());
+            // Load data
+            mWebView.loadDataWithBaseURL(null, displayableHtml, HTML_TYPE, HTML_ENCODING, null);
+        } else {
+            // Hide web view
+            mWebView.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -218,6 +263,26 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     public String stripHtml(String html) {
         return Html.fromHtml(Html.fromHtml(html).toString()).toString();
+    }
+
+    /**
+     * Load featured boxes.
+     */
+    private void loadFeaturedBox(StaticPage staticPage) {
+        // Validate html
+        if (staticPage.hasFeaturedBoxes()) {
+            Context context = mMainContainer.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            for (StaticFeaturedBox featuredBox : staticPage.getFeaturedBoxes()) {
+                View inflated = inflater.inflate(R.layout._def_shop_fragment_featured_box, mMainContainer, false);
+                ((TextView) inflated.findViewById(R.id.shop_featured_box_title)).setText(featuredBox.getTitle());
+                HorizontalListView horizontalListView = (HorizontalListView) inflated.findViewById(R.id.shop_featured_box_horizontal_list);        // Validate orientation
+                horizontalListView.setHasFixedSize(true);
+                horizontalListView.enableRtlSupport(ShopSelector.isRtl());
+                horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(featuredBox.getItems(), this));
+                mMainContainer.addView(inflated);
+            }
+        }
     }
 
     /*
@@ -233,16 +298,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Bundle bundle = new Bundle();
         String staticPageKey = getStaticPageKey(url);
         bundle.putString(Constants.BUNDLE_URL_KEY, staticPageKey);
-        triggerContentEvent(new GetShopHelper(), bundle, this);
+        triggerContentEvent(new GetShopInShopHelper(), bundle, this);
     }
 
     /**
      * extract static page key from the static page url
      */
     private String getStaticPageKey(String url){
-        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(url)){
+        if(!TextUtils.isEmpty(url)){
             Uri myUri = Uri.parse(url);
-            return myUri.getQueryParameter(GetShopHelper.INNER_SHOP_TAG);
+            return myUri.getQueryParameter(GetShopInShopHelper.INNER_SHOP_TAG);
         }
         return "";
     }
@@ -250,6 +315,21 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /*
      * ############## LISTENERS ##############
      */
+
+    @Override
+    public void onClick(View view) {
+        Print.i(TAG, "ON CLICK");
+        // Get featured box item type
+        String url = (String) view.getTag(R.id.target_url);
+        // Validate target
+        if (TextUtils.isNotEmpty(url)) {
+            // Get url
+            gotoProduct(url);
+        } else {
+            super.onClick(view);
+        }
+    }
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -276,16 +356,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Print.i(TAG, "ON PAGE FINISHED: " + url);
-            // Restore the saved position
-            if (mWebViewScrollPosition > 0) {
-                Print.i(TAG, "ON SCROLL TO SAVED POSITION: " + mWebViewScrollPosition);
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mWebView.scrollTo(0, mWebViewScrollPosition);
-                    }
-                }, WEB_VIEW_SCROLL_DELAY);
-            }
         }
 
         @Override
@@ -396,11 +466,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Get the html
-        mHtml = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+        // Get static page
+        StaticPage mShopPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         //  Case valid success response
-        if (!TextUtils.isEmpty(mHtml)) {
-            onLoadShopData(mHtml);
+        if (mShopPage != null) {
+            onLoadShopData(mShopPage);
         }
         // Case invalid success response
         else {

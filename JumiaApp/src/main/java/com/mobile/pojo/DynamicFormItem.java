@@ -43,6 +43,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
@@ -352,7 +353,7 @@ public class DynamicFormItem {
                 try {
                     //#RTL
                     int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                    if (context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
                     }
                 } catch (Exception e) {
@@ -1049,7 +1050,7 @@ public class DynamicFormItem {
 
         this.control.setLayoutParams(params);
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         } else {
@@ -1065,7 +1066,7 @@ public class DynamicFormItem {
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         } else {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1120,7 +1121,7 @@ public class DynamicFormItem {
         dataContainer.setLayoutParams(params);
 
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         } else {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1261,7 +1262,7 @@ public class DynamicFormItem {
             ((ViewGroup) this.control).addView(this.errorControl);
         }
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (ShopSelector.isRtl() && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
         }
 
@@ -1508,7 +1509,7 @@ public class DynamicFormItem {
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
         //#RTl
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         } else {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1730,8 +1731,7 @@ public class DynamicFormItem {
     private void addCustomRatingCheckbox(LinearLayout linearLayout, RelativeLayout.LayoutParams params, int controlWidth) {
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
-
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         } else {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1802,20 +1802,15 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.CENTER_VERTICAL);
 
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
-
+        if (ShopSelector.isRtl()) {
             params.addRule(RelativeLayout.RIGHT_OF, dataControlId);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             params.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0);
-
         } else {
             params.addRule(RelativeLayout.LEFT_OF, dataControlId);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            params.setMargins(
-                    (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0,
-                    0);
+            params.setMargins((int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0, 0);
         }
-
 
         ImageView errImage = new ImageView(this.context);
         errImage.setId(parent.getNextId());
@@ -1827,7 +1822,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
             params.setMargins(0, 0, 5, 0);
         } else {
@@ -1844,7 +1839,7 @@ public class DynamicFormItem {
         this.errorTextControl.setTextSize(ERRORTEXTSIZE);
 
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             this.errorTextControl.setSingleLine(true);
             this.errorTextControl.setEllipsize(TruncateAt.END);
         }
@@ -1882,7 +1877,7 @@ public class DynamicFormItem {
                     | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
             textDataControl.setInputType(inputType);
             //#RTL
-            if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            if (ShopSelector.isRtl()) {
                 textDataControl.setGravity(Gravity.RIGHT);
                 if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     textDataControl.setGravity(Gravity.END);
@@ -1897,7 +1892,7 @@ public class DynamicFormItem {
                     | android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
             textDataControl.setInputType(inputType);
             //#RTL
-            if (context.getResources().getBoolean(R.bool.is_bamilo_specific))
+            if (ShopSelector.isRtl())
                 textDataControl.setGravity(Gravity.RIGHT);
 
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
@@ -1905,7 +1900,7 @@ public class DynamicFormItem {
             int inputType = android.text.InputType.TYPE_CLASS_TEXT;
             textDataControl.setInputType(inputType);
             //#RTL
-            if (context.getResources().getBoolean(R.bool.is_bamilo_specific))
+            if (ShopSelector.isRtl())
                 textDataControl.setGravity(Gravity.RIGHT);
 
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
@@ -1935,7 +1930,7 @@ public class DynamicFormItem {
         params.rightMargin = MANDATORYSIGNALMARGIN;
         //#RTL
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 params.addRule(RelativeLayout.ALIGN_PARENT_END);
                 params.setMarginEnd(MANDATORYSIGNALMARGIN);
@@ -1956,7 +1951,7 @@ public class DynamicFormItem {
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
         //#RTL
-        if (context.getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 dataContainer.setLayoutDirection(LayoutDirection.RTL);
             }

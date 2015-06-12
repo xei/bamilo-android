@@ -45,6 +45,8 @@ public final class ShopSelector {
 
 	private static String sShopName;
 
+	private static boolean isRtlShop;
+
 	/**
 	 * Hidden default constructor for utility class.
 	 */
@@ -69,6 +71,8 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
+		// Rtl flag
+		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
 		// Trackers
 		AdjustTracker.startup(context);
 		AdjustTracker.initializeAdjust(context);
@@ -86,6 +90,8 @@ public final class ShopSelector {
 		// Rest client
         AigRestContract.init(context);
 		AigHttpClient.getInstance(context);
+		// Rtl flag
+		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
 	}
 
 	/**
@@ -96,6 +102,8 @@ public final class ShopSelector {
 		// Rest client
 		AigRestContract.init(context, requestHost, basePath);
 		AigHttpClient.getInstance(context);
+		// Rtl flag
+		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
 	}
 
 	/**
@@ -115,6 +123,8 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
+		// Rtl flag
+		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
 	}
 	
 	/**
@@ -144,6 +154,10 @@ public final class ShopSelector {
 		Resources res = context.getResources();
 		res.updateConfiguration(config, res.getDisplayMetrics());
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
+	}
+
+	public static boolean isRtl() {
+		return isRtlShop;
 	}
 	
 	public static String getShopId() {

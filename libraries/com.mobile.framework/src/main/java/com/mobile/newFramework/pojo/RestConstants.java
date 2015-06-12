@@ -1,11 +1,7 @@
-/**
- *
- */
 package com.mobile.newFramework.pojo;
 
 /**
  * @author nunocastro
- *
  */
 public class RestConstants {
 
@@ -37,12 +33,10 @@ public class RestConstants {
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
     public static final String JSON_CREATED_AT_TAG = "created_at";
-    public static final String JSON_PASSWORD_TAG = "password";
 
     // FormsService Tags
     public static final String JSON_NAME_TAG = "name";
     public static final String JSON_CODE_TAG = "code";
-    public static final String JSON_SORT_TAG = "sort";
     public static final String JSON_NUMBER_TAG = "number";
     public static final String JSON_VAL_TAG = "val";
     public static final String JSON_PRODUCTS_COUNT_TAG = "products_count";
@@ -92,8 +86,6 @@ public class RestConstants {
 
     // NavigationList Tags
     public static final String JSON_ATTRIBUTES_TAG = "attributes";
-    public static final String JSON_NAV_LIST_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
     public static final String JSON_IMAGE_TAG = "image";
     public static final String JSON_IMAGE_URL_TAG = "image_url";
     public static final String JSON_IMAGE_PORTRAIT_TAG = "image_portrait";
@@ -226,26 +218,9 @@ public class RestConstants {
     public static final String JSON_MAX_QUANTITY = "max_quantity";
     public static final String JSON_VARIATION_TAG = "variation";
 
-    // MinOrderAmount Tags
-    public static final String JSON_PAYMENT_SETTINGS_TAG = "payment_settings";
-    public static final String JSON_CART_MIN_ORDER_TAG = "cart_min_order_amount";
-
-    // HomePage Tags
-    public static final String JSON_HOMEPAGE_ID_TAG = "homepage_id";
-    public static final String JSON_HOMEPAGE_TITLE_TAG = "homepage_title";
-    public static final String JSON_HOMEPAGE_DEFAULT_TAG = "homepage_default";
-    public static final String JSON_HOMEPAGE_LAYOUT_TAG = "homepage_layout";
-
     // TeaserSpecification Tags
-    public static final String JSON_TEASER_ATTRIBUTES_TAG = JSON_ATTRIBUTES_TAG;
-    public static final String JSON_TEASER_DESCRIPTION_TAG = JSON_DESCRIPTION_TAG;
     public static final String JSON_TEASER_IMAGE_URL_TAG = JSON_IMAGE_URL_TAG;
     public static final String JSON_TEASER_IMAGES_TAG = "image_list";
-    public static final String JSON_GROUP_TYPE_TAG = "group_type";
-    public static final String JSON_GROUP_TITLE_TAG = "group_title";
-
-    // ImageTeaserGroup Tags
-    public static final String JSON_TEASER_URL_TAG = "product_url";
 
     // Teaser Campaign Tags
     public static final String JSON_CAMPAIGN_TAG = "campaign";
@@ -266,8 +241,6 @@ public class RestConstants {
 
 
     // TeaserBrandElement Tags
-    public static final String JSON_BRAND_DESCRIPTION_TAG = JSON_DESCRIPTION_TAG;
-    public static final String JSON_BRAND_URL_TAG = "brand_url";
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
     public static final String JSON_IMAGE_DEVICE_TYPE_TAG = "device_type";
 
@@ -284,26 +257,12 @@ public class RestConstants {
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
 
-    // Brand Tags
-    public static final String JSON_INNER_OBJECT_TAG = "brand";
-
     // Errors Tags
     public static final String JSON_VALIDATE_TAG = "validate";
     public static final String JSON_ERROR_TAG = "error";
 
     // ProductImage Tags
-    public static final String JSON_ID_CATALOG_PRODUCT_IMAGE_TAG = "id_catalog_product_image";
-    public static final String JSON_FK_CATALOG_CONFIG_TAG = "fk_catalog_config";
-    public static final String JSON_FK_CATALOG_SIMPLE_TAG = "fk_catalog_simple";
-    public static final String JSON_MAIN_TAG = "main";
     public static final String JSON_UPDATED_AT_TAG = "updated_at";
-    public static final String JSON_UPDATED_AT_TS_TAG = "updated_at_ts";
-    public static final String JSON_FK_CATALOG_BRAND_TAG = "fk_catalog_brand";
-    public static final String JSON_SKU_SIMPLE_TAG = "sku_simple";
-    public static final String JSON_ID_CATALOG_BRAND_TAG = "id_catalog_brand";
-    public static final String JSON_BRAND_NAME_TAG = "brand_name";
-    public static final String JSON_BRAND_URL_KEY_TAG = "brand_url_key";
-    public static final String JSON_SPRITE_TAG = "sprite";
 
     // ProductRatingPage Tags
     public static final String JSON_STARS_TAG = "stars";
@@ -330,13 +289,6 @@ public class RestConstants {
     // Version Tags
     public static final String JSON_MIN_VERSION_TAG = "min_version";
     public static final String JSON_CUR_VERSION_TAG = "cur_version";
-
-    /**
-     * Promotion TAGS
-     */
-    public static final String JSON_COUPON_CODE_TAG = "coupon_code";
-    public static final String JSON_END_DATE_TAG = "end_date";
-    public static final String JSON_TERMS_CONDITIONS_TAG = "terms_conditions";
 
     /**
      * Order History TAGS
@@ -424,14 +376,10 @@ public class RestConstants {
     public static final String JSON_CUSTOMER_TAG = "customer";
     public static final String JSON_ADDRESS_LIST_TAG = "address_list";
 
-    public static final String JSON_SUBSCRIBED_CATEGORIES_TAG = "subscribed_categories";
-    public static final String JSON_NEWSLETTER_CATEGORY_ID_TAG = "id_newsletter_category";
-
     public static final String JSON_PRODUCTS_TAG = "products";
     public static final String JSON_BRANDS_TAG = "brands";
     public static final String JSON_ERROR_MESSAGE_TAG = "error_message";
     public static final String JSON_NOTICE_MESSAGE_TAG = "notice_message";
-    public static final String JSON_IS_DEFAULT_TAG = "is_default";
     public static final String JSON_RULES_TAG = "rules";
 
     /**

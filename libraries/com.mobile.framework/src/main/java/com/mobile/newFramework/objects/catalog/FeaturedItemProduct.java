@@ -18,14 +18,14 @@ import org.json.JSONObject;
  * @author Andre Lopes
  *
  */
-public class FeaturedProduct extends FeaturedItem implements Parcelable {
+public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
 
     private String price;
 
     /**
      * simple FeaturedProduct constructor.
      */
-    public FeaturedProduct() {
+    public FeaturedItemProduct() {
         super();
         this.price = "";
     }
@@ -124,18 +124,18 @@ public class FeaturedProduct extends FeaturedItem implements Parcelable {
         dest.writeString(price);
     }
 
-    private FeaturedProduct(Parcel in) {
+    private FeaturedItemProduct(Parcel in) {
         super(in);
         price = in.readString();
     }
 
-    public static final Parcelable.Creator<FeaturedProduct> CREATOR = new Parcelable.Creator<FeaturedProduct>() {
-        public FeaturedProduct createFromParcel(Parcel in) {
-            return new FeaturedProduct(in);
+    public static final Parcelable.Creator<FeaturedItemProduct> CREATOR = new Parcelable.Creator<FeaturedItemProduct>() {
+        public FeaturedItemProduct createFromParcel(Parcel in) {
+            return new FeaturedItemProduct(in);
         }
 
-        public FeaturedProduct[] newArray(int size) {
-            return new FeaturedProduct[size];
+        public FeaturedItemProduct[] newArray(int size) {
+            return new FeaturedItemProduct[size];
         }
     };
 

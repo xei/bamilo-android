@@ -47,6 +47,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -744,7 +745,7 @@ public class ReviewsFragment extends BaseFragment {
                 LayoutParams gridParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, numColumns);
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                if(ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                     gridElement.setLayoutDirection(LayoutDirection.LOCALE);
                 }
                 gridElement.setLayoutParams(gridParams);
@@ -887,7 +888,7 @@ public class ReviewsFragment extends BaseFragment {
                 typeLine.setOrientation(LinearLayout.HORIZONTAL);
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                if(ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                     typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
 //                    typeLine.setLayoutDirection(View.LaLayoutDirection.LOCALE);
                 }
