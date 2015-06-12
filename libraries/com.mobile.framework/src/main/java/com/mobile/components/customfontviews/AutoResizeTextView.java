@@ -10,7 +10,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.widget.TextView;
+
 
 public class AutoResizeTextView extends TextView {
     private interface SizeTester {

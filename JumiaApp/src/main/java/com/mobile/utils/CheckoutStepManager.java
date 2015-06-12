@@ -136,6 +136,7 @@ public class CheckoutStepManager {
 
             titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
                     greyColor, redColor));
+
             titleTextView.post(new Runnable() {
                 @Override
                 public void run() {
