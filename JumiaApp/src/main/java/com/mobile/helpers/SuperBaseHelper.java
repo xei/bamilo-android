@@ -16,6 +16,7 @@ import com.mobile.newFramework.utils.EventType;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
 
@@ -82,10 +83,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public abstract EventType getEventType();
 
-    public static Map<String, String> convertContentValuesToMap(ContentValues bundle) {
+    public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
         Map<String, String> data = new HashMap<>();
-        for (String key : bundle.keySet()) {
-            data.put(key, bundle.getAsString(key));
+        for (Map.Entry entrySet: contentValues.valueSet()) {
+            data.put(entrySet.getKey().toString(), entrySet.getValue().toString());
         }
         return data;
     }
