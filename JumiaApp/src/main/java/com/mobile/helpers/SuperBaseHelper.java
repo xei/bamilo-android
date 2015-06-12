@@ -86,7 +86,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
         Map<String, String> data = new HashMap<>();
         for (Map.Entry entrySet: contentValues.valueSet()) {
-            data.put(entrySet.getKey().toString(), entrySet.getValue().toString());
+            data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
         }
         return data;
     }
