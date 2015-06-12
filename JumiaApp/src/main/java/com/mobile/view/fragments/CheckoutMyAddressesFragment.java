@@ -103,7 +103,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.next_button));
+        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.next_button));
     }
     
     /*

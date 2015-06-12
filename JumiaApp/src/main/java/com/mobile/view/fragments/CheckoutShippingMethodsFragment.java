@@ -121,7 +121,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         // Get containers
         mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
-        view.findViewById(R.id.checkout_shipping_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Get and show addresses
         triggerGetShippingMethods();
 
@@ -249,7 +249,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_shipping_button_enter) onClickSubmitShippingMethod();
+        if(id == R.id.checkout_button_enter) onClickSubmitShippingMethod();
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

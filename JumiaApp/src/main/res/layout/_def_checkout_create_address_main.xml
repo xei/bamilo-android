@@ -9,7 +9,7 @@
         android:id="@+id/checkout_address_form_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_address_button_container"
+        android:layout_above="@+id/checkout_button_container"
         android:layout_alignParentTop="true">
 
         <!-- FORMS -->
@@ -34,27 +34,7 @@
 
     <!-- NEXT BUTTON -->
 
-    <LinearLayout
-        android:id="@+id/checkout_address_button_container"
-        style="@style/button_container"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <ViewStub
-            android:id="@+id/total_view_stub"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:layout="@layout/cart_total" />
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/checkout_address_button_enter"
-            style="@style/button_orange_bottom"
-            android:text="@string/next_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+    <include layout="@layout/_def_checkout_total_layout"/>
 
     <!-- WARNING -->
 

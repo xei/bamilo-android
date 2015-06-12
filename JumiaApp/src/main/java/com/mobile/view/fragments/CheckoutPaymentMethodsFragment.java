@@ -142,7 +142,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
-        view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Get and show addresses
         triggerGetPaymentMethods();
     }
@@ -333,7 +333,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_payment_button_enter){
+        if(id == R.id.checkout_button_enter){
             onClickSubmitPaymentButton(); 
             getBaseActivity().hideKeyboard();
         }
