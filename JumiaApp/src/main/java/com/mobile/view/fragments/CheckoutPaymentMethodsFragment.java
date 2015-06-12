@@ -432,7 +432,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+            CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
             if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;

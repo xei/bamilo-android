@@ -117,7 +117,7 @@ public class CheckoutStepManager {
         };
     }
 
-    public static void showTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
+    public static void showCheckoutTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
         String value = null;
         if(orderSummary != null){
             value = orderSummary.getTotal();

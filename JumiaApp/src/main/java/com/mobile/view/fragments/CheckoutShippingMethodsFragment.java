@@ -372,7 +372,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         loadForm(form);
 
         //Total price
-        CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     public void onSuccessSetShippingMethods(Bundle bundle){

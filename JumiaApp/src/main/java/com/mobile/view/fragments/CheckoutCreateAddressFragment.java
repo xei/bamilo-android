@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -91,7 +90,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     @Override
