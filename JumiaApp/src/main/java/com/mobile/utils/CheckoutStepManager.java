@@ -31,7 +31,9 @@ public class CheckoutStepManager {
     public final static String SHIPPING_STEP = "shippingMethod";
     public final static String PAYMENT_STEP = "paymentMethod";
     public final static String ORDER_STEP = "finish";
-    
+
+    public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
+
     /**
      * Method used to get the next step value from JSON and return a fragment type
      * @param jsonObject The json response to get the next step
@@ -140,14 +142,14 @@ public class CheckoutStepManager {
             final int greyColor = resources.getColor(R.color.grey_middledark);
             final int redColor = resources.getColor(R.color.red_cc0000);
             final AutoResizeTextView titleTextView = ((AutoResizeTextView) inflatedView.findViewById(R.id.checkout_total_label));
-
+            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
             titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
                     greyColor, redColor));
 
             titleTextView.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(titleTextView.getLineCount() > 1){
+                    if(titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES){
                         titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, greyColor, redColor));
                     }
                 }
