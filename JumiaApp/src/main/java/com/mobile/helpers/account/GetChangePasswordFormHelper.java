@@ -17,6 +17,10 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class GetChangePasswordFormHelper extends SuperBaseHelper{
 
+    public static final String PASSWORD_ID = "Alice_Module_Customer_Model_PasswordForm_password";
+
+    public static final String PASSWORD2_ID = "Alice_Module_Customer_Model_PasswordForm_password2";
+
     private static String TAG = GetCustomerHelper.class.getSimpleName();
 
     @Override

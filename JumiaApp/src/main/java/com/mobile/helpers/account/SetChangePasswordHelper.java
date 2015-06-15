@@ -20,9 +20,15 @@ import java.util.Map;
  * Example helper
  */
 public class SetChangePasswordHelper extends SuperBaseHelper {
-    
+
     private static String TAG = SetChangePasswordHelper.class.getSimpleName();
-    
+
+    public static final String PASSWORD_VALUE = "Alice_Module_Customer_Model_PasswordForm[password]";
+
+    public static final String PASSWORD2_VALUE = "Alice_Module_Customer_Model_PasswordForm[password2]";
+
+    public static final String EMAIL_VALUE = "Alice_Module_Customer_Model_PasswordForm[email]";
+
     public static final String CONTENT_VALUES = "contentValues";
     
     private ContentValues mContentValues;

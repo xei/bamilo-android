@@ -168,6 +168,21 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return control;
     }
 
+    public DynamicFormItem getItemById(String id) {
+
+        Iterator<DynamicFormItem> iterator = iterator();
+        // Map.Entry<?, ?> pairs;
+        while (iterator.hasNext()) {
+            DynamicFormItem control = iterator.next();
+            // checks if there is a control with the same key as the one for the
+            // given value.
+            if (null != control && control.getEntry().getId().equals(id)) {
+                return control;
+            }
+        }
+        return null;
+    }
+
     public DynamicFormItem getItemByKey(String key) {
         // gets an iterator to the hashmap
         for (DynamicFormItem dynamicFormItem : this) {
