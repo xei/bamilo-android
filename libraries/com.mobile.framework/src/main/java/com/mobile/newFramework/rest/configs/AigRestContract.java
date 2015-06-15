@@ -2,10 +2,10 @@ package com.mobile.newFramework.rest.configs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 /**

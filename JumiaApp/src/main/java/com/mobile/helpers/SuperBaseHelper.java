@@ -16,7 +16,6 @@ import com.mobile.newFramework.utils.EventType;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
 
@@ -34,12 +33,9 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
-
         setEventTask(args);
         setPriority(args);
-
-        RequestBundle requestBundle = createRequest(args);
-        onRequest(requestBundle);
+        onRequest(createRequest(args));
     }
 
     protected RequestBundle createRequest(Bundle args) {
@@ -52,13 +48,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         if (data != null) {
             requestBundleBuilder.setData(data);
         }
-
-        // TODO VALIDATE THIS APPROACH
-//        // Validate priority
-//        if(!hasPriority()){
-//            requestBundleBuilder.discardResponse();
-//        }
-
         //
         return requestBundleBuilder.build();
     }
