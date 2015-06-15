@@ -136,7 +136,7 @@ public class CheckoutStepManager {
             View inflatedView = viewStub.inflate();
             Resources resources = inflatedView.getResources();
             final String title = resources.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value);
+            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
             final int greyColor = resources.getColor(R.color.grey_middledark);
             final int redColor = resources.getColor(R.color.red_cc0000);
             final AutoResizeTextView titleTextView = ((AutoResizeTextView) inflatedView.findViewById(R.id.checkout_total_label));
@@ -147,7 +147,7 @@ public class CheckoutStepManager {
             titleTextView.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(titleTextView.getLineCount() == 2){
+                    if(titleTextView.getLineCount() > 1){
                         titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, greyColor, redColor));
                     }
                 }

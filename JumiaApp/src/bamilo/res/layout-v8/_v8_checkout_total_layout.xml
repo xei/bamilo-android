@@ -15,8 +15,7 @@
         android:layout_weight="1"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="0dp"
-        android:text="@string/next_button"
-        android:background="@color/blue"/>
+        android:text="@string/next_button" />
 
     <ViewStub
         android:id="@+id/total_view_stub"
