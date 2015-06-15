@@ -117,6 +117,13 @@ public class CheckoutStepManager {
         };
     }
 
+    /**
+     * Method used for showing checkout total at checkout steps.
+     *
+     * @param viewStub Viewstub with TextView (checkout_total_label).
+     * @param orderSummary OrderSummary to get total
+     * @param cart Cart in case orderSummary is null
+     */
     public static void showCheckoutTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
         String value = null;
         if(orderSummary != null){
