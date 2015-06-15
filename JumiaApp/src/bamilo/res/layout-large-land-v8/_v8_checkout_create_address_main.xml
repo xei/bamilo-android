@@ -76,7 +76,7 @@
             android:orientation="vertical" >
 
             <com.mobile.components.customfontviews.Button
-                android:id="@+id/checkout_address_button_enter"
+                android:id="@+id/checkout_button_enter"
                 style="@style/button_orange_landscape"
                 android:text="@string/next_button" />
         </LinearLayout>
