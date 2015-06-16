@@ -283,3 +283,25 @@ task findbugs(type: FindBugs) {
         }
     }
 }
+
+/**
+ * Execute cmd command printing it in console and also the result of the command.
+ * @param cmd A shell command
+ * @return
+ */
+def executeWaitAndPrintCmd(List cmd) {
+
+    println cmd
+    def proc = cmd.execute()
+    proc.waitFor()
+    println proc.text
+}
+
+/**
+ * Calabash tests
+ */
+task testCalabash << {
+    //testCalabash -Pcountry=NG
+    //calabash-android run /home/mobile/rocket/jenkins/workspace/Jumia_Calabash_2.2_NG/AutomatedTests/pt.rocket.jumia.dev/bin/JumiaDev-debug.apk --t @Calabash_Tests country=${COUNTRY} -f json -o cucumber.json -f html -o test.html -f pretty
+    executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
+}
