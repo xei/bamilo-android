@@ -1001,7 +1001,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             onClickMaintenanceChooseCountry();
         }
         // Case unknown
-        else{
+        else {
             Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
         }
     }
