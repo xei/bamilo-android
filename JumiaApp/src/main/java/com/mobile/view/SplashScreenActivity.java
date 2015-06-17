@@ -85,8 +85,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private View mRetryFallBackStub;
 
-    private View mUnexpectedError;
-
     private Bundle mLastSuccessResponse;
 
     private ErrorLayoutFactory mErrorLayoutfactory;
@@ -114,8 +112,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
-        // Get unexpected error layout
-        mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
         // Intercept event
         shouldHandleEvent = true;
         // Initialize application
@@ -707,7 +703,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case retry button from no network
+
         if (id == R.id.fragment_root_retry_network) {
             checkRetryButtonBehavior(view);
 //            onClickRetryNoNetwork();
@@ -720,10 +716,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
         }
-        // Case retry button
-//        else if (id == R.id.fragment_root_retry_unexpected_error) {
-//            onClickErrorButton();
-//        }
         // Case unknown
         else {
             Print.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
@@ -734,8 +726,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (view.getId() == R.id.fragment_root_retry_network) {
             int type = (int)view.getTag(R.id.fragment_root_retry_network);
             if(type == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+                // Case retry button from no network
                 onClickRetryNoNetwork();
             } else if(type == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+                // Case retry button
                 onClickErrorButton();
             }
         }
