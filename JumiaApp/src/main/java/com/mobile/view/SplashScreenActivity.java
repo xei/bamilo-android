@@ -83,7 +83,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private View mMainFallBackStub;
 
-    private View mRetryFallBackStub;
+    private View mErrorFallBackStub;
 
     private Bundle mLastSuccessResponse;
 
@@ -111,7 +111,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
-        mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
+        mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Intercept event
         shouldHandleEvent = true;
         // Initialize application
@@ -673,12 +673,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     protected void showErrorLayout(int type, OnClickListener onClickListener){
         // Show no network
-        if(mRetryFallBackStub instanceof ViewStub) {
-            mRetryFallBackStub = ((ViewStub)mRetryFallBackStub).inflate();
-            mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup)mRetryFallBackStub);
+        if(mErrorFallBackStub instanceof ViewStub) {
+            mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();
+            mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
             mErrorLayoutfactory.showErrorLayout(type);
         } else {
-            mRetryFallBackStub.setVisibility(View.VISIBLE);
+            mErrorFallBackStub.setVisibility(View.VISIBLE);
             mErrorLayoutfactory.showErrorLayout(type);
         }
         // Set view

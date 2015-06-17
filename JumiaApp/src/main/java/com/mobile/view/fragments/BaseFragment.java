@@ -105,7 +105,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mLoadingView;
 
-    private View mRetryView;
+    private View mErrorView;
 
     private View mContentView;
 
@@ -247,8 +247,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
         // Get retry layout
-        mRetryView =  view.findViewById(R.id.fragment_stub_retry);
-        ((ViewStub)mRetryView).setOnInflateListener(this);
+        mErrorView =  view.findViewById(R.id.fragment_stub_retry);
+        ((ViewStub) mErrorView).setOnInflateListener(this);
         // Get fall back layout
         mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
         mFallBackView.setOnInflateListener(this);
@@ -597,7 +597,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentContentContainer() {
         UIUtils.showOrHideViews(View.VISIBLE, mContentView);
-        UIUtils.showOrHideViews(View.GONE, mLoadingView, mRetryView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mLoadingView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
@@ -633,16 +633,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected final void showErrorFragment(int type, OnClickListener listener){
-        if(mRetryView instanceof ViewStub){
-            mRetryView.setTag(mRetryView.getId(), type);
-            mRetryView.setTag(R.id.stub_listener, listener);
-            ((ViewStub)mRetryView).inflate();
+        if(mErrorView instanceof ViewStub){
+            mErrorView.setTag(mErrorView.getId(), type);
+            mErrorView.setTag(R.id.stub_listener, listener);
+            ((ViewStub) mErrorView).inflate();
         } else {
             mErrorLayoutFactory.showErrorLayout(type);
-            View retryButton = mRetryView.findViewById(R.id.fragment_root_error_button);
+            View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(listener);
             retryButton.setTag(R.id.fragment_root_error_button, type);
-            UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
+            UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
         }
     }
 
@@ -753,7 +753,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             e.printStackTrace();
         }
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mMaintenanceView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -762,7 +762,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onInflateLoading(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
@@ -772,7 +772,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onInflateNoNetwork(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: RETRY");
 
-        mRetryView = inflated;
+        mErrorView = inflated;
 
         mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
         showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
@@ -792,7 +792,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
         }
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mFallBackView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /*
