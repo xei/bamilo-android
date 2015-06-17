@@ -533,7 +533,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get data
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        errorCode = ErrorCode.HTTP_STATUS;
+
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Print.i(TAG, "ERROR CODE: " + errorCode);
@@ -753,7 +753,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         retryRequest();
         try {
             Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
-            findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
+            findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }

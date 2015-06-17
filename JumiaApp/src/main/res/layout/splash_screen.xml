@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/splash_screen_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,13 +47,14 @@
         android:inflatedId="@+id/fragment_retry_stub_inflate"
         android:layout="@layout/fragment_root_retry" />
 
-    <!-- UNEXPECTED ERROR LAYOUT -->
+    <!-- MAINTENANCE PAGE -->
 
     <ViewStub
-        android:id="@+id/fragment_stub_unexpected_error"
+        android:id="@+id/splash_screen_maintenance_stub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:inflatedId="@+id/fragment_unexpected_error_stub_inflate"
-        android:layout="@layout/fragment_root_unexpected_error" />
+        android:inflatedId="@+id/splash_screen_maintenance_stub_inflate"
+        android:layout="@layout/fragment_root_maintenance" />
+
 </FrameLayout>
