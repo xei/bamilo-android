@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -44,6 +46,7 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -85,6 +88,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private View mUnexpectedError;
 
     private Bundle mLastSuccessResponse;
+
+    private ErrorLayoutFactory mErrorLayoutfactory;
 
     /*
      * (non-Javadoc)
@@ -532,7 +537,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get data
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
+        errorCode = ErrorCode.HTTP_STATUS;
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Print.i(TAG, "ERROR CODE: " + errorCode);
@@ -542,6 +547,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 case CONNECT_ERROR:
                 case HTTP_STATUS:
                     showUnexpectedError();
+                    break;
                 case TIME_OUT:
                 case NO_NETWORK:
                     showFragmentRetry();
@@ -647,20 +653,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     protected void showFragmentRetry() {
-        if(mMainFallBackStub != null){
+        if(mMainFallBackStub != null) {
             // Hide maintenance visibility
             if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
                 mMainFallBackStub.setVisibility(View.GONE);
             }
-            // Show no network
-            mRetryFallBackStub.setVisibility(View.VISIBLE);
-            // Set view
         }
-        try {
-            findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
-        }
+        showErrorLayout(ErrorLayoutFactory.NO_NETWORK_LAYOUT, this);
     }
 
     /**
@@ -673,11 +672,24 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (mMainFallBackStub != null && mMainFallBackStub.getVisibility() == View.VISIBLE) {
             mMainFallBackStub.setVisibility(View.GONE);
         }
+        showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
+    }
+
+    protected void showErrorLayout(int type, OnClickListener onClickListener){
         // Show no network
-        mUnexpectedError.setVisibility(View.VISIBLE);
+        if(mRetryFallBackStub instanceof ViewStub) {
+            mRetryFallBackStub = ((ViewStub)mRetryFallBackStub).inflate();
+            mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup)mRetryFallBackStub);
+            mErrorLayoutfactory.showErrorLayout(type);
+        } else {
+            mRetryFallBackStub.setVisibility(View.VISIBLE);
+            mErrorLayoutfactory.showErrorLayout(type);
+        }
         // Set view
         try {
-            findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
+            View retryButton = findViewById(R.id.fragment_root_retry_network);
+            retryButton.setOnClickListener(onClickListener);
+            retryButton.setTag(R.id.fragment_root_retry_network, type);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -697,7 +709,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         int id = view.getId();
         // Case retry button from no network
         if (id == R.id.fragment_root_retry_network) {
-            onClickRetryNoNetwork();
+            checkRetryButtonBehavior(view);
+//            onClickRetryNoNetwork();
         }
         // Case retry button from maintenance
         else if (id == R.id.fragment_root_retry_maintenance) {
@@ -708,12 +721,23 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             onClickMaintenanceChooseCountry();
         }
         // Case retry button
-        else if (id == R.id.fragment_root_retry_unexpected_error) {
-            onClickErrorButton();
-        }
+//        else if (id == R.id.fragment_root_retry_unexpected_error) {
+//            onClickErrorButton();
+//        }
         // Case unknown
         else {
             Print.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
+        }
+    }
+
+    private void checkRetryButtonBehavior(View view) {
+        if (view.getId() == R.id.fragment_root_retry_network) {
+            int type = (int)view.getTag(R.id.fragment_root_retry_network);
+            if(type == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+                onClickRetryNoNetwork();
+            } else if(type == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+                onClickErrorButton();
+            }
         }
     }
 
