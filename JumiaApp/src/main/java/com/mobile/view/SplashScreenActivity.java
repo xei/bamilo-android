@@ -678,7 +678,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
             mErrorLayoutfactory.showErrorLayout(type);
         } else {
-            mErrorFallBackStub.setVisibility(View.VISIBLE);
             mErrorLayoutfactory.showErrorLayout(type);
         }
         // Set view

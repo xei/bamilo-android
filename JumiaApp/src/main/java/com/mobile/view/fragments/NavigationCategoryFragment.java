@@ -502,8 +502,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
 
     @Override
-    protected void onInflateNoNetwork(ViewStub stub, View inflated) {
-        super.onInflateNoNetwork(stub, inflated);
+    protected void onInflateErrorLayout(ViewStub stub, View inflated) {
+        super.onInflateErrorLayout(stub, inflated);
         // Show back button
         verifyBackButton();
         // Set no network view

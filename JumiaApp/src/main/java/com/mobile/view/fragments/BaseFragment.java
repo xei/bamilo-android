@@ -638,11 +638,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             mErrorView.setTag(R.id.stub_listener, listener);
             ((ViewStub) mErrorView).inflate();
         } else {
-            mErrorLayoutFactory.showErrorLayout(type);
             View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(listener);
             retryButton.setTag(R.id.fragment_root_error_button, type);
-            UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
+            mErrorLayoutFactory.showErrorLayout(type);
         }
     }
 
@@ -706,7 +705,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case no network
         else if(id == R.id.fragment_stub_retry) {
-            onInflateNoNetwork(stub, inflated);
+            onInflateErrorLayout(stub, inflated);
         }
         // Case maintenance
         else if(id == R.id.fragment_stub_maintenance) {
@@ -769,8 +768,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set no network view.
      * @param inflated The inflated view
      */
-    protected void onInflateNoNetwork(ViewStub viewStub, View inflated) {
-        Print.i(TAG, "ON INFLATE STUB: RETRY");
+    protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
+        Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
 
         mErrorView = inflated;
 

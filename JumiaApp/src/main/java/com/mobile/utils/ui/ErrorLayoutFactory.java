@@ -97,10 +97,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessage(R.string.internet_no_connection_details_label)
                     .setRotationVisible(true)
                     .setButtonMessage(R.string.try_again_retry)
-                    .setButtonBackground(R.drawable.btn_grey);
+                    .setButtonBackground(R.drawable.btn_grey)
+                    .show();
             actualError = NO_NETWORK_LAYOUT;
         } else {
-//            new Builder().startAnimation();
+            new Builder().show();
         }
     }
 
@@ -112,10 +113,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessage(R.string.server_error)
                     .setRotationVisible(true)
                     .setButtonMessage(R.string.try_again_retry)
-                    .setButtonBackground(R.drawable.btn_grey);
+                    .setButtonBackground(R.drawable.btn_grey)
+                    .show();
             actualError = UNEXPECTED_ERROR_LAYOUT;
         } else {
-//            new Builder().startAnimation();
+            new Builder().show();
         }
     }
 
@@ -128,8 +130,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.continue_shopping)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = CART_EMPTY_LAYOUT;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -142,8 +147,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.continue_shopping)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = NO_FAVOURITES_LAYOUT;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -156,8 +164,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.continue_shopping)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = NO_RECENT_SEARCHES_LAYOUT;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -170,8 +181,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.continue_shopping)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = NO_RECENTLY_VIEWED_LAYOUT;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -184,8 +198,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessage(R.string.server_error)
                     .setButtonMessage(R.string.continue_shopping)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = CONTINUE_SHOPPING_LAYOUT;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -198,8 +215,11 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.catalog_edit_filters)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = CATALOG_NO_RESULTS;
+        } else {
+            new Builder().show();
         }
     }
 
@@ -212,9 +232,16 @@ public class ErrorLayoutFactory {
                     .setDetailMessageVisible(false)
                     .setButtonMessage(R.string.catalog_edit_filters)
                     .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange);
+                    .setButtonBackground(R.drawable.btn_orange)
+                    .show();
             actualError = CATALOG_UNEXPECTED_ERROR;
+        } else {
+            new Builder().show();
         }
+    }
+
+    public void hide(){
+        new Builder().hide();
     }
 
     /**
@@ -307,6 +334,13 @@ public class ErrorLayoutFactory {
             return this;
         }
 
+        public void show() {
+            mErrorLayout.setVisibility(View.VISIBLE);
+        }
+
+        public void hide() {
+            mErrorLayout.setVisibility(View.GONE);
+        }
     }
 
 }
