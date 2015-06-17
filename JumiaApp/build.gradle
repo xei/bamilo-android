@@ -189,6 +189,19 @@ android {
             resConfigs "en"
         }
 
+        /* TODO
+        shopPreInstall {
+            applicationId "com.shop.android"
+            versionName "1.4"
+            versionCode 7
+            signingConfig signingConfigs.shopSigning
+            resConfigs "en"
+            android.sourceSets {
+                shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
+            }
+        }
+        */
+
         /**
          * #################### DARAZ ####################
          */
@@ -198,6 +211,17 @@ android {
             versionCode getAppVersionCode(8)
             signingConfig signingConfigs.darazSigning
             resConfigs "en"
+        }
+
+        darazPreInstall {
+            applicationId "com.daraz.android"
+            versionName "1.4"
+            versionCode 8
+            signingConfig signingConfigs.darazSigning
+            resConfigs "en"
+            android.sourceSets {
+                darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
+            }
         }
 
         /**
@@ -280,4 +304,26 @@ task findbugs(type: FindBugs) {
             destination "build/reports/findbugs/findbugs.xml"
         }
     }
+}
+
+/**
+ * Execute cmd command printing it in console and also the result of the command.
+ * @param cmd A shell command
+ * @return
+ */
+def executeWaitAndPrintCmd(List cmd) {
+
+    println cmd
+    def proc = cmd.execute()
+    proc.waitFor()
+    println proc.text
+}
+
+/**
+ * Calabash tests
+ */
+task testCalabash << {
+    //testCalabash -Pcountry=NG
+    //calabash-android run /home/mobile/rocket/jenkins/workspace/Jumia_Calabash_2.2_NG/AutomatedTests/pt.rocket.jumia.dev/bin/JumiaDev-debug.apk --t @Calabash_Tests country=${COUNTRY} -f json -o cucumber.json -f html -o test.html -f pretty
+    executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
 }

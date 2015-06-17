@@ -136,7 +136,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
      * @param args arguments with priority.
      */
     private void setPriority(Bundle args){
-        prioritary = args != null ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false) : hasPriority();
+        prioritary = args != null && args.containsKey(Constants.BUNDLE_PRIORITY_KEY) ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY) : hasPriority();
     }
 
 }
