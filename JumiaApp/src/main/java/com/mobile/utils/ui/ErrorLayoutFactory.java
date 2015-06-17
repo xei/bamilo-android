@@ -225,7 +225,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setRotationVisible(boolean isToShow){
-            View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_retry_spinning);
+            View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
             if(retrySpinning != null) {
                 if(isToShow){
                     retrySpinning.setVisibility(View.VISIBLE);
@@ -238,7 +238,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setButtonMessage(int message){
-            View buttonMessage = mErrorLayout.findViewById(R.id.fragment_root_retry_button_message);
+            View buttonMessage = mErrorLayout.findViewById(R.id.fragment_root_error_button_message);
             if(buttonMessage instanceof TextView){
                 ((TextView)buttonMessage).setText(message);
             }
@@ -246,7 +246,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setButtonBackground(int background){
-            View button = mErrorLayout.findViewById(R.id.fragment_root_retry_network);
+            View button = mErrorLayout.findViewById(R.id.fragment_root_error_button);
             if(button != null){
                 button.setBackgroundResource(background);
             }
@@ -254,7 +254,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setImage(int image){
-            View imageView = mErrorLayout.findViewById(R.id.no_connection_image);
+            View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
             if(imageView instanceof ImageView){
                 imageView.setVisibility(View.VISIBLE);
                 ((ImageView)imageView).setImageResource(image);
@@ -263,7 +263,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setImageVisibible(boolean isToShow){
-            View imageView = mErrorLayout.findViewById(R.id.no_connection_image);
+            View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
             if(imageView != null){
                 imageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
             }
@@ -271,7 +271,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setPrincipalMessage(int message){
-            View messageView = mErrorLayout.findViewById(R.id.no_connection_label);
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
             if(messageView instanceof TextView){
                 messageView.setVisibility(View.VISIBLE);
                 ((TextView)messageView).setText(message);
@@ -280,7 +280,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setPrincipalMessageVisible(boolean isToShow){
-            View messageView = mErrorLayout.findViewById(R.id.no_connection_label);
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
             if(messageView != null){
                 messageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
             }
@@ -288,7 +288,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setDetailMessage(int message){
-            View messageView = mErrorLayout.findViewById(R.id.no_connection_details_label);
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             if(messageView instanceof TextView){
                 messageView.setVisibility(View.VISIBLE);
                 ((TextView)messageView).setText(message);
@@ -297,7 +297,7 @@ public class ErrorLayoutFactory {
         }
 
         Builder setDetailMessageVisible(boolean isToShow){
-            View messageView = mErrorLayout.findViewById(R.id.no_connection_details_label);
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             if(messageView != null){
                 messageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
             }

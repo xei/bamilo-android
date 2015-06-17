@@ -683,9 +683,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Set view
         try {
-            View retryButton = findViewById(R.id.fragment_root_retry_network);
+            View retryButton = findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(onClickListener);
-            retryButton.setTag(R.id.fragment_root_retry_network, type);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -704,7 +704,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get id
         int id = view.getId();
 
-        if (id == R.id.fragment_root_retry_network) {
+        if (id == R.id.fragment_root_error_button) {
             checkRetryButtonBehavior(view);
 //            onClickRetryNoNetwork();
         }
@@ -723,8 +723,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     private void checkRetryButtonBehavior(View view) {
-        if (view.getId() == R.id.fragment_root_retry_network) {
-            int type = (int)view.getTag(R.id.fragment_root_retry_network);
+        if (view.getId() == R.id.fragment_root_error_button) {
+            int type = (int)view.getTag(R.id.fragment_root_error_button);
             if(type == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
                 // Case retry button from no network
                 onClickRetryNoNetwork();
@@ -741,7 +741,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void onClickRetryNoNetwork() {
         retryRequest();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
-        findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+        findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
     }
 
     /**
@@ -753,7 +753,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         retryRequest();
         try {
             Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
-            findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+            findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }

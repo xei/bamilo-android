@@ -12,7 +12,6 @@
         android:padding="@dimen/margin_20px" >
 
         <include
-            android:id="@+id/no_connection_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/retry_layout_height"
             android:layout_marginBottom="@dimen/margin_20px"

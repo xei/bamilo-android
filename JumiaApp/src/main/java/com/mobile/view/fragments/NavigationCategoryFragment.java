@@ -507,8 +507,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Show back button
         verifyBackButton();
         // Set no network view
-        ((TextView) inflated.findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
-        ((TextView) inflated.findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
+        ((TextView) inflated.findViewById(R.id.fragment_root_error_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
+        ((TextView) inflated.findViewById(R.id.fragment_root_error_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
     }
 
     @Override

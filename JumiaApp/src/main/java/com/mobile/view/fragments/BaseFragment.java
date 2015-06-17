@@ -18,12 +18,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 
 import com.facebook.Request;
 import com.facebook.Session;
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -641,9 +639,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             ((ViewStub)mRetryView).inflate();
         } else {
             mErrorLayoutFactory.showErrorLayout(type);
-            View retryButton = mRetryView.findViewById(R.id.fragment_root_retry_network);
+            View retryButton = mRetryView.findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(listener);
-            retryButton.setTag(R.id.fragment_root_retry_network, type);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
             UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
         }
     }
@@ -989,7 +987,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.fragment_root_retry_network){
+        if (id == R.id.fragment_root_error_button){
             checkErrorButtonBehavior(view);
         }
         // Case retry button in maintenance page
@@ -1007,8 +1005,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     private void checkErrorButtonBehavior(View view) {
-        if(view.getId() == R.id.fragment_root_retry_network){
-            int error = (int)view.getTag(R.id.fragment_root_retry_network);
+        if(view.getId() == R.id.fragment_root_error_button){
+            int error = (int)view.getTag(R.id.fragment_root_error_button);
 
             if(error == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
                 // Case retry button from network
@@ -1030,7 +1028,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryNoNetwork(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            View retrySpinning = view.findViewById(R.id.fragment_root_retry_spinning);
+            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
             retrySpinning.clearAnimation();
             retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
@@ -1047,7 +1045,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryUnexpectedError(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            View retrySpinning = view.findViewById(R.id.fragment_root_retry_spinning);
+            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
             retrySpinning.clearAnimation();
             retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
