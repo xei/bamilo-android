@@ -271,20 +271,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
             }
             gotoBack();
             return true;
-        case GET_CUSTOMER:
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.CUSTOMER = customer;
-            Print.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
-            if (null != lastNameText) {
-                lastNameText.setText(customer.getLastName());
-                firstNameText.setText(customer.getFirstName());
-                emailText.setText(customer.getEmail());
-                showFragmentContentContainer();
-            } else {
-                restartAllFragments();
-                return true;
-            }
-            return true;
         default:
             return false;
         }
