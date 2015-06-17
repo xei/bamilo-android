@@ -109,7 +109,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mEmptyView;
 
-    private ViewStub mRetryView;
+    private View mRetryView;
 
     private View mContentView;
 
@@ -256,8 +256,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mEmptyView = (ViewStub) view.findViewById(R.id.fragment_stub_empty);
         mEmptyView.setOnInflateListener(this);
         // Get retry layout
-        mRetryView = (ViewStub) view.findViewById(R.id.fragment_stub_retry);
-        mRetryView.setOnInflateListener(this);
+        mRetryView =  view.findViewById(R.id.fragment_stub_retry);
+        ((ViewStub)mRetryView).setOnInflateListener(this);
         // Get fall back layout
         mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
         mFallBackView.setOnInflateListener(this);
@@ -663,16 +663,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected final void showErrorFragment(int type, OnClickListener listener){
-        if(mErrorLayoutFactory != null){
+        if(mRetryView instanceof ViewStub){
+            mRetryView.setTag(mRetryView.getId(), type);
+            mRetryView.setTag(R.id.stub_listener, listener);
+            ((ViewStub)mRetryView).inflate();
+        } else {
             mErrorLayoutFactory.showErrorLayout(type);
-            View retryButton = getView().findViewById(R.id.fragment_root_retry_network);
+            View retryButton = mRetryView.findViewById(R.id.fragment_root_retry_network);
             retryButton.setOnClickListener(listener);
             retryButton.setTag(R.id.fragment_root_retry_network, type);
             UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
-        } else {
-            mRetryView.setTag(mRetryView.getId(),type);
-            mRetryView.setTag(R.id.stub_listener, listener);
-            mRetryView.inflate();
         }
     }
 
@@ -833,7 +833,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onInflateNoNetwork(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: RETRY");
 
-        mErrorLayoutFactory = new ErrorLayoutFactory(inflated);
+        mRetryView = inflated;
+
+        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
         showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
 
     }

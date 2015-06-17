@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,9 +40,9 @@ public class ErrorLayoutFactory {
      * @param errorLayout
      * @throws java.lang.IllegalStateException If layout is null.
      */
-    public ErrorLayoutFactory(View errorLayout){
+    public ErrorLayoutFactory(ViewGroup errorLayout){
 
-        if(errorLayout == null){
+        if(errorLayout  == null){
             throw new IllegalStateException("Error Layout not initialized");
         }
 
@@ -228,7 +229,7 @@ public class ErrorLayoutFactory {
             if(retrySpinning != null) {
                 if(isToShow){
                     retrySpinning.setVisibility(View.VISIBLE);
-                } else{
+                } else {
                     retrySpinning.clearAnimation();
                     retrySpinning.setVisibility(View.GONE);
                 }
