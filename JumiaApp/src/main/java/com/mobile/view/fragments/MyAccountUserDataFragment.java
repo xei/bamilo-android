@@ -213,8 +213,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
         lastNameText.setVisibility(View.GONE);
         emailText = (TextView) mainView.findViewById(R.id.clientEmail);
 
-//        newPasswordText = (EditText) mainView.findViewById(R.id.typeNewPassword);
-//        newPassword2Text = (EditText) mainView.findViewById(R.id.retypeNewPassword);
         passwordErrorHint = (TextView) mainView.findViewById(R.id.passwordErrorHint);
         passwordErrorHint.setVisibility(View.GONE);
     }
@@ -236,11 +234,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
             return;
         }
 
-        ContentValues values = new ContentValues();
-        values.put(SetChangePasswordHelper.PASSWORD_VALUE, newPassword);
-        values.put(SetChangePasswordHelper.PASSWORD2_VALUE, newPassword2);
-        values.put(SetChangePasswordHelper.EMAIL_VALUE, emailText.getText().toString());
-        triggerChangePass(values);
+        triggerChangePass(dynamicForm.save());
         //
         displayErrorHint(null);
     }
@@ -353,8 +347,8 @@ public class MyAccountUserDataFragment extends BaseFragment {
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
         ((ViewGroup)getView().findViewById(R.id.new_password_layout)).addView(dynamicForm.getContainer());
-        newPasswordText = (EditText)dynamicForm.getItemById(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
-        newPassword2Text = (EditText)dynamicForm.getItemById(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
+        newPasswordText = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
+        newPassword2Text = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
     }
 
     @Override
