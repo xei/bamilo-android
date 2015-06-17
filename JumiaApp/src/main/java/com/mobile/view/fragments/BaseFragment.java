@@ -51,6 +51,7 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -129,6 +130,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected TeaserGroupType mGroupType;
 
     private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
+
+    private ErrorLayoutFactory mErrorLayoutFactory;
 
     /**
      * Constructor with layout to inflate
@@ -614,7 +617,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentNoNetworkRetry() {
-        UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
+        showErrorFragment(ErrorLayoutFactory.NO_NETWORK_LAYOUT, this);
     }
 
     /**
@@ -630,7 +633,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showContinueShopping() {
         Print.i(TAG, "ON SHOW CONTINUE LAYOUT");
-        showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, this);
+        showErrorFragment(ErrorLayoutFactory.CONTINUE_SHOPPING_LAYOUT, this);
     }
 
     /**
@@ -640,6 +643,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param buttonEmptyStringResId The string id for button
      * @param onClickListener The click listener
      */
+    @Deprecated
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId, int buttonEmptyStringResId, OnClickListener onClickListener) {
         // Set view with some data
         mEmptyView.setTag(R.id.stub_text_title, emptyStringResId);
@@ -655,7 +659,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
-        UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
+        showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
+    }
+
+    protected final void showErrorFragment(int type, OnClickListener listener){
+        if(mErrorLayoutFactory != null){
+            mErrorLayoutFactory.showErrorLayout(type);
+            View retryButton = getView().findViewById(R.id.fragment_root_retry_network);
+            retryButton.setOnClickListener(listener);
+            retryButton.setTag(R.id.fragment_root_retry_network, type);
+            UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
+        } else {
+            mRetryView.setTag(mRetryView.getId(),type);
+            mRetryView.setTag(R.id.stub_listener, listener);
+            mRetryView.inflate();
+        }
     }
 
     /**
@@ -709,11 +727,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get stub id
         int id = stub.getId();
         // Case continue shopping
-        if(id == R.id.fragment_stub_empty) {
-            onInflateContinue(stub, inflated);
-        }
+//        if(id == R.id.fragment_stub_empty) {
+//            onInflateContinue(stub, inflated);
+//        }
         // Case home fall back
-        else if(id == R.id.fragment_stub_home_fall_back)  {
+        if(id == R.id.fragment_stub_home_fall_back)  {
             onInflateHomeFallBack(inflated);
         }
         // Case loading
@@ -722,12 +740,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case no network
         else if(id == R.id.fragment_stub_retry) {
-            onInflateNoNetwork(inflated);
+            onInflateNoNetwork(stub, inflated);
         }
         // Case unexpected error
-        else if(id == R.id.fragment_stub_unexpected_error) {
-            onInflateUnexpectedError(inflated);
-        }
+//        else if(id == R.id.fragment_stub_unexpected_error) {
+//            onInflateUnexpectedError(inflated);
+//        }
         // Case maintenance
         else if(id == R.id.fragment_stub_maintenance) {
             onInflateMaintenance(inflated);
@@ -812,12 +830,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set no network view.
      * @param inflated The inflated view
      */
-    protected void onInflateNoNetwork(View inflated) {
+    protected void onInflateNoNetwork(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: RETRY");
-        // Set view
-        inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
-        // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+
+        mErrorLayoutFactory = new ErrorLayoutFactory(inflated);
+        showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
+
     }
 
     /**
@@ -940,7 +958,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-
+//        errorCode = ErrorCode.IO;
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -1040,17 +1058,32 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onClick(View view) {
         int id = view.getId();
         // Case retry button from network
-        if (id == R.id.fragment_root_retry_network) onClickRetryNoNetwork(view);
+        if (id == R.id.fragment_root_retry_network) checkErrorButtonBehavior(view);
+//            onClickRetryNoNetwork(view);
             // Case retry button from error
-        else if(id == R.id.fragment_root_retry_unexpected_error) onClickRetryUnexpectedError(view);
+//        else if(id == R.id.fragment_root_retry_unexpected_error) onClickRetryUnexpectedError(view);
             // Case retry button in maintenance page
         else if(id == R.id.fragment_root_retry_maintenance)  onClickRetryMaintenance(view);
             // Case continue button
-        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+//        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
             // Case choose country button in maintenance page
         else if(id == R.id.fragment_root_cc_maintenance) onClickMaintenanceChooseCountry();
             // Case unknown
         else Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+    }
+
+    private void checkErrorButtonBehavior(View view) {
+        if(view.getId() == R.id.fragment_root_retry_network){
+            int error = (int)view.getTag(R.id.fragment_root_retry_network);
+
+            if(error == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+                onClickRetryNoNetwork(view);
+            } else if(error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+                onClickRetryUnexpectedError(view);
+            } else {
+                onClickContinueButton();
+            }
+        }
     }
 
     /**
@@ -1060,8 +1093,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryNoNetwork(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+            View retrySpinning = view.findViewById(R.id.fragment_root_retry_spinning);
+            retrySpinning.clearAnimation();
+            retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
@@ -1076,8 +1110,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryUnexpectedError(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
+            View retrySpinning = view.findViewById(R.id.fragment_root_retry_spinning);
+            retrySpinning.clearAnimation();
+            retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }

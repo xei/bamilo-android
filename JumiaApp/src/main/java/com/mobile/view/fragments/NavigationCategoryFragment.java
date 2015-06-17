@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -501,8 +502,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
 
     @Override
-    protected void onInflateNoNetwork(View inflated) {
-        super.onInflateNoNetwork(inflated);
+    protected void onInflateNoNetwork(ViewStub stub, View inflated) {
+        super.onInflateNoNetwork(stub, inflated);
         // Show back button
         verifyBackButton();
         // Set no network view

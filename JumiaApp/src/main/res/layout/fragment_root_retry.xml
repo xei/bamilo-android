@@ -19,7 +19,6 @@
             layout="@layout/no_connection_layout" />
 
         <include
-            android:id="@+id/fragment_root_retry_network"
             layout="@layout/no_connection_button_retry" />
     </LinearLayout>
 
