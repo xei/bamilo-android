@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/retry_layout_height"
             android:layout_marginBottom="@dimen/margin_20px"
-            layout="@layout/no_connection_layout" />
+            layout="@layout/error_layout" />
 
         <include
-            layout="@layout/no_connection_button_retry" />
+            layout="@layout/error_button" />
     </LinearLayout>
 
 </ScrollView>
