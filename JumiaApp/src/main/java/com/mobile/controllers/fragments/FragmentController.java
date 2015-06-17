@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import de.akquinet.android.androlog.Log;
+
 /**
  * This class is responsible to controller the fragment transition, to switch fragments on UI with back stack support.
  * Uses the back stack from support to get the instances of fragments but the behaviour of the back is performed using the our LinkedList.
@@ -520,6 +522,13 @@ public class FragmentController {
         }
         
         Print.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
+//        for (String backstackType : backstackTypes) {
+//            Print.i(TAG, "FRAGMENT CONTROLLER: TYPE " + backstackType);
+//        }
+//        for (Fragment originalFragment : originalFragments) {
+//            if(originalFragment != null)
+//                Print.i(TAG, "FRAGMENT CONTROLLER: FRAGMENT " + originalFragment.getTag());
+//        }
         
         List<Fragment> orderedFragments = new ArrayList<>();
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
@@ -528,24 +537,30 @@ public class FragmentController {
                     if(originalFragments.get(j) != null && backstackTypes.get(i).equalsIgnoreCase(originalFragments.get(j).getTag()))
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
-                        if(!backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()))
+                        if(
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()) &&
+                            // CASE CHOOSE_COUNTRY FROM SPLASH SCREEN
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString())
+                        ) {
+                            Log.i(TAG, "Add Fragment: " + originalFragments.get(j).getTag());
                             orderedFragments.add(originalFragments.get(j));
+                        }
                 }
-            } 
-            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen 
-            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()) &&
-                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.HOME.toString()) &&
-                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
-                restoreBackstack(activity, orderedFragments);          
+            }
+
+//            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen
+//            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()))
+                restoreBackstack(activity, orderedFragments);
+
         }
     }
 

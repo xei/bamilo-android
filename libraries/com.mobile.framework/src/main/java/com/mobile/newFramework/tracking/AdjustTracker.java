@@ -115,49 +115,49 @@ public class AdjustTracker {
         public static final String SIZE = "size";
         public static final String COLOUR = "colour";
         public static final String TOTAL_WISHLIST = "total_wishlist";
-        public static final String WISHLIST_CURRENCY_CODE = "currency_code1";
+//        public static final String WISHLIST_CURRENCY_CODE = "currency_code1";
         public static final String TOTAL_CART = "total_cart";
-        public static final String CART_CURRENCY_CODE = "cart_currency_code";
+//        public static final String CART_CURRENCY_CODE = "cart_currency_code";//
         public static final String TOTAL_TRANSACTION = "total_transaction"; 
-        public static final String TRANSACTION_CURRENCY = "transaction_currency";
-        public static final String VARIATION = "variation";
+//        public static final String TRANSACTION_CURRENCY = "transaction_currency";
+//        public static final String VARIATION = "variation";
         public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
-        public static final String INFO_BRAND = Constants.INFO_BRAND;
+//        public static final String INFO_BRAND = Constants.INFO_BRAND;
         public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
                 
     }
 
-    protected static class AdjustEvents {
-        public static final String LAUNCH = "Launch";
-        public static final String LOGIN = "Login";
-        public static final String LOGOUT = "Logout";
-        public static final String SIGNUP = "Signup";
-        public static final String SIGNUPNEWSLETTER = "SignupNewsletter";
-        public static final String CUSTOMER = "Customer";
-        public static final String SALE = "Sale";
-        public static final String FBCONNECTLOGIN = "FBConnectLogin";
-        public static final String FBCONNECTSIGNUP = "FBConnectSignup";
-        public static final String ADDTOWISHLIST = "AddtoWishlist";
-        public static final String REMOVEFROMWISHLIST = "RemoveFromWishlist";
-        public static final String FILTERS = "PersonalisedFeed";
-        public static final String SHARE = "SocialShare";
-        public static final String ADDREVIEWASBUYER = "RateSeller";
-        public static final String ADDREVIEWASSELLER = "RateBuyer";
-        public static final String LISTINGADDTITLE = "CreateListingStarted";
-        public static final String LISTINGCREATION = "CreateListing";
-        public static final String MESSAGESUBMITTOSELLER = "MessageToSeller";
-        public static final String MESSAGESUBMIT = "Message";
-        public static final String SEARCH = "Search";
-        public static final String PERSONALISEDFEED = "PersonalisedFeed";
-        public static final String CALL = "Call";        
-
-    }
+//    protected static class AdjustEvents {
+//        public static final String LAUNCH = "Launch";
+//        public static final String LOGIN = "Login";
+//        public static final String LOGOUT = "Logout";
+//        public static final String SIGNUP = "Signup";
+//        public static final String SIGNUPNEWSLETTER = "SignupNewsletter";
+//        public static final String CUSTOMER = "Customer";
+//        public static final String SALE = "Sale";
+//        public static final String FBCONNECTLOGIN = "FBConnectLogin";
+//        public static final String FBCONNECTSIGNUP = "FBConnectSignup";
+//        public static final String ADDTOWISHLIST = "AddtoWishlist";
+//        public static final String REMOVEFROMWISHLIST = "RemoveFromWishlist";
+//        public static final String FILTERS = "PersonalisedFeed";
+//        public static final String SHARE = "SocialShare";
+//        public static final String ADDREVIEWASBUYER = "RateSeller";
+//        public static final String ADDREVIEWASSELLER = "RateBuyer";
+//        public static final String LISTINGADDTITLE = "CreateListingStarted";
+//        public static final String LISTINGCREATION = "CreateListing";
+//        public static final String MESSAGESUBMITTOSELLER = "MessageToSeller";
+//        public static final String MESSAGESUBMIT = "Message";
+//        public static final String SEARCH = "Search";
+//        public static final String PERSONALISEDFEED = "PersonalisedFeed";
+//        public static final String CALL = "Call";
+//
+//    }
     
-    private String TABLET = "Tablet";
-    private String PHONE = "Phone";
+    private static final String TABLET = "Tablet";
+    private static final String PHONE = "Phone";
 
-    private final String TRACKING_PREFS = "tracking_prefs";
-    private final String SESSION_COUNTER = "sessionCounter";
+    private static final String TRACKING_PREFS = "tracking_prefs";
+    private static final String SESSION_COUNTER = "sessionCounter";
 
     private static boolean isEnabled = false;
     
@@ -165,11 +165,11 @@ public class AdjustTracker {
     
     private static final String NOT_AVAILABLE = "n.a.";
 
-    public final static String ENCODING_SCHEME = "UTF-8";
+//    public final static String ENCODING_SCHEME = "UTF-8";
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
     
-    private static double ADJUST_CENT_VALUE = 100d;
+//    private static double ADJUST_CENT_VALUE = 100d;
 
     private static Context mContext;
     
@@ -233,7 +233,6 @@ public class AdjustTracker {
 
     /**
      * initialized Adjust tracker
-     * @param context
      */
     public static void initializeAdjust(final Context context) {
         String appToken = context.getString(R.string.adjust_app_token);

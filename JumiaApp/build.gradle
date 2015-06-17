@@ -224,8 +224,6 @@ dependencies {
     /** LOCAL LIBS **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
-    compile 'com.google.android.support:wearable:1.1.0'
-    compile 'com.google.android.gms:play-services-wearable:7.0.0'
     /** Android wear releases **/
 //    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
 //    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
