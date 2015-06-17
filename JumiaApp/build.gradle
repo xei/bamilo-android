@@ -183,12 +183,24 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            minSdkVersion 9
             versionName "1.3.1"
             versionCode getAppVersionCode(6)
             signingConfig signingConfigs.shopSigning
             resConfigs "en"
         }
+
+        /* TODO
+        shopPreInstall {
+            applicationId "com.shop.android"
+            versionName "1.3.1"
+            versionCode 6
+            signingConfig signingConfigs.shopSigning
+            resConfigs "en"
+            android.sourceSets {
+                shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
+            }
+        }
+        */
 
         /**
          * #################### DARAZ ####################
@@ -199,6 +211,17 @@ android {
             versionCode getAppVersionCode(7)
             signingConfig signingConfigs.darazSigning
             resConfigs "en"
+        }
+
+        darazPreInstall {
+            applicationId "com.daraz.android"
+            versionName "1.3.2"
+            versionCode 7
+            signingConfig signingConfigs.darazSigning
+            resConfigs "en"
+            android.sourceSets {
+                darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
+            }
         }
 
         /**

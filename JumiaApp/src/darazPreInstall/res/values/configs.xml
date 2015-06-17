@@ -2,7 +2,7 @@
 <!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <!-- ##### MERGE: JUMIA BASE AND RELEASE ##### -->
+    <!-- ##### MERGE: DARAZ BASE AND RELEASE ##### -->
 
     <!-- ##### PRE INSTALL ##### -->
 
@@ -16,11 +16,8 @@
     <!-- ############### ADJUST ################# -->
     <!-- ######################################## -->
 
-    <!-- GH Tigo:       f7juys -->
-    <!-- NG Injoo:      6ohr47 -->
-    <!-- NG Tigo:       mkcqip -->
-    <!-- NG Infinix:    qwj7o2 -->
+    <!-- PK Infinix: y2129h -->
 
-    <string name="adjust_default_tracker">qwj7o2</string>
+    <string name="adjust_default_tracker">y2129h</string>
 
 </resources>
