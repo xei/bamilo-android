@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_root_retry_button"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_root_retry_network"
     style="@style/button_fallback_retry"
     android:layout_width="@dimen/inner_container_width"
     android:layout_height="50dp"
@@ -10,6 +11,7 @@
     android:orientation="horizontal" >
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/fragment_root_retry_button_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"
@@ -18,7 +20,8 @@
         android:singleLine="true"
         android:text="@string/try_again_retry"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/text_m" />
+        android:textSize="@dimen/text_m"
+        />
 
     <ImageView
         android:id="@+id/fragment_root_retry_spinning"
