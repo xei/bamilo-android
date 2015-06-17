@@ -4,11 +4,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mobile.view.R;
 
 /**
- * Created by rsoares on 6/15/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/06/15
  */
 public class ErrorLayoutFactory {
 
@@ -49,12 +55,6 @@ public class ErrorLayoutFactory {
         actualError = -1;
 
         this.mErrorLayout = errorLayout;
-//        errorLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                hideWarning();
-//            }
-//        });
     }
 
     public void showErrorLayout(int error) {
@@ -217,6 +217,9 @@ public class ErrorLayoutFactory {
         }
     }
 
+    /**
+     * Class used for building the layout.
+     */
     private class Builder{
 
         Builder(){
