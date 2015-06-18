@@ -5,7 +5,7 @@ package com.mobile.app;
 
 import android.content.Context;
 
-import com.mobile.framework.ErrorCode;
+import com.mobile.newFramework.ErrorCode;
 
 /**
  * @author nutzer2

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -31,19 +30,19 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.BaseHelper;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -67,18 +66,14 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * @author sergiopereira
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener, ViewStub.OnInflateListener {
 
-    protected static final String TAG = LogTagHelper.create(BaseFragment.class);
+    protected static final String TAG = BaseFragment.class.getSimpleName();
 
     public static final int RESTART_FRAGMENTS_DELAY = 500;
-
-    // private static Field sChildFragmentManagerField;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
@@ -223,14 +218,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get current time
         mLoadTime = System.currentTimeMillis();
         if (hasLayoutToInflate()) {
-            Log.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
+            Print.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
             View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
             ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
             contentContainer.setLayoutResource(mInflateLayoutResId);
             this.mContentView = contentContainer.inflate();
             return view;
         } else {
-            Log.i(TAG, "ON CREATE VIEW: HAS NO LAYOUT TO INFLATE");
+            Print.i(TAG, "ON CREATE VIEW: HAS NO LAYOUT TO INFLATE");
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -243,7 +238,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "ON VIEW CREATED");
+        Print.d(TAG, "ON VIEW CREATED");
         // Get current time
         if(mLoadTime == 0) mLoadTime = System.currentTimeMillis();
         // Set flag for requests
@@ -277,7 +272,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
-            Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
+            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
         }
     }
@@ -290,12 +285,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void showOrderSummaryIfPresent(int checkoutStep, OrderSummary orderSummary) {
         // Get order summary
         if (isOrderSummaryPresent) {
-            Log.i(TAG, "ORDER SUMMARY IS PRESENT");
+            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
             ft.commit();
         } else {
-            Log.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
         }
     }
 
@@ -317,14 +312,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "ON RESUME");
+        Print.d(TAG, "ON RESUME");
 
         isOnStoppingProcess = false;
-
-        /**
-         * Register service callback
-         */
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 
         if (getBaseActivity() != null && !isNestedFragment) {
             getBaseActivity().warningFactory.hideWarning();
@@ -380,7 +370,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         isOnStoppingProcess = true;
     }
 
@@ -406,7 +395,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * This method should be used when we known that the system clean data of application
      */
     public void restartAllFragments() {
-        Log.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
+        Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
 
         final BaseActivity activity = getBaseActivity();
 
@@ -419,7 +408,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 }
             }, RESTART_FRAGMENTS_DELAY);
         } else {
-            Log.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
+            Print.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
         }
     }
 
@@ -431,8 +420,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.i(TAG, "ON LOW MEMORY");
-
+        Print.i(TAG, "ON LOW MEMORY");
         // TODO - Validate this is necessary
         if (getView() != null && isHidden()) {
             unbindDrawables(getView());
@@ -445,7 +433,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
      */
     public void unbindDrawables(View view) {
-        Log.i(TAG, "UNBIND DRAWABLES");
+        Print.i(TAG, "UNBIND DRAWABLES");
         try {
 
             if (view.getBackground() != null) {
@@ -466,7 +454,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             }
 
         } catch (RuntimeException e) {
-            Log.w(TAG, "" + e);
+            Print.w(TAG, "" + e);
         }
     }
 
@@ -494,16 +482,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     /**
-     * Send request
+     * Send request showing the loading
      */
-    protected final void triggerContentEventNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-    }
-
-    /**
-     * Send request and show loading
-     */
-    protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         // Show loading
         showFragmentLoading();
         // Request
@@ -513,8 +494,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Send request and show progress view
      */
-    protected final void triggerContentEventProgress(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Show progress
         showActivityProgress();
+        // Request
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+    /**
+     * Send request
+     */
+    protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
@@ -529,7 +520,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * This method was created because the method on BaseActivity not working with dynamic forms
      */
     protected void hideKeyboard() {
-        Log.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
+        Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
@@ -550,89 +541,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return mainActivity;
     }
 
-    // TODO : Validate if is necessary
-    /**
-     * FIXES 
-     * FATAL EXCEPTION: main
-     * java.lang.IllegalStateException: No activity
-     * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
-     static {
-     Field f = null;
-     try {
-     f = Fragment.class.getDeclaredField("ChildFragmentManager");
-     f.setAccessible(true);
-     } catch (NoSuchFieldException e) {
-     Log.w(TAG, "Error getting ChildFragmentManager field", e);
-     }
-     sChildFragmentManagerField = f;
-     }
-     */
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        /**
-         // TODO : Validate if is necessary
-         if (sChildFragmentManagerField != null) {
-         try {
-         sChildFragmentManagerField.set(this, null);
-         } catch (Exception e) {
-         Log.e(TAG, "Error setting mChildFragmentManager field", e);
-         }
-         }
-         */
-    }
-
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-    /**
-     * Handles correct responses
-     */
-    private void handleResponse(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" size is : "+JumiaApplication.INSTANCE.responseCallbacks.size());
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-    }
-
-    /**
-     * Handles error responses
-     */
-    private void handleError(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+ bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-    }
-
     /**
      * Method used to redirect the native checkout to the old checkout method
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
-        Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
+        Print.w(TAG, "WARNING: GOTO WEB CHECKOUT");
         // Tracking
         String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         TrackerDelegator.trackNativeCheckoutError(userId, email, error);
@@ -671,7 +584,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                         getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                         break;
                 }
-                Log.d(TAG, "UPDATE ADJUST STATE: " + stateString);
+                Print.d(TAG, "UPDATE ADJUST STATE: " + stateString);
             }
         }
     }
@@ -717,7 +630,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showContinueShopping() {
-        Log.i(TAG, "ON SHOW CONTINUE LAYOUT");
+        Print.i(TAG, "ON SHOW CONTINUE LAYOUT");
         showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, this);
     }
 
@@ -822,7 +735,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case unknown
         else {
-            Log.w(TAG, "WARNING: UNKNOWN INFLATED STUB");
+            Print.w(TAG, "WARNING: UNKNOWN INFLATED STUB");
         }
     }
 
@@ -832,7 +745,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param inflated The inflated view
      */
     private void onInflateContinue(ViewStub stub, View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: EMPTY");
+        Print.i(TAG, "ON INFLATE STUB: EMPTY");
         // Get associated data
         int emptyStringResId = (int) stub.getTag(R.id.stub_text_title);
         int emptyDrawableResId = (int) stub.getTag(R.id.stub_drawable);
@@ -853,7 +766,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set the home fall back view.
      */
     private void onInflateHomeFallBack(View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+        Print.i(TAG, "ON INFLATE STUB: FALL BACK");
         try {
             boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -869,7 +782,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                if(ShopSelector.isRtl()){
                     getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -891,7 +804,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Set the loading view.
      */
     protected void onInflateLoading(View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: LOADING");
+        Print.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
     }
@@ -901,7 +814,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param inflated The inflated view
      */
     protected void onInflateNoNetwork(View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: RETRY");
+        Print.i(TAG, "ON INFLATE STUB: RETRY");
         // Set view
         inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         // Hide other stubs
@@ -913,7 +826,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param inflated The inflated view
      */
     private void onInflateUnexpectedError(View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
+        Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         inflated.findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
@@ -924,9 +837,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param inflated The inflated view
      */
     private void onInflateMaintenance(View inflated) {
-        Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
+        Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
@@ -946,7 +859,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @see {@link CheckoutAboutYouFragment#onResume()} <br> {@link SessionLoginFragment#onResume()}
      */
     protected void forceInputAlignToLeft() {
-        if (getBaseActivity() != null && !getBaseActivity().getApplicationContext().getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (getBaseActivity() != null && !ShopSelector.isRtl()) {
             // Save the default locale
             mLocale = Locale.getDefault();
             // Force align to left
@@ -984,7 +897,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @return intercept or not
      */
     public boolean handleSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON HANDLE SUCCESS EVENT");
+        Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -995,7 +908,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 getBaseActivity().updateCartInfo();
                 return true;
             case LOGOUT_EVENT:
-                Log.i(TAG, "LOGOUT EVENT");
+                Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
             case LOGIN_EVENT:
@@ -1015,7 +928,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        Print.i(TAG, "ON HANDLE ERROR EVENT");
 
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
@@ -1029,7 +942,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             return false;
         }
 
-        Log.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
+        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
                 case IO:
@@ -1138,7 +1051,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             // Case choose country button in maintenance page
         else if(id == R.id.fragment_root_cc_maintenance) onClickMaintenanceChooseCountry();
             // Case unknown
-        else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+        else Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
     }
 
     /**
@@ -1151,7 +1064,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             view.findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
             view.findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
         // Common method for retry buttons
         onClickRetryButton(view);
@@ -1167,7 +1080,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             view.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
             view.findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
         // Common method for retry buttons
         onClickRetryButton(view);
@@ -1219,7 +1132,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Clean the current session and warning user.
      */
     protected final void onUserNotAcceptRequiredPermissions() {
-        Log.i(TAG, "USER NOT ACCEPT THE SECOND FACEBOOK DIALOG");
+        Print.i(TAG, "USER NOT ACCEPT THE SECOND FACEBOOK DIALOG");
         // Clean session
         clearCredentials();
         FacebookHelper.cleanFacebookSession();
@@ -1235,7 +1148,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param callback The requester
      */
     protected final void onMakeNewRequiredPermissionsRequest(Session session, Session.StatusCallback callback) {
-        Log.i(TAG, "USER NOT ACCEPT EMAIL PERMISSION");
+        Print.i(TAG, "USER NOT ACCEPT EMAIL PERMISSION");
         // Show loading
         showFragmentLoading();
         // Make new permissions request
@@ -1248,7 +1161,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param callback The requester
      */
     protected final void onMakeGraphUserRequest(Session session, Request.GraphUserCallback callback) {
-        Log.i(TAG, "USER ACCEPT PERMISSIONS");
+        Print.i(TAG, "USER ACCEPT PERMISSIONS");
         // Show loading
         showFragmentLoading();
         // Make request to the me API
@@ -1270,20 +1183,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Process the product click
-     *
-     * @param targetUrl
-     * @param bundle
      * @author sergiopereira
      */
     protected void onClickProduct(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK PRODUCT");
+        Print.i(TAG, "ON CLICK PRODUCT");
         if (targetUrl != null) {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
+            Print.i(TAG, "WARNING: URL IS NULL");
         }
     }
 
@@ -1301,27 +1211,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Process the category click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
-     */
-    protected void onClickCategory(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATEGORY");
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
-        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
      * Process the catalog click
-     *
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
      */
     protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATALOG");
+        Print.i(TAG, "ON CLICK CATALOG");
         if (targetUrl != null) {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
@@ -1330,52 +1223,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
         } else {
-            Log.w(TAG, "WARNING: URL IS NULL");
+            Print.w(TAG, "WARNING: URL IS NULL");
         }
-    }
-
-
-
-    /**
-     * Process the brand click
-     *
-     * @param targetUrl
-     * @param bundle
-     */
-    protected void onClickBrand(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK BRAND");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the campaign click.
-     *
-     * @param view
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
-     */
-    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
     }
 
     /**
      * Create an array with a single campaign
-     *
-     * @param targetTitle
-     * @param targetUrl
-     * @return ArrayList with one campaign
-     * @author sergiopereira
      */
-    protected ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(targetTitle);

@@ -10,7 +10,6 @@ import android.content.pm.Signature;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -19,13 +18,15 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.LoginButton;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.utils.ui.UIUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Facebook helper.

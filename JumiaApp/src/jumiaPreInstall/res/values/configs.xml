@@ -5,6 +5,22 @@
     <!-- ##### MERGE: JUMIA BASE AND RELEASE ##### -->
 
     <!-- ##### PRE INSTALL ##### -->
+
+    <!-- ################################################## -->
+    <!-- ############### PRE INSTALL FILE ################# -->
+    <!-- ################################################## -->
+
     <bool name="create_pre_install_file">true</bool>
-    <string name="adjust_default_tracker">6ohr47</string>
+
+    <!-- ######################################## -->
+    <!-- ############### ADJUST ################# -->
+    <!-- ######################################## -->
+
+    <!-- GH Tigo:       f7juys -->
+    <!-- NG Injoo:      6ohr47 -->
+    <!-- NG Tigo:       mkcqip -->
+    <!-- NG Infinix:    qwj7o2 -->
+
+    <string name="adjust_default_tracker">qwj7o2</string>
+
 </resources>

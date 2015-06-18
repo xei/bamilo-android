@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.SearchSuggestion;
+import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import java.util.List;
 
 /**
  * Adapter used on RecentSearchFragment
  * 
  */
-public class SearchSuggestionsAdapter extends ArrayAdapter<SearchSuggestion> {
+public class SearchSuggestionsAdapter extends ArrayAdapter<Suggestion> {
 
     private LayoutInflater mInflater;
 
-    public SearchSuggestionsAdapter(Context context, List<SearchSuggestion> objects) {
+    public SearchSuggestionsAdapter(Context context, List<Suggestion> objects) {
         super(context, 0, 0, objects);
         mInflater = LayoutInflater.from(context);
     }
@@ -35,7 +34,7 @@ public class SearchSuggestionsAdapter extends ArrayAdapter<SearchSuggestion> {
         } else {
             view = convertView;
         }
-        Log.d("ITEM on position " + position);
+        Print.d("ITEM on position " + position);
 
         TextView tV = (TextView) view.findViewById(R.id.item_text_suggestion);
         tV.setText(getItem(position).getResult());

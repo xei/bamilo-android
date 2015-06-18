@@ -13,8 +13,9 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
@@ -69,8 +70,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * @author sergiopereira
  */
@@ -104,12 +103,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ON CREATE");
+        Print.d(TAG, "ON CREATE");
         // Enable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(false);
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
-            Log.d(TAG, "################### SAVED INSTANCE IS NULL");
+            Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
             // Get deep link
@@ -128,7 +127,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
+            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
@@ -139,7 +138,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
             } else {
-                Log.d(TAG, "COULDN'T RECOVER BACKSTACK");
+                Print.d(TAG, "COULDN'T RECOVER BACKSTACK");
             }
         }
 
@@ -160,7 +159,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d(TAG, "ON NEW INTENT");
+        Print.d(TAG, "ON NEW INTENT");
         // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
         // Get deep link
@@ -179,7 +178,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "ON RESUME");
+        Print.d(TAG, "ON RESUME");
         //
         Ad4PushTracker.get().startActivity(this);
     }
@@ -192,7 +191,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         //
         Ad4PushTracker.get().stopActivity(this);
     }
@@ -203,7 +202,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     @Override
     protected void onStop() {
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         super.onStop();
     }
 
@@ -215,7 +214,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -229,7 +228,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType.toString());
+        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType.toString());
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -239,7 +238,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 frags.add(entry);
             }
         } catch (Exception e) {
-            Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
+            Print.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
         }
         // Save the current fragment type on orientation change
         outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, mCurrentFragmentType);
@@ -403,7 +402,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = WriteSellerReviewFragment.getInstance(bundle);
                 break;
             default:
-                Log.w(TAG, "INVALID FRAGMENT TYPE");
+                Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
 
@@ -411,7 +410,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             popBackStackUntilTag(FragmentType.HOME.toString());
         }
 
-        Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
+        Print.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         mCurrentFragmentType = type;
 
@@ -426,7 +425,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     @Override
     public void onBackPressed() {
-        Log.i(TAG, "ON BACK PRESSED");
+        Print.i(TAG, "ON BACK PRESSED");
         // This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
         if (isInMaintenance()) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
@@ -447,17 +446,17 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         fragment = getActiveFragment();
         // Case navigation opened
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-            Log.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+            Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         }
         // Case fragment not allow back pressed
         else if (fragment == null || !fragment.allowBackPressed()) {
-            Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+            Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
         }
         // Case fragment allow back pressed
         else {
-            Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
         }
     }
 
@@ -468,11 +467,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     public BaseFragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            Log.i("BACKSTACK", "getBackStackEntryCount is 0");
+            Print.i("BACKSTACK", "getBackStackEntryCount is 0");
             return null;
         }
         String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        Log.i("BACKSTACK", "getActiveFragment:" + tag);
+        Print.i("BACKSTACK", "getActiveFragment:" + tag);
         return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
@@ -506,11 +505,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      * @return valid or invalid
      */
     private boolean isValidDeepLinkNotification(Bundle bundle) {
-        Log.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
+        Print.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
         if (bundle != null) {
             // Get fragment type
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-            Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
             if (fragmentType != FragmentType.UNKNOWN) {
                 // Restart back stack and fragment manager
@@ -524,7 +523,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return true;
             }
         }
-        Log.i(TAG, "DEEP LINK: INVALID INTENT");
+        Print.i(TAG, "DEEP LINK: INVALID INTENT");
         return false;
     }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- ##### MERGE: JUMIA BASE AND RELEASE ##### -->
+
+    <!-- ##### PRE INSTALL ##### -->
+
+    <!-- ################################################## -->
+    <!-- ############### PRE INSTALL FILE ################# -->
+    <!-- ################################################## -->
+
+    <bool name="create_pre_install_file">true</bool>
+
+    <!-- ######################################## -->
+    <!-- ############### ADJUST ################# -->
+    <!-- ######################################## -->
+
+    <!-- Injoo: 6ohr47 -->
+
+    <!--<string name="adjust_default_tracker">6ohr47</string>-->
+
+</resources>

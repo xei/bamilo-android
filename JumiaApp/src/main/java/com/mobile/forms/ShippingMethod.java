@@ -4,80 +4,70 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.rest.RestConstants;
+import com.mobile.newFramework.requests.checkout.ShippingMethodHolder;
 import com.mobile.view.R;
 
-import org.json.JSONObject;
-
 public class ShippingMethod {
-    private String shippingMethod;
-    private String label;
-    private String deliveryTime;
-    private String deliveryFee;
-    
+
+    public ShippingMethodHolder shippingMethodHolder;
+
     public ShippingMethod(String shippingMethod, String label, String deliveryTime) {
-        this.shippingMethod = shippingMethod;
-        this.label = label;
-        this.deliveryTime = deliveryTime;
+        this.shippingMethodHolder = new ShippingMethodHolder();
+        this.shippingMethodHolder.shippingMethod = shippingMethod;
+        this.shippingMethodHolder.label = label;
+        this.shippingMethodHolder.deliveryTime = deliveryTime;
     }
     
     public ShippingMethod() {
-        this.shippingMethod = "";
-        this.label = "";
-        this.deliveryTime = "";
-        this.deliveryFee = "";
+        this.shippingMethodHolder = new ShippingMethodHolder();
+        this.shippingMethodHolder.shippingMethod = "";
+        this.shippingMethodHolder.label = "";
+        this.shippingMethodHolder.deliveryTime = "";
+        this.shippingMethodHolder.deliveryFee = "";
     }
     
     public String getDeliveryFee() {
-        return deliveryFee;
+        return shippingMethodHolder.deliveryFee;
     }
 
     public void setDeliveryFee(String deliveryFee) {
-        this.deliveryFee = deliveryFee;
+        this.shippingMethodHolder.deliveryFee = deliveryFee;
     }
     
     public String getShippingMethod() {
-        return shippingMethod;
+        return shippingMethodHolder.shippingMethod;
     }
 
     public void setShippingMethod(String shippingMethod) {
-        this.shippingMethod = shippingMethod;
+        this.shippingMethodHolder.shippingMethod = shippingMethod;
     }
 
     public String getLabel() {
-        return label;
+        return shippingMethodHolder.label;
     }
 
     public void setLabel(String label) {
-        this.label = label;
+        this.shippingMethodHolder.label = label;
     }
 
     public String getDeliveryTime() {
-        return deliveryTime;
+        return shippingMethodHolder.deliveryTime;
     }
 
     public void setDeliveryTime(String deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
-    
-    public void initialize(String key, JSONObject jsonObject){
-        this.shippingMethod = key;
-        this.label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-        this.deliveryTime = jsonObject.optString(RestConstants.JSON_DELIVERY_TIME);
-        // Missing delivery fee
-        
+        this.shippingMethodHolder.deliveryTime = deliveryTime;
     }
     
     public View generateForm(final Context context) {
         
         View view = View.inflate(context, R.layout.checkout_shipping_fee_time, null);
 
-        if(!deliveryTime.equals("")){
+        if(!shippingMethodHolder.deliveryTime.equals("")){
             TextView shippingTimeLabel = (TextView)view.findViewById(R.id.shipping_time_label);
             TextView shippingTime = (TextView)view.findViewById(R.id.shipping_time);
             shippingTimeLabel.setVisibility(View.VISIBLE);
             shippingTime.setVisibility(View.VISIBLE);
-            shippingTime.setText(deliveryTime);
+            shippingTime.setText(shippingMethodHolder.deliveryTime);
         }
         
         return view;

@@ -11,7 +11,6 @@ import android.view.View;
 
 /**
  * Class
- * TODO: <br>
  * - Create method for RTL from attrs<br>
  * - Create method to enable or disable touch interception.
  * @author sergiopereira
@@ -70,9 +69,6 @@ public class HorizontalListView extends RecyclerView {
         setLayoutManager(mLayoutManager);
     }
 
-    /**
-     * TODO
-     */
     public void enableTouchInterception(){
         interceptTouchEvent = true;
     }

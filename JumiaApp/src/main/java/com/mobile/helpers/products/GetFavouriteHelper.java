@@ -3,16 +3,15 @@ package com.mobile.helpers.products;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.Favourite;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 
 public class GetFavouriteHelper implements IResponseCallback {
@@ -32,7 +31,7 @@ public class GetFavouriteHelper implements IResponseCallback {
      * @param requester The listener
      */
     public GetFavouriteHelper(IResponseCallback requester) {
-        Log.d(TAG, "ON CONSTRUCTOR");
+        Print.d(TAG, "ON CONSTRUCTOR");
         // Get call back
         mResponseCallback = requester;
         // Get all items on database
@@ -43,7 +42,7 @@ public class GetFavouriteHelper implements IResponseCallback {
      * Get the favourite items
      */
     public void getCompleteFavouriteList() {
-        Log.d(TAG, "ON GET COMPLETE FAVOURITE LIST");
+        Print.d(TAG, "ON GET COMPLETE FAVOURITE LIST");
         // Get incomplete items
         ArrayList<String> incompleteItems = FavouriteTableHelper.getIncompleteFavouriteList();
         // For each request to complete
@@ -62,7 +61,7 @@ public class GetFavouriteHelper implements IResponseCallback {
      * Get the favourite items
      */
     private void getFavouriteList() {
-        Log.d(TAG, "ON GET FAVOURITE LIST");
+        Print.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<Favourite> favourites = FavouriteTableHelper.getFavouriteList();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
@@ -81,7 +80,7 @@ public class GetFavouriteHelper implements IResponseCallback {
         // Validate event
         switch (eventType) {
         case GET_PRODUCT_EVENT:
-            Log.d(TAG, "ON RESPONSE COMPLETE: GET_PRODUCT_EVENT");
+            Print.d(TAG, "ON RESPONSE COMPLETE: GET_PRODUCT_EVENT");
             // Inc counter
             counter++;
             // Get complete product and update
@@ -91,7 +90,7 @@ public class GetFavouriteHelper implements IResponseCallback {
             if (counter == mNumberOfIncomplete) getFavouriteList();
             break;
         default:
-            Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
+            Print.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
             break;
         }
     }
@@ -107,14 +106,14 @@ public class GetFavouriteHelper implements IResponseCallback {
         // Validate event
         switch (eventType) {
         case GET_PRODUCT_EVENT:
-            Log.d(TAG, "ON RESPONSE ERROR: GET_PRODUCT_EVENT");
+            Print.d(TAG, "ON RESPONSE ERROR: GET_PRODUCT_EVENT");
             // Inc counter
             counter++;
             // in case the last response was an error
             if (counter == mNumberOfIncomplete) getFavouriteList();
             break;
         default:
-            Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
+            Print.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
             break;
         }
     }

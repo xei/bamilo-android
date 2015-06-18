@@ -14,16 +14,15 @@ import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author Paulo Carvalho
@@ -71,7 +70,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -82,7 +81,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -99,7 +98,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 
         // Get view pager
         mMyOrdersPager = (ViewPager) view.findViewById(R.id.my_orders_pager);
@@ -140,7 +139,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -151,7 +150,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -162,7 +161,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -173,7 +172,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -184,7 +183,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         // mPositionToStart = 0;
     }
 
@@ -256,13 +255,11 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState");
+        Print.i(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mPositionToStart);
 

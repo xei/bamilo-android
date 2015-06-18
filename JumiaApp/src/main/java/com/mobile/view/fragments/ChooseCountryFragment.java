@@ -14,22 +14,22 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.CountryObject;
-import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.CountriesConfigsTableHelper;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -38,8 +38,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Fragment used on SplashScreen on First Use
@@ -87,7 +85,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -98,7 +96,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }
 
@@ -109,7 +107,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         
         // Validate the current shop
         if(ShopSelector.getShopId() != null) {
@@ -133,7 +131,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");  
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -144,7 +142,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -155,7 +153,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -166,7 +164,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -177,7 +175,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -186,7 +184,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onDestroy() {
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         super.onDestroy();
         // Clean memory
         countryAdapter = null;
@@ -227,7 +225,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         } 
         
         int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
-        Log.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
+        Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
         int count = 0;
         countries = new String[countriesAvailable];
@@ -317,20 +315,18 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
-            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
             /**
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
-            Log.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
+            Print.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-            //editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-            editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+            editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
             editor.apply();
 
             // Clean memory
@@ -361,12 +357,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void triggerGetJumiaCountries() {
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
-        } else {
-            showFragmentErrorRetry();
-        }
+        triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
     }
 
     /*
@@ -388,7 +379,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void onClickRetryButton(){
-        Log.d(TAG, "ON CLICK: RETRY BUTTON");
+        Print.d(TAG, "ON CLICK: RETRY BUTTON");
         triggerGetJumiaCountries();
     }
     
@@ -402,10 +393,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED SUCCESS EVENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED SUCCESS EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type
@@ -413,7 +404,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         // Validate event type
         switch (eventType) {
         case GET_GLOBAL_CONFIGURATIONS:
-            Log.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
             // Get countries
             JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Show countries
@@ -421,7 +412,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             showFragmentContentContainer();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }
@@ -434,25 +425,25 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onRequestError(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type and error type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         if(super.handleErrorEvent(bundle)) return;
         
         // Validate event type
         switch (eventType) {
         case GET_GLOBAL_CONFIGURATIONS:
-            Log.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
             // Show retry view
             showFragmentErrorRetry();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }

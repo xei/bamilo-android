@@ -14,12 +14,13 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CatalogPage;
-import com.mobile.framework.objects.Product;
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
+import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -271,15 +272,15 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     private void setProductPrice(ProductViewHolder holder, Product item) {
         // Case discount
         if(item.hasDiscountPercentage()) {
-            holder.discount.setText(item.getSpecialPrice());
-            holder.price.setText(item.getPrice());
+            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
+            holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText("-" + item.getMaxSavingPercentage().intValue() + "%");
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
-            holder.discount.setText(item.getSpecialPrice());
+            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText("");
             holder.percentage.setVisibility(View.GONE);
         }

@@ -11,10 +11,10 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.view.R;
 
 /**

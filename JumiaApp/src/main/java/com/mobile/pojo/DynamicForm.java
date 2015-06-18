@@ -9,9 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.forms.Form;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+//import com.mobile.newFramework.forms.InputType;
 
 /**
  * This Class defines the representation of a dynamic form
@@ -282,7 +283,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             } else if (null != control) {
                 model.put(control.getName(), "");
             } else {
-                Log.e(TAG, "control is null");
+                Print.e(TAG, "control is null");
             }
         }
 

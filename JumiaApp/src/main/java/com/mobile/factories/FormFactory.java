@@ -7,17 +7,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.constants.FormConstants;
-import com.mobile.forms.Form;
-import com.mobile.forms.IFormField;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.MetaFormExtractor;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>
@@ -112,7 +112,7 @@ public class FormFactory {
         if (context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null) {
             scale = context.getResources().getDisplayMetrics().density;
         }
-        Log.i(TAG, "code1register CREATING FORM : "+formType);
+        Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
                 parent = createAddressForm(context, form, ctrlParams);
@@ -385,7 +385,7 @@ public class FormFactory {
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
         LinearLayout parent;
-        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
+        Print.i(TAG, "code1form id : " + form.id + " name: " + form.name);
         if(context == null){
             return null;
         }
@@ -401,7 +401,7 @@ public class FormFactory {
         LinearLayout groupLayout = new LinearLayout(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+        if(ShopSelector.isRtl()){
             groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
         }
 
@@ -415,12 +415,12 @@ public class FormFactory {
         MetaFormExtractor.dumpIFormField(transformedFields);
 
         for (IFormField frmEntry : transformedFields) {
-            Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
+            Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             ctrl = new DynamicFormItem(userForm, context, frmEntry);
 
             if (ctrl.isMeta() || ctrl.hasNoType()) {
                 // Don't waste space with meta fields nor field without type
-                Log.i(TAG, "Meta or no type field");
+                Print.i(TAG, "Meta or no type field");
                 userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             } else if ( ! ctrl.isDatePart() ) {
                 userForm.addControl(ctrl, ctrlParams);

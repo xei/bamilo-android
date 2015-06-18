@@ -17,16 +17,16 @@ import com.mobile.controllers.AppSharingAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
@@ -76,7 +76,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -87,7 +87,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
     
     /*
@@ -97,7 +97,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         showMyAccount(view);
         showAppSharing(view);
     }
@@ -110,7 +110,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -121,7 +121,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -132,7 +132,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -143,7 +143,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -154,7 +154,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /**
@@ -234,7 +234,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         case POSITION_SHARE_APP:
             String text;
             String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
-            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if(ShopSelector.isRtl()){
                 text = getString(R.string.share_app_link) + " " + preText;
             } else {
                 text = preText + " " + getString(R.string.share_app_link);

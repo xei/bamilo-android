@@ -18,13 +18,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ListView;
 
-import com.mobile.framework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import de.akquinet.android.androlog.Log;
 
 public class PreferenceListFragment extends ListFragment implements OnPreferenceClickListener{
     
@@ -193,7 +192,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
                 postBindPreferences();
             }
         }catch(Exception e){
-           Log.e(TAG, "Could not set Preference Screen", e);
+           Print.e(TAG, "Could not set Preference Screen", e);
         }
     }
     
@@ -209,7 +208,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
             m.setAccessible(true);
             return (PreferenceScreen) m.invoke(mPreferenceManager);
         }catch(Exception e){
-            Log.e(TAG, "Could not get Preference Screen", e);
+            Print.e(TAG, "Could not get Preference Screen", e);
             return null;
         }
     }
@@ -235,7 +234,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
             PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(mPreferenceManager, getActivity(), preferencesResId, getPreferenceScreen());
             setPreferenceScreen(prefScreen);
         }catch(Exception e){
-            Log.e(TAG, "Could not add preferences", e);
+            Print.e(TAG, "Could not add preferences", e);
         }
     }
     

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.mobile.framework.objects.CatalogPage;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
 
 /**
  * Created by spereira on 2/27/15.

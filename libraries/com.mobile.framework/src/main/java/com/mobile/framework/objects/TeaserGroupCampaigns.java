@@ -8,7 +8,7 @@
 //
 //import org.json.JSONObject;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * Class used to represent a group of teaser campaigns

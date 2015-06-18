@@ -17,10 +17,11 @@ package com.mobile.utils.photoview.gestures;
 
 import android.content.Context;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
+
+import de.akquinet.android.androlog.Log;
 
 public class CupcakeGestureDetector implements GestureDetector {
 

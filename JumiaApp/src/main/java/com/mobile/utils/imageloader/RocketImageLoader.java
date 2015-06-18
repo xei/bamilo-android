@@ -26,13 +26,12 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 public class RocketImageLoader {
 
@@ -367,7 +366,7 @@ public class RocketImageLoader {
 
     public void stopProcessingQueue(String tag) {        
         if (isVolleyRequestQueueRunning) {
-            Log.i("RocketImageLoader", " --- > STOP ProcessingQueue");
+            Print.i("RocketImageLoader", " --- > STOP ProcessingQueue");
             isVolleyRequestQueueRunning = false;
             volleyRequestQueue.stop();
             if (null != tag)
@@ -379,7 +378,7 @@ public class RocketImageLoader {
     public void startProcessingQueue() {
         if (!isVolleyRequestQueueRunning) {
             isVolleyRequestQueueRunning = true;
-            Log.i("RocketImageLoader", " --- > START ProcessingQueue");        
+            Print.i("RocketImageLoader", " --- > START ProcessingQueue");
             volleyRequestQueue.start();
         }
     }

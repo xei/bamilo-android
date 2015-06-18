@@ -2,16 +2,15 @@ package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.utils.DateTimeUtils;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.utils.DateTimeUtils;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -19,6 +18,8 @@ import com.mobile.view.R;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Campaign teaser

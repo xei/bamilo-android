@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- ##### MERGE: DARAZ BASE AND RELEASE ##### -->
+
+    <!-- ##### PRE INSTALL ##### -->
+
+    <!-- ################################################## -->
+    <!-- ############### PRE INSTALL FILE ################# -->
+    <!-- ################################################## -->
+
+    <bool name="create_pre_install_file">true</bool>
+
+    <!-- ######################################## -->
+    <!-- ############### ADJUST ################# -->
+    <!-- ######################################## -->
+
+    <!-- PK Infinix: y2129h -->
+
+    <string name="adjust_default_tracker">y2129h</string>
+
+</resources>
