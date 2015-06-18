@@ -21,7 +21,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetApiInfoHelper;
