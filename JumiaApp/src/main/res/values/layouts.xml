@@ -98,4 +98,6 @@
     <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
 
+    <!-- MY ACCOUNT -->
+    <item name="my_account_user_data_fragment"         type="layout">@layout/_def_my_account_user_data_fragment</item>
 </resources>

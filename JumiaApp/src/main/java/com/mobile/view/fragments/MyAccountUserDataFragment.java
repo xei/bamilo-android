@@ -23,7 +23,6 @@ import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
