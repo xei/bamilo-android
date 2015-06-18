@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.FavouriteTableHelper;

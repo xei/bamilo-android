@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.forms.PickUpStationObject;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -127,7 +128,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
     private void setDetailsWithBold(PickUpStationObject pickUpStationObject, PickupStationViewHolder pickupStationViewHolder) {
         final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
         final StyleSpan iss = new StyleSpan(android.graphics.Typeface.NORMAL);
-        boolean bamilo = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+        boolean bamilo = ShopSelector.isRtl();
         String divider = " ";
 
         // Address

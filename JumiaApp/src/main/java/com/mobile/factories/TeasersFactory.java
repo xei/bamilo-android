@@ -273,7 +273,7 @@
 //            // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
 //            horizontalScrollView.setHasFixedSize(true);
 //            // RTL
-//            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+//            Boolean isRTL = mContext.ShopSelector.isRtl(context);
 //            if (isRTL) {
 //                horizontalScrollView.enableReverseLayout();
 //            }

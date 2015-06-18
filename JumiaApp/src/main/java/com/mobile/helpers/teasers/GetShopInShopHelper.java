@@ -25,9 +25,9 @@ import java.util.Map;
  *
  * @author sergiopereira
  */
-public class GetShopHelper extends SuperBaseHelper {
+public class GetShopInShopHelper extends SuperBaseHelper {
 
-    private static String TAG = GetShopHelper.class.getSimpleName();
+    private static String TAG = GetShopInShopHelper.class.getSimpleName();
 
     public static final String INNER_SHOP_TAG = "key";
 
@@ -50,7 +50,6 @@ public class GetShopHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new GetShopInShopPage(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getShopInShop);
     }
 
@@ -59,7 +58,7 @@ public class GetShopHelper extends SuperBaseHelper {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         StaticPage staticPage = (StaticPage) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, staticPage);
         mRequester.onRequestComplete(bundle);
     }
 

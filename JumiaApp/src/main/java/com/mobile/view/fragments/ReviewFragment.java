@@ -16,6 +16,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -223,7 +224,7 @@ public class ReviewFragment extends BaseFragment {
                 typeLine.setOrientation(LinearLayout.HORIZONTAL);
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                if(ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                     typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
                 }
                 typeLine.setLayoutParams(params);

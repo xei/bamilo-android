@@ -1,59 +1,60 @@
 package com.mobile.newFramework.objects.statics;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * This class represents a static page that will display a CMS block. it can be static block, or shops in shop type
  * Created by Paulo Carvalho on 4/10/15.
+ *
+ * @modified sergiopereira
  */
-public class StaticPage implements IJSONSerializable {
+public class StaticPage implements IJSONSerializable, Parcelable {
+
+    private static final String TAG = StaticPage.class.getSimpleName();
 
     private String mHtml;
-    private String mStaticPageType;
-    public static final String SHOPS_IN_SHOP = "shop";
-    public static final String STATIC_PAGE = "static_page";
 
+    private ArrayList<StaticFeaturedBox> mFeaturedBoxes;
 
+    /**
+     * Empty constructor for JSON converter
+     */
     public StaticPage() {
-        this.setHtml("");
-        this.setStaticPageType("");
-
     }
-
-    public String getHtml() {
-        return mHtml;
-    }
-
-    public void setHtml(String html) {
-        this.mHtml = html;
-    }
-
-    public String getStaticPageType() {
-        return mStaticPageType;
-    }
-
-    public void setStaticPageType(String staticPageType) {
-        this.mStaticPageType = staticPageType;
-    }
-
-
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONObject dataObject = jsonObject.getJSONObject(Constants.BUNDLE_DATA_KEY);
-        if(dataObject != null){
-            mStaticPageType = dataObject.optString(RestConstants.JSON_TYPE_TAG);
-            mHtml = dataObject.optString(RestConstants.JSON_HTML_TAG);
-        } else {
-            return false;
+        // Get html
+        mHtml = jsonObject.optString(RestConstants.JSON_HTML_TAG);
+        // Get featured box (optional)
+        JSONArray array = jsonObject.optJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
+        if(array != null && array.length() > 0) {
+            mFeaturedBoxes = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                try {
+                    JSONObject featuredBoxObject = array.getJSONObject(i);
+                    StaticFeaturedBox featuredBox = new StaticFeaturedBox();
+                    featuredBox.initialize(featuredBoxObject);
+                    mFeaturedBoxes.add(featuredBox);
+                } catch (JSONException e) {
+                    Print.w(TAG, "WARNING PARSING FEATURED BOX: " + e.getMessage());
+                }
+            }
         }
-
         return true;
     }
 
@@ -64,7 +65,64 @@ public class StaticPage implements IJSONSerializable {
 
     @Override
     public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.OBJECT_DATA;
     }
 
+    public String getHtml() {
+        return mHtml;
+    }
+
+    public ArrayList<StaticFeaturedBox> getFeaturedBoxes() {
+        return mFeaturedBoxes;
+    }
+
+    public boolean hasFeaturedBoxes() {
+        return CollectionUtils.isNotEmpty(mFeaturedBoxes);
+    }
+
+    public boolean hasHtml() {
+        return !TextUtils.isEmpty(mHtml);
+    }
+
+    /*
+     * ########### Parcelable ###########
+     */
+
+    protected StaticPage(Parcel in) {
+        mHtml = in.readString();
+        if (in.readByte() == 0x01) {
+            mFeaturedBoxes = new ArrayList<>();
+            in.readList(mFeaturedBoxes, StaticFeaturedBox.class.getClassLoader());
+        } else {
+            mFeaturedBoxes = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mHtml);
+        if (mFeaturedBoxes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mFeaturedBoxes);
+        }
+    }
+
+    public static final Creator<StaticPage> CREATOR = new Creator<StaticPage>() {
+        @Override
+        public StaticPage createFromParcel(Parcel in) {
+            return new StaticPage(in);
+        }
+
+        @Override
+        public StaticPage[] newArray(int size) {
+            return new StaticPage[size];
+        }
+    };
 }

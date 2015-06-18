@@ -14,7 +14,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;

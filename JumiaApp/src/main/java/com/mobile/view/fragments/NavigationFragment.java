@@ -20,6 +20,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
@@ -230,7 +231,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         tVSearch.setContentDescription("calabash_" + text);
         
         // RTL VALIDATION
-        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+        if(ShopSelector.isRtl()){
             tVSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRes, 0);
         } else {
             tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
