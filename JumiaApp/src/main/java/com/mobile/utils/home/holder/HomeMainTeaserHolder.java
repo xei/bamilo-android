@@ -3,6 +3,8 @@ package com.mobile.utils.home.holder;
 import android.content.Context;
 import android.view.View;
 
+import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
+import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
@@ -35,7 +37,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     public PreviewViewPager pager;
 
-    public CirclePageIndicator indicator;
+    public InfiniteCirclePageIndicator indicator;
 
     public View container;
 
@@ -44,7 +46,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         // Tablet flag
         isTablet = DeviceInfoHelper.isTabletDevice(mContext);
         // Pager indicator
-        indicator = (CirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
+        indicator = (InfiniteCirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
         // Pager indicator
         container = itemView.findViewById(R.id.home_teaser_main_container);
         // Set height
@@ -80,8 +82,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NULL");
             // Create adapter
             HomeMainTeaserAdapter adapter = new HomeMainTeaserAdapter(mContext, group.getData(), mParentClickListener, isTablet);
+
+            InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(adapter);
+            infinitePagerAdapter.setOneItemMode();
+            infinitePagerAdapter.enableInfinitePages(adapter.getCount() > 1);
+
             // Add adapter to pager
-            pager.setAdapter(adapter);
+            pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
             // Set default position
