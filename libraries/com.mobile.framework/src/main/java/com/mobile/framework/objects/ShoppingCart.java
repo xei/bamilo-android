@@ -389,7 +389,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeInt(mCartCount);
 		dest.writeString(mVatValue);
 		dest.writeDouble(mShippingValue);
-		dest.writeBooleanArray(new boolean[] { hasSumCosts });
+		dest.writeBooleanArray(new boolean[]{hasSumCosts});
 		dest.writeDouble(mExtraCosts);
 		dest.writeString(mSumCostsValue);
 		dest.writeString(mCouponDiscount);
@@ -400,6 +400,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
         dest.writeString(mSubTotal);
         dest.writeDouble(mSubTotalDouble);
         dest.writeDouble(mSubTotalConvertedDouble);
+		dest.writeBooleanArray(new boolean[]{mVatLabelEnable});
 	}
 
 	/**
@@ -426,6 +427,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
         mSubTotal = in.readString();
         mSubTotalDouble = in.readDouble();
         mSubTotalConvertedDouble = in.readDouble();
+		in.readBooleanArray(new boolean[] { mVatLabelEnable });
 	}
 
 	/**
