@@ -316,7 +316,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
-            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
             /**
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.

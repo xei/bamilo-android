@@ -137,6 +137,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public Map<String, String> simpleData;
         public String variation;
         public String productUrl;
+        public int maxQuantity;
     }
 
     /**
@@ -753,6 +754,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
                 values.productUrl = item.getProductUrl();
+                values.maxQuantity = item.getMaxQuantity();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -958,15 +960,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
+        long actualMaxQuantity = prodItem.itemValues.stock < prodItem.itemValues.maxQuantity ? prodItem.itemValues.stock : prodItem.itemValues.maxQuantity;
         prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+        if(actualMaxQuantity > 1) {
+            prodItem.quantityBtn.setEnabled(true);
+            prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                prodItem.itemValues.is_checked = true;
-                changeQuantityOfItem(position);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    prodItem.itemValues.is_checked = true;
+                    changeQuantityOfItem(position);
+                }
+            });
+        } else {
+            prodItem.quantityBtn.setEnabled(false);
+        }
 
         // Save the position to process the click on item
         view.setTag(R.id.target_url, item.productUrl);
@@ -1061,16 +1069,20 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
         long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
-        for (int i = 0; i <= actualMaxQuantity; i++) {
+        for (int i = 1; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));
         }
-        long crrQuantity = items.get(position).getQuantity();
+        final long crrQuantity = items.get(position).getQuantity();
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
-                changeQuantityOfItem(position, quantity);
+                if(quantity != crrQuantity -1){
+                    changeQuantityOfItem(position, quantity+1);
+                }
+
                 if(dialogList != null) {
                     dialogList.dismissAllowingStateLoss();
+                    dialogList = null;
                 }
             }
 
@@ -1080,7 +1092,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         };
 
         dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY,
-                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity);
+                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity-1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 
