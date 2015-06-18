@@ -23,13 +23,13 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.mobile.view"
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 22
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
@@ -100,12 +100,12 @@ android {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
         release {
             minifyEnabled true
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
         }
     }
@@ -256,6 +256,7 @@ dependencies {
 //    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
 //    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
 //    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+//    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
 /**

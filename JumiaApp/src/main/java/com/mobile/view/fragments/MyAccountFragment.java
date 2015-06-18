@@ -5,6 +5,9 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,6 +30,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
@@ -155,6 +160,23 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onDestroyView() {
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY");
+        // Remove PreferencesFragment
+        removePreferencesFragment();
+    }
+
+    /**
+     * Remove the preferences fragment added via layout.
+     */
+    private void removePreferencesFragment() {
+        try {
+            FragmentManager fm = getChildFragmentManager();
+            Fragment fragment = (fm.findFragmentById(R.id.account_preferences_fragment));
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(fragment);
+            ft.commitAllowingStateLoss();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON REMOVE PREFERENCES FRAGMENT");
+        }
     }
     
     /**

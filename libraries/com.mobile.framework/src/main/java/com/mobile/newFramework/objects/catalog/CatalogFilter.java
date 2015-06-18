@@ -76,10 +76,8 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
         mName = jsonObject.getString("name");
         // Get multi
         mMulti = jsonObject.optBoolean("multi");
-
         // Init array
-        mFilterOptions = new ArrayList<CatalogFilterOption>();
-
+        mFilterOptions = new ArrayList<>();
         // Get options
         JSONArray jsonOptions = jsonObject.optJSONArray("option");
         if (jsonOptions != null) {

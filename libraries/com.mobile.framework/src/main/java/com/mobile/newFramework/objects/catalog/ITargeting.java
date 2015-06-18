@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.newFramework.objects.catalog;
 
 
@@ -9,11 +6,12 @@ package com.mobile.newFramework.objects.catalog;
  *
  * @author Ralph Holland-Moritz
  * @modified sergiopereira
+ * @see com.mobile.newFramework.objects.home.type.TeaserTargetType
  */
 @Deprecated
 public interface ITargeting {
 
-    public enum TargetType {
+    enum TargetType {
         CATALOG("catalog"),
         PRODUCT("product_detail"),
         CAMPAIGN("campaign"),
@@ -24,7 +22,7 @@ public interface ITargeting {
 
         private final String value;
 
-        private TargetType(String value) {
+        TargetType(String value) {
             this.value = value;
         }
 
@@ -42,9 +40,9 @@ public interface ITargeting {
         }
     }
 
-    public String getTargetUrl();
+    String getTargetUrl();
 
-    public TargetType getTargetType();
+    TargetType getTargetType();
 
-    public String getTargetTitle();
+    String getTargetTitle();
 }

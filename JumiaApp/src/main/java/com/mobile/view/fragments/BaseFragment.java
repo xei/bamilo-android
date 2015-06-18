@@ -381,10 +381,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Recycle bitmaps
-        if (getView() != null) {
-            unbindDrawables(getView());
-        }
+//        // TODO - Validate this is necessary
+//        // Recycle bitmaps
+//        if (getView() != null) {
+//            unbindDrawables(getView());
+//        }
     }
 
     /**
@@ -396,9 +397,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void restartAllFragments() {
         Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
-
         final BaseActivity activity = getBaseActivity();
-
         // wait 500ms before switching to HOME, to be sure all fragments ended any visual processing pending
         if (activity != null) {
             new Handler().postDelayed(new Runnable() {
@@ -421,10 +420,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-        // TODO - Validate this is necessary
-        if (getView() != null && isHidden()) {
-            unbindDrawables(getView());
-        }
+//        // TODO - Validate this is necessary
+//        if (getView() != null && isHidden()) {
+//            unbindDrawables(getView());
+//        }
     }
 
     /**

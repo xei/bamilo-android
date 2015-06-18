@@ -1,101 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content">
 
-    <!-- ACCOUNT SETTINGS -->
-
-    <RelativeLayout
-        style="@style/rounded_box"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
-        android:paddingBottom="@dimen/rounded_margin_mid" >
+        android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/title_options"
-            style="@style/rounded_box_title_grey"
-            android:layout_centerHorizontal="true"
-            android:text="@string/section_title_account" />
+        <!-- ACCOUNT SETTINGS -->
 
-        <com.mobile.components.FullSizeListView
-            android:id="@+id/middle_myaccount_list"
-            android:layout_width="@dimen/inner_container_width"
+        <RelativeLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title_options"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="@dimen/rounded_margin_mid">
 
-        <View
-            style="@style/divider_horizontal_orange"
-            android:layout_below="@id/title_options" />
-    </RelativeLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/title_options"
+                style="@style/rounded_box_title_grey"
+                android:layout_centerHorizontal="true"
+                android:text="@string/section_title_account" />
 
-    <!-- NOTIFICATION SETTINGS -->
+            <com.mobile.components.FullSizeListView
+                android:id="@+id/middle_myaccount_list"
+                android:layout_width="@dimen/inner_container_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_options"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
 
-    <RelativeLayout
-        style="@style/rounded_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
-        android:paddingBottom="@dimen/rounded_margin_mid" >
+            <View
+                style="@style/divider_horizontal_orange"
+                android:layout_below="@id/title_options" />
+        </RelativeLayout>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/title_preferences"
-            style="@style/rounded_box_title_grey"
-            android:text="@string/section_title_notification" />
+        <!-- NOTIFICATION SETTINGS -->
 
-        <fragment
-            android:name="com.mobile.view.fragments.MyAccountPushPreferences"
-            android:layout_width="@dimen/inner_container_width"
+        <RelativeLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title_preferences"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center" />
-
-        <View
-            style="@style/divider_horizontal_orange"
-            android:layout_below="@id/title_preferences" />
-    </RelativeLayout>
-
-    <!-- SHARE SETTINGS -->
-
-    <RelativeLayout
-        style="@style/rounded_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="0dp"
-        android:paddingBottom="@dimen/rounded_margin_mid" >
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/title_sharing"
-            style="@style/rounded_box_title_grey"
-            android:text="@string/app_social" />
-
-        <com.mobile.components.FullSizeListView
-            android:id="@+id/middle_app_sharing_list"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_sharing"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:paddingBottom="@dimen/rounded_margin_mid">
 
-        <View
-            style="@style/divider_horizontal_orange"
-            android:layout_below="@id/title_sharing" />
-    </RelativeLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/title_preferences"
+                style="@style/rounded_box_title_grey"
+                android:text="@string/section_title_notification" />
 
-</LinearLayout>
+            <fragment
+                android:id="@+id/account_preferences_fragment"
+                android:name="com.mobile.view.fragments.MyAccountPushPreferences"
+                android:layout_width="@dimen/inner_container_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_preferences"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center" />
+
+            <View
+                style="@style/divider_horizontal_orange"
+                android:layout_below="@id/title_preferences" />
+        </RelativeLayout>
+
+        <!-- SHARE SETTINGS -->
+
+        <RelativeLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:paddingBottom="@dimen/rounded_margin_mid">
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/title_sharing"
+                style="@style/rounded_box_title_grey"
+                android:text="@string/app_social" />
+
+            <com.mobile.components.FullSizeListView
+                android:id="@+id/middle_app_sharing_list"
+                android:layout_width="@dimen/inner_container_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_sharing"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
+
+            <View
+                style="@style/divider_horizontal_orange"
+                android:layout_below="@id/title_sharing" />
+        </RelativeLayout>
+
+    </LinearLayout>
 </ScrollView>
