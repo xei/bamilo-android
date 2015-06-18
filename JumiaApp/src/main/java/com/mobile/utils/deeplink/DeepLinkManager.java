@@ -15,6 +15,7 @@ import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
@@ -22,8 +23,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
