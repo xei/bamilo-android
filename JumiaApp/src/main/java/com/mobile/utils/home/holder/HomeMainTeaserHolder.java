@@ -91,8 +91,6 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
-            // Set default position
-            pager.setCurrentItem(getDefaultPosition(adapter.getCount()));
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }
@@ -103,6 +101,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
      * @param size The number of items
      * @return int
      */
+    @Deprecated
     private int getDefaultPosition(int size) {
         int position;
         if(!isTablet) {
