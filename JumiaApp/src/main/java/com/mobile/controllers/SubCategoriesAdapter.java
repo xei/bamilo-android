@@ -3,15 +3,14 @@ package com.mobile.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Category;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

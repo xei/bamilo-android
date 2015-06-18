@@ -18,13 +18,12 @@ import android.widget.SpinnerAdapter;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * ActionProvider to present a Menu on ActionBar. used on main_menu.xml
@@ -151,7 +150,7 @@ public class MyProfileActionProvider extends ActionProvider {
      * Change selection on Spinner to force a dismiss
      */
     public void dismissSpinner() {
-        Log.d(TAG, "dismissSpinner");
+        Print.d(TAG, "dismissSpinner");
         mSpinner.dismiss();
     }
 
@@ -267,7 +266,7 @@ public class MyProfileActionProvider extends ActionProvider {
                 icon.setImageResource(R.drawable.ico_dropdown_changecountry);
                 break;
             default:
-                Log.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
+                Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
                 break;
             }
 

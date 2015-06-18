@@ -12,10 +12,9 @@ import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
-import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the category filter
@@ -34,7 +33,7 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
      * @return
      */
     public static FilterCategoryFragment newInstance(DialogFilterFragment parent, Bundle bundle) {
-        Log.d(TAG, "NEW INSTANCE: BRAND");
+        Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterCategoryFragment frag = new FilterCategoryFragment();
         frag.mParent = parent;
         frag.setArguments(bundle);
@@ -71,11 +70,11 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
         
         // Get multi selection option
         allowMultiSelection = mCatalogFilter.isMulti();
-        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
+        Print.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
         if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
-        else Log.i(TAG, "PRE SELECTION IS EMPTY");
+        else Print.i(TAG, "PRE SELECTION IS EMPTY");
         
         // Title
         ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mCatalogFilter.getName());
@@ -99,19 +98,19 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
      */
     @Override
     public void onClick(View view) {
-        Log.d(TAG, "ON CLICK: FILTER BACK");
+        Print.d(TAG, "ON CLICK: FILTER BACK");
         int id = view.getId();
         
         // Clean current selection
         if(id == mBackButtonId || id == mCancelButtonId) {
-            Log.d(TAG, "FILTER BACK: " + mCurrentSelectedOptions.size());
+            Print.d(TAG, "FILTER BACK: " + mCurrentSelectedOptions.size());
             // Clean the current selection
             cleanOldSelections();
             // Go to back
             mParent.allowBackPressed();
             
         } else if(id == mClearButtonId) {
-            Log.d(TAG, "FILTER CLEAN: " + mCurrentSelectedOptions.size());
+            Print.d(TAG, "FILTER CLEAN: " + mCurrentSelectedOptions.size());
             // Clean the current selection
             if(mCurrentSelectedOptions.size() > 0){
                 //
@@ -121,7 +120,7 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
             }
             
         } else if(id == mDoneButtonId) {
-            Log.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
+            Print.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
             // Save the current selection
             mCatalogFilter.setSelectedOption(mCurrentSelectedOptions);
             // Goto back
@@ -135,7 +134,7 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
+        Print.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         // Validate if is multi
         if(allowMultiSelection) processMultiSelection(parent, position);
         else processSingleSelection(parent, position);
@@ -153,12 +152,12 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
         // Validate if checked or not
         CatalogFilterOption option = mCurrentSelectedOptions.get(position);
         if( option == null) {
-            Log.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
+            Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
             addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
-            Log.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
+            Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
             cleanSelectedItem(option, position);
         }
     }
@@ -172,11 +171,11 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
     private void processSingleSelection(AdapterView<?> parent, int position){
         // Option is the last
         if(mCurrentSelectedOptions.get(position) != null) {
-            Log.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
+            Print.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
             // Clean old selection
             cleanOldSelections();
         } else {
-            Log.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
+            Print.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
             // Clean old selection
             cleanOldSelections();
             // Add item
@@ -189,7 +188,7 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
      * @author sergiopereira
      */
     private void loadSelectedItems(){
-        Log.d(TAG, "PRE SELECTION SIZE: " + mCatalogFilter.getSelectedOption().size());
+        Print.d(TAG, "PRE SELECTION SIZE: " + mCatalogFilter.getSelectedOption().size());
         // Copy all selected items
         for (int i = 0; i < mCatalogFilter.getSelectedOption().size(); i++) {
             // Get position

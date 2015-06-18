@@ -14,16 +14,15 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.objects.FeaturedBrand;
-import com.mobile.framework.objects.FeaturedItem;
-import com.mobile.framework.objects.FeaturedProduct;
+import com.mobile.newFramework.objects.catalog.FeaturedBrand;
+import com.mobile.newFramework.objects.catalog.FeaturedItem;
+import com.mobile.newFramework.objects.catalog.FeaturedProduct;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * PagerAdapter used on a ViewPager for featured items
@@ -60,7 +59,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         int count = 0;
 
         int featureListSize = this.mFeaturedList.size();
-        Log.d(TAG, "featureListSize: " + featureListSize);
+        Print.d(TAG, "featureListSize: " + featureListSize);
         int pageIndex = featureListSize / this.partialSize;
 
         if (featureListSize % this.partialSize == 0) {
@@ -68,7 +67,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         } else {
             count = pageIndex + 1;
         }
-        Log.d(TAG, "count: " + count);
+        Print.d(TAG, "count: " + count);
         return count;
     }
 
@@ -205,7 +204,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
             RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
-            Log.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
+            Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }
     }
 

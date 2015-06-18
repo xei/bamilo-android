@@ -2,18 +2,17 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -21,6 +20,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -74,19 +75,12 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-                triggerInitForm();
-            } else if(mFormResponse != null && regions != null){
-                loadCreateAddressForm(mFormResponse);
-            } else {
-                triggerCreateAddressForm();
-            }
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            triggerInitForm();
+        } else if(mFormResponse != null && regions != null){
+            loadCreateAddressForm(mFormResponse);
         } else {
-            showFragmentErrorRetry();
+            triggerCreateAddressForm();
         }
 
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);

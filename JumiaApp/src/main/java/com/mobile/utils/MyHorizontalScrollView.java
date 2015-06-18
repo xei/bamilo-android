@@ -133,7 +133,7 @@ package com.mobile.utils;
 //
 //        @Override
 //        public void onGlobalLayout() {
-//            // System.out.println("onGlobalLayout");
+//            // Print.d("onGlobalLayout");
 //
 //            final HorizontalScrollView me = MyHorizontalScrollView.this;
 //
@@ -154,7 +154,7 @@ package com.mobile.utils;
 //            scrollToViewPos = 0;
 //            for (int i = 0; i < children.length; i++) {
 //                sizeCallback.getViewSize(i, w, h, dims);
-//                // System.out.println("addView w=" + dims[0] + ", h=" + dims[1]);
+//                // Print.d("addView w=" + dims[0] + ", h=" + dims[1]);
 //                children[i].setVisibility(View.VISIBLE);
 //                parent.addView(children[i], dims[0], dims[1]);
 //                if (i < scrollToViewIdx) {

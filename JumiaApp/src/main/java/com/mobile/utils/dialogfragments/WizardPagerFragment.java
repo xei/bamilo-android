@@ -4,7 +4,7 @@ package com.mobile.utils.dialogfragments;
 //
 //import org.holoeverywhere.drawable.ColorDrawable;
 //
-//import com.mobile.framework.utils.LogTagHelper;
+//import com.mobile.newFramework.utils.LogTagHelper;
 //import com.mobile.preferences.WizardPreferences;
 //import com.mobile.preferences.WizardPreferences.WizardType;
 //import com.mobile.view.R;
@@ -24,7 +24,7 @@ package com.mobile.utils.dialogfragments;
 //import com.viewpagerindicator.IconPagerAdapter;
 //import com.viewpagerindicator.PageIndicator;
 //
-//import de.akquinet.android.androlog.Log;
+//import com.mobile.newFramework.utils.output.Log;
 //
 ///**
 // * 

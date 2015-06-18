@@ -9,7 +9,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,22 +24,22 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Section;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.rest.RestContract;
-import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetApiInfoHelper;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.preferences.CountryConfigs;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.configs.Section;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
@@ -52,8 +51,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
@@ -79,7 +76,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private boolean shouldHandleEvent = true;
 
-    private View mJumiaMapImage;
+    private View mMainMapImage;
 
     private View mMainFallBackStub;
 
@@ -97,7 +94,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(true);
         // Set Font
@@ -107,7 +104,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
-        mJumiaMapImage = findViewById(R.id.jumiaMap);
+        mMainMapImage = findViewById(R.id.jumiaMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -128,7 +125,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
         // Intercept event
         shouldHandleEvent = true;
     }
@@ -141,7 +138,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Intercept event
         shouldHandleEvent = true;
         // Start Accengage for this activity
@@ -149,8 +146,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
-        mJumiaMapImage.clearAnimation();
-        mJumiaMapImage.startAnimation(animationFadeIn);
+        mMainMapImage.clearAnimation();
+        mMainMapImage.startAnimation(animationFadeIn);
     }
 
     /*
@@ -161,7 +158,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         // Stop Accengage for this activity
         Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
@@ -178,14 +175,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         // Intercept event
         shouldHandleEvent = false;
-        // Set preferences
-        SharedPreferences sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor eD = sharedPrefs.edit();
-        eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        eD.apply();
     }
 
     /*
@@ -196,10 +188,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         // Intercept event
         shouldHandleEvent = false;
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
     }
 
 
@@ -209,7 +200,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
             EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
-            Log.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
+            Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
@@ -232,33 +223,33 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Starts the Activity depending whether the app is started by the user, or by the push notification.
      */
     public void selectActivity() {
-        Log.i(TAG, "START ANIMATION ACTIVITY");
-        mJumiaMapImage.clearAnimation();
+        Print.i(TAG, "START ANIMATION ACTIVITY");
+        mMainMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(SPLASH_DURATION_OUT);
         animationFadeOut.setAnimationListener(new AnimationListener() {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                Log.i(TAG, "ON ANIMATION START");
+                Print.i(TAG, "ON ANIMATION START");
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                Log.i(TAG, "ON ANIMATION REPEAT");
+                Print.i(TAG, "ON ANIMATION REPEAT");
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Log.i(TAG, "ON ANIMATION END");
-                mJumiaMapImage.setVisibility(View.GONE);
+                Print.i(TAG, "ON ANIMATION END");
+                mMainMapImage.setVisibility(View.GONE);
                 // Validate deep link bundle
                 startMainActivity();
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
             }
         });
-        mJumiaMapImage.startAnimation(animationFadeOut);
+        mMainMapImage.startAnimation(animationFadeOut);
     }
 
     /**
@@ -267,7 +258,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void startMainActivity() {
-        Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
+        Print.d(TAG, "START MAIN FRAGMENT ACTIVITY");
         // Clone the current intent, but only the relevant parts for Deep Link (URI or GCM)
         Intent intent = (Intent) getIntent().clone();
         intent.setClass(getApplicationContext(), getActivityClassForDevice());
@@ -312,7 +303,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } catch (Exception e) {
             e.printStackTrace();
         }
-        devText.append("\nServer: " + RestContract.REQUEST_HOST);
+        devText.append("\nServer: " + AigRestContract.REQUEST_HOST);
         // Device info
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
@@ -325,7 +316,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        Log.e(TAG, "onUserLeaveHint");
+        Print.e(TAG, "onUserLeaveHint");
         shouldHandleEvent = false;
     }
 
@@ -342,9 +333,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS RESPONSE");
+        Print.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
-            Log.e(TAG,"shouldHandleEvent: " + shouldHandleEvent);
+            Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
 
@@ -354,7 +345,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
-        Log.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
+        Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
         if (dialog != null && dialog.isVisible()) {
             try {
@@ -392,29 +383,26 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessInitialize() {
-        Log.i(TAG, "ON PROCESS: INITIALIZE");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        Print.i(TAG, "ON PROCESS: INITIALIZE");
         JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, this);
     }
 
     /**
      * Process the global configs event
-     *
-     * @param bundle
      * @author sergiopereira
      */
     private void onProcessGlobalConfigsEvent(Bundle bundle) {
-        Log.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
+        Print.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
-            Log.i(TAG, "SELECTED COUNTRY ID IS NULL");
+            Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
                 onRequestError(bundle);
             }
         } else {
-            Log.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
+            Print.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 JumiaApplication.INSTANCE.init(initializationHandler);
             } else {
@@ -427,7 +415,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Process the country configs event
      */
     private void onProcessCountryConfigsEvent() {
-        Log.i(TAG, "ON PROCESS COUNTRY CONFIGS");
+        Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
         JumiaApplication.INSTANCE.init(initializationHandler);
     }
 
@@ -437,8 +425,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessNoCountryConfigsError() {
-        Log.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        Print.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
         JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
@@ -448,8 +435,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessNoCountriesConfigsError() {
-        Log.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
         JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper(), null, this);
     }
 
@@ -459,7 +445,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessAutoCountrySelection() {
-        Log.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
+        Print.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
         LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
     }
 
@@ -469,7 +455,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError() {
-        mJumiaMapImage.clearAnimation();
+        mMainMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);
         animationFadeOut.setAnimationListener(new AnimationListener() {
@@ -484,8 +470,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mJumiaMapImage.setVisibility(View.GONE);
-                Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
+                mMainMapImage.setVisibility(View.GONE);
+                Print.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -496,26 +482,24 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 finish();
             }
         });
-        mJumiaMapImage.startAnimation(animationFadeOut);
+        mMainMapImage.startAnimation(animationFadeOut);
 
     }
 
     /**
      * Process the api md5 event
-     *
-     * @param bundle
      */
     private void onProcessApiEvent(Bundle bundle) {
-        Log.i(TAG, "ON PROCESS API EVENT");
+        Print.i(TAG, "ON PROCESS API EVENT");
         // Validate out dated sections
         if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
-            Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
+            Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else if(!CountryConfigs.checkCountryRequirements(getApplicationContext())){
-            Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
+        } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
+            Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else {
-            Log.i(TAG, "START MAIN ACTIVITY");
+            Print.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
     }
@@ -524,7 +508,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Trigger to get the country configurations
      */
     private void triggerGetCountryConfigs(){
-        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
@@ -536,9 +519,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR RESPONSE");
+        Print.i(TAG, "ON ERROR RESPONSE");
         if (!shouldHandleEvent) {
-            Log.e(TAG,"shouldHandleEvent: " + shouldHandleEvent);
+            Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
         // Get data
@@ -547,7 +530,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        Log.i(TAG, "ERROR CODE: " + errorCode);
+        Print.i(TAG, "ERROR CODE: " + errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
                 case IO:
@@ -593,7 +576,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     dialog.show(getSupportFragmentManager(), null);
                     break;
                 case SERVER_OVERLOAD:
-                    Log.w("SHOW OVERLOAD");
+                    Print.w("SHOW OVERLOAD");
                     ActivitiesWorkFlow.showOverLoadErrorActivity(this);
                     break;
                 default:
@@ -620,7 +603,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                Log.i(TAG, "code1configs received response correctly!!!");
+                Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
@@ -635,9 +618,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /**
      * Show maintenance page.
-     *
-     * @param eventType
-     * @author sergiopereira
      */
     private void setLayoutMaintenance(EventType eventType) {
         // Inflate maintenance
@@ -674,7 +654,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         try {
             findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
     }
 
@@ -694,61 +674,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         try {
             findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
-    }
-    
-    /*
-     * ########### RESPONSES ###########
-     */
-
-    /**
-     * Requests and Callbacks methods
-     */
-
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-    /**
-     * Sends error responses to the target callback
-     *
-     * @param bundle
-     */
-    private void handleError(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-
-    }
-
-    /**
-     * Sends the correct responses to be handled by the target callback
-     *
-     * @param bundle
-     */
-    private void handleResponse(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-
     }
 
     /*
@@ -769,7 +696,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Case retry button from maintenance
         else if (id == R.id.fragment_root_retry_maintenance) {
-            onClickMaintenanceRetryButton(view);
+            onClickMaintenanceRetryButton();
         }
         // Case choose country
         else if (id == R.id.fragment_root_cc_maintenance) {
@@ -781,7 +708,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Case unknown
         else {
-            Log.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
+            Print.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
         }
     }
 
@@ -805,7 +732,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
             findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
     }
 
@@ -843,7 +770,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the click on retry button in maintenance page.
      */
-    private void onClickMaintenanceRetryButton(View view) {
+    private void onClickMaintenanceRetryButton() {
         // Retry
         mMainFallBackStub.setVisibility(View.GONE);
         // Retry

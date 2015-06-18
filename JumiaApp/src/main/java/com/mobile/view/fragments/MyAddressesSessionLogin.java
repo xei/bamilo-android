@@ -5,15 +5,14 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.tracking.gtm.GTMValues;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -45,7 +44,7 @@ public class MyAddressesSessionLogin extends SessionLoginFragment {
 
     @Override
     protected void onLoginSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
 
         BaseActivity baseActivity = getBaseActivity();
         JumiaApplication.INSTANCE.setLoggedIn(true);
@@ -83,14 +82,14 @@ public class MyAddressesSessionLogin extends SessionLoginFragment {
                 baseActivity.onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
             }
         } else if (nextFragmentType != null) {
-            Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
+            Print.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.MY_ADDRESSES_LOGIN.toString());
             Bundle args = new Bundle();
             args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
             baseActivity.onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
 
         } else {
-            Log.d(TAG, "NEXT STEP: BACK");
+            Print.d(TAG, "NEXT STEP: BACK");
             baseActivity.onBackPressed();
         }
     }

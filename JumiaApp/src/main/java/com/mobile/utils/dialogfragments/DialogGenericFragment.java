@@ -12,10 +12,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -67,7 +66,7 @@ public class DialogGenericFragment extends DialogFragment {
             String button2_title,
             OnClickListener click) {
 
-        Log.d(TAG, "NEW INSTANCE: 2 Buttons");
+        Print.d(TAG, "NEW INSTANCE: 2 Buttons");
 
         dialogGenericFragment = new DialogGenericFragment();
         // dialogGenericFragment.hasHeader = has_header;
@@ -104,7 +103,7 @@ public class DialogGenericFragment extends DialogFragment {
                                                     String button2_title,
                                                     String button3_title, OnClickListener click) {
 
-        Log.d(TAG, "NEW INSTANCE: 3 Buttons");
+        Print.d(TAG, "NEW INSTANCE: 3 Buttons");
 
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
         // dialogGenericFragment.hasHeader = has_header;
@@ -135,7 +134,7 @@ public class DialogGenericFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -146,7 +145,7 @@ public class DialogGenericFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
+        Print.i(TAG, "ON CREATE VIEW");
         View view;
         if (buttonTitle3 == null) {
             view = inflater.inflate(R.layout.dialog_generic, container);
@@ -276,7 +275,7 @@ public class DialogGenericFragment extends DialogFragment {
             final android.view.View.OnClickListener cancelClickListener,
             final boolean finishActivity) {
 
-        Log.d(TAG, "CREATE NO NETWORK DIALOG");
+        Print.d(TAG, "CREATE NO NETWORK DIALOG");
 
         return DialogGenericFragment.newInstance(true, false,
                 activity.getResources().getString(R.string.no_internet_access_warning_title),
@@ -350,7 +349,7 @@ public class DialogGenericFragment extends DialogFragment {
             final Activity activity,
             final android.view.View.OnClickListener retryClickListener, final boolean finishActivity) {
 
-        Log.d(TAG, "CREATE ERROR DIALOG");
+        Print.d(TAG, "CREATE ERROR DIALOG");
 
         return DialogGenericFragment.newInstance(true, false,
                 title, message, activity

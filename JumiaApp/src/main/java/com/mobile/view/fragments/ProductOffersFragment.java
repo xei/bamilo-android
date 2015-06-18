@@ -17,17 +17,18 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.Offer;
-import com.mobile.framework.objects.ProductOffers;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.product.Offer;
+import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -43,8 +44,6 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the product offers
@@ -102,7 +101,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -113,7 +112,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get product URL from arguments
         mCompleteProductUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
         // Get product name from arguments
@@ -135,7 +134,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get views
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
         mOffersCount = (TextView) view.findViewById(R.id.offer_product_count);
@@ -150,7 +149,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -161,7 +160,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         Bundle arg = new Bundle();
         if(productOffers == null){
             arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
@@ -193,7 +192,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -204,7 +203,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -214,7 +213,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -224,7 +223,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -278,11 +277,11 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onRequestComplete(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -314,7 +313,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         hideActivityProgress();
@@ -324,7 +323,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
@@ -396,7 +395,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICK");
+        Print.d(TAG, "ON ITEM CLICK");
         Offer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
@@ -443,14 +442,14 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
      */
     private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
         ContentValues values = new ContentValues();
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
         // GA OFFER TRACKING              
-        Log.d(TAG,"SIMLPE SKU:" + simpleSKU+ " PRICE:" + price);
+        Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
         TrackerDelegator.trackAddOfferToCart(simpleSKU,price);
     }
 }

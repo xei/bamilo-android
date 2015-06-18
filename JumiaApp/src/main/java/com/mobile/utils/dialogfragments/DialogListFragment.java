@@ -19,12 +19,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -89,7 +88,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @return
 	 */
 	public static DialogListFragment newInstance(Fragment fragment, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
-	    Log.d(TAG, "NEW INSTANCE");
+	    Print.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();
 	    dialogListFragment.mActivity = fragment.getActivity();
         if (fragment instanceof OnDialogListListener) dialogListFragment.mSelectListener = (OnDialogListListener) fragment;
@@ -114,7 +113,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @return
 	 */
 	public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
-	    Log.d(TAG, "NEW INSTANCE");
+	    Print.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();  
 	    dialogListFragment.mActivity = fragment.getActivity();
 	    dialogListFragment.mSelectListener = listener;
@@ -137,7 +136,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
      * @return
      */
     public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         DialogListFragment dialogListFragment = new DialogListFragment();  
         dialogListFragment.mActivity = fragment.getActivity();
         dialogListFragment.mSelectListener = listener; 
@@ -211,7 +210,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @author sergiopereira
 	 */
     private void setSizeGuide(View view) {
-        Log.i(TAG, "SIZE GUIDE: " + mSizeGuideUrl);
+        Print.i(TAG, "SIZE GUIDE: " + mSizeGuideUrl);
         // Get views 
         View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
         View button = view.findViewById(R.id.dialog_list_size_guide_button);

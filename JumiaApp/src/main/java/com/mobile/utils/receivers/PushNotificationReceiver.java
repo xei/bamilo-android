@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GWearManager;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to receive the push notification from Accengage for GoogleWear.
@@ -25,11 +24,11 @@ public class PushNotificationReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "ON RECEIVE");
+        Print.i(TAG, "ON RECEIVE");
         // Get action
         String action = intent.getAction();
-        Log.i(TAG, "INTENT ACTION: " + action);
-        Log.i(TAG, "INTENT EXTRAS: " + intent.getExtras());
+        Print.i(TAG, "INTENT ACTION: " + action);
+        Print.i(TAG, "INTENT EXTRAS: " + intent.getExtras());
         if(!TextUtils.isEmpty(action) && !action.equals(Constants.ACTION_CLICKED)) {
             GWearManager mGWearManager = new GWearManager(context);
             mGWearManager.parseLocalNotification(intent);

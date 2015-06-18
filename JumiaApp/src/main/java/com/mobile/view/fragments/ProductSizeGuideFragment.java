@@ -11,8 +11,9 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.WizardPreferences;
@@ -23,8 +24,6 @@ import com.mobile.utils.photoview.PhotoView;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to shoe the size guide.
@@ -72,7 +71,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -83,7 +82,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get size guide URL from arguments
         mSizeGuideUrl = getArguments().getString(ConstantsIntentExtra.SIZE_GUIDE_URL);
         // Get from saved instance
@@ -99,7 +98,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get views
         mImageView = (PhotoView) view.findViewById(R.id.product_size_guide_image);
         mWizard = view.findViewById(R.id.product_size_wizard_stub);
@@ -119,7 +118,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -130,7 +129,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -140,7 +139,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         outState.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, mSizeGuideUrl);
     }
     
@@ -152,7 +151,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -163,7 +162,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -173,7 +172,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -183,7 +182,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         mWizard = null;
         mImageView = null;
     }
@@ -198,7 +197,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
      * @param url
      */
     private void showSizeGuide(PhotoView mImageView, String url) {
-        Log.i(TAG, "ON SHOW SIZE GUIDE");
+        Print.i(TAG, "ON SHOW SIZE GUIDE");
      // Load image        
         RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
             
@@ -238,7 +237,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
         try {
             getView().findViewById(R.id.wizard_product_size_button).setOnClickListener(this);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }   
     }
     
@@ -258,7 +257,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
         // Case wizard
         if (id == R.id.wizard_product_size_button) onClickWizardButton();
         // Case unknown
-        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+        else Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
 
     /**
@@ -272,7 +271,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
             // Hide wizard
             mWizard.setVisibility(View.GONE);   
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
+            Print.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
         }
     }
 
