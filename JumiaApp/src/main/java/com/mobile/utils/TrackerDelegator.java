@@ -1278,6 +1278,15 @@ public class TrackerDelegator {
             break;
     }
 }
+    /**
+     * DeepLink Reattribution, Adjust
+     * @param intent
+     */
+    public static void deeplinkReattribution(Intent intent){
+        if(intent != null && intent.getData() != null){
+            AdjustTracker.deepLinkReattribution(intent.getData());
+        }
+    }
 
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
