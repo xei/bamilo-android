@@ -178,11 +178,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON STOP");
         // Intercept event
         shouldHandleEvent = false;
-        // Set preferences
-        SharedPreferences sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor eD = sharedPrefs.edit();
-        eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        eD.apply();
     }
 
     /*
