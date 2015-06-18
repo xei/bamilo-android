@@ -21,7 +21,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetApiInfoHelper;
@@ -39,6 +38,7 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
@@ -178,11 +178,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON STOP");
         // Intercept event
         shouldHandleEvent = false;
-        // Set preferences
-        SharedPreferences sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor eD = sharedPrefs.edit();
-        eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        eD.apply();
     }
 
     /*
@@ -627,10 +622,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void setLayoutMaintenance(EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        // Get config
-        boolean isBamilo = getResources().getBoolean(R.bool.is_bamilo_specific);
         // Show maintenance page
-        if (isBamilo) {
+        if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
         } else {
             MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);

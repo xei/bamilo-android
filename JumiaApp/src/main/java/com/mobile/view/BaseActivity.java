@@ -443,8 +443,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_shop_specific) ||
-                getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtl()) {
             // Show the application name in the action bar
             setActionBarTitle(R.string.app_name);
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
@@ -808,7 +807,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get edit text
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
         }
         // Set font

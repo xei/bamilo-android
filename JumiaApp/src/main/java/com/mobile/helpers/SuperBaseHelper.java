@@ -48,13 +48,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         if (data != null) {
             requestBundleBuilder.setData(data);
         }
-
-        // TODO VALIDATE THIS APPROACH
-//        // Validate priority
-//        if(!hasPriority()){
-//            requestBundleBuilder.discardResponse();
-//        }
-
         //
         return requestBundleBuilder.build();
     }

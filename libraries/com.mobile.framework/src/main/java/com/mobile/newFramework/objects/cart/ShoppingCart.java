@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.newFramework.objects.cart;
 
@@ -47,9 +47,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private HashMap<String, String> mPriceRules;
 
-    private String mSubTotal;
+	private String mSubTotal;
 	private double mSubTotalDouble = 0d;
-    private double mSubTotalConvertedDouble = 0d;
+	private double mSubTotalConvertedDouble = 0d;
+	private boolean mVatLabelEnable;
 
 	/**
 	 * Constructor
@@ -69,10 +70,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		// Get cart value as string and double
 		mCartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
 		mCartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
-        // Get cart sub total
-        mSubTotal = jsonObject.optString(RestConstants.JSON_CART_SUB_TOTAL);
-        mSubTotalDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL,0d);
-        mSubTotalConvertedDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL_CONVERTED, 0d);
+		// Get cart sub total
+		mSubTotal = jsonObject.optString(RestConstants.JSON_CART_SUB_TOTAL);
+		mSubTotalDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL,0d);
+		mSubTotalConvertedDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL_CONVERTED, 0d);
 		// Get cart value converted
 		mCartValueConverted = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_CONVERTED_TAG, 0d);
 		// Get cart clean value
@@ -108,6 +109,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				}
 			}
 		}
+
+		mVatLabelEnable = (jsonObject.optInt(RestConstants.JSON_CART_VAT_LABEL_ENABLE, 0) == 1);
 
 		Print.d("CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
 
@@ -274,21 +277,21 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	public void setCouponDiscount(String couponDiscount) {
 		this.mCouponDiscount = couponDiscount;
-    }
+	}
 
 	/**
 	 *
 	 */
-    public String getCouponCode() {
-        return mCouponCode;
-    }
+	public String getCouponCode() {
+		return mCouponCode;
+	}
 
-    /**
-     *
-     */
-    public void setCouponCode(String couponCode) {
-        this.mCouponCode = couponCode;
-    }
+	/**
+	 *
+	 */
+	public void setCouponCode(String couponCode) {
+		this.mCouponCode = couponCode;
+	}
 
 	/**
 	 * @return the price_rules
@@ -342,29 +345,29 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		return mCartValueConverted;
 	}
 
-    public double getSubTotalDouble() {
-        return mSubTotalDouble;
-    }
+	public double getSubTotalDouble() {
+		return mSubTotalDouble;
+	}
 
-    public void setSubTotalDouble(double mSubTotal) {
-        this.mSubTotalDouble = mSubTotal;
-    }
+	public void setSubTotalDouble(double mSubTotal) {
+		this.mSubTotalDouble = mSubTotal;
+	}
 
-    public double getmubTotalConvertedDouble() {
-        return mSubTotalConvertedDouble;
-    }
+	public double getmubTotalConvertedDouble() {
+		return mSubTotalConvertedDouble;
+	}
 
-    public void setSubTotalConvertedDouble(double mSubTotalConverted) {
-        this.mSubTotalConvertedDouble = mSubTotalConverted;
-    }
+	public void setSubTotalConvertedDouble(double mSubTotalConverted) {
+		this.mSubTotalConvertedDouble = mSubTotalConverted;
+	}
 
-    public String getSubTotal() {
-        return mSubTotal;
-    }
+	public String getSubTotal() {
+		return mSubTotal;
+	}
 
-    public void setSubTotal(String mSubTotal) {
-        this.mSubTotal = mSubTotal;
-    }
+	public void setSubTotal(String mSubTotal) {
+		this.mSubTotal = mSubTotal;
+	}
 
 	/*
 	 * ########### PARCELABLE ###########
@@ -399,11 +402,12 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeString(mCouponDiscount);
 		dest.writeString(mCouponCode);
 		dest.writeMap(mPriceRules);
-	    dest.writeDouble(mCartValueAsDouble);
-	    dest.writeDouble(mCartValueConverted);
-        dest.writeString(mSubTotal);
-        dest.writeDouble(mSubTotalDouble);
-        dest.writeDouble(mSubTotalConvertedDouble);
+		dest.writeDouble(mCartValueAsDouble);
+		dest.writeDouble(mCartValueConverted);
+		dest.writeString(mSubTotal);
+		dest.writeDouble(mSubTotalDouble);
+		dest.writeDouble(mSubTotalConvertedDouble);
+		dest.writeBooleanArray(new boolean[]{mVatLabelEnable});
 	}
 
 	/**
@@ -427,9 +431,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		in.readMap(mPriceRules, String.class.getClassLoader());
 		mCartValueAsDouble = in.readDouble();
 		mCartValueConverted = in.readDouble();
-        mSubTotal = in.readString();
-        mSubTotalDouble = in.readDouble();
-        mSubTotalConvertedDouble = in.readDouble();
+		mSubTotal = in.readString();
+		mSubTotalDouble = in.readDouble();
+		mSubTotalConvertedDouble = in.readDouble();
+		in.readBooleanArray(new boolean[] { mVatLabelEnable });
 	}
 
 	/**
@@ -445,11 +450,19 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		}
 	};
 
-    public void setSumCostsValue(String mSumCostsValue) {
-        this.mSumCostsValue = mSumCostsValue;
-    }
+	public void setSumCostsValue(String mSumCostsValue) {
+		this.mSumCostsValue = mSumCostsValue;
+	}
 
-    public void setShippingValue(double mShippingValue) {
-        this.mShippingValue = mShippingValue;
-    }
+	public void setShippingValue(double mShippingValue) {
+		this.mShippingValue = mShippingValue;
+	}
+
+	public boolean isVatLabelEnable() {
+		return mVatLabelEnable;
+	}
+
+	public void setVatLabelEnable(boolean mVatLabelEnable) {
+		this.mVatLabelEnable = mVatLabelEnable;
+	}
 }

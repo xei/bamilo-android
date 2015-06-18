@@ -39,7 +39,6 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
     public void execute(){}
 
     public void execute(String name){
-        long tStart = System.currentTimeMillis();
         Method method = AigApiInterface.Service.getMethod(name);
         List parameters = new LinkedList();
         if(mRequestBundle.getData() != null){
@@ -49,12 +48,11 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         try {
             method.invoke(service, parameters.toArray());
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        long tEnd = System.currentTimeMillis();
-        long tDelta = tEnd - tStart;
-        Print.d("elapsed time: " + tDelta);
     }
 
     /*

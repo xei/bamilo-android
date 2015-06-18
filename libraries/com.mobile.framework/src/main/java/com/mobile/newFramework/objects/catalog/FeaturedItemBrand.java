@@ -8,6 +8,6 @@ package com.mobile.newFramework.objects.catalog;
  * @author Andre Lopes
  *
  */
-public class FeaturedBrand extends FeaturedItem {
+public class FeaturedItemBrand extends FeaturedItem {
 
 }

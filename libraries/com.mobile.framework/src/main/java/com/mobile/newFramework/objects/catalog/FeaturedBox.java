@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Class used to fill the sugestions screen when no results are found after a
+ * Class used to fill the suggestions screen when no results are found after a
  * search
  *
  * @author Andre Lopes
@@ -25,15 +25,15 @@ import java.util.ArrayList;
  */
 public class FeaturedBox implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = FeaturedBox.class.getSimpleName();
+    public static final String TAG = FeaturedBox.class.getSimpleName();
 
     private String productsTitle;
-    private ArrayList<FeaturedItem> products;
     private String brandsTitle;
-    private ArrayList<FeaturedItem> brands;
     private String searchTips;
     private String errorMessage;
     private String noticeMessage;
+    private ArrayList<FeaturedItem> brands;
+    private ArrayList<FeaturedItem> products;
 
     public FeaturedBox() {
 
@@ -54,11 +54,10 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
 //        Log.d(TAG, "FILTER: FEATURED BOX");
-
         JSONObject data = metadataObject.optJSONObject(RestConstants.JSON_DATA_TAG);
         if (data != null) {
             // one List for all products
-            products = new ArrayList<FeaturedItem>();
+            products = new ArrayList<>();
             try{
                 JSONArray featuredBoxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
                 if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
@@ -75,7 +74,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                             // get products
                             for (int j = 0; j < productsObject.length(); j++) {
                                 JSONObject productObject = productsObject.getJSONObject(j);
-                                FeaturedProduct product = new FeaturedProduct();
+                                FeaturedItemProduct product = new FeaturedItemProduct();
 
                                 // only use products properly initialized
                                 if (product.initialize(productObject)) {
@@ -89,7 +88,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 //                Log.e(TAG, "ERROR PARSING FEATURE BOX");
             }
             // one list for all brands
-            brands = new ArrayList<FeaturedItem>();
+            brands = new ArrayList<>();
 
             try{
                 JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRAND_BOX_TAG);
@@ -107,7 +106,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                             // get brands
                             for (int j = 0; j < brandsObject.length(); j++) {
                                 JSONObject brandObject = brandsObject.getJSONObject(j);
-                                FeaturedBrand brand = new FeaturedBrand();
+                                FeaturedItemBrand brand = new FeaturedItemBrand();
 
                                 // only use brands properly initialized
                                 if (brand.initialize(brandObject)) {
@@ -184,14 +183,14 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
     protected FeaturedBox(Parcel in) {
         productsTitle = in.readString();
         if (in.readByte() == 0x01) {
-            products = new ArrayList<FeaturedItem>();
+            products = new ArrayList<>();
             in.readList(products, FeaturedItem.class.getClassLoader());
         } else {
             products = null;
         }
         brandsTitle = in.readString();
         if (in.readByte() == 0x01) {
-            brands = new ArrayList<FeaturedItem>();
+            brands = new ArrayList<>();
             in.readList(brands, FeaturedItem.class.getClassLoader());
         } else {
             brands = null;
