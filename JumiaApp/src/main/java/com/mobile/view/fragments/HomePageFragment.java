@@ -62,6 +62,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     public static final String SCROLL_STATE_KEY = "scroll";
 
+    public static final String POSITION_STATE_KEY = "position";
+
     private int[] mScrollSavedPosition;
 
     private int mViewPagerPosition;
@@ -115,7 +117,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-            mViewPagerPosition = savedInstanceState.getInt("intqualquer", 0);
+            mViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
         }
     }
 
@@ -208,7 +210,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         }
         for(BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders){
             if(baseTeaserViewHolder instanceof HomeMainTeaserHolder){
-                outState.putInt("intqualquer", ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
             }
         }
     }
