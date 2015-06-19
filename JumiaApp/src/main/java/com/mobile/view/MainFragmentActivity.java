@@ -120,6 +120,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Invalid deep link
             if (!isDeepLinkLaunch) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                // Adjust reattribution
+                TrackerDelegator.deeplinkReattribution(getIntent());
             }
 
         } else {
