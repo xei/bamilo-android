@@ -167,6 +167,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
+        // Disabled for Samsung and Blackberry (check_version_enabled)
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(getActivity());
+        }
     }
 
     /**
@@ -176,10 +180,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     public void onResumeExecution() {
         Print.i(TAG, "ON RESUME EXECUTION");
-        // Disabled for Samsung and Blackberry (check_version_enabled)
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(getActivity());
-        }
         // Validate current state
         if(mHomePage != null && mHomePage.hasTeasers()) {
             validateDataState();
