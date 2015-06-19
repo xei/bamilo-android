@@ -1,4 +1,4 @@
-package com.mobile.newFramework.utils.shop;
+package com.mobile.components.viewpager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +10,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by rsoares on 6/19/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * <br><br>FragmentAdapter with RTL support. This adapter only supports static fragments
+ * (the fragments must be initialized at creation of this adapter).
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/06/18
  */
 public class RtlAdapterService extends FragmentPagerAdapter{
     protected List<Fragment> fragmentList;

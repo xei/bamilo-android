@@ -7,9 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.viewpager.RtlViewPager;
@@ -17,7 +15,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.RtlDynamicFragmentAdapter;
+import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
