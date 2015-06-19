@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.view.fragments;
 
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
@@ -29,13 +30,13 @@ import java.util.List;
 
 /**
  * @author Paulo Carvalho
- * 
+ *
  */
 public class MyOrdersFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
 
-    private ViewPager mMyOrdersPager;
+    private RtlViewPager mMyOrdersPager;
 
     private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
 
@@ -45,7 +46,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
+     *
      * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
@@ -67,7 +68,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -78,7 +79,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -94,13 +95,12 @@ public class MyOrdersFragment extends BaseFragment {
             }
         } else {
             mPositionToStart = ShopSelector.isRtl() ? 1: 0;
-
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -110,7 +110,7 @@ public class MyOrdersFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
 
         // Get view pager
-        mMyOrdersPager = (ViewPager) view.findViewById(R.id.my_orders_pager);
+        mMyOrdersPager = (RtlViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
         mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
 
@@ -128,12 +128,10 @@ public class MyOrdersFragment extends BaseFragment {
         } else {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
-
-            if(ShopSelector.isRtl()){
-                mMyOrdersPagerAdapter.enableRtl(true);
-            }
-
             mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
+            if(ShopSelector.isRtl()){
+                mMyOrdersPager.enableRtl();
+            }
             mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
             // Show the pre selection
             mMyOrdersPager.setCurrentItem(mPositionToStart, true);
@@ -147,7 +145,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -158,7 +156,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -169,7 +167,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onPause()
      */
     @Override
@@ -180,7 +178,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onStop()
      */
     @Override
@@ -191,7 +189,7 @@ public class MyOrdersFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -203,14 +201,14 @@ public class MyOrdersFragment extends BaseFragment {
 
     /**
      * Class used as an simple pager adapter that represents each fragment
-     * 
+     *
      * @author Paulo Carvalho
      */
-    private class MyOrdersPagerAdapter extends RtlDynamicFragmentAdapter {
+    private class MyOrdersPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
 
         /**
          * Constructor
-         * 
+         *
          * @param fm
          * @author Paulo Carvalho
          */
@@ -225,6 +223,10 @@ public class MyOrdersFragment extends BaseFragment {
                     TrackOrderFragment.getInstance(getArguments());
         }
 
+        @Override
+        public void invertItems() {
+            enableRtl(!isRtl);
+        }
     }
 
     static List<String> getFragmentTitleValues(Fragment fragment){
