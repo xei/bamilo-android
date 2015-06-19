@@ -229,12 +229,12 @@ public class MyOrdersFragment extends BaseFragment {
         }
     }
 
-    static List<String> getFragmentTitleValues(Fragment fragment){
+    private List<String> getFragmentTitleValues(Fragment fragment){
         String[] titles = {fragment.getString(R.string.my_order_tracking_label).toUpperCase(), fragment.getString(R.string.my_order_history_label).toUpperCase()};
         return Arrays.asList( titles);
     }
 
-    static List<String> getFragmentsList(){
+    private List<String> getFragmentsList(){
         String[] fragments ={TrackOrderFragment.class.getSimpleName(), OrderHistoryFragment.class.getSimpleName()};
         return Arrays.asList(fragments);
     }
