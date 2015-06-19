@@ -35,6 +35,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
+import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -62,6 +63,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     public static final String SCROLL_STATE_KEY = "scroll";
 
     private int[] mScrollSavedPosition;
+
+    private int mViewPagerPosition;
 
     /**
      * Constructor via bundle
@@ -112,6 +115,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            mViewPagerPosition = savedInstanceState.getInt("intqualquer", 0);
         }
     }
 
@@ -201,6 +205,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Save the scroll state for rotation
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
+        }
+        for(BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders){
+            if(baseTeaserViewHolder instanceof HomeMainTeaserHolder){
+                outState.putInt("intqualquer", ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+            }
         }
     }
 
@@ -300,6 +309,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             // Create view
             BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
+
+                if(viewHolder instanceof HomeMainTeaserHolder){
+                    ((HomeMainTeaserHolder)viewHolder).setViewPagerPosition(mViewPagerPosition);
+                }
+
                 // Set view
                 viewHolder.onBind(baseTeaserType);
                 // Add to container
