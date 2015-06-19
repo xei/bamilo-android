@@ -129,6 +129,10 @@ public class MyOrdersFragment extends BaseFragment {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
 
+            if(ShopSelector.isRtl()){
+                mMyOrdersPagerAdapter.enableRtl(true);
+            }
+
             mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
             mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
             // Show the pre selection
