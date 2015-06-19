@@ -213,7 +213,7 @@ public class MyOrdersFragment extends BaseFragment {
          * @author Paulo Carvalho
          */
         public MyOrdersPagerAdapter(FragmentManager fm) {
-            super(fm, getFragmentsList(), getFragmentTitleValues(MyOrdersFragment.this));
+            super(fm, getFragmentsList(), getFragmentTitleValues());
         }
 
         @Override
@@ -229,8 +229,8 @@ public class MyOrdersFragment extends BaseFragment {
         }
     }
 
-    private List<String> getFragmentTitleValues(Fragment fragment){
-        String[] titles = {fragment.getString(R.string.my_order_tracking_label).toUpperCase(), fragment.getString(R.string.my_order_history_label).toUpperCase()};
+    private List<String> getFragmentTitleValues(){
+        String[] titles = {getString(R.string.my_order_tracking_label).toUpperCase(), getString(R.string.my_order_history_label).toUpperCase()};
         return Arrays.asList( titles);
     }
 
