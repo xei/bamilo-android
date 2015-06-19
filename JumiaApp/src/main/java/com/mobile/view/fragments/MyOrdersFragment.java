@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,18 +16,22 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.RtlDynamicFragmentAdapter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 
 /**
  * @author Paulo Carvalho
  * 
  */
-public class MyOrdersFragment extends BaseFragment implements OnClickListener {
+public class MyOrdersFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
 
@@ -84,8 +87,14 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
+
         if (arguments != null) {
-            mPositionToStart = arguments.containsKey(TrackerDelegator.LOGIN_KEY) ? 1 : 0;
+            if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
+                mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
+            }
+        } else {
+            mPositionToStart = ShopSelector.isRtl() ? 1: 0;
+
         }
     }
 
@@ -119,6 +128,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
         } else {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
+
             mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
             mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
             // Show the pre selection
@@ -192,7 +202,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
      * 
      * @author Paulo Carvalho
      */
-    private class MyOrdersPagerAdapter extends FragmentPagerAdapter {
+    private class MyOrdersPagerAdapter extends RtlDynamicFragmentAdapter {
 
         /**
          * Constructor
@@ -201,60 +211,26 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
          * @author Paulo Carvalho
          */
         public MyOrdersPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, getFragmentsList(), getFragmentTitleValues(MyOrdersFragment.this));
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-         */
         @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-            case 0:
-                return TrackOrderFragment.getInstance(getArguments());
-            case 1:
-                return OrderHistoryFragment.getInstance();
-            default:
-                return TrackOrderFragment.getInstance(getArguments());
-
-            }
-
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getCount()
-         */
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-         */
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-            case 0:
-                return getString(R.string.my_order_tracking_label).toUpperCase();
-            case 1:
-                return getString(R.string.my_order_history_label).toUpperCase();
-            default:
-                return getString(R.string.my_orders_label).toUpperCase();
-            }
+        protected Fragment createNewFragment(int position) {
+            return (OrderHistoryFragment.class.getSimpleName().equals(fragments.get(position))) ?
+                    OrderHistoryFragment.getInstance() :
+                    TrackOrderFragment.getInstance(getArguments());
         }
 
     }
 
-    @Override
-    public void onClick(View v) {
+    static List<String> getFragmentTitleValues(Fragment fragment){
+        String[] titles = {fragment.getString(R.string.my_order_tracking_label).toUpperCase(), fragment.getString(R.string.my_order_history_label).toUpperCase()};
+        return Arrays.asList( titles);
+    }
+
+    static List<String> getFragmentsList(){
+        String[] fragments ={TrackOrderFragment.class.getSimpleName(), OrderHistoryFragment.class.getSimpleName()};
+        return Arrays.asList(fragments);
     }
 
     @Override
