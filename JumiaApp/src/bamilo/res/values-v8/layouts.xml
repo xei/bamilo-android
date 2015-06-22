@@ -24,6 +24,8 @@
     <item name="checkout_shipping_pickup_station" 	type="layout">@layout/_v8_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time" 		type="layout">@layout/_v8_checkout_shipping_fee_time</item>
     <item name="checkout_header"					type="layout">@layout/_v8_checkout_header</item>
+    <item name="checkout_total_layout" 			    type="layout">@layout/_v8_checkout_total_layout</item>
+    <item name="cart_total"                         type="layout">@layout/_v8_price</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping" 			type="layout">@layout/_v8_form_radiobutton_shipping</item>
