@@ -21,6 +21,8 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 
     public HorizontalListView horizontal;
 
+    private boolean secondTime = false;
+
     /**
      * Constructor
      */
@@ -42,6 +44,7 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
      */
     @Override
     public void onBind(BaseTeaserGroupType group) {
+        setTeaserGroupTypeMargins(group);
         if (horizontal.getAdapter() == null) {
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontal.setHasFixedSize(true);
@@ -52,6 +55,24 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 
     @Override
     public void onUpdate() {
+    }
+
+    /**
+     * set specific margins for small teasers
+     * @param group
+     */
+    public void setTeaserGroupTypeMargins(BaseTeaserGroupType group) {
+        if (group.getData() != null && group.getData().size() == NUMBER_OF_PIECES) {
+            secondTime = true;
+            apllyMargin();
+        }
+    }
+
+    @Override
+    public void apllyMargin() {
+        if(secondTime){
+            super.apllyMargin();
+        }
 
     }
 }
