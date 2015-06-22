@@ -173,7 +173,7 @@ public class SessionRegisterFragment extends BaseFragment {
         } else {
             triggerRegisterForm();
         }
-        setAppContentLayout();
+
         getFormComponents();
         setFormComponents();
     }
@@ -240,13 +240,6 @@ public class SessionRegisterFragment extends BaseFragment {
     /**
      * ##### LAYOUT ####
      */
-
-    /**
-     * Inflate this layout
-     */
-    public void setAppContentLayout() {
-        triggerTerms();
-    }
 
     /**
      * Get Components
@@ -712,10 +705,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private void triggerRegisterForm() {
         triggerContentEvent(new GetRegisterFormHelper(), null, mCallBack);
-    }
-
-    private void triggerTerms() {
-        triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
     /**
