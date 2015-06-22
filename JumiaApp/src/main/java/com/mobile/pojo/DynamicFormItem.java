@@ -1023,7 +1023,11 @@ public class DynamicFormItem {
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        if (ShopSelector.isRtl()) {
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        } else {
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
 
@@ -1039,6 +1043,18 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(this.dataControl);
 
         ((ViewGroup) this.control).addView(this.mandatoryControl);
+
+        if (hasRules()) {
+            this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            RelativeLayout.LayoutParams errorControlParams = (RelativeLayout.LayoutParams)this.errorControl.getLayoutParams();
+            errorControlParams.addRule(RelativeLayout.BELOW, this.dataControl.getId());
+            ((ViewGroup) this.control).addView(this.errorControl);
+        }
 
         ((ViewGroup) this.control).addView(dataContainer);
 
