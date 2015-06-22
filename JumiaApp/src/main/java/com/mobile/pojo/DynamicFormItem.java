@@ -1913,7 +1913,7 @@ public class DynamicFormItem {
 
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         } else {
-            int inputType = android.text.InputType.TYPE_CLASS_TEXT;
+            int inputType = android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
             textDataControl.setInputType(inputType);
             //#RTL
             if (ShopSelector.isRtl())
