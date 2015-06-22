@@ -146,6 +146,6 @@ public class SessionTermsFragment extends BaseFragment {
     }
     
     private void setupView() {
-            textView.setText(termsText);     
+        textView.setText(termsText);
     }
 }
