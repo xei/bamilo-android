@@ -5,8 +5,6 @@ import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.utils.output.Print;
 
-import org.apache.http.protocol.HTTP;
-
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
@@ -87,7 +85,7 @@ public class AigRestAdapter {
                 request.addHeader(HeaderConstants.CACHE_CONTROL, value);
             }
             // AGENT
-            request.addHeader(HTTP.USER_AGENT, agent);
+            request.addHeader(HeaderConstants.USER_AGENT, agent);
             //Print.d("##########################################################");
         }
     }

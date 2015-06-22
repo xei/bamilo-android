@@ -13,7 +13,7 @@ import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.controllers.PickupStationsAdapter;
 import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.requests.checkout.ShippingMethodSubFormHolder;
+import com.mobile.newFramework.objects.checkout.ShippingMethodSubFormHolder;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.R;
 

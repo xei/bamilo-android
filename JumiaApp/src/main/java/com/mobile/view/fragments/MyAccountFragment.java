@@ -5,9 +5,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,7 +19,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -39,7 +35,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class MyAccountFragment extends BaseFragment implements OnItemClickListener{
 
-    private static final String TAG = LogTagHelper.create(MyAccountFragment.class);
+    private static final String TAG = MyAccountFragment.class.getSimpleName();
 
     public final static int POSITION_USER_DATA = 0;
 
@@ -52,7 +48,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private ListView optionsList;
     
     private ListView appSharingList;
-    
+
+    private MyAccountPushPreferences mPreferencesFragment;
+
     /**
      * Get instance
      * 
@@ -104,6 +102,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         showMyAccount(view);
+        showPreferences();
         showAppSharing(view);
     }
 
@@ -158,27 +157,18 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      */
     @Override
     public void onDestroyView() {
+        Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
         // Remove PreferencesFragment
-        removePreferencesFragment();
+        FragmentController.removeChildFragmentById(this, mPreferencesFragment.getId());
     }
 
-    /**
-     * Remove the preferences fragment added via layout.
-     */
-    private void removePreferencesFragment() {
-        try {
-            FragmentManager fm = getChildFragmentManager();
-            Fragment fragment = (fm.findFragmentById(R.id.account_preferences_fragment));
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(fragment);
-            ft.commitAllowingStateLoss();
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON REMOVE PREFERENCES FRAGMENT");
-        }
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "ON DESTROY");
+        super.onDestroy();
     }
-    
+
     /**
      * Shows my account options
      */
@@ -194,6 +184,14 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Set Listener for all items
         optionsList.setOnItemClickListener(this);
         
+    }
+
+    /**
+     * Shows user preferences
+     */
+    private void showPreferences() {
+        mPreferencesFragment = new MyAccountPushPreferences();
+        FragmentController.addChildFragment(this, R.id.account_preferences_frame, mPreferencesFragment);
     }
     
     /**
@@ -220,8 +218,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     
     /**
      *  Handles the item click of childs of options list.
-     *
-     * @param position
      */
     private void handleOnOptionsListItemClick(int position) {
         switch (position) {
@@ -248,8 +244,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     /**
      *  Handles the item click of childs of app sharing list.
-     *
-     * @param position
      */
     private void handleOnAppSharingListItemClick(int position) {
         switch (position) {

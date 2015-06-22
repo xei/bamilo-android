@@ -3,8 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.ForgotPassword;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -15,8 +16,6 @@ public class ForgotPasswordTest extends BaseTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Mobapi_Form_Customer_ForgotPasswordForm[email]", "sofias@jumia.com");
         requestBundle = new RequestBundle.Builder()
@@ -29,7 +28,7 @@ public class ForgotPasswordTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new ForgotPassword(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.forgotPassword);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

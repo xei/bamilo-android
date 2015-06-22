@@ -48,8 +48,6 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     private int mTabsCount = 2;
 
     private boolean mHasSummary = true;
-//    private boolean hasSpecification = true;
-
 
     /**
      * Get instance

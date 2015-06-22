@@ -412,7 +412,9 @@
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:textColor">@color/grey_dark</item>
         <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:text">@dimen/text_button</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="button_grey_bottom" parent="_parent_button_bottom_container">

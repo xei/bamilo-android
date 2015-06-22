@@ -44,8 +44,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {;
-        // Request
-//        new GetApiInformation(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getApiInformation);
     }
 

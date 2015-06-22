@@ -13,7 +13,7 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -39,12 +39,17 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
     public void execute(){}
 
     public void execute(String name){
+        // Get api service via string
         Method method = AigApiInterface.Service.getMethod(name);
-        List parameters = new LinkedList();
-        if(mRequestBundle.getData() != null){
+        // Set parameters
+        List parameters = new ArrayList();
+        // Add request data
+        if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
+        // Add callback
         parameters.add(this);
+        // Invoke api service
         AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
         try {
             method.invoke(service, parameters.toArray());
@@ -98,13 +103,13 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
      * ############## UTILS TEMPORARY ##############
      */
 
-    protected String[] getBaseAndEndPointFrom(String fullUrl) {
-        String baseUrl = fullUrl;
-        String endPoint = "";
-        if (baseUrl.contains("/mobapi/")) {
-            baseUrl = mRequestBundle.getUrl().substring(0, baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
-            endPoint = mRequestBundle.getUrl().substring(baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
-        }
-        return new String[]{baseUrl, endPoint};
-    }
+//    protected String[] getBaseAndEndPointFrom(String fullUrl) {
+//        String baseUrl = fullUrl;
+//        String endPoint = "";
+//        if (baseUrl.contains("/mobapi/")) {
+//            baseUrl = mRequestBundle.getUrl().substring(0, baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
+//            endPoint = mRequestBundle.getUrl().substring(baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
+//        }
+//        return new String[]{baseUrl, endPoint};
+//    }
 }
