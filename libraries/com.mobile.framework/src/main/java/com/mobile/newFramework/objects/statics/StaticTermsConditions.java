@@ -31,4 +31,20 @@ public class StaticTermsConditions implements IJSONSerializable{
     public RequiredJson getRequiredJson() {
         return RequiredJson.OBJECT_DATA;
     }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
