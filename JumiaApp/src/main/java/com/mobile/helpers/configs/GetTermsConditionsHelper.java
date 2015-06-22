@@ -4,12 +4,10 @@ import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -51,9 +49,10 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        StaticTermsConditions termsConditions = (StaticTermsConditions) baseResponse.getMetadata().getData();
+        // TODO: CREATE NEW OBJECT
+        //Terms terms = (Terms) baseResponse.getMetadata().getData();
         Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, termsConditions.getHtml());
+        //bundle.putString(Constants.BUNDLE_RESPONSE_KEY, terms.toString());
         mRequester.onRequestComplete(bundle);
     }
 

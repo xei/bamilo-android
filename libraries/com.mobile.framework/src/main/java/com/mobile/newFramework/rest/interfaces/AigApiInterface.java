@@ -34,7 +34,6 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
-import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -93,7 +92,7 @@ public interface AigApiInterface {
     String getImageResolutions = "getImageResolutions";
 
     @GET("/")
-    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticTermsConditions>> callback);
+    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
 
     String getTermsAndConditions = "getTermsAndConditions";
 
