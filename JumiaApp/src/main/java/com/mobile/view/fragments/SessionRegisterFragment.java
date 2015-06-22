@@ -83,8 +83,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private DynamicFormItem newsletterSubscribe;
 
-    private String terms;
-
     private LinearLayout container;
 
     /**
@@ -500,11 +498,6 @@ public class SessionRegisterFragment extends BaseFragment {
                 loadForm(form);
             }
             break;
-        case GET_TERMS_EVENT:
-            terms = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-            // Remove the listener
-            // detailsListener();
-            break;
         default:
             break;
         }
@@ -578,9 +571,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 saveFormState();
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
-                getBaseActivity().onSwitchFragment(FragmentType.TERMS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.TERMS, null, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });
