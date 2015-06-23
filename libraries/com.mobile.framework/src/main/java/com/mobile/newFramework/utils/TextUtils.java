@@ -1,6 +1,5 @@
 package com.mobile.newFramework.utils;
 
-
 public class TextUtils {
 
     private static String[] EMPTY_STRING_ARRAY = new String[]{};

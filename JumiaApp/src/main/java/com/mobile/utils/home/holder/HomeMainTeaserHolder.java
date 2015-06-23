@@ -117,4 +117,9 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     public void onUpdate() {
 
     }
+
+    @Override
+    public void apllyMargin() {
+
+    }
 }
