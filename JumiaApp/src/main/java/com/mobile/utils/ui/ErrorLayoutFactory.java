@@ -13,7 +13,7 @@ import com.mobile.view.R;
  * Proprietary and confidential.
  *
  * @author ricardosoares
- * @version 1.0
+ * @version 1.1
  * @date 2015/06/15
  */
 public class ErrorLayoutFactory {
