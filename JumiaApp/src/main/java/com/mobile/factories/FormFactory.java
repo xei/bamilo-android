@@ -144,8 +144,27 @@ public class FormFactory {
             case FormConstants.REVIEW_SELLER_FORM:
                 parent = createSellerReviewOptionsForm(context, form, ctrlParams);
                 break;
+            case FormConstants.CHANGE_PASSWORD_FORM:
+                parent = createChangePasswordForm(context,form, ctrlParams);
+                break;
         }
         return parent;
+    }
+
+    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
+        if (null == ctrlParams) {
+            final int CTRLMARGIN_LEFT = 0;
+            final int CTRLMARGIN_TOP = 0;
+            final int CTRLMARGIN_RIGHT = 0;
+            final int CTRLMARGIN_BOTTOM =0;
+
+            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
+        }
+
+        DynamicForm dynamicForm = createGenericForm(context, form, ctrlParams);
+        int margin = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
+        ((LinearLayout.LayoutParams)dynamicForm.getContainer().getLayoutParams()).setMargins(margin, margin, margin, margin);
+        return dynamicForm;
     }
 
     /**

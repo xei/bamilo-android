@@ -59,6 +59,8 @@ public enum EventType {
 
     GET_REGISTRATION_FORM_FALLBACK_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 
+    GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
+
     CHANGE_PASSWORD_EVENT("https:/customer/changepass/", AigRestContract.NO_CACHE),
 
     //GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME), // TODO - implement

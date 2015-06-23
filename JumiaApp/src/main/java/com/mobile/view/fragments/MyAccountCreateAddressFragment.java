@@ -88,7 +88,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
             orderSummaryLayout.setVisibility(View.GONE);
         }
 
-        ((Button)view.findViewById(R.id.checkout_address_button_enter)).setText(getResources().getString(R.string.save_label));
+        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
     }
 
     @Override

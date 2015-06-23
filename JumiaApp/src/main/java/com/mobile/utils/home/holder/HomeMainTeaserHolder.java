@@ -127,4 +127,9 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
                 : pager.getCurrentItem();
         return viewPagerPosition;
     }
+
+    @Override
+    public void apllyMargin() {
+
+    }
 }
