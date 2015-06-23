@@ -35,6 +35,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
+import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -60,6 +61,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
     public static final String SCROLL_STATE_KEY = "scroll";
+
+    public static final String POSITION_STATE_KEY = "position";
 
     private int[] mScrollSavedPosition;
 
@@ -112,6 +115,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
         }
     }
 
@@ -201,6 +205,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Save the scroll state for rotation
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
+        }
+        for(BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders){
+            if(baseTeaserViewHolder instanceof HomeMainTeaserHolder){
+                outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+            }
         }
     }
 

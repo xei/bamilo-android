@@ -41,6 +41,8 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     public View container;
 
+    public static int viewPagerPosition;
+
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
         super(context, itemView, onClickListener);
         // Tablet flag
@@ -91,8 +93,8 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
-            // Set default position
-            pager.setCurrentItem(getDefaultPosition(adapter.getCount()));
+
+            pager.setCurrentItem(viewPagerPosition);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }
@@ -103,6 +105,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
      * @param size The number of items
      * @return int
      */
+    @Deprecated
     private int getDefaultPosition(int size) {
         int position;
         if(!isTablet) {
@@ -116,6 +119,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     @Override
     public void onUpdate() {
 
+    }
+
+    public int getViewPagerPosition() {
+        viewPagerPosition = (pager.getAdapter() instanceof InfinitePagerAdapter) ?
+                ((InfinitePagerAdapter) pager.getAdapter()).getVirtualPosition(pager.getCurrentItem())
+                : pager.getCurrentItem();
+        return viewPagerPosition;
     }
 
     @Override
