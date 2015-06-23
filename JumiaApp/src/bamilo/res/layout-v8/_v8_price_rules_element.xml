@@ -10,20 +10,22 @@
         android:id="@+id/price_rules_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_toLeftOf="@+id/price_rules_value"
         android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:singleLine="true"
         android:text="@string/vat_string"
+        android:gravity="left"
         android:textColor="@color/grey_middle" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/price_rules_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:fontFamily="roboto_regular"
+        android:text="100"
         android:textColor="@color/grey_middle" />
 
 </RelativeLayout>
