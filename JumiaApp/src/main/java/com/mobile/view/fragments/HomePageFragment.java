@@ -66,8 +66,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     private int[] mScrollSavedPosition;
 
-    private int mViewPagerPosition;
-
     /**
      * Constructor via bundle
      *
@@ -117,7 +115,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-            mViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
+            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
         }
     }
 
@@ -311,11 +309,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             // Create view
             BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
-
-                if(viewHolder instanceof HomeMainTeaserHolder){
-                    ((HomeMainTeaserHolder)viewHolder).setViewPagerPosition(mViewPagerPosition);
-                }
-
                 // Set view
                 viewHolder.onBind(baseTeaserType);
                 // Add to container

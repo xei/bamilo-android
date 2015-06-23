@@ -41,7 +41,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     public View container;
 
-    private int viewPagerPosition;
+    public static int viewPagerPosition;
 
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
         super(context, itemView, onClickListener);
@@ -57,8 +57,6 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         pager = (PreviewViewPager) itemView.findViewById(R.id.home_teaser_main_pager);
         // Set the preview offset
         pager.setPreviewOffset(mOffset);
-
-        viewPagerPosition = 0;
 
     }
 
@@ -128,9 +126,5 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
                 ((InfinitePagerAdapter) pager.getAdapter()).getVirtualPosition(pager.getCurrentItem())
                 : pager.getCurrentItem();
         return viewPagerPosition;
-    }
-
-    public void setViewPagerPosition(int viewPagerPosition) {
-        this.viewPagerPosition = viewPagerPosition;
     }
 }
