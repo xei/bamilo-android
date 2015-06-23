@@ -182,6 +182,10 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
     }
 
     private boolean onErrorEvent(Bundle bundle) {
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
         return false;
     }
 }
