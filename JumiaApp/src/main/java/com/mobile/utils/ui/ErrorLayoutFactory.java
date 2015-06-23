@@ -58,186 +58,154 @@ public class ErrorLayoutFactory {
     }
 
     public void showErrorLayout(int error) {
-        switch (error) {
-            case NO_NETWORK_LAYOUT:
-                showNoNetworkLayout();
-                break;
-            case UNEXPECTED_ERROR_LAYOUT:
-                showUnexpectedErrorLayout();
-                break;
-            case CART_EMPTY_LAYOUT:
-                showCartEmptyLayout();
-                break;
-            case NO_FAVOURITES_LAYOUT:
-                showNoFavouritesLayout();
-                break;
-            case NO_RECENT_SEARCHES_LAYOUT:
-                showNoRecentSearchesLayout();
-                break;
-            case NO_RECENTLY_VIEWED_LAYOUT:
-                showNoRecentlyViewedLayout();
-                break;
-            case CONTINUE_SHOPPING_LAYOUT:
-                showContinueShoppingLayout();
-                break;
-            case CATALOG_NO_RESULTS:
-                showCatalogNoResultsLayout();
-                break;
-            case CATALOG_UNEXPECTED_ERROR:
-                showCatalogUnexpectedErrorLayout();
-                break;
+        if(actualError != error) {
+            switch (error) {
+                case NO_NETWORK_LAYOUT:
+                    showNoNetworkLayout();
+                    break;
+                case UNEXPECTED_ERROR_LAYOUT:
+                    showUnexpectedErrorLayout();
+                    break;
+                case CART_EMPTY_LAYOUT:
+                    showCartEmptyLayout();
+                    break;
+                case NO_FAVOURITES_LAYOUT:
+                    showNoFavouritesLayout();
+                    break;
+                case NO_RECENT_SEARCHES_LAYOUT:
+                    showNoRecentSearchesLayout();
+                    break;
+                case NO_RECENTLY_VIEWED_LAYOUT:
+                    showNoRecentlyViewedLayout();
+                    break;
+                case CONTINUE_SHOPPING_LAYOUT:
+                    showContinueShoppingLayout();
+                    break;
+                case CATALOG_NO_RESULTS:
+                    showCatalogNoResultsLayout();
+                    break;
+                case CATALOG_UNEXPECTED_ERROR:
+                    showCatalogUnexpectedErrorLayout();
+                    break;
+            }
+        } else {
+            new Builder().show();
         }
     }
 
     private void showNoNetworkLayout() {
-        if(actualError != NO_NETWORK_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_connect)
-                    .setPrincipalMessage(R.string.error_no_connection)
-                    .setDetailMessage(R.string.internet_no_connection_details_label)
-                    .setRotationVisible(true)
-                    .setButtonMessage(R.string.try_again_retry)
-                    .setButtonBackground(R.drawable.btn_grey)
-                    .show();
-            actualError = NO_NETWORK_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+        new Builder()
+                .setImage(R.drawable.img_connect)
+                .setPrincipalMessage(R.string.error_no_connection)
+                .setDetailMessage(R.string.internet_no_connection_details_label)
+                .setRotationVisible(true)
+                .setButtonMessage(R.string.try_again_retry)
+                .setButtonBackground(R.drawable.btn_grey)
+                .show();
+        actualError = NO_NETWORK_LAYOUT;
     }
 
     private void showUnexpectedErrorLayout(){
-        if(actualError != UNEXPECTED_ERROR_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_warning)
-                    .setPrincipalMessageVisible(false)
-                    .setDetailMessage(R.string.server_error)
-                    .setRotationVisible(true)
-                    .setButtonMessage(R.string.try_again_retry)
-                    .setButtonBackground(R.drawable.btn_grey)
-                    .show();
-            actualError = UNEXPECTED_ERROR_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+        new Builder()
+                .setImage(R.drawable.img_warning)
+                .setPrincipalMessageVisible(false)
+                .setDetailMessage(R.string.server_error)
+                .setRotationVisible(true)
+                .setButtonMessage(R.string.try_again_retry)
+                .setButtonBackground(R.drawable.btn_grey)
+                .show();
+        actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
     private void showCartEmptyLayout(){
-        if(actualError != CART_EMPTY_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_emptycart)
-                    .setPrincipalMessage(R.string.order_no_items)
+        new Builder()
+                .setImage(R.drawable.img_emptycart)
+                .setPrincipalMessage(R.string.order_no_items)
 //                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.continue_shopping)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = CART_EMPTY_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = CART_EMPTY_LAYOUT;
     }
 
     private void showNoFavouritesLayout(){
-        if(actualError != NO_FAVOURITES_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_nofavourites)
-                    .setPrincipalMessage(R.string.favourite_no_favourites)
-//                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.continue_shopping)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = NO_FAVOURITES_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+        new Builder()
+                .setImage(R.drawable.img_nofavourites)
+                .setPrincipalMessage(R.string.favourite_no_favourites)
+    //                    .setDetailMessage(R.string.server_error)
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = NO_FAVOURITES_LAYOUT;
     }
 
     private void showNoRecentSearchesLayout(){
-        if(actualError != NO_RECENT_SEARCHES_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_norecentsearch)
-                    .setPrincipalMessage(R.string.recentsearch_no_searches)
+        new Builder()
+                .setImage(R.drawable.img_norecentsearch)
+                .setPrincipalMessage(R.string.recentsearch_no_searches)
 //                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.continue_shopping)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = NO_RECENT_SEARCHES_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = NO_RECENT_SEARCHES_LAYOUT;
     }
 
     private void showNoRecentlyViewedLayout(){
-        if(actualError != NO_RECENTLY_VIEWED_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_norecentview)
-                    .setPrincipalMessage(R.string.recentlyview_no_searches)
+        new Builder()
+                .setImage(R.drawable.img_norecentview)
+                .setPrincipalMessage(R.string.recentlyview_no_searches)
 //                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.continue_shopping)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = NO_RECENTLY_VIEWED_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = NO_RECENTLY_VIEWED_LAYOUT;
     }
 
     private void showContinueShoppingLayout() {
-        if(actualError != CONTINUE_SHOPPING_LAYOUT){
-            new Builder()
-                    .setImage(R.drawable.img_warning)
+        new Builder()
+                .setImage(R.drawable.img_warning)
 //                    .setPrincipalMessage(R.string.recentlyview_no_searches)
-                    .setPrincipalMessageVisible(false)
-                    .setDetailMessage(R.string.server_error)
-                    .setButtonMessage(R.string.continue_shopping)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = CONTINUE_SHOPPING_LAYOUT;
-        } else {
-            new Builder().show();
-        }
+                .setPrincipalMessageVisible(false)
+                .setDetailMessage(R.string.server_error)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = CONTINUE_SHOPPING_LAYOUT;
     }
 
     private void showCatalogNoResultsLayout(){
-        if(actualError != CATALOG_NO_RESULTS){
-            new Builder()
-                    .setImage(R.drawable.img_filternoresults)
-                    .setPrincipalMessage(R.string.catalog_no_results)
+        new Builder()
+                .setImage(R.drawable.img_filternoresults)
+                .setPrincipalMessage(R.string.catalog_no_results)
 //                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.catalog_edit_filters)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = CATALOG_NO_RESULTS;
-        } else {
-            new Builder().show();
-        }
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.catalog_edit_filters)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = CATALOG_NO_RESULTS;
     }
 
     private void showCatalogUnexpectedErrorLayout(){
-        if(actualError != CATALOG_UNEXPECTED_ERROR){
-            new Builder()
-                    .setImage(R.drawable.img_filternoresults)
-                    .setPrincipalMessage(R.string.server_error)
+        new Builder()
+                .setImage(R.drawable.img_filternoresults)
+                .setPrincipalMessage(R.string.server_error)
 //                    .setDetailMessage(R.string.server_error)
-                    .setDetailMessageVisible(false)
-                    .setButtonMessage(R.string.catalog_edit_filters)
-                    .setRotationVisible(false)
-                    .setButtonBackground(R.drawable.btn_orange)
-                    .show();
-            actualError = CATALOG_UNEXPECTED_ERROR;
-        } else {
-            new Builder().show();
-        }
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.catalog_edit_filters)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange)
+                .show();
+        actualError = CATALOG_UNEXPECTED_ERROR;
     }
 
     public void hide(){
