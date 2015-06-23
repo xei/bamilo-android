@@ -220,81 +220,58 @@ public class ErrorLayoutFactory {
 
         Builder setRotationVisible(boolean isToShow){
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
-            if(retrySpinning != null) {
                 if(isToShow){
                     retrySpinning.setVisibility(View.VISIBLE);
                 } else {
                     retrySpinning.clearAnimation();
                     retrySpinning.setVisibility(View.GONE);
                 }
-            }
             return this;
         }
 
         Builder setButtonMessage(int message){
-            View buttonMessage = mErrorLayout.findViewById(R.id.fragment_root_error_button_message);
-            if(buttonMessage instanceof TextView){
-                ((TextView)buttonMessage).setText(message);
-            }
+            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setText(message);
             return this;
         }
 
         Builder setButtonBackground(int background){
-            View button = mErrorLayout.findViewById(R.id.fragment_root_error_button);
-            if(button != null){
-                button.setBackgroundResource(background);
-            }
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setBackgroundResource(background);
             return this;
         }
 
         Builder setImage(int image){
             View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
-            if(imageView instanceof ImageView){
-                imageView.setVisibility(View.VISIBLE);
-                ((ImageView)imageView).setImageResource(image);
-            }
+            imageView.setVisibility(View.VISIBLE);
+            ((ImageView)imageView).setImageResource(image);
             return this;
         }
 
         Builder setImageVisibible(boolean isToShow){
-            View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
-            if(imageView != null){
-                imageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
-            }
+            mErrorLayout.findViewById(R.id.fragment_root_error_image).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
 
         Builder setPrincipalMessage(int message){
             View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
-            if(messageView instanceof TextView){
-                messageView.setVisibility(View.VISIBLE);
-                ((TextView)messageView).setText(message);
-            }
+            messageView.setVisibility(View.VISIBLE);
+            ((TextView)messageView).setText(message);
             return this;
         }
 
         Builder setPrincipalMessageVisible(boolean isToShow){
-            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
-            if(messageView != null){
-                messageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
-            }
+            mErrorLayout.findViewById(R.id.fragment_root_error_label).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
 
         Builder setDetailMessage(int message){
             View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
-            if(messageView instanceof TextView){
-                messageView.setVisibility(View.VISIBLE);
-                ((TextView)messageView).setText(message);
-            }
+            messageView.setVisibility(View.VISIBLE);
+            ((TextView)messageView).setText(message);
             return this;
         }
 
         Builder setDetailMessageVisible(boolean isToShow){
-            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
-            if(messageView != null){
-                messageView.setVisibility(isToShow ? View.VISIBLE : View.GONE);
-            }
+            mErrorLayout.findViewById(R.id.fragment_root_error_details_label).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
     }
