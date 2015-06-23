@@ -200,7 +200,7 @@ public class ErrorLayoutFactory {
         actualError = CATALOG_UNEXPECTED_ERROR;
     }
 
-    public void show() {
+    private void show() {
         mErrorLayout.setVisibility(View.VISIBLE);
     }
 
@@ -220,12 +220,12 @@ public class ErrorLayoutFactory {
 
         Builder setRotationVisible(boolean isToShow){
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
-                if(isToShow){
-                    retrySpinning.setVisibility(View.VISIBLE);
-                } else {
-                    retrySpinning.clearAnimation();
-                    retrySpinning.setVisibility(View.GONE);
-                }
+            if(isToShow){
+                retrySpinning.setVisibility(View.VISIBLE);
+            } else {
+                retrySpinning.clearAnimation();
+                retrySpinning.setVisibility(View.GONE);
+            }
             return this;
         }
 
