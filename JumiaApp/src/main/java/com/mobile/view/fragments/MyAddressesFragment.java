@@ -107,7 +107,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         mTopAddContainer = view.findViewById(R.id.checkout_addresses_top_button_container);
         view.findViewById(R.id.checkout_addresses_default_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_other_add).setOnClickListener(this);
-        view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
     }
 
     @Override
@@ -169,7 +169,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_addresses_button_enter) onClickSubmitAddressesButton();
+        if(id == R.id.checkout_button_enter) onClickSubmitAddressesButton();
             // Add new
         else if(id == R.id.checkout_addresses_default_add) onClickCreateAddressButton();
             // Add new

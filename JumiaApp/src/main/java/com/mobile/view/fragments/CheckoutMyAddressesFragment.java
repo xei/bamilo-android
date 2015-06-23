@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -28,6 +29,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -52,7 +54,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public static CheckoutMyAddressesFragment getInstance() {
         return new CheckoutMyAddressesFragment();
     }
-
 
     /**
      * Empty constructor
@@ -102,7 +103,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.next_button));
+        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.next_button));
     }
     
     /*
@@ -201,6 +202,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Get order summary
         OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
+
+        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
 
     }
 
