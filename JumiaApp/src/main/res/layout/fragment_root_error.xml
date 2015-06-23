@@ -15,10 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/retry_layout_height"
             android:layout_marginBottom="@dimen/margin_20px"
-            layout="@layout/error_layout" />
+            layout="@layout/error_info_layout" />
 
         <include
-            layout="@layout/error_button" />
+            layout="@layout/error_button_layout" />
     </LinearLayout>
 
 </ScrollView>
