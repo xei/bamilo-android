@@ -492,4 +492,8 @@ public interface AigApiInterface {
 
     String checkoutFinish = "checkoutFinish";
 
+    @GET("/")
+    void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
+
+    String getChangePasswordForm = "getChangePasswordForm";
 }
