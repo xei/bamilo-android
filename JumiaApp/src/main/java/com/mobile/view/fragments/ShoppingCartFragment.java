@@ -47,6 +47,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -790,22 +791,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
 
             HashMap<String, String> priceRules = cart.getPriceRules();
-            if (priceRules != null && priceRules.size() > 0) {
-                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(
-                        R.id.price_rules_container);
-                priceRulesContainer.removeAllViews();
-                priceRulesContainer.setVisibility(View.VISIBLE);
-                LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-                Set<String> priceRulesKeys = priceRules.keySet();
-                for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,
-                            priceRulesContainer, false);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"
-                            + CurrencyFormatter.formatCurrency(priceRules.get(key)));
-                    priceRulesContainer.addView(priceRuleElement);
-                }
-            }
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+            CheckoutStepManager.showPriceRules(getActivity(),priceRulesContainer,priceRules);
 
             //hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
