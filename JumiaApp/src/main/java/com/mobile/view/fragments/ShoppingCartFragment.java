@@ -684,6 +684,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
@@ -731,8 +732,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
                 vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
+                vatIncludedLabel.setText(getString(R.string.vat_string));
             } else {
                 vatValue.setVisibility(View.GONE);
+                vatIncludedLabel.setText(getString(R.string.string_vat_included));
             }
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
