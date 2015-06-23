@@ -632,12 +632,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
+    /**
+     * Show error layout based on type. if the view is not inflated, it will be in first place.
+     *
+     * @param type
+     * @param listener
+     */
     protected final void showErrorFragment(int type, OnClickListener listener){
         if(mErrorView instanceof ViewStub){
+            // If not inflated yet
             mErrorView.setTag(mErrorView.getId(), type);
             mErrorView.setTag(R.id.stub_listener, listener);
             ((ViewStub) mErrorView).inflate();
         } else {
+            //If already inflated
             View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(listener);
             retryButton.setTag(R.id.fragment_root_error_button, type);
@@ -773,6 +781,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         mErrorView = inflated;
 
+        // Init error factory
         mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
         showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
 
