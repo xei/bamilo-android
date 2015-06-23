@@ -174,7 +174,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mIsSameCheckBox.setOnCheckedChangeListener(this);
         mIsSameCheckBox.setChecked(true);
         // Next button
-        view.findViewById(R.id.checkout_address_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
 
     }
 
@@ -531,7 +531,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get view id
         int id = view.getId();
         // Next button
-        if (id == R.id.checkout_address_button_enter) {
+        if (id == R.id.checkout_button_enter) {
             onClickCreateAddressButton();
         }
         // Unknown view

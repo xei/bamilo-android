@@ -10,9 +10,6 @@ import android.util.TypedValue;
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
 
-
-
-
 public class TextView extends android.widget.TextView implements FontStyleProvider {
     private String mFontFamily;
     private int mFontStyle;

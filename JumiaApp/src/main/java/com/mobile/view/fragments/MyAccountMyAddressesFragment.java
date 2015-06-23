@@ -77,7 +77,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.i(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
-        ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.save_label));
+        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
 
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
         if(orderSummaryLayout != null){

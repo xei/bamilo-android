@@ -36,10 +36,15 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
         isRtl = ShopSelector.isRtl();
         // Get view offset
         mOffset = TeaserViewFactory.getViewHolderOffset(context);
-        // Set offset case not PreviewViewPager
-        if (!(this instanceof HomeMainTeaserHolder)) {
-            itemView.setPadding(itemView.getPaddingLeft() + mOffset, itemView.getPaddingTop(), itemView.getPaddingRight() + mOffset, itemView.getPaddingBottom());
-        }
+        // Set offset margin
+        apllyMargin();
+    }
+
+    /**
+     * apply margins to view
+     */
+    public void apllyMargin(){
+        itemView.setPadding(itemView.getPaddingLeft() + mOffset, itemView.getPaddingTop(), itemView.getPaddingRight() + mOffset, itemView.getPaddingBottom());
     }
 
     /**
@@ -53,5 +58,7 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
      * Method to update the view
      */
     public abstract void onUpdate();
+
+
 
 }

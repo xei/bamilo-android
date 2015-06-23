@@ -162,8 +162,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
         // Get cart
         mCart = JumiaApplication.INSTANCE.getCart();
-        if (mCart == null) triggerGetShoppingCart();
-        else showOrderSummary();
+        if (mCart == null){
+            triggerGetShoppingCart();
+        } else{
+            showOrderSummary();
+        }
 
     }
     
@@ -246,8 +249,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         }
 
         // Validate order summary
-        if(mOrderSummary == null)  Print.w(TAG, "ORDER SUMMARY IS NULL");
-        else Print.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        if(mOrderSummary == null){
+            Print.w(TAG, "ORDER SUMMARY IS NULL");
+        } else {
+            Print.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        }
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
