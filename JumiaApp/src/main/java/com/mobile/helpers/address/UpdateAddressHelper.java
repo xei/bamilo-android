@@ -35,21 +35,6 @@ public class UpdateAddressHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.editAddress);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
-
-
-
-
     // Alice_Module_Customer_Model_AddressForm[address_id]
     // Alice_Module_Customer_Model_AddressForm[first_name]
     // Alice_Module_Customer_Model_AddressForm[last_name]

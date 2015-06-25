@@ -60,9 +60,10 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
 
+        //TODO move to observable
         // TODO: VALIDATE THIS ???
         // Don't continue if isToUpdateCart was set as false on generateRequestBundle()
         if (!isToUpdateCart) return;
@@ -73,18 +74,9 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
         Print.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
+
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
-
 
 //    /*
 //     * (non-Javadoc)

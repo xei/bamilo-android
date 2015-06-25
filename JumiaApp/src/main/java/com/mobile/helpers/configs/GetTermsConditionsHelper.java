@@ -46,26 +46,6 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
-        //Terms terms = (Terms) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        //bundle.putString(Constants.BUNDLE_RESPONSE_KEY, terms.toString());
-        mRequester.onRequestComplete(bundle);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-
 //
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

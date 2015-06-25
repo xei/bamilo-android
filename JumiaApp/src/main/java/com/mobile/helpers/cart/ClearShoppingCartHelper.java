@@ -63,25 +63,18 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        JumiaApplication.INSTANCE.setCart(null);
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+
+        //TODO move to observable
+        JumiaApplication.INSTANCE.setCart(null);
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getCartValue());
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        mRequester.onRequestComplete(bundle);
-    }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
     }
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
