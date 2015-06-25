@@ -10,7 +10,6 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -112,14 +111,9 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         }
         return position;
     }
-
+    
     @Override
-    public void onUpdate() {
-
-    }
-
-    @Override
-    public void apllyMargin() {
-
+    public void applyMargin() {
+        // ...
     }
 }

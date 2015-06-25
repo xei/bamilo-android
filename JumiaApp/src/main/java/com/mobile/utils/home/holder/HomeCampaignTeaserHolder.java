@@ -30,7 +30,6 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
     private static final int MAIN_POSITION = 0;
 
-    // Data
     public View container;
     public ImageView image;
     public View progress;
@@ -41,6 +40,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     private ArrayList<BaseTeaserObject> campaigns;
     private CountDownTimer counter;
 
+    /**
+     * Constructor
+     */
     public HomeCampaignTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         container = view.findViewById(R.id.home_teaser_campaign_container);
@@ -63,6 +65,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
     @Override
     public void onUpdate() {
+        super.onUpdate();
         loadMainCampaign();
     }
 
@@ -179,26 +182,19 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
      * @param timeInMilliSeconds The remaining time in ms
      */
     private void startCampaignTimer(long timeInMilliSeconds) {
-        /*
-        if(counter != null) {
-            Log.i(TAG, "RESTART COUNTDOWN: " + timeInMilliSeconds);
-            counter.onTick(timeInMilliSeconds);
-            counter.start();
-        } else {
-        */
-            Log.i(TAG, "START COUNTDOWN: " + timeInMilliSeconds);
-            counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));
-                }
-                @Override
-                public void onFinish() {
-                    popOutDatedMainCampaign();
-                }
-            };
-            counter.start();
-        //}
+        Log.i(TAG, "START COUNTDOWN: " + timeInMilliSeconds);
+        counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+                popOutDatedMainCampaign();
+            }
+        };
+        counter.start();
     }
 
 }

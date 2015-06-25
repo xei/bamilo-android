@@ -16,11 +16,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 
 /**
- * 
+ * Class used to fill the brand teasers container.
  * @author sergiopereira
- *
  */
 public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaserAdapter.ViewHolder> {
+
+    public static final String TAG = HomeBrandTeaserAdapter.class.getSimpleName();
 
     private final View.OnClickListener mOnClickListener;
 
@@ -30,17 +31,12 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br>
      * @author sergiopereira
-     *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Data
+
         private ImageView mImage;
         private View mProgress;
 
-        /**
-         * Constructor
-         * @param view
-         */
         public ViewHolder(View view) {
             super(view);
             mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
@@ -50,7 +46,6 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param teasers
      * @author sergiopereira
      */
     public HomeBrandTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
@@ -65,7 +60,11 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
     @Override
     public HomeBrandTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_brand_item, parent, false));
+        ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_brand_item, parent, false));
+        // Calculate and set width to fill the parent
+        setWidthToFillParent(parent, viewHolder);
+        // Return
+        return viewHolder;
     }
 
     /*
@@ -90,6 +89,27 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
     public int getItemCount() {
         // Return the size of your data set (invoked by the layout manager)
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;
+    }
+
+    /**
+     * Calculate the new view holder width foreach item to fill the parent width.<br>
+     * Is warranted a min width for each item that comes from xml (layout_width).
+     * @param parent The view group
+     * @param viewHolder The current view holder
+     */
+    private void setWidthToFillParent(ViewGroup parent, ViewHolder viewHolder) {
+        // Validate size
+        if (getItemCount() > 0) {
+            // Get view holder params
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
+            // Calculate the new width to fill parent width
+            int width = (parent.getWidth() / getItemCount()) - params.leftMargin - params.rightMargin;
+            // Validate the new width is greater than width from params (xml)
+            if (width > params.width) {
+                // Apply the new width
+                params.width = width;
+            }
+        }
     }
     
 }

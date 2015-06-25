@@ -21,12 +21,14 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public ViewGroup container;
     public ViewGroup left;
     public ViewGroup middle;
     public ViewGroup right;
 
+    /**
+     * Constructor
+     */
     public HomeShopTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         container = (ViewGroup) view.findViewById(R.id.home_teaser_shop_container);
@@ -60,8 +62,4 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }

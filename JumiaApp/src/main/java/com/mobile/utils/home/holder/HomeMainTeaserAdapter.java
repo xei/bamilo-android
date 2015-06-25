@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 
 public class HomeMainTeaserAdapter extends PagerAdapter {
 
-    public static final String TAG = LogTagHelper.create(HomeMainTeaserAdapter.class);
+    public static final String TAG = HomeMainTeaserAdapter.class.getSimpleName();
 
     private final View.OnClickListener mOnClickListener;
 
@@ -30,10 +29,7 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
     private LayoutInflater mInflater;
 
     /**
-     *
-     * @param context
-     * @param teasers
-     * @param listener
+     * Constructor
      */
     public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener, boolean tablet) {
         mTeasers = teasers;

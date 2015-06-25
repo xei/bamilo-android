@@ -14,7 +14,6 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
@@ -38,7 +37,7 @@ import java.util.List;
  */
 public class AnalyticsGoogle {
 
-	private static final String TAG = LogTagHelper.create(AnalyticsGoogle.class);
+	private static final String TAG = AnalyticsGoogle.class.getSimpleName();
 
 	private static AnalyticsGoogle sInstance;
 	
@@ -296,22 +295,22 @@ public class AnalyticsGoogle {
 	    .build());
 	}
 	
-	/**
-	 * Build and send a GA campaign.
-	 * @author sergiopereira
-	 */
-	protected void trackGACampaign() {
-		// Track
-		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
-		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
-		// mTracker.send(new HitBuilders.AppViewBuilder()
-		// .setCampaignParamsFromUrl(utmURI)
-		// .build());
-		
-		//mTracker.set("&cn", campaign);
-		//mTracker.set("&cs", "push");
-		//mTracker.set("&cm", "referrer");
-	}
+//	/**
+//	 * Build and send a GA campaign.
+//	 * @author sergiopereira
+//	 */
+//	protected void trackGACampaign() {
+//		// Track
+//		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
+//		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
+//		// mTracker.send(new HitBuilders.AppViewBuilder()
+//		// .setCampaignParamsFromUrl(utmURI)
+//		// .build());
+//
+//		//mTracker.set("&cn", campaign);
+//		//mTracker.set("&cs", "push");
+//		//mTracker.set("&cm", "referrer");
+//	}
 	
 	/**
 	 * Enable Display Advertising features.
