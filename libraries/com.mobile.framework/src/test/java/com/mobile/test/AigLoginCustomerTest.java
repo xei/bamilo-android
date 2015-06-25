@@ -5,6 +5,8 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
+import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +38,7 @@ public class AigLoginCustomerTest extends AigTestCase {
     @Override
     public void onRequestComplete(BaseResponse response) {
         Print.d("TEST SUCCESS: " + response.hadSuccess());
+        assertTrue("Success is true", response.hadSuccess());
         // tests returned then countdown semaphore
         mCountDownLatch.countDown();
     }
@@ -43,8 +46,27 @@ public class AigLoginCustomerTest extends AigTestCase {
     @Override
     public void onRequestError(BaseResponse response) {
         Print.d("TEST ERROR: " + response.hadSuccess());
-        // tests returned then countdown semaphore
-        mCountDownLatch.countDown();
+        //final boolean success = response.hadSuccess();
+        try {
+            analyzeOnErrorEvent(response);
+        } finally {
+            // tests returned then countdown semaphore
+            mCountDownLatch.countDown();
+
+            //assertFunction();
+            Assert.fail("Success is false");
+        }
     }
+
+    /*
+    public synchronized void assertFunction(){
+        new Runnable() {
+            @Override
+            public void run() {
+                Assert.fail("Success is false");
+                //Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorListFinal != null ? errorListFinal.toString() : " no message") + " when requesting: " + eventType);
+            }
+        };
+    }*/
 
 }
