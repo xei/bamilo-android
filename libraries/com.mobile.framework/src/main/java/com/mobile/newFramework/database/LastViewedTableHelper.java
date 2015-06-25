@@ -12,9 +12,9 @@ import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

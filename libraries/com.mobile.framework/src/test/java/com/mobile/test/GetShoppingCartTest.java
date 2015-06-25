@@ -3,8 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.cart.GetShoppingCart;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -22,7 +23,7 @@ public class GetShoppingCartTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new GetShoppingCart(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getShoppingCart);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

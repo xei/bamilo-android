@@ -87,7 +87,7 @@ public class HockeyStartup {
         }
         if (resultCheckSignature == RESULT_KEY_HOCKEY) {
             Print.d(TAG, "start: starting UpdateManager");
-            UpdateManager.register(activity, hockeyTocken, sUml);
+            UpdateManager.register(activity, hockeyTocken);
         }
     }
     

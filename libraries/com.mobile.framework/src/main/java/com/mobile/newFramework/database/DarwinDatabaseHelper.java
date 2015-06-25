@@ -7,9 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
