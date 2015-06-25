@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
+import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -149,6 +150,9 @@ public class JumiaApplication extends A4SApplication {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
+        // Initialize the SDK before executing any other operations,
+        // especially, if you're using Facebook UI elements.
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
     }
 

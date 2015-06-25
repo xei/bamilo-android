@@ -107,23 +107,25 @@
             <!-- FACEBOOK -->
 
             <com.mobile.components.customfontviews.FacebookTextView
-                xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/checkout_login_form_button_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/button_big_height"
                 android:layout_margin="@dimen/rounded_margin_mid"
+                android:paddingTop="@dimen/button_facebook_padding"
+                android:paddingBottom="@dimen/button_facebook_padding"
+                android:fontFamily="roboto_bold"
                 android:background="@drawable/com_facebook_button_blue"
                 android:drawableLeft="@drawable/com_facebook_inverse_icon"
-                android:fontFamily="roboto_bold"
+                android:drawableStart="@drawable/com_facebook_inverse_icon"
                 android:gravity="center"
                 android:paddingLeft="12dp"
                 android:paddingRight="16dp"
                 android:text="@string/facebook_login_button_text"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_button"
                 android:textStyle="bold"
-                fb:login_text="@string/facebook_login_button_text" />
+            />
         </LinearLayout>
     </LinearLayout>
 

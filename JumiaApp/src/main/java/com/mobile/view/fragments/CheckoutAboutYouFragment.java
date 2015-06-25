@@ -12,19 +12,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.facebook.FacebookAuthorizationException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.Request.GraphUserCallback;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.Session.StatusCallback;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
+import com.facebook.CallbackManager;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
+import com.mobile.components.customfontviews.FacebookTextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -51,7 +43,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
-import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -69,12 +60,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+//import com.mobile.utils.social.FacebookHelper;
+
 /**
  * Class used to perform the login or sign up
  *
  * @author sergiopereira
  */
-public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserCallback, StatusCallback, IResponseCallback {
+public class CheckoutAboutYouFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
 
@@ -83,8 +76,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private DynamicForm loginForm;
 
     private Bundle savedInstanceState;
-
-    private UiLifecycleHelper uiHelper;
 
     private View loginMainContainer;
 
@@ -111,6 +102,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private boolean cameFromSignUp = false;
 
     private int retryForms = 0;
+
+    private CallbackManager callbackManager;
 
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -155,15 +148,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Print.i(TAG, "ON CREATE");
         // Retain the fragment
         setRetainInstance(true);
-        // Init the helper
-        uiHelper = new UiLifecycleHelper(getActivity(), this);
-        uiHelper.onCreate(savedInstanceState);
 
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
 
         TrackerDelegator.trackCheckoutStep(params);
+        callbackManager = CallbackManager.Factory.create();
     }
 
     /*
@@ -200,13 +191,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
 
         // FACEBOOK
-        LoginButton mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
-        LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
+        FacebookTextView mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
+        FacebookTextView facebookButton2 = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
         View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
         View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
         // Set Facebook
         FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, facebookDivider1, facebookButton2, facebookDivider2);
 
+        // Callback registration
+        facebookButton2.registerCallback(callbackManager, facebookCallback);
+        mLoginFacebookButton.registerCallback(callbackManager, facebookCallback);
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             Print.d(TAG, "TRIGGER: AUTO LOGIN");
@@ -243,8 +237,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
         retryForms = 0;
         Print.i(TAG, "ON RESUME");
-        // Resume helper
-        uiHelper.onResume();
 
         /**
          * Force input form align to left.
@@ -263,7 +255,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
-        uiHelper.onPause();
     }
 
     /*
@@ -275,7 +266,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        uiHelper.onStop();
     }
 
     /*
@@ -298,7 +288,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
         formResponse = null;
-        uiHelper.onDestroy();
     }
 
     /*
@@ -307,8 +296,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        uiHelper.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /*
@@ -325,7 +314,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             savedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
-        uiHelper.onSaveInstanceState(outState);
     }
 
 
@@ -475,73 +463,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /**
-     * ############# FACEBOOK #############
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see com.facebook.Request.GraphUserCallback#onCompleted(com.facebook.model.GraphUser, com.facebook.Response)
-     */
-    @Override
-    public void onCompleted(GraphUser user, Response response) {
-        Print.i(TAG, "ON COMPLETED GRAPH USER");
-        if (user != null) {
-            requestFacebookLogin(user);
-        }
-    }
-
-    /*
-     * ################ FACEBOOK ################
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.facebook.Session.StatusCallback#call(com.facebook.Session, com.facebook.SessionState, java.lang.Exception)
-     */
-    @Override
-    public void call(Session session, SessionState state, Exception exception) {
-        onSessionStateChange(session, state, exception);
-    }
-
-    /**
-     * Validate Facebook session.
-     * @param session The Facebook session
-     * @param state The session state
-     * @param exception The session exception
-     * @author sergiopereira
-     */
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        Print.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
-        // Exception handling for no network error
-        if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException) && !NetworkConnectivity.isConnected(getBaseActivity())) {
-            // Show dialog case form is visible
-            if (formResponse != null) {
-                showNoNetworkWarning();
-            }
-            return;
-        }
-        // Validate state
-        if (state.isOpened() && session.isOpened()) {
-            // Case user not accept the new request for required permissions
-            if (FacebookHelper.userNotAcceptRequiredPermissions(session)) {
-                super.onUserNotAcceptRequiredPermissions();
-            }
-            // Case required permissions are not granted then request again
-            else if (FacebookHelper.wereRequiredPermissionsGranted(session)) {
-                super.onMakeNewRequiredPermissionsRequest(session, this);
-            }
-            // Case accept permissions
-            else {
-                super.onMakeGraphUserRequest(session, this);
-            }
-        }
-        // Other cases
-        else if (state.isClosed()) {
-            Print.i(TAG, "USER Logged out!");
-            showFragmentContentContainer();
-        }
-    }
-
-    /**
      * ########## SET FORMS ##########
      */
 
@@ -636,24 +557,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /**
-     * Method used to trigger the Facebook login
-     *
-     * @param user The Facebook response
-     */
-    private void requestFacebookLogin(GraphUser user) {
-        Print.d(TAG, "REQUEST FACEBOOK LOGIN");
-        ContentValues values = new ContentValues();
-        values.put("email", (String) user.getProperty("email"));
-        values.put("first_name", user.getFirstName());
-        values.put("last_name", user.getLastName());
-        values.put("birthday", user.getBirthday());
-        values.put("gender", (String) user.getProperty("gender"));
-        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        triggerFacebookLogin(values, true);
-    }
-
-
-    /**
      * ########### TRIGGERS ###########
      */
 
@@ -730,7 +633,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * @param values
      * @param saveCredentials
      */
-    private void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
+    @Override
+    public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER: FACEBOOK LOGIN");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
@@ -922,8 +826,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                     // Save and load form
                     loadForm(form);
                     this.formResponse = form;
-                    // Clean FACEBOOK session
-                    FacebookHelper.cleanFacebookSession();
+                    // Facebook logout
+                    FacebookHelper.facebookLogout();
                 }
                 break;
             case GET_CUSTOMER:
@@ -970,8 +874,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             case FACEBOOK_LOGIN_EVENT:
                 // Clear credentials case auto login failed
                 clearCredentials();
-                // Clean the Facebook Session
-                FacebookHelper.cleanFacebookSession();
+                // Facebook logout
+                FacebookHelper.facebookLogout();
                 // Track
                 TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, GTMValues.FACEBOOK);
                 // Show alert
