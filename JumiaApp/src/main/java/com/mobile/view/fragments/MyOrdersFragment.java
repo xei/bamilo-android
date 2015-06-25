@@ -88,10 +88,12 @@ public class MyOrdersFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if (arguments != null) {
+            //If comes from login page, means that it has to go to OrderHistory
             if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
                 mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
             }
         } else {
+            // If app is on Rtl mode, the view pager must start from the end
             mPositionToStart = ShopSelector.isRtl() ? 1: 0;
         }
     }
