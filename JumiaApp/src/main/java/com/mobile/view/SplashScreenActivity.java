@@ -36,7 +36,6 @@ import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -66,7 +65,7 @@ import java.util.zip.ZipFile;
 @Tag(name = "SplashScreenActivity")
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
-    private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
+    private final static String TAG = SplashScreenActivity.class.getSimpleName();
 
     private static final int SPLASH_DURATION_IN = 1250;
 

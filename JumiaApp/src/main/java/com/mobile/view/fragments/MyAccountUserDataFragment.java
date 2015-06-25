@@ -7,23 +7,28 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.FormFactory;
+import com.mobile.helpers.account.GetChangePasswordFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -52,6 +57,8 @@ public class MyAccountUserDataFragment extends BaseFragment {
     private EditText newPasswordText;
 
     private EditText newPassword2Text;
+
+    private DynamicForm dynamicForm;
 
     private TextView passwordErrorHint;
 
@@ -120,7 +127,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
             lastNameText.setText(JumiaApplication.CUSTOMER.getLastName());
             firstNameText.setText(JumiaApplication.CUSTOMER.getFirstName());
             emailText.setText(JumiaApplication.CUSTOMER.getEmail());
-            showFragmentContentContainer();
+            triggerGetChangePasswordForm();
         } else {
             restartAllFragments();
         }
@@ -205,8 +212,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
         lastNameText.setVisibility(View.GONE);
         emailText = (TextView) mainView.findViewById(R.id.clientEmail);
 
-        newPasswordText = (EditText) mainView.findViewById(R.id.typeNewPassword);
-        newPassword2Text = (EditText) mainView.findViewById(R.id.retypeNewPassword);
         passwordErrorHint = (TextView) mainView.findViewById(R.id.passwordErrorHint);
         passwordErrorHint.setVisibility(View.GONE);
     }
@@ -228,11 +233,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
             return;
         }
 
-        ContentValues values = new ContentValues();
-        values.put("Alice_Module_Customer_Model_PasswordForm[password]", newPassword);
-        values.put("Alice_Module_Customer_Model_PasswordForm[password2]", newPassword2);
-        values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText().toString());
-        triggerChangePass(values);
+        triggerChangePass(dynamicForm.save());
         //
         displayErrorHint(null);
     }
@@ -259,26 +260,15 @@ public class MyAccountUserDataFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
         switch (eventType) {
+        case GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT:
+            onSuccessGetChangePasswordFormEvent(bundle);
+            return true;
         case CHANGE_PASSWORD_EVENT:
             Print.d(TAG, "changePasswordEvent: Password changed with success");
             if (null != getActivity()) {
                 Toast.makeText(getActivity(), getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
             }
             gotoBack();
-            return true;
-        case GET_CUSTOMER:
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.CUSTOMER = customer;
-            Print.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
-            if (null != lastNameText) {
-                lastNameText.setText(customer.getLastName());
-                firstNameText.setText(customer.getFirstName());
-                emailText.setText(customer.getEmail());
-                showFragmentContentContainer();
-            } else {
-                restartAllFragments();
-                return true;
-            }
             return true;
         default:
             return false;
@@ -301,6 +291,9 @@ public class MyAccountUserDataFragment extends BaseFragment {
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         switch (eventType) {
+            case GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT:
+                onErrorGetChangePasswordFormEvent(bundle);
+                return true;
         case CHANGE_PASSWORD_EVENT:
             Print.d(TAG, "changePasswordEvent: Password changed was not successful");
             if (errorCode == ErrorCode.REQUEST_ERROR) {
@@ -329,6 +322,18 @@ public class MyAccountUserDataFragment extends BaseFragment {
         default:
             return false;
         }
+    }
+
+    protected void onErrorGetChangePasswordFormEvent(Bundle bundle) {
+        showFragmentErrorRetry();
+    }
+
+    protected void onSuccessGetChangePasswordFormEvent(Bundle bundle) {
+        Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
+        ((ViewGroup)getView().findViewById(R.id.new_password_layout)).addView(dynamicForm.getContainer());
+        newPasswordText = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
+        newPassword2Text = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
     }
 
     @Override
@@ -379,6 +384,10 @@ public class MyAccountUserDataFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SetChangePasswordHelper(), bundle, mCallBack);
+    }
+
+    private void triggerGetChangePasswordForm(){
+        triggerContentEvent(new GetChangePasswordFormHelper(), null, mCallBack);
     }
 
     /**

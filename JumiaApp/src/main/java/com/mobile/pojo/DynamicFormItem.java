@@ -1334,8 +1334,7 @@ public class DynamicFormItem {
     /**
      * Creates the control with hidden value
      */
-    private void buildHide(RelativeLayout.LayoutParams params,
-                           int controlWidth) {
+    private void buildHide(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // Don't allow an hidden control to take visual space
         this.control.setVisibility(View.GONE);
@@ -1897,7 +1896,7 @@ public class DynamicFormItem {
 
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         } else {
-            int inputType = android.text.InputType.TYPE_CLASS_TEXT;
+            int inputType = android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
             textDataControl.setInputType(inputType);
             //#RTL
             if (ShopSelector.isRtl())

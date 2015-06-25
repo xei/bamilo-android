@@ -5,8 +5,9 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.configs.GetAvailableCountries;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -25,7 +26,7 @@ public class GetAvailableCountriesTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new GetAvailableCountries(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getAvailableCountries);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

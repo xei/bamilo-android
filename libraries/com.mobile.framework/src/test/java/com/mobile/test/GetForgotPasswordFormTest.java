@@ -3,8 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.GetForgotPasswordForm;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -24,7 +25,8 @@ public class GetForgotPasswordFormTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new GetForgotPasswordForm(requestBundle, this).execute();
+        //new GetForgotPasswordForm(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getForgotPasswordForm);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

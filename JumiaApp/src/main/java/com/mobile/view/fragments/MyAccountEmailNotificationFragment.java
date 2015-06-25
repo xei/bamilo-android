@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -28,7 +25,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -46,7 +42,7 @@ import java.util.EnumSet;
  */
 public class MyAccountEmailNotificationFragment extends BaseFragment implements IResponseCallback, OnCheckedChangeListener {
 
-    private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
+    private static final String TAG = MyAccountEmailNotificationFragment.class.getSimpleName();
 
     private final static int UNSUBSCRIBE_VALUE = -1;
 

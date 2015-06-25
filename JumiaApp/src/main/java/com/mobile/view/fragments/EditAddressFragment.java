@@ -30,6 +30,7 @@ import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
@@ -42,8 +43,6 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

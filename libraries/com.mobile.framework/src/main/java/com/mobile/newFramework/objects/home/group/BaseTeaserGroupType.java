@@ -10,8 +10,8 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

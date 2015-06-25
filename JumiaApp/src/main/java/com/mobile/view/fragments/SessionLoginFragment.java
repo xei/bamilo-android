@@ -118,6 +118,7 @@ public class SessionLoginFragment extends BaseFragment  {
     
     private FacebookTextView mFacebookButton;
 
+
     private CallbackManager callbackManager;
 
     /**
@@ -351,6 +352,16 @@ public class SessionLoginFragment extends BaseFragment  {
 //        if (user != null) requestFacebookLogin(user);
 //    }
     
+    /*
+     * (non-Javadoc)
+     * @see com.facebook.Request.GraphUserCallback#onCompleted(com.facebook.model.GraphUser, com.facebook.Response)
+     */
+    @Override
+    public void onCompleted(GraphUser user, com.facebook.Response response) {
+        // Callback after Graph API response with user object
+        if (user != null) requestFacebookLogin(user);
+    }
+
 
     /**
      * Set listeners

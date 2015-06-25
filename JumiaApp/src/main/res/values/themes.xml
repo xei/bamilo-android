@@ -38,7 +38,6 @@
 
     <!-- ####################################################################### -->
 
-
     <!-- Jumia -->
     <style name="Theme.Jumia" parent="Theme.AppCompat.Light">
         <!-- #### Custom Material Color Palette -->
@@ -63,17 +62,19 @@
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
-        <!-- #### Search View -->
-        <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
-        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <!-- #### Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_orange</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>
         <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
-        <!-- #### Custom Spinner -->
+        <!-- #### Custom Spinner View -->
         <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
         <!-- #### View Page Indicator -->
         <item name="vpiCirclePageIndicatorStyle">@style/Widget.JumiaCirclePageIndicator</item>
+        <!-- #### Button View -->
+        <item name="android:buttonStyle">@style/Widget.Jumia.Button</item>
+        <item name="buttonStyle">@style/Widget.Jumia.Button</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->
@@ -85,6 +86,9 @@
         <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
         <!-- To apply the color filter over indicator in Android v5.0.1 -->
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
+        <!-- Apply the search view style -->
+        <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
+        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
     </style>
 
     <!-- Style for DrawerArrow from support library compatibility -->
@@ -103,9 +107,8 @@
     </style>
 
     <!-- Search view from support library compatibility -->
-    <style name="Widget.Jumia.SearchView" parent="Widget.AppCompat.Light.SearchView">
+    <style name="Widget.Jumia.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
         <item name="queryBackground">@drawable/selector_textfield_orange</item>
-
         <item name="closeIcon">@drawable/btn_clearsearchfield</item>
         <item name="searchIcon">@drawable/selector_search_edit_icon</item>
         <item name="collapseIcon">?attr/homeAsUpIndicator</item>
@@ -122,6 +125,10 @@
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@color/grey_light</item>
+    </style>
+
+    <!-- Button View -->
+    <style name="Widget.Jumia.Button" parent="Widget.AppCompat.Button">
     </style>
 
     <!-- Base Dialog -->

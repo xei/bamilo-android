@@ -209,8 +209,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private void showAvailableCountries() {
 
         // Data
-        String[] countries = null;
-        String[] flagsList = null;
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String selectedCountry = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
         
@@ -228,8 +226,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
         int count = 0;
-        countries = new String[countriesAvailable];
-        flagsList = new String[countriesAvailable];
+        String[] countries = new String[countriesAvailable];
+        String[] flagsList = new String[countriesAvailable];
         for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();

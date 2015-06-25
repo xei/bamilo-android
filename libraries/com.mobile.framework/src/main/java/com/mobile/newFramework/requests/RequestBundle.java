@@ -26,6 +26,10 @@ public class RequestBundle {
         return data;
     }
 
+    public boolean hasData() {
+        return data != null;
+    }
+
     public boolean isDiscardedResponse() {
         return discard;
     }

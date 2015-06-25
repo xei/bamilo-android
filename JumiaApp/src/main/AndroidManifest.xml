@@ -124,10 +124,6 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
 
-        <service
-            android:name="com.mobile.framework.service.RemoteService"
-            android:exported="false" />
-
         <!-- ################################################# -->
         <!-- ############# GOOGLE PLAY SERVICES ############## -->
         <!-- ################################################# -->

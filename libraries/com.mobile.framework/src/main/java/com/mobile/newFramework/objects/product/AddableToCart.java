@@ -4,10 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
