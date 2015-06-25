@@ -27,9 +27,9 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     private String mName;
 
-    private String mStartTime;
-
-    private String mEndTime;
+//    private String mStartTime;
+//
+//    private String mEndTime;
 
     private int mCount;
 
@@ -44,7 +44,6 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     /**
      * Constructor
-     * @param jsonObject
      * @throws JSONException
      */
     public Campaign(JSONObject jsonObject) throws JSONException {
@@ -57,7 +56,6 @@ public class Campaign implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-//        Log.d(TAG, "ON INITIALIZE");
         // Get banner
         JSONObject cmsO = jsonObject.optJSONObject(RestConstants.JSON_CMS_TAG);
         // Get mobile and tablet banners
@@ -70,10 +68,10 @@ public class Campaign implements IJSONSerializable, Parcelable {
         JSONObject campaignO = jsonObject.getJSONObject(RestConstants.JSON_CAMPAIGN_TAG);
         // Get name
         mName = campaignO.optString(RestConstants.JSON_NAME_TAG);
-        // Get start time
-        mStartTime = campaignO.optString(RestConstants.JSON_START_TIME_TAG);
-        // Get end time
-        mEndTime = campaignO.optString(RestConstants.JSON_END_TIME_TAG);
+//        // Get start time
+//        mStartTime = campaignO.optString(RestConstants.JSON_START_TIME_TAG);
+//        // Get end time
+//        mEndTime = campaignO.optString(RestConstants.JSON_END_TIME_TAG);
         // Get product count
         mCount = campaignO.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Get data
@@ -90,7 +88,8 @@ public class Campaign implements IJSONSerializable, Parcelable {
      */
     @Override
     public String toString() {
-        return mName + " " + mMobileBanner + " " + mStartTime + " " + mEndTime + " " + mCount;
+        //return mName + " " + mMobileBanner + " " + mStartTime + " " + mEndTime + " " + mCount;
+        return mName + " " + mMobileBanner + " " + mCount;
     }
 
     /*
@@ -131,19 +130,19 @@ public class Campaign implements IJSONSerializable, Parcelable {
         return mName;
     }
 
-    /**
-     * @return the mStartTime
-     */
-    public String getStartTime() {
-        return mStartTime;
-    }
-
-    /**
-     * @return the mEndTime
-     */
-    public String getEndTime() {
-        return mEndTime;
-    }
+//    /**
+//     * @return the mStartTime
+//     */
+//    public String getStartTime() {
+//        return mStartTime;
+//    }
+//
+//    /**
+//     * @return the mEndTime
+//     */
+//    public String getEndTime() {
+//        return mEndTime;
+//    }
 
     /**
      * @return the mCount
@@ -163,19 +162,19 @@ public class Campaign implements IJSONSerializable, Parcelable {
 	/*
      * ########### Setters ###########
      */
-    /**
-     * @param mBanner the mBanner to set
-     */
-    public void setMobileBanner(String mBanner) {
-        this.mMobileBanner = mBanner;
-    }
-
-    /**
-     * @param mBanner the mBanner to set
-     */
-    public void setTabletBanner(String mBanner) {
-        this.mTabletBanner = mBanner;
-    }
+//    /**
+//     * @param mBanner the mBanner to set
+//     */
+//    public void setMobileBanner(String mBanner) {
+//        this.mMobileBanner = mBanner;
+//    }
+//
+//    /**
+//     * @param mBanner the mBanner to set
+//     */
+//    public void setTabletBanner(String mBanner) {
+//        this.mTabletBanner = mBanner;
+//    }
 
     /**
      * @param mName the mName to set
@@ -184,19 +183,19 @@ public class Campaign implements IJSONSerializable, Parcelable {
         this.mName = mName;
     }
 
-    /**
-     * @param mStartTime the mStartTime to set
-     */
-    public void setStartTime(String mStartTime) {
-        this.mStartTime = mStartTime;
-    }
-
-    /**
-     * @param mEndTime the mEndTime to set
-     */
-    public void setEndTime(String mEndTime) {
-        this.mEndTime = mEndTime;
-    }
+//    /**
+//     * @param mStartTime the mStartTime to set
+//     */
+//    public void setStartTime(String mStartTime) {
+//        this.mStartTime = mStartTime;
+//    }
+//
+//    /**
+//     * @param mEndTime the mEndTime to set
+//     */
+//    public void setEndTime(String mEndTime) {
+//        this.mEndTime = mEndTime;
+//    }
 
     /**
      * @param mCount the mCount to set
@@ -233,24 +232,23 @@ public class Campaign implements IJSONSerializable, Parcelable {
         dest.writeString(mMobileBanner);
         dest.writeString(mTabletBanner);
         dest.writeString(mName);
-        dest.writeString(mStartTime);
-        dest.writeString(mEndTime);
+//        dest.writeString(mStartTime);
+//        dest.writeString(mEndTime);
         dest.writeInt(mCount);
         dest.writeList(mItems);
     }
 
     /**
      * Parcel constructor
-     * @param in
      */
     public Campaign(Parcel in) {
         mMobileBanner = in.readString();
         mTabletBanner = in.readString();
         mName = in.readString();
-        mStartTime = in.readString();
-        mEndTime = in.readString();
+//        mStartTime = in.readString();
+//        mEndTime = in.readString();
         mCount = in.readInt();
-        mItems = new ArrayList<CampaignItem>();
+        mItems = new ArrayList<>();
         in.readList(mItems, CampaignItem.class.getClassLoader());
     }
 

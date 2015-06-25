@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -19,6 +18,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import de.akquinet.android.androlog.Log;
+
 /**
  * This class is responsible to controller the fragment transition, to switch fragments on UI with back stack support.
  * Uses the back stack from support to get the instances of fragments but the behaviour of the back is performed using the our LinkedList.
@@ -30,7 +31,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class FragmentController {
 
-    private static final String TAG = LogTagHelper.create(FragmentController.class);
+    private static final String TAG = FragmentController.class.getSimpleName();
     
     private static final boolean ANIMATION_IN = true;
     
@@ -154,8 +155,6 @@ public class FragmentController {
     /**
      * Remove all old entries.
      * Warning: Async operation.
-     *
-     * @param tags
      */
     public void removeAllEntriesWithTag(final String... tags) {
         WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
@@ -171,6 +170,7 @@ public class FragmentController {
     /**
      * Print all entries
      */
+    @SuppressWarnings("unused")
     public void printAllEntries(){
         String entries ="";
         for (String aBackStack : backStack) {
@@ -200,7 +200,6 @@ public class FragmentController {
      * Method used to remove entries until a respective tag of fragment
      * Warning: Async operation.
      * @param tag The fragment tag
-     * @return
      */
     public void removeEntriesUntilTag(final String tag) {
         Print.i(TAG, "POP ENTRIES UNTIL: " + tag);
@@ -238,8 +237,6 @@ public class FragmentController {
     /**
      * Add the tag to the back stack removing duplicates.
      * Warning: Async operation.
-     *
-     * @param tag
      */
     public void addEntryToBackStack(final String tag) {
         Print.d(TAG, "ADD ENTRY TO BACK STACK");
@@ -384,14 +381,18 @@ public class FragmentController {
      * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
-    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, Boolean animation) {
+    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, Boolean animationIn) {
         Print.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-        // Animations
-        if (animation == ANIMATION_IN)
+
+        // Case ANIMATION_IN
+        if(animationIn) {
             fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        if (animation == ANIMATION_OUT)
+        }
+        // Case ANIMATION_OUT
+        else {
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
 
         /**
          * Case isn't add to back stack
@@ -421,46 +422,46 @@ public class FragmentController {
      * ##################### OLD METHODS #####################
      */
     
-    /**
-     * Method used to switch fragment on UI with/without back stack support
-     * 
-     * @param fragment The new fragment
-     * @param addToBackStack The flag to add or not to back stack
-     * @author sergiopereira
-     */
-    @Deprecated
-    public void fragmentManagerTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, boolean animated) {
-        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-        // Animations
-        if(animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        // Replace
-        fragmentTransaction.replace(container, fragment, tag);
-        // BackStack
-        if (addToBackStack)
-            fragmentTransaction.addToBackStack(tag);
-        // Commit
-        fragmentTransaction.commit();
-        
-        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
-        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
-    }
+//    /**
+//     * Method used to switch fragment on UI with/without back stack support
+//     *
+//     * @param fragment The new fragment
+//     * @param addToBackStack The flag to add or not to back stack
+//     * @author sergiopereira
+//     */
+//    @Deprecated
+//    public void fragmentManagerTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, boolean animated) {
+//        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+//        // Animations
+//        if(animated)
+//            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+//        // Replace
+//        fragmentTransaction.replace(container, fragment, tag);
+//        // BackStack
+//        if (addToBackStack)
+//            fragmentTransaction.addToBackStack(tag);
+//        // Commit
+//        fragmentTransaction.commit();
+//
+//        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
+//        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
+//    }
     
     
-    /**
-     * Method used to perform a back stack using fragments
-     * @author sergiopereira
-     */
-    @Deprecated
-    public void fragmentManagerBackPressed(BaseActivity activity){
-        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
-        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
-        if (backStackSize == 1)
-            activity.finish();
-        else {
-            activity.getSupportFragmentManager().popBackStackImmediate();
-        }
-    }
+//    /**
+//     * Method used to perform a back stack using fragments
+//     * @author sergiopereira
+//     */
+//    @Deprecated
+//    public void fragmentManagerBackPressed(BaseActivity activity){
+//        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
+//        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
+//        if (backStackSize == 1)
+//            activity.finish();
+//        else {
+//            activity.getSupportFragmentManager().popBackStackImmediate();
+//        }
+//    }
     
     /**
      *  @param activity The current activity
@@ -520,6 +521,13 @@ public class FragmentController {
         }
         
         Print.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
+//        for (String backstackType : backstackTypes) {
+//            Print.i(TAG, "FRAGMENT CONTROLLER: TYPE " + backstackType);
+//        }
+//        for (Fragment originalFragment : originalFragments) {
+//            if(originalFragment != null)
+//                Print.i(TAG, "FRAGMENT CONTROLLER: FRAGMENT " + originalFragment.getTag());
+//        }
         
         List<Fragment> orderedFragments = new ArrayList<>();
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
@@ -528,24 +536,30 @@ public class FragmentController {
                     if(originalFragments.get(j) != null && backstackTypes.get(i).equalsIgnoreCase(originalFragments.get(j).getTag()))
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
-                        if(!backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()))
+                        if(
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()) &&
+                            // CASE CHOOSE_COUNTRY FROM SPLASH SCREEN
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString())
+                        ) {
+                            Log.i(TAG, "Add Fragment: " + originalFragments.get(j).getTag());
                             orderedFragments.add(originalFragments.get(j));
+                        }
                 }
-            } 
-            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen 
-            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()) &&
-                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.HOME.toString()) &&
-                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
-                restoreBackstack(activity, orderedFragments);          
+            }
+
+//            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen
+//            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()))
+                restoreBackstack(activity, orderedFragments);
+
         }
     }
 
@@ -561,4 +575,35 @@ public class FragmentController {
         }
         return mWorkerThread;
     }
+
+
+    /*
+     * ########### FRAGMENTS WITH CHILD FRAGMENTS ###########
+     */
+
+    /**
+     * Add a child fragment to parent fragment using ChildFragmentManager.
+     */
+    public static void addChildFragment(Fragment parent, int container, Fragment fragment) {
+        // Child Fragment manger
+        FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
+        // Replace
+        fragmentTransaction.replace(container, fragment, fragment.getTag());
+        // Commit
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    /**
+     * Remove a child fragment from parent fragment using ChildFragmentManager.
+     */
+    public static void removeChildFragmentById(Fragment parent, int id) {
+        FragmentManager manager = parent.getChildFragmentManager();
+        // Find
+        Fragment fragment = manager.findFragmentById(id);
+        // Validate and remove
+        if (fragment != null) {
+            manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+        }
+    }
+
 }

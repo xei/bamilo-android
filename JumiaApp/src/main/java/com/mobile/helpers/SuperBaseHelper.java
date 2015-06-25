@@ -72,6 +72,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     public abstract EventType getEventType();
 
+    // TODO: Move this method to CollectionUtils
     public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
         Map<String, String> data = new HashMap<>();
         for (Map.Entry entrySet: contentValues.valueSet()) {

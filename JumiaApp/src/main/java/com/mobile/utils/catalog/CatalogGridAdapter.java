@@ -19,6 +19,7 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
@@ -26,8 +27,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 

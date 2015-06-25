@@ -44,10 +44,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author nunocastro
@@ -117,49 +115,49 @@ public class AdjustTracker {
         public static final String SIZE = "size";
         public static final String COLOUR = "colour";
         public static final String TOTAL_WISHLIST = "total_wishlist";
-        public static final String WISHLIST_CURRENCY_CODE = "currency_code1";
+//        public static final String WISHLIST_CURRENCY_CODE = "currency_code1";
         public static final String TOTAL_CART = "total_cart";
-        public static final String CART_CURRENCY_CODE = "cart_currency_code";
+//        public static final String CART_CURRENCY_CODE = "cart_currency_code";//
         public static final String TOTAL_TRANSACTION = "total_transaction"; 
-        public static final String TRANSACTION_CURRENCY = "transaction_currency";
-        public static final String VARIATION = "variation";
+//        public static final String TRANSACTION_CURRENCY = "transaction_currency";
+//        public static final String VARIATION = "variation";
         public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
-        public static final String INFO_BRAND = Constants.INFO_BRAND;
+//        public static final String INFO_BRAND = Constants.INFO_BRAND;
         public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
                 
     }
 
-    protected static class AdjustEvents {
-        public static final String LAUNCH = "Launch";
-        public static final String LOGIN = "Login";
-        public static final String LOGOUT = "Logout";
-        public static final String SIGNUP = "Signup";
-        public static final String SIGNUPNEWSLETTER = "SignupNewsletter";
-        public static final String CUSTOMER = "Customer";
-        public static final String SALE = "Sale";
-        public static final String FBCONNECTLOGIN = "FBConnectLogin";
-        public static final String FBCONNECTSIGNUP = "FBConnectSignup";
-        public static final String ADDTOWISHLIST = "AddtoWishlist";
-        public static final String REMOVEFROMWISHLIST = "RemoveFromWishlist";
-        public static final String FILTERS = "PersonalisedFeed";
-        public static final String SHARE = "SocialShare";
-        public static final String ADDREVIEWASBUYER = "RateSeller";
-        public static final String ADDREVIEWASSELLER = "RateBuyer";
-        public static final String LISTINGADDTITLE = "CreateListingStarted";
-        public static final String LISTINGCREATION = "CreateListing";
-        public static final String MESSAGESUBMITTOSELLER = "MessageToSeller";
-        public static final String MESSAGESUBMIT = "Message";
-        public static final String SEARCH = "Search";
-        public static final String PERSONALISEDFEED = "PersonalisedFeed";
-        public static final String CALL = "Call";        
-
-    }
+//    protected static class AdjustEvents {
+//        public static final String LAUNCH = "Launch";
+//        public static final String LOGIN = "Login";
+//        public static final String LOGOUT = "Logout";
+//        public static final String SIGNUP = "Signup";
+//        public static final String SIGNUPNEWSLETTER = "SignupNewsletter";
+//        public static final String CUSTOMER = "Customer";
+//        public static final String SALE = "Sale";
+//        public static final String FBCONNECTLOGIN = "FBConnectLogin";
+//        public static final String FBCONNECTSIGNUP = "FBConnectSignup";
+//        public static final String ADDTOWISHLIST = "AddtoWishlist";
+//        public static final String REMOVEFROMWISHLIST = "RemoveFromWishlist";
+//        public static final String FILTERS = "PersonalisedFeed";
+//        public static final String SHARE = "SocialShare";
+//        public static final String ADDREVIEWASBUYER = "RateSeller";
+//        public static final String ADDREVIEWASSELLER = "RateBuyer";
+//        public static final String LISTINGADDTITLE = "CreateListingStarted";
+//        public static final String LISTINGCREATION = "CreateListing";
+//        public static final String MESSAGESUBMITTOSELLER = "MessageToSeller";
+//        public static final String MESSAGESUBMIT = "Message";
+//        public static final String SEARCH = "Search";
+//        public static final String PERSONALISEDFEED = "PersonalisedFeed";
+//        public static final String CALL = "Call";
+//
+//    }
     
-    private String TABLET = "Tablet";
-    private String PHONE = "Phone";
+    private static final String TABLET = "Tablet";
+    private static final String PHONE = "Phone";
 
-    private final String TRACKING_PREFS = "tracking_prefs";
-    private final String SESSION_COUNTER = "sessionCounter";
+    private static final String TRACKING_PREFS = "tracking_prefs";
+    private static final String SESSION_COUNTER = "sessionCounter";
 
     private static boolean isEnabled = false;
     
@@ -167,11 +165,11 @@ public class AdjustTracker {
     
     private static final String NOT_AVAILABLE = "n.a.";
 
-    public final static String ENCODING_SCHEME = "UTF-8";
+//    public final static String ENCODING_SCHEME = "UTF-8";
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
     
-    private static double ADJUST_CENT_VALUE = 100d;
+//    private static double ADJUST_CENT_VALUE = 100d;
 
     private static Context mContext;
     
@@ -848,18 +846,18 @@ public class AdjustTracker {
 
     }
 
-    /**
-     * Just to aind adjust tracking debug, will be removed before going to prod
-     * @param mp
-     */
-    public static void printParameters(Map mp) {
-        Print.e("Adjust", "init ----------");
-        Iterator it = mp.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            Print.e("Adjust", "key=" + pairs.getKey() + " value=" + pairs.getValue());
-        }
-    }
+//    /**
+//     * Just to aind adjust tracking debug, will be removed before going to prod
+//     * @param mp
+//     */
+//    public static void printParameters(Map mp) {
+//        Print.e("Adjust", "init ----------");
+//        Iterator it = mp.entrySet().iterator();
+//        while (it.hasNext()) {
+//            Map.Entry pairs = (Map.Entry)it.next();
+//            Print.e("Adjust", "key=" + pairs.getKey() + " value=" + pairs.getValue());
+//        }
+//    }
     
     
     
@@ -951,9 +949,7 @@ public class AdjustTracker {
         PackageInfo pInfo = null;
         try {
             pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (NameNotFoundException | NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -985,21 +981,17 @@ public class AdjustTracker {
      */
     private String getSessionsCount() {
         SharedPreferences settings = mContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-        String sessionCount = String.valueOf(settings.getInt(SESSION_COUNTER, 0));
-        return sessionCount;
+        return String.valueOf(settings.getInt(SESSION_COUNTER, 0));
     }    
 
     
     private String getTransactionCount() {
         SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
-        
-        return String.valueOf(purchasesNumber);
+        return String.valueOf(settings.getInt(PURCHASE_NUMBER, 0));
     }    
     
     private void increaseTransactionCount() {
         SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        
         int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
         purchasesNumber = purchasesNumber +1;
         SharedPreferences.Editor editor = settings.edit();
@@ -1008,14 +1000,10 @@ public class AdjustTracker {
     }    
     
     public Address getAddressFromLocation() {
-        Address currAddressLocation = null;
         // From geo location
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-
         // From last known geo location
-        currAddressLocation = getAddressFromLastKnownLocation(locationManager); 
-     
-        return currAddressLocation;
+        return getAddressFromLastKnownLocation(locationManager);
     }
     
     private Address getAddressFromLastKnownLocation(LocationManager locationManager) {

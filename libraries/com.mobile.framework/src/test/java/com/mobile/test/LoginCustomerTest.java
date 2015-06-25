@@ -3,8 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.LoginCustomer;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -15,10 +16,6 @@ public class LoginCustomerTest extends BaseTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        // Params
-        // facebook_login=false
-        // __autologin_requested__=true
-
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
         data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
@@ -32,13 +29,7 @@ public class LoginCustomerTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-//        new BaseRequest<CheckoutStepLogin>(IS_AUTOMATED_TEST,requestBundle,this){
-//            @Override
-//            public void execute() {
-//
-//            }
-//        }.executeUseReflection("loginCustomer");
-        new LoginCustomer(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.loginCustomer);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

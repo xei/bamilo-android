@@ -19,13 +19,12 @@ import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 

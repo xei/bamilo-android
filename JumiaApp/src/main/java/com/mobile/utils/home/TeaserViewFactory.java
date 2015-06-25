@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
@@ -20,8 +21,6 @@ import com.mobile.utils.home.holder.HomeShopWeekTeaserHolder;
 import com.mobile.utils.home.holder.HomeSmallTeaserHolder;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserHolder;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 

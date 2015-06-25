@@ -39,8 +39,6 @@ public enum EventType {
 
     LOGOUT_EVENT("https:/customer/logout/", AigRestContract.NO_CACHE),
 
-    GET_TEASERS_EVENT("http:/main/getteasers/", AigRestContract.MAX_CACHE_TIME),
-
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
 
     GET_PRODUCT_EVENT,
