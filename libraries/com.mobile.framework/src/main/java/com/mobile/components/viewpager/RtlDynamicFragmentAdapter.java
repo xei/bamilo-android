@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,21 +21,24 @@ import java.util.List;
  * in order to dynamic support get applied.
  *
  * @author ricardosoares
- * @version 1.0
+ * @version 1.1
  * @date 2015/06/18
  */
 public abstract class RtlDynamicFragmentAdapter extends RtlAdapterService {
 
-    protected List<String> fragments;
+    protected List<Integer> titlesPageInt;
 
-    public RtlDynamicFragmentAdapter(FragmentManager fm, List<String> fragments, List<String> titles) {
-        super(fm, null, titles);
-        this.fragments = fragments;
+    protected final Fragment parent;
+
+    public RtlDynamicFragmentAdapter(FragmentManager fm, Fragment parent, List<Integer> titlesPageInt) {
+        super(fm, null, new LinkedList<String>());
+        this.titlesPageInt = titlesPageInt;
+        this.parent = parent;
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return titlesPageInt.size();
     }
 
     @Override
@@ -44,10 +49,18 @@ public abstract class RtlDynamicFragmentAdapter extends RtlAdapterService {
     protected abstract Fragment createNewFragment(int position);
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        if(titleList.size() <= position){
+            titleList.add(parent.getString(titlesPageInt.get(position)).toUpperCase());
+        }
+        return titleList.get(position);
+    }
+
+    @Override
     public void enableRtl(boolean rtl) {
         if((rtl && !this.isRtl) || (!rtl && this.isRtl)){
-            if(!CollectionUtils.isEmpty(fragments)){
-                Collections.reverse(fragments);
+            if(!CollectionUtils.isEmpty(titlesPageInt)){
+                Collections.reverse(titlesPageInt);
             }
         }
 

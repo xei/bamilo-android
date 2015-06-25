@@ -211,12 +211,12 @@ public class MyOrdersFragment extends BaseFragment {
          * @author Paulo Carvalho
          */
         public MyOrdersPagerAdapter(FragmentManager fm) {
-            super(fm, getFragmentsList(), getFragmentTitleValues());
+            super(fm, MyOrdersFragment.this, getFragmentTitleValues());
         }
 
         @Override
         protected Fragment createNewFragment(int position) {
-            return (OrderHistoryFragment.class.getSimpleName().equals(fragments.get(position))) ?
+            return (titlesPageInt.get(position) == R.string.my_order_history_label) ?
                     OrderHistoryFragment.getInstance() :
                     TrackOrderFragment.getInstance(getArguments());
         }
@@ -227,14 +227,9 @@ public class MyOrdersFragment extends BaseFragment {
         }
     }
 
-    private List<String> getFragmentTitleValues(){
-        String[] titles = {getString(R.string.my_order_tracking_label).toUpperCase(), getString(R.string.my_order_history_label).toUpperCase()};
-        return Arrays.asList( titles);
-    }
-
-    private List<String> getFragmentsList(){
-        String[] fragments ={TrackOrderFragment.class.getSimpleName(), OrderHistoryFragment.class.getSimpleName()};
-        return Arrays.asList(fragments);
+    private List<Integer> getFragmentTitleValues(){
+        Integer[] titles = {R.string.my_order_tracking_label, R.string.my_order_history_label};
+        return Arrays.asList(titles);
     }
 
     @Override

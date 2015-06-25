@@ -245,7 +245,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
          * @author Paulo Carvalho
          */
         public ProductInfoPagerAdapter(FragmentManager fm) {
-            super(fm,getFragmentsList(), getFragmentTitleValues());
+            super(fm,ProductDetailsInfoFragment.this, getFragmentTitleValues());
         }
 
         /*
@@ -260,7 +260,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         @Override
         protected Fragment createNewFragment(int position) {
-            return (ProductDetailsSummaryFragment.class.getSimpleName().equals(fragments.get(position))) ?
+            return (titlesPageInt.get(position) == R.string.product_desc_summary_title) ?
                     ProductDetailsSummaryFragment.getInstance(getArguments()) :
                     ProductDetailsSpecificationsFragment.getInstance(getArguments());
         }
@@ -271,20 +271,12 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         }
     }
 
-    private List<String> getFragmentTitleValues(){
-        String[] titles = {
-                getString(mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications).toUpperCase(),
-                getString(R.string.product_specifications).toUpperCase()};
+    private List<Integer> getFragmentTitleValues(){
+        Integer[] titles = {
+                mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications,
+                R.string.product_specifications};
 
         return Arrays.asList(titles);
-    }
-
-    private List<String> getFragmentsList(){
-        String[] fragments ={
-                mHasSummary ? ProductDetailsSummaryFragment.class.getSimpleName() : ProductDetailsSpecificationsFragment.class.getSimpleName(),
-                ProductDetailsSpecificationsFragment.class.getSimpleName()};
-
-        return Arrays.asList(fragments);
     }
 
     @Override
