@@ -133,7 +133,7 @@ public class FacebookHelper {
      * @author sergiopereira
      */
     public static boolean userNotAcceptRequiredPermissions(Session session) {
-        return !session.isPermissionGranted(FB_PERMISSION_EMAIL) && session.getState() == SessionState.OPENED_TOKEN_UPDATED;  
+        return !session.isPermissionGranted(FB_PERMISSION_EMAIL) && session.getState() == SessionState.OPENED_TOKEN_UPDATED;
     }
     
     /**
@@ -154,7 +154,7 @@ public class FacebookHelper {
      * @author sergiopereira
      */
     public static void makeNewRequiredPermissionsRequest(Fragment fragment, Session session, Session.StatusCallback callback) {
-        // Make new permissions request 
+        // Make new permissions request
         Session.NewPermissionsRequest newRequest = new Session.NewPermissionsRequest(fragment, FB_PERMISSION_EMAIL);
         newRequest.setCallback(callback);
         session.requestNewReadPermissions(newRequest);

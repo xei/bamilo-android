@@ -8,7 +8,6 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.reviews.GetSellerReviews;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
@@ -17,6 +16,8 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
+
+//import com.mobile.newFramework.requests.reviews.GetSellerReviews;
 
 /**
  * Get Seller reviews
@@ -57,7 +58,7 @@ public class GetSellerReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new GetSellerReviews(requestBundle, this).execute();
+        //new GetSellerReviews(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getSellerReviews);
     }
 

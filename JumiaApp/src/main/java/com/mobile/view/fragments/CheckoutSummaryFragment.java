@@ -32,6 +32,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
@@ -290,7 +291,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             // Show cart
             showCart();
             if(mCart != null){
-                showPriceRules();
+                CheckoutStepManager.showPriceRules(getBaseActivity(),(LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container), mCart.getPriceRules());
             }
             break;
         }
@@ -405,26 +406,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         if(mOrderSummary.hasCouponDiscount()) {
             mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getDiscountCouponValue()));
             mVoucherView.setVisibility(View.VISIBLE);
-        }
-    }
-    
-    /**
-     * Show Cart Price Rules
-     */
-    private void showPriceRules(){
-        if(mCart.getPriceRules() != null && mCart.getPriceRules().size() > 0){
-            Print.i(TAG, "code1rules : pass");
-            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container);
-            priceRulesContainer.setVisibility(View.VISIBLE);
-            LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-            Set<String> priceRulesKeys = mCart.getPriceRules().keySet();
-            for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_summary_element, null);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(mCart.getPriceRules().get(key)));
-                priceRulesContainer.addView(priceRuleElement);
-            }
-            
         }
     }
     

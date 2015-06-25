@@ -6,6 +6,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.pojo.Success;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,8 +16,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import okio.Okio;
@@ -30,11 +29,14 @@ import retrofit.mime.TypedOutput;
  */
 public class AigResponseConverter implements Converter {
 
+    private static final String TAG = AigResponseConverter.class.getSimpleName();
+
     /**
      * Convert json response
      */
     @Override
     public Object fromBody(TypedInput body, Type type) throws ConversionException {
+        Print.i(TAG, "PARSE FROM BODY");
         try {
             String bodyJson = Okio.buffer(Okio.source(body.in())).readUtf8();
             JSONObject responseJsonObject = new JSONObject(bodyJson);
@@ -53,6 +55,7 @@ public class AigResponseConverter implements Converter {
      * Get object type
      */
     protected String getType(Object type){
+        Print.i(TAG, "GET OBJECT TYPE: " + type.toString());
         if(type instanceof Class){
             return ((Class) type).getName();
         } else if(type instanceof ParameterizedType){
@@ -67,7 +70,6 @@ public class AigResponseConverter implements Converter {
      */
     protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
-
         BaseResponse<?> response = new BaseResponse<>();
         response.setSuccess(responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false));
         if(response.hadSuccess()) {
@@ -83,7 +85,7 @@ public class AigResponseConverter implements Converter {
      */
     protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
+        Print.i(TAG, "PARSE SUCCESS RESPONSE");
         // Data
         //TODO change to use method getMessages when response from API is coming correctly
         if (responseJsonObject.has(RestConstants.JSON_METADATA_TAG)) {
@@ -96,8 +98,8 @@ public class AigResponseConverter implements Converter {
 
         try {
             baseResponse.setSuccessMessages(Success.createMap(messagesJsonObject));
-        } catch (JSONException ex){
-            //TODO
+        } catch (JSONException e){
+            Print.i(TAG, "WARNING: JSE ON CREATE SUCCESS MESSAGES", e);
         }
         baseResponse.setErrorMessages(Errors.createErrorMessageMap(messagesJsonObject));
 
@@ -112,6 +114,7 @@ public class AigResponseConverter implements Converter {
      * Get unsuccess messages
      */
     protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
+        Print.i(TAG, "PARSE FAILURE RESPONSE");
         //body data
         try{
             baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
@@ -128,10 +131,9 @@ public class AigResponseConverter implements Converter {
      */
     protected IJSONSerializable getData(JSONObject responseJsonObject, Type dataType)
             throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
         String objectType = getType(dataType);
-        if(!objectType.equals(Void.class.getName())) {
-
+        Print.i(TAG, "GET DATA: " + objectType);
+        if(objectType != null && !objectType.equals(Void.class.getName())) {
             IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(objectType);
             iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
             return iJsonSerializable;
@@ -142,47 +144,47 @@ public class AigResponseConverter implements Converter {
     /**
      * Get success messages
      */
-    protected String handleSuccessMessage(JSONObject messagesObject){
+    protected String handleSuccessMessage(JSONObject messagesObject) {
         String successMessage = null;
         try {
-        if (messagesObject != null) {
-            JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-            if(successArray != null){
-                successMessage = successArray.getString(0);
+            if (messagesObject != null) {
+                JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
+                if (successArray != null) {
+                    successMessage = successArray.getString(0);
+                }
             }
-        }
-        } catch (JSONException e){
-            return successMessage;
+        } catch (JSONException e) {
+            Print.w(TAG, "WARNING HANDLE SUCCESS MESSAGE", e);
         }
         return successMessage;
     }
 
-    /**
-     * Get messages
-     */
-    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
-        Map<String, List<String>> messages = new HashMap<>();
-        try {
-            if (responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
-                JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
-                Iterator<?> keys = messagesJsonObject.keys();
-
-                while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    List<String> stringList = new LinkedList<>();
-                    if (messagesJsonObject.get(key) instanceof JSONArray) {
-                        JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            stringList.add(jsonArray.getString(i));
-                        }
-                    }
-                    messages.put(key, stringList);
-                }
-            }
-        } finally {
-            return messages;
-        }
-    }
+//    /**
+//     * Get messages
+//     */
+//    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
+//        Map<String, List<String>> messages = new HashMap<>();
+//        try {
+//            if (responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
+//                JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
+//                Iterator<?> keys = messagesJsonObject.keys();
+//
+//                while (keys.hasNext()) {
+//                    String key = (String) keys.next();
+//                    List<String> stringList = new LinkedList<>();
+//                    if (messagesJsonObject.get(key) instanceof JSONArray) {
+//                        JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
+//                        for (int i = 0; i < jsonArray.length(); i++) {
+//                            stringList.add(jsonArray.getString(i));
+//                        }
+//                    }
+//                    messages.put(key, stringList);
+//                }
+//            }
+//        } finally {
+//            return messages;
+//        }
+//    }
 
     /**
      * Get session
@@ -212,6 +214,7 @@ public class AigResponseConverter implements Converter {
      * -  metadata -> data</br>
      */
     protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
+        Print.i(TAG, "GET DATA FROM JSON");
         RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
         if(requiredJson == RequiredJson.METADATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);

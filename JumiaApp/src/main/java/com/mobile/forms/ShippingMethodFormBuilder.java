@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import com.mobile.newFramework.requests.checkout.ShippingMethodFormBuilderHolder;
-import com.mobile.newFramework.requests.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
+import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
 

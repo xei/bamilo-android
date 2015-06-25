@@ -5,13 +5,14 @@ import android.content.res.TypedArray;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
+import com.mobile.components.infiniteviewpager.InfiniteViewPager;
 import com.mobile.framework.R;
 
 /**
  * Created by spereira on 4/27/15.
  * @author spereira
  */
-public class PreviewViewPager extends ViewPager {
+public class PreviewViewPager extends InfiniteViewPager {
 
     public static final String TAG = PreviewViewPager.class.getSimpleName();
 

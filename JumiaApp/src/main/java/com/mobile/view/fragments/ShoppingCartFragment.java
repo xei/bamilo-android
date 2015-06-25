@@ -47,6 +47,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -683,6 +684,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
@@ -730,8 +732,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
                 vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
+                vatIncludedLabel.setText(getString(R.string.vat_string));
             } else {
                 vatValue.setVisibility(View.GONE);
+                vatIncludedLabel.setText(getString(R.string.string_vat_included));
             }
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
@@ -790,22 +794,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
 
             HashMap<String, String> priceRules = cart.getPriceRules();
-            if (priceRules != null && priceRules.size() > 0) {
-                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(
-                        R.id.price_rules_container);
-                priceRulesContainer.removeAllViews();
-                priceRulesContainer.setVisibility(View.VISIBLE);
-                LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-                Set<String> priceRulesKeys = priceRules.keySet();
-                for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,
-                            priceRulesContainer, false);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"
-                            + CurrencyFormatter.formatCurrency(priceRules.get(key)));
-                    priceRulesContainer.addView(priceRuleElement);
-                }
-            }
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+            CheckoutStepManager.showPriceRules(getActivity(),priceRulesContainer,priceRules);
 
             //hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);

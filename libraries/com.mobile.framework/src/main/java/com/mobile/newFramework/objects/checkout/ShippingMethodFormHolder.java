@@ -1,4 +1,4 @@
-package com.mobile.newFramework.requests.checkout;
+package com.mobile.newFramework.objects.checkout;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;

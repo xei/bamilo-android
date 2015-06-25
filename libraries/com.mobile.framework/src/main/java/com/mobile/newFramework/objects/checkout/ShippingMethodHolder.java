@@ -1,4 +1,4 @@
-package com.mobile.newFramework.requests.checkout;
+package com.mobile.newFramework.objects.checkout;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
@@ -14,11 +14,11 @@ public class ShippingMethodHolder {
     public String deliveryTime;
     public String deliveryFee;
 
-    public ShippingMethodHolder(String shippingMethod, String label, String deliveryTime) {
-        this.shippingMethod = shippingMethod;
-        this.label = label;
-        this.deliveryTime = deliveryTime;
-    }
+//    public ShippingMethodHolder(String shippingMethod, String label, String deliveryTime) {
+//        this.shippingMethod = shippingMethod;
+//        this.label = label;
+//        this.deliveryTime = deliveryTime;
+//    }
 
     public ShippingMethodHolder() {
         this.shippingMethod = "";

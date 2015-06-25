@@ -24,7 +24,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.helpers.configs.GetTermsConditionsHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -715,7 +714,8 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     private void triggerTerms() {
-        triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
+        // TODO: Validate this process
+        //triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
     /**

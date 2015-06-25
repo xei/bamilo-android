@@ -18,11 +18,11 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,8 +44,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {;
-        // Request
-//        new GetApiInformation(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getApiInformation);
     }
 
