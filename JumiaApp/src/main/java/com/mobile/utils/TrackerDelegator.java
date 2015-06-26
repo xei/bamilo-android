@@ -861,7 +861,7 @@ public class TrackerDelegator {
         }       
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putParcelableArrayList(AdjustTracker.FAVORITES, args.getParcelableArrayList(FAVOURITES_KEY));
-        
+
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.VIEW_WISHLIST, bundle);
     }
     
@@ -932,7 +932,7 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.PRODUCT_SKU, productSku);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putDouble(AdjustTracker.VALUE, price);
-        
+
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.REMOVE_FROM_WISHLIST, bundle);
         
         //GTM
@@ -1118,7 +1118,7 @@ public class TrackerDelegator {
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.APP_OPEN, params);
         GTMManager.trackAdjustInstallSource(context);
-        
+
         Ad4PushTracker.get().storeGaIdOnAccengage();
     }
     
@@ -1134,7 +1134,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, userId);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));        
+        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.CALL, bundle);
 
     }
@@ -1186,7 +1186,7 @@ public class TrackerDelegator {
      * @param cartValue
      * @author sergiopereira
      */
-    public static void trackCart(double cartValue, int cartCount) { 
+    public static void trackCart(double cartValue, int cartCount) {
         // Ad4
         Ad4PushTracker.get().trackCart(cartValue, cartCount);
     }
