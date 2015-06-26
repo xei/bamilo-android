@@ -6,15 +6,16 @@
     android:orientation="vertical" >
 
     <ImageView
+        android:id="@+id/fragment_root_error_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/margin_70px"
         android:layout_marginTop="@dimen/margin_116px"
-        android:background="@drawable/img_connect" />
+         />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/no_connection_label"
+        android:id="@+id/fragment_root_error_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_32px"
@@ -25,7 +26,7 @@
         android:textSize="@dimen/text_l" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/no_connection_details_label"
+        android:id="@+id/fragment_root_error_details_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="middle"

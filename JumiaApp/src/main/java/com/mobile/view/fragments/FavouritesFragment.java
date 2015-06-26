@@ -43,6 +43,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -234,7 +235,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         getBaseActivity().warningFactory.hideWarning();
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, this);
+
+//        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, this);
+        showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
     }
 
     /**
