@@ -56,6 +56,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -994,14 +995,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
-                R.string.continue_shopping, new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
-                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    }
-                });
+//        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
+//                R.string.continue_shopping, new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
+//                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//                    }
+//                });
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
         getBaseActivity().hideKeyboard();
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
