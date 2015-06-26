@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
-    compile project(':libraries:com.viewpagerindicator')
+//    compile project(':libraries:com.viewpagerindicator')
+    compile 'com.android.support:support-v4:22.2.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
