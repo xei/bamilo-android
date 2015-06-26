@@ -416,15 +416,15 @@ public class TrackerDelegator {
         }
     }
 
-    public static void trackSignUp(String email) {
-        try {
-            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            // GA
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? email : userId, 0l);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
-        }
-    }
+//    public static void trackSignUp(String email) {
+//        try {
+//            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+//            // GA
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? email : userId, 0l);
+//        } catch (NullPointerException e) {
+//            Print.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
+//        }
+//    }
 
     /**
      * Track Payment Method
@@ -486,7 +486,7 @@ public class TrackerDelegator {
         double value;
         JSONObject itemsJson;
         String coupon = "";
-        double valueConverted = 0d;
+        double valueConverted;
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getDouble(JSON_TAG_GRAND_TOTAL);
@@ -501,7 +501,9 @@ public class TrackerDelegator {
         Double averageValue = 0d;
         //ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
 
+        // TODO: UPDATE THIS PARSER
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
+
         ArrayList<String> skus = new ArrayList<>();
         //int favoritesCount = 0;
         for (PurchaseItem item : items) {
@@ -716,7 +718,7 @@ public class TrackerDelegator {
      */
     public static void trackPage(TrackingPage screen, long loadTime, boolean justGTM) {
         // GTM
-        trackScreenGTM(screen,loadTime);
+        trackScreenGTM(screen, loadTime);
         //
         if (!justGTM) {
             // GA

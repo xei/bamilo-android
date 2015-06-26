@@ -50,11 +50,6 @@ public class PurchaseItem implements Parcelable {
 			indexBegin += INDEX_OFFSET;
 		}
 
-		for (PurchaseItem item : items) {
-			Print.d(TAG, "parseItems: sku = " + item.sku + " name = " + item.name + " category = " + item.category + " paidprice = "
-					+ item.paidprice + " quantity = " + item.quantity);
-		}
-
 		return items;
 	}
 	
