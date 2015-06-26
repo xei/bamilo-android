@@ -56,9 +56,9 @@ public class DialogError extends Throwable {
         return mErrorCode;
     }
 
-    @Deprecated
-    public String getFailingUrl() {
-        return mFailingUrl;
-    }
+//    @Deprecated
+//    public String getFailingUrl() {
+//        return mFailingUrl;
+//    }
 
 }

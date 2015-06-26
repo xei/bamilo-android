@@ -93,28 +93,28 @@ public final class Util {
         return sb.toString();
     }
 
-    @Deprecated
-    public static Bundle decodeUrl(String s) {
-        Bundle params = new Bundle();
-        if (s != null) {
-            String array[] = s.split("&");
-            for (String parameter : array) {
-                String v[] = parameter.split("=");
-
-                try {
-                    if (v.length == 2) {
-                        params.putString(URLDecoder.decode(v[0], UTF8),
-                                         URLDecoder.decode(v[1], UTF8));
-                    } else if (v.length == 1) {
-                        params.putString(URLDecoder.decode(v[0], UTF8), "");
-                    }
-                } catch (UnsupportedEncodingException e) {
+//    @Deprecated
+//    public static Bundle decodeUrl(String s) {
+//        Bundle params = new Bundle();
+//        if (s != null) {
+//            String array[] = s.split("&");
+//            for (String parameter : array) {
+//                String v[] = parameter.split("=");
+//
+//                try {
+//                    if (v.length == 2) {
+//                        params.putString(URLDecoder.decode(v[0], UTF8),
+//                                         URLDecoder.decode(v[1], UTF8));
+//                    } else if (v.length == 1) {
+//                        params.putString(URLDecoder.decode(v[0], UTF8), "");
+//                    }
+//                } catch (UnsupportedEncodingException e) {
                     // shouldn't happen
-                }
-            }
-        }
-        return params;
-    }
+//                }
+//            }
+//        }
+//        return params;
+//    }
 
     /**
      * Parse a URL query and fragment parameters into a key-value bundle.
@@ -122,19 +122,19 @@ public final class Util {
      * @param url the URL to parse
      * @return a dictionary bundle of keys and values
      */
-    @Deprecated
-    public static Bundle parseUrl(String url) {
-        // hack to prevent MalformedURLException
-        url = url.replace("fbconnect", "http");
-        try {
-            URL u = new URL(url);
-            Bundle b = decodeUrl(u.getQuery());
-            b.putAll(decodeUrl(u.getRef()));
-            return b;
-        } catch (MalformedURLException e) {
-            return new Bundle();
-        }
-    }
+//    @Deprecated
+//    public static Bundle parseUrl(String url) {
+//         hack to prevent MalformedURLException
+//        url = url.replace("fbconnect", "http");
+//        try {
+//            URL u = new URL(url);
+//            Bundle b = decodeUrl(u.getQuery());
+//            b.putAll(decodeUrl(u.getRef()));
+//            return b;
+//        } catch (MalformedURLException e) {
+//            return new Bundle();
+//        }
+//    }
 
     
     /**
@@ -255,44 +255,44 @@ public final class Util {
      * @throws JSONException - if the response is not valid JSON
      * @throws FacebookError - if an error condition is set
      */
-    @Deprecated
-    public static JSONObject parseJson(String response)
-          throws JSONException, FacebookError {
+//    @Deprecated
+//    public static JSONObject parseJson(String response)
+//          throws JSONException, FacebookError {
         // Edge case: when sending a POST request to /[post_id]/likes
         // the return value is 'true' or 'false'. Unfortunately
         // these values cause the JSONObject constructor to throw
         // an exception.
-        if (response.equals("false")) {
-            throw new FacebookError("request failed");
-        }
-        if (response.equals("true")) {
-            response = "{value : true}";
-        }
-        JSONObject json = new JSONObject(response);
+//        if (response.equals("false")) {
+//            throw new FacebookError("request failed");
+//        }
+//        if (response.equals("true")) {
+//            response = "{value : true}";
+//        }
+//        JSONObject json = new JSONObject(response);
 
         // errors set by the server are not consistent
         // they depend on the method and endpoint
-        if (json.has("error")) {
-            JSONObject error = json.getJSONObject("error");
-            throw new FacebookError(
-                    error.getString("message"), error.getString("type"), 0);
-        }
-        if (json.has("error_code") && json.has("error_msg")) {
-            throw new FacebookError(json.getString("error_msg"), "",
-                    Integer.parseInt(json.getString("error_code")));
-        }
-        if (json.has("error_code")) {
-            throw new FacebookError("request failed", "",
-                    Integer.parseInt(json.getString("error_code")));
-        }
-        if (json.has("error_msg")) {
-            throw new FacebookError(json.getString("error_msg"));
-        }
-        if (json.has("error_reason")) {
-            throw new FacebookError(json.getString("error_reason"));
-        }
-        return json;
-    }
+//        if (json.has("error")) {
+//            JSONObject error = json.getJSONObject("error");
+//            throw new FacebookError(
+//                    error.getString("message"), error.getString("type"), 0);
+//        }
+//        if (json.has("error_code") && json.has("error_msg")) {
+//            throw new FacebookError(json.getString("error_msg"), "",
+//                    Integer.parseInt(json.getString("error_code")));
+//        }
+//        if (json.has("error_code")) {
+//            throw new FacebookError("request failed", "",
+//                    Integer.parseInt(json.getString("error_code")));
+//        }
+//        if (json.has("error_msg")) {
+//            throw new FacebookError(json.getString("error_msg"));
+//        }
+//        if (json.has("error_reason")) {
+//            throw new FacebookError(json.getString("error_reason"));
+//        }
+//        return json;
+//    }
 
     /**
      * Display a simple alert dialog with the given text and title.

@@ -273,19 +273,19 @@ public interface OpenGraphAction extends GraphObject {
          * Creates an OpenGraphAction suitable for posting via, e.g., a native Share dialog.
          * @return an OpenGraphAction
          */
-        @Deprecated
-        public static OpenGraphAction createForPost() {
-            return createForPost(OpenGraphAction.class, null);
-        }
+//        @Deprecated
+//        public static OpenGraphAction createForPost() {
+//            return createForPost(OpenGraphAction.class, null);
+//        }
 
         /**
          * Creates an OpenGraphAction suitable for posting via, e.g., a native Share dialog.
          * @param type the Open Graph action type for the action, or null if it will be specified later
          * @return an OpenGraphAction
          */
-        public static OpenGraphAction createForPost(String type) {
-            return createForPost(OpenGraphAction.class, type);
-        }
+//        public static OpenGraphAction createForPost(String type) {
+//            return createForPost(OpenGraphAction.class, type);
+//        }
 
         /**
          * Creates an OpenGraphAction suitable for posting via, e.g., a native Share dialog.
@@ -293,14 +293,14 @@ public interface OpenGraphAction extends GraphObject {
          * @param graphObjectClass the OpenGraphAction-derived type to return
          * @return an OpenGraphAction
          */
-        public static <T extends OpenGraphAction> T createForPost(Class<T> graphObjectClass, String type) {
-            T object = GraphObject.Factory.create(graphObjectClass);
-
-            if (type != null) {
-                object.setType(type);
-            }
-
-            return object;
-        }
+//        public static <T extends OpenGraphAction> T createForPost(Class<T> graphObjectClass, String type) {
+//            T object = GraphObject.Factory.create(graphObjectClass);
+//
+//            if (type != null) {
+//                object.setType(type);
+//            }
+//
+//            return object;
+//        }
     }
 }

@@ -90,9 +90,9 @@ public class AppLinkData {
      * @param completionHandler CompletionHandler to be notified with the AppLinkData object or null if none is
      *                          available.  Must not be null.
      */
-    public static void fetchDeferredAppLinkData(Context context, CompletionHandler completionHandler) {
-        fetchDeferredAppLinkData(context, null, completionHandler);
-    }
+//    public static void fetchDeferredAppLinkData(Context context, CompletionHandler completionHandler) {
+//        fetchDeferredAppLinkData(context, null, completionHandler);
+//    }
 
     /**
      * Asynchronously fetches app link information that might have been stored for use
@@ -102,28 +102,28 @@ public class AppLinkData {
      * @param completionHandler CompletionHandler to be notified with the AppLinkData object or null if none is
      *                          available.  Must not be null.
      */
-    public static void fetchDeferredAppLinkData(
-            Context context,
-            String applicationId,
-            final CompletionHandler completionHandler) {
-        Validate.notNull(context, "context");
-        Validate.notNull(completionHandler, "completionHandler");
-
-        if (applicationId == null) {
-            applicationId = Utility.getMetadataApplicationId(context);
-        }
-
-        Validate.notNull(applicationId, "applicationId");
-
-        final Context applicationContext = context.getApplicationContext();
-        final String applicationIdCopy = applicationId;
-        Settings.getExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                fetchDeferredAppLinkFromServer(applicationContext, applicationIdCopy, completionHandler);
-            }
-        });
-    }
+//    public static void fetchDeferredAppLinkData(
+//            Context context,
+//            String applicationId,
+//            final CompletionHandler completionHandler) {
+//        Validate.notNull(context, "context");
+//        Validate.notNull(completionHandler, "completionHandler");
+//
+//        if (applicationId == null) {
+//            applicationId = Utility.getMetadataApplicationId(context);
+//        }
+//
+//        Validate.notNull(applicationId, "applicationId");
+//
+//        final Context applicationContext = context.getApplicationContext();
+//        final String applicationIdCopy = applicationId;
+//        Settings.getExecutor().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                fetchDeferredAppLinkFromServer(applicationContext, applicationIdCopy, completionHandler);
+//            }
+//        });
+//    }
 
     private static void fetchDeferredAppLinkFromServer(
             Context context,
@@ -208,49 +208,49 @@ public class AppLinkData {
      * @param activity Activity that was started because of an app link
      * @return AppLinkData if found. null if not.
      */
-    public static AppLinkData createFromActivity(Activity activity) {
-        Validate.notNull(activity, "activity");
-        Intent intent = activity.getIntent();
-        if (intent == null) {
-            return null;
-        }
+//    public static AppLinkData createFromActivity(Activity activity) {
+//        Validate.notNull(activity, "activity");
+//        Intent intent = activity.getIntent();
+//        if (intent == null) {
+//            return null;
+//        }
+//
+//        AppLinkData appLinkData = createFromAlApplinkData(intent);
+//        if (appLinkData == null) {
+//            String appLinkArgsJsonString = intent.getStringExtra(BUNDLE_APPLINK_ARGS_KEY);
+//            appLinkData = createFromJson(appLinkArgsJsonString);
+//        }
+//        if (appLinkData == null) {
+//             Try regular app linking
+//            appLinkData = createFromUri(intent.getData());
+//        }
+//
+//        return appLinkData;
+//    }
 
-        AppLinkData appLinkData = createFromAlApplinkData(intent);
-        if (appLinkData == null) {
-            String appLinkArgsJsonString = intent.getStringExtra(BUNDLE_APPLINK_ARGS_KEY);
-            appLinkData = createFromJson(appLinkArgsJsonString);
-        }
-        if (appLinkData == null) {
-            // Try regular app linking
-            appLinkData = createFromUri(intent.getData());
-        }
-
-        return appLinkData;
-    }
-
-    private static AppLinkData createFromAlApplinkData(Intent intent) {
-        Bundle applinks = intent.getBundleExtra(BUNDLE_AL_APPLINK_DATA_KEY);
-        if (applinks == null) {
-            return null;
-        }
-
-        AppLinkData appLinkData = new AppLinkData();
-        appLinkData.targetUri = intent.getData();
-        if (appLinkData.targetUri == null) {
-            String targetUriString = applinks.getString(METHOD_ARGS_TARGET_URL_KEY);
-            if (targetUriString != null) {
-                appLinkData.targetUri = Uri.parse(targetUriString);
-            }
-        }
-        appLinkData.argumentBundle = applinks;
-        appLinkData.arguments = null;
-        Bundle refererData = applinks.getBundle(ARGUMENTS_REFERER_DATA_KEY);
-        if (refererData != null) {
-            appLinkData.ref = refererData.getString(REFERER_DATA_REF_KEY);
-        }
-
-        return appLinkData;
-    }
+//    private static AppLinkData createFromAlApplinkData(Intent intent) {
+//        Bundle applinks = intent.getBundleExtra(BUNDLE_AL_APPLINK_DATA_KEY);
+//        if (applinks == null) {
+//            return null;
+//        }
+//
+//        AppLinkData appLinkData = new AppLinkData();
+//        appLinkData.targetUri = intent.getData();
+//        if (appLinkData.targetUri == null) {
+//            String targetUriString = applinks.getString(METHOD_ARGS_TARGET_URL_KEY);
+//            if (targetUriString != null) {
+//                appLinkData.targetUri = Uri.parse(targetUriString);
+//            }
+//        }
+//        appLinkData.argumentBundle = applinks;
+//        appLinkData.arguments = null;
+//        Bundle refererData = applinks.getBundle(ARGUMENTS_REFERER_DATA_KEY);
+//        if (refererData != null) {
+//            appLinkData.ref = refererData.getString(REFERER_DATA_REF_KEY);
+//        }
+//
+//        return appLinkData;
+//    }
 
     private static AppLinkData createFromJson(String jsonString) {
         if (jsonString  == null) {
@@ -356,9 +356,9 @@ public class AppLinkData {
      * Returns the target uri for this App Link.
      * @return target uri
      */
-    public Uri getTargetUri() {
-        return targetUri;
-    }
+//    public Uri getTargetUri() {
+//        return targetUri;
+//    }
 
     /**
      * Returns the ref for this App Link.
@@ -382,21 +382,21 @@ public class AppLinkData {
      * picked out of this set of arguments.
      * @return App link related arguments as a bundle.
      */
-    public Bundle getArgumentBundle() {
-        return argumentBundle;
-    }
+//    public Bundle getArgumentBundle() {
+//        return argumentBundle;
+//    }
 
     /**
      * The referer data associated with the app link. This will contain Facebook specific information like
      * fb_access_token, fb_expires_in, and fb_ref.
      * @return the referer data.
      */
-    public Bundle getRefererData() {
-        if (argumentBundle != null) {
-            return argumentBundle.getBundle(ARGUMENTS_REFERER_DATA_KEY);
-        }
-        return null;
-    }
+//    public Bundle getRefererData() {
+//        if (argumentBundle != null) {
+//            return argumentBundle.getBundle(ARGUMENTS_REFERER_DATA_KEY);
+//        }
+//        return null;
+//    }
 
     /**
      * Interface to asynchronously receive AppLinkData after it has been fetched.

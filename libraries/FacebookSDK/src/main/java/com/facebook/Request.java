@@ -1135,11 +1135,11 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executePostRequestAsync(Session session, String graphPath, GraphObject graphObject,
-            Callback callback) {
-        return newPostRequest(session, graphPath, graphObject, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executePostRequestAsync(Session session, String graphPath, GraphObject graphObject,
+//            Callback callback) {
+//        return newPostRequest(session, graphPath, graphObject, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to retrieve a user's own profile.
@@ -1154,10 +1154,10 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeMeRequestAsync(Session session, GraphUserCallback callback) {
-        return newMeRequest(session, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeMeRequestAsync(Session session, GraphUserCallback callback) {
+//        return newMeRequest(session, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to retrieve a user's friend list.
@@ -1172,10 +1172,10 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeMyFriendsRequestAsync(Session session, GraphUserListCallback callback) {
-        return newMyFriendsRequest(session, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeMyFriendsRequestAsync(Session session, GraphUserListCallback callback) {
+//        return newMyFriendsRequest(session, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to upload a photo to the user's default photo album.
@@ -1192,10 +1192,10 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeUploadPhotoRequestAsync(Session session, Bitmap image, Callback callback) {
-        return newUploadPhotoRequest(session, image, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeUploadPhotoRequestAsync(Session session, Bitmap image, Callback callback) {
+//        return newUploadPhotoRequest(session, image, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to upload a photo to the user's default photo album. The photo
@@ -1210,11 +1210,11 @@ public class Request {
      * @param callback a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeUploadPhotoRequestAsync(Session session, File file,
-            Callback callback) throws FileNotFoundException {
-        return newUploadPhotoRequest(session, file, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeUploadPhotoRequestAsync(Session session, File file,
+//            Callback callback) throws FileNotFoundException {
+//        return newUploadPhotoRequest(session, file, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to retrieve a particular graph path.
@@ -1231,10 +1231,10 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeGraphPathRequestAsync(Session session, String graphPath, Callback callback) {
-        return newGraphPathRequest(session, graphPath, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeGraphPathRequestAsync(Session session, String graphPath, Callback callback) {
+//        return newGraphPathRequest(session, graphPath, callback).executeAsync();
+//    }
 
     /**
      * Starts a new Request that is configured to perform a search for places near a specified location via the Graph
@@ -1261,12 +1261,12 @@ public class Request {
      *
      * @throws FacebookException If neither location nor searchText is specified
      */
-    @Deprecated
-    public static RequestAsyncTask executePlacesSearchRequestAsync(Session session, Location location,
-            int radiusInMeters, int resultsLimit, String searchText, GraphPlaceListCallback callback) {
-        return newPlacesSearchRequest(session, location, radiusInMeters, resultsLimit, searchText, callback)
-                .executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executePlacesSearchRequestAsync(Session session, Location location,
+//            int radiusInMeters, int resultsLimit, String searchText, GraphPlaceListCallback callback) {
+//        return newPlacesSearchRequest(session, location, radiusInMeters, resultsLimit, searchText, callback)
+//                .executeAsync();
+//    }
 
     /**
      * Starts a new Request configured to post a status update to a user's feed.
@@ -1283,10 +1283,10 @@ public class Request {
      *            a callback that will be called when the request is completed to handle success or error conditions
      * @return a RequestAsyncTask that is executing the request
      */
-    @Deprecated
-    public static RequestAsyncTask executeStatusUpdateRequestAsync(Session session, String message, Callback callback) {
-        return newStatusUpdateRequest(session, message, callback).executeAsync();
-    }
+//    @Deprecated
+//    public static RequestAsyncTask executeStatusUpdateRequestAsync(Session session, String message, Callback callback) {
+//        return newStatusUpdateRequest(session, message, callback).executeAsync();
+//    }
 
     /**
      * Executes this request and returns the response.
@@ -1330,9 +1330,9 @@ public class Request {
      * @throws IllegalArgumentException if the passed in array is zero-length
      * @throws NullPointerException if the passed in array or any of its contents are null
      */
-    public static HttpURLConnection toHttpConnection(Request... requests) {
-        return toHttpConnection(Arrays.asList(requests));
-    }
+//    public static HttpURLConnection toHttpConnection(Request... requests) {
+//        return toHttpConnection(Arrays.asList(requests));
+//    }
 
     /**
      * Serializes one or more requests but does not execute them. The resulting HttpURLConnection can be executed

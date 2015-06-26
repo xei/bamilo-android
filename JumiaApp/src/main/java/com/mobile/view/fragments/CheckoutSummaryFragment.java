@@ -386,16 +386,16 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
      * @author sergiopereira
      */
-    @Deprecated
-    private void showShippingFees() {
-        if(!mCart.hasSumCosts()){
-            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
-        } else {
-            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
-        }
-        
-        mShippingFeeView.setVisibility(View.VISIBLE);
-    }
+//    @Deprecated
+//    private void showShippingFees() {
+//        if(!mCart.hasSumCosts()){
+//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
+//        } else {
+//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
+//        }
+//
+//        mShippingFeeView.setVisibility(View.VISIBLE);
+//    }
     
     /**
      * Show voucher

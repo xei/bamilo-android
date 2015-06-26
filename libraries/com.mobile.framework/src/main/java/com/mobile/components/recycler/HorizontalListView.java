@@ -185,20 +185,20 @@ public class HorizontalListView extends RecyclerView {
         }
     }
     
-    /**
-     * Method used to enable the reverse layout to support RTL direction.<br>
-     * Case SDK version >= JELLY_BEAN_MR1 (API 17), use native support (LAYOUT_DIRECTION_LOCALE).<br>
-     * @author sergiopereira
-     */
-    @SuppressLint("NewApi")
-    @Deprecated
-    public void enableReverseLayout() {
-        // Case API < 17: set reverse layout as true
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) 
-            ((LinearLayoutManager) getLayoutManager()).setReverseLayout(true);
-        // Case API >= 17: use the native support
-        else setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
-    }
+//    /**
+//     * Method used to enable the reverse layout to support RTL direction.<br>
+//     * Case SDK version >= JELLY_BEAN_MR1 (API 17), use native support (LAYOUT_DIRECTION_LOCALE).<br>
+//     * @author sergiopereira
+//     */
+//    @SuppressLint("NewApi")
+//    @Deprecated
+//    public void enableReverseLayout() {
+//        // Case API < 17: set reverse layout as true
+//        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+//            ((LinearLayoutManager) getLayoutManager()).setReverseLayout(true);
+//        // Case API >= 17: use the native support
+//        else setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
+//    }
 
     /**
      * Method used to enable the reverse layout to support RTL direction.<br>

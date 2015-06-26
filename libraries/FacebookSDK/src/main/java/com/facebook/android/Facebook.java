@@ -150,11 +150,11 @@ public class Facebook {
      * <p/>
      * This method is deprecated.  See {@link Facebook} and {@link Session} for more info.
      */
-    @Deprecated
-    public void authorize(Activity activity, final DialogListener listener) {
-        authorize(activity, new String[]{}, DEFAULT_AUTH_ACTIVITY_CODE, SessionLoginBehavior.SSO_WITH_FALLBACK,
-                listener);
-    }
+//    @Deprecated
+//    public void authorize(Activity activity, final DialogListener listener) {
+//        authorize(activity, new String[]{}, DEFAULT_AUTH_ACTIVITY_CODE, SessionLoginBehavior.SSO_WITH_FALLBACK,
+//                listener);
+//    }
 
     /**
      * Authorize method that grants custom permissions.
@@ -163,10 +163,10 @@ public class Facebook {
      * <p/>
      * This method is deprecated.  See {@link Facebook} and {@link Session} for more info.
      */
-    @Deprecated
-    public void authorize(Activity activity, String[] permissions, final DialogListener listener) {
-        authorize(activity, permissions, DEFAULT_AUTH_ACTIVITY_CODE, SessionLoginBehavior.SSO_WITH_FALLBACK, listener);
-    }
+//    @Deprecated
+//    public void authorize(Activity activity, String[] permissions, final DialogListener listener) {
+//        authorize(activity, permissions, DEFAULT_AUTH_ACTIVITY_CODE, SessionLoginBehavior.SSO_WITH_FALLBACK, listener);
+//    }
 
     /**
      * Full authorize method.
@@ -232,13 +232,13 @@ public class Facebook {
      *            the authentication dialog has completed, failed, or been
      *            canceled.
      */
-    @Deprecated
-    public void authorize(Activity activity, String[] permissions, int activityCode, final DialogListener listener) {
-        SessionLoginBehavior behavior = (activityCode >= 0) ? SessionLoginBehavior.SSO_WITH_FALLBACK
-                : SessionLoginBehavior.SUPPRESS_SSO;
-
-        authorize(activity, permissions, activityCode, behavior, listener);
-    }
+//    @Deprecated
+//    public void authorize(Activity activity, String[] permissions, int activityCode, final DialogListener listener) {
+//        SessionLoginBehavior behavior = (activityCode >= 0) ? SessionLoginBehavior.SSO_WITH_FALLBACK
+//                : SessionLoginBehavior.SUPPRESS_SSO;
+//
+//        authorize(activity, permissions, activityCode, behavior, listener);
+//    }
 
     /**
      * Full authorize method.
@@ -438,18 +438,18 @@ public class Facebook {
      * <p/>
      * This method is deprecated.  See {@link Facebook} and {@link Session} for more info.
      */
-    @Deprecated
-    public void authorizeCallback(int requestCode, int resultCode, Intent data) {
-        checkUserSession("authorizeCallback");
-        Session pending = this.pendingOpeningSession;
-        if (pending != null) {
-            if (pending.onActivityResult(this.pendingAuthorizationActivity, requestCode, resultCode, data)) {
-                this.pendingOpeningSession = null;
-                this.pendingAuthorizationActivity = null;
-                this.pendingAuthorizationPermissions = null;
-            }
-        }
-    }
+//    @Deprecated
+//    public void authorizeCallback(int requestCode, int resultCode, Intent data) {
+//        checkUserSession("authorizeCallback");
+//        Session pending = this.pendingOpeningSession;
+//        if (pending != null) {
+//            if (pending.onActivityResult(this.pendingAuthorizationActivity, requestCode, resultCode, data)) {
+//                this.pendingOpeningSession = null;
+//                this.pendingAuthorizationActivity = null;
+//                this.pendingAuthorizationPermissions = null;
+//            }
+//        }
+//    }
 
     /**
      * Refresh OAuth access token method. Binds to Facebook for Android
@@ -472,23 +472,23 @@ public class Facebook {
      *            Bundle under Facebook.ACCESS_TOKEN key.
      * @return true if the binding to the RefreshToken Service was created
      */
-    @Deprecated
-    public boolean extendAccessToken(Context context, ServiceListener serviceListener) {
-        checkUserSession("extendAccessToken");
-        Intent intent = new Intent();
+//    @Deprecated
+//    public boolean extendAccessToken(Context context, ServiceListener serviceListener) {
+//        checkUserSession("extendAccessToken");
+//        Intent intent = new Intent();
+//
+//        intent.setClassName("com.facebook.katana", "com.facebook.katana.platform.TokenRefreshService");
+//
+//         Verify that the application whose package name is
+//         com.facebook.katana
+//         has the expected FB app signature.
+//        if (!validateServiceIntent(context, intent)) {
+//            return false;
+//        }
 
-        intent.setClassName("com.facebook.katana", "com.facebook.katana.platform.TokenRefreshService");
-
-        // Verify that the application whose package name is
-        // com.facebook.katana
-        // has the expected FB app signature.
-        if (!validateServiceIntent(context, intent)) {
-            return false;
-        }
-
-        return context.bindService(intent, new TokenRefreshServiceConnection(context, serviceListener),
-                Context.BIND_AUTO_CREATE);
-    }
+//        return context.bindService(intent, new TokenRefreshServiceConnection(context, serviceListener),
+//                Context.BIND_AUTO_CREATE);
+//    }
 
     /**
      * Calls extendAccessToken if shouldExtendAccessToken returns true.
@@ -498,14 +498,14 @@ public class Facebook {
      * @return the same value as extendAccessToken if the the token requires
      *         refreshing, true otherwise
      */
-    @Deprecated
-    public boolean extendAccessTokenIfNeeded(Context context, ServiceListener serviceListener) {
-        checkUserSession("extendAccessTokenIfNeeded");
-        if (shouldExtendAccessToken()) {
-            return extendAccessToken(context, serviceListener);
-        }
-        return true;
-    }
+//    @Deprecated
+//    public boolean extendAccessTokenIfNeeded(Context context, ServiceListener serviceListener) {
+//        checkUserSession("extendAccessTokenIfNeeded");
+//        if (shouldExtendAccessToken()) {
+//            return extendAccessToken(context, serviceListener);
+//        }
+//        return true;
+//    }
 
     /**
      * Check if the access token requires refreshing.
@@ -515,12 +515,12 @@ public class Facebook {
      * @return true if the last time a new token was obtained was over 24 hours
      *         ago.
      */
-    @Deprecated
-    public boolean shouldExtendAccessToken() {
-        checkUserSession("shouldExtendAccessToken");
-        return isSessionValid()
-                && (System.currentTimeMillis() - lastAccessUpdateMillisecondsAfterEpoch >= REFRESH_TOKEN_BARRIER);
-    }
+//    @Deprecated
+//    public boolean shouldExtendAccessToken() {
+//        checkUserSession("shouldExtendAccessToken");
+//        return isSessionValid()
+//                && (System.currentTimeMillis() - lastAccessUpdateMillisecondsAfterEpoch >= REFRESH_TOKEN_BARRIER);
+//    }
 
     /**
      * Handles connection to the token refresh service (this service is a part
@@ -1039,10 +1039,10 @@ public class Facebook {
      *
      * @return long - timestamp of the last token update.
      */
-    @Deprecated
-    public long getLastAccessUpdate() {
-        return lastAccessUpdateMillisecondsAfterEpoch;
-    }
+//    @Deprecated
+//    public long getLastAccessUpdate() {
+//        return lastAccessUpdateMillisecondsAfterEpoch;
+//    }
 
     /**
      * Restore the token, expiration time, and last update time from cached values.
@@ -1055,15 +1055,15 @@ public class Facebook {
      * @param accessExpires - access token expiration time
      * @param lastAccessUpdate - timestamp of the last token update
      */
-    @Deprecated
-    public void setTokenFromCache(String accessToken, long accessExpires, long lastAccessUpdate) {
-        checkUserSession("setTokenFromCache");
-        synchronized (this.lock) {
-            this.accessToken = accessToken;
-            accessExpiresMillisecondsAfterEpoch = accessExpires;
-            lastAccessUpdateMillisecondsAfterEpoch = lastAccessUpdate;
-        }
-    }
+//    @Deprecated
+//    public void setTokenFromCache(String accessToken, long accessExpires, long lastAccessUpdate) {
+//        checkUserSession("setTokenFromCache");
+//        synchronized (this.lock) {
+//            this.accessToken = accessToken;
+//            accessExpiresMillisecondsAfterEpoch = accessExpires;
+//            lastAccessUpdateMillisecondsAfterEpoch = lastAccessUpdate;
+//        }
+//    }
 
     /**
      * Set the OAuth 2.0 access token for API access.
@@ -1111,39 +1111,39 @@ public class Facebook {
      * @param expiresInSecsFromNow
      *            - duration in seconds (or 0 if the session doesn't expire)
      */
-    @Deprecated
-    public void setAccessExpiresIn(String expiresInSecsFromNow) {
-        checkUserSession("setAccessExpiresIn");
-        if (expiresInSecsFromNow != null) {
-            long expires = expiresInSecsFromNow.equals("0") ? 0 : System.currentTimeMillis()
-                    + Long.parseLong(expiresInSecsFromNow) * 1000L;
-            setAccessExpires(expires);
-        }
-    }
+//    @Deprecated
+//    public void setAccessExpiresIn(String expiresInSecsFromNow) {
+//        checkUserSession("setAccessExpiresIn");
+//        if (expiresInSecsFromNow != null) {
+//            long expires = expiresInSecsFromNow.equals("0") ? 0 : System.currentTimeMillis()
+//                    + Long.parseLong(expiresInSecsFromNow) * 1000L;
+//            setAccessExpires(expires);
+//        }
+//    }
 
     /**
      * This method is deprecated.  See {@link Facebook} and {@link Session} for more info.
      *
      * @return the String representing application ID
      */
-    @Deprecated
-    public String getAppId() {
-        return mAppId;
-    }
+//    @Deprecated
+//    public String getAppId() {
+//        return mAppId;
+//    }
 
     /**
      * This method is deprecated.  See {@link Facebook} and {@link Session} for more info.
      *
      * @param appId the String representing the application ID
      */
-    @Deprecated
-    public void setAppId(String appId) {
-        checkUserSession("setAppId");
-        synchronized (this.lock) {
-            mAppId = appId;
-            sessionInvalidated = true;
-        }
-    }
+//    @Deprecated
+//    public void setAppId(String appId) {
+//        checkUserSession("setAppId");
+//        synchronized (this.lock) {
+//            mAppId = appId;
+//            sessionInvalidated = true;
+//        }
+//    }
 
     private TokenCachingStrategy getTokenCache() {
         // Intentionally not volatile/synchronized--it is okay if we race to
@@ -1215,10 +1215,10 @@ public class Facebook {
      * @return Attribution ID that will be used for conversion tracking. It will be null only if
      *         the user has not installed or logged in to the Facebook app.
      */
-    @Deprecated
-    public static String getAttributionId(ContentResolver contentResolver) {
-        return Settings.getAttributionId(contentResolver);
-    }
+//    @Deprecated
+//    public static String getAttributionId(ContentResolver contentResolver) {
+//        return Settings.getAttributionId(contentResolver);
+//    }
 
     /**
      * Callback interface for dialog requests.

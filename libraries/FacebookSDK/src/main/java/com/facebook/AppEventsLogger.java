@@ -241,18 +241,18 @@ public class AppEventsLogger {
     /**
      * This method is deprecated.  Use {@link Settings#getLimitEventAndDataUsage(Context)} instead.
      */
-    @Deprecated
-    public static boolean getLimitEventUsage(Context context) {
-        return Settings.getLimitEventAndDataUsage(context);
-    }
+//    @Deprecated
+//    public static boolean getLimitEventUsage(Context context) {
+//        return Settings.getLimitEventAndDataUsage(context);
+//    }
 
     /**
      * This method is deprecated.  Use {@link Settings#setLimitEventAndDataUsage(Context, boolean)} instead.
      */
-    @Deprecated
-    public static void setLimitEventUsage(Context context, boolean limitEventUsage) {
-        Settings.setLimitEventAndDataUsage(context, limitEventUsage);
-    }
+//    @Deprecated
+//    public static void setLimitEventUsage(Context context, boolean limitEventUsage) {
+//        Settings.setLimitEventAndDataUsage(context, limitEventUsage);
+//    }
 
     /**
      * Notifies the events system that the app has launched & logs an activatedApp event.  Should be called whenever

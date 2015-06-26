@@ -205,18 +205,18 @@ public final class Settings {
     /**
      * This method is deprecated.  Use {@link Settings#isDebugEnabled()} instead.
      */
-    @Deprecated
-    public static final boolean isLoggingEnabled() {
-        return isDebugEnabled();
-    }
+//    @Deprecated
+//    public static final boolean isLoggingEnabled() {
+//        return isDebugEnabled();
+//    }
 
     /**
      * This method is deprecated.  Use {@link Settings#setIsDebugEnabled(boolean)} instead.
      */
-    @Deprecated
-    public static final void setIsLoggingEnabled(boolean enabled) {
-        setIsDebugEnabled(enabled);
-    }
+//    @Deprecated
+//    public static final void setIsLoggingEnabled(boolean enabled) {
+//        setIsDebugEnabled(enabled);
+//    }
 
     /**
      * Indicates if we are in debug mode.
@@ -229,9 +229,9 @@ public final class Settings {
      * Used to enable or disable logging, and other debug features. Defaults to BuildConfig.DEBUG.
      * @param enabled Debug features (like logging) are enabled if true, disabled if false.
      */
-    public static final void setIsDebugEnabled(boolean enabled) {
-        isDebugEnabled = enabled;
-    }
+//    public static final void setIsDebugEnabled(boolean enabled) {
+//        isDebugEnabled = enabled;
+//    }
 
     /**
      * Returns the Executor used by the SDK for non-AsyncTask background work.
