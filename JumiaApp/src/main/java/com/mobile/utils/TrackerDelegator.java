@@ -418,16 +418,7 @@ public class TrackerDelegator {
             Log.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
     }
-
-//    public static void trackSignUp(String email) {
-//        try {
-//            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-//            // GA
-//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
-//        } catch (NullPointerException e) {
-//            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
-//        }
-//    }
+    
 
     /**
      * Track Payment Method
