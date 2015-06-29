@@ -52,6 +52,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
@@ -469,7 +470,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
         // Show layout
-        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+//        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Print.d(TAG, "ON CLICK: FILTER BUTTON");
+//                onClickFilterButton();
+//            }
+//        });
+        showErrorFragment(stringId, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Print.d(TAG, "ON CLICK: FILTER BUTTON");
@@ -482,14 +490,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Show the no filter result.
      */
     private void showFilterNoResult() {
-        showFilterError(R.string.catalog_no_results);
+        showFilterError(ErrorLayoutFactory.CATALOG_NO_RESULTS);
     }
 
     /**
      * Show the no filter unexpected error.
      */
     private void showFilterUnexpectedError(){
-        showFilterError(R.string.server_error);
+        showFilterError(ErrorLayoutFactory.CATALOG_UNEXPECTED_ERROR);
     }
 
     /**
