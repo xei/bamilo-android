@@ -209,9 +209,7 @@
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
-    <!--<string name="product_description_title">Product Description</string>-->
     <string name="product_details_title">Product Details</string>
-    <!--<string name="product_features_title">Product Features</string>-->
     <string name="product_offer_from_title">Offers from</string>
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
@@ -323,9 +321,9 @@
     <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
     <string name="try_again">Retry</string>
     <string name="try_again_retry">Try Again</string>
-    <string name="upgrade_forced_text">We found something that we needed to fix to make shopping on %s even better! You will need to update before you continue using.</string>
+    <string name="upgrade_forced_text">We found something that we needed to fix to improve your shopping experience on %s! You will need to update the Application before you continue using it.</string>
     <string name="upgrade_forced_title">Upgrade necessary</string>
-    <string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on %s even better! Be sure to upgrade today!</string>
+    <string name="upgrade_optional_text">We found something to improve your shopping experience on %s! Please update the App!</string>
     <string name="upgrade_optional_title">Upgrade available</string>
     <string name="upgrade_proceed">Upgrade</string>
     <string name="upgrade_remindmelater">Remind me later</string>
@@ -348,7 +346,6 @@
     <string name="your_order">Your Order</string>
 
     <!-- Version v2.4 -->
-	<string name="app_sharing">App Sharing</string>
     <string name="install_jumia_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>

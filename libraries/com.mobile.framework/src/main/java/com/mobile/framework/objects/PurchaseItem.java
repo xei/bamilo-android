@@ -2,11 +2,11 @@ package com.mobile.framework.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,8 +19,6 @@ import de.akquinet.android.androlog.Log;
 public class PurchaseItem implements Parcelable {
 	
 	private static String TAG = LogTagHelper.create(PurchaseItem.class);
-	
-	private static int INDEX_OFFSET = 5;
 
 	public String sku;
 	public String name;
@@ -39,53 +37,55 @@ public class PurchaseItem implements Parcelable {
 	/**
 	 * For WebCheckout
 	 */
-	public static List<PurchaseItem> parseItems(JSONObject itemsJson) {
+	public static List<PurchaseItem> parseItems(JSONArray itemsJson) {
 		List<PurchaseItem> items = new ArrayList<>();
 
-		int indexBegin = 0;
-		while (!TextUtils.isEmpty(itemsJson.optString(String.valueOf(indexBegin)))) {
-			PurchaseItem item = new PurchaseItem();
-			if( !item.parseItem( itemsJson, indexBegin))
-				continue;
-			items.add(item);
-			indexBegin += INDEX_OFFSET;
-		}
-
-		for (PurchaseItem item : items) {
-			Log.d(TAG, "parseItems: sku = " + item.sku + " name = " + item.name + " category = " + item.category + " paidprice = "
-					+ item.paidprice + " quantity = " + item.quantity);
-		}
+        if(itemsJson != null){
+            for (int i = 0; i < itemsJson.length(); i++) {
+                try {
+                    PurchaseItem item = new PurchaseItem();
+                    if( !item.parseItem(itemsJson.getJSONObject(i)))
+                        continue;
+                    items.add(item);
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }
 
 		return items;
 	}
 	
 	/*--
-	"0": { "sku": "PP447HLADTYYMEAMZ-289976" },
-	"1": { "name": "دستمال کاغذی با طرح گربه" },
-	"2": { "category": "خانه و آشپزخانه" },
-	"3": { "paidprice": 37000 },
-	"4": { "paidprice_converted": 0.88095238095238 },
-	"5": { "quantity": 1 }
+      {
+         "category":false,
+         "quantity":1,
+         "paidprice_converted":12.466,
+         "sku":"SA729ME60CXNNGAMZ-19914",
+         "paidprice":2710,
+         "name":"Reading the Quran"
+      },
 	 */
-	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
+	private boolean parseItem( JSONObject itemJson) {
 		try {
-			// 0: sku
-			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString(RestConstants.JSON_SKU_TAG );
-			// 1: name
-			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( RestConstants.JSON_PURCHASE_NAME_TAG );
-			// 2: category
-			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
-			// 3: price
-			JSONObject prcObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 3));
-			paidprice = prcObj.getString( RestConstants.JSON_PAID_PRICE_TAG);
-			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAID_PRICE_TAG, 0);
-			// 4: price tracking
-			JSONObject prcTrck = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
-			paidPriceForTracking = prcTrck.optDouble(RestConstants.JSON_PAID_PRICE_CONVERTED_TAG, 0d);
-			// 5: quantity
-			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 5));
-			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);
-			quantityAsInt = qtObj.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
+			//sku
+			sku = itemJson.getString(RestConstants.JSON_SKU_TAG);
+			//name
+			name = itemJson.getString(RestConstants.JSON_PURCHASE_NAME_TAG);
+			//category
+			category = itemJson.getString(RestConstants.JSON_CATEGORY_TAG);
+			//TODO hotfix to be removed once fix happens on API side
+			if (category.equals("false") || category.equals("true")) {
+				category = "";
+			}
+			//price
+			paidprice = itemJson.getString( RestConstants.JSON_PAID_PRICE_TAG);
+			paidpriceAsDouble = itemJson.optDouble(RestConstants.JSON_PAID_PRICE_TAG, 0);
+			//price tracking
+			paidPriceForTracking = itemJson.optDouble(RestConstants.JSON_PAID_PRICE_CONVERTED_TAG, 0d);
+			//quantity
+			quantity = itemJson.getString( RestConstants.JSON_QUANTITY_TAG);
+			quantityAsInt = itemJson.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
 		} catch (JSONException e) {
 			Log.e(TAG, "parsing purchase item failed" + e);
 			return false;

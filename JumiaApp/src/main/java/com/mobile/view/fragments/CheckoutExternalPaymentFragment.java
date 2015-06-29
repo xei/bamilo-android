@@ -561,7 +561,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                             trackPurchase(result);
                         }
                     });
-                    Bundle bundle = new Bundle();
+                    final Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
                     /**
                      * TODO: Verify if we need to send customer email
@@ -569,20 +569,20 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     // bundle.putString(ConstantsIntentExtra.CUSTOMER_EMAIL, (customer != null ) ?
                     // customer.getEmail() : "");
                     String order_number = "";
-                    String grandTotal = "";
                     if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
                         order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
                     } else if (result.has("orderNr")) {
                         order_number = result.optString("orderNr");
                     }
 
-                    if (result.has(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG)) {
-                        grandTotal = result.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
-                    } else if (result.has("grandTotal")) {
-                        grandTotal = result.optString("grandTotal");
-                    }
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
-                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+                    getBaseActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                    });
                 }
             } catch (ParseException e) {
                 Log.e(TAG, "parse exception:", e);

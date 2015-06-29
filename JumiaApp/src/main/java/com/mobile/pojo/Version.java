@@ -1,10 +1,10 @@
 package com.mobile.pojo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 

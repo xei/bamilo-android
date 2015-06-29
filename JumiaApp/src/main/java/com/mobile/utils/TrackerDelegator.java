@@ -31,6 +31,7 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +101,7 @@ public class TrackerDelegator {
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
     private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
-    private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
+    private static final String JSON_TAG_ITEMS_JSON = "products";
     
     private static final String SESSION_COUNTER = "sessionCounter";
     private static final String LAST_SESSION_SAVED = "lastSessionSaved";
@@ -418,15 +419,15 @@ public class TrackerDelegator {
         }
     }
 
-    public static void trackSignUp(String email) {
-        try {
-            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            // GA
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
-        }
-    }
+//    public static void trackSignUp(String email) {
+//        try {
+//            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+//            // GA
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+//        } catch (NullPointerException e) {
+//            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
+//        }
+//    }
 
     /**
      * Track Payment Method
@@ -465,7 +466,6 @@ public class TrackerDelegator {
     }
 
     // Got checkout response
-
     private static void trackPurchaseInt(Bundle params) {
         JSONObject result = null;
         try {
@@ -486,13 +486,13 @@ public class TrackerDelegator {
 
         String orderNr;
         double value;
-        JSONObject itemsJson;
+        JSONArray itemsJson;
         String coupon = "";
-        double valueConverted = 0d;
+        double valueConverted;
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getDouble(JSON_TAG_GRAND_TOTAL);
-            itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
+            itemsJson = result.optJSONArray(JSON_TAG_ITEMS_JSON);
             valueConverted = result.optDouble(JSON_TAG_GRAND_TOTAL_CONVERTED, 0d);
             Log.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
@@ -502,8 +502,9 @@ public class TrackerDelegator {
 
         Double averageValue = 0d;
         //ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
-
+        // TODO: UPDATE THIS PARSER
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
+
         ArrayList<String> skus = new ArrayList<>();
         //int favoritesCount = 0;
         for (PurchaseItem item : items) {
@@ -718,7 +719,7 @@ public class TrackerDelegator {
      */
     public static void trackPage(TrackingPage screen, long loadTime, boolean justGTM) {
         // GTM
-        trackScreenGTM(screen,loadTime);
+        trackScreenGTM(screen, loadTime);
         //
         if (!justGTM) {
             // GA

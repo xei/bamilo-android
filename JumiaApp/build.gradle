@@ -117,8 +117,8 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.5.1"
-            versionCode getAppVersionCode(50)
+            versionName "2.5.2"
+            versionCode getAppVersionCode(51)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
         }

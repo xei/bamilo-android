@@ -345,7 +345,7 @@
     <string name="your_cart">سبد خرید شم</string>
     <string name="your_order">سفارش شما</string>
     <string name="app_sharing">به اشتراک گذاشتن برنامه</string>
-    <string name="install_jumia_android">برنامه Android بامیلو را نصب کنید.</string>
+    <string name="install_jumia_android">برنامه  %s Android بامیلو را نصب کنید.</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
     <string name="app_social">آیکون شبکه های اجتماعی</string>
