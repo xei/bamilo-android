@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,13 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
@@ -46,7 +37,6 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -59,16 +49,12 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -1132,94 +1118,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
-    
-    /*
-     * ########### FACEBOOK ###########
-     */
-
-
-
-    FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
-                Toast.makeText(getBaseActivity(),getString(R.string.facebook_permission),Toast.LENGTH_LONG).show();
-            }
-            onFacebookSuccessLogin();
-        }
-        @Override
-        public void onCancel() {
-            FacebookHelper.facebookLogout();
-            showFragmentContentContainer();
-        }
-
-        @Override
-        public void onError(FacebookException e) {
-            e.printStackTrace();
-            showFragmentContentContainer();
-        }
-    };
-
-    /**
-     * If the user does not accept the email permisson, re-request the permission
-     */
-    public void repeatFacebookEmailRequest(){
-        showFragmentLoading();
-        LoginManager.getInstance().logInWithReadPermissions(
-                this,
-                Arrays.asList(FacebookHelper.FB_PERMISSION_EMAIL));
-
-    }
-
-    /**
-     * When the facebook login is done with success
-     */
-    private void onFacebookSuccessLogin(){
-        GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject user, GraphResponse response) {
-                if (user != null) {
-                    requestFacebookLogin(user);
-                } else {
-                    FacebookHelper.facebookLogout();
-                    showFragmentContentContainer();
-                }
-            }
-        }).executeAsync();
-    }
-
-
-    /**
-     * Function that parses the information from facebook success response
-     * @param user
-     */
-    private void requestFacebookLogin(JSONObject user) {
-        ContentValues values = new ContentValues();
-        String email = user.optString("email");
-        if (TextUtils.isEmpty(email)) {
-            repeatFacebookEmailRequest();
-            return;
-        } else {
-            values.put("email",email);
-        }
-//        String id = user.optString("id");
-//        String name = user.optString("name");
-        values.put("first_name", user.optString("first_name"));
-        values.put("last_name", user.optString("last_name"));
-        values.put("gender", user.optString("gender"));
-
-        values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        triggerFacebookLogin(values, true);
-    }
-
-    /**
-     *
-     * Method to be overriden on the SessionLogin and CheckoutAboutYou fragments
-     *
-     * @param values
-     * @param autoLogin
-     */
-    public void triggerFacebookLogin(ContentValues values,boolean autoLogin){}
 
     /*
      * ########### ALERT DIALOGS ###########

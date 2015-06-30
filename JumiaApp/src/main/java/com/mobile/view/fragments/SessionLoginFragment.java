@@ -82,7 +82,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionLoginFragment extends BaseFragment  {
+public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
     private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
 
@@ -221,6 +221,8 @@ public class SessionLoginFragment extends BaseFragment  {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+        // validate if there was an error related to facebook
+        validateFacebookNetworkError();
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
 
         /**

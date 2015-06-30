@@ -2,7 +2,11 @@ package com.mobile.utils.social;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.View;
 
 import com.facebook.login.LoginBehavior;
@@ -12,6 +16,8 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.utils.ui.UIUtils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import de.akquinet.android.androlog.Log;
@@ -83,6 +89,26 @@ public class FacebookHelper {
 //        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE, FB_PERMISSION_FRIENDS));
         // Set click listener
         if(fragment instanceof View.OnClickListener) button.setOnClickListener((View.OnClickListener) fragment);
+    }
+
+    /**
+     * Log the hash key for Facebook dashboard
+     * @param context
+     * @author sergiopereira
+     */
+    public static void logHashKey(Context context) {
+        try {
+            String name = context.getApplicationInfo().packageName;
+            PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
+            android.util.Log.i("Facebook", "Package name: " + name);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                android.util.Log.i("Facebook", "KeyHash:\n" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            // ...
+        }
     }
 
     /**

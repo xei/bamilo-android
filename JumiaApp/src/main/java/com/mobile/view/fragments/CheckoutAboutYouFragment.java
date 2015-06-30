@@ -67,7 +67,7 @@ import java.util.List;
  *
  * @author sergiopereira
  */
-public class CheckoutAboutYouFragment extends BaseFragment implements IResponseCallback {
+public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
 
@@ -105,6 +105,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements IResponseC
 
     private CallbackManager callbackManager;
 
+    private FacebookTextView mLoginFacebookButton;
+
+    private FacebookTextView mSignUpFacebookButton;
+
+    private View mFacebookLoginDivider;
+
+    private View mFacebookSignUpDivider;
     /**
      * Get the instance of CheckoutAboutYouFragment
      *
@@ -191,15 +198,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements IResponseC
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
 
         // FACEBOOK
-        FacebookTextView mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
-        FacebookTextView facebookButton2 = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
-        View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
-        View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
+        mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
+        mSignUpFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
+        mFacebookLoginDivider = view.findViewById(R.id.checkout_login_form_divider_facebook);
+        mFacebookSignUpDivider = view.findViewById(R.id.checkout_signup_form_divider_facebook);
         // Set Facebook
-        FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, facebookDivider1, facebookButton2, facebookDivider2);
+        FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, mFacebookLoginDivider, mSignUpFacebookButton, mFacebookSignUpDivider);
 
         // Callback registration
-        facebookButton2.registerCallback(callbackManager, facebookCallback);
+        mSignUpFacebookButton.registerCallback(callbackManager, facebookCallback);
         mLoginFacebookButton.registerCallback(callbackManager, facebookCallback);
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -237,6 +244,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements IResponseC
 
         retryForms = 0;
         Print.i(TAG, "ON RESUME");
+        // validate if there was an error related to facebook
+        validateFacebookNetworkError();
 
         /**
          * Force input form align to left.
