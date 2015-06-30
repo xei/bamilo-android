@@ -282,7 +282,7 @@
     <string name="shoppingcart_instock">ကုန္ပစၥည္းရွိပါေသးသည္။</string>
     <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
     <string name="shoppingcart_items">ကုန္ပစၥည္းမ်ား </string>
-    <string name="shoppingcart_minamount">ကြ်ႏု္ပ္တို႔၏အနည္းဆံုးေအာ္ဒါအေရအတြက္ေအာက္ ျဖစ္ပါက သယ္ယူပို႔ေဆာင္ေပး၍မရပါ။</string>
+    <string name="shoppingcart_minamount">ကြ်ႏု္ပ္တို႔၏အနည္းဆံုးေအာ္ဒါအေရအတြက္ေအာက္ ျဖစ္ပါက သယ္ယူပို႔ေဆာင္ေပး၍မရပါ။ %s</string>
     <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
     <string name="shoppingcart_notinstock">ကုန္ပစၥည္းလက္က်န္မရွိပါ</string>
     <string name="shoppingcart_quantity">အေရအတြက္</string>
