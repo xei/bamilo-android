@@ -18,10 +18,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -103,15 +101,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mLoadingView;
 
-    private ViewStub mEmptyView;
-
-    private ViewStub mRetryView;
+    private View mErrorView;
 
     private View mContentView;
 
     private ViewStub mFallBackView;
-
-    private ViewStub mErrorView;
 
     private ViewStub mMaintenanceView;
 
@@ -126,6 +120,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected TeaserGroupType mGroupType;
 
     private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
+
+    private ErrorLayoutFactory mErrorLayoutFactory;
 
     /**
      * Constructor with layout to inflate
@@ -246,18 +242,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
-        // Get empty layout
-        mEmptyView = (ViewStub) view.findViewById(R.id.fragment_stub_empty);
-        mEmptyView.setOnInflateListener(this);
         // Get retry layout
-        mRetryView = (ViewStub) view.findViewById(R.id.fragment_stub_retry);
-        mRetryView.setOnInflateListener(this);
+        mErrorView =  view.findViewById(R.id.fragment_stub_retry);
+        ((ViewStub) mErrorView).setOnInflateListener(this);
         // Get fall back layout
         mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
         mFallBackView.setOnInflateListener(this);
-        // Get fall back layout
-        mErrorView = (ViewStub) view.findViewById(R.id.fragment_stub_unexpected_error);
-        mErrorView.setOnInflateListener(this);
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
@@ -602,7 +592,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentContentContainer() {
         UIUtils.showOrHideViews(View.VISIBLE, mContentView);
-        UIUtils.showOrHideViews(View.GONE, mLoadingView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mLoadingView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
@@ -610,7 +600,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentNoNetworkRetry() {
-        UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
+        showErrorFragment(ErrorLayoutFactory.NO_NETWORK_LAYOUT, this);
     }
 
     /**
@@ -626,24 +616,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showContinueShopping() {
         Print.i(TAG, "ON SHOW CONTINUE LAYOUT");
-        showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, this);
-    }
-
-    /**
-     * Show the empty view from the root layout
-     * @param emptyStringResId The string id for title
-     * @param emptyDrawableResId The drawable id for image
-     * @param buttonEmptyStringResId The string id for button
-     * @param onClickListener The click listener
-     */
-    protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId, int buttonEmptyStringResId, OnClickListener onClickListener) {
-        // Set view with some data
-        mEmptyView.setTag(R.id.stub_text_title, emptyStringResId);
-        mEmptyView.setTag(R.id.stub_drawable, emptyDrawableResId);
-        mEmptyView.setTag(R.id.stub_text_button, buttonEmptyStringResId);
-        mEmptyView.setTag(R.id.stub_listener, onClickListener);
-        // Show empty view
-        UIUtils.showOrHideViews(View.VISIBLE, mEmptyView);
+        showErrorFragment(ErrorLayoutFactory.CONTINUE_SHOPPING_LAYOUT, this);
     }
 
     /**
@@ -651,7 +624,28 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
-        UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
+        showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
+    }
+
+    /**
+     * Show error layout based on type. if the view is not inflated, it will be in first place.
+     *
+     * @param type
+     * @param listener
+     */
+    protected final void showErrorFragment(int type, OnClickListener listener){
+        if(mErrorView instanceof ViewStub){
+            // If not inflated yet
+            mErrorView.setTag(mErrorView.getId(), type);
+            mErrorView.setTag(R.id.stub_listener, listener);
+            ((ViewStub) mErrorView).inflate();
+        } else {
+            //If already inflated
+            View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
+            retryButton.setOnClickListener(listener);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
+            mErrorLayoutFactory.showErrorLayout(type);
+        }
     }
 
     /**
@@ -704,12 +698,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onInflate(ViewStub stub, View inflated) {
         // Get stub id
         int id = stub.getId();
-        // Case continue shopping
-        if(id == R.id.fragment_stub_empty) {
-            onInflateContinue(stub, inflated);
-        }
         // Case home fall back
-        else if(id == R.id.fragment_stub_home_fall_back)  {
+        if(id == R.id.fragment_stub_home_fall_back)  {
             onInflateHomeFallBack(inflated);
         }
         // Case loading
@@ -718,11 +708,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case no network
         else if(id == R.id.fragment_stub_retry) {
-            onInflateNoNetwork(inflated);
-        }
-        // Case unexpected error
-        else if(id == R.id.fragment_stub_unexpected_error) {
-            onInflateUnexpectedError(inflated);
+            onInflateErrorLayout(stub, inflated);
         }
         // Case maintenance
         else if(id == R.id.fragment_stub_maintenance) {
@@ -732,29 +718,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         else {
             Print.w(TAG, "WARNING: UNKNOWN INFLATED STUB");
         }
-    }
-
-    /**
-     * Set the continue view after inflate stub.
-     * @param stub The continue stub
-     * @param inflated The inflated view
-     */
-    private void onInflateContinue(ViewStub stub, View inflated) {
-        Print.i(TAG, "ON INFLATE STUB: EMPTY");
-        // Get associated data
-        int emptyStringResId = (int) stub.getTag(R.id.stub_text_title);
-        int emptyDrawableResId = (int) stub.getTag(R.id.stub_drawable);
-        int buttonEmptyStringResId = (int) stub.getTag(R.id.stub_text_button);
-        OnClickListener onClickListener = (OnClickListener) stub.getTag(R.id.stub_listener);
-        // Set view
-        ((ImageView) inflated.findViewById(R.id.fragment_root_empty_image)).setImageResource(emptyDrawableResId);
-        ((TextView) inflated.findViewById(R.id.fragment_root_empty_text)).setText(getString(emptyStringResId));
-        Button emptyContinueButton = (Button) inflated.findViewById(R.id.fragment_root_empty_button);
-        emptyContinueButton.setVisibility(View.VISIBLE);
-        emptyContinueButton.setText(getString(buttonEmptyStringResId));
-        emptyContinueButton.setOnClickListener(onClickListener);
-        // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -792,7 +755,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             e.printStackTrace();
         }
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -801,30 +764,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onInflateLoading(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
      * Set no network view.
      * @param inflated The inflated view
      */
-    protected void onInflateNoNetwork(View inflated) {
-        Print.i(TAG, "ON INFLATE STUB: RETRY");
-        // Set view
-        inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
-        // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
-    }
+    protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
+        Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
 
-    /**
-     * Set unexpected error view.
-     * @param inflated The inflated view
-     */
-    private void onInflateUnexpectedError(View inflated) {
-        Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
-        inflated.findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
-        // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
+        mErrorView = inflated;
+
+        // Init error factory
+        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
+        showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
+
     }
 
     /**
@@ -840,7 +795,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
         }
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /*
@@ -928,7 +883,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
 
-
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
@@ -936,7 +890,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-
+//        errorCode = ErrorCode.IO;
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -1035,18 +989,39 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        // Case retry button from network
-        if (id == R.id.fragment_root_retry_network) onClickRetryNoNetwork(view);
-            // Case retry button from error
-        else if(id == R.id.fragment_root_retry_unexpected_error) onClickRetryUnexpectedError(view);
-            // Case retry button in maintenance page
-        else if(id == R.id.fragment_root_retry_maintenance)  onClickRetryMaintenance(view);
-            // Case continue button
-        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-            // Case choose country button in maintenance page
-        else if(id == R.id.fragment_root_cc_maintenance) onClickMaintenanceChooseCountry();
-            // Case unknown
-        else Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+
+        if (id == R.id.fragment_root_error_button){
+            checkErrorButtonBehavior(view);
+        }
+        // Case retry button in maintenance page
+        else if(id == R.id.fragment_root_retry_maintenance) {
+            onClickRetryMaintenance(view);
+        }
+        // Case choose country button in maintenance page
+        else if(id == R.id.fragment_root_cc_maintenance) {
+            onClickMaintenanceChooseCountry();
+        }
+        // Case unknown
+        else {
+            Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+        }
+    }
+
+    private void checkErrorButtonBehavior(View view) {
+        if(view.getId() == R.id.fragment_root_error_button){
+            int error = (int)view.getTag(R.id.fragment_root_error_button);
+
+            if(error == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+                // Case retry button from network
+                onClickRetryNoNetwork(view);
+            } else if(error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+                // Case retry button from error
+                onClickRetryUnexpectedError(view);
+            } else {
+                // Case continue button
+                onClickContinueButton();
+            }
+        }
     }
 
     /**
@@ -1056,8 +1031,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryNoNetwork(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.clearAnimation();
+            retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
@@ -1072,8 +1048,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickRetryUnexpectedError(View view) {
         try {
             Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            view.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
-            view.findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
+            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.clearAnimation();
+            retrySpinning.setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
