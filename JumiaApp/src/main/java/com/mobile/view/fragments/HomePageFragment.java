@@ -205,9 +205,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
         }
-        for(BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders){
-            if(baseTeaserViewHolder instanceof HomeMainTeaserHolder){
-                outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+
+        if(!CollectionUtils.isEmpty(mViewHolders)) {
+            for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
+                if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
+                    outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                }
             }
         }
     }
