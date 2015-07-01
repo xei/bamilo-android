@@ -83,8 +83,6 @@
     <string name="exit_press_back_again">برای خروج از برنامه دوباره کلید بازگشت را فشار دهید</string>
     <string name="extra_costs">هزینه های اضافی:</string>
     <string name="extra_costs_label">هزینه های اضافی</string>
-    <string name="facebook_login_button_text">ورود با فیس بوک</string>
-    <string name="facebook_signup_button_text">ثبت نام با فیس بوک</string>
     <string name="fallback_audio">صدا و تصویر</string>
     <string name="fallback_best">بهترین تجربه خرید آنلاین</string>
     <string name="fallback_books">کتاب ها</string>
@@ -375,4 +373,7 @@
     <string name="featured_stores">مجموعه های منتخب</string>
     <string name="you_may_like">برگزیده های بامیلو</string>
     <string name="top_sellers">پرفروش ترین ها</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">ورود با فیس بوک</string>
 </resources>

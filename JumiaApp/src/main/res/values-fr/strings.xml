@@ -85,8 +85,6 @@
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
     <string name="extra_costs_label">Frais Supplémentaires</string>
-    <string name="facebook_login_button_text">Se connecter via Facebook</string>
-    <string name="facebook_signup_button_text">Créer un compte via Facebook</string>
     <string name="fallback_audio">Son &amp; Image</string>
     <string name="fallback_best">Première boutique de vente en ligne</string>
     <string name="fallback_books">Livres</string>
@@ -377,4 +375,7 @@
     <string name="featured_stores">Magasins en vedette</string>
     <string name="you_may_like">Vous aimerez</string>
     <string name="top_sellers">Meilleures ventes</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Se connecter via Facebook</string>
 </resources>

@@ -85,8 +85,6 @@
     <string name="exit_press_back_again">App မွ ထြက္လိုပါက " ေနာက္သို႔" ခလုတ္အားထပ္ႏွိပ္ပါ။</string>
     <string name="extra_costs">အပိုကုန္က်စရိတ္ :</string>
     <string name="extra_costs_label">အပိုကုန္က်စရိတ္ &#160;</string>
-    <string name="facebook_login_button_text">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
-    <string name="facebook_signup_button_text">Facebook အေကာင့္ျဖင့္ Sign Up လုပ္ရန္</string>
     <string name="fallback_audio">အသံပိုင္းဆိုင္ရာပစၥည္းမ်ား ႏွင္႔ ဗီဒီယို</string>
     <string name="fallback_best">အေကာင္းဆံုး အြန္လိုင္းေရွာ့ပင္းအေတြ႕အႀကံဳ</string>
     <string name="fallback_books">စာအုပ္မ်ား</string>
@@ -377,4 +375,7 @@
     <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
     <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
     <string name="top_sellers">ေရာင္းအားအေကာင္းဆံုး ဆုိင္မ်ား</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
 </resources>
