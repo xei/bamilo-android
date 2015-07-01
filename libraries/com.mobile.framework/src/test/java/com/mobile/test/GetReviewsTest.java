@@ -5,12 +5,15 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.reviews.GetProductReviews;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
+
+//import com.mobile.newFramework.requests.reviews.GetProductReviews;
 
 public class GetReviewsTest extends BaseTestCase {
 
@@ -36,7 +39,8 @@ public class GetReviewsTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new GetProductReviews(requestBundle, this).execute();
+        //new GetProductReviews(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

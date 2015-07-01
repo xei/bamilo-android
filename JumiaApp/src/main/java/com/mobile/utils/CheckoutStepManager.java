@@ -1,5 +1,11 @@
 package com.mobile.utils;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.mobile.components.customfontviews.TextView;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewStub;
@@ -16,6 +22,9 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Class used to manage the checkout steps
@@ -155,6 +164,23 @@ public class CheckoutStepManager {
                 }
             });
 
+        }
+    }
+
+    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules){
+        priceRulesContainer.removeAllViews();
+        if (priceRules != null && priceRules.size() > 0) {
+            priceRulesContainer.setVisibility(View.VISIBLE);
+            LayoutInflater mLayoutInflater = LayoutInflater.from(context);
+            Set<String> priceRulesKeys = priceRules.keySet();
+            for (String key : priceRulesKeys) {
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,priceRulesContainer, false);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+ CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                priceRulesContainer.addView(priceRuleElement);
+            }
+        } else {
+            priceRulesContainer.setVisibility(View.GONE);
         }
     }
 

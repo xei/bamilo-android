@@ -25,6 +25,7 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -35,9 +36,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
+import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -60,6 +60,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
     public static final String SCROLL_STATE_KEY = "scroll";
+
+    public static final String POSITION_STATE_KEY = "position";
 
     private int[] mScrollSavedPosition;
 
@@ -112,6 +114,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
         }
     }
 
@@ -167,6 +170,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
+        // Disabled for Samsung and Blackberry (check_version_enabled)
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(getActivity());
+        }
     }
 
     /**
@@ -176,10 +183,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     public void onResumeExecution() {
         Print.i(TAG, "ON RESUME EXECUTION");
-        // Disabled for Samsung and Blackberry (check_version_enabled)
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(getActivity());
-        }
         // Validate current state
         if(mHomePage != null && mHomePage.hasTeasers()) {
             validateDataState();
@@ -201,6 +204,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Save the scroll state for rotation
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
+        }
+
+        if(!CollectionUtils.isEmpty(mViewHolders)) {
+            for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
+                if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
+                    outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                }
+            }
         }
     }
 

@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_marginStart="2dp"
-                        android:singleLine="true"
+                        android:maxLines="2"
                         android:layout_toRightOf="@+id/order_list_payment_title"
                         android:fontFamily="roboto_regular|left|start"
                         android:gravity="center_vertical"

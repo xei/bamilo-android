@@ -1350,8 +1350,7 @@ public class DynamicFormItem {
     /**
      * Creates the control with hidden value
      */
-    private void buildHide(RelativeLayout.LayoutParams params,
-                           int controlWidth) {
+    private void buildHide(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // Don't allow an hidden control to take visual space
         this.control.setVisibility(View.GONE);

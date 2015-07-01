@@ -39,7 +39,7 @@
     <item name="action_bar_menu_item_layout" 		type="layout">@layout/_def_action_bar_menu_item_layout</item>
     
 	<!-- FRAGMENT ROOT -->
-	<item name="no_connection_button_retry" 		type="layout">@layout/_def_no_connection_button_retry</item>
+	<item name="error_button_layout" 		        type="layout">@layout/_def_error_button_retry</item>
 
     <!-- CATALOG -->
     <item name="catalog_fragment_main" 				type="layout">@layout/_def_catalog_fragment_main</item>

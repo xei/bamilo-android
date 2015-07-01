@@ -2,15 +2,20 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.errors.JumiaError;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -67,6 +72,15 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
 
     @Override
     public void onRequestError(BaseResponse response) {
+    }
+
+     public void analyzeOnErrorEvent(final BaseResponse response) {
+
+        //final JumiaError jumiaError = response.getError();
+        ErrorCode errorCode = response.getError().getErrorCode();
+        Map<String, List<String>> errorMessages = response.getErrorMessages();
+        // emit a test fail on main thread so that it can be catched and reported by the fail caching mechanism
+        Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorMessages != null ? errorMessages.toString() : " no message") + " when requesting: " + getEventType());
     }
 }
 

@@ -33,6 +33,7 @@
     <item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
+    <item name="price_rules_element"                        type="layout">@layout/_def_price_rules_element</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>
@@ -47,8 +48,8 @@
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_def_action_bar_menu_item_layout</item>
 
     <!-- FRAGMENT ROOT -->
-    <item name="no_connection_button_retry"             type="layout">@layout/_def_no_connection_button_retry</item>
-    <item name="no_connection_layout"                   type="layout">@layout/_def_no_connection_layout</item>
+    <item name="error_button_layout"                    type="layout">@layout/_def_error_button_retry</item>
+    <item name="error_info_layout"                      type="layout">@layout/_def_error_layout</item>
 
     <!-- CATALOG -->
     <item name="catalog_fragment_main"                  type="layout">@layout/_def_catalog_fragment_main</item>

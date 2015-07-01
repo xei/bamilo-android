@@ -26,6 +26,7 @@
     <item name="checkout_header"					type="layout">@layout/_v8_checkout_header</item>
     <item name="checkout_total_layout" 			    type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                         type="layout">@layout/_v8_price</item>
+    <item name="price_rules_element"                type="layout">@layout/_v8_price_rules_element</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping" 			type="layout">@layout/_v8_form_radiobutton_shipping</item>
@@ -40,7 +41,7 @@
     <item name="action_bar_menu_item_layout" 		type="layout">@layout/_v8_action_bar_menu_item_layout</item>
     
 	<!-- FRAGMENT ROOT -->
-	<item name="no_connection_button_retry" 		type="layout">@layout/_v8_no_connection_button_retry</item>
+	<item name="error_button_layout" 		        type="layout">@layout/_v8_error_button_retry</item>
 
     <!-- CATALOG -->
     <item name="catalog_fragment_main" 				type="layout">@layout/_v8_catalog_fragment_main</item>

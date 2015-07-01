@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         pager:transformer="fade" />
 
-    <com.viewpagerindicator.CirclePageIndicator
+    <com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator
         android:id="@+id/home_teaser_main_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

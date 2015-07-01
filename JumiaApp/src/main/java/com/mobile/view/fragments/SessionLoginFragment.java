@@ -110,7 +110,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     protected boolean cameFromRegister = false;
     
     private FacebookTextView mFacebookButton;
-    
+
     /**
      * 
      * @return
@@ -394,7 +394,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         // Callback after Graph API response with user object
         if (user != null) requestFacebookLogin(user);
     }
-    
+
 
     /**
      * Set listeners
