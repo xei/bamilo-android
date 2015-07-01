@@ -14,6 +14,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.ui.UIUtils;
 
 import java.security.MessageDigest;
@@ -100,11 +101,11 @@ public class FacebookHelper {
         try {
             String name = context.getApplicationInfo().packageName;
             PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
-            android.util.Log.i("Facebook", "Package name: " + name);
+            Print.i("Facebook", "Package name: " + name);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                android.util.Log.i("Facebook", "KeyHash:\n" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Print.i("Facebook", "KeyHash:\n" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             // ...
