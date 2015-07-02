@@ -1251,25 +1251,32 @@ public class TrackerDelegator {
 
     switch (groupType){
         case MAIN_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case SMALL_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case CAMPAIGNS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case SHOP_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case BRAND_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case SHOP_OF_WEEK:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case FEATURED_STORES:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
+//            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK.setTrackingPosition(groupType.getTrackingPosition()), item.sku, (long) item.getPriceForTracking());
             break;
         case UNKNOWN:
             Print.w(TAG, "UNKNOWN TEASER GROUP");
@@ -1278,6 +1285,9 @@ public class TrackerDelegator {
             break;
     }
 }
+    public void trackBannerClicked (TeaserGroupType groupType){
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+    }
     /**
      * DeepLink Reattribution, Adjust
      * @param intent

@@ -55,7 +55,7 @@ public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
         // Set image
         RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large);
         // Set listener
-        TeaserViewFactory.setClickableView(convertView, item, mOnClickListener);
+        TeaserViewFactory.setClickableView(convertView, item, mOnClickListener, position);
         // Return convert view
         return convertView;
     }

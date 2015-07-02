@@ -360,6 +360,29 @@ public class AnalyticsGoogle {
 	}
 
 	/**
+	 *
+	 * specific function to track purchase flow from home page teasers
+	 *
+	 * @param event
+	 * @param label
+	 * @param value
+	 * @param position
+	 */
+	public void trackEvent(TrackingEvent event, String label, long value, int position) {
+		// Validation
+		if (!isEnabled) return;
+		// Get and send page
+		String category = mContext.getString(event.getCategory());
+		String action = mContext.getString(event.getAction());
+		if(position != -1){
+			category = category+"_"+position;
+		}
+		// Tracking
+		trackEvent(category, action, label, value);
+	}
+
+
+	/**
 	 * 
 	 * @param categoryId
 	 * @param beginMillis
