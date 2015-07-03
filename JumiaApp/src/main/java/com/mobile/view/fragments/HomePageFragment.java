@@ -396,7 +396,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
         if(view.getTag(R.id.target_list_position) != null){
             originGroupType.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-//            TrackerDelegator.track
+            TrackerDelegator.trackBannerClicked(originGroupType, targetUrl, (int) view.getTag(R.id.target_list_position));
         }
         Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
         // Get target type

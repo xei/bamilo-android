@@ -149,7 +149,9 @@ public enum TrackingEvent {
 
 	SHOPS_WEEK_BANNER_CLICK(R.string.gshopweekbanner, R.string.gPurchase),
 
-	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase);
+	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase),
+
+	HOME_BANNER_CLICK(-1, R.string.gBannerClick);
 	
 	/**
 	 * ############## CLASS ##############
@@ -159,8 +161,6 @@ public enum TrackingEvent {
 	
     private int mActionId;
 
-	private int mTrackingPosition;
-    
     /**
      * Contstrutor
      * @param category
@@ -170,7 +170,6 @@ public enum TrackingEvent {
     TrackingEvent(int category, int action) {
 		this.mCategoryId = category;
 		this.mActionId = action;
-		this.mTrackingPosition = -1;
 	}
     
     /**
@@ -189,20 +188,5 @@ public enum TrackingEvent {
      */
     public int getAction() {
 		return mActionId;
-	}
-
-	/**
-	 * Get tracking position
-	 */
-	public int getTrackingPosition() {
-		return mTrackingPosition;
-	}
-
-	/**
-	 * Set tracking position
-	 */
-	public TrackingEvent setTrackingPosition(int trackingPosition) {
-		mTrackingPosition = trackingPosition;
-		return this;
 	}
 }
