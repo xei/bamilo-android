@@ -38,6 +38,13 @@
             android:text="@string/string_vat_included" />
 
         <com.mobile.components.customfontviews.TextView
+            style="@style/text_normal"
+            android:id="@+id/vat_value"
+            android:layout_below="@id/articles_count"
+            android:layout_alignParentLeft="true"
+            android:gravity="bottom"/>
+
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/text_normal"
             android:ellipsize="none"

@@ -20,11 +20,9 @@ import java.util.Map;
  * Example helper
  */
 public class SetChangePasswordHelper extends SuperBaseHelper {
-    
+
     private static String TAG = SetChangePasswordHelper.class.getSimpleName();
-    
-    public static final String CONTENT_VALUES = "contentValues";
-    
+
     private ContentValues mContentValues;
 
     @Override

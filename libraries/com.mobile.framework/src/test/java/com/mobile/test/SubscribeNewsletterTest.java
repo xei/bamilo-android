@@ -3,8 +3,9 @@ package com.mobile.test;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.requests.session.SubscribeNewsletter;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -30,7 +31,7 @@ public class SubscribeNewsletterTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new SubscribeNewsletter(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.subscribeNewsletter);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

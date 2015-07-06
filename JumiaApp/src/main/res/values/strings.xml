@@ -11,7 +11,7 @@
     <string name="add_address">Add Address</string>
     <string name="add_to_shopping_cart">Add to Cart</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Products were added to shopping cart</string>
-    <string name="added_to_shop_cart_dialog_text">Item was added to shopping cart</string>
+    <string name="added_to_shop_cart_dialog_text">Item was added to cart</string>
     <string name="all_label">All</string>
     <string name="app_name">Jumia</string>
     <string name="back_label">BACK</string>
@@ -81,7 +81,7 @@
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
     <string name="error_register_title">Registration failed</string>
     <string name="error_signup_title">Signup failed</string>
-    <string name="error_tracking_order_text">No results found for the searched order id.\nPlease recheck the order id and try again.</string>
+    <string name="error_tracking_order_text">No results found for the searched order number.\nPlease recheck the order ID and try again.</string>
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="extra_costs">Extra Costs:</string>
     <string name="extra_costs_label">Extra Costs</string>
@@ -129,10 +129,10 @@
     <string name="incomplete_alert">Oh oh, could not complete!</string>
     <string name="internet_no_connection_details_label">An internet error occurred, please try again</string>
     <string name="invalid_product">Invalid Product</string>
-    <string name="loading_message">Loading…</string>
-    <string name="loading_more">Loading more items…</string>
+    <string name="loading_message">Loading&#8230;</string>
+    <string name="loading_more">Loading more items&#8230;</string>
     <string name="login_label">Login</string>
-    <string name="login_remember_user_email">Remember my email</string>
+    <string name="login_remember_user_email">Remember my e-mail</string>
     <string name="login_sectiontitle">Credentials</string>
     <string name="logout_text_question">Are you sure you want to exit?</string>
     <string name="logout_title">Logout Confirmation</string>
@@ -145,7 +145,7 @@
     <string name="my_order_history_label">My Order History</string>
     <string name="my_order_is_same">Billing to same address</string>
     <string name="my_order_item_label">item</string>
-    <string name="my_order_items_label">items</string>
+    <string name="my_order_items_label">Items</string>
     <string name="my_order_label">My Order</string>
     <string name="my_order_no_orders_label">You have placed no orders.</string>
     <string name="my_order_number_label">Nr.</string>
@@ -175,10 +175,10 @@
     <string name="no_label">No</string>
     <string name="no_payment">No payment necessary</string>
     <string name="notifications">Notifications</string>
-    <string name="notifications_summary">Receive exclusive offers and personal updates</string>
+    <string name="notifications_summary">Receive exclusive offers and updates</string>
     <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
-    <string name="option2_description">Change Password, manage email</string>
+    <string name="option2_description">Change Password, E-mail, etc&#8230;</string>
     <string name="option3_description">Subscribe or Unsubscribe</string>
     <string name="or_text">OR</string>
     <string name="order_no_items">You have no items in the cart</string>
@@ -196,7 +196,7 @@
     <string name="password_changed">Password changed with success</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <string name="payment">Payment</string>
-    <string name="payment_method">Payment Method:</string>
+    <string name="payment_method">Payment Method</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
     <string name="pickup_station_address">Address:</string>
@@ -209,9 +209,7 @@
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
-    <!--<string name="product_description_title">Product Description</string>-->
     <string name="product_details_title">Product Details</string>
-    <!--<string name="product_features_title">Product Features</string>-->
     <string name="product_offer_from_title">Offers from</string>
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
@@ -219,7 +217,7 @@
     <string name="product_specifications">Specifications</string>
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
-    <string name="product_variant_placeholder">…</string>
+    <string name="product_variant_placeholder">&#8230;</string>
     <string name="products_added_favourite">Item added to My Favourites</string>
     <string name="products_could_notloaded">Loading more products failed. Please try again.</string>
     <string name="products_label">Products</string>
@@ -236,7 +234,7 @@
     <string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
     <string name="rating_option_error_message">All ratings options must be filled</string>
     <string name="rating_quality">Quality</string>
-    <string name="rating_question">You have used this Product? Rate it now!</string>
+    <string name="rating_question">Have you used this Product? Rate it now</string>
     <string name="recent_searches">Recent Searches</string>
     <string name="recently_viewed">Recently Viewed</string>
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
@@ -306,7 +304,7 @@
     <string name="sub_total_title">Subtotal</string>
     <string name="submit_label">Submit</string>
     <string name="submit_text">Your comment has been submited and is now subject to approval.</string>
-    <string name="submit_title">Review sent</string>
+    <string name="submit_title">Review Sent</string>
     <string name="succes_login">You are logged in</string>
     <string name="teaser_campaign_button_first_line">HOT</string>
     <string name="teaser_campaign_button_second_line">OFFERS</string>
@@ -318,14 +316,14 @@
     <string name="tip_tap_text">Tap to open the product gallery</string>
     <string name="top_brands_toplevel_title">All Brands</string>
     <string name="track_order">Track Order</string>
-    <string name="track_order_hint">Order id</string>
+    <string name="track_order_hint">Order Number</string>
     <string name="track_your_order">Track Your Order</string>
-    <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
+    <string name="track_your_order_tip">Search for your Order number and every detail about it will show here</string>
     <string name="try_again">Retry</string>
     <string name="try_again_retry">Try Again</string>
-    <string name="upgrade_forced_text">We found something that we needed to fix to make shopping on %s even better! You will need to update before you continue using.</string>
+    <string name="upgrade_forced_text">We found something that we needed to fix to improve your shopping experience on %s! You will need to update the Application before you continue using it.</string>
     <string name="upgrade_forced_title">Upgrade necessary</string>
-    <string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on %s even better! Be sure to upgrade today!</string>
+    <string name="upgrade_optional_text">We found something to improve your shopping experience on %s! Please update the App!</string>
     <string name="upgrade_optional_title">Upgrade available</string>
     <string name="upgrade_proceed">Upgrade</string>
     <string name="upgrade_remindmelater">Remind me later</string>
@@ -346,14 +344,12 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
-
     <!-- Version v2.4 -->
-	<string name="app_sharing">App Sharing</string>
     <string name="install_jumia_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>
-	<string name="sort_by">Sort by</string>
+    <string name="sort_by">Sort by</string>
     <!-- PLURALS -->
     <string name="plurals_rating">%d rating</string>
     <string name="plurals_ratings">%d ratings</string>
@@ -361,31 +357,24 @@
     <string name="plurals_items">%d items</string>
     <string name="plurals_article">%d article</string>
     <string name="plurals_articles">%d articles</string>
-
     <string name="my_addresses">My Addresses</string>
     <string name="create_edit_address">Create or edit your addresses</string>
     <string name="string_more_choices">More Choices</string>
     <string name="string_vat_included">(VAT incl.)</string>
     <string name="addresses_saved_message">Your addresses settings have been saved.</string>
-
     <string name="dialog_to_product">To Product Details</string>
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
-
-    <!--NEW 2.5 -->
+    <!-- NEW 2.5 -->
     <string name="see_more_offers">SEE MORE OFFERS</string>
     <string name="shops_of_the_week">Shops of the week</string>
     <string name="featured_stores">Featured Stores</string>
     <string name="you_may_like">You May Like</string>
     <string name="top_sellers">Top Sellers</string>
-
-
     <string name="product_desc_summary_title">Summary</string>
     <string name="description">Description</string>
     <string name="key_features">Key Features</string>
-
     <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
-
 </resources>

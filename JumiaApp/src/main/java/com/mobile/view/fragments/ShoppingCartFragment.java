@@ -47,6 +47,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -55,6 +56,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -137,6 +139,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public Map<String, String> simpleData;
         public String variation;
         public String productUrl;
+        public int maxQuantity;
     }
 
     /**
@@ -682,6 +685,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
+            TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
@@ -725,6 +730,15 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 priceTotal.setText(cart.getSubTotal());
             }
 
+            if(cart.isVatLabelEnable()) {
+                vatValue.setVisibility(View.VISIBLE);
+                vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
+                vatIncludedLabel.setText(getString(R.string.vat_string));
+            } else {
+                vatValue.setVisibility(View.GONE);
+                vatIncludedLabel.setText(getString(R.string.string_vat_included));
+            }
+
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
 
             articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
@@ -753,6 +767,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
                 values.productUrl = item.getProductUrl();
+                values.maxQuantity = item.getMaxQuantity();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -780,22 +795,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
 
             HashMap<String, String> priceRules = cart.getPriceRules();
-            if (priceRules != null && priceRules.size() > 0) {
-                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(
-                        R.id.price_rules_container);
-                priceRulesContainer.removeAllViews();
-                priceRulesContainer.setVisibility(View.VISIBLE);
-                LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-                Set<String> priceRulesKeys = priceRules.keySet();
-                for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,
-                            priceRulesContainer, false);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"
-                            + CurrencyFormatter.formatCurrency(priceRules.get(key)));
-                    priceRulesContainer.addView(priceRuleElement);
-                }
-            }
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+            CheckoutStepManager.showPriceRules(getActivity(),priceRulesContainer,priceRules);
 
             //hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
@@ -958,15 +959,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
+        long actualMaxQuantity = prodItem.itemValues.stock < prodItem.itemValues.maxQuantity ? prodItem.itemValues.stock : prodItem.itemValues.maxQuantity;
         prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+        if(actualMaxQuantity > 1) {
+            prodItem.quantityBtn.setEnabled(true);
+            prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                prodItem.itemValues.is_checked = true;
-                changeQuantityOfItem(position);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    prodItem.itemValues.is_checked = true;
+                    changeQuantityOfItem(position);
+                }
+            });
+        } else {
+            prodItem.quantityBtn.setEnabled(false);
+        }
 
         // Save the position to process the click on item
         view.setTag(R.id.target_url, item.productUrl);
@@ -988,14 +995,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
-                R.string.continue_shopping, new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
-                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    }
-                });
+//        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
+//                R.string.continue_shopping, new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
+//                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//                    }
+//                });
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
         getBaseActivity().hideKeyboard();
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
@@ -1061,16 +1075,20 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
         long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
-        for (int i = 0; i <= actualMaxQuantity; i++) {
+        for (int i = 1; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));
         }
-        long crrQuantity = items.get(position).getQuantity();
+        final long crrQuantity = items.get(position).getQuantity();
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
-                changeQuantityOfItem(position, quantity);
+                if(quantity != crrQuantity -1){
+                    changeQuantityOfItem(position, quantity+1);
+                }
+
                 if(dialogList != null) {
                     dialogList.dismissAllowingStateLoss();
+                    dialogList = null;
                 }
             }
 
@@ -1080,7 +1098,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         };
 
         dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY,
-                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity);
+                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity-1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 

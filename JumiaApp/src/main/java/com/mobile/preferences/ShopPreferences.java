@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.FavouriteTableHelper;
@@ -82,7 +81,6 @@ public class ShopPreferences {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         /**
          * Save the Selected Country Configs 
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
@@ -129,7 +127,6 @@ public class ShopPreferences {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
         editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.apply();
         // Delete old data
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();

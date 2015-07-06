@@ -7,7 +7,10 @@ import com.mobile.newFramework.objects.IJSONSerializable;
  */
 public class DeserializableFactory {
 
+    //private static final String TAG = DeserializableFactory.class.getSimpleName();
+
     public IJSONSerializable createObject(String object) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        //Print.i(TAG, "CREATE OBJECT");
         Class<?> objectClass = Class.forName(object);
         Object concreteObject = objectClass.newInstance();
         return (concreteObject instanceof IJSONSerializable) ? (IJSONSerializable) concreteObject : null;

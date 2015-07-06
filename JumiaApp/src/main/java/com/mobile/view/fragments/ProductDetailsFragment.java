@@ -66,12 +66,13 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -90,8 +91,6 @@ import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -132,7 +131,7 @@ import java.util.Set;
  */
 public class ProductDetailsFragment extends BaseFragment implements OnDialogListListener, OnItemChecked, OnItemSelected, OnSimplePressed, OnItemSelectedListener, RocketImageLoaderLoadImagesListener {
 
-    private final static String TAG = LogTagHelper.create(ProductDetailsFragment.class);
+    private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
     private final static int NO_SIMPLE_SELECTED = -1;
 
@@ -158,13 +157,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private int mSelectedSimple = NO_SIMPLE_SELECTED;
 
-    private ViewGroup mProductRatingContainer;
-
     private RatingBar mProductRating;
 
     private TextView mProductRatingCount;
-
-    private Button mCallToOrderButton;
 
     private Button mVarianceButton;
 
@@ -187,8 +182,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private boolean mShowRelatedItems;
 
     private RelativeLayout loadingRating;
-
-    public static String VARIATION_LIST_POSITION = "variation_list_position";
 
     private String mPhone2Call = "";
 
@@ -236,11 +229,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private RelativeLayout sellerView;
 
-    private RelativeLayout mSellerNameContainer;
-
     private TextView mSellerName;
-
-    private RelativeLayout mSellerRatingContainer;
 
     private TextView mSellerRatingValue;
 
@@ -408,8 +397,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onDestroy() {
         super.onDestroy();
         Print.d(TAG, "ON DESTROY");
-        // Garbage
-//        FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
     /**
@@ -490,7 +477,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mVarianceButton = (Button) view.findViewById(R.id.product_detail_product_variant_button);
         mVarianceButton.setOnClickListener(this);
         // Rating
-        mProductRatingContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_rating_container);
+        ViewGroup mProductRatingContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
         mProductRating = (RatingBar) view.findViewById(R.id.product_detail_product_rating);
         mProductRatingCount = (TextView) view.findViewById(R.id.product_detail_product_rating_count);
@@ -522,7 +509,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mAddToCartButton.setSelected(true);
         mAddToCartButton.setOnClickListener(this);
         // Call to order
-        mCallToOrderButton = (Button) view.findViewById(R.id.product_detail_call_to_order);
+        Button mCallToOrderButton = (Button) view.findViewById(R.id.product_detail_call_to_order);
         PackageManager pm = getActivity().getPackageManager();
         if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
             mCallToOrderButton.setSelected(true);
@@ -535,10 +522,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mTitleText.setOnClickListener(this);
         // Seller info
         sellerView = (RelativeLayout) view.findViewById(R.id.seller_info);
-        mSellerNameContainer = (RelativeLayout) view.findViewById(R.id.seller_name_container);
+        RelativeLayout mSellerNameContainer = (RelativeLayout) view.findViewById(R.id.seller_name_container);
         mSellerNameContainer.setOnClickListener(this);
         mSellerName = (TextView) view.findViewById(R.id.product_detail_seller_name);
-        mSellerRatingContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_seller_rating_container);
+        RelativeLayout mSellerRatingContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_seller_rating_container);
         mSellerRatingContainer.setOnClickListener(this);
         mSellerRatingValue = (TextView) view.findViewById(R.id.product_detail_product_seller_rating_count);
         mSellerDeliveryTime = (TextView) view.findViewById(R.id.product_detail_seller_delivery_time);
@@ -1169,7 +1156,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         // Set Title
         // #RTL
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getName() + " " + mCompleteProduct.getBrand() : "");
         } else {
             mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
@@ -1276,8 +1263,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             int position = CompleteProductUtils.findIndexOfSelectedVariation(mCompleteProduct);
             ProductVariationsListAdapter adapter = new ProductVariationsListAdapter(mCompleteProduct.getVariations());
             mVariationsListView.setHasFixedSize(true);
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if(isRTL) mVariationsListView.enableReverseLayout();
+            mVariationsListView.enableRtlSupport(ShopSelector.isRtl());
             mVariationsListView.setAdapter(adapter);
             mVariationsListView.setSelectedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
@@ -1359,9 +1345,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             // Use this setting to improve performance if you know that changes in content do not change
             // the layout size of the RecyclerView
             mRelatedListView.setHasFixedSize(true);
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if(isRTL) mRelatedListView.enableReverseLayout();
-
+            mRelatedListView.enableRtlSupport(ShopSelector.isRtl());
             mRelatedListView.setAdapter(new RelatedItemsListAdapter(relatedItemsList,
                     new OnClickListener() {
                         @Override
@@ -2045,8 +2029,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Use this setting to improve performance
         mBundleListView.setHasFixedSize(true);
         // RTL
-        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-        if(isRTL) mBundleListView.enableReverseLayout();
+        mBundleListView.enableRtlSupport(ShopSelector.isRtl());
         // Content
         Print.e("BUNDLE", "bundleProducts size:" + bundleProducts.size());
         mBundleListView.setAdapter(new BundleItemsListAdapter(bundleProducts, this, this, this, this));

@@ -4,7 +4,6 @@
     style="?android:attr/spinnerItemStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:ellipsize="marquee"
     android:fontFamily="roboto_regular"
     android:singleLine="true"

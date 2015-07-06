@@ -17,14 +17,13 @@ import android.view.View.OnClickListener;
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.EnumSet;
 
@@ -49,8 +48,6 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     private int mTabsCount = 2;
 
     private boolean mHasSummary = true;
-//    private boolean hasSpecification = true;
-
 
     /**
      * Get instance

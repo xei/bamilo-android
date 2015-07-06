@@ -20,8 +20,6 @@ public class GetHomeHelper extends SuperBaseHelper {
 
     public static String TAG = GetHomeHelper.class.getSimpleName();
 
-    //private EventType type = EventType.GET_HOME_EVENT;
-
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request

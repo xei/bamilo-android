@@ -225,10 +225,7 @@ public class WarningFactory {
         private int animationLength = _5_SECONDS;
 
         Builder setText(int message){
-            View label = mWarningBar.findViewById(R.id.warning_text);
-            if(label instanceof TextView){
-                ((TextView)label).setText(message);
-            }
+            ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);
             return this;
         }
 
@@ -239,19 +236,14 @@ public class WarningFactory {
         }
 
         Builder setImageVisibility(boolean isToShowImage){
-            View image = mWarningBar.findViewById(R.id.warning_image);
-            if(image != null) {
-                image.setVisibility(isToShowImage ? View.VISIBLE : View.GONE);
-            }
+            mWarningBar.findViewById(R.id.warning_image).setVisibility(isToShowImage ? View.VISIBLE : View.GONE);
             return this;
         }
 
         Builder setImage(int image){
             View imageView = mWarningBar.findViewById(R.id.warning_image);
-            if(imageView instanceof ImageView){
-                imageView.setVisibility(View.VISIBLE);
-                ((ImageView)imageView).setImageResource(image);
-            }
+            imageView.setVisibility(View.VISIBLE);
+            ((ImageView)imageView).setImageResource(image);
             return this;
         }
 

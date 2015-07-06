@@ -6,6 +6,7 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -19,6 +20,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -37,6 +39,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
 
     private OrderSummary orderSummary;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -86,6 +89,8 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.loadCreateAddressForm(form);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
+
+        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     @Override

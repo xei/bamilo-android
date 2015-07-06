@@ -14,7 +14,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
@@ -210,8 +209,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private void showAvailableCountries() {
 
         // Data
-        String[] countries = null;
-        String[] flagsList = null;
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String selectedCountry = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
         
@@ -229,8 +226,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
         int count = 0;
-        countries = new String[countriesAvailable];
-        flagsList = new String[countriesAvailable];
+        String[] countries = new String[countriesAvailable];
+        String[] flagsList = new String[countriesAvailable];
         for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();
@@ -316,7 +313,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
-            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
             /**
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.

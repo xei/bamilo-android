@@ -64,4 +64,15 @@ public class AigLoginCustomerTest extends AigTestCase {
         junit.framework.Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorMessages != null ? errorMessages.toString() : " no message") + " when requesting: " + getEventType());
     }
 
+    /*
+    public synchronized void assertFunction(){
+        new Runnable() {
+            @Override
+            public void run() {
+                Assert.fail("Success is false");
+                //Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorListFinal != null ? errorListFinal.toString() : " no message") + " when requesting: " + eventType);
+            }
+        };
+    }*/
+
 }

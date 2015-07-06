@@ -34,6 +34,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -355,21 +356,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         else mVoucherView.setVisibility(View.GONE);
         // Total
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
-        
-        if(cart.getPriceRules() != null && cart.getPriceRules().size() > 0){
-            Print.i(TAG, "code1rules : pass");
-            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
-            priceRulesContainer.setVisibility(View.VISIBLE);
-            LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-            Set<String> priceRulesKeys = cart.getPriceRules().keySet();
-            for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_summary_element, priceRulesContainer, false);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(cart.getPriceRules().get(key)));
-                priceRulesContainer.addView(priceRuleElement);
-            }
-            
-        }
+
+
+        LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+        CheckoutStepManager.showPriceRules(getBaseActivity(),priceRulesContainer,cart.getPriceRules());
     }
     
     /**

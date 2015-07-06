@@ -55,7 +55,6 @@ public interface AigApiInterface {
 
     class Service {
         public static void init() {
-
             if (methods.isEmpty()) {
                 for (Method method : AigApiInterface.class.getMethods()) {
                     methods.put(method.getName(), method);
@@ -492,4 +491,8 @@ public interface AigApiInterface {
 
     String checkoutFinish = "checkoutFinish";
 
+    @GET("/")
+    void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
+
+    String getChangePasswordForm = "getChangePasswordForm";
 }

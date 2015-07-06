@@ -43,9 +43,9 @@ public class SuperGetPaymentMethodsForm implements IJSONSerializable, Parcelable
         JSONObject formJSON = jsonObject.getJSONObject("paymentMethodForm");
 //            Log.d(TAG, "FORM JSON: " + formJSON.toString());
         form = new Form();
-        if (!form.initialize(formJSON))
+//        if (!form.initialize(formJSON))
 //                Log.e(TAG, "Error initializing the form using the data");
-
+        form.initialize(formJSON);
         orderSummary = new OrderSummary(jsonObject);
 
         return true;

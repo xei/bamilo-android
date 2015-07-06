@@ -1,7 +1,6 @@
 package com.mobile.newFramework.rest;
 
 import android.content.Context;
-import android.os.Build;
 
 import com.mobile.newFramework.rest.configs.AigAuthenticator;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
@@ -193,7 +192,7 @@ public class AigHttpClient extends OkClient {
             CookieHandler.setDefault(cookieManager);
         }
         // Case in test mode
-        else if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+        else {
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);

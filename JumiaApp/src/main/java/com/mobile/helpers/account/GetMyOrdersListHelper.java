@@ -64,7 +64,7 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
         // Get order summary from response
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, orders.getOrders());
         bundle.putInt(CURRENT_PAGE, orders.getCurrentPage());
-        bundle.putInt(TOTAL_PAGES, orders.getTotalOrders());
+        bundle.putInt(TOTAL_PAGES, orders.getNumPages());
         mRequester.onRequestComplete(bundle);
     }
 

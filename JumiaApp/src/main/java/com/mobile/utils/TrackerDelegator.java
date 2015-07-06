@@ -24,13 +24,13 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1278,6 +1278,15 @@ public class TrackerDelegator {
             break;
     }
 }
+    /**
+     * DeepLink Reattribution, Adjust
+     * @param intent
+     */
+    public static void deeplinkReattribution(Intent intent){
+        if(intent != null && intent.getData() != null){
+            AdjustTracker.deepLinkReattribution(intent.getData());
+        }
+    }
 
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);

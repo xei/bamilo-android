@@ -26,8 +26,6 @@ public class GetLoginHelper extends SuperBaseHelper {
     
     private static String TAG = GetLoginHelper.class.getSimpleName();
 
-    public static final String LOGIN_CONTENT_VALUES = "contentValues";
-
     boolean saveCredentials = true;
 
     private ContentValues mContentValues;
@@ -56,7 +54,6 @@ public class GetLoginHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new LoginCustomer(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.loginCustomer);
     }
 

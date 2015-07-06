@@ -32,6 +32,7 @@ import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.LogTagHelper;
@@ -44,8 +45,6 @@ import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -174,7 +173,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mIsSameCheckBox.setOnCheckedChangeListener(this);
         mIsSameCheckBox.setChecked(true);
         // Next button
-        view.findViewById(R.id.checkout_address_button_enter).setOnClickListener(this);
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
 
     }
 
@@ -531,7 +530,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get view id
         int id = view.getId();
         // Next button
-        if (id == R.id.checkout_address_button_enter) {
+        if (id == R.id.checkout_button_enter) {
             onClickCreateAddressButton();
         }
         // Unknown view

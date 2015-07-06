@@ -8,7 +8,7 @@
 //import android.text.TextUtils;
 //
 //import com.mobile.framework.rest.RestConstants;
-//import com.mobile.newFramework.utils.DarwinRegex;
+//import com.mobile.framework.utils.DarwinRegex;
 //
 //import org.json.JSONArray;
 //import org.json.JSONException;
@@ -18,7 +18,7 @@
 //import java.util.Iterator;
 //import java.util.Map;
 //
-//import com.mobile.newFramework.utils.output.Log;
+//import de.akquinet.android.androlog.Log;
 //
 ///**
 // * @author nutzer2
@@ -48,6 +48,7 @@
 //    private String mSubTotal;
 //	private double mSubTotalDouble = 0d;
 //    private double mSubTotalConvertedDouble = 0d;
+//	private boolean mVatLabelEnable;
 //
 //	/**
 //	 * Constructor
@@ -106,6 +107,8 @@
 //				}
 //			}
 //		}
+//
+//		mVatLabelEnable = (jsonObject.optInt(RestConstants.JSON_CART_VAT_LABEL_ENABLE, 0) == 1);
 //
 //		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
 //
@@ -386,7 +389,7 @@
 //		dest.writeInt(mCartCount);
 //		dest.writeString(mVatValue);
 //		dest.writeDouble(mShippingValue);
-//		dest.writeBooleanArray(new boolean[] { hasSumCosts });
+//		dest.writeBooleanArray(new boolean[]{hasSumCosts});
 //		dest.writeDouble(mExtraCosts);
 //		dest.writeString(mSumCostsValue);
 //		dest.writeString(mCouponDiscount);
@@ -397,6 +400,7 @@
 //        dest.writeString(mSubTotal);
 //        dest.writeDouble(mSubTotalDouble);
 //        dest.writeDouble(mSubTotalConvertedDouble);
+//		dest.writeBooleanArray(new boolean[]{mVatLabelEnable});
 //	}
 //
 //	/**
@@ -423,6 +427,7 @@
 //        mSubTotal = in.readString();
 //        mSubTotalDouble = in.readDouble();
 //        mSubTotalConvertedDouble = in.readDouble();
+//		in.readBooleanArray(new boolean[] { mVatLabelEnable });
 //	}
 //
 //	/**
@@ -445,4 +450,12 @@
 //    public void setShippingValue(double mShippingValue) {
 //        this.mShippingValue = mShippingValue;
 //    }
+//
+//	public boolean isVatLabelEnable() {
+//		return mVatLabelEnable;
+//	}
+//
+//	public void setVatLabelEnable(boolean mVatLabelEnable) {
+//		this.mVatLabelEnable = mVatLabelEnable;
+//	}
 //}

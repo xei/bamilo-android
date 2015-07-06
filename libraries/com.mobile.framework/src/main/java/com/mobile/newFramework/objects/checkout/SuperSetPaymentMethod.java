@@ -37,10 +37,6 @@ public class SuperSetPaymentMethod extends CheckoutStepObject implements Parcela
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get and set next step
-        //FIXME
-//        fragmentType = CheckoutStepManager.getNextCheckoutStep(jsonObject);
-        // Get order summary from response
-
         setCheckoutNextStep(jsonObject);
         orderSummary = new OrderSummary(jsonObject);
 //            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());

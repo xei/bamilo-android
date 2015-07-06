@@ -20,6 +20,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class MyProfileActionProvider extends ActionProvider {
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
 
         // Case in Bamilo and API 17 set spinner as gone
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && context.getResources().getBoolean(R.bool.is_bamilo_specific)) 
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && ShopSelector.isRtl())
             mSpinner.setVisibility(View.GONE);
 
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
@@ -108,7 +109,7 @@ public class MyProfileActionProvider extends ActionProvider {
         subMenuItems.add(NavigationAction.MyAccount);
         subMenuItems.add(NavigationAction.MyOrders);
 
-        if(!getContext().getResources().getBoolean(R.bool.is_bamilo_specific) && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
+        if(!ShopSelector.isRtl() && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
             subMenuItems.add(NavigationAction.Country);
         }
     }
