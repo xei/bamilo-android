@@ -160,7 +160,7 @@
                 android:layout_marginStart="2dp"
                 android:fontFamily="roboto_regular"
                 android:gravity="center_vertical"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_s" />
         </LinearLayout>
