@@ -46,7 +46,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class used to shoe the order
