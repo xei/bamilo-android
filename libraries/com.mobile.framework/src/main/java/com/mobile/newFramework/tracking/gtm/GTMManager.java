@@ -361,7 +361,7 @@ public class GTMManager {
         ArrayList<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
         for (PurchaseItem item : items) {
             Map<String, Object> productsData = DataLayer.mapOf(GTMKeys.NAME, item.name, GTMKeys.SKU, item.sku, GTMKeys.CATEGORY, item.category,
-                    GTMKeys.PRICE, item.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.QUANTITY, item.quantityAsInt);
+                    GTMKeys.PRICE, item.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.QUANTITY, item.quantity);
             products.add(productsData);
         }
         

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.annotation.SuppressLint;
@@ -10,6 +7,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -36,7 +34,6 @@ import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -45,7 +42,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -62,13 +58,13 @@ import java.util.Set;
 
 
 /**
- * Webview to execute an external Payment
+ * Web view to execute an external Payment
  *
  * @author Manuel Silva
  */
 public class CheckoutExternalPaymentFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutExternalPaymentFragment.class);
+    private static final String TAG = CheckoutExternalPaymentFragment.class.getSimpleName();
 
     private WebView webview;
 
@@ -84,8 +80,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static CheckoutExternalPaymentFragment getInstance() {
         CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
@@ -99,7 +93,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
-        // Uses webview
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkoutweb,
@@ -325,14 +318,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             try {
                 entity = new UrlEncodedFormEntity(parameters);
                 Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
-                setProxy();
+                //setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null) {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
-            setProxy();
+            //setProxy();
             for (Entry<String, Object> entry : mValues) {
                 if (!paymentUrl.contains("?")) {
                     paymentUrl += "?" + entry.getKey() + "=" + entry.getValue();
@@ -342,26 +335,26 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             }
             webview.loadUrl(paymentUrl);
         } else {
-            setProxy();
+            //setProxy();
             webview.loadUrl(paymentUrl);
         }
 
         isRequestedPage = true;
     }
 
-    private void setProxy() {
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-//            ProxyConfiguration conf = null;
-//            try {
-//                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
-//            } catch (Exception e) {
-//                Log.e(TAG, "ProxyConfigurationException:", e);
-//            }
-//            if (conf != null && conf.getProxyType() != Type.DIRECT) {
-//                ProxyUtils.setWebViewProxy(getActivity(), conf);
-//            }
-//        }
-    }
+//    private void setProxy() {
+////        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+////            ProxyConfiguration conf = null;
+////            try {
+////                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
+////            } catch (Exception e) {
+////                Log.e(TAG, "ProxyConfigurationException:", e);
+////            }
+////            if (conf != null && conf.getProxyType() != Type.DIRECT) {
+////                ProxyUtils.setWebViewProxy(getActivity(), conf);
+////            }
+////        }
+//    }
 
     private void prepareCookieStore() {
         // GET COOKIES FROM FRAMEWORK
@@ -432,7 +425,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.HttpAuthHandler, java.lang.String, java.lang.String)
          */
         @Override
-        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        public void onReceivedHttpAuthRequest(WebView view, @NonNull HttpAuthHandler handler, String host, String realm) {
             Print.i(TAG, "code1payment : onReceivedHttpAuthRequest");
             handler.proceed(AigRestContract.AUTHENTICATION_USER, AigRestContract.AUTHENTICATION_PASS);
         }
@@ -524,7 +517,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.SslErrorHandler, android.net.http.SslError)
          */
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
@@ -577,8 +570,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                         }
                     });
                 }
-            } catch (ParseException e) {
-                Print.e(TAG, "parse exception:", e);
             } catch (JSONException e) {
                 Print.e(TAG, "json parse exception:", e);
             }

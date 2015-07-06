@@ -10,7 +10,6 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -21,13 +20,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int DEFAULT_POSITION_PHONE = 0;
-
-    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
-
-    private static final int DEFAULT_POSITION_TABLET = 1;
-
-    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
+//    private static final int DEFAULT_POSITION_PHONE = 0;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
+//
+//    private static final int DEFAULT_POSITION_TABLET = 1;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
 
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
@@ -100,21 +99,21 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    /**
-     * Get the default position
-     * @param size The number of items
-     * @return int
-     */
-    @Deprecated
-    private int getDefaultPosition(int size) {
-        int position;
-        if(!isTablet) {
-            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
-        } else {
-            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
-        }
-        return position;
-    }
+//    /**
+//     * Get the default position
+//     * @param size The number of items
+//     * @return int
+//     */
+//    @Deprecated
+//    private int getDefaultPosition(int size) {
+//        int position;
+//        if(!isTablet) {
+//            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
+//        } else {
+//            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
+//        }
+//        return position;
+//    }
 
     @Override
     public void onUpdate() {

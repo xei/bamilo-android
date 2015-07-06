@@ -487,7 +487,7 @@ public class AnalyticsGoogle {
 		trackTransaction(orderNr, (long) cartValue, currencyCode);
 		// Track all items
 		for (PurchaseItem item : items)
-			trackTransactionItem(orderNr, item.name, item.sku, item.category, (long) item.getPriceForTracking(), (long) item.quantityAsInt, currencyCode);
+			trackTransactionItem(orderNr, item.name, item.sku, item.category, (long) item.getPriceForTracking(), (long) item.quantity, currencyCode);
 		// Event
 		trackEvent(TrackingEvent.CHECKOUT_FINISHED, orderNr, (long) cartValue);
 	}
