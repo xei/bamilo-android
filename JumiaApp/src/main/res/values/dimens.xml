@@ -282,6 +282,7 @@
 
     <!-- MY PROFILE REDESIGN -->
     <dimen name="button_big_height">40dp</dimen>
+    <dimen name="button_facebook_padding">7dp</dimen>
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">60dp</dimen>
     <!-- rounded_margin_mid + button_big_height + button_container_height -->

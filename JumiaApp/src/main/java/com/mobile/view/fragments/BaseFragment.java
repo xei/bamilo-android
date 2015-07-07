@@ -19,8 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 
-import com.facebook.Request;
-import com.facebook.Session;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -49,9 +47,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
@@ -1099,50 +1095,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Show Change country
         getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-    }
-    
-    /*
-     * ########### FACEBOOK ###########
-     */
-
-    /**
-     * Clean the current session and warning user.
-     */
-    protected final void onUserNotAcceptRequiredPermissions() {
-        Print.i(TAG, "USER NOT ACCEPT THE SECOND FACEBOOK DIALOG");
-        // Clean session
-        clearCredentials();
-        FacebookHelper.cleanFacebookSession();
-        // Notify user
-        ToastFactory.ERROR_FB_PERMISSION.show(getBaseActivity());
-        // Show container
-        showFragmentContentContainer();
-    }
-
-    /**
-     * Perform a new request to user with required permissions
-     * @param session The Facebook session
-     * @param callback The requester
-     */
-    protected final void onMakeNewRequiredPermissionsRequest(Session session, Session.StatusCallback callback) {
-        Print.i(TAG, "USER NOT ACCEPT EMAIL PERMISSION");
-        // Show loading
-        showFragmentLoading();
-        // Make new permissions request
-        FacebookHelper.makeNewRequiredPermissionsRequest(this, session, callback);
-    }
-
-    /**
-     * Get the FacebookGraphUser.
-     * @param session The Facebook session
-     * @param callback The requester
-     */
-    protected final void onMakeGraphUserRequest(Session session, Request.GraphUserCallback callback) {
-        Print.i(TAG, "USER ACCEPT PERMISSIONS");
-        // Show loading
-        showFragmentLoading();
-        // Make request to the me API
-        FacebookHelper.makeGraphUserRequest(session, callback);
     }
 
     /*
