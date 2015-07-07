@@ -5,7 +5,7 @@
     android:minHeight="@dimen/dimen_340px"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/dimen_50px"
-    android:paddingTop="@dimen/dimen_50px" >
+    android:paddingTop="@dimen/dimen_50px">
 
     <com.mobile.components.customfontviews.RadioButton
         android:id="@+id/pickup_station_radio_button"
@@ -33,7 +33,7 @@
         android:layout_toLeftOf="@id/pickup_station_image"
         android:layout_toRightOf="@id/pickup_station_radio_button"
         android:gravity="center|right"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_city"
@@ -58,6 +58,15 @@
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_shipping_fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:singleLine="false"
+            android:textSize="@dimen/text_subtitle"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

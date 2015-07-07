@@ -1,10 +1,8 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +14,7 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -30,11 +28,12 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
     private boolean[] checks;
 
     static class PickupStationViewHolder {
-        TextView pickupStationAddress;
-        TextView pickupStationCity;
-        TextView pickupStationOpeningHours;
-        ImageView pickupStationImage;
-        RadioButton pickupStationRadioButton;
+        public TextView address;
+        public TextView city;
+        public TextView hours;
+        public ImageView image;
+        public RadioButton button;
+        public TextView fee;
     }
 
     public PickupStationsAdapter(Context context, List<PickUpStationObject> objects) {
@@ -53,23 +52,21 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         PickupStationViewHolder pickupStationViewHolder;
 
         if (convertView == null) {
-
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.checkout_shipping_pickup_station, parent,false);
-
             pickupStationViewHolder = new PickupStationViewHolder();
-            pickupStationViewHolder.pickupStationAddress = (TextView) convertView.findViewById(R.id.pickup_station_address);
-            pickupStationViewHolder.pickupStationCity = (TextView) convertView.findViewById(R.id.pickup_station_city);
-            pickupStationViewHolder.pickupStationOpeningHours = (TextView) convertView.findViewById(R.id.pickup_station_opening_hours);
-            pickupStationViewHolder.pickupStationImage = (ImageView) convertView.findViewById(R.id.pickup_station_image);
-            pickupStationViewHolder.pickupStationRadioButton = (RadioButton) convertView.findViewById(R.id.pickup_station_radio_button);
-
+            pickupStationViewHolder.address = (TextView) convertView.findViewById(R.id.pickup_station_address);
+            pickupStationViewHolder.city = (TextView) convertView.findViewById(R.id.pickup_station_city);
+            pickupStationViewHolder.hours = (TextView) convertView.findViewById(R.id.pickup_station_opening_hours);
+            pickupStationViewHolder.image = (ImageView) convertView.findViewById(R.id.pickup_station_image);
+            pickupStationViewHolder.button = (RadioButton) convertView.findViewById(R.id.pickup_station_radio_button);
+            pickupStationViewHolder.fee = (TextView) convertView.findViewById(R.id.pickup_station_shipping_fee);
             convertView.setTag(pickupStationViewHolder);
         } else {
             pickupStationViewHolder = (PickupStationViewHolder) convertView.getTag();
         }
 
-        pickupStationViewHolder.pickupStationRadioButton.setOnClickListener(new OnClickListener() {
+        pickupStationViewHolder.button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 CompoundButton buttonView = (CompoundButton) arg0;
@@ -88,96 +85,36 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
             }
         });
         
-        pickupStationViewHolder.pickupStationRadioButton.setChecked(checks[position]);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setDetailsWithBold(pickUpStationObject, pickupStationViewHolder);
-        } else {
-            setDetails(pickUpStationObject, pickupStationViewHolder);
-        }
+        pickupStationViewHolder.button.setChecked(checks[position]);
+
+        setDetails(pickUpStationObject, pickupStationViewHolder);
+
         RocketImageLoader.instance.loadImage(pickUpStationObject.getImage(),
-                pickupStationViewHolder.pickupStationImage, null, R.drawable.no_image_small);
+                pickupStationViewHolder.image, null, R.drawable.no_image_small);
 
         return convertView;
     }
 
     private void setDetails(PickUpStationObject pickUpStationObject, PickupStationViewHolder pickupStationViewHolder) {
-
-        String divider = " ";
-
         // Address
-        String address = context.getResources().getString(R.string.pickup_station_address);
-        // String address = "Address:";
-        String pickupStationAddress = pickUpStationObject.getAddress();
-
-        pickupStationViewHolder.pickupStationAddress.setText(address + divider + pickupStationAddress);
-
+        String pickupStationAddress = TextUtils.htmlEncode(pickUpStationObject.getAddress());
+        String address = String.format(getContext().getString(R.string.pickup_station_address), pickupStationAddress);
+        pickupStationViewHolder.address.setText(Html.fromHtml(address));
         // City
-        String city = context.getResources().getString(R.string.pickup_station_city);
-        String pickupStationCity = pickUpStationObject.getCity();
-
-        pickupStationViewHolder.pickupStationCity.setText(city + divider + pickupStationCity);
-        
-        // Opening hours
-        String hours = context.getResources().getString(R.string.pickup_station_opening_hours);
-        String pickupStationHours = pickUpStationObject.getOpening_hours();
-
-        pickupStationViewHolder.pickupStationOpeningHours.setText(hours + divider + pickupStationHours);
-
-    }
-
-    private void setDetailsWithBold(PickUpStationObject pickUpStationObject, PickupStationViewHolder pickupStationViewHolder) {
-        final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-        final StyleSpan iss = new StyleSpan(android.graphics.Typeface.NORMAL);
-        boolean bamilo = ShopSelector.isRtl();
-        String divider = " ";
-
-        // Address
-        String address = context.getResources().getString(R.string.pickup_station_address);
-        String pickupStationAddress = pickUpStationObject.getAddress();
-        SpannableString sb = new SpannableString(address + divider + pickupStationAddress);
-
-        if (bamilo) {
-            sb.setSpan(bss, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, address.length(), address.length() + pickupStationAddress.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, address.length(), address.length() + pickupStationAddress.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String pickupStationCity = TextUtils.htmlEncode(pickUpStationObject.getCity());
+        String city = String.format(getContext().getString(R.string.pickup_station_city), pickupStationCity);
+        pickupStationViewHolder.city.setText(Html.fromHtml(city));
+        // Hours
+        String pickupStationHours = TextUtils.htmlEncode(pickUpStationObject.getOpeningHours());
+        String hours = String.format(getContext().getString(R.string.pickup_station_opening_hours), pickupStationHours);
+        pickupStationViewHolder.hours.setText(Html.fromHtml(hours));
+        // Shipping Fee
+        if (pickUpStationObject.getShippingFee() > 0) {
+            String shippingFee = TextUtils.htmlEncode(CurrencyFormatter.formatCurrency(String.valueOf(pickUpStationObject.getShippingFee())));
+            String fee = String.format(getContext().getString(R.string.shipping_fee), shippingFee);
+            pickupStationViewHolder.fee.setText(Html.fromHtml(fee));
+            pickupStationViewHolder.fee.setVisibility(View.VISIBLE);
         }
-        pickupStationViewHolder.pickupStationAddress.setText(sb);
-
-        // City
-        String city = context.getResources().getString(R.string.pickup_station_city);
-        String pickupStationCity = pickUpStationObject.getCity();
-        sb = new SpannableString(city + divider + pickupStationCity);
-
-        if (bamilo) {
-            sb.setSpan(bss, 0, city.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, city.length(), city.length() + pickupStationCity.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, city.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, city.length(), city.length() + pickupStationCity.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        pickupStationViewHolder.pickupStationCity.setText(sb);
-        
-        // // Opening hours
-        String hours = context.getResources().getString(R.string.pickup_station_opening_hours);
-        String pickupStationHours = pickUpStationObject.getOpening_hours();
-        sb = new SpannableString(hours + divider + pickupStationHours);
-
-        if (bamilo) {
-            sb.setSpan(bss, 0, hours.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, hours.length(), hours.length() + pickupStationHours.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, hours.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.setSpan(iss, hours.length(), hours.length() + pickupStationHours.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        pickupStationViewHolder.pickupStationOpeningHours.setText(sb);
     }
 
     public PickUpStationObject getSelectedPickupStation() {

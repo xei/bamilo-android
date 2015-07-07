@@ -16,7 +16,7 @@ import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
 import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShippingRadioGroupList extends RadioGroup {
-    private final static String TAG = LogTagHelper.create(ShippingRadioGroupList.class);
 
-    public interface OnRadioGroupSelected {
-        public void onRadioGroupItemSelected(int position);
-    }
+    private final static String TAG = ShippingRadioGroupList.class.getSimpleName();
 
-    public static final int NO_DEFAULT_SELECTION = -1;
+//    public interface OnRadioGroupSelected {
+//        public void onRadioGroupItemSelected(int position);
+//    }
+
+//    public static final int NO_DEFAULT_SELECTION = -1;
 
     private ArrayList<String> mItems;
     private ShippingMethodForm mForm;
@@ -131,7 +132,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                 }
             }
 
-            if (tmpSubForms != null && tmpSubForms.size() > 0) {
+            if (CollectionUtils.isNotEmpty(tmpSubForms)) {
                 subForms.put(mItems.get(idx), tmpSubForms);
             } else {
                 ShippingMethod shippingMethod = new ShippingMethod();
@@ -180,9 +181,6 @@ public class ShippingRadioGroupList extends RadioGroup {
  
     /**
      * Process the click on radio button
-     * @param button
-     * @param extras
-     * @param mLinearLayout
      */
     private void onClickCheckBox(RadioButton button, View extras, View mLinearLayout) {
         if (button.isChecked()) {
@@ -275,12 +273,12 @@ public class ShippingRadioGroupList extends RadioGroup {
         }
     }
 
-    public boolean validateSelected() {
-        boolean result = false;
-        mGroup.getCheckedRadioButtonId();
-
-        return result;
-    }
+//    public boolean validateSelected() {
+//        boolean result = false;
+//        mGroup.getCheckedRadioButtonId();
+//
+//        return result;
+//    }
 
     // public String getErrorMessage(){
     // String result = mContext.getString(R.string.register_required_text);
@@ -302,13 +300,12 @@ public class ShippingRadioGroupList extends RadioGroup {
     // }
     //
     public String getSelectedFieldName() {
-        String result = null;
+        String result;
         if (mGroup.getCheckedRadioButtonId() >= 0) {
             result = mItems.get(mGroup.getCheckedRadioButtonId());
         } else {
             result = mItems.get(mDefaultSelectedId);
         }
-
         return result;
     }
 
@@ -330,7 +327,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                         
                     }
                     if(selectedPickup != null){
-                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupId());
+                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupStationId());
                     }
                     Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {

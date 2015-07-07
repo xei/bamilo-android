@@ -5,34 +5,29 @@ import com.mobile.newFramework.pojo.RestConstants;
 import org.json.JSONObject;
 
 /**
- * Created by rsoares on 6/2/15.
+ * Class used to represent a shipping option.
+ *
+ * @author rsoares
+ * @modified sergiopereira
  */
-public class ShippingMethodHolder {
+public class ShippingMethodOption {
 
     public String shippingMethod;
     public String label;
     public String deliveryTime;
-    public String deliveryFee;
+    public long shippingFee;
 
-//    public ShippingMethodHolder(String shippingMethod, String label, String deliveryTime) {
-//        this.shippingMethod = shippingMethod;
-//        this.label = label;
-//        this.deliveryTime = deliveryTime;
-//    }
-
-    public ShippingMethodHolder() {
+    public ShippingMethodOption() {
         this.shippingMethod = "";
         this.label = "";
         this.deliveryTime = "";
-        this.deliveryFee = "";
     }
 
-    public void initialize(String key, JSONObject jsonObject){
+    public void initialize(String key, JSONObject jsonObject) {
         this.shippingMethod = key;
         this.label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
         this.deliveryTime = jsonObject.optString(RestConstants.JSON_DELIVERY_TIME);
-        // Missing delivery fee
-
+        this.shippingFee = jsonObject.optLong(RestConstants.JSON_SHIPPING_FEE_TAG);
     }
 
 }
