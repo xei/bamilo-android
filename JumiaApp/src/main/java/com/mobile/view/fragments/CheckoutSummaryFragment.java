@@ -40,7 +40,6 @@ import com.mobile.view.R;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Class used to show the order summary in the checkout process

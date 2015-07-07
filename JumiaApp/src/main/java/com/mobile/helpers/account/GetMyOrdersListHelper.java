@@ -13,7 +13,6 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +62,7 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, orders.getOrders());
         bundle.putInt(CURRENT_PAGE, orders.getCurrentPage());
         bundle.putInt(TOTAL_PAGES, orders.getTotalOrders());
+        bundle.putInt(TOTAL_PAGES, orders.getNumPages());
     }
     //    /*
 //     * (non-Javadoc)

@@ -25,6 +25,8 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -124,7 +126,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mClearAllButton.setOnClickListener(null);
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, this);
+//        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, this);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
     }
 
     /**

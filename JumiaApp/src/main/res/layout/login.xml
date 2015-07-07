@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
@@ -25,31 +25,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/login_margin_medium"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.FacebookTextView
-                    xmlns:fb="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/login_facebook_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/rounded_margin_mid"
-                    android:background="@drawable/com_facebook_button_blue"
-                    android:drawableLeft="@drawable/com_facebook_inverse_icon"
-                    android:drawableStart="@drawable/com_facebook_inverse_icon"
-                    android:fontFamily="roboto_bold"
-                    android:gravity="center"
-                    android:minHeight="@dimen/button_big_height"
+                    style="@style/button_facebook"
                     android:paddingEnd="16dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="16dp"
-                    android:paddingStart="12dp"
-                    android:text="@string/facebook_login_button_text"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    fb:login_text="@string/facebook_login_button_text" />
-
-                <!-- android:layout_height="@dimen/button_big_height" -->
+                    android:paddingStart="12dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,20 +43,19 @@
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
                     android:layout_marginStart="@dimen/rounded_margin_mid"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/form_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-                    </LinearLayout>
+                        android:orientation="vertical"></LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/form_item_height"
                         android:layout_marginTop="@dimen/login_margin_medium"
-                        android:gravity="start|left|center_vertical" >
+                        android:gravity="start|left|center_vertical">
 
                         <include layout="@layout/login_remember_checkbox" />
                     </LinearLayout>

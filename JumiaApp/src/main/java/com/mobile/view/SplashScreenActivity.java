@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -43,6 +45,7 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -79,11 +82,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private View mMainFallBackStub;
 
-    private View mRetryFallBackStub;
-
-    private View mUnexpectedError;
+    private View mErrorFallBackStub;
 
     private Bundle mLastSuccessResponse;
+
+    private ErrorLayoutFactory mErrorLayoutfactory;
 
     /*
      * (non-Javadoc)
@@ -107,9 +110,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
-        mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
-        // Get unexpected error layout
-        mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
+        mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Intercept event
         shouldHandleEvent = true;
         // Initialize application
@@ -536,6 +537,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 case CONNECT_ERROR:
                 case HTTP_STATUS:
                     showUnexpectedError();
+                    break;
                 case TIME_OUT:
                 case NO_NETWORK:
                     showFragmentRetry();
@@ -639,20 +641,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     protected void showFragmentRetry() {
-        if(mMainFallBackStub != null){
+        if(mMainFallBackStub != null) {
             // Hide maintenance visibility
             if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
                 mMainFallBackStub.setVisibility(View.GONE);
             }
-            // Show no network
-            mRetryFallBackStub.setVisibility(View.VISIBLE);
-            // Set view
         }
-        try {
-            findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
-        }
+        showErrorLayout(ErrorLayoutFactory.NO_NETWORK_LAYOUT, this);
     }
 
     /**
@@ -665,11 +660,23 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (mMainFallBackStub != null && mMainFallBackStub.getVisibility() == View.VISIBLE) {
             mMainFallBackStub.setVisibility(View.GONE);
         }
+        showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
+    }
+
+    protected void showErrorLayout(int type, OnClickListener onClickListener){
         // Show no network
-        mUnexpectedError.setVisibility(View.VISIBLE);
+        if(mErrorFallBackStub instanceof ViewStub) {
+            mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();
+            mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
+            mErrorLayoutfactory.showErrorLayout(type);
+        } else {
+            mErrorLayoutfactory.showErrorLayout(type);
+        }
         // Set view
         try {
-            findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
+            View retryButton = findViewById(R.id.fragment_root_error_button);
+            retryButton.setOnClickListener(onClickListener);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -687,9 +694,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case retry button from no network
-        if (id == R.id.fragment_root_retry_network) {
-            onClickRetryNoNetwork();
+
+        if (id == R.id.fragment_root_error_button) {
+            checkRetryButtonBehavior(view);
+//            onClickRetryNoNetwork();
         }
         // Case retry button from maintenance
         else if (id == R.id.fragment_root_retry_maintenance) {
@@ -699,13 +707,22 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
         }
-        // Case retry button
-        else if (id == R.id.fragment_root_retry_unexpected_error) {
-            onClickErrorButton();
-        }
         // Case unknown
         else {
             Print.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
+        }
+    }
+
+    private void checkRetryButtonBehavior(View view) {
+        if (view.getId() == R.id.fragment_root_error_button) {
+            int type = (int)view.getTag(R.id.fragment_root_error_button);
+            if(type == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+                // Case retry button from no network
+                onClickRetryNoNetwork();
+            } else if(type == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+                // Case retry button
+                onClickErrorButton();
+            }
         }
     }
 
@@ -715,7 +732,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void onClickRetryNoNetwork() {
         retryRequest();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
-        findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+        findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
     }
 
     /**
