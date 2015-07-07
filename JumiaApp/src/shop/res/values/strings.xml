@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <resources>
-
     <string name="account_name">ကြ်ႏု္ပ္၏ အေကာင့္</string>
     <string name="action_label_add_address">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
     <string name="action_label_basket">ျခင္းေတာင္း</string>
@@ -14,6 +12,7 @@
     <string name="added_bundle_to_shop_cart_dialog_text">ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းသို႔ ထည္႔ၿပီးပါၿပီ</string>
     <string name="added_to_shop_cart_dialog_text">1 ခု ထည္႕သြင္းၿပီးပါၿပီ</string>
     <string name="all_label">အားလံုး</string>
+    <string name="app_name">Shop.com.mm</string>
     <string name="back_label">ေနာက္သို႔</string>
     <string name="back_level">ၿပီးခဲ့ေသာအဆင့္သို႔ ျပန္သြားရန္</string>
     <string name="bamilo_not_available">Bamilo အား လက္ရွိအခ်ိန္အတြင္း မရရွိႏိုင္ေသးပါ။</string>
@@ -85,8 +84,6 @@
     <string name="exit_press_back_again">App မွ ထြက္လိုပါက " ေနာက္သို႔" ခလုတ္အားထပ္ႏွိပ္ပါ။</string>
     <string name="extra_costs">အပိုကုန္က်စရိတ္ :</string>
     <string name="extra_costs_label">အပိုကုန္က်စရိတ္ &#160;</string>
-    <string name="facebook_login_button_text">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
-    <string name="facebook_signup_button_text">Facebook အေကာင့္ျဖင့္ Sign Up လုပ္ရန္</string>
     <string name="fallback_audio">အသံပိုင္းဆိုင္ရာပစၥည္းမ်ား ႏွင္႔ ဗီဒီယို</string>
     <string name="fallback_best">အေကာင္းဆံုး အြန္လိုင္းေရွာ့ပင္းအေတြ႕အႀကံဳ</string>
     <string name="fallback_books">စာအုပ္မ်ား</string>
@@ -209,9 +206,7 @@
     <string name="product_could_not_retrieved">ကုန္ပစၥည္းအခ်က္အလက္ျပန္လည္မရယူႏိုင္ပါ!</string>
     <string name="product_delivery_days">ေန႔</string>
     <string name="product_delivery_time">: အတြင္း ပို႔ေဆာင္ေပးမႈ</string>
-    <!--<string name="product_description_title">ကုန္ပစၥည္းေဖာ္ျပခ်က္</string>-->
     <string name="product_details_title">ကုန္ပစၥည္းအခ်က္အလက္မ်ား</string>
-    <!--<string name="product_features_title">ကုန္ပစၥည္းထူးျခားခ်က္မ်ား</string>-->
     <string name="product_offer_from_title">မွ ကမ္းလွမ္းခ်က္မ်ား</string>
     <string name="product_outof_stock">လက္က်န္ကုန္ပစၥည္းမရွိေတာ့ပါ</string>
     <string name="product_sold_by">: မွ ေရာင္းခ်ပါသည္</string>
@@ -282,7 +277,7 @@
     <string name="shoppingcart_instock">ကုန္ပစၥည္းရွိပါေသးသည္။</string>
     <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
     <string name="shoppingcart_items">ကုန္ပစၥည္းမ်ား </string>
-    <string name="shoppingcart_minamount">ကြ်ႏု္ပ္တို႔၏အနည္းဆံုးေအာ္ဒါအေရအတြက္ေအာက္ ျဖစ္ပါက သယ္ယူပို႔ေဆာင္ေပး၍မရပါ။</string>
+    <string name="shoppingcart_minamount">ကြ်ႏု္ပ္တို႔၏အနည္းဆံုးေအာ္ဒါအေရအတြက္ေအာက္ ျဖစ္ပါက သယ္ယူပို႔ေဆာင္ေပး၍မရပါ။ %s</string>
     <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
     <string name="shoppingcart_notinstock">ကုန္ပစၥည္းလက္က်န္မရွိပါ</string>
     <string name="shoppingcart_quantity">အေရအတြက္</string>
@@ -346,12 +341,13 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">သင္၏ေစ်း၀ယ္လွည္း</string>
     <string name="your_order">သင္၏ေအာ္ဒါ</string>
-    <string name="app_sharing">App_မွ်ေ၀ရန္</string>
+    <!-- Version v2.4 -->
     <string name="install_jumia_android">%s Android App ကို ယခု install လုပ္မည္</string>
     <string name="share_the_app">App ကို မွ်ေ၀မည္</string>
     <string name="can_share_app_with_friends">သင္၏ သူငယ္ခ်င္းမ်ားကို app မွ်ေ၀ႏုိင္ပါသည္</string>
     <string name="app_social">App_ဆိုရွယ္</string>
     <string name="sort_by">ျဖင့္ စီမည္</string>
+    <!-- PLURALS -->
     <string name="plurals_rating">သုံးသပ္ခ်က္ %d ခု</string>
     <string name="plurals_ratings">သံုးသပ္ခ်က္ %d ခု</string>
     <string name="plurals_item">ပစၥည္း %d ခု</string>
@@ -366,15 +362,19 @@
     <string name="dialog_to_product">ပစစည္း၏ အေသးစိတ္အားၾကည့္ရႈရန္။</string>
     <string name="address_creation_failed_title">လိပ္စာျပဳလုုပ္ရာတြင္ မေအာင္ျမင္ပါ</string>
     <string name="address_creation_failed_main">ေက်းဇူျပဳရ်္ ပုုံစံတြင္ေပးထားေသာ လုုိအပ္ခ်က္မ်ားအားမွန္ကန္စြာျဖည့္စြတ္ပါ။</string>
+    <!-- NEW 2.5 -->
+    <string name="see_more_offers">အျခား အစီအစဥ္မ်ားကို ၾကည္႕ရွဳရန္</string>
+    <string name="shops_of_the_week">ဤအပတ္၏ အေရာင္းရဆံုးမ်ား</string>
+    <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
+    <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
+    <string name="top_sellers">ေရာင္းအားအေကာင္းဆံုး ဆုိင္မ်ား</string>
     <string name="product_desc_summary_title">အႏွစ္ခ်ဳပ္</string>
     <string name="description">ေဖာ္ျပခ်က္</string>
     <string name="key_features">အဓိက အေၾကာင္းအရာမ်ား</string>
     <string name="kickout_page_title">ကြ်ဳန္တို႕၏ အထူးအစီအစဥ္ ေအာင္ျမင္စြာ ျပီးဆံုးပါျပီ!</string>
     <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
     <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
-    <string name="see_more_offers">အျခား အစီအစဥ္မ်ားကို ၾကည္႕ရွဳရန္</string>
-    <string name="shops_of_the_week">ဤအပတ္၏ အေရာင္းရဆံုးမ်ား</string>
-    <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
-    <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
-    <string name="top_sellers">ေရာင္းအားအေကာင္းဆံုး ဆုိင္မ်ား</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
 </resources>

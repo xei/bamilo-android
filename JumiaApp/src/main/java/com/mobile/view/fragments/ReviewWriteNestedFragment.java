@@ -224,7 +224,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-                isShowingRatingForm = true;
+//                isShowingRatingForm = true;
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
@@ -390,7 +390,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     private void restoreTextReview(DynamicForm form){
         mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
-        if(form != null && form.getItemByKey(NAME) != null){
+        if(form != null && form.getItemByKey(NAME) != null && form.getItemByKey(NAME).getValue().equals("")){
             if(mFormReviewValues != null)
                 form.getItemByKey(NAME).setValue(mFormReviewValues.get(NAME));
         }
@@ -563,7 +563,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         case GET_FORM_REVIEW_EVENT:
             Print.i(TAG, "GET_FORM_REVIEW_EVENT");
             reviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            if(ratingForm == null)
+            if(ratingForm == null || !isShowingRatingForm)
                 setRatingLayout(reviewForm);
             showFragmentContentContainer();
             return true;

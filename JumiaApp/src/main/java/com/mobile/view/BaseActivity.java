@@ -76,6 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
@@ -1576,6 +1577,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         /*
          * NOTE: Others sign out methods are performed in {@link LogOut}.
          */
+        // Logout Facebook
+        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
