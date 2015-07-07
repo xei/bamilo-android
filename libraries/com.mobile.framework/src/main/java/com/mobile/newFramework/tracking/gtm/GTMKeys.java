@@ -86,4 +86,6 @@ public class GTMKeys {
     public static String INSTALLCAMPAIGN = "installCampaign";
     public static String INSTALLCREATIVE = "installCreative";
 
+    public static String GAPROPERTYID = "gaPropertyId";
+
 }

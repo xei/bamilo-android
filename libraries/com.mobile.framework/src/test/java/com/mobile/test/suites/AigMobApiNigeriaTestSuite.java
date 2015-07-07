@@ -24,5 +24,4 @@ public class AigMobApiNigeriaTestSuite {
         System.out.println("TEST SUITE STARTED");
     }
 
-
 }
