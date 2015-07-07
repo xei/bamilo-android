@@ -31,6 +31,8 @@ public class TeaserViewFactory {
 
     public static final String TAG = TeaserViewFactory.class.getSimpleName();
 
+    public static final int DEFAULT_POSITION = -1;
+
     /**
      * Create a teaser view holder
      * @param inflater The inflater
