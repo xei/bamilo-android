@@ -2,7 +2,6 @@ package com.mobile.components.viewpager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
 import com.mobile.components.infiniteviewpager.InfiniteViewPager;

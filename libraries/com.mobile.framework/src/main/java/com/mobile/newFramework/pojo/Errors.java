@@ -82,9 +82,9 @@ public class Errors implements Parcelable {
 
 	public static void dumpMessages() {
 		if (errorMessages != null) {
-			Print.d(TAG, "dumpMessages: error ");
+			Print.d(TAG, "dumpMessages: ");
 			for (String error : errorMessages) {
-				Print.d(TAG, "dumpMessages: error = " + error);
+				Print.d(TAG, "dumpMessages = " + error);
 			}
 		}
 
