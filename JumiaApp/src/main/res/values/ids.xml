@@ -36,6 +36,7 @@
     <item type="id" name="target_title"/>
     <item type="id" name="target_position"/>
     <item type="id" name="target_teaser_origin"/>
+    <item type="id" name="target_list_position"/>
 
     <!-- TODO: REMOVE THIS ID FOR REGEX (TEMPORARY SOLUTION) -->
     <item type="id" name="regex"/>

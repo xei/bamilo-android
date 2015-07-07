@@ -19,6 +19,7 @@ public enum TeaserGroupType {
     UNKNOWN;
 
     private String mType;
+    private int mPosition;
 
     /**
      * Empty constructor
@@ -34,7 +35,19 @@ public enum TeaserGroupType {
      */
     TeaserGroupType(String type) {
         mType = type;
+        mPosition = -1;
     }
+
+//    /**
+//     * Constructor
+//     *
+//     * @param type The group key
+//     * @param position The list position of the item that was clicked, for tracking purpose
+//     */
+//    TeaserGroupType(String type, int position) {
+//        mType = type;
+//        mPosition = -1;
+//    }
 
     /**
      * Get the group key
@@ -43,6 +56,23 @@ public enum TeaserGroupType {
      */
     public String getType() {
         return mType;
+    }
+
+    /**
+     * Get the position
+     *
+     * @return String
+     */
+    public int getTrackingPosition() {
+        return mPosition;
+    }
+
+    /**
+     * Set the position
+     *
+     */
+    public void setTrackingPosition(int position) {
+        mPosition = position;
     }
 
     /**
