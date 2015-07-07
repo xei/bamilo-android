@@ -17,7 +17,7 @@
 //import com.mobile.utils.imageloader.RocketImageLoader;
 //import com.mobile.view.R;
 //
-//import org.apache.commons.collections4.CollectionUtils;
+//import com.mobile.newFramework.utils.CollectionUtils;
 //
 //import java.util.ArrayList;
 //

@@ -28,6 +28,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import java.util.EnumSet;
  * @author Andre Lopes
  * @modified sergiopereira
  */
-public class RecentSearchFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class RecentSearchFragment extends BaseFragment implements IResponseCallback {
     
     private final static String TAG = LogTagHelper.create(RecentSearchFragment.class);
 
@@ -153,35 +154,8 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, this);
-    }
-
-    /**
-     * ########### LISTENERS ########### 
-     */
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        if (id == R.id.fragment_root_empty_button) {
-            onClickContinueShopping();
-        }
-    }
-
-    /**
-     * Process the click on continue button
-     * 
-     * @author Andre Lopes
-     */
-    protected void onClickContinueShopping() {
-        Print.i(TAG, "ON CLICK CONTINUE SHOPPING");
-        getBaseActivity().onBackPressed();
+//        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, this);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENT_SEARCHES_LAYOUT, this);
     }
 
     /**

@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
@@ -18,9 +17,9 @@ import java.util.Map;
 
 public class PurchaseItem implements Parcelable {
 	
-	private static String TAG = LogTagHelper.create(PurchaseItem.class);
+	private static String TAG = PurchaseItem.class.getSimpleName();
 	
-	private static int INDEX_OFFSET = 5;
+	private static final int INDEX_OFFSET = 5;
 
 	public String sku;
 	public String name;
@@ -163,7 +162,6 @@ public class PurchaseItem implements Parcelable {
 	
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private PurchaseItem(Parcel in) {
 		sku = in.readString();

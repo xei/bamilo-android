@@ -4,19 +4,19 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.requests.checkout.ShippingMethodHolder;
+import com.mobile.newFramework.objects.checkout.ShippingMethodHolder;
 import com.mobile.view.R;
 
 public class ShippingMethod {
 
     public ShippingMethodHolder shippingMethodHolder;
 
-    public ShippingMethod(String shippingMethod, String label, String deliveryTime) {
-        this.shippingMethodHolder = new ShippingMethodHolder();
-        this.shippingMethodHolder.shippingMethod = shippingMethod;
-        this.shippingMethodHolder.label = label;
-        this.shippingMethodHolder.deliveryTime = deliveryTime;
-    }
+//    public ShippingMethod(String shippingMethod, String label, String deliveryTime) {
+//        this.shippingMethodHolder = new ShippingMethodHolder();
+//        this.shippingMethodHolder.shippingMethod = shippingMethod;
+//        this.shippingMethodHolder.label = label;
+//        this.shippingMethodHolder.deliveryTime = deliveryTime;
+//    }
     
     public ShippingMethod() {
         this.shippingMethodHolder = new ShippingMethodHolder();

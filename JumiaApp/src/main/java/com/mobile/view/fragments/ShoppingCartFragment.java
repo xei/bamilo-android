@@ -47,6 +47,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -55,6 +56,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -64,7 +66,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author sergiopereira
@@ -683,6 +684,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
@@ -730,8 +732,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
                 vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
+                vatIncludedLabel.setText(getString(R.string.vat_string));
             } else {
                 vatValue.setVisibility(View.GONE);
+                vatIncludedLabel.setText(getString(R.string.string_vat_included));
             }
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
@@ -790,22 +794,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
 
             HashMap<String, String> priceRules = cart.getPriceRules();
-            if (priceRules != null && priceRules.size() > 0) {
-                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(
-                        R.id.price_rules_container);
-                priceRulesContainer.removeAllViews();
-                priceRulesContainer.setVisibility(View.VISIBLE);
-                LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-                Set<String> priceRulesKeys = priceRules.keySet();
-                for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,
-                            priceRulesContainer, false);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"
-                            + CurrencyFormatter.formatCurrency(priceRules.get(key)));
-                    priceRulesContainer.addView(priceRuleElement);
-                }
-            }
+            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+            CheckoutStepManager.showPriceRules(getActivity(),priceRulesContainer,priceRules);
 
             //hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
@@ -1004,14 +994,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
-                R.string.continue_shopping, new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
-                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    }
-                });
+//        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
+//                R.string.continue_shopping, new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
+//                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//                    }
+//                });
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
         getBaseActivity().hideKeyboard();
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }

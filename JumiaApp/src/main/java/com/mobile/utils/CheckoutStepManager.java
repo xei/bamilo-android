@@ -1,10 +1,28 @@
 package com.mobile.utils;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
+
+import com.mobile.components.customfontviews.AutoResizeTextView;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.view.R;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Class used to manage the checkout steps
@@ -20,7 +38,9 @@ public class CheckoutStepManager {
     public final static String SHIPPING_STEP = "shippingMethod";
     public final static String PAYMENT_STEP = "paymentMethod";
     public final static String ORDER_STEP = "finish";
-    
+
+    public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
+
     /**
      * Method used to get the next step value from JSON and return a fragment type
      * @param jsonObject The json response to get the next step
@@ -104,6 +124,62 @@ public class CheckoutStepManager {
                 FragmentType.MY_ORDER.toString(),
                 FragmentType.CHECKOUT_THANKS.toString()
         };
+    }
+
+    /**
+     * Method used for showing checkout total at checkout steps.
+     *
+     * @param viewStub Viewstub with TextView (checkout_total_label).
+     * @param orderSummary OrderSummary to get total
+     * @param cart Cart in case orderSummary is null
+     */
+    public static void showCheckoutTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
+        String value = null;
+        if(orderSummary != null){
+            value = orderSummary.getTotal();
+        } else if(cart != null){
+            value = cart.getCartValue();
+        }
+
+        if(!TextUtils.isEmpty(value) && viewStub != null){
+            View inflatedView = viewStub.inflate();
+            Resources resources = inflatedView.getResources();
+            final String title = resources.getString(R.string.order_summary_total_label);
+            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
+            final int greyColor = resources.getColor(R.color.grey_middledark);
+            final int redColor = resources.getColor(R.color.red_cc0000);
+            final AutoResizeTextView titleTextView = ((AutoResizeTextView) inflatedView.findViewById(R.id.checkout_total_label));
+            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
+            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
+                    greyColor, redColor));
+
+            titleTextView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES){
+                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, greyColor, redColor));
+                    }
+                }
+            });
+
+        }
+    }
+
+    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules){
+        priceRulesContainer.removeAllViews();
+        if (priceRules != null && priceRules.size() > 0) {
+            priceRulesContainer.setVisibility(View.VISIBLE);
+            LayoutInflater mLayoutInflater = LayoutInflater.from(context);
+            Set<String> priceRulesKeys = priceRules.keySet();
+            for (String key : priceRulesKeys) {
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,priceRulesContainer, false);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+ CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                priceRulesContainer.addView(priceRuleElement);
+            }
+        } else {
+            priceRulesContainer.setVisibility(View.GONE);
+        }
     }
 
 }

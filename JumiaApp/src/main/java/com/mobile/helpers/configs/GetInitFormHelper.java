@@ -31,7 +31,6 @@ public class GetInitFormHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-//        new GetFormsIndex(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getFormsIndex);
     }
 

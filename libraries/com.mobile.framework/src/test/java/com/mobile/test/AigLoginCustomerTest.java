@@ -29,22 +29,15 @@ public class AigLoginCustomerTest extends AigTestCase {
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
-        data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
+        data.put("Alice_Module_Customer_Model_LoginForm[password]", "1234567");
         return data;
     }
 
     @Override
-    public void onRequestComplete(BaseResponse response) {
-        Print.d("TEST SUCCESS: " + response.hadSuccess());
-        // tests returned then countdown semaphore
-        mCountDownLatch.countDown();
+    public void testResponse(BaseResponse response) {
+        Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
+        assertTrue("Success is true", response.hadSuccess());
+        //assertFalse("Success is false", response.hadSuccess());
+        //Assert.fail("Success is false");
     }
-
-    @Override
-    public void onRequestError(BaseResponse response) {
-        Print.d("TEST ERROR: " + response.hadSuccess());
-        // tests returned then countdown semaphore
-        mCountDownLatch.countDown();
-    }
-
 }

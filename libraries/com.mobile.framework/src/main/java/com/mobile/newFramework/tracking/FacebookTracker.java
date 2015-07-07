@@ -3,8 +3,9 @@ package com.mobile.newFramework.tracking;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.facebook.AppEventsConstants;
-import com.facebook.AppEventsLogger;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import de.akquinet.android.androlog.Log;
@@ -19,7 +20,7 @@ public class FacebookTracker {
     private static final String TAG = FacebookTracker.class.getSimpleName();
 
     private static FacebookTracker sFacebookTracker;
-    
+
     private AppEventsLogger mFacebookLogger;
 
     /**
@@ -28,9 +29,14 @@ public class FacebookTracker {
      * @author sergiopereira
      */
     public FacebookTracker(Context context) {
+        if(!FacebookSdk.isInitialized()){
+            FacebookSdk.sdkInitialize(context);
+        }
         mFacebookLogger = AppEventsLogger.newLogger(context);
+
+
     }
-    
+
     /**
      * Get singleton instance
      * @param context
@@ -40,7 +46,7 @@ public class FacebookTracker {
     public static FacebookTracker get(Context context) {
         return sFacebookTracker == null ? sFacebookTracker = new FacebookTracker(context) : sFacebookTracker;
     }
-    
+
     /**
      * Startup Tracker.
      * @param context
@@ -51,7 +57,7 @@ public class FacebookTracker {
     }
 
     /*
-     * ######### BASE ######### 
+     * ######### BASE #########
      */
 
     /**
@@ -62,7 +68,7 @@ public class FacebookTracker {
     private void logEvent(String event) {
         mFacebookLogger.logEvent(event);
     }
-    
+
     /**
      * Log an event with parameters.
      * @param event
@@ -71,7 +77,7 @@ public class FacebookTracker {
     private void logEvent(String event, Bundle parameters) {
         mFacebookLogger.logEvent(event, parameters);
     }
-    
+
     /**
      * Log an event with associated value.
      * @param event
@@ -82,11 +88,11 @@ public class FacebookTracker {
     private void logEvent(String event, double valueToSum, Bundle parameters) {
         mFacebookLogger.logEvent(event, valueToSum, parameters);
     }
-    
+
     /*
-     * ######### PRIVATE ######### 
+     * ######### PRIVATE #########
      */
-    
+
     private void trackItem(String event, String sku, double price, String category) {
         Bundle params = new Bundle();
         params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, sku);
@@ -96,9 +102,9 @@ public class FacebookTracker {
     }
 
     /*
-     * ######### PUBLIC ######### 
+     * ######### PUBLIC #########
      */
-    
+
     /**
      * Track the activated app.
      * @author sergiopereira
@@ -107,7 +113,7 @@ public class FacebookTracker {
         Log.i(TAG, "TRACK: ACTIVATED APP");
         logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     }
-    
+
     /**
      * Track added item to cart.
      * @param sku - the product sku
@@ -119,7 +125,7 @@ public class FacebookTracker {
         Log.i(TAG, "TRACK ADD TO CART: " + sku + " " + price);
         trackItem(AppEventsConstants.EVENT_NAME_ADDED_TO_CART, sku, price, category);
     }
-    
+
     /**
      * Track added item to wishlist.
      * @param sku
@@ -131,7 +137,7 @@ public class FacebookTracker {
         Log.i(TAG, "TRACK ADD TO WISHLIST: " + sku + " " + price);
         trackItem(AppEventsConstants.EVENT_NAME_ADDED_TO_WISHLIST, sku, price, category);
     }
-    
+
     /**
      * Track a product detail.
      * @param sku
@@ -143,7 +149,7 @@ public class FacebookTracker {
         Log.i(TAG, "TRACK PRODUCT DETAIL: " + sku + " " + price);
         trackItem(AppEventsConstants.EVENT_NAME_VIEWED_CONTENT, sku, price, category);
     }
-    
+
     /**
      * Track checkout started.
      * @param userId
@@ -159,7 +165,7 @@ public class FacebookTracker {
         params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, CurrencyFormatter.EURO_CODE);
         logEvent(AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT, total, params);
     }
-    
+
     /**
      * Track checkout finished.
      * @param order
@@ -175,7 +181,7 @@ public class FacebookTracker {
         params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, CurrencyFormatter.EURO_CODE);
         logEvent(AppEventsConstants.EVENT_NAME_PURCHASED, total, params);
     }
-    
+
     /**
      * Track rating.
      * @param sku
@@ -192,7 +198,7 @@ public class FacebookTracker {
         params.putInt(AppEventsConstants.EVENT_PARAM_MAX_RATING_VALUE, maxRate);
         logEvent(AppEventsConstants.EVENT_NAME_RATED, rateValue, params);
     }
-    
+
     /**
      * Track search.
      * @param query
@@ -202,7 +208,7 @@ public class FacebookTracker {
         Log.i(TAG, "TRACK SEARCH: " + query);
         Bundle params = new Bundle();
         params.putString(AppEventsConstants.EVENT_PARAM_SEARCH_STRING, query);
-        logEvent(AppEventsConstants.EVENT_NAME_SEARCHED, params);        
+        logEvent(AppEventsConstants.EVENT_NAME_SEARCHED, params);
     }
-    
+
 }
