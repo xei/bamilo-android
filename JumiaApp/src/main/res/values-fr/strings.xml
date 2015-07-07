@@ -84,8 +84,6 @@
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
     <string name="extra_costs_label">Frais Supplémentaires</string>
-    <string name="facebook_login_button_text">Se connecter via Facebook</string>
-    <string name="facebook_signup_button_text">Se connecter via Facebook</string>
     <string name="fallback_audio">Son &amp; Image</string>
     <string name="fallback_best">Première boutique de vente en ligne</string>
     <string name="fallback_books">Livres</string>
@@ -376,4 +374,7 @@
     <string name="kickout_page_title">Notre campagne était un grand succès!</string>
     <string name="kickout_page_text1">Le magasin est actuellement plein, et on ne peut pas accueillir de nouveaux clients pour le moment.</string>
     <string name="kickout_page_text2">Nous voulons vous offrir la meilleure expérience de shopping possible, alors nous aimerions vous demander de réessayer plus tard.</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Se connecter via Facebook</string>
 </resources>
