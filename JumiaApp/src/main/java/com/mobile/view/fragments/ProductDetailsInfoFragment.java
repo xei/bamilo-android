@@ -25,6 +25,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import java.util.List;
  */
 public class ProductDetailsInfoFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductDetailsInfoFragment.class);
+    private static final String TAG = ProductDetailsInfoFragment.class.getSimpleName();
 
     private RtlViewPager mProductInfoPager;
 
