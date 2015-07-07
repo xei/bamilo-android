@@ -82,6 +82,7 @@ public class GTMManager {
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
         mContext = context;
+        setCurrentGAID();
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
@@ -700,14 +701,21 @@ public class GTMManager {
     }
 
     /**
-     * send Google Analytics Id to Google Tag Manager
+     * Set Google Analytics Id
      */
-    public Map<String, Object> setCurrentGAID(Map<String, Object> event){
+    public String setCurrentGAID(){
         if(mContext != null && TextUtils.isEmpty(mCurrentGAID)){
             //GA Id
             SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             mCurrentGAID = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
         }
+        return mCurrentGAID;
+    }
+
+    /**
+     * Add Google Analytics Id to Google Tag Manager
+     */
+    public Map<String, Object> addCurrentGAID(Map<String, Object> event){
         if(!TextUtils.isEmpty(mCurrentGAID)){
             event.put(GTMKeys.GAPROPERTYID, mCurrentGAID);
         }
@@ -719,7 +727,7 @@ public class GTMManager {
     private void sendEvent(Map<String, Object> event) {
         Print.i(TAG, " sendEvent");
         // Add current GA ID to all GTM events being fired
-        event = setCurrentGAID(event);
+        event = addCurrentGAID(event);
         if (isContainerAvailable) {
             Print.i(TAG, " PUSH DATA:" + event.get(EVENT_TYPE));
             Print.i(TAG, " PUSH DATA PENDING SIZE:" + pendingEvents.size());

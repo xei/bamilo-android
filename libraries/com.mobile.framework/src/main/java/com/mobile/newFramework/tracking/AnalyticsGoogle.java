@@ -146,7 +146,7 @@ public class AnalyticsGoogle {
 	 * Load keys from saved preferences
 	 * @author sergiopereira
 	 */
-	public void loadKeys() {
+	private void loadKeys() {
 		// Load keys
 		SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
