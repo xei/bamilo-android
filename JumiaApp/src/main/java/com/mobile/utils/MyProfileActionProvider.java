@@ -219,7 +219,7 @@ public class MyProfileActionProvider extends ActionProvider {
 
             ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
             TextView title = (TextView) view.findViewById(R.id.menu_item_title);
-            // counter for favourites total 
+            // counter for favourites total
             TextView counter = (TextView) view.findViewById(R.id.icon_counter);
             counter.setVisibility(View.INVISIBLE);
 
