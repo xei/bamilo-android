@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,11 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
-
 public class PurchaseItem implements Parcelable {
 
-	private static String TAG = LogTagHelper.create(PurchaseItem.class);
+	private static String TAG = PurchaseItem.class.getSimpleName();
 
 	public String sku;
 	public String name;
@@ -49,7 +47,7 @@ public class PurchaseItem implements Parcelable {
 						continue;
 					items.add(item);
 				}catch(JSONException e){
-					e.printStackTrace();
+					Print.e(TAG, "parsing item Json:" + e);
 				}
 			}
 		}
@@ -88,7 +86,7 @@ public class PurchaseItem implements Parcelable {
 			quantity = itemJson.getString( RestConstants.JSON_QUANTITY_TAG);
 			quantityAsInt = itemJson.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
 		} catch (JSONException e) {
-			Log.e(TAG, "parsing purchase item failed" + e);
+			Print.e(TAG, "parsing purchase item failed" + e);
 			return false;
 		}
 		return true;
@@ -112,7 +110,7 @@ public class PurchaseItem implements Parcelable {
 			mPurchaseItem.quantityAsInt = (int) mShoppingCartItem.getQuantity();
 			items.add(mPurchaseItem);
 
-			Log.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku +
+			Print.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku +
 					" name = " + mPurchaseItem.name +
 					" category = " + mPurchaseItem.category +
 					" paidprice = " + mPurchaseItem.paidprice +
