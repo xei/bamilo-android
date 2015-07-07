@@ -1,9 +1,11 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
@@ -32,15 +34,11 @@ import de.akquinet.android.androlog.Log;
  */
 public class BaseExternalLoginFragment extends BaseFragment {
 
-    private final static String FACEBOOK_EMAIL_TAG = "email";
 
-    private final static String FACEBOOK_FIRST_NAME_TAG = "first_name";
-
-    private final static String FACEBOOK_LAST_NAME_TAG = "last_name";
-
-    private final static String FACEBOOK_GENDER_TAG = "gender";
 
     protected boolean isNetworkFacebookError = false;
+
+    public CallbackManager callbackManager;
 
     public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state);
@@ -48,6 +46,12 @@ public class BaseExternalLoginFragment extends BaseFragment {
 
     public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state, titleCheckout);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        callbackManager = CallbackManager.Factory.create();
     }
 
     FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
@@ -124,18 +128,18 @@ public class BaseExternalLoginFragment extends BaseFragment {
      */
     private void requestFacebookLogin(JSONObject user) {
         ContentValues values = new ContentValues();
-        String email = user.optString(FACEBOOK_EMAIL_TAG);
+        String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
         if (TextUtils.isEmpty(email)) {
             repeatFacebookEmailRequest();
             return;
         } else {
-            values.put(FACEBOOK_EMAIL_TAG,email);
+            values.put(FacebookHelper.FACEBOOK_EMAIL_TAG,email);
         }
 //        String id = user.optString("id");
 //        String name = user.optString("name");
-        values.put(FACEBOOK_FIRST_NAME_TAG, user.optString(FACEBOOK_FIRST_NAME_TAG));
-        values.put(FACEBOOK_LAST_NAME_TAG, user.optString(FACEBOOK_LAST_NAME_TAG));
-        values.put(FACEBOOK_GENDER_TAG, user.optString(FACEBOOK_GENDER_TAG));
+        values.put(FacebookHelper.FACEBOOK_FIRST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_FIRST_NAME_TAG));
+        values.put(FacebookHelper.FACEBOOK_LAST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_LAST_NAME_TAG));
+        values.put(FacebookHelper.FACEBOOK_GENDER_TAG, user.optString(FacebookHelper.FACEBOOK_GENDER_TAG));
 
         values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerFacebookLogin(values, true);

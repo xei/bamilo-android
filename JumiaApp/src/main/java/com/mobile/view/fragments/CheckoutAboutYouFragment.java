@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.facebook.CallbackManager;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
@@ -103,8 +102,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     private int retryForms = 0;
 
-    private CallbackManager callbackManager;
-
     private FacebookTextView mLoginFacebookButton;
 
     private FacebookTextView mSignUpFacebookButton;
@@ -161,7 +158,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
 
         TrackerDelegator.trackCheckoutStep(params);
-        callbackManager = CallbackManager.Factory.create();
     }
 
     /*

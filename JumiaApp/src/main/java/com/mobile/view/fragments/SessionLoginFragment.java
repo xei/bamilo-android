@@ -119,8 +119,6 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     private FacebookTextView mFacebookButton;
 
 
-    private CallbackManager callbackManager;
-
     /**
      * 
      * @return
@@ -176,7 +174,6 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             super.titleResId = R.string.login_label;
         }
         setRetainInstance(true);
-        callbackManager = CallbackManager.Factory.create();
     }
 
     /*

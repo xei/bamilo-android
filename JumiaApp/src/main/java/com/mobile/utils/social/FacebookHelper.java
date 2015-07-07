@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.view.View;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
@@ -36,6 +37,14 @@ public class FacebookHelper {
     private static final String FB_PERMISSION_PUB_PROFILE = "public_profile";
 
     private static final String FB_PERMISSION_FRIENDS = "user_friends";
+
+    public final static String FACEBOOK_EMAIL_TAG = "email";
+
+    public final static String FACEBOOK_FIRST_NAME_TAG = "first_name";
+
+    public final static String FACEBOOK_LAST_NAME_TAG = "last_name";
+
+    public final static String FACEBOOK_GENDER_TAG = "gender";
 
     /**
      * Method used to show or hide Facebook views using a flag.<br>
@@ -117,7 +126,7 @@ public class FacebookHelper {
      *
      */
     public static void facebookLogout(){
-        if(LoginManager.getInstance() != null){
+        if(FacebookSdk.isInitialized()){
             LoginManager.getInstance().logOut();
         }
     }
