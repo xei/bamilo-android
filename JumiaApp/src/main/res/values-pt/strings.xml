@@ -84,8 +84,6 @@
     <string name="exit_press_back_again">Por favor pressione em voltar se quiser sair da aplicação.</string>
     <string name="extra_costs">Custos Extra:</string>
     <string name="extra_costs_label">Custos Extra</string>
-    <string name="facebook_login_button_text">Entrar com Facebook</string>
-    <string name="facebook_signup_button_text">Registar com Facebook</string>
     <string name="fallback_audio">Áudio &amp; Vídeo</string>
     <string name="fallback_best">A melhor experiência em compras online</string>
     <string name="fallback_books">Livros</string>
@@ -376,4 +374,7 @@
     <string name="kickout_page_title">A NOSSA CAMPANHA ESTÁ A SER UM GRANDE SUCESSO!</string>
     <string name="kickout_page_text1">A loja está atuamente lotada e não poderemos aceitar novos clientes neste momento.</string>
     <string name="kickout_page_text2">Queremos proporcionar-lhe a melhor experiência de compra possível, por isso gostaríamos de lhe pedir para tentar novamente mais tarde.</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Entrar com o Facebook</string>
 </resources>

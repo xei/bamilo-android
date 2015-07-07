@@ -53,6 +53,8 @@ public class GTMManager {
     public static final String IS_REFERRER_CAMPAIGN_SET = "isReferrerCampaignSet";
 
     private TagManager mTagManager;
+    private String mCurrentGAID;
+    private Context mContext;
 
     // private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
     
@@ -79,7 +81,8 @@ public class GTMManager {
         Print.i(TAG, " STARTING GTM TRACKING");
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
-
+        mContext = context;
+        setCurrentGAID();
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
@@ -412,6 +415,8 @@ public class GTMManager {
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMKeys.SHOPCOUNTRY, country);
 
         sendEvent(message);
+        // Clean the Google Analytics Id when the user changes country
+        mCurrentGAID = "";
 
     }
 
@@ -695,10 +700,34 @@ public class GTMManager {
 //        }
     }
 
+    /**
+     * Set Google Analytics Id
+     */
+    public String setCurrentGAID(){
+        if(mContext != null && TextUtils.isEmpty(mCurrentGAID)){
+            //GA Id
+            SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mCurrentGAID = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
+        }
+        return mCurrentGAID;
+    }
+
+    /**
+     * Add Google Analytics Id to Google Tag Manager
+     */
+    public Map<String, Object> addCurrentGAID(Map<String, Object> event){
+        if(!TextUtils.isEmpty(mCurrentGAID)){
+            event.put(GTMKeys.GAPROPERTYID, mCurrentGAID);
+        }
+        return event;
+    }
+
 
 
     private void sendEvent(Map<String, Object> event) {
         Print.i(TAG, " sendEvent");
+        // Add current GA ID to all GTM events being fired
+        event = addCurrentGAID(event);
         if (isContainerAvailable) {
             Print.i(TAG, " PUSH DATA:" + event.get(EVENT_TYPE));
             Print.i(TAG, " PUSH DATA PENDING SIZE:" + pendingEvents.size());

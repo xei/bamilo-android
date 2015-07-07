@@ -85,8 +85,6 @@
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="extra_costs">Extra Costs:</string>
     <string name="extra_costs_label">Extra Costs</string>
-    <string name="facebook_login_button_text">Login with Facebook</string>
-    <string name="facebook_signup_button_text">Sign up with Facebook</string>
     <string name="fallback_audio">Audio &amp; Video</string>
     <string name="fallback_best">best online shopping experience</string>
     <string name="fallback_books">Books</string>
@@ -377,4 +375,7 @@
     <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
 </resources>

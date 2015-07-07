@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.view.fragments;
 
@@ -7,32 +7,34 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 
 /**
  * @author Paulo Carvalho
- * 
+ *
  */
-public class MyOrdersFragment extends BaseFragment implements OnClickListener {
+public class MyOrdersFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
 
-    private ViewPager mMyOrdersPager;
+    private RtlViewPager mMyOrdersPager;
 
     private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
 
@@ -42,7 +44,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /**
      * Get instance
-     * 
+     *
      * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
@@ -64,7 +66,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -75,7 +77,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -84,14 +86,21 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
+
         if (arguments != null) {
-            mPositionToStart = arguments.containsKey(TrackerDelegator.LOGIN_KEY) ? 1 : 0;
+            //If comes from login page, means that it has to go to OrderHistory
+            if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
+                mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
+            }
+        } else {
+            // If app is on Rtl mode, the view pager must start from the end
+            mPositionToStart = ShopSelector.isRtl() ? 1: 0;
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -101,7 +110,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
         Print.i(TAG, "ON VIEW CREATED");
 
         // Get view pager
-        mMyOrdersPager = (ViewPager) view.findViewById(R.id.my_orders_pager);
+        mMyOrdersPager = (RtlViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
         mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
 
@@ -120,6 +129,9 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
             mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
+            if(ShopSelector.isRtl()){
+                mMyOrdersPager.enableRtl();
+            }
             mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
             // Show the pre selection
             mMyOrdersPager.setCurrentItem(mPositionToStart, true);
@@ -133,7 +145,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -144,7 +156,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -155,7 +167,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onPause()
      */
     @Override
@@ -166,7 +178,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onStop()
      */
     @Override
@@ -177,7 +189,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -189,72 +201,37 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     /**
      * Class used as an simple pager adapter that represents each fragment
-     * 
+     *
      * @author Paulo Carvalho
      */
-    private class MyOrdersPagerAdapter extends FragmentPagerAdapter {
+    private class MyOrdersPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
 
         /**
          * Constructor
-         * 
+         *
          * @param fm
          * @author Paulo Carvalho
          */
         public MyOrdersPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, MyOrdersFragment.this, getFragmentTitleValues());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-         */
         @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-            case 0:
-                return TrackOrderFragment.getInstance(getArguments());
-            case 1:
-                return OrderHistoryFragment.getInstance();
-            default:
-                return TrackOrderFragment.getInstance(getArguments());
-
-            }
-
+        protected Fragment createNewFragment(int position) {
+            return (titlesPageInt.get(position) == R.string.my_order_history_label) ?
+                    OrderHistoryFragment.getInstance() :
+                    TrackOrderFragment.getInstance(getArguments());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getCount()
-         */
         @Override
-        public int getCount() {
-            return 2;
+        public void invertItems() {
+            enableRtl(!isRtl);
         }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-         */
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-            case 0:
-                return getString(R.string.my_order_tracking_label).toUpperCase();
-            case 1:
-                return getString(R.string.my_order_history_label).toUpperCase();
-            default:
-                return getString(R.string.my_orders_label).toUpperCase();
-            }
-        }
-
     }
 
-    @Override
-    public void onClick(View v) {
+    private List<Integer> getFragmentTitleValues(){
+        Integer[] titles = {R.string.my_order_tracking_label, R.string.my_order_history_label};
+        return Arrays.asList(titles);
     }
 
     @Override
