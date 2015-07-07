@@ -1,1 +1,1 @@
-include ':JumiaApp',':libraries:A4SSDK',':libraries:com.mobile.framework',':libraries:com.viewpagerindicator',':libraries:FacebookSDK',':libraries:Volley', ':JumiaWear'
+include ':JumiaApp',':libraries:com.mobile.framework',':libraries:com.viewpagerindicator', ':JumiaWear'

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -23,21 +24,23 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.forms.Form;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetPaymentMethodsHelper;
 import com.mobile.helpers.checkout.SetPaymentMethodHelper;
+import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
-import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -46,8 +49,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.Iterator;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -107,7 +108,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -118,7 +119,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Validate the saved values 
         if(savedInstanceState != null){
             // Get the ship content values
@@ -137,18 +138,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
-        view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show addresses
-            triggerGetPaymentMethods();
-        } else {
-            showFragmentErrorRetry();
-        }
+        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
+        // Get and show addresses
+        triggerGetPaymentMethods();
     }
 
     
@@ -159,7 +155,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -170,7 +166,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
     }
     
@@ -187,7 +183,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             if(values.size() > 0)
                 outState.putParcelable(SAVED_STATE, values);
         } catch (Exception e) {
-            Log.w(TAG, "TRY SAVE FORM BUT IS NULL");
+            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
         } 
     }
 
@@ -199,7 +195,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         if(formGenerator != null){
             JumiaApplication.INSTANCE.lastPaymentSelected = formGenerator.getSelectedValueIndex();    
         }
@@ -214,7 +210,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -223,7 +219,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
     
@@ -234,7 +230,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -252,7 +248,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * @param form
      */
     private void loadForm(Form form) {
-        Log.i(TAG, "LOAD FORM");
+        Print.i(TAG, "LOAD FORM");
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
         paymentMethodsContainer.addView(formGenerator.getContainer());
@@ -276,7 +272,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                     iter.next().setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
                     iter.next().loadState(mSavedState);
                 } catch (Exception e) {
-                    Log.w(TAG, "CAN'T LOAD THE SAVED STATE");
+                    Print.w(TAG, "CAN'T LOAD THE SAVED STATE");
                 }
             }
         }
@@ -312,8 +308,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 getBaseActivity().hideKeyboard();
                 if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
-                    Log.i(TAG, "code1coupon : " + mVoucher);
+                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    Print.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
@@ -337,12 +333,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_payment_button_enter){
+        if(id == R.id.checkout_button_enter){
             onClickSubmitPaymentButton(); 
             getBaseActivity().hideKeyboard();
         }
         // Case Unknown
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
     /*
@@ -371,7 +367,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     
     private void onClickSubmitPaymentButton() {
-        Log.i(TAG, "ON CLICK: Submit Payment Method");
+        Print.i(TAG, "ON CLICK: Submit Payment Method");
         if(formGenerator != null){
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
@@ -423,19 +419,20 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:
-            Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
+            CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
             if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
@@ -448,7 +445,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             updateVoucher(orderSummary);
             break;
         case SET_PAYMENT_METHOD_EVENT:
-            Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
+            Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
@@ -485,25 +482,25 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onRequestError(Bundle bundle) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
     	// Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         // Get event type and error
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         // Validate event type
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:
-            Log.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+            Print.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_PAYMENT_METHOD_EVENT:
-            Log.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
+            Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             //GTM TRACKING
             if(formGenerator != null){
                 ContentValues values = formGenerator.save();
@@ -530,24 +527,24 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     private void triggerSubmitPaymentMethod(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetPaymentMethodHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SetPaymentMethodHelper(), bundle, this);
     }
     
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEventProgress(new SetVoucherHelper(), bundle, this);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
     
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
     }
     
     private void triggerGetPaymentMethods(){
-        Log.i(TAG, "TRIGGER: GET PAYMENT METHODS");
+        Print.i(TAG, "TRIGGER: GET PAYMENT METHODS");
         triggerContentEvent(new GetPaymentMethodsHelper(), null, this);
     }
 

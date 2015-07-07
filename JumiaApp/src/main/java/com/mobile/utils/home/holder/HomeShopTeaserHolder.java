@@ -1,17 +1,18 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  *
@@ -55,7 +56,7 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
             ((TextView) parent.findViewById(R.id.home_teaser_shop_title)).setText(object.getTitle());
             ((TextView) parent.findViewById(R.id.home_teaser_shop_sub_title)).setText(object.getSubTitle());
             RocketImageLoader.instance.loadImage(object.getImage(), (ImageView) parent.findViewById(R.id.home_teaser_item_image), parent.findViewById(R.id.home_teaser_item_progress), R.drawable.no_image_large);
-            TeaserViewFactory.setClickableView(parent, object, mParentClickListener);
+            TeaserViewFactory.setClickableView(parent, object, mParentClickListener, i);
         }
     }
 

@@ -16,8 +16,6 @@
 
 package com.mobile.components;
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -35,7 +33,10 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
-import de.akquinet.android.androlog.Log;
+
+import com.mobile.newFramework.utils.output.Print;
+
+import java.util.ArrayList;
 
 /**
  * A {@link GridView} that supports adding header rows in a
@@ -234,7 +235,7 @@ public class HeaderGridView extends GridView {
         int[] attrsArray = new int[] { android.R.attr.numColumns };
         TypedArray ta = context.obtainStyledAttributes(attrs, attrsArray);
         mNumColumns = ta.getInt(0, 1);
-        Log.i(TAG, "ON SAVE NUMBER OF COLUMNS: " + mNumColumns);
+        Print.i(TAG, "ON SAVE NUMBER OF COLUMNS: " + mNumColumns);
         ta.recycle();
     }
     

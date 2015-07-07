@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
         View view = mInflater.inflate(R.layout.home_teaser_main_item, container, false);
         BaseTeaserObject teaser = mTeasers.get(position);
         setImageToLoad(teaser.getImage(isTablet), view);
-        TeaserViewFactory.setClickableView(view, teaser, mOnClickListener);
+        TeaserViewFactory.setClickableView(view, teaser, mOnClickListener, position);
         container.addView(view);
         return view;
     }

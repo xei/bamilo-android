@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,20 +16,18 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.database.CategoriesTableHelper;
-import com.mobile.framework.objects.Category;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the categories in the main container
@@ -103,7 +102,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -114,21 +113,21 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get data from saved instance or from arguments
         Bundle bundle = (savedInstanceState != null) ? savedInstanceState : getArguments();
         // Get data
         if(bundle != null) {
-            Log.i(TAG, "ON GET DATA FROM BUNDLE");
+            Print.i(TAG, "ON GET DATA FROM BUNDLE");
             // Save data
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
             mParentCategoryName = bundle.getString(ConstantsIntentExtra.CATEGORY_PARENT_NAME);
             mSelectedParentPosition = bundle.getInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX);
             mTitleCategory = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
-            Log.i(TAG, "ON LOAD SAVED STATE: " + mParentCategoryName + " " + mSelectedParentPosition);
+            Print.i(TAG, "ON LOAD SAVED STATE: " + mParentCategoryName + " " + mSelectedParentPosition);
         } 
         // Case bundle null
-        else Log.w(TAG, "WARNING: SOMETHING IS WRONG BUNDLE IS NULL ON CREATE");
+        else Print.w(TAG, "WARNING: SOMETHING IS WRONG BUNDLE IS NULL ON CREATE");
     }
     
     /*
@@ -138,7 +137,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Get category list view
@@ -154,7 +153,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         // Case empty
         else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories(mCategoryKey);
         // Case recover from background
-        else { Log.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
+        else { Print.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
     }
 
     /*
@@ -165,7 +164,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -176,7 +175,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Set title
         getBaseActivity().setTitle(TextUtils.isEmpty(mTitleCategory) ? getString(R.string.categories_title) : mTitleCategory);
     }
@@ -188,7 +187,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putString(ConstantsIntentExtra.CATEGORY_ID, mCategoryKey);
         outState.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, mParentCategoryName);
         outState.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, mSelectedParentPosition);
@@ -203,7 +202,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -214,7 +213,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -225,7 +224,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW"); 
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /**
@@ -251,7 +250,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void showRootCategories(ArrayList<Category> categories) {
-        Log.i(TAG, "ON SHOW ROOT CATEGORIES: " + mSelectedParentPosition);
+        Print.i(TAG, "ON SHOW ROOT CATEGORIES: " + mSelectedParentPosition);
         // Container
         CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getBaseActivity(), categories);
         mCategoryList.setTag(CLICK_FROM_DEFAULT_CONTAINER);
@@ -266,7 +265,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void showSubCategory(Category category) {
-        Log.i(TAG, "ON SHOW NESTED CATEGORIES");
+        Print.i(TAG, "ON SHOW NESTED CATEGORIES");
         try {
             // Get data
             mCurrentSubCategory = category;
@@ -281,10 +280,10 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             if(isPresentLandscapeContainer()) triggerGetCategoriesLandscape(child.get(mSelectedParentPosition).getUrlKey());
             
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
+            Print.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
             //goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "WARNING IOE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
+            Print.w(TAG, "WARNING IOE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
             //goToParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         }
     }
@@ -367,13 +366,17 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */    
     private void triggerGetCategories(String categoryKey) {
-        Log.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
-        // Create bundle 
-        Bundle bundle = new Bundle();
+        Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
+
         // Get per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         // Get category
-        if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        if(!TextUtils.isEmpty(categoryKey)) contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
@@ -384,14 +387,19 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void triggerGetCategoriesLandscape(String categoryKey) {
-        Log.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
+        Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
         // Show inner loading
         showLandscapeLoading();
-        // Create bundle 
-        Bundle bundle = new Bundle();
+
+        ContentValues contentValues = new ContentValues();
+
         // Get category per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
-        bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEventNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
 
@@ -427,7 +435,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        Log.d(TAG, "ON CLICK RETRY");
+        Print.d(TAG, "ON CLICK RETRY");
         triggerGetCategories(mCategoryKey);
     }
     
@@ -439,34 +447,34 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICKED: " + position + " TAG:" + parent.getTag());
+        Print.d(TAG, "ON ITEM CLICKED: " + position + " TAG:" + parent.getTag());
         try {
             // Get tag
             int from = (Integer) parent.getTag();
             // Validation
             switch (from) {
             case CLICK_FROM_DEFAULT_CONTAINER:
-                Log.i(TAG, "CLICK_FROM_DEFAULT_CONTAINER");
+                Print.i(TAG, "CLICK_FROM_DEFAULT_CONTAINER");
                 // Case root
                 if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
                 // Case branch or leaf
                 else onClickNestedCategory(parent, position);
                 break;
             case CLICK_FROM_LANDSCAPE_CONTAINER:
-                Log.i(TAG, "CLICK_FROM_LANDSCAPE_CONTAINER");
+                Print.i(TAG, "CLICK_FROM_LANDSCAPE_CONTAINER");
                 // Case root level from landscape without back button
                 if(mCategoryKey == ROOT_CATEGORIES) onClickSubCategoryWithoutBack(parent, position);
                 // Case other level from landscape with back button
                 else onClickSubCategoryWithBack(parent, position);
                 break;
             default:
-                Log.w(TAG, "WARNING: UNKNOWN CLICK");
+                Print.w(TAG, "WARNING: UNKNOWN CLICK");
                 break;
             }            
         } catch (ClassCastException e) {
-            Log.w(TAG, "WARNING CCE ON CLICK ITEM, THE TAG MUST BE AN INTEGER", e);
+            Print.w(TAG, "WARNING CCE ON CLICK ITEM, THE TAG MUST BE AN INTEGER", e);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CLICK ITEM, THE TAG IS NULL", e);
+            Print.w(TAG, "WARNING NPE ON CLICK ITEM, THE TAG IS NULL", e);
         }
     }
     
@@ -490,7 +498,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Show sub level
             else gotoNestedCategories(category.getName(), category.getUrlKey(), NO_SELECTED_LANDSCAPE_CATEGORY);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CLICK ROOT CATEGORY POS: " + position);   
+            Print.w(TAG, "WARNING NPE ON CLICK ROOT CATEGORY POS: " + position);
         }
     }
     
@@ -523,9 +531,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 break;
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position, e);
+            Print.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position, e);
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY", e);
+            Print.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY", e);
         }
     }
     
@@ -557,9 +565,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 break;
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK NESTED CATEGORY IN LANDSCAPE POS: " + position, e);
+            Print.w(TAG, "WARNING: NPE ON CLICK NESTED CATEGORY IN LANDSCAPE POS: " + position, e);
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY IN LANDSCAPE", e);
+            Print.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY IN LANDSCAPE", e);
         }
     }
     
@@ -594,9 +602,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 break;
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK NESTED CATEGORY IN LANDSCAPE POS: " + position, e);
+            Print.w(TAG, "WARNING: NPE ON CLICK NESTED CATEGORY IN LANDSCAPE POS: " + position, e);
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY IN LANDSCAPE", e);
+            Print.w(TAG, "WARNING IOE ON CLICK NESTED CATEGORY IN LANDSCAPE", e);
         }
     }
     
@@ -651,7 +659,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void goToParentCategoryFromType(FragmentType type){
-        Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
+        Print.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             ((CategoriesCollectionFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
@@ -660,7 +668,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             ((CategoriesCollectionFragment) getParentFragment()).goToParentCategory();
             break;
         default:
-            Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
+            Print.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
             break;
         }
     }
@@ -674,7 +682,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Get categories
@@ -689,7 +697,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR EVENT");
+        Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Generic errors

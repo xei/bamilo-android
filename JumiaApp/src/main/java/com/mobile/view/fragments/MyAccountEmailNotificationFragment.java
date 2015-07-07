@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -17,18 +14,18 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.Form;
-import com.mobile.forms.FormField;
-import com.mobile.forms.NewsletterOption;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.gtm.GTMValues;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.account.GetNewslettersFormHelper;
 import com.mobile.helpers.account.SubscribeNewslettersHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormField;
+import com.mobile.newFramework.forms.NewsletterOption;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -38,8 +35,6 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * Class used to show the newsletter form
  * 
@@ -47,7 +42,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class MyAccountEmailNotificationFragment extends BaseFragment implements IResponseCallback, OnCheckedChangeListener {
 
-    private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
+    private static final String TAG = MyAccountEmailNotificationFragment.class.getSimpleName();
 
     private final static int UNSUBSCRIBE_VALUE = -1;
 
@@ -92,7 +87,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -103,12 +98,12 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Validate the saved state
         if (savedInstanceState != null && savedInstanceState.containsKey(TAG)) {
-            Log.i(TAG, "ON GET SAVED STATE");
+            Print.i(TAG, "ON GET SAVED STATE");
             mNewsletterOptionsSaved = savedInstanceState.getParcelableArrayList(TAG);
         }
     }
@@ -121,7 +116,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get list view
         mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
@@ -141,7 +136,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -152,7 +147,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         if (mNewslettersForm != null) {
             showFragmentContentContainer();
         }
@@ -168,7 +163,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
+        Print.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
         outState.putParcelableArrayList(TAG, mNewsletterOptions);
     }
 
@@ -180,7 +175,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -191,7 +186,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -202,7 +197,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -213,7 +208,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -232,10 +227,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             // Show form
             showFragmentContentContainer();
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "IBE ON SHOW NEWSLETTER FORM", e);
+            Print.w(TAG, "IBE ON SHOW NEWSLETTER FORM", e);
             goBackWarningUser();
         } catch (NullPointerException e) {
-            Log.w(TAG, "NPE ON SHOW NEWSLETTER FORM", e);
+            Print.w(TAG, "NPE ON SHOW NEWSLETTER FORM", e);
             goBackWarningUser();
         }
     }
@@ -278,7 +273,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Cancel button
         else if (id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
         // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     @Override
@@ -304,7 +299,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     private void onClickSaveButton() {
-        Log.i(TAG, "ON CLICK: SAVE");
+        Print.i(TAG, "ON CLICK: SAVE");
         try {
             // Validate the current newsletter form
             ContentValues values = new ContentValues();
@@ -317,12 +312,12 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                     values.put(option.name, UNSUBSCRIBE_VALUE);
             }
             // Trigger
-            Log.d(TAG, "VALUES: " + values.toString());
+            Print.d(TAG, "VALUES: " + values.toString());
             triggerSubscribeNewsletters(values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
-            Log.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
+            Print.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }
     }
 
@@ -332,7 +327,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     private void onClickCancelButton() {
-        Log.i(TAG, "ON CLICK: CANCEL");
+        Print.i(TAG, "ON CLICK: CANCEL");
         getBaseActivity().onBackPressed();
     }
 
@@ -346,9 +341,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     private void triggerSubscribeNewsletters(ContentValues values) {
-        Log.i(TAG, "TRIGGER: SUBSCRIBE");
+        Print.i(TAG, "TRIGGER: SUBSCRIBE");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new SubscribeNewslettersHelper(), bundle, this);
     }
 
@@ -358,7 +353,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     private void triggerGetNewslettersForm() {
-        Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
+        Print.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
         if (null != JumiaApplication.CUSTOMER) {
             showFragmentLoading();
             triggerContentEvent(new GetNewslettersFormHelper(), null, this);
@@ -377,20 +372,20 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        Print.i(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
-            Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
+            Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
             // Get the form
             // Save the form
             mNewslettersForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -400,7 +395,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             showNewslettersForm();
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
-            Log.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
+            Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
             // Show toast
             Toast.makeText(getBaseActivity(), getString(R.string.newsletter_saved_message), Toast.LENGTH_LONG).show();
             // Goto back
@@ -423,13 +418,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         // Generic error
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
@@ -437,15 +432,15 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
-            Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
+            Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
             goBackWarningUser();
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
-            Log.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
+            Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
             Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
             break;
         default:

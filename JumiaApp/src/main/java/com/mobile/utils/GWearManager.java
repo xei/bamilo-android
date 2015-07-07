@@ -6,8 +6,7 @@ import android.os.Bundle;
 
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
-
-import de.akquinet.android.androlog.Log;
+import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Class that parses the notification received by the handheld app, and sends it to the wear app through the
@@ -38,15 +37,15 @@ public class GWearManager {
      */
     public void parseLocalNotification(Intent intent) {
         Bundle bundle = intent.getExtras();
-        Log.e(TAG, "BUNDLE:" + bundle.toString());
+        Print.e(TAG, "BUNDLE:" + bundle.toString());
         String title = bundle.getString(EXTRA_A4STITLE);
-        Log.e(TAG, "title:" + title);
+        Print.e(TAG, "title:" + title);
         String shortMessage = bundle.getString(EXTRA_A4SCONTENT);
-        Log.e(TAG, "shortMessage:" + shortMessage);
+        Print.e(TAG, "shortMessage:" + shortMessage);
         String bigContent = bundle.getString(EXTRA_A4SBIGCONTENT);
-        Log.e(TAG, "bigcontent:" + bigContent);
+        Print.e(TAG, "bigcontent:" + bigContent);
         String content = bundle.getString("a4scontent");
-        Log.e(TAG, "content:" + content);
+        Print.e(TAG, "content:" + content);
         int index = (int) (System.currentTimeMillis() / 10000);
         //informWearOfNotification(index, title, bigContent, bundle);
         informWearOfNotification(index, bundle);

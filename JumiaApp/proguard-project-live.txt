@@ -77,7 +77,6 @@
 }
 ########################################################################################
 
-
 ## BEGIN GOOGLE PLAY SERVICES ########################################################
 -keep class * extends java.util.ListResourceBundle {
     protected Object[][] getContents();
@@ -170,9 +169,18 @@
 -keep interface com.viewpagerindicator.** { *; }
 #############################################################################
 
+## BEGIN RETROFIT ##############################################################
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+################################################################################
+
 ## BEGIN MOBILE #################################################################
 #### com.mobile.components
-#-keep interface com.mobile.components.HorizontalListView$** { public *; }
 -keep interface com.mobile.components.RangeSeekBar$** { public *; }
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
@@ -188,10 +196,9 @@
 #### com.mobile.view
 -keep public enum com.mobile.view.fragments.BaseFragment$KeyboardState { public *; }
 
-#### com.mobile.framework.rest
--keep class com.mobile.framework.rest.** { *; }
--keep interface com.mobile.framework.rest.** { *; }
-
+#### com.mobile.newFramework.rest
+-keep class com.mobile.newFramework.rest.** { *; }
+-keep interface com.mobile.newFramework.rest.** { *; }
 #################################################################################
 
 ## JAVASCRIPTINTERFACE ##########################################################

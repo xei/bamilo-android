@@ -7,7 +7,7 @@
     <bool name="is_to_show_dev_env">true</bool>
 
     <!-- COUNTRIES -->
-    <string name="countries_url">https://cld.pt/dl/download/06052f3c-c6ac-4a91-ae88-b739c1e08d91/dtmobapi?download=true</string>
+    <string name="countries_url">http://shareptcmobile.eu.pn/dtmobapi/</string>
 
     <!-- HOCKEY APP -->
     <string name="hockey_app_id">ff6f925528a2c72ef85cac8908c7ee94</string>

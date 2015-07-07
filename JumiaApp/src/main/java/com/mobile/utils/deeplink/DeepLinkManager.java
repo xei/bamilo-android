@@ -10,28 +10,25 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.objects.CountryObject;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
-import com.mobile.helpers.teasers.GetShopHelper;
+import com.mobile.helpers.teasers.GetShopInShopHelper;
+import com.mobile.newFramework.database.CountriesConfigsTableHelper;
+import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import de.akquinet.android.androlog.Log;
 
 
 /**
@@ -106,12 +103,12 @@ public class DeepLinkManager {
         // Get host and path
         String host = data.getHost();
         List<String> segments = data.getPathSegments();
-        Log.i(TAG, "DEEP LINK URI HOST: " + data.getHost() + " PATH: " + data.getPathSegments());
+        Print.i(TAG, "DEEP LINK URI HOST: " + data.getHost() + " PATH: " + data.getPathSegments());
         // Get deep link origin
         int origin = validateDeepLinkOrigin(host);
         // Case empty
         if (CollectionUtils.isEmpty(segments)) {
-            Log.w(TAG, "WARNING: DEEP LINK IS EMPTY");
+            Print.w(TAG, "WARNING: DEEP LINK IS EMPTY");
         }
         // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
         else if(origin == FROM_URI) {
@@ -119,11 +116,11 @@ public class DeepLinkManager {
             ArrayList<String> arrayList = new ArrayList<>(segments);
             arrayList.add(PATH_CC_POS, host);
             segments = arrayList;
-            Log.i(TAG, "DEEP LINK FROM URI: " + segments.toString());
+            Print.i(TAG, "DEEP LINK FROM URI: " + segments.toString());
         }
         // Case from GCM: JUMIA://eg/cart/
         else {
-            Log.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
+            Print.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
         }
         // Return segments
         return segments;
@@ -148,7 +145,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle loadDeepViewTag(Uri data, List<String> segments) {
-        Log.i(TAG, "DEEP LINK URI: " + data + " " + segments);
+        Print.i(TAG, "DEEP LINK URI: " + data + " " + segments);
         //
         Bundle bundle = null;
         try {
@@ -228,7 +225,7 @@ public class DeepLinkManager {
                     break;
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            Log.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
+            Print.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
         }
         bundle = addOriginGroupType(data,bundle);
         return bundle;
@@ -255,7 +252,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCampaignLink(String campaignId) {
-        Log.i(TAG, "DEEP LINK TO CAMPAIGN: " + campaignId);
+        Print.i(TAG, "DEEP LINK TO CAMPAIGN: " + campaignId);
         // Create bundle
         Bundle bundle = new Bundle();
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
@@ -276,7 +273,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCategoryLink(String categoryId) {
-        Log.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
+        Print.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
@@ -293,7 +290,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processTrackOrderLink(String orderId) {
-        Log.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
+        Print.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderId);
@@ -309,7 +306,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processSearchTermLink(String query) {
-        Log.i(TAG, "DEEP LINK TO SEARCH: " + query);
+        Print.i(TAG, "DEEP LINK TO SEARCH: " + query);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
@@ -330,7 +327,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCartLink(List<String> segments) {
-        Log.i(TAG, "DEEP LINK TO CART");
+        Print.i(TAG, "DEEP LINK TO CART");
         // Default link
         String simpleSkuArray;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
@@ -340,7 +337,7 @@ public class DeepLinkManager {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
-            Log.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
+            Print.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
@@ -359,7 +356,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processPdvLink(List<String> segments, Uri data) {
-        Log.i(TAG, "DEEP LINK TO PDV: " + data.toString());
+        Print.i(TAG, "DEEP LINK TO PDV: " + data.toString());
         // Get SKU
         String sku = segments.get(PATH_DATA_POS);
         // Get simple
@@ -381,7 +378,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processLoginLink() {
-        Log.i(TAG, "DEEP LINK TO LOGIN");
+        Print.i(TAG, "DEEP LINK TO LOGIN");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
@@ -395,7 +392,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRegisterLink() {
-        Log.i(TAG, "DEEP LINK TO REGISTER");
+        Print.i(TAG, "DEEP LINK TO REGISTER");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.REGISTER);
@@ -409,7 +406,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processNewsletterLink() {
-        Log.i(TAG, "DEEP LINK TO NEWSLETTER");
+        Print.i(TAG, "DEEP LINK TO NEWSLETTER");
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
@@ -424,7 +421,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRecentViewedLink() {
-        Log.i(TAG, "DEEP LINK TO RECENT VIEWED");
+        Print.i(TAG, "DEEP LINK TO RECENT VIEWED");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLY_VIEWED_LIST);
@@ -438,7 +435,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRecenteSearchesLink() {
-        Log.i(TAG, "DEEP LINK TO RECENT SEARCHES");
+        Print.i(TAG, "DEEP LINK TO RECENT SEARCHES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENT_SEARCHES_LIST);
@@ -452,7 +449,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processFavoritesLink() {
-        Log.i(TAG, "DEEP LINK TO FAVOURITES");
+        Print.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
@@ -466,7 +463,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processHomeLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Print.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.HOME);
         return bundle;
@@ -492,22 +489,14 @@ public class DeepLinkManager {
             }
         }
 
-        // Get filters
-        Set<String> filters = getQueryParameterNames(data);
-        // Get all params
-        if (filters.size() > 0) {
-            catalogUrlKey += "?";
-            for (String key : filters) {
-                catalogUrlKey += key + "=" + data.getQueryParameter(key) + "&";
-            }
-        }
         // Log
-        Log.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
+        Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        bundle.putParcelable(ConstantsIntentExtra.CATALOG_QUERIE, data);
         bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
@@ -522,11 +511,11 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processShopsInShopLink(String innerShopId) {
-        Log.i(TAG, "DEEP LINK TO SHOPS IN SHOP: " + innerShopId);
+        Print.i(TAG, "DEEP LINK TO SHOPS IN SHOP: " + innerShopId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopInShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
         return bundle;
     }
@@ -540,11 +529,11 @@ public class DeepLinkManager {
      */
     @Deprecated
     private static List<String> isValidLink(String host, List<String> segments) {
-        Log.i(TAG, "DEEP LINK URI HOST: " + host);
-        Log.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
+        Print.i(TAG, "DEEP LINK URI HOST: " + host);
+        Print.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
         // Validate segments
         if (segments.size() == 0) {
-            Log.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
+            Print.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
 
             // Case -> JUMIA://ng/
             if (isSupportedCountryCode(host)) {
@@ -580,14 +569,14 @@ public class DeepLinkManager {
      */
     @Deprecated
     private static void loadCountryCode(Context context, String countryCode) {
-        Log.d(TAG, "DEEP LINK URI PATH: " + countryCode);
+        Print.d(TAG, "DEEP LINK URI PATH: " + countryCode);
         // Get current country code
         String selectedCountryCode = ShopPreferences.getShopId(context);
         // Validate saved shop id
         if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode)) {
             locateCountryCode(context, countryCode);
         } else {
-            Log.i(TAG, "DEEP LINK CC IS THE SAME");
+            Print.i(TAG, "DEEP LINK CC IS THE SAME");
         }
     }
 
@@ -608,9 +597,9 @@ public class DeepLinkManager {
             // Get the shop id for the country code
             for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
                 String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
-                Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
+                Print.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (supportedCountry.equalsIgnoreCase(countryCode)) {
-                    Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
+                    Print.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
                     ShopPreferences.setShopId(context, i);
                     break;
                 }
@@ -626,17 +615,17 @@ public class DeepLinkManager {
      */
     @Deprecated
     private static boolean isSupportedCountryCode(String countryCode) {
-        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
-            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        }
-        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-            // Get the shop id for the country code 
-            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) {
-                if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) {
-                    return true;
-                }
-            }
-        }
+//        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
+//            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+//        }
+//        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+//            // Get the shop id for the country code
+//            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) {
+//                if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) {
+//                    return true;
+//                }
+//            }
+//        }
 
         return false;
     }
@@ -679,7 +668,7 @@ public class DeepLinkManager {
      * - From notification<br>
      */
     public static Bundle hasDeepLink(Intent intent) {
-        Log.i(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
+        Print.i(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
         // Create bundle from initial CC intent
         Bundle bundle = hasInitialChooseCountry(intent);
         // Create bundle from external URI intent
@@ -701,17 +690,17 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle hasInitialChooseCountry(Intent intent) {
-        Log.i(TAG, "DEEP LINK: FROM INITIAL CHOOSE COUNTRY");
+        Print.i(TAG, "DEEP LINK: FROM INITIAL CHOOSE COUNTRY");
         Bundle bundle = null;
         // Validate intent
         if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
-            Log.i(TAG, "DEEP LINK: VALID INTENT");
+            Print.i(TAG, "DEEP LINK: VALID INTENT");
             // Get extras from notifications
             bundle = new Bundle();
             bundle.putSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG, FragmentType.CHOOSE_COUNTRY);
             bundle.putBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
         }
-        Log.i(TAG, "DEEP LINK: INVALID INTENT");
+        Print.i(TAG, "DEEP LINK: INVALID INTENT");
         return bundle;
     }
 
@@ -731,7 +720,7 @@ public class DeepLinkManager {
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             bundle = loadDeepLink(data);
-            Log.i(TAG, "DEEP LINK: RECEIVED FROM URI");
+            Print.i(TAG, "DEEP LINK: RECEIVED FROM URI");
         }
         return bundle;
     }
@@ -744,7 +733,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle hasDeepLinkFromGCM(Intent intent) {
-        Log.i(TAG, "DEEP LINK: FROM GCM");
+        Print.i(TAG, "DEEP LINK: FROM GCM");
         Bundle bundle = null;
         // ## DEEP LINK FROM NOTIFICATION ##
         Bundle payload = intent.getBundleExtra(EXTRA_GCM_PAYLOAD);
@@ -754,18 +743,18 @@ public class DeepLinkManager {
             String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
             // ## Google Analytics "General Campaign Measurement" ##
             TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
-            Log.i(TAG, "UTM FROM GCM: " + mUtm);
+            Print.i(TAG, "UTM FROM GCM: " + mUtm);
             // Get value from deep link key
             String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
-            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
+            Print.i(TAG, "DEEP LINK: GCM " + deepLink);
             // Validate deep link
             if (!TextUtils.isEmpty(deepLink)) {
                 // Create uri from the value
                 Uri data = Uri.parse(deepLink);
-                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 bundle = loadDeepLink(data);
-                Log.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
+                Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }
         return bundle;

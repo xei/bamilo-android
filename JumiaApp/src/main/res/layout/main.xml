@@ -45,12 +45,6 @@
             layout="@layout/warning"
             android:visibility="gone" />
 
-        <!-- PROMOTIONS LAYOUT -->
-
-        <include
-            layout="@layout/promotion_layout"
-            android:visibility="gone" />
-
     </RelativeLayout>
 
     <!-- NAVIGATION -->

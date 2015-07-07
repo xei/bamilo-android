@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
 import com.mobile.utils.home.holder.HomeCampaignTeaserHolder;
@@ -21,8 +22,6 @@ import com.mobile.utils.home.holder.HomeSmallTeaserHolder;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserHolder;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 
 /**
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 public class TeaserViewFactory {
 
     public static final String TAG = TeaserViewFactory.class.getSimpleName();
+
+    public static final int DEFAULT_POSITION = -1;
 
     /**
      * Create a teaser view holder
@@ -85,13 +86,15 @@ public class TeaserViewFactory {
      * @param teaser The teaser
      * @param listener The callback
      */
-    public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener) {
+    public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener, int position) {
         if (listener != null) {
             String title = !TextUtils.isEmpty(teaser.getName()) ? teaser.getName() : teaser.getTitle();
             view.setTag(R.id.target_title, title);
             view.setTag(R.id.target_type, teaser.getTargetType());
             view.setTag(R.id.target_url, teaser.getUrl());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
+            // Set position of the clicked teaser, for tracking purpose
+            view.setTag(R.id.target_list_position, position);
             view.setOnClickListener(listener);
         }
     }

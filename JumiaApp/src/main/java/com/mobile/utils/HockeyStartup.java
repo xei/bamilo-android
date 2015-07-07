@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import net.hockeyapp.android.CrashManager;
@@ -34,8 +35,6 @@ import java.security.cert.X509Certificate;
 import java.util.Locale;
 
 import javax.security.auth.x500.X500Principal;
-
-import de.akquinet.android.androlog.Log;
 
 public class HockeyStartup {
     private static final String TAG = HockeyStartup.class.getSimpleName();
@@ -58,7 +57,7 @@ public class HockeyStartup {
     private static Activity sActivity;
 
     public static void start(Activity activity, Runnable startRunnable) {
-        Log.i(TAG, "start: executing key check and hockey - with app startup");
+        Print.i(TAG, "start: executing key check and hockey - with app startup");
         sActivity = activity;
         sStartRunnable = startRunnable;
         sDialogWasStarted = false;
@@ -72,7 +71,7 @@ public class HockeyStartup {
 
     public static void register(Activity activity) {
         int resultCheckSignature = checkSignatureForUpdate(activity);
-        Log.d(TAG, "resultCheckSignature = " + resultCheckSignature);
+        Print.d(TAG, "resultCheckSignature = " + resultCheckSignature);
         
         String hockeyTocken = activity.getString(HOCKEY_APP_TOKEN_RES);
 
@@ -81,14 +80,14 @@ public class HockeyStartup {
          */
         Boolean enableDevVersion = activity.getResources().getBoolean(HOCKEY_APP_DEV_BOOL);
         
-        Log.d(TAG, "HOCKEY_TOKEN = " + hockeyTocken);
+        Print.d(TAG, "HOCKEY_TOKEN = " + hockeyTocken);
         if (resultCheckSignature == RESULT_KEY_OTHER || resultCheckSignature == RESULT_KEY_HOCKEY || enableDevVersion) {
-            Log.d(TAG, "start: starting CrashManager" );
+            Print.d(TAG, "start: starting CrashManager");
             CrashManager.register(activity, hockeyTocken, sCml);
         }
         if (resultCheckSignature == RESULT_KEY_HOCKEY) {
-            Log.d( TAG, "start: starting UpdateManager" );
-            UpdateManager.register(activity, hockeyTocken, sUml);
+            Print.d(TAG, "start: starting UpdateManager");
+            UpdateManager.register(activity, hockeyTocken);
         }
     }
     
@@ -109,7 +108,7 @@ public class HockeyStartup {
         try {
             signature  = pM.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0];
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "Can't find signature for app", e );
+            Print.e(TAG, "Can't find signature for app", e);
             return RESULT_KEY_OTHER;
         }
         
@@ -120,14 +119,14 @@ public class HockeyStartup {
             cf = CertificateFactory.getInstance("X.509" );
             cert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(signature.toByteArray()));
         } catch (CertificateException e) {
-            Log.e(TAG, "Cant get x509certificate", e );
+            Print.e(TAG, "Cant get x509certificate", e);
             return RESULT_KEY_OTHER;
         }
         
         String fingerPrint = calcFingerPrint( cert );
         
         // keytool -list -v -keystore ${1} -keypass android -storepass android
-        Log.d( TAG, "X500Principal: " + cert.getSubjectX500Principal().toString());
+        Print.d(TAG, "X500Principal: " + cert.getSubjectX500Principal().toString());
         // Log.d( TAG, "certificate fingerPrint(" +MESSAGEDIGEST+ ") = " + fingerPrint );
       
         if ( fingerPrint != null && KEY_FINGERPRINT_HOCKEY.equals( fingerPrint.toUpperCase(Locale.US))) {
@@ -170,10 +169,10 @@ public class HockeyStartup {
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "failing calculation of fingerprint: ", e);
+            Print.e(TAG, "failing calculation of fingerprint: ", e);
             return null;
         } catch (CertificateEncodingException e) {
-            Log.e(TAG, "failing calculation of fingerprint: ", e);
+            Print.e(TAG, "failing calculation of fingerprint: ", e);
             return null;
         }
     }
@@ -183,12 +182,12 @@ public class HockeyStartup {
         @Override
         public void onNoUpdateAvailable() {
             super.onNoUpdateAvailable();
-            Log.d(TAG, "No update found");
+            Print.d(TAG, "No update found");
         }
 
         @Override
         public void onUpdateAvailable() {
-            Log.d(TAG, "Update found - waiting for dialog to finish");
+            Print.d(TAG, "Update found - waiting for dialog to finish");
             sHandler.removeCallbacks(sStartRunnable);
             sDialogWasStarted = true;
         }
@@ -202,7 +201,7 @@ public class HockeyStartup {
 
         @Override
         public boolean onCrashesFound() {
-            Log.d(TAG, "Crashes found - waiting for dialog to finish");
+            Print.d(TAG, "Crashes found - waiting for dialog to finish");
             sHandler.removeCallbacks(sStartRunnable);
             sDialogWasStarted = true;
             return true;
@@ -229,7 +228,7 @@ public class HockeyStartup {
         public void onWindowFocusChanged(boolean hasFocus) {
             sActivity.onWindowFocusChanged(hasFocus);
             if (sDialogWasStarted && hasFocus) {
-                Log.d(TAG, "we have focus again - start the app");
+                Print.d(TAG, "we have focus again - start the app");
                 sDialogWasStarted = false;
                 sStartRunnable.run();
             }

@@ -5,7 +5,6 @@
     <!-- APP -->
     <string name="app_name">Daraz</string>
 
-
     <!-- COUNTRIES -->
     <string name="countries_url">http://www.daraz.com/mobapi/availablecountries</string>
 
@@ -25,7 +24,6 @@
     <string name="ad4push_private_key">72b4c66f78e58f36d289db3d64a37d27b7444898</string>
 
     <!-- ADJUST -->
-    <item name="adjust_enabled" type="bool">true</item>
     <item name="adjust_is_production_env" type="bool">true</item>
 
     <!-- APPTIMIZE -->

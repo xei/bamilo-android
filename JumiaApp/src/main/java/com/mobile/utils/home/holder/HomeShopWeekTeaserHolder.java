@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -42,8 +42,8 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
         BaseTeaserObject rightX = group.getData().get(1);
         RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
         RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
-        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener);
-        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener);
+        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener, 0);
+        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
     }
 
     @Override

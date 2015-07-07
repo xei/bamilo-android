@@ -11,12 +11,11 @@ import android.text.TextUtils;
 import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.AdjustReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
-import com.mobile.framework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import de.akquinet.android.androlog.Log;
 
 public class InstallReceiver extends BroadcastReceiver {
     
@@ -24,7 +23,7 @@ public class InstallReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "Received INSTALL_REFERRAL");
+        Print.d(TAG, "Received INSTALL_REFERRAL");
         Bundle bundle = intent.getExtras();
         
         if(bundle != null) {
@@ -35,12 +34,12 @@ public class InstallReceiver extends BroadcastReceiver {
                     String utmSource = queryMap.get("utm_source");
                     String utmMedium = queryMap.get("utm_medium");
                     String utmCampaign = queryMap.get("utm_campaign");
-                    Log.d(TAG,"utm_source:"+utmSource);
-                    Log.d(TAG,"utm_medium:"+utmMedium);
-                    Log.d(TAG,"utm_campaign:"+utmCampaign);
-                    Log.d("BETA", "InstallReceiver utm_campaign:"+utmCampaign);
-                    Log.d("BETA", "InstallReceiver utm_medium:"+utmMedium);
-                    Log.d("BETA", "InstallReceiver utm_source:"+ utmSource);
+                    Print.d(TAG, "utm_source:" + utmSource);
+                    Print.d(TAG, "utm_medium:" + utmMedium);
+                    Print.d(TAG, "utm_campaign:" + utmCampaign);
+                    Print.d("BETA", "InstallReceiver utm_campaign:" + utmCampaign);
+                    Print.d("BETA", "InstallReceiver utm_medium:" + utmMedium);
+                    Print.d("BETA", "InstallReceiver utm_source:" + utmSource);
                     saveCampaignParameters(context, GTMManager.CAMPAIGN_ID_KEY, utmCampaign);
                     saveCampaignParameters(context, GTMManager.CAMPAIGN_SOURCE, utmSource);
                     saveCampaignParameters(context, GTMManager.CAMPAIGN_MEDIUM, utmMedium);
@@ -48,11 +47,11 @@ public class InstallReceiver extends BroadcastReceiver {
                     saveCampaignParameters(context, GTMManager.IS_GTM_CAMPAIGN_SET, "YES");        
                     saveCampaignParameters(context, GTMManager.IS_REFERRER_CAMPAIGN_SET, "Yes");   
                 } catch (Exception e) {
-                    Log.e(TAG, "Exception while getting utm parameters : ", e);
+                    Print.e(TAG, "Exception while getting utm parameters : ", e);
                 }
             }
         } else {
-            Log.d(TAG, "BUNDLE == NULL");
+            Print.d(TAG, "BUNDLE == NULL");
         }
         
        
@@ -76,8 +75,8 @@ public class InstallReceiver extends BroadcastReceiver {
     }
     
     private void saveCampaignParameters(Context context, String key, String value) {
-        Log.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
-        Log.d("BETA", "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
+        Print.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
+        Print.d("BETA", "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);

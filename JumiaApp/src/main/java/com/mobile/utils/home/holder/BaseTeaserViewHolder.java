@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.home.TeaserViewFactory;
-import com.mobile.view.R;
 
 /**
  *
@@ -33,13 +33,18 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mContext = context;
         mParentClickListener = onClickListener;
-        isRtl = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+        isRtl = ShopSelector.isRtl();
         // Get view offset
         mOffset = TeaserViewFactory.getViewHolderOffset(context);
-        // Set offset case not PreviewViewPager
-        if (!(this instanceof HomeMainTeaserHolder)) {
-            itemView.setPadding(itemView.getPaddingLeft() + mOffset, itemView.getPaddingTop(), itemView.getPaddingRight() + mOffset, itemView.getPaddingBottom());
-        }
+        // Set offset margin
+        apllyMargin();
+    }
+
+    /**
+     * apply margins to view
+     */
+    public void apllyMargin(){
+        itemView.setPadding(itemView.getPaddingLeft() + mOffset, itemView.getPaddingTop(), itemView.getPaddingRight() + mOffset, itemView.getPaddingBottom());
     }
 
     /**
@@ -53,5 +58,7 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
      * Method to update the view
      */
     public abstract void onUpdate();
+
+
 
 }

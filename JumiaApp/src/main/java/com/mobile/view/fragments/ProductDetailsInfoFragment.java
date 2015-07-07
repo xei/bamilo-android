@@ -8,26 +8,26 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
+import java.util.Arrays;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
+import java.util.List;
 
 /**
  * Class that show a Product information, as in descriptions and specifications.
@@ -35,11 +35,11 @@ import de.akquinet.android.androlog.Log;
  * @author Paulo Carvalho
  * 
  */
-public class ProductDetailsInfoFragment extends BaseFragment implements OnClickListener {
+public class ProductDetailsInfoFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductDetailsInfoFragment.class);
+    private static final String TAG = ProductDetailsInfoFragment.class.getSimpleName();
 
-    private ViewPager mProductInfoPager;
+    private RtlViewPager mProductInfoPager;
 
     private ProductInfoPagerAdapter mProductInfoPagerAdapter;
 
@@ -50,8 +50,6 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     private int mTabsCount = 2;
 
     private boolean mHasSummary = true;
-//    private boolean hasSpecification = true;
-
 
     /**
      * Get instance
@@ -70,7 +68,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     public ProductDetailsInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-                R.layout._def_details_info_fragment_main,
+                R.layout.details_info_fragment_main,
                 0,
                 KeyboardState.ADJUST_CONTENT);
     }
@@ -83,7 +81,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -94,7 +92,12 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
+        if(savedInstanceState != null){
+            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
+        } else {
+            mPositionToStart = -1;
+        }
     }
 
     /*
@@ -106,10 +109,10 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 
         // Get view pager
-        mProductInfoPager = (ViewPager) view.findViewById(R.id.product_info_pager);
+        mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
         mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
@@ -128,6 +131,12 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
+            if(ShopSelector.isRtl()){
+                mProductInfoPager.enableRtl();
+                mPositionToStart = mProductInfoPagerAdapter.getCount();
+            } else {
+                mPositionToStart = 0;
+            }
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);
@@ -147,7 +156,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -158,7 +167,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -169,7 +178,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -180,7 +189,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -191,7 +200,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         // mPositionToStart = 0;
     }
 
@@ -224,7 +233,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
      * 
      * @author Paulo Carvalho
      */
-    private class ProductInfoPagerAdapter extends FragmentPagerAdapter {
+    private class ProductInfoPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
 
         /**
          * Constructor
@@ -233,46 +242,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
          * @author Paulo Carvalho
          */
         public ProductInfoPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-         */
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-            case 0:
-                return chooseFragment(position);
-            case 1:
-                return chooseFragment(position);
-            default:
-                return ProductDetailsSummaryFragment.getInstance(getArguments());
-
-            }
-
-        }
-
-        /**
-         * control which fragment to inflate acordingly to which information is available
-         * @param position
-         * @return
-         */
-        private Fragment chooseFragment(int position){
-            Fragment fragment = ProductDetailsSummaryFragment.getInstance(getArguments());
-
-            if(position == 0){
-                if(!mHasSummary){
-                    fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
-                }
-            } else {
-                fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
-            }
-
-            return fragment;
+            super(fm,ProductDetailsInfoFragment.this, getFragmentTitleValues());
         }
 
         /*
@@ -285,38 +255,30 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
             return mTabsCount;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-         */
         @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-            case 0:
-                if(mHasSummary){
-                    return getString(R.string.product_desc_summary_title).toUpperCase();
-                } else {
-                    return getString(R.string.product_specifications).toUpperCase();
-                }
-            case 1:
-                return getString(R.string.product_specifications).toUpperCase();
-            default:
-                return getString(R.string.product_desc_summary_title).toUpperCase();
-            }
+        protected Fragment createNewFragment(int position) {
+            return (titlesPageInt.get(position) == R.string.product_desc_summary_title) ?
+                    ProductDetailsSummaryFragment.getInstance(getArguments()) :
+                    ProductDetailsSpecificationsFragment.getInstance(getArguments());
         }
 
+        @Override
+        public void invertItems() {
+            enableRtl(!isRtl);
+        }
     }
 
-    @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
+    private List<Integer> getFragmentTitleValues(){
+        Integer[] titles = {
+                mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications,
+                R.string.product_specifications};
 
+        return Arrays.asList(titles);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState");
+        Print.i(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, mPositionToStart);
 

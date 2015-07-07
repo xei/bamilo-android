@@ -18,13 +18,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ListView;
 
-import com.mobile.framework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import de.akquinet.android.androlog.Log;
 
 public class PreferenceListFragment extends ListFragment implements OnPreferenceClickListener{
     
@@ -38,11 +37,11 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     private static final int FIRST_REQUEST_CODE = 100;
     
     private static final int MSG_BIND_PREFERENCES = 0;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                
                 case MSG_BIND_PREFERENCES:
                     bindPreferences();
                     break;
@@ -55,23 +54,10 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     public PreferenceListFragment(int xmlId){
         this.xmlId = xmlId;
     }
+
     //must be provided
     public PreferenceListFragment(){
         
-    }
-    
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle b){
-        postBindPreferences();
-        return lv;
-    }
-    
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        ViewParent p = lv.getParent();
-        if(p != null)
-            ((ViewGroup)p).removeView(lv);
     }
 
     @Override
@@ -82,7 +68,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         mPreferenceManager = onCreatePreferenceManager();
         lv = (ListView) LayoutInflater.from(getActivity()).inflate(R.layout.preference_list_content, null);
         lv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        
+
         addPreferencesFromResource(xmlId);
         
         Preference pNotification = findPreference(getString(R.string.pref_notification));
@@ -90,6 +76,12 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         pNotification.setDefaultValue(Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext()));
         postBindPreferences();
         ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle b){
+        postBindPreferences();
+        return lv;
     }
 
     @Override
@@ -102,6 +94,14 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        ViewParent p = lv.getParent();
+        if(p != null)
+            ((ViewGroup)p).removeView(lv);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     
     private void bindPreferences() {
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
-        if (preferenceScreen != null) {
+        if (preferenceScreen != null && lv != null) {
             preferenceScreen.bind(lv);
         }
     }
@@ -163,21 +163,20 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         try{
             Constructor<PreferenceManager> c = PreferenceManager.class.getDeclaredConstructor(Activity.class, int.class);
             c.setAccessible(true);
-            PreferenceManager preferenceManager = c.newInstance(this.getActivity(), FIRST_REQUEST_CODE);
-            return preferenceManager;
+            return c.newInstance(this.getActivity(), FIRST_REQUEST_CODE);
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
     }
     
-    /**
-     * Returns the {@link PreferenceManager} used by this activity.
-     * @return The {@link PreferenceManager}.
-     */
-    public PreferenceManager getPreferenceManager() {
-        return mPreferenceManager;
-    }
+//    /**
+//     * Returns the {@link PreferenceManager} used by this activity.
+//     * @return The {@link PreferenceManager}.
+//     */
+//    public PreferenceManager getPreferenceManager() {
+//        return mPreferenceManager;
+//    }
 
     /**
      * Sets the root of the preference hierarchy that this activity is showing.
@@ -193,7 +192,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
                 postBindPreferences();
             }
         }catch(Exception e){
-           Log.e(TAG, "Could not set Preference Screen", e);
+           Print.e(TAG, "Could not set Preference Screen", e);
         }
     }
     
@@ -209,18 +208,18 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
             m.setAccessible(true);
             return (PreferenceScreen) m.invoke(mPreferenceManager);
         }catch(Exception e){
-            Log.e(TAG, "Could not get Preference Screen", e);
+            Print.e(TAG, "Could not get Preference Screen", e);
             return null;
         }
     }
     
-    /**
-     * Adds preferences from activities that match the given {@link Intent}.
-     *
-     */
-    public void addPreferencesFromIntent() {
-        throw new RuntimeException("too lazy to include this bs");
-    }
+//    /**
+//     * Adds preferences from activities that match the given {@link Intent}.
+//     *
+//     */
+//    public void addPreferencesFromIntent() {
+//        throw new RuntimeException("too lazy to include this bs");
+//    }
     
     /**
      * Inflates the given XML resource and adds the preference hierarchy to the current
@@ -235,7 +234,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
             PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(mPreferenceManager, getActivity(), preferencesResId, getPreferenceScreen());
             setPreferenceScreen(prefScreen);
         }catch(Exception e){
-            Log.e(TAG, "Could not add preferences", e);
+            Print.e(TAG, "Could not add preferences", e);
         }
     }
     
@@ -254,7 +253,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     }
     
     public interface OnPreferenceAttachedListener{
-        public void onPreferenceAttached();
+        void onPreferenceAttached();
     }
 
     @Override

@@ -2,23 +2,23 @@ package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.utils.DateTimeUtils;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DateTimeUtils;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Campaign teaser
@@ -131,7 +131,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         // Set countdown
         setCountDown(campaign);
         // Set click listener
-        TeaserViewFactory.setClickableView(container, campaign, listener);
+        TeaserViewFactory.setClickableView(container, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
     }
 
     /**
@@ -140,7 +140,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     private void setMoreButton(BaseTeaserObject campaign) {
         // Has more campaigns
         if(campaigns.size() > 1) {
-            TeaserViewFactory.setClickableView(more, campaign, listener);
+            TeaserViewFactory.setClickableView(more, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
         } else {
             more.setOnClickListener(null);
             more.setVisibility(View.GONE);

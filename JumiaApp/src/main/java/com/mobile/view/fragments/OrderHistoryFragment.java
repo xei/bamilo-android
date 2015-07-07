@@ -22,19 +22,21 @@ import com.mobile.controllers.OrdersListAdapter;
 import com.mobile.controllers.OrdersListAdapter.OnSelectedOrderChange;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Errors;
-import com.mobile.framework.objects.Order;
-import com.mobile.framework.objects.OrderItem;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.orders.Order;
+import com.mobile.newFramework.objects.orders.OrderItem;
+import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -44,8 +46,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author Paulo Carvalho
@@ -67,7 +67,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     private TextView noOrders;
     
-    private LinearLayout productsLanscapeContainer;
+    private LinearLayout productsLandscapeContainer;
     
     private RelativeLayout productsContainer;
     
@@ -120,7 +120,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -131,7 +131,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         
         if(savedInstanceState != null) {
             selectedProduct = savedInstanceState.getInt("selectedPos");
@@ -140,7 +140,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
             
-                Log.i("ORDER", "ON LOAD SAVED STATE ordersList size:"+ordersList.size());
+                Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
         }
         
     }
@@ -154,7 +154,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
@@ -164,7 +164,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
             productsContainer = (RelativeLayout) view.findViewById(R.id.order_products_container);
-            productsLanscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
+            productsLandscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
         }
         
     }
@@ -180,7 +180,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.GONE);
                 ordersListView.setVisibility(View.GONE);
-                productsLanscapeContainer.setVisibility(View.GONE);
+                productsLandscapeContainer.setVisibility(View.GONE);
             } else {
                 ordersListView.setVisibility(View.GONE);
             }
@@ -190,7 +190,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.VISIBLE);
                 ordersListView.setVisibility(View.VISIBLE);
-                productsLanscapeContainer.setVisibility(View.VISIBLE);
+                productsLandscapeContainer.setVisibility(View.VISIBLE);
             } else {
                 ordersListView.setVisibility(View.VISIBLE);
             }
@@ -205,7 +205,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -216,14 +216,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
-        
-        if(JumiaApplication.mIsBound){
-            triggerGetOrderList();            
-        } else {
-            showFragmentErrorRetry();
-        }
-        
+        Print.i(TAG, "ON RESUME");
+        triggerGetOrderList();
     }
 
     /*
@@ -234,7 +228,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -245,7 +239,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -256,7 +250,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
 
@@ -274,11 +268,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
+        Print.d(TAG, "ON SUCCESS EVENT");
         mReceivedError = false;
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -293,7 +287,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             
             ArrayList<Order> ordersResponse =  bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             
-            if(ordersResponse == null || ordersResponse.size() == 0){
+            if(CollectionUtils.isEmpty(ordersList) && CollectionUtils.isEmpty(ordersResponse)){
                 // show error/empty screen
                 setEmptyScreenState(true);
                 showProductsLoading(false);
@@ -312,7 +306,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 if(pageIndex <= totalPages){
                     mIsLoadingMore = false;
                     
-                    if(ordersList != null && ordersList.size() > 0 && ordersAdapter != null){
+                    if(!CollectionUtils.isEmpty(ordersList) && ordersAdapter != null){
                         //does nothing because theres no new order
                           ordersList.addAll(ordersResponse);
                           ordersAdapter.updateOrders(ordersList);
@@ -353,10 +347,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        Log.d(TAG, "ON ERROR EVENT");
+        Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -370,11 +364,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         switch (eventType) {
         case GET_MY_ORDERS_LIST_EVENT:
             if(isVisible && !errorHandled){
-                Log.w("ORDER","ERROR Visible");
+                Print.w("ORDER", "ERROR Visible");
                     if(null == JumiaApplication.CUSTOMER){
                         triggerLogin();
                     } else {
-                        Log.w("ORDER","ERROR Visible");
+                        Print.w("ORDER", "ERROR Visible");
                         //used for when the user session expires on the server side
                         try{
                             boolean isNotLoggedIn = false;
@@ -397,7 +391,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                         }
                     }
             } else {
-                Log.w("ORDER","ERROR notVisible");
+                Print.w("ORDER", "ERROR notVisible");
                 mReceivedError = true;
             }
 
@@ -429,8 +423,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 }
                 ordersListView.setAdapter(ordersAdapter);
                 
-                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
-                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLandscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLandscapeContainer,true);
                 
                 ordersListView.setSelection(selectedProduct);
             } else{
@@ -439,8 +433,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 ordersAdapter.updateOrders(ordersList);
                 ordersListView.setSelection(selectedProduct);
                 
-                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
-                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLandscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLandscapeContainer,true);
             }
         }
         else{
@@ -496,9 +490,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(selectedProduct == -1) selectedProduct = 0;
             
             productsContainer.setVisibility(View.VISIBLE);
-            productsLanscapeContainer.setVisibility(View.VISIBLE);
+            productsLandscapeContainer.setVisibility(View.VISIBLE);
             
-            setOrderProducts(orders.get(selectedProduct),productsLanscapeContainer, true);
+            setOrderProducts(orders.get(selectedProduct),productsLandscapeContainer, true);
 //            setupProductslandScape(orders.get(selectedProduct));
         } else {
             ordersListView.setVisibility(View.VISIBLE);
@@ -530,7 +524,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         selectedProduct = selectedProd;
         
         if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
-        else setOrderProducts(order,productsLanscapeContainer,toShowInnerProds);
+        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
         
     }
     
@@ -555,9 +549,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             ordersAdapter.notifyDataSetChanged();
         }
 
-        if (toShowInnerProds && productsLanscapeContainer != null && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            if (productsLanscapeContainer.getChildCount() > 0) {
-                productsLanscapeContainer.removeAllViews();
+        if (toShowInnerProds && productsLandscapeContainer != null && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
+            if (productsLandscapeContainer.getChildCount() > 0) {
+                productsLandscapeContainer.removeAllViews();
             }
             ordersProductsPayment.setText(order.getmPayment());
             ordersProductDate.setText(order.getmDate());
@@ -606,7 +600,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState");
+        Print.i(TAG, "onSaveInstanceState");
         if(ordersAdapter != null){
             outState.putInt("selectedPos", ordersAdapter.getSelectedPosition());
             outState.putInt("currentPage", pageIndex);
@@ -641,7 +635,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                         @Override
                         public void run() {
                             mIsLoadingMore = true;
-                            Log.w("ORDER","LOAD MORE");
+                            Print.w("ORDER", "LOAD MORE");
                             showProductsLoading(true);
                             getMoreProducts();
                         }

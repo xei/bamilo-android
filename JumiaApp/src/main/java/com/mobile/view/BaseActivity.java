@@ -47,25 +47,26 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.SearchSuggestion;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.gtm.GTMValues;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CustomerUtils;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.search.GetSearchSuggestionHelper;
+import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.CustomerUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -75,6 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
@@ -83,8 +85,6 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * All activities extend this activity, in order to access methods that are shared and used in all activities.
@@ -218,15 +218,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ON CREATE");
+        Print.d(TAG, "ON CREATE");
         /*
          * In case of rotation the activity is restarted and the locale too.<br>
          * These method forces the right locale used before the rotation.
          * @author spereira
          */
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
-        // Bind service
-        JumiaApplication.INSTANCE.doBindService();
         // In case app is killed in background needs to restore font type
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
@@ -257,7 +255,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.i(TAG, "ON NEW INTENT");
+        Print.i(TAG, "ON NEW INTENT");
         ActivitiesWorkFlow.addStandardTransition(this);
     }
 
@@ -269,7 +267,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -280,7 +278,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
 
         // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.run(getApplicationContext());
@@ -322,7 +320,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         // Hide search component
         hideSearchComponent();
         // Dispatch saved hits
@@ -339,7 +337,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -351,7 +349,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         JumiaApplication.INSTANCE.setLoggedIn(false);
         // Tracking
         TrackerDelegator.trackCloseApp();
@@ -368,7 +366,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Log.i(TAG, "ON POST CREATE: DRAWER");
+        Print.i(TAG, "ON POST CREATE: DRAWER");
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
@@ -381,7 +379,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.i(TAG, "ON CONFIGURATION CHANGED");
+        Print.i(TAG, "ON CONFIGURATION CHANGED");
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
@@ -401,7 +399,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @modified Andre Lopes
      */
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep) {
-        Log.i(TAG, "ON UPDATE BASE COMPONENTS");
+        Print.i(TAG, "ON UPDATE BASE COMPONENTS");
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         hideKeyboard();
@@ -446,8 +444,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_shop_specific) ||
-                getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtl()) {
             // Show the application name in the action bar
             setActionBarTitle(R.string.app_name);
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
@@ -503,14 +500,14 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      */
     private void setupContentViews() {
-        Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
+        Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Get the application horizontalListView
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
         } catch(IllegalStateException ex){
-            Log.e(TAG,ex.getLocalizedMessage(),ex);
+            Print.e(TAG, ex.getLocalizedMessage(), ex);
         }
     }
     
@@ -568,7 +565,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Update the sliding menu
      */
     public void updateNavigationMenu(NavigationAction page) {
-        Log.d(TAG, "UPDATE SLIDE MENU");
+        Print.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
             slideMenuFragment.onUpdateMenu(page);
@@ -578,7 +575,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Update the sliding menu
      */
     public void updateNavigationCategorySelection(String categoryId) {
-        Log.d(TAG, "UPDATE SLIDE MENU");
+        Print.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
             slideMenuFragment.onUpdateCategorySelected(categoryId);
@@ -604,7 +601,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
+        Print.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
         // Get item id
         int itemId = item.getItemId();
         // CASE BACK ARROW
@@ -637,7 +634,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "ON OPTIONS MENU: CREATE");
+        Print.d(TAG, "ON OPTIONS MENU: CREATE");
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // Save the current menu
         mCurrentMenu = menu;
@@ -702,7 +699,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 getSupportActionBar().hide();
                 break;
             default:
-                Log.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
+                Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
                 break;
         }
     }
@@ -730,10 +727,10 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void setActionBarUpButton() {
         if (isBackButtonEnabled) {
-            Log.i(TAG, "SHOW UP BUTTON");
+            Print.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
         } else {
-            Log.i(TAG, "NO SHOW UP BUTTON");
+            Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }
@@ -802,7 +799,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @modified sergiopereira
      */
     private void setActionSearch(Menu menu) {
-        Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
+        Print.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
         // Get search menu item
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
@@ -811,7 +808,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get edit text
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
         }
         // Set font
@@ -841,7 +838,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
         // Calculate the search width
         int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
         // Set measures
         mSearchView.setMaxWidth(searchComponentWidth);
         mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
@@ -853,9 +850,9 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param mSearchMenuItem
      */
     public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
-        Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
+        Print.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
         if (mSearchAutoComplete == null) {
-            Log.w(TAG, "SEARCH COMPONENT IS NULL");
+            Print.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
         
@@ -865,9 +862,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
+                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
                 // Get suggestion
-                SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
+                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
                 // Clean edit text
@@ -876,7 +873,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 // Collapse search view
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Save query
-                GetSearchSuggestionHelper.saveSearchQuery(text);
+                GetSearchSuggestionsHelper.saveSearchQuery(text);
                 // Show query
                 showSearchCategory(text);
                 if (JumiaApplication.INSTANCE != null) {
@@ -917,7 +914,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
                     String searchTerm = textView.getText().toString();
-                    Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
+                    Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {
                         return false;
                     }
@@ -926,7 +923,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     // Save query
-                    GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
                     // Show query
                     showSearchCategory(searchTerm);
                     return true;
@@ -941,7 +938,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                Log.d(TAG, "SEARCH ON EXPAND");
+                Print.d(TAG, "SEARCH ON EXPAND");
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setItemsVisibility(false);
@@ -950,7 +947,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Log.d(TAG, "SEARCH ON COLLAPSE");
+                Print.d(TAG, "SEARCH ON COLLAPSE");
                 isSearchComponentOpened = false;
                 setItemsVisibility(true);
                 return true;
@@ -979,7 +976,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     protected void showSearchCategory(String searchText) {
-        Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         // Tracking
         JumiaApplication.INSTANCE.trackSearchCategory = true;
         TrackerDelegator.trackSearchSuggestions(searchText);
@@ -1012,7 +1009,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     public void hideSearchComponent() {
-        Log.d(TAG, "SEARCH COMPONENT: HIDE");
+        Print.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
             if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
@@ -1027,7 +1024,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
+            Print.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
         }
     }
 
@@ -1056,7 +1053,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private Runnable run = new Runnable() {
         @Override
         public void run() {
-            Log.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText().toString());
+            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText().toString());
             getSuggestions();
         }
     };
@@ -1069,11 +1066,11 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
-        Log.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
+        Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
 
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionHelper(), bundle,
+        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
                 new IResponseCallback() {
 
                     @Override
@@ -1099,13 +1096,13 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void processErrorSearchEvent(Bundle bundle) {
-        Log.d(TAG, "SEARCH COMPONENT: ON ERROR");
+        Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
-        Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
+        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
+        Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
+            Print.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
             return;
         }
         if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
@@ -1143,12 +1140,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void processSuccessSearchEvent(Bundle bundle) {
-        Log.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
+        Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        List<SearchSuggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        List<Suggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
-        Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
+        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
+        Print.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
 
         // Validate current objects
         if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
@@ -1165,11 +1162,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Validate current search
         if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
                 || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Log.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
+            Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
         // Show suggestions
-        Log.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
+        Print.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
         Bundle params = new Bundle();
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
@@ -1200,7 +1197,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Displays the number of items that are currently on the shopping cart as well as its value. This information is displayed on the navigation list
      */
     public void updateCartInfo() {
-        Log.d(TAG, "ON UPDATE CART INFO");
+        Print.d(TAG, "ON UPDATE CART INFO");
 //        if (JumiaApplication.INSTANCE.getCart() != null) {
 //            Log.d(TAG, "updateCartInfo value = "
 //                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
@@ -1210,9 +1207,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     public void updateCartInfoInActionBar() {
-        Log.d(TAG, "ON UPDATE CART IN ACTION BAR");
+        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
         if (mActionCartCount == null) {
-            Log.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
+            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
 
@@ -1344,11 +1341,11 @@ public abstract class BaseActivity extends ActionBarActivity {
                         onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
-                        Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+                        Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
                         break;
                 }
             } else {
-                Log.d(TAG, "selected navAction is already being shown");
+                Print.d(TAG, "selected navAction is already being shown");
             }
 
             // only hide dropdown for Spinner if hideMyProfile flag is activated
@@ -1403,7 +1400,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         }
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
-            Log.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
+            Print.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
             // Set text and force measure
             subtitleView.setText(subtitle);
             // Set title
@@ -1551,13 +1548,13 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             }
         } catch (RuntimeException e) {
-            Log.w(TAG, "" + e);
+            Print.w(TAG, "" + e);
         }
 
     }
 
     public void hideKeyboard() {
-        Log.i(TAG, "HIDE KEYBOARD");
+        Print.i(TAG, "HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;
         if (v == null) {
@@ -1568,7 +1565,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public void showKeyboard() {
         // Log.d( TAG, "showKeyboard" );
-        Log.i(TAG, "code1here showKeyboard");
+        Print.i(TAG, "code1here showKeyboard");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
         // use the above as the method below does not always work
@@ -1580,6 +1577,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         /*
          * NOTE: Others sign out methods are performed in {@link LogOut}.
          */
+        // Logout Facebook
+        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
@@ -1663,7 +1662,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Toast.LENGTH_LONG is 3500 seconds. <br> Toast.LENGTH_SHORT is 2000 seconds.
      */
     public void doubleBackPressToExit() {
-        Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
+        Print.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
         // If was pressed once
         if (backPressedOnce) {
             fragmentController.popLastEntry();
@@ -1692,7 +1691,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @return true/false
      */
     public boolean setCheckoutHeader(int checkoutStep) {
-        Log.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
+        Print.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
 
         int visibility = View.VISIBLE;
         boolean result = true;
@@ -1741,7 +1740,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 updateBaseComponentsOutCheckout(visibility);
                 break;
             default:
-                Log.e(TAG, "checkoutStep unknown");
+                Print.e(TAG, "checkoutStep unknown");
                 visibility = View.GONE;
                 result = false;
                 updateBaseComponentsOutCheckout(visibility);
@@ -1758,7 +1757,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void updateBaseComponentsOutCheckout(int visibility) {
-        Log.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
+        Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
         findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
@@ -1771,7 +1770,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void updateBaseComponentsInCheckout(int visibility) {
-        Log.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
+        Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
         // Set header visibility
         findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
@@ -1867,7 +1866,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     public void onCheckoutHeaderClickListener(View view) {
-        Log.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
+        Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
         int id = view.getId();
         /*
         // CHECKOUT_ABOUT_YOU
@@ -1917,7 +1916,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void recoverUserDataFromBackground() {
-        Log.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
+        Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
             triggerAutoLogin();
@@ -1935,19 +1934,19 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Get cart
      */
     public void triggerGetShoppingCartItemsHelper() {
-        Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
+        Print.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+        //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
         JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(Bundle bundle) {
-                Log.i(TAG, "ON REQUEST ERROR: CART");
+                Print.i(TAG, "ON REQUEST ERROR: CART");
                 //...
             }
 
             @Override
             public void onRequestComplete(Bundle bundle) {
-                Log.i(TAG, "ON REQUEST COMPLETE: CART");
+                Print.i(TAG, "ON REQUEST COMPLETE: CART");
                 updateCartInfo();
             }
         });
@@ -1957,21 +1956,21 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Auto login
      */
     private void triggerAutoLogin() {
-        Log.i(TAG, "ON TRIGGER: AUTO LOGIN");
+        Print.i(TAG, "ON TRIGGER: AUTO LOGIN");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(Bundle bundle) {
-                Log.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
+                Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
             public void onRequestComplete(Bundle bundle) {
-                Log.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
+                Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer

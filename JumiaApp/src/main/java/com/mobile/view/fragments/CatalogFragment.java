@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,24 +18,26 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.CatalogPage;
-import com.mobile.framework.objects.FeaturedBox;
-import com.mobile.framework.objects.ITargeting;
-import com.mobile.framework.objects.Product;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
+import com.mobile.newFramework.objects.catalog.FeaturedBox;
+import com.mobile.newFramework.objects.catalog.ITargeting;
+import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -49,15 +52,13 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
+import java.util.Set;
 
 /**
  * Catalog fragment.
@@ -151,13 +152,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Load line to active top button
         mTopButtonActivateLine = setButtonActiveLine(mIsToShowGridLayout);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Log.i(TAG, "ARGUMENTS: " + arguments.toString());
+            Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mCatalogUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mSearchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
@@ -170,7 +171,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
-            Log.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
+            Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
             mSearchQuery = savedInstanceState.getString(ConstantsIntentExtra.SEARCH_QUERY);
@@ -189,7 +190,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
         mIsToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
         mNumberOfColumns = getResources().getInteger(mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
@@ -232,7 +233,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
         // Validate data
         onValidateDataState();
     }
@@ -244,7 +245,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         trackPageAdjust();
         if(!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null){
@@ -259,7 +260,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE");
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the current content
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putString(ConstantsIntentExtra.CONTENT_URL, mCatalogUrl);
@@ -278,7 +279,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -288,7 +289,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -298,7 +299,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -308,7 +309,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -322,7 +323,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * - Case not empty show data<br>
      */
     private void onValidateDataState() {
-        Log.i(TAG, "ON VALIDATE DATA STATE");
+        Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
         if (TextUtils.isEmpty(mCatalogUrl) && TextUtils.isEmpty(mSearchQuery)) {
             showContinueShopping();
@@ -349,7 +350,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param catalogPage - the saved instance
      */
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
-        Log.i(TAG, "ON RECOVER CATALOG");
+        Print.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
         // Set sort button
@@ -384,7 +385,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param catalogPage - The current catalog page
      */
     private void onUpdateCatalogContainer(CatalogPage catalogPage) {
-        Log.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
+        Print.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
         // Case first time save catalog
         if (mCatalogPage == null) {
             mCatalogPage = catalogPage;
@@ -467,14 +468,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param  stringId The message.
      */
     private void showFilterError(int stringId) {
-        Log.i(TAG, "ON SHOW FILTER NO RESULT");
+        Print.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
         // Show layout
-        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+//        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Print.d(TAG, "ON CLICK: FILTER BUTTON");
+//                onClickFilterButton();
+//            }
+//        });
+        showErrorFragment(stringId, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                Print.d(TAG, "ON CLICK: FILTER BUTTON");
                 onClickFilterButton();
             }
         });
@@ -484,14 +492,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Show the no filter result.
      */
     private void showFilterNoResult() {
-        showFilterError(R.string.catalog_no_results);
+        showFilterError(ErrorLayoutFactory.CATALOG_NO_RESULTS);
     }
 
     /**
      * Show the no filter unexpected error.
      */
     private void showFilterUnexpectedError(){
-        showFilterError(R.string.server_error);
+        showFilterError(ErrorLayoutFactory.CATALOG_UNEXPECTED_ERROR);
     }
 
     /**
@@ -500,7 +508,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param featuredBox - all data to show the feature box
      */
     private void showFeaturedBoxNoResult(FeaturedBox featuredBox) {
-        Log.i(TAG, "ON SHOW FEATURED BOX");
+        Print.i(TAG, "ON SHOW FEATURED BOX");
         // Inflate view
         mNoResultStub.setVisibility(View.VISIBLE);
         // Show featured box
@@ -509,7 +517,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFragmentContentContainer();
         } else {
             // Case fail show continue
-            Log.e(TAG, "No featureBox!");
+            Print.e(TAG, "No featureBox!");
             showContinueShopping();
         }
     }
@@ -557,7 +565,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onClick(View view) {
-        Log.i(TAG, "ON CLICK VIEW");
+        Print.i(TAG, "ON CLICK VIEW");
         // Get id
         int id = view.getId();
         // Case sort button
@@ -590,7 +598,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Process the click on wizard button
      */
     private void onClickWizardButton() {
-        Log.i(TAG, "ON CLICK FILTER BUTTON");
+        Print.i(TAG, "ON CLICK FILTER BUTTON");
         WizardPreferences.changeState(getBaseActivity(), WizardPreferences.WizardType.CATALOG);
         mWizardStub.setVisibility(View.GONE);
     }
@@ -599,7 +607,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Process the click on filter button
      */
     private void onClickFilterButton() {
-        Log.i(TAG, "ON CLICK FILTER BUTTON");
+        Print.i(TAG, "ON CLICK FILTER BUTTON");
         try {
             // Show dialog
             Bundle bundle = new Bundle();
@@ -607,7 +615,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
             newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
+            Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
     }
 
@@ -617,7 +625,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param filterValues - the new content values from dialog
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
-        Log.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
+        Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         // Contains the new search query (Brand filter)
         if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
             // Used to indicate that has filter q=<BRAND>
@@ -645,7 +653,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param button - the clicked view
      */
     private void onClickSwitchColumnsButton(View button) {
-        Log.i(TAG, "ON CLICK COLUMNS BUTTON");
+        Print.i(TAG, "ON CLICK COLUMNS BUTTON");
         // Case selected is showing the GRID LAYOUT and the LIST ICON
         boolean mIsToShowGridLayout = button.isSelected();
         // Save user preference 
@@ -669,7 +677,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Process the click on button to go top
      */
     private void onClickGotoTopButton() {
-        Log.i(TAG, "ON CLICK SCROLL TOP BUTTON");
+        Print.i(TAG, "ON CLICK SCROLL TOP BUTTON");
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
         // Scroll faster until mark line
@@ -700,7 +708,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Process the click on sort button
      */
     private void onClickSortButton() {
-        Log.i(TAG, "ON CLICK SORT BUTTON");
+        Print.i(TAG, "ON CLICK SORT BUTTON");
         // Create array list of strings
         ArrayList<String> mSortOptions = new ArrayList<>();
         for (CatalogSort sort : CatalogSort.values()) {
@@ -769,7 +777,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            Log.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
+            Print.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 RocketImageLoader.getInstance().stopProcessingQueue();
             } else {
@@ -817,7 +825,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Trigger used to get a catalog.<br> Is sent the URL, arguments and indication to save or not related items.
      */
     private void triggerGetCatalogPage(int page) {
-        Log.i(TAG, "TRIGGER GET PAGINATED CATALOG");
+        Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
         // Create catalog request parameters
         ContentValues catalogValues = new ContentValues();
         catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
@@ -825,11 +833,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         catalogValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
         catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
+        if(getArguments() != null && getArguments().getParcelable(ConstantsIntentExtra.CATALOG_QUERIE) != null){
+            Uri data = getArguments().getParcelable(ConstantsIntentExtra.CATALOG_QUERIE);
+
+            // Get filters
+            Set<String> filters = data.getQueryParameterNames();
+            // Get all params
+            if (filters.size() > 0) {
+                for (String key : filters) {
+                    mCurrentFilterValues.put(key, data.getQueryParameter(key));
+                }
+            }
+        }
         catalogValues.putAll(mCurrentFilterValues);
+
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
-        bundle.putParcelable(GetCatalogPageHelper.CATALOG_ARGUMENTS, catalogValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, catalogValues);
         bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
@@ -866,10 +888,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS");
+        Print.i(TAG, "ON SUCCESS");
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get the catalog
@@ -878,7 +900,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
-            Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
 
             if (catalogPage.getPage() == 1){
@@ -891,7 +913,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case invalid success response
         else {
-            Log.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
+            Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
             showContinueShopping();
         }
     }
@@ -902,10 +924,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR: " + mCurrentFilterValues.toString());
+        Print.i(TAG, "ON ERROR: " + mCurrentFilterValues.toString());
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get error code
@@ -913,17 +935,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
         // Case error on load more data
         if (isLoadingMoreData) {
-            Log.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
+            Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
             onLoadingMoreRequestError(bundle);
         }
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
-            Log.i(TAG, "ON SHOW FILTER NO RESULT");
+            Print.i(TAG, "ON SHOW FILTER NO RESULT");
             showFilterNoResult();
         }
         // Case error on request data without filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
-            Log.i(TAG, "ON SHOW NO RESULT");
+            Print.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
             FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
             // Show no result layout
@@ -937,7 +959,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case No Network
         else if (super.handleErrorEvent(bundle)) {
-            Log.i(TAG, "HANDLE BASE FRAGMENT");
+            Print.i(TAG, "HANDLE BASE FRAGMENT");
         }
         // Case unexpected error
         else {
@@ -987,12 +1009,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-    @Override
     protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
         // Tracking event
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
         // Create campaign using the URL
-        ArrayList<TeaserCampaign> campaigns = createSignleCampaign(targetTitle, targetUrl);
+        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
         bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
