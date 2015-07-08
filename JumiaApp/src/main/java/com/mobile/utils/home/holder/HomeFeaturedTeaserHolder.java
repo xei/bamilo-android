@@ -17,9 +17,11 @@ public class HomeFeaturedTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public ExpandableGridViewComponent container;
 
+    /**
+     * Constructor
+     */
     public HomeFeaturedTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         container = (ExpandableGridViewComponent) view.findViewById(R.id.home_teaser_featured_stores_container_grid);
@@ -36,11 +38,6 @@ public class HomeFeaturedTeaserHolder extends BaseTeaserViewHolder {
         } else {
             Log.i(TAG, "FEATURED_TEASER: ADAPTER IS NOT NULL");
         }
-    }
-
-    @Override
-    public void onUpdate() {
-
     }
 
 }

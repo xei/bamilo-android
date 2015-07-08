@@ -112,6 +112,7 @@
     <string name="gShareApp">ShareApp</string>
     <string name="gAccountCreateAddress">AccountCreateAddress</string>
     <string name="gPurchase">Purchase</string>
+    <string name="gBannerClick">BannerClick</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
