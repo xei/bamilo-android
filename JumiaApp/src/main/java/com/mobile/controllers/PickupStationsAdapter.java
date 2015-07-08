@@ -34,6 +34,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         public ImageView image;
         public RadioButton button;
         public TextView fee;
+        public View info;
     }
 
     public PickupStationsAdapter(Context context, List<PickUpStationObject> objects) {
@@ -61,6 +62,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
             pickupStationViewHolder.image = (ImageView) convertView.findViewById(R.id.pickup_station_image);
             pickupStationViewHolder.button = (RadioButton) convertView.findViewById(R.id.pickup_station_radio_button);
             pickupStationViewHolder.fee = (TextView) convertView.findViewById(R.id.pickup_station_shipping_fee);
+            pickupStationViewHolder.info = convertView.findViewById(R.id.pickup_station_shipping_fee_info);
             convertView.setTag(pickupStationViewHolder);
         } else {
             pickupStationViewHolder = (PickupStationViewHolder) convertView.getTag();
@@ -114,6 +116,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
             String fee = String.format(getContext().getString(R.string.shipping_fee), shippingFee);
             pickupStationViewHolder.fee.setText(Html.fromHtml(fee));
             pickupStationViewHolder.fee.setVisibility(View.VISIBLE);
+            pickupStationViewHolder.info.setVisibility(View.VISIBLE);
         }
     }
 

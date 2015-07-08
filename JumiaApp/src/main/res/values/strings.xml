@@ -201,6 +201,7 @@
     <string name="pickup_station_city">&lt;b>City:&lt;/b> %s</string>
     <string name="pickup_station_opening_hours">&lt;b>Opening Hours:&lt;/b> %s</string>
     <string name="shipping_fee">&lt;b>Shipping Fee:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Fee added to Total Amount Payable\"</string>
     <string name="shipping_time">&lt;b>Shipping Time:&lt;/b> %s</string>
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
