@@ -2,7 +2,6 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -10,10 +9,8 @@ import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -31,6 +28,12 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
 
     protected Map<String, String> mData;
 
+    private BaseResponse mAigResponse;
+
+    /*
+     * ############# TEST CONSTRUCTOR #############
+     */
+
     public AigTestCase() {
         mEventType = getEventType();
         mInterfaceName = getAigInterfaceName();
@@ -46,6 +49,10 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
 
     public abstract Map<String, String> getData();
 
+    /*
+     * ############# JUNIT #############
+     */
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -56,30 +63,57 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(mRequestBundle, this).execute(mInterfaceName);
+        // Request
+        onRequest();
+        // Wait
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        // Response
+        testResponse(mAigResponse);
+    }
+
+    public abstract void testResponse(BaseResponse response);
+
+    /*
+     * ############# RETROFIT INTERFACE #############
+     */
+
+    private void onRequest() {
+        new BaseRequest(mRequestBundle, this).execute(mInterfaceName);
     }
 
     @Override
     public void onRequestComplete(BaseResponse response) {
+        Print.d("TEST SUCCESS: " + response.hadSuccess());
+        // Save response
+        mAigResponse = response;
+        // tests returned then countdown semaphore
+        mCountDownLatch.countDown();
     }
 
     @Override
     public void onRequestError(BaseResponse response) {
+        Print.d("TEST ERROR: " + response.hadSuccess());
+        // Save response
+        mAigResponse = response;
+        // tests returned then countdown semaphore
+        mCountDownLatch.countDown();
     }
 
-     public void analyzeOnErrorEvent(final BaseResponse response) {
+    /*
+     * ############# COMMON METHODS #############
+     */
 
-        //final JumiaError jumiaError = response.getError();
-        ErrorCode errorCode = response.getError().getErrorCode();
-        Map<String, List<String>> errorMessages = response.getErrorMessages();
-        // emit a test fail on main thread so that it can be catched and reported by the fail caching mechanism
-        Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorMessages != null ? errorMessages.toString() : " no message") + " when requesting: " + getEventType());
-    }
+//     public void analyzeOnErrorEvent(final BaseResponse response) {
+//        //final JumiaError jumiaError = response.getError();
+//        ErrorCode errorCode = response.getError().getErrorCode();
+//        Map<String, List<String>> errorMessages = response.getErrorMessages();
+//        // emit a test fail on main thread so that it can be catched and reported by the fail caching mechanism
+//        Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorMessages != null ? errorMessages.toString() : " no message") + " when requesting: " + getEventType());
+//    }
 }
 
 

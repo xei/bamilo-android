@@ -1,16 +1,14 @@
 package com.mobile.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mobile.components.customfontviews.TextView;
-import android.content.res.Resources;
-import android.view.View;
 import android.view.ViewStub;
 
 import com.mobile.components.customfontviews.AutoResizeTextView;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.orders.OrderSummary;

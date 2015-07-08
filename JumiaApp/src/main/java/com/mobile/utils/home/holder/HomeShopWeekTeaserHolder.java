@@ -44,8 +44,8 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
         BaseTeaserObject rightX = group.getData().get(1);
         RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
         RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
-        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener);
-        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener);
+        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener, 0);
+        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
     }
 
 }

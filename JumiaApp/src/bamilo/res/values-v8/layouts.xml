@@ -41,7 +41,7 @@
     <item name="action_bar_menu_item_layout" 		type="layout">@layout/_v8_action_bar_menu_item_layout</item>
     
 	<!-- FRAGMENT ROOT -->
-	<item name="no_connection_button_retry" 		type="layout">@layout/_v8_no_connection_button_retry</item>
+	<item name="error_button_layout" 		        type="layout">@layout/_v8_error_button_retry</item>
 
     <!-- CATALOG -->
     <item name="catalog_fragment_main" 				type="layout">@layout/_v8_catalog_fragment_main</item>
@@ -58,7 +58,6 @@
     <item name="product_specs_fragment"             type="layout">@layout/_v8_product_specs_fragment</item>
     <item name="product_specs_container"            type="layout">@layout/_v8_product_specs_container</item>
     <item name="product_specs_container_item"       type="layout">@layout/_v8_product_specs_container_item</item>
-    <item name="details_info_fragment_main"         type="layout">@layout/_v8_details_info_fragment_main</item>
 
     <!-- NAVIGATION DRAWER -->
     <item name="navigation_fragment_main"           type="layout">@layout/_v8_navigation_fragment_main</item>

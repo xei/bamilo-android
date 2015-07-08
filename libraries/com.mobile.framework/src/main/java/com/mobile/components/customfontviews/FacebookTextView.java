@@ -8,7 +8,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import com.facebook.widget.LoginButton;
+import com.facebook.login.widget.LoginButton;
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
 

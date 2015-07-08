@@ -134,7 +134,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         // Set countdown
         setCountDown(campaign);
         // Set click listener
-        TeaserViewFactory.setClickableView(container, campaign, listener);
+        TeaserViewFactory.setClickableView(container, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
     }
 
     /**
@@ -143,7 +143,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     private void setMoreButton(BaseTeaserObject campaign) {
         // Has more campaigns
         if(campaigns.size() > 1) {
-            TeaserViewFactory.setClickableView(more, campaign, listener);
+            TeaserViewFactory.setClickableView(more, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
         } else {
             more.setOnClickListener(null);
             more.setVisibility(View.GONE);

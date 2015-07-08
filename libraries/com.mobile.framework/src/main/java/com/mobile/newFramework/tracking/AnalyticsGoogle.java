@@ -61,6 +61,8 @@ public class AnalyticsGoogle {
 
 	private static boolean isCheckoutStarted = false;
 
+	private static final long NO_VALUE = -1;
+
 	/**
 	 * Startup GA
 	 * @param context
@@ -198,15 +200,20 @@ public class AnalyticsGoogle {
 	 */
 	private void trackEvent(String category, String action, String label, long value) {
 		Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
-		mTracker.send(new HitBuilders.EventBuilder()
-    	.setCategory(category)
-    	.setAction(action)
-    	.setLabel(label)
-    	.setValue(value)
-    	.setCampaignParamsFromUrl(getGACampaign())
-    	.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-		.build());
+
+		HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+				.setCategory(category)
+				.setAction(action)
+				.setLabel(label)
+				.setCampaignParamsFromUrl(getGACampaign())
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+		// Only set Value if is a valid Value
+		if(value != NO_VALUE){
+			builder.setValue(value);
+		}
+
+		mTracker.send(builder.build());
 	}
 	
 	/**
@@ -356,6 +363,49 @@ public class AnalyticsGoogle {
 		String action = mContext.getString(event.getAction());
 		// Tracking
 		trackEvent(category, action, label, value);
+	}
+
+	/**
+	 *
+	 * specific function to track purchase flow from home page teasers
+	 *
+	 * @param event
+	 * @param label
+	 * @param value
+	 * @param position
+	 */
+	public void trackBannerFlowPurchase(TrackingEvent event, String label, long value, int position) {
+		// Validation
+		if (!isEnabled) return;
+		// Get and send page
+		String category = mContext.getString(event.getCategory());
+		String action = mContext.getString(event.getAction());
+		if(position != -1){
+			category = category+"_"+position;
+		}
+		// Tracking
+		trackEvent(category, action, label, value);
+	}
+
+	/**
+	 *
+	 * Event to track the specific teaser and position the user clicked
+	 *
+	 * @param event
+	 * @param label
+	 * @param position
+	 */
+	public void trackEventBannerClick(TrackingEvent event, String label, int position) {
+		// Validation
+		if (!isEnabled) return;
+		// Get and send page
+		String category = mContext.getString(event.getCategory());
+		String action = mContext.getString(TrackingEvent.HOME_BANNER_CLICK.getAction());
+		if(position != -1){
+			category = category+"_"+position;
+		}
+		// Tracking
+		trackEvent(category, action, label, NO_VALUE);
 	}
 
 	/**

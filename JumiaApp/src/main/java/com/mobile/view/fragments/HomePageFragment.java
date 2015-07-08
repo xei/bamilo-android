@@ -205,9 +205,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
         }
-        for(BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders){
-            if(baseTeaserViewHolder instanceof HomeMainTeaserHolder){
-                outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+
+        if(!CollectionUtils.isEmpty(mViewHolders)) {
+            for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
+                if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
+                    outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                }
             }
         }
     }
@@ -391,6 +394,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         int origin = (int) view.getTag(R.id.target_teaser_origin);
         // Get teaser group type
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
+        if(view.getTag(R.id.target_list_position) != null){
+            originGroupType.setTrackingPosition((int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(originGroupType, targetUrl, (int) view.getTag(R.id.target_list_position));
+        }
         Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);

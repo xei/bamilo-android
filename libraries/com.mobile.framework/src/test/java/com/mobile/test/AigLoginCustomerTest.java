@@ -5,8 +5,6 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
-import org.junit.Assert;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,42 +29,15 @@ public class AigLoginCustomerTest extends AigTestCase {
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
-        data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
+        data.put("Alice_Module_Customer_Model_LoginForm[password]", "1234567");
         return data;
     }
 
     @Override
-    public void onRequestComplete(BaseResponse response) {
-        Print.d("TEST SUCCESS: " + response.hadSuccess());
+    public void testResponse(BaseResponse response) {
+        Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        // tests returned then countdown semaphore
-        mCountDownLatch.countDown();
+        //assertFalse("Success is false", response.hadSuccess());
+        //Assert.fail("Success is false");
     }
-
-    @Override
-    public void onRequestError(BaseResponse response) {
-        Print.d("TEST ERROR: " + response.hadSuccess());
-        //final boolean success = response.hadSuccess();
-        try {
-            analyzeOnErrorEvent(response);
-        } finally {
-            // tests returned then countdown semaphore
-            mCountDownLatch.countDown();
-
-            //assertFunction();
-            Assert.fail("Success is false");
-        }
-    }
-
-    /*
-    public synchronized void assertFunction(){
-        new Runnable() {
-            @Override
-            public void run() {
-                Assert.fail("Success is false");
-                //Assert.fail("Request failed error code: " + errorCode + ". Message: " + (errorListFinal != null ? errorListFinal.toString() : " no message") + " when requesting: " + eventType);
-            }
-        };
-    }*/
-
 }
