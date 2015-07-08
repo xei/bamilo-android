@@ -78,6 +78,8 @@ public class DialogFilterFragment extends DialogFragment {
 
     private Object[] initialFilterValues;
 
+    private boolean toCancelFilters;
+
     /**
      * Empty constructor
      */
@@ -109,6 +111,7 @@ public class DialogFilterFragment extends DialogFragment {
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
         initialFilterValues = new Object[mFilters.size()];
+        toCancelFilters = true;
     }
 
     /*
@@ -224,6 +227,9 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        if(toCancelFilters){
+            goToInitialFilterValues();
+        }
     }
     
     /**
@@ -451,8 +457,8 @@ public class DialogFilterFragment extends DialogFragment {
         }
 
         private void processOnClickCancel() {
+            mParent.toCancelFilters = true;
             mParent.dismiss();
-            mParent.goToInitialFilterValues();
         }
 
         /**
@@ -466,6 +472,7 @@ public class DialogFilterFragment extends DialogFragment {
             mContentValues = createContentValues();
             // Validate and send to catalog fragment
             mParent.onSubmitFilterValues(mContentValues);
+            mParent.toCancelFilters = false;
             // Dismiss dialog
             mParent.dismiss();
         }

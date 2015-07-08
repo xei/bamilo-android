@@ -540,7 +540,7 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, value,orderNr, coupon, paymentMethod, "", "");
         // FB
-        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, valueConverted, items.size());        
+        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, valueConverted, items.size());
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
