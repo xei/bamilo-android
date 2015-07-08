@@ -12,17 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.LoggingBehavior;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
@@ -58,7 +47,6 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
@@ -67,10 +55,7 @@ import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -259,7 +244,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Print.i(TAG, "code1facebook onActivityResult");
-        Log.e("onActivityResult","requestCode:"+requestCode+" resultCode:"+resultCode+" data:"+data);
+        Log.e("onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " data:" + data);
 //        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
