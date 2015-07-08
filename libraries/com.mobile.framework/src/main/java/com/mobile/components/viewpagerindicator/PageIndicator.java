@@ -1,4 +1,4 @@
-package com.mobile.components.infiniteviewpager;
+package com.mobile.components.viewpagerindicator;
 /*
  * Copyright (C) 2011 Patrik Akerfeldt
  * Copyright (C) 2011 Jake Wharton

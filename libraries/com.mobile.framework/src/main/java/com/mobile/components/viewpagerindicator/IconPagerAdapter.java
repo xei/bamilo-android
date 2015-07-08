@@ -1,4 +1,4 @@
-package com.mobile.controllers;
+package com.mobile.components.viewpagerindicator;
 
 public interface IconPagerAdapter {
     /**
