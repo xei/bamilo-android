@@ -1,6 +1,5 @@
 package com.mobile.components.recycler;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +31,6 @@ public class HorizontalListView extends RecyclerView {
 
     /**
      * Constructor
-     * @param context
      */
     public HorizontalListView(Context context) {
         super(context);
@@ -41,8 +39,6 @@ public class HorizontalListView extends RecyclerView {
     
     /**
      * Constructor
-     * @param context
-     * @param attrs
      */
     public HorizontalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,9 +47,6 @@ public class HorizontalListView extends RecyclerView {
     
     /**
      * Constructor
-     * @param context
-     * @param attrs
-     * @param defStyle
      */
     public HorizontalListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -61,21 +54,25 @@ public class HorizontalListView extends RecyclerView {
     }
     
     /**
-     * 
-     * @param context
+     * Initialize the view with horizontal linear layout manager.
      */
     private void init(Context context) {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         setLayoutManager(mLayoutManager);
     }
 
+    /**
+     * Enable the touch interception and disallow the parent.<br>
+     * Used inside a view with horizontal scroll.
+     */
+    @SuppressWarnings("unused")
     public void enableTouchInterception(){
         interceptTouchEvent = true;
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.widget.HorizontalScrollView#onInterceptTouchEvent(android.view.MotionEvent)
      */
     @Override
@@ -84,20 +81,12 @@ public class HorizontalListView extends RecyclerView {
         // Get layout manager
         int firstC = ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         int lastC = ((LinearLayoutManager) getLayoutManager()).findLastCompletelyVisibleItemPosition();
-        //int firstV = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
-        //int lastV = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
         int count = getLayoutManager().getItemCount();
-        //Log.i(TAG, "onInterceptTouchEvent: Complete: " + firstC + "-" + lastC + " Visible:" + firstV + "-" + lastV + " Count:" + count + " " + bool);
-
         // Case empty or not fill
         if(count == 0 || lastC - firstC == count - 1) {
-            //Log.i(TAG, "Disallow");
             this.getParent().requestDisallowInterceptTouchEvent(false);
-            //setHorizontalScrollBarEnabled(false);
-            //setHorizontalFadingEdgeEnabled(false);
             return false;
         } else {
-            //Log.i(TAG, "Allow");
             // For old versions is necessary disable the intercept of touch event in the parent.
             validateTouchEvent(ev);
             // Intercept touch event
@@ -108,7 +97,6 @@ public class HorizontalListView extends RecyclerView {
     /**
      * Validate the current touch event to disable/enable other views, like ViewPager and ScrollView. 
      * For old versions is necessary disable the intercept of touch event in the parent.
-     * @param ev
      * @author sergiopereira
      */
     private void validateTouchEvent(MotionEvent ev) {
@@ -156,8 +144,8 @@ public class HorizontalListView extends RecyclerView {
     
     /**
      * Set the selected item.<br>
-     * The adpter must implement the interface {@link OnViewHolderSelected}. 
-     * @param position
+     * The adapter must implement the interface {@link OnViewHolderSelected}.
+     * @param position The selected position
      * @author sergiopereira
      * @throws RuntimeException
      */
@@ -167,14 +155,14 @@ public class HorizontalListView extends RecyclerView {
             ((OnViewHolderSelected) adapter).setSelectedPosition(position);
             scrollToPosition(position);
         } else {
-            throw new RuntimeException("The adpter must implement the interface 'OnViewHolderSelected' to set a selected position!");
+            throw new RuntimeException("The adapter must implement the interface 'OnViewHolderSelected' to set a selected position!");
         }
     }
 
     /**
      * Set the on item selected listener.<br>
-     * The adpter must implement the interface {@link OnViewHolderSelected}.
-     * @param listener
+     * The adapter must implement the interface {@link OnViewHolderSelected}.
+     * @param listener The selected listener
      */
     public void setOnItemSelectedListener(OnViewSelectedListener listener) {
         Adapter<?> adapter = getAdapter();
@@ -183,21 +171,6 @@ public class HorizontalListView extends RecyclerView {
         } else {
             throw new RuntimeException("The adpter must implement the interface OnViewHolderSelected to the on selected item listener!");
         }
-    }
-    
-    /**
-     * Method used to enable the reverse layout to support RTL direction.<br>
-     * Case SDK version >= JELLY_BEAN_MR1 (API 17), use native support (LAYOUT_DIRECTION_LOCALE).<br>
-     * @author sergiopereira
-     */
-    @SuppressLint("NewApi")
-    @Deprecated
-    public void enableReverseLayout() {
-        // Case API < 17: set reverse layout as true
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) 
-            ((LinearLayoutManager) getLayoutManager()).setReverseLayout(true);
-        // Case API >= 17: use the native support
-        else setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
     }
 
     /**
@@ -225,14 +198,12 @@ public class HorizontalListView extends RecyclerView {
      */
     public interface OnViewHolderSelected {
         /**
-         * Set the selected position.<br> 
-         * @param position
+         * Set the selected position.<br>
          * @author sergiopereira
          */
         void setSelectedPosition(int position);
         /**
          * Set the listener for on item selected.<br>
-         * @param listener
          * @author sergiopereira
          */
         void setOnViewHolderSelected(OnViewSelectedListener listener);
@@ -246,8 +217,6 @@ public class HorizontalListView extends RecyclerView {
     public interface OnViewSelectedListener {
         /**
          * Receives the selected view and the respective position
-         * @param view
-         * @param position
          */
         void onViewSelected(View view, int position, String string);
     }
