@@ -1236,41 +1236,61 @@ public class TrackerDelegator {
     }
 
     /**
-     * fires the GA event for a specific Home teaser
+     * fires the GA event when the user finish a order, originating in one of the home teasers
      * @param item
      * @param groupType
      */
     private static void trackBannerType(PurchaseItem item,TeaserGroupType groupType){
-
-    switch (groupType){
-        case MAIN_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case SMALL_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case CAMPAIGNS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case SHOP_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case BRAND_TEASERS:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case SHOP_OF_WEEK:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case FEATURED_STORES:
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
-            break;
-        case UNKNOWN:
-            Print.w(TAG, "UNKNOWN TEASER GROUP");
-            break;
-        default:
-            break;
+        AnalyticsGoogle.get().trackBannerFlowPurchase(getTrackEventFromTeaserGroupType(groupType), item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
     }
-}
+
+    /**
+     * fires a GA event every time the user taps on one of the home teasers
+     * @param groupType
+     * @param targetUrl
+     */
+    public static void trackBannerClicked(TeaserGroupType groupType, String targetUrl, int position){
+        AnalyticsGoogle.get().trackEventBannerClick(getTrackEventFromTeaserGroupType(groupType), targetUrl, position);
+    }
+
+    /**
+     * this function matchs the home page teaser type with a tracking event
+     * @param groupType
+     * @return
+     */
+    public static TrackingEvent getTrackEventFromTeaserGroupType(TeaserGroupType groupType){
+        // Default value
+        TrackingEvent event = TrackingEvent.MAIN_BANNER_CLICK;
+        switch (groupType){
+            case MAIN_TEASERS:
+                event = TrackingEvent.MAIN_BANNER_CLICK;
+                break;
+            case SMALL_TEASERS:
+                event = TrackingEvent.SMALL_BANNER_CLICK;
+                break;
+            case CAMPAIGNS:
+                event =  TrackingEvent.CAMPAIGNS_BANNER_CLICK;
+                break;
+            case SHOP_TEASERS:
+                event =  TrackingEvent.SHOP_BANNER_CLICK;
+                break;
+            case BRAND_TEASERS:
+                event =  TrackingEvent.BRAND_BANNER_CLICK;
+                break;
+            case SHOP_OF_WEEK:
+                event =  TrackingEvent.SHOPS_WEEK_BANNER_CLICK;
+                break;
+            case FEATURED_STORES:
+                event =  TrackingEvent.FEATURE_BANNER_CLICK;
+                break;
+            case UNKNOWN:
+                event =  TrackingEvent.MAIN_BANNER_CLICK;
+                Print.w(TAG, "UNKNOWN TEASER GROUP");
+                break;
+
+        }
+         return event;
+    }
     /**
      * DeepLink Reattribution, Adjust
      * @param intent
