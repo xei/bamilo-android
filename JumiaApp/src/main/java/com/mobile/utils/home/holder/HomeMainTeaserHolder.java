@@ -92,7 +92,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
-
+            // Set default position
             pager.setCurrentItem(viewPagerPosition);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
@@ -116,8 +116,8 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 //    }
 
     @Override
-    public void onUpdate() {
-
+    public void applyMargin() {
+        // ...
     }
 
     public int getViewPagerPosition() {
@@ -126,9 +126,5 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
                 : pager.getCurrentItem();
         return viewPagerPosition;
     }
-
-    @Override
-    public void apllyMargin() {
-
-    }
+    
 }

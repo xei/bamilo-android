@@ -149,7 +149,9 @@ public enum TrackingEvent {
 
 	SHOPS_WEEK_BANNER_CLICK(R.string.gshopweekbanner, R.string.gPurchase),
 
-	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase);
+	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase),
+
+	HOME_BANNER_CLICK(-1, R.string.gBannerClick);
 	
 	/**
 	 * ############## CLASS ##############
@@ -158,7 +160,7 @@ public enum TrackingEvent {
 	private int mCategoryId;
 	
     private int mActionId;
-    
+
     /**
      * Contstrutor
      * @param category
