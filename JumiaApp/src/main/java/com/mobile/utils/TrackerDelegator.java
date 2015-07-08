@@ -54,31 +54,24 @@ public class TrackerDelegator {
     public static final String FACEBOOKLOGIN_KEY = "facebook_login";
     public static final String SEARCH_CRITERIA_KEY = "search_criteria";
     public static final String SEARCH_RESULTS_KEY = "search_results";
-    public static final String SORT_KEY = "sort";
     public static final String SKU_KEY = "sku";
     public static final String PRICE_KEY = "price";
     public static final String LOCATION_KEY = "location";
     public static final String START_TIME_KEY = "start";
     public static final String CATEGORY_KEY = "category";
     public static final String COUPON_KEY = "coupon";
-    public static final String PAGE_NUMBER_KEY = "page_number";
     public static final String PRODUCT_KEY = "product";
-    public static final String REVIEW_KEY = "review";
     public static final String RATINGS_KEY = "ratings";
     public static final String RATING_KEY = "rating";
     public static final String PURCHASE_KEY = "purchase";
     public static final String EMAIL_KEY = "email";
     public static final String GA_STEP_KEY = "ga_step";
     public static final String PAYMENT_METHOD_KEY = "payment_method";
-    public static final String ERROR_KEY = "error";
     public static final String ORDER_NUMBER_KEY = "order_number";
     public static final String VALUE_KEY = "value";
-    public static final String ITEMS_KEY = "items";
     public static final String SOURCE_KEY = "source";
     public static final String PATH_KEY = "path";
     public static final String NAME_KEY = "name";
-    public static final String URL_KEY = "url";
-    public static final String SIMPLE_KEY = "simple";
     public static final String BRAND_KEY = "brand";
     public static final String RELATED_ITEM = "related_item";
     public static final String FAVOURITES_KEY = "favourites";
@@ -94,12 +87,10 @@ public class TrackerDelegator {
     
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
-    private static final String SIGNUP_KEY_FOR_CHECKOUT = "signup_for_checkout";
 
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
     private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
-    private static final String JSON_TAG_ITEMS_JSON = "products";
     
     private static final String SESSION_COUNTER = "sessionCounter";
     private static final String LAST_SESSION_SAVED = "lastSessionSaved";
@@ -169,7 +160,6 @@ public class TrackerDelegator {
     
     /**
      * Track the normal/auto login
-     * @param wasAutologin
      */
     public static void trackLoginFailed(boolean wasAutologin, String location, String method) {
         Print.i(TAG, "trackLoginFailed: autologin " + wasAutologin);
@@ -296,24 +286,6 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackShare("", sku, category);
     }
-
-    /**
-     * 
-     */
-    public static void trackCategoryView(String catKey) {
-//        try  {
-//            // Data
-//            String category = catKey;
-//            //int page = params.getInt(PAGE_NUMBER_KEY);
-//            TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
-//            // AD4Push
-//            Ad4PushTracker.get().trackCategorySelection();
-//            // GA
-//            AnalyticsGoogle.get().trackEvent(event, category, 0l);
-//        } catch (NullPointerException e) {
-//            Log.i(TAG, "WARNING: NPE ON TRACK CATEGORY ");
-//        }
-    }
     
     /**
      * 
@@ -359,7 +331,6 @@ public class TrackerDelegator {
 
     /**
      * Track signup successful.
-     * @param params
      */
     public static void trackSignupSuccessful(Bundle params) {
         Customer customer = params.getParcelable(CUSTOMER_KEY);
@@ -403,8 +374,6 @@ public class TrackerDelegator {
 
     /**
      * Track Checkout Step
-     * 
-     * @param params
      */
     public static void trackCheckoutStep(Bundle params) {
         try {
@@ -481,7 +450,7 @@ public class TrackerDelegator {
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getDouble(JSON_TAG_GRAND_TOTAL);
-            itemsJson = result.optJSONArray(JSON_TAG_ITEMS_JSON);
+            itemsJson = result.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
             valueConverted = result.optDouble(JSON_TAG_GRAND_TOTAL_CONVERTED, 0d);
             Print.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
@@ -492,7 +461,6 @@ public class TrackerDelegator {
         Double averageValue = 0d;
         //ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
 
-        // TODO: UPDATE THIS PARSER
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
 
         ArrayList<String> skus = new ArrayList<>();
@@ -506,7 +474,7 @@ public class TrackerDelegator {
         
         AnalyticsGoogle.get().trackPurchase(orderNr, valueConverted, items);
 
-        boolean isFirstCustomer = false;
+        boolean isFirstCustomer;
         
         if (customer == null) {
             Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
@@ -535,8 +503,8 @@ public class TrackerDelegator {
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, value);
         
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
-        String paymentMethod = "";
-        paymentMethod = params.getString(PAYMENT_METHOD_KEY);
+
+        String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         //GTM
         GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, value,orderNr, coupon, paymentMethod, "", "");
         // FB
@@ -548,18 +516,14 @@ public class TrackerDelegator {
         double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
-        String coupon = "";
-        coupon = params.getString(COUPON_KEY);
-        String paymentMethod = "";
-        paymentMethod = params.getString(PAYMENT_METHOD_KEY);
-        String shippingAmount = "";
-        shippingAmount = params.getString(SHIPPING_KEY);
-        String taxAmount = "";
-        taxAmount = params.getString(TAX_KEY);
+        String coupon = params.getString(COUPON_KEY);
+        String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
+        String shippingAmount = params.getString(SHIPPING_KEY);
+        String taxAmount = params.getString(TAX_KEY);
         
         int numberOfItems = params.getInt(TrackerDelegator.CART_COUNT);
 
-        Double averageValue = 0d;
+        Double averageValue;
         try {
             averageValue = cartValue / numberOfItems;
         } catch (IllegalArgumentException e) {
@@ -577,7 +541,7 @@ public class TrackerDelegator {
             skus.add(item.sku);
         }
 
-        boolean isFirstCustomer = false;
+        boolean isFirstCustomer;
         if (customer == null) {
             Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
             // Send the track sale without customer id
@@ -613,11 +577,11 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, cartValue, numberOfItems);
     }
 
-    public static void storeSignupProcess(Customer customer) {
-        Print.d(TAG, "storing signup tags");
-        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-        prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).apply();
-    }
+//    public static void storeSignupProcess(Customer customer) {
+//        Print.d(TAG, "storing signup tags");
+//        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+//        prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).apply();
+//    }
     
     public static void removeFirstCustomer(Customer customer) {
         Print.d(TAG, "remove first customer");
@@ -655,20 +619,12 @@ public class TrackerDelegator {
 
     private static boolean checkFirstCustomer(Customer customer) {
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-
-        if (!prefs.contains(customer.getEmail())) {
-            return true;
-        }
-
-        return prefs.getBoolean(customer.getEmail(),true);
-
+        return !prefs.contains(customer.getEmail()) || prefs.getBoolean(customer.getEmail(), true);
     }
 
 
     /**
      * Tracking the continue shopping
-     *
-     * @param userId
      */
     public static void trackCheckoutContinueShopping(String userId) {
         // GA
@@ -677,8 +633,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking the start of checkout
-     *
-     * @param userId
      */
     public static void trackCheckoutStart(TrackingEvent event, String userId, int cartQt, double cartValue) {
         // GA
@@ -693,8 +647,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking a timing
-     * 
-     * @param params
      */
     public static void trackLoadTiming(Bundle params) {
         int location = params.getInt(LOCATION_KEY);
@@ -721,8 +673,6 @@ public class TrackerDelegator {
     
     /**
      * Tracking a page for adjust
-     * 
-     * @param bundle
      */
     public static void trackPageForAdjust(TrackingPage screen, Bundle bundle) {
         if (null != bundle) {
@@ -738,18 +688,14 @@ public class TrackerDelegator {
 
     /**
      * Tracking a product added to cart
-     *
-     * @param bundle
      */
     public static void trackProductAddedToCart(Bundle bundle) {
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         // Data
         String brand = bundle.getString(BRAND_KEY);
-        String category = "";
-        category = bundle.getString(CATEGORY_KEY);
-        String subCategory = "";
-        subCategory = bundle.getString(SUBCATEGORY_KEY);
+        String category = bundle.getString(CATEGORY_KEY);
+        String subCategory = bundle.getString(SUBCATEGORY_KEY);
         double price = bundle.getDouble(PRICE_KEY);
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
@@ -787,8 +733,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking a complete product
-     *
-     * @param bundle
      */
     public static void trackProduct(Bundle bundle) {
         // Data
@@ -797,10 +741,8 @@ public class TrackerDelegator {
         String name = bundle.getString(NAME_KEY);
         String sku = bundle.getString(SKU_KEY);
         String brand = bundle.getString(BRAND_KEY);
-        String category = "";
-        category = bundle.getString(CATEGORY_KEY);
-        String subCategory = "";
-        subCategory = bundle.getString(SUBCATEGORY_KEY);
+        String category = bundle.getString(CATEGORY_KEY);
+        String subCategory = bundle.getString(SUBCATEGORY_KEY);
         double price = bundle.getDouble(PRICE_KEY);
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
@@ -816,8 +758,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking a campaign
-     * 
-     * @param utm
      */
     public static void trackGACampaign(Context context, String utm) {
         // GA
@@ -840,8 +780,6 @@ public class TrackerDelegator {
     
     /**
      * Track when the user views the favorites page (with the products)
-     * 
-     * @param args
      */
     public static void trackViewFavorites(Bundle args) {
         Bundle bundle = new Bundle();
@@ -860,10 +798,6 @@ public class TrackerDelegator {
     
     /**
      * Tracking add product to favorites
-     * 
-     * @param productSku
-     * @param productBrand
-     * @param productPrice
      */
     public static void trackAddToFavorites(String productSku, String productBrand, double productPrice, 
             double averageRating, double productDiscount, boolean fromCatalog, ArrayList<String> categories) {
@@ -906,8 +840,6 @@ public class TrackerDelegator {
     /**
      * Tracking remove product from favorites
      * h375id
-     *
-     * @param productSku
      */
     public static void trackRemoveFromFavorites(String productSku, double price, double averageRatingTotal) {
         // User
@@ -934,22 +866,19 @@ public class TrackerDelegator {
     }
 
     
-    /**
-     * Tracking a view Catalog
-     * 
-     */
-    public static void trackViewCatalog(String category, String subCategory, int pageNumber) {
-        // GTM
-        GTMManager.get().gtmTrackCatalog(category, subCategory, pageNumber);
-
-    }
+//    /**
+//     * Tracking a view Catalog
+//     *
+//     */
+//    public static void trackViewCatalog(String category, String subCategory, int pageNumber) {
+//        // GTM
+//        GTMManager.get().gtmTrackCatalog(category, subCategory, pageNumber);
+//    }
     
     
     
     /**
      * Tracking a catalog filter
-     * 
-     * @param catalogFilterValues
      */
     public static void trackCatalogFilter(ContentValues catalogFilterValues) {
         // Validate filters
@@ -975,14 +904,10 @@ public class TrackerDelegator {
     
     /**
      * Tracking a catalog Sort
-     * 
-     * @param sortType
      */
     public static void trackCatalogSorter(String sortType) {
         // GTM
         GTMManager.get().gtmTrackSortCatalog(sortType);
-
-
     }
 
     /**
@@ -992,7 +917,6 @@ public class TrackerDelegator {
     public static void trackViewCart(int quantityCart, double cartValue) {
         // GTM
         GTMManager.get().gtmTrackViewCart(quantityCart, cartValue, EUR_CURRENCY);
-
     }
     
     /**
@@ -1002,7 +926,6 @@ public class TrackerDelegator {
     public static void trackAddAddress(boolean success) {
         // GTM
         GTMManager.get().gtmTrackEnterAddress(success);
-
     }
     
     /**
@@ -1012,7 +935,6 @@ public class TrackerDelegator {
     public static void trackFailedPayment(String paymentMethod, double transactionTotal) {
         // GTM
         GTMManager.get().gtmTrackFailedPayment(paymentMethod, transactionTotal, EUR_CURRENCY);
-
     }
     
     /**
@@ -1040,8 +962,6 @@ public class TrackerDelegator {
     
     /**
      * Tracking newsletter subscription
-     * 
-     * @param subscribe
      */
     public static void trackNewsletterSubscription(boolean subscribe, String location) {
         // User
@@ -1063,8 +983,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking a search query
-     * 
-     * @param query
      */
     public static void trackSearchSuggestions(String query) {
         // GA
@@ -1135,8 +1053,7 @@ public class TrackerDelegator {
     
     
     /**
-     * Tracking the click in overeflow menu item 
-     * @param event
+     * Tracking the click in overflow menu item
      */
     public static void trackOverflowMenu(TrackingEvent event) {
         // GA
@@ -1145,7 +1062,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking the switch layout in catalog
-     * @param label 
      */
     public static void trackCatalogSwitchLayout(String label) {
         // GA
@@ -1176,7 +1092,6 @@ public class TrackerDelegator {
 
     /**
      * Track the new cart for each user interaction, add or remove.
-     * @param cartValue
      * @author sergiopereira
      */
     public static void trackCart(double cartValue, int cartCount) {
@@ -1203,7 +1118,6 @@ public class TrackerDelegator {
 
     /**
      * validate if theres any product added from a banner when finished a success order
-     * @param items
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
         final HashMap<String,TeaserGroupType> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
@@ -1237,8 +1151,6 @@ public class TrackerDelegator {
 
     /**
      * fires the GA event when the user finish a order, originating in one of the home teasers
-     * @param item
-     * @param groupType
      */
     private static void trackBannerType(PurchaseItem item,TeaserGroupType groupType){
         AnalyticsGoogle.get().trackBannerFlowPurchase(getTrackEventFromTeaserGroupType(groupType), item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
@@ -1246,8 +1158,6 @@ public class TrackerDelegator {
 
     /**
      * fires a GA event every time the user taps on one of the home teasers
-     * @param groupType
-     * @param targetUrl
      */
     public static void trackBannerClicked(TeaserGroupType groupType, String targetUrl, int position){
         AnalyticsGoogle.get().trackEventBannerClick(getTrackEventFromTeaserGroupType(groupType), targetUrl, position);
@@ -1255,8 +1165,6 @@ public class TrackerDelegator {
 
     /**
      * this function matchs the home page teaser type with a tracking event
-     * @param groupType
-     * @return
      */
     public static TrackingEvent getTrackEventFromTeaserGroupType(TeaserGroupType groupType){
         // Default value
@@ -1293,7 +1201,6 @@ public class TrackerDelegator {
     }
     /**
      * DeepLink Reattribution, Adjust
-     * @param intent
      */
     public static void deeplinkReattribution(Intent intent){
         if(intent != null && intent.getData() != null){
