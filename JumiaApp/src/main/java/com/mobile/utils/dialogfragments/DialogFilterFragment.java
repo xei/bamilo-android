@@ -26,7 +26,6 @@ import com.mobile.newFramework.objects.catalog.CatalogFilter.RangeValuesFilter;
 import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.CategoryFilterOption;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
@@ -40,7 +39,7 @@ import java.util.List;
  */
 public class DialogFilterFragment extends DialogFragment {
 
-    private final static String TAG = LogTagHelper.create(DialogFilterFragment.class);
+    private final static String TAG = DialogFilterFragment.class.getSimpleName();
 
     public static final int NO_INITIAL_POSITION = -1;
 

@@ -10,12 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -32,13 +31,9 @@ import java.util.List;
  */
 public class MyOrdersFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
+    private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
     private RtlViewPager mMyOrdersPager;
-
-    private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
-
-    private SlidingTabLayout mMyOrdersPagerTabStrip;
 
     private int mPositionToStart = 0;
 
@@ -112,7 +107,7 @@ public class MyOrdersFragment extends BaseFragment {
         // Get view pager
         mMyOrdersPager = (RtlViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
-        mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
+        SlidingTabLayout mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
 
         int layout = R.layout.tab_simple_half_item;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
@@ -121,7 +116,7 @@ public class MyOrdersFragment extends BaseFragment {
 
         mMyOrdersPagerTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
-        mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
+        MyOrdersPagerAdapter mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
         if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mMyOrdersPager.setCurrentItem(mPositionToStart, true);

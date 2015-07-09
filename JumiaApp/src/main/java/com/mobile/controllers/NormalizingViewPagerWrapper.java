@@ -5,12 +5,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.viewpagerindicator.IconPagerAdapter;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
-    private final static String TAG = LogTagHelper.create(NormalizingViewPagerWrapper.class);
+    private final static String TAG = NormalizingViewPagerWrapper.class.getSimpleName();
     public static final int MAX_REAL_ITEMS = 100;
     private static int OFFSCREEN_PAGE_LIMIT = 1;
 
@@ -36,8 +35,7 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
 
     private int calcStartPosition(IPagerAdapter adapter) {
         int moveForEven = (adapter.getRealCount() % 2 == 0) ? 2 : 0;
-        int startPosition = adapter.getCount() / 2 + moveForEven;
-        return startPosition;
+        return adapter.getCount() / 2 + moveForEven;
     }
 
     @Override

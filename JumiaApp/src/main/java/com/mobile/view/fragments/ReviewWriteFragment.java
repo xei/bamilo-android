@@ -36,7 +36,6 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.pojo.DynamicForm;
@@ -62,7 +61,7 @@ import java.util.Map;
  */
 public class ReviewWriteFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewWriteFragment.class);
+    private static final String TAG = ReviewWriteFragment.class.getSimpleName();
     
     private static final String SHOWING_FORM = "showingForm";
     

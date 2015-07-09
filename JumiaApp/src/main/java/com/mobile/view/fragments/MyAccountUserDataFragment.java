@@ -26,7 +26,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
@@ -44,7 +43,7 @@ import java.util.List;
  */
 public class MyAccountUserDataFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
+    private static final String TAG = MyAccountUserDataFragment.class.getSimpleName();
 
     private final static int PASSWORD_MIN_LENGTH = 6;
 

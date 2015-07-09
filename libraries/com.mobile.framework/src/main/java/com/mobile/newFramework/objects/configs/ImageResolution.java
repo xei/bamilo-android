@@ -3,8 +3,6 @@ package com.mobile.newFramework.objects.configs;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.utils.LogTagHelper;
-
 /**
  * 
  * @author sergiopereira
@@ -12,7 +10,7 @@ import com.mobile.newFramework.utils.LogTagHelper;
  */
 public class ImageResolution implements Parcelable {
 	
-	protected final static String TAG = LogTagHelper.create( ImageResolution.class );
+	protected final static String TAG = ImageResolution.class.getSimpleName();
 	
 	// JSON
     public static final String JSON_IDENTIFIER_TAG = "identifier";
@@ -28,10 +26,6 @@ public class ImageResolution implements Parcelable {
 
     /**
      * Constructor
-     * @param identifier
-     * @param width
-     * @param heigth
-     * @param extension
      */
     public ImageResolution(String identifier, int width, int heigth, String extension) {
 		this.identifier = identifier;
@@ -63,12 +57,12 @@ public class ImageResolution implements Parcelable {
 
 
 
-	/**
-	 * @return the heigth
-	 */
-	public int getHeigth() {
-		return heigth;
-	}
+//	/**
+//	 * @return the heigth
+//	 */
+//	public int getHeigth() {
+//		return heigth;
+//	}
 
 
 
@@ -83,12 +77,12 @@ public class ImageResolution implements Parcelable {
      * ############################ SETTERS #################################
      */
 
-	/**
-	 * @param identifier the identifier to set
-	 */
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+//	/**
+//	 * @param identifier the identifier to set
+//	 */
+//	public void setIdentifier(String identifier) {
+//		this.identifier = identifier;
+//	}
 
 
 
@@ -101,21 +95,21 @@ public class ImageResolution implements Parcelable {
 
 
 
-	/**
-	 * @param heigth the heigth to set
-	 */
-	public void setHeigth(int heigth) {
-		this.heigth = heigth;
-	}
-
-
-
-	/**
-	 * @param extension the extension to set
-	 */
-	public void setExtension(String extension) {
-		this.extension = extension;
-	}
+//	/**
+//	 * @param heigth the heigth to set
+//	 */
+//	public void setHeigth(int heigth) {
+//		this.heigth = heigth;
+//	}
+//
+//
+//
+//	/**
+//	 * @param extension the extension to set
+//	 */
+//	public void setExtension(String extension) {
+//		this.extension = extension;
+//	}
 
     /*
      * ############################ JSON #################################
@@ -150,7 +144,6 @@ public class ImageResolution implements Parcelable {
 	
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private ImageResolution(Parcel in) {
 		identifier = in.readString();

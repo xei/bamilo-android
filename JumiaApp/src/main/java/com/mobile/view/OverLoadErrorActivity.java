@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -17,7 +16,7 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class OverLoadErrorActivity extends FragmentActivity {
 
-    private final static String TAG = LogTagHelper.create(OverLoadErrorActivity.class);
+    private final static String TAG = OverLoadErrorActivity.class.getSimpleName();
 //    private boolean IsconfigChange ;
 
     @Override

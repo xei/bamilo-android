@@ -36,7 +36,6 @@ import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -68,7 +67,7 @@ import java.util.Set;
  */
 public class CheckoutExternalPaymentFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutExternalPaymentFragment.class);
+    private static final String TAG = CheckoutExternalPaymentFragment.class.getSimpleName();
 
     private WebView webview;
 

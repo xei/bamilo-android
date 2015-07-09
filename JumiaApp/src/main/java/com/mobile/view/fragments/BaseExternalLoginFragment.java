@@ -22,7 +22,7 @@ import com.mobile.view.R;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
@@ -32,21 +32,29 @@ import de.akquinet.android.androlog.Log;
  *
  * Created by pcarvalho on 6/30/15.
  */
-public class BaseExternalLoginFragment extends BaseFragment {
-
-
+public abstract class BaseExternalLoginFragment extends BaseFragment implements GraphRequest.GraphJSONObjectCallback, FacebookCallback<LoginResult> {
 
     protected boolean isNetworkFacebookError = false;
 
     public CallbackManager callbackManager;
 
+    /**
+     * Constructor
+     */
     public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state);
     }
 
+    /**
+     * Constructor for checkout
+     */
     public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state, titleCheckout);
     }
+
+    /*
+     * ###### LIFE CYCLE ######
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,32 +62,34 @@ public class BaseExternalLoginFragment extends BaseFragment {
         callbackManager = CallbackManager.Factory.create();
     }
 
-    FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            Log.e("facebookCallback","facebookCallback");
-            if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
-                Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
-            }
-            onFacebookSuccessLogin();
-        }
-        @Override
-        public void onCancel() {
-            Log.e("facebookCallback","onCancel");
-            FacebookHelper.facebookLogout();
-            showFragmentContentContainer();
-        }
+    /*
+     * ###### FACEBOOK LOGIN CALLBACK ######
+     */
 
-        @Override
-        public void onError(FacebookException e) {
-            Log.e("facebookCallback","onError");
-            e.printStackTrace();
-            FacebookHelper.facebookLogout();
-            if(!NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext())){
-                isNetworkFacebookError = true;
-            }
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+        Log.e("facebookCallback","facebookCallback");
+        if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
+            Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
         }
-    };
+        onFacebookSuccessLogin();
+    }
+    @Override
+    public void onCancel() {
+        Log.e("facebookCallback","onCancel");
+        FacebookHelper.facebookLogout();
+        showFragmentContentContainer();
+    }
+
+    @Override
+    public void onError(FacebookException e) {
+        Log.e("facebookCallback","onError");
+        e.printStackTrace();
+        FacebookHelper.facebookLogout();
+        if(!NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext())){
+            isNetworkFacebookError = true;
+        }
+    }
 
     /**
      * function that validates if a facebook network error has occurred
@@ -92,66 +102,62 @@ public class BaseExternalLoginFragment extends BaseFragment {
         }
     }
 
-    /**
-     * If the user does not accept the email permisson, re-request the permission
+    /*
+     * ###### FACEBOOK GRAPH REQUEST CALLBACK ######
      */
-    public void repeatFacebookEmailRequest(){
-        showFragmentLoading();
-        LoginManager.getInstance().logInWithReadPermissions(
-                this,
-                Arrays.asList(FacebookHelper.FB_PERMISSION_EMAIL));
-
-    }
 
     /**
      * When the facebook login is done with success
      */
-    private void onFacebookSuccessLogin(){
-        GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject user, GraphResponse response) {
-                Log.e("newMeRequest","onCompleted");
-                if (user != null) {
-                    requestFacebookLogin(user);
-                } else {
-                    FacebookHelper.facebookLogout();
-                    showFragmentContentContainer();
-                }
-            }
-        }).executeAsync();
+    private void onFacebookSuccessLogin() {
+        GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), this).executeAsync();
     }
 
+    @Override
+    public void onCompleted(JSONObject user, GraphResponse response) {
+        Log.e("newMeRequest", "onCompleted");
+        if (user != null) {
+            String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
+            if (TextUtils.isEmpty(email)) {
+                repeatFacebookEmailRequest();
+            } else {
+                requestFacebookLogin(user);
+            }
+        } else {
+            FacebookHelper.facebookLogout();
+            showFragmentContentContainer();
+        }
+    }
+
+    /**
+     * If the user does not accept the email permission, re-request the permission<br>
+     * Arrays.asList(FacebookHelper.FB_PERMISSION_EMAIL)
+     */
+    public void repeatFacebookEmailRequest(){
+        showFragmentLoading();
+        LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList(FacebookHelper.FB_PERMISSION_EMAIL));
+    }
+
+    /*
+     * ###### TRIGGER ######
+     */
 
     /**
      * Function that parses the information from facebook success response
-     * @param user
      */
     private void requestFacebookLogin(JSONObject user) {
         ContentValues values = new ContentValues();
-        String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
-        if (TextUtils.isEmpty(email)) {
-            repeatFacebookEmailRequest();
-            return;
-        } else {
-            values.put(FacebookHelper.FACEBOOK_EMAIL_TAG,email);
-        }
-//        String id = user.optString("id");
-//        String name = user.optString("name");
+        values.put(FacebookHelper.FACEBOOK_EMAIL_TAG, user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG));
         values.put(FacebookHelper.FACEBOOK_FIRST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_FIRST_NAME_TAG));
         values.put(FacebookHelper.FACEBOOK_LAST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_LAST_NAME_TAG));
         values.put(FacebookHelper.FACEBOOK_GENDER_TAG, user.optString(FacebookHelper.FACEBOOK_GENDER_TAG));
-
         values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         triggerFacebookLogin(values, true);
     }
 
     /**
-     *
-     * Method to be overriden on the SessionLogin and CheckoutAboutYou fragments
-     *
-     * @param values
-     * @param autoLogin
+     * Method to be override on the SessionLogin and CheckoutAboutYou fragments
      */
-    public void triggerFacebookLogin(ContentValues values,boolean autoLogin){}
+    public void triggerFacebookLogin(ContentValues values, boolean autoLogin){}
 
 }

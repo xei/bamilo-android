@@ -23,7 +23,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -44,7 +43,7 @@ import java.util.Map;
  */
 public class WriteSellerReviewFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(WriteSellerReviewFragment.class);
+    private static final String TAG = WriteSellerReviewFragment.class.getSimpleName();
 
     private static final String NAME = "name";
 
@@ -55,10 +54,6 @@ public class WriteSellerReviewFragment extends BaseFragment {
     private static final String SELLER_ID = "sellerId";
 
     private static final String RATINGS = "ratings";
-
-    private static WriteSellerReviewFragment mWriteSellerReviewFragment;
-
-    private TextView mProductSellerName;
 
     private LinearLayout mReviewContainer;
 
@@ -90,18 +85,6 @@ public class WriteSellerReviewFragment extends BaseFragment {
 
     private int mSellerCommentCount = 0;
 
-    private RelativeLayout mSellerRatingContainer;
-
-    private RatingBar mSellerRatingBar;
-
-    private TextView mSellerRatingCount;
-
-    private TextView mProductPriceNormal;
-
-    private TextView mProductPriceSpecial;
-
-    private TextView mReviewTitle;
-
     /**
      * Get instance
      *
@@ -109,7 +92,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
      */
     public static WriteSellerReviewFragment getInstance(Bundle bundle) {
         Print.i(TAG, "getInstance");
-        mWriteSellerReviewFragment = new WriteSellerReviewFragment();
+        WriteSellerReviewFragment mWriteSellerReviewFragment = new WriteSellerReviewFragment();
         if (bundle != null) {
 
             String sellerId = bundle.getString(ProductDetailsFragment.SELLER_ID);
@@ -399,13 +382,13 @@ public class WriteSellerReviewFragment extends BaseFragment {
 
         mMainContainer.setVisibility(View.VISIBLE);
 
-        mProductSellerName = (TextView) getView().findViewById(R.id.product_detail_name);
-        mSellerRatingContainer = (RelativeLayout) getView().findViewById(R.id.seller_reviews_rating_container);
-        mSellerRatingBar = (RatingBar) getView().findViewById(R.id.seller_reviews_item_rating);
-        mSellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
-        mProductPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-        mProductPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-        mReviewTitle = (TextView) getView().findViewById(R.id.write_title);
+        TextView mProductSellerName = (TextView) getView().findViewById(R.id.product_detail_name);
+        RelativeLayout mSellerRatingContainer = (RelativeLayout) getView().findViewById(R.id.seller_reviews_rating_container);
+        RatingBar mSellerRatingBar = (RatingBar) getView().findViewById(R.id.seller_reviews_item_rating);
+        TextView mSellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
+        TextView mProductPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+        TextView mProductPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
+        TextView mReviewTitle = (TextView) getView().findViewById(R.id.write_title);
 
 
         mProductPriceSpecial.setVisibility(View.GONE);
@@ -438,7 +421,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
      */
     private void loadReviewFormValues() {
         
-        ContentValues savedReviewValues = new ContentValues();
+        ContentValues savedReviewValues;
         
         if(formValues == null){
             savedReviewValues = JumiaApplication.getSellerReviewValues();

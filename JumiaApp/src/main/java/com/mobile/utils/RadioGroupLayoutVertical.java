@@ -17,7 +17,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.PaymentInfo;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
-    private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
+    private final static String TAG = RadioGroupLayoutVertical.class.getSimpleName();
     public static final int NO_DEFAULT_SELECTION = -1;
 
     private ArrayList<String> mItems;

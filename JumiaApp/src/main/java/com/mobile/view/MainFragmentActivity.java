@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view;
 
 import android.content.Intent;

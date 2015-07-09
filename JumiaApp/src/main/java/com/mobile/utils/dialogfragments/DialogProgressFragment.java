@@ -4,12 +4,12 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -20,7 +20,7 @@ import com.mobile.view.R;
  */
 public class DialogProgressFragment extends DialogFragment {
     
-    private final static String TAG = LogTagHelper.create( DialogProgressFragment.class );
+    private final static String TAG = DialogProgressFragment.class.getSimpleName();
 
     
     /**
@@ -29,8 +29,7 @@ public class DialogProgressFragment extends DialogFragment {
     public DialogProgressFragment() {}
     
     /**
-     * 
-     * @return
+     *
      */
     public static DialogProgressFragment newInstance() {
         Print.d(TAG, "NEW INSTANCE");
@@ -64,6 +63,7 @@ public class DialogProgressFragment extends DialogFragment {
      * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
      */
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Create dialog
         final Dialog dialog = new Dialog(getActivity());

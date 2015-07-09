@@ -16,7 +16,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -38,7 +37,7 @@ import java.util.HashMap;
  */
 public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
-    private static final String TAG = LogTagHelper.create(MyAccountMyAddressesFragment.class);
+    private static final String TAG = MyAccountMyAddressesFragment.class.getSimpleName();
 
     private boolean isSetShippingComplete;
 

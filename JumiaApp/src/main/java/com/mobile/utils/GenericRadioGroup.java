@@ -8,7 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
  */
 public class GenericRadioGroup extends RadioGroup implements View.OnClickListener{
     
-    private final static String TAG = LogTagHelper.create(GenericRadioGroup.class);
+    private final static String TAG = GenericRadioGroup.class.getSimpleName();
     
     private static final String RADIO_BUTTON_TAG = "_radio_button_";
     
@@ -128,10 +127,9 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      */
     private View locateRadioButtons(ViewGroup child, View result) {
         // Locate
-        ViewGroup viewGroup = child;
-        int size = viewGroup.getChildCount();
+        int size = child.getChildCount();
         for (int i = 0; i < size; i++) {
-            View viewChild = viewGroup.getChildAt(i);
+            View viewChild = child.getChildAt(i);
             // Current level
             if (viewChild instanceof RadioButton) {
                 result = stampRadioButton((RadioButton) viewChild);
@@ -245,7 +243,6 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
     
     /**
      * Method used to check or uncheck the radio children.
-     * @param buttonView the checked radio button
      * @author sergiopereira
      */
     private void checkRadioWithTag(String checkedTag){

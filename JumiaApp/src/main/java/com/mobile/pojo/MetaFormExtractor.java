@@ -5,7 +5,6 @@ import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormFieldMeta;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.forms.InputType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -15,7 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class MetaFormExtractor {
-	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );
+
+	private final static String TAG = MetaFormExtractor.class.getSimpleName();
 	
 	private static HashMap<String, Set<String>> metaFieldMapping;
 	private static HashMap<String, InputType> metaFieldInputType;

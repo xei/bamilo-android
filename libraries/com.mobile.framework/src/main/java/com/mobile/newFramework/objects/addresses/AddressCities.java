@@ -3,7 +3,6 @@ package com.mobile.newFramework.objects.addresses;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 
 public class AddressCities extends ArrayList<AddressCity> implements IJSONSerializable {
 
-	public static final String TAG = LogTagHelper.create(AddressCities.class);
+	public static final String TAG = AddressCities.class.getSimpleName();
 
     /**
      * Empty constructor
@@ -35,7 +34,6 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
 				add(new AddressCity(json));
 			}
         } catch (JSONException e) {
-			//Log.w(TAG, "PARSE EXCEPTION", e);
 			return false;
 		}
 		return true;
