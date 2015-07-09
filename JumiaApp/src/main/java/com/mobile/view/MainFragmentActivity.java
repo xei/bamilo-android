@@ -318,6 +318,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = SessionTermsFragment.getInstance(bundle);
                 break;
             case MY_ACCOUNT:
+                removeEntries = true;
                 fragment = MyAccountFragment.getInstance();
                 break;
             case MY_USER_DATA:
