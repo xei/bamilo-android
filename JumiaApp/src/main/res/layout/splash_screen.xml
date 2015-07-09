@@ -3,7 +3,7 @@
     android:id="@+id/splash_screen_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_dividerlight" >
+    android:background="@color/grey_dividerlight">
 
     <ImageView
         android:id="@+id/jumiaMap"
@@ -28,6 +28,17 @@
         android:fontFamily="roboto_regular"
         android:gravity="center"
         android:text="@string/splash_slogan"
+        android:textColor="@color/grey_middledark"
+        android:textSize="@dimen/text_title" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:fontFamily="roboto_regular"
+        android:gravity="center"
+        android:text="@string/splash_slogan_powered_by"
         android:textColor="@color/grey_middledark"
         android:textSize="@dimen/text_title" />
 
