@@ -1326,6 +1326,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         break;
                     case MyAccount:
                         // MY ACCOUNT
+//                        popBackStackUntilTag(FragmentType.MY_ACCOUNT.toString());
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
                                 FragmentController.ADD_TO_BACK_STACK);

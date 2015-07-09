@@ -3,6 +3,7 @@ package com.mobile.utils.dialogfragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,7 +179,15 @@ public class DialogGenericFragment extends DialogFragment {
         super.onPause();
         dismissAllowingStateLoss();
     }
-    
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager,tag);
+        } catch (IllegalStateException ex){
+            Print.e(TAG, "Error showing Dialog", ex);
+        }
+    }
 
     /**
      * Dialog
