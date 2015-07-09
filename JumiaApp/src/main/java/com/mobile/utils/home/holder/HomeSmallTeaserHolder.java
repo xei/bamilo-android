@@ -53,10 +53,6 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    @Override
-    public void onUpdate() {
-    }
-
     /**
      * set specific margins for small teasers
      * @param group
@@ -64,14 +60,14 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
     public void setTeaserGroupTypeMargins(BaseTeaserGroupType group) {
         if (group.getData() != null && group.getData().size() == NUMBER_OF_PIECES) {
             secondTime = true;
-            apllyMargin();
+            applyMargin();
         }
     }
 
     @Override
-    public void apllyMargin() {
+    public void applyMargin() {
         if(secondTime){
-            super.apllyMargin();
+            super.applyMargin();
         }
 
     }

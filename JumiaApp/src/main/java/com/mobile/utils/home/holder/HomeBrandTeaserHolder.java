@@ -11,7 +11,7 @@ import com.mobile.view.R;
 import de.akquinet.android.androlog.Log;
 
 /**
- *
+ * Class used that represents the brand teasers.
  */
 public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
 
@@ -19,6 +19,9 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
 
     public HorizontalListView container;
 
+    /**
+     * Constructor
+     */
     public HomeBrandTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         // Get horizontal container
@@ -40,8 +43,4 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }

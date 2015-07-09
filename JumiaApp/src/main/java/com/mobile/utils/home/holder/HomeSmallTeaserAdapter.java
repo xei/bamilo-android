@@ -39,9 +39,9 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
         private TextView mSubTitle;
         private ImageView mImage;
         private View mProgress;
+
         /**
          * Constructor
-         * @param view
          */
         public ViewHolder(View view) {
             super(view);

@@ -18,7 +18,6 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
 
     public static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public ImageView leftImage;
     public ViewGroup leftContainer;
     public View leftProgress;
@@ -26,6 +25,9 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
     public ImageView rightImage;
     public View rightProgress;
 
+    /**
+     * Constructor
+     */
     public HomeShopWeekTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         leftContainer = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_left);
@@ -46,9 +48,5 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
         TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }
 
