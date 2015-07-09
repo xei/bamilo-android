@@ -247,7 +247,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onResume();
         Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-        trackPageAdjust();
+        trackPageContent();
         if(!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null){
             getBaseActivity().updateNavigationCategorySelection(mCategoryId);
         }
@@ -733,7 +733,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
-        TrackerDelegator.trackCatalogSorter(mSelectedSort.toString());
+        TrackerDelegator.trackCatalogSorter(mSelectedSort);
     }
 
     @Override
@@ -907,7 +907,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if(!TextUtils.isEmpty(mSearchQuery)){
                     trackSearch(catalogPage);
                 }
-                trackPageAdjust();
+                trackPageContent();
             }
 
         }
@@ -1022,13 +1022,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * fire the track catalog page for Adjust Tracker
      */
-    private void trackPageAdjust(){
+    private void trackPageContent(){
         if(mCatalogPage != null){
             // Track Adjust screen
             Bundle bundle = new Bundle();
 
             if(!TextUtils.isEmpty(mCatalogPage.getCategoryId())){
                 bundle.putString(AdjustTracker.CATEGORY_ID, mCatalogPage.getCategoryId());
+                // last viewed category Id
+                TrackerDelegator.trackLastViewedCategory(mCatalogPage.getCategoryId());
             }
             if(!TextUtils.isEmpty(mCatalogPage.getName())){
                 bundle.putString(AdjustTracker.CATEGORY, mCatalogPage.getName());

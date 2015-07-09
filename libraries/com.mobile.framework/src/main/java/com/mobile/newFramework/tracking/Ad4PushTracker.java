@@ -20,6 +20,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.mobile.framework.R;
+import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DateTimeUtils;
@@ -115,9 +116,29 @@ public class Ad4PushTracker {
     private static final String LOGIN_SIGNUP_VIEW = "ACCOUNT";
     private static final String FAVORITES_VIEW = "MYFAVORITES";
     private static final String CART_VIEW = "CART";
+    private static final String REGISTRATION_VIEW = "REGISTER";
 
     private static final String IS_ENABLED = "Enabled";
     private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
+
+    /**
+     * NEW IN 2.6
+     */
+    private static final String LAST_PURCHASED_CATEGORY = "lastPurchasedCategory"; // API v1.8
+    private static final String PUSH_NOTIFICATION_OPENED = "lastPNOpened";
+    private static final String ATTRIBUTE_SET_ID = "attributeSetID"; // API v1.8
+    private static final String LAST_VIEWED_CATEGORY = "lastViewedCategory";
+    private static final String MOST_VIEWED_BRAND = "mostViewedBrand";
+    private static final String LAST_SORTED_BY = "lastSortedBy";
+    private static final String LAST_NAME = "lastName";
+    private static final String LAST_CAMPAIGN_VISITED = "lastCampaignVisited";
+    private static final String DATE_LAST_ADDED_TO_CART = "dateLastAddedToCart";
+    private static final String LAST_CART_PRODUCT_NAME = "lastCartProductName";
+    private static final String LAST_CART_PRODUCT_SKU = "lastCartProductSKU";
+    private static final String LAST_PRODUCT_REVIEWED = "lastProductReviewed";
+    private static final String LAST_PRODUCT_SHARED = "lastProductShared";
+    private static final String PURCHASE_GRAND_TOTAL_USER = "purchaseGrandTotalUser"; // API v1.8
+    private static final String LAST_CATEGORY_ADDED_TO_CART = "lastCategoryAddedToCart";
 
     HashMap<TrackingPage, String> screens;
 
@@ -172,7 +193,7 @@ public class Ad4PushTracker {
         screens.put(TrackingPage.LOGIN_SIGNUP, LOGIN_SIGNUP_VIEW);
         screens.put(TrackingPage.FAVORITES, FAVORITES_VIEW);
         screens.put(TrackingPage.CART, CART_VIEW);
-        screens.put(TrackingPage.REGISTRATION, REGISTRATION);
+        screens.put(TrackingPage.REGISTRATION, REGISTRATION_VIEW);
         // Get A4S
         init();
     }
@@ -380,9 +401,10 @@ public class Ad4PushTracker {
      * Track login.
      * 
      * @param customerId
-     * @param customerName
+     * @param firstName
+     * @param lastName
      */
-    public void trackLogin(String customerId, String customerName, String customerDob, String gender) {
+    public void trackLogin(String customerId, String firstName, String lastName, String customerDob, String gender) {
         if (isEnabled) {
             // Get status in app
             String userStatus = statusInApp();
@@ -390,7 +412,8 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putString(STATUS_IN_APP, userStatus);
             prefs.putString(USER_ID, customerId);
-            prefs.putString(USER_FIRST_NAME, customerName);
+            prefs.putString(USER_FIRST_NAME, firstName);
+            prefs.putString(LAST_NAME, lastName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(USER_GENDER, gender);
             
@@ -435,9 +458,10 @@ public class Ad4PushTracker {
      * 
      * @param customerId
      * @param customerGender
-     * @param customerName
+     * @param firstName
+     * @param lastName
      */
-    public void trackSignup(String customerId, String customerGender, String customerName, String customerDob) {
+    public void trackSignup(String customerId, String customerGender, String firstName, String lastName, String customerDob) {
         if (isEnabled) {
             Lead lead = new Lead("Registration done with customer ID", customerId);
             mA4S.trackLead(lead);
@@ -448,7 +472,8 @@ public class Ad4PushTracker {
             prefs.putString(REGISTRATION, REGISTRATION_DONE);
             prefs.putString(USER_ID, customerId);
             prefs.putString(USER_GENDER, customerGender);
-            prefs.putString(USER_FIRST_NAME, customerName);
+            prefs.putString(USER_FIRST_NAME, firstName);
+            prefs.putString(LAST_NAME, lastName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(STATUS_IN_APP, userStatus);
             mA4S.updateDeviceInfo(prefs);
@@ -705,6 +730,111 @@ public class Ad4PushTracker {
     }
 
 
+    /**
+     * Track the last date an push notification was opened
+     */
+    public void trackOpenPushNotification() {
+        if (isEnabled) {
+            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
+            Bundle prefs = new Bundle();
+            prefs.putString(PUSH_NOTIFICATION_OPENED, currentDateAndTime);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK PUSH NOTIFICATION: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last category the user saw
+     */
+    public void trackLastViewedCategory(String categoryId) {
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putString(LAST_VIEWED_CATEGORY, categoryId);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK VIEWED CATEGORY: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last sort the user used
+     */
+    public void trackLastSortedBy(String sortedBy) {
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putString(LAST_SORTED_BY, sortedBy);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK SORTED BY: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last viewed campaign
+     */
+    public void trackLastViewedCampaign(String campaignKey) {
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putString(LAST_CAMPAIGN_VISITED, campaignKey);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK CAMPAIGN KEY: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last product added to cart
+     */
+    public void trackLastAddToCart(String productName, String productSku, String productCategoryId) {
+        if (isEnabled) {
+            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
+            Bundle prefs = new Bundle();
+            prefs.putString(DATE_LAST_ADDED_TO_CART, currentDateAndTime);
+            prefs.putString(LAST_CART_PRODUCT_NAME, productName);
+            prefs.putString(LAST_CART_PRODUCT_SKU, productSku);
+            prefs.putString(LAST_CATEGORY_ADDED_TO_CART, productCategoryId);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK LAST ADDED TO CART: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last product shared
+     */
+    public void trackLastShared(String productSku) {
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putString(LAST_PRODUCT_SHARED, productSku);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK LAST SHARED: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the last product reviewed
+     */
+    public void trackLastReviewed(String productSku) {
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putString(LAST_PRODUCT_REVIEWED, productSku);
+            mA4S.updateDeviceInfo(prefs);
+            Print.i(TAG, "TRACK REVIEWED PROD: " + prefs.toString());
+        }
+    }
+
+    /**
+     * Track the top viewed Brand
+     */
+    public void trackTopBrand() {
+        if (isEnabled) {
+            try {
+                Bundle prefs = new Bundle();
+                String brand = new String(BrandsTableHelper.getTopBrand().getBytes(), "UTF-8");
+                prefs.putString(MOST_VIEWED_BRAND, brand);
+                mA4S.updateDeviceInfo(prefs);
+                Print.i(TAG, "TRACK TOP BRAND: " + prefs.toString());
+            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      *

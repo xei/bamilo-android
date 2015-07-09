@@ -10,6 +10,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,8 +75,15 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject metadataObject) throws JSONException {
 //        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
-        mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
-        mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
+        JSONArray categories = metadataObject.optJSONArray(RestConstants.JSON_CATEGORIES_TAG);
+        if(categories != null && categories.length() > 0){
+            try{
+                mId = categories.getJSONObject(0).optString(RestConstants.JSON_CATALOG_IDS_TAG);
+                mName = categories.getJSONObject(0).optString(RestConstants.JSON_CATALOG_NAME_TAG);
+            } catch (JSONException e){
+                Print.e(TAG,"Wrong categories format",e);
+            }
+        }
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Set the max pages that application can request

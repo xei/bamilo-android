@@ -234,10 +234,10 @@ public class DeepLinkManager {
     /**
      *  method that adds the Deep link origin to all bundles
      * @param bundle
-     * @param origin
+     * @param data
      * @return
      */
-    private static Bundle addOriginGroupType(Uri data,Bundle bundle){
+    private static Bundle addOriginGroupType(Uri data, Bundle bundle){
         if(bundle != null && data != null){
             bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
         }
@@ -754,6 +754,7 @@ public class DeepLinkManager {
                 Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 bundle = loadDeepLink(data);
+                TrackerDelegator.trackPushNotification();
                 Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }

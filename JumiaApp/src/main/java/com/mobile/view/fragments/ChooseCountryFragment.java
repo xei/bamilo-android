@@ -20,6 +20,7 @@ import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
@@ -333,6 +334,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             if (isChangeCountry) {
                 LastViewedTableHelper.deleteAllLastViewed();
                 FavouriteTableHelper.deleteAllFavourite();
+                BrandsTableHelper.clearBrands();
                 TrackerDelegator.trackShopChanged();
             }
             // Clear Ad4Push prefs
