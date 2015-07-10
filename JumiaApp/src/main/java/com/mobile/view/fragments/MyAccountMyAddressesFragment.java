@@ -54,7 +54,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     public MyAccountMyAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MyAccountMyAddresses,
                 R.string.my_addresses,
                 KeyboardState.ADJUST_CONTENT);
 
