@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
  * @modified ricardosoares
  */
 public class FormFactory {
-    private final static String TAG = LogTagHelper.create( FormFactory.class );
+    private final static String TAG = FormFactory.class.getSimpleName();
 
     private static FormFactory factory = null;
 
@@ -154,17 +153,14 @@ public class FormFactory {
     private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         if (null == ctrlParams) {
             final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = 0;
+            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
             final int CTRLMARGIN_RIGHT = 0;
             final int CTRLMARGIN_BOTTOM =0;
 
             ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
         }
 
-        DynamicForm dynamicForm = createGenericForm(context, form, ctrlParams);
-        int margin = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
-        ((LinearLayout.LayoutParams)dynamicForm.getContainer().getLayoutParams()).setMargins(margin, margin, margin, margin);
-        return dynamicForm;
+        return createGenericForm(context, form, ctrlParams);
     }
 
     /**
