@@ -35,21 +35,12 @@ public class GetInitFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         FormsIndex formsIndex = (FormsIndex) baseResponse.getMetadata().getData();
+        //TODO move to observable
         JumiaApplication.INSTANCE.setFormDataRegistry(formsIndex);
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

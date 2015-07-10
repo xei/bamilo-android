@@ -95,16 +95,16 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
 
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         /*
          * Favourites
@@ -124,20 +124,14 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         if (isToRemoveFromLastViewed && !TextUtils.isEmpty(mCurrentSku)) {
             LastViewedTableHelper.removeLastViewed(mCurrentSku);
         }
-        //
-        mRequester.onRequestComplete(bundle);
     }
 
     @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        // Add specific data
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createErrorBundleParams(baseResponse, bundle);
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
-        mRequester.onRequestError(bundle);
     }
-
 
  
 //    /*

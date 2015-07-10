@@ -38,26 +38,14 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         return EventType.GET_COUNTRY_CONFIGURATIONS;
     }
 
-
-
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
 
+        //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();
         CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);
-
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
