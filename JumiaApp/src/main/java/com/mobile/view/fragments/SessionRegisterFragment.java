@@ -580,10 +580,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    mandatory.setVisibility(View.GONE);
-                } else {
-                    mandatory.setVisibility(View.VISIBLE);
+                if(termsLink.hasRules()) {
+                    if (((CheckBox) v).isChecked()) {
+                        mandatory.setVisibility(View.GONE);
+                    } else {
+                        mandatory.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if (serverForm != null && serverForm.checkRequired()) {

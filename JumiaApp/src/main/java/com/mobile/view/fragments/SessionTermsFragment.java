@@ -50,7 +50,7 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
      */
     public SessionTermsFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+                NavigationAction.Terms,
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
                 KeyboardState.NO_ADJUST_CONTENT);
