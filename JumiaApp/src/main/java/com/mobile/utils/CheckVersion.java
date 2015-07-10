@@ -94,9 +94,9 @@ public class CheckVersion {
                 sNeedsToShowDialog = true;
             }
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE_IGNORED) {
-            return sNeedsToShowDialog = false;
+            sNeedsToShowDialog = false;
         } else {
-            return sNeedsToShowDialog = false;
+            sNeedsToShowDialog = false;
         }
         return sNeedsToShowDialog;
     }
@@ -189,7 +189,7 @@ public class CheckVersion {
 
         if (crrAppVersion < infoVersion.getMinimumVersion()) {
             checkResult = UpdateStatus.FORCED_AVAILABLE;
-        } else if (crrAppVersion < infoVersion.getCurrentVersion()) {
+        } else if (crrAppVersion <= infoVersion.getCurrentVersion()) {
             if (unwantedVersion == infoVersion.getCurrentVersion()) {
                 checkResult = UpdateStatus.OPTIONAL_AVAILABLE_IGNORED;
             } else {
@@ -224,7 +224,8 @@ public class CheckVersion {
         Version version = getVersion(sContext);
         if ( version == null)
             return;
-        
+
+        sNeedsToShowDialog = false;
         unwantedVersion = version.getCurrentVersion();
         SharedPreferences.Editor editor = sSharedPrefs.edit();
         editor.putInt(VERSION_UNWANTED_KEY, unwantedVersion);
@@ -236,6 +237,7 @@ public class CheckVersion {
     }
 
     private static void storeRemindMeLater() {
+        sNeedsToShowDialog = false;
         SharedPreferences.Editor editor = sSharedPrefs.edit();
         editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, true);
         editor.apply();
