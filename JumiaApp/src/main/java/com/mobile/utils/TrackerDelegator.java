@@ -93,7 +93,6 @@ public class TrackerDelegator {
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
     private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
-    private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
 
     private static final String SESSION_COUNTER = "sessionCounter";
     private static final String LAST_SESSION_SAVED = "lastSessionSaved";
