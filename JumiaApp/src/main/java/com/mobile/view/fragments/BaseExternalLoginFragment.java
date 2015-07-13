@@ -68,7 +68,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        Log.e("facebookCallback","facebookCallback");
+        Log.e("facebookCallback", "facebookCallback");
         if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
             Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
         }
@@ -117,12 +117,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     public void onCompleted(JSONObject user, GraphResponse response) {
         Log.e("newMeRequest", "onCompleted");
         if (user != null) {
-            String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
-            if (TextUtils.isEmpty(email)) {
-                repeatFacebookEmailRequest();
-            } else {
-                requestFacebookLogin(user);
-            }
+            requestFacebookLogin(user);
         } else {
             FacebookHelper.facebookLogout();
             showFragmentContentContainer();
@@ -146,8 +141,15 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
      * Function that parses the information from facebook success response
      */
     private void requestFacebookLogin(JSONObject user) {
+        // Validate required permission
+        String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
+        if (TextUtils.isEmpty(email)) {
+            repeatFacebookEmailRequest();
+            return;
+        }
+        // Trigger
         ContentValues values = new ContentValues();
-        values.put(FacebookHelper.FACEBOOK_EMAIL_TAG, user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG));
+        values.put(FacebookHelper.FACEBOOK_EMAIL_TAG, email);
         values.put(FacebookHelper.FACEBOOK_FIRST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_FIRST_NAME_TAG));
         values.put(FacebookHelper.FACEBOOK_LAST_NAME_TAG, user.optString(FacebookHelper.FACEBOOK_LAST_NAME_TAG));
         values.put(FacebookHelper.FACEBOOK_GENDER_TAG, user.optString(FacebookHelper.FACEBOOK_GENDER_TAG));
@@ -158,6 +160,6 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     /**
      * Method to be override on the SessionLogin and CheckoutAboutYou fragments
      */
-    public void triggerFacebookLogin(ContentValues values, boolean autoLogin){}
+    public abstract void triggerFacebookLogin(ContentValues values, boolean autoLogin);
 
 }

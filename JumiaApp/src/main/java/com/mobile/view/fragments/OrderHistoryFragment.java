@@ -613,8 +613,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
 
-
-
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
 

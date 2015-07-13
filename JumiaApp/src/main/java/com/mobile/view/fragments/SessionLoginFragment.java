@@ -714,6 +714,12 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
 
+    /**
+     * Trigger used to perform a login/signup from Facebook
+     *
+     * @param values
+     * @param saveCredentials
+     */
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
