@@ -4,10 +4,14 @@ import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.statics.StaticTermsConditions;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     @Override
     public boolean hasPriority() {
-        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
+        return HelperPriorityConfiguration.IS_PRIORITARY;
     }
 
     @Override
@@ -44,7 +48,13 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
     }
 
-//
+    @Override
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+        StaticTermsConditions termsConditions = (StaticTermsConditions) baseResponse.getMetadata().getData();
+        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, termsConditions.getHtml());
+    }
+
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
 //        Bundle bundle = new Bundle();
