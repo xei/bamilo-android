@@ -118,7 +118,9 @@ public class AigRestContract {
 	 * Set the cookie domain based in the host.
 	 */
 	private static void setCookieShopDomain() {
-		COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replace("www.", "") : "";
+		//COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replace("www.", "") : "";
+		COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replaceFirst("^.*?\\.", ".") : "";
+		//COOKIE_SHOP_DOMAIN = !TextUtils.isEmpty(AigRestContract.REQUEST_HOST) ? AigRestContract.REQUEST_HOST.replaceFirst(".*[\\.]", ".") : "";
 	}
 
 	/**
@@ -126,6 +128,7 @@ public class AigRestContract {
 	 * @return String
 	 */
 	public static String getShopDomain() {
+		Print.i(TAG, "COOKIE SHOP DOMAIN: " + COOKIE_SHOP_DOMAIN);
 		return COOKIE_SHOP_DOMAIN;
 	}
 
