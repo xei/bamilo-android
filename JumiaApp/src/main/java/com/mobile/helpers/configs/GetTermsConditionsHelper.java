@@ -32,7 +32,7 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     @Override
     public boolean hasPriority() {
-        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
+        return HelperPriorityConfiguration.IS_PRIORITARY;
     }
 
     @Override

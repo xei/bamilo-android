@@ -151,41 +151,39 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
 
     @Override
     public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
-    }
-
-    private boolean onSuccessEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         if (getBaseActivity() != null) {
             super.handleSuccessEvent(bundle);
         } else {
-            return true;
+            return;
         }
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_TERMS_EVENT:
                 showFragmentContentContainer();
                 termsText = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
                 textView.setText(termsText);
-                return true;
         }
-        return false;
     }
 
     @Override
     public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
-    }
-
-    private boolean onErrorEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-        return false;
+
+        super.handleErrorEvent(bundle);
+
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        triggerTerms();
     }
 }
