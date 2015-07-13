@@ -197,9 +197,12 @@
     <string name="payment_method">Payment Method</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
-    <string name="pickup_station_address">Address:</string>
-    <string name="pickup_station_city">City:</string>
-    <string name="pickup_station_opening_hours">Opening Hours:</string>
+    <string name="pickup_station_address">&lt;b>Address:&lt;/b> %s</string>
+    <string name="pickup_station_city">&lt;b>City:&lt;/b> %s</string>
+    <string name="pickup_station_opening_hours">&lt;b>Opening Hours:&lt;/b> %s</string>
+    <string name="shipping_fee">&lt;b>Shipping Fee:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Fee added to Total Amount Payable\"</string>
+    <string name="shipping_time">&lt;b>Shipping Time:&lt;/b> %s</string>
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="poll_question_label">Poll Question</string>
@@ -266,8 +269,6 @@
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
-    <string name="shipping_fee">Shipping Fee: </string>
-    <string name="shipping_time">Shipping Time: </string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="shoppingcart_alert_header">Basket</string>
     <string name="shoppingcart_alert_message_no_items">Basket empty! Please add products to the cart.</string>

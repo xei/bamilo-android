@@ -35,10 +35,7 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
      */
 
     public AigTestCase() {
-        mEventType = getEventType();
-        mInterfaceName = getAigInterfaceName();
-        mUrl = getUrl();
-        mData = getData();
+        // ...
     }
 
     public abstract EventType getEventType();
@@ -56,6 +53,10 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        mEventType = getEventType();
+        mInterfaceName = getAigInterfaceName();
+        mUrl = getUrl();
+        mData = getData();
         mRequestBundle = new RequestBundle.Builder().setUrl(mUrl).setData(mData).build();
         mCountDownLatch = new CountDownLatch(1);
     }

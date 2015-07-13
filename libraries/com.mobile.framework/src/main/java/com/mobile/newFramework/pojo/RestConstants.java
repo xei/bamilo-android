@@ -208,6 +208,7 @@ public class RestConstants {
     public static final String JSON_PRODUCT_URL_TAG = "url";
     public static final String JSON_CONFIG_SKU_TAG = "configSku";
     public static final String JSON_QUANTITY_TAG = "quantity";
+    public static final String JSON_REAL_QUANTITY_TAG = "real_quantity";
     public static final String JSON_CONFIG_ID = "configId";
     public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_STOCK_TAG = "stock";
@@ -230,8 +231,6 @@ public class RestConstants {
     public static final String JSON_CMS_TAG = "cms";
     public static final String JSON_MOBILE_BANNER_TAG = "mobile_banner";
     public static final String JSON_DESKTOP_BANNER_TAG = "desktop_banner";
-    public static final String JSON_START_TIME_TAG = "start_time";
-    public static final String JSON_END_TIME_TAG = "end_time";
     public static final String JSON_SAVE_PRICE_TAG = "save_price";
     public static final String JSON_STOCK_PERCENTAGE_TAG = "stock_percentage";
     public static final String JSON_HAS_UNIQUE_SIZE_TAG = "has_unique_size";
@@ -373,7 +372,6 @@ public class RestConstants {
     public static final String JSON_PICKUP_PLACE = "place";
     public static final String JSON_PICKUP_CITY = "city";
     public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
-    public static final String JSON_PICKUP_ID_PICKUP_STATION_REGION = "id_pickupstation_region";
     public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
     public static final String JSON_PICKUP_REGIONS = "regions";
 
@@ -386,6 +384,7 @@ public class RestConstants {
     public static final String JSON_ERROR_MESSAGE_TAG = "error_message";
     public static final String JSON_NOTICE_MESSAGE_TAG = "notice_message";
     public static final String JSON_RULES_TAG = "rules";
+    public static final String JSON_SHIPPING_FEE_TAG = "shipping_fee";
 
     /**
      * Featured Items

@@ -62,6 +62,26 @@
             android:gravity="left|start"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_shipping_fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|start"
+            android:singleLine="false"
+            android:textSize="@dimen/text_subtitle"
+            android:visibility="gone"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_shipping_fee_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|start"
+            android:singleLine="false"
+            android:textSize="@dimen/text_info"
+            android:text="@string/shipping_fee_info"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </RelativeLayout>

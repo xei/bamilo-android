@@ -38,7 +38,7 @@ public class Print {
         if (defaultLogMode == ANDROID_MODE) {
             Log.i(tag, message);
         } else {
-            System.out.println(message);
+            System.out.println(tag + ": " + message);
         }
     }
 
@@ -63,7 +63,7 @@ public class Print {
         if (defaultLogMode == ANDROID_MODE) {
             Log.d(tag, message);
         } else {
-            System.out.println(message);
+            System.out.println(tag + ": " + message);
         }
     }
 
