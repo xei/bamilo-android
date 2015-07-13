@@ -48,19 +48,6 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setRatingReview);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
-
-
 //
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

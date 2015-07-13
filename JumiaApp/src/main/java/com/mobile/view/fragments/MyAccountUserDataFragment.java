@@ -331,7 +331,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     protected void onSuccessGetChangePasswordFormEvent(Bundle bundle) {
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
-        ((ViewGroup)getView().findViewById(R.id.new_password_layout)).addView(dynamicForm.getContainer());
+        ((ViewGroup)getView().findViewById(R.id.changePasswordLayout)).addView(dynamicForm.getContainer());
         newPasswordText = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
         newPassword2Text = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
     }

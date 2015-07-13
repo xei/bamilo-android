@@ -53,10 +53,14 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
         // Get api info
         ApiInformation apiInformation = (ApiInformation) baseResponse.getMetadata().getData();
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
+
+        //TODO move to observable
         // Save mob api version
         JumiaApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
         // Get md5 sections
@@ -68,23 +72,12 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         // Save all new sections
         SectionsTablesHelper.saveSections(sections);
 
-        Bundle bundle = generateSuccessBundle(baseResponse);
-
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
-
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
-        mRequester.onRequestComplete(bundle);
     }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
 
 
 //    /*

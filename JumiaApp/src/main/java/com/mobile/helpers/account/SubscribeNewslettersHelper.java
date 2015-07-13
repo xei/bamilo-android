@@ -37,27 +37,6 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.subscribeNewsletter);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-//        SuperCustomerNewsletterSubscription subscriptions = (SuperCustomerNewsletterSubscription) baseResponse.getMetadata().getData();
-//        // Save the newsletter subscriptions
-//        if (JumiaApplication.CUSTOMER != null) {
-//            JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
-//        }
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-    
 //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)

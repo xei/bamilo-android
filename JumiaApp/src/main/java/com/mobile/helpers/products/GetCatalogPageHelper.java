@@ -97,11 +97,14 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         //
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         catalog.getCatalogPage().setPage(mCurrentPage);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getCatalogPage());
+
+        //TODO move to observable
         // Persist related Items when initially loading products for POPULARITY tab
         if (isToSaveRelatedItems) {
             final ArrayList<Product> aux = new ArrayList<>(catalog.getCatalogPage().getProducts());
@@ -116,28 +119,23 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
                 }
             }).start();
         }
-        //
-        Bundle bundle = generateSuccessBundle(baseResponse);
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getCatalogPage());
-        mRequester.onRequestComplete(bundle);
     }
 
     @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        // Generic error
-        Bundle bundle = generateErrorBundle(baseResponse);
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createErrorBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         // Validate Featured Box
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         if(baseResponse.getError().getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
             bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
         }
-        mRequester.onRequestError(bundle);
     }
 
-//    /*
+    //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
 //     */

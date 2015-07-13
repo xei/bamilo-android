@@ -32,23 +32,12 @@ public class GetNativeCheckoutAvailableHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperNativeCheckoutAvailability nativeCheckoutAvailability = (SuperNativeCheckoutAvailability) baseResponse.getMetadata().getData();
-
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putBoolean(Constants.BUNDLE_RESPONSE_KEY,  nativeCheckoutAvailability.isAvailable());
         Print.i(TAG, "Native Checkout is available: " + nativeCheckoutAvailability.isAvailable());
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
-
 
 //    /*
 //     * (non-Javadoc)

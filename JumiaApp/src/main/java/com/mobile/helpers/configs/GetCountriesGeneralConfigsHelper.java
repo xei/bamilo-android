@@ -47,11 +47,12 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
 
+        //TODO move to observable
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         Print.i(TAG, "COUNTRIES SIZE IN MEM: " + JumiaApplication.INSTANCE.countriesAvailable.size());
@@ -72,18 +73,14 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.apply();
 
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
-        mRequester.onRequestComplete(bundle);
+
     }
 
     @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createErrorBundleParams(baseResponse, bundle);
 
-        Bundle bundle = generateErrorBundle(baseResponse);
-
-        // TODO: VALIDATE THIS METHOD ????
+        //TODO move to observable
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         ArrayList<CountryObject> mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(CollectionUtils.isNotEmpty(mCountries)){
@@ -93,8 +90,6 @@ public class GetCountriesGeneralConfigsHelper extends SuperBaseHelper {
             mEditor.apply();
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
         }
-
-        mRequester.onRequestError(bundle);
     }
 
     @Override

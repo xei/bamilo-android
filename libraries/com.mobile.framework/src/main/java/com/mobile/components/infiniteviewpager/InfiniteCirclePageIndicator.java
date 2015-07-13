@@ -13,8 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.mobile.components.viewpagerindicator.PageIndicator;
 import com.mobile.framework.R;
-import com.viewpagerindicator.PageIndicator;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.widget.LinearLayout.HORIZONTAL;
@@ -24,7 +24,7 @@ import static android.widget.LinearLayout.VERTICAL;
  * Draws circles (one for each view). The current view position is filled and
  * others are only stroked.
  */
-public class InfiniteCirclePageIndicator extends View implements PageIndicator{
+public class InfiniteCirclePageIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
 
     private float mRadius;

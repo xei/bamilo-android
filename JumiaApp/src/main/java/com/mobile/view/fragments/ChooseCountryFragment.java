@@ -265,35 +265,35 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         });
     }
 
-    @Deprecated
-    private void showWarningDialog(final int position) {
-
-        dismissDialogFragment();
-
-        dialog = DialogGenericFragment.newInstance(true, false,
-                getString(R.string.nav_country),
-                getString(R.string.nav_country_warning), 
-                getString(R.string.cancel_label),
-                getString(R.string.yes_label), 
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss dialog
-                        dismissDialogFragment();
-                        // Validate click
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            getBaseActivity().onBackPressed();
-                        } else if (id == R.id.button2) {
-                            if(!setCountry(position)){
-                                getBaseActivity().onBackPressed();
-                            }
-
-                        }
-                    }
-                });
-        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-    }
+//    @Deprecated
+//    private void showWarningDialog(final int position) {
+//
+//        dismissDialogFragment();
+//
+//        dialog = DialogGenericFragment.newInstance(true, false,
+//                getString(R.string.nav_country),
+//                getString(R.string.nav_country_warning),
+//                getString(R.string.cancel_label),
+//                getString(R.string.yes_label),
+//                new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                         Dismiss dialog
+//                        dismissDialogFragment();
+//                         Validate click
+//                        int id = v.getId();
+//                        if (id == R.id.button1) {
+//                            getBaseActivity().onBackPressed();
+//                        } else if (id == R.id.button2) {
+//                            if(!setCountry(position)){
+//                                getBaseActivity().onBackPressed();
+//                            }
+//
+//                        }
+//                    }
+//                });
+//        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+//    }
 
     /**
      * Save the selected country
