@@ -42,25 +42,11 @@ public class ValidateProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperValidProducts validProducts = (SuperValidProducts) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, validProducts);
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

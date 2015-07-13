@@ -41,22 +41,12 @@ public class GetRatingFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         Form form = (Form) baseResponse.getMetadata().getData();
         form.sortForm(mEventType);
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {
