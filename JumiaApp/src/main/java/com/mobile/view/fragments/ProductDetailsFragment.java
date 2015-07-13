@@ -51,6 +51,7 @@ import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.database.RelatedItemsTableHelper;
@@ -1151,6 +1152,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         LastViewedTableHelper.insertLastViewedProduct(product);
+        BrandsTableHelper.updateBrandCounter(product.getBrand());
+
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
 

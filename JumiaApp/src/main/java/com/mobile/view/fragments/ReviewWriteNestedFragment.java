@@ -515,10 +515,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             
             //only needed for tracking purpose
             params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
-            
-            TrackerDelegator.trackItemReview(params);
+
+            TrackerDelegator.trackItemReview(params, isShowingRatingForm);
             String buttonMessageText = getResources().getString(R.string.dialog_to_product);
-            
            
             //Validate if fragment is nested
             nestedFragment = this.getParentFragment() instanceof ReviewsFragment;
