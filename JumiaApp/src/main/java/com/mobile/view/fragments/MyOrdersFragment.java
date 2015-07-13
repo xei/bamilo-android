@@ -35,6 +35,10 @@ public class MyOrdersFragment extends BaseFragment {
 
     private RtlViewPager mMyOrdersPager;
 
+    private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
+
+    private SlidingTabLayout mMyOrdersPagerTabStrip;
+
     private int mPositionToStart = 0;
 
     /**
@@ -107,7 +111,7 @@ public class MyOrdersFragment extends BaseFragment {
         // Get view pager
         mMyOrdersPager = (RtlViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
-        SlidingTabLayout mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
+        mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
 
         int layout = R.layout.tab_simple_half_item;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
@@ -116,25 +120,7 @@ public class MyOrdersFragment extends BaseFragment {
 
         mMyOrdersPagerTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
-        MyOrdersPagerAdapter mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
-        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
-            // Show the pre selection
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        } else {
-            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
-            mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
-            mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
-            if(ShopSelector.isRtl()){
-                mMyOrdersPager.enableRtl();
-            }
-            mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
-            // Show the pre selection
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        }
-    }
-
-    public void setPagerPosition(int pos) {
-        mMyOrdersPager.setCurrentItem(pos, true);
+        mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
 
     }
 
@@ -158,6 +144,20 @@ public class MyOrdersFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
+            // Show the pre selection
+            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
+        } else {
+            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
+            mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
+            mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
+            if(ShopSelector.isRtl()){
+                mMyOrdersPager.enableRtl();
+            }
+            mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
+            // Show the pre selection
+            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
+        }
     }
 
     /*
