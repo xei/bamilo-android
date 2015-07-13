@@ -39,7 +39,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
@@ -69,7 +68,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
-    private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
+    private static final String TAG = SessionLoginFragment.class.getSimpleName();
 
     private final static String FORM_ITEM_EMAIL = "email";
 
@@ -100,8 +99,6 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     protected FragmentType nextFragmentType;
 
     protected boolean cameFromRegister = false;
-    
-    private FacebookTextView mFacebookButton;
 
 
     /**
@@ -177,10 +174,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
         // Get and set FB button
-        mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_facebook_button);
+        FacebookTextView mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_facebook_button);
         FacebookHelper.showOrHideFacebookButton(this, mFacebookButton);
         // Callback registration
-        mFacebookButton.registerCallback(callbackManager, facebookCallback);
+        mFacebookButton.registerCallback(callbackManager, this);
     }
 
     /*
@@ -244,7 +241,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Print.i(TAG, "code1facebook onActivityResult");
-        Log.e("onActivityResult","requestCode:"+requestCode+" resultCode:"+resultCode+" data:"+data);
+        Log.e("onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " data:" + data);
 //        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
@@ -416,33 +413,29 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             // Get Customer
             baseActivity.hideKeyboard();
             // NullPointerException on orientation change
-            if (baseActivity != null) {
-                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.CUSTOMER = customer;
+            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.CUSTOMER = customer;
 
-                Bundle params = new Bundle();
-                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
-                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
-                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
-                
-                // Validate the next step
-                if (nextFragmentType != null) {
-                    FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                    Bundle args = new Bundle();
-                    args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-                    getBaseActivity().onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
-                } else {
-                    getBaseActivity().onBackPressed();
-                }
+            Bundle params = new Bundle();
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+            params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
+            params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
+            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
 
-                TrackerDelegator.trackLoginSuccessful(params);
-                // Notify user
-                ToastFactory.SUCCESS_LOGIN.show(baseActivity);
+            // Validate the next step
+            if (nextFragmentType != null) {
+                FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+                Bundle args = new Bundle();
+                args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+                getBaseActivity().onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                getBaseActivity().onBackPressed();
             }
-          
-            return true;
 
+            TrackerDelegator.trackLoginSuccessful(params);
+            // Notify user
+            ToastFactory.SUCCESS_LOGIN.show(baseActivity);
+            return true;
         case LOGIN_EVENT:
             onLoginSuccessEvent(bundle);
             return true;
@@ -720,6 +713,13 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
+
+    /**
+     * Trigger used to perform a login/signup from Facebook
+     *
+     * @param values
+     * @param saveCredentials
+     */
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;

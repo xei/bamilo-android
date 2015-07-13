@@ -34,7 +34,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -53,9 +52,7 @@ import java.util.List;
  */
 public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
-    private static final String TAG = LogTagHelper.create(OrderHistoryFragment.class);
-
-    private static OrderHistoryFragment mOrderHistoryFragment;
+    private static final String TAG = OrderHistoryFragment.class.getSimpleName();
 
     private ArrayList<Order> ordersList = new ArrayList<>();
     
@@ -97,8 +94,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * @return
      */
     public static OrderHistoryFragment getInstance() {
-        mOrderHistoryFragment = new OrderHistoryFragment();
-        return mOrderHistoryFragment;
+        return new OrderHistoryFragment();
     }
 
     /**
@@ -616,8 +612,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * listview listener in order to load more products when last item is visible
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
-
-
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {

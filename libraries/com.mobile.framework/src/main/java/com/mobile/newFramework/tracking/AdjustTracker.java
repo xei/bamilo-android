@@ -640,8 +640,8 @@ public class AdjustTracker {
                         eventTransactionFB.addPartnerParameter(AdjustKeys.SKU, item.sku);
                         eventTransactionFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                         eventTransactionFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-                        eventTransactionFB.addCallbackParameter(AdjustKeys.QUANTITY, item.quantity);
-                        eventTransactionFB.addPartnerParameter(AdjustKeys.QUANTITY, item.quantity);
+                        eventTransactionFB.addCallbackParameter(AdjustKeys.QUANTITY, String.valueOf(item.quantity));
+                        eventTransactionFB.addPartnerParameter(AdjustKeys.QUANTITY, String.valueOf(item.quantity));
                         eventTransactionFB.addCallbackParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
                         eventTransactionFB.addPartnerParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
                         //TODO

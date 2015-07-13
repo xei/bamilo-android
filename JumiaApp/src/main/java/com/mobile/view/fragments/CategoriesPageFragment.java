@@ -22,7 +22,6 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
  */
 public class CategoriesPageFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CategoriesPageFragment.class);
+    private static final String TAG = CategoriesPageFragment.class.getSimpleName();
     
     private static final int NUMBER_OF_HEADERS = 1;
     
@@ -270,7 +269,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Get data
             mCurrentSubCategory = category;
             ArrayList<Category> child = category.getChildren();
-            String categoryName = category.getName();
+            //String categoryName = category.getName();
             // Set adapter, tag and listener
             SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
             mCategoryList.setTag(CLICK_FROM_DEFAULT_CONTAINER);

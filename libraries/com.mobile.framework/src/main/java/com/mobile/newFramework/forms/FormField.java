@@ -6,12 +6,9 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -33,7 +30,7 @@ import java.util.Map;
  */
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
-    private final static String TAG = LogTagHelper.create(FormField.class);
+    protected final static String TAG = FormField.class.getSimpleName();
 
     public interface OnDataSetReceived {
         void DataSetReceived(Map<String, String> dataSet);
@@ -98,7 +95,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     private HashMap<String, String> dataCalls;
 
-    private HashMap<String, String>  dataOptions;
+    //private HashMap<String, String>  dataOptions;
 
     private HashMap<String, Form>  paymentFields;
 
@@ -123,7 +120,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.value = "";
         this.dataSet = new LinkedHashMap<>();
         this.dataCalls = new HashMap<>();
-        this.dataOptions = new HashMap<>();
+        //this.dataOptions = new HashMap<>();
         this.dataSetSource = "";
         this.parent = parent;
         this.dataSetListener = null;
@@ -131,20 +128,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.scenario = null;
         this.linkText = "";
         this.dataSetRating = new LinkedHashMap<>();
-        this.paymentInfoList = new HashMap<String,PaymentInfo>();
+        this.paymentInfoList = new HashMap<>();
     }
 
     /**
-     * Form param cosntructor.
-     * @param parent
-     *            . Form that encapsulates the field.
-     * @param name
-*            . Name of the field
-     * @param id
-*            . Id of the form field.
-     * @param obligatory
-*            . Specifies if the field is required.
-     * @param inputType
+     * Form param constructor.
+     *
+     * @param parent     . Form that encapsulates the field.
+     * @param name       . Name of the field
+     * @param id         . Id of the form field.
+     * @param obligatory . Specifies if the field is required.
+     * @param inputType  . The input type for edit text
      */
     public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType) {
         this.id = id;
@@ -155,14 +149,14 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.validation.required = obligatory;
         this.dataSet = new LinkedHashMap<>();
         this.dataCalls = new HashMap<>();
-        this.dataOptions = new HashMap<>();
+        //this.dataOptions = new HashMap<>();
         this.dataSetSource = "";
         this.parent = parent;
         this.dataSetListener = null;
         this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.dataSetRating = new LinkedHashMap<>();
-        this.paymentInfoList = new HashMap<String,PaymentInfo>();
+        this.paymentInfoList = new HashMap<>();
     }
 
     /*
@@ -339,7 +333,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // Case shipping options from array
-            dataOptions.clear();
+            //dataOptions.clear();
             if(dataOptionsArray != null){
                 extrasValues.clear();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
@@ -418,20 +412,20 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 //
 //        }
 //    };
-//FIXME using new callback
-    AigResponseCallback responseCallback = new AigResponseCallback() {
 
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-//            handleSuccessEvent(bundle);
-        }
-
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-//            handleErrorEvent(bundle);
-        }
-    };
+//    AigResponseCallback responseCallback = new AigResponseCallback() {
+//
+//
+//        @Override
+//        public void onRequestComplete(BaseResponse baseResponse) {
+////            handleSuccessEvent(bundle);
+//        }
+//
+//        @Override
+//        public void onRequestError(BaseResponse baseResponse) {
+////            handleErrorEvent(bundle);
+//        }
+//    };
 
     /*
      * (non-Javadoc)

@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
  */
 public class Order implements IJSONSerializable, Parcelable {
 
-    public final static String TAG = LogTagHelper.create(Order.class);
+    public final static String TAG = Order.class.getSimpleName();
 
     private String mOrderNumber;
 
@@ -43,7 +42,7 @@ public class Order implements IJSONSerializable, Parcelable {
         mPayment = "";
         mDate = "";
         mOrderTotal = "";
-        mOrderProducts = new ArrayList<OrderItem>();
+        mOrderProducts = new ArrayList<>();
     }
 
     /**
@@ -56,7 +55,7 @@ public class Order implements IJSONSerializable, Parcelable {
         mPayment = "";
         mDate = "";
         mOrderTotal = "";
-        mOrderProducts = new ArrayList<OrderItem>();
+        mOrderProducts = new ArrayList<>();
         initialize(jsonObject);
     }
 
@@ -64,45 +63,45 @@ public class Order implements IJSONSerializable, Parcelable {
         return mOrderNumber;
     }
 
-    public void setmOrderNumber(String mOrderNumber) {
-        this.mOrderNumber = mOrderNumber;
-    }
+//    public void setmOrderNumber(String mOrderNumber) {
+//        this.mOrderNumber = mOrderNumber;
+//    }
 
     public String getmPayment() {
         return mPayment;
     }
 
-    public void setmPayment(String mPayment) {
-        this.mPayment = mPayment;
-    }
+//    public void setmPayment(String mPayment) {
+//        this.mPayment = mPayment;
+//    }
 
     public String getmDate() {
         return mDate;
     }
 
-    public void setmDate(String mDate) {
-        this.mDate = mDate;
-    }
+//    public void setmDate(String mDate) {
+//        this.mDate = mDate;
+//    }
 
     public String getmOrderTotal() {
         return mOrderTotal;
     }
-
-    public void setmOrderTotal(String mOrderTotal) {
-        this.mOrderTotal = mOrderTotal;
-    }
+//
+//    public void setmOrderTotal(String mOrderTotal) {
+//        this.mOrderTotal = mOrderTotal;
+//    }
 
     public ArrayList<OrderItem> getmOrderProducts() {
         return mOrderProducts;
     }
+//
+//    public void setmOrderProducts(ArrayList<OrderItem> mOrderProducts) {
+//        this.mOrderProducts = mOrderProducts;
+//    }
 
-    public void setmOrderProducts(ArrayList<OrderItem> mOrderProducts) {
-        this.mOrderProducts = mOrderProducts;
-    }
-
-    public int getTotalOrdersHistory() {
-        return totalOrdersHistory;
-    }
+//    public int getTotalOrdersHistory() {
+//        return totalOrdersHistory;
+//    }
 
     public void setTotalOrdersHistory(int totalOrdersHistory) {
         this.totalOrdersHistory = totalOrdersHistory;
@@ -149,7 +148,6 @@ public class Order implements IJSONSerializable, Parcelable {
      */
     @Override
     public JSONObject toJSON() {
-        // TODO
         return null;
     }
 
@@ -164,7 +162,7 @@ public class Order implements IJSONSerializable, Parcelable {
         mDate = in.readString();
         mOrderTotal = in.readString();
         if (in.readByte() == 0x01) {
-            mOrderProducts = new ArrayList<OrderItem>();
+            mOrderProducts = new ArrayList<>();
             in.readList(mOrderProducts, OrderItem.class.getClassLoader());
         } else {
             mOrderProducts = null;

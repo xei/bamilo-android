@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
  */
 public class ProductOffers implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = LogTagHelper.create(ProductOffers.class);
+    protected static final String TAG = ProductOffers.class.getSimpleName();
 
     private ArrayList<Offer> offers;
     private double minPriceOfferDouble;
@@ -37,24 +36,23 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
     /**
      * Complete product empty constructor.
      */
+    @SuppressWarnings("unused")
     public ProductOffers() {
-
-        offers = new ArrayList<Offer>();
+        offers = new ArrayList<>();
         minPriceOfferDouble = 0.0;
         minPriceOffer = "";
         minPriceOfferConverted = 0.0;
         totalOffers = 0;
     }
 
-    public ProductOffers(JSONObject productOffers) {
-
-        offers = new ArrayList<Offer>();
-        minPriceOfferDouble = 0.0;
-        minPriceOffer = "";
-        minPriceOfferConverted = 0.0;
-        totalOffers = 0;
-        initialize(productOffers);
-    }
+//    public ProductOffers(JSONObject productOffers) {
+//        offers = new ArrayList<>();
+//        minPriceOfferDouble = 0.0;
+//        minPriceOffer = "";
+//        minPriceOfferConverted = 0.0;
+//        totalOffers = 0;
+//        initialize(productOffers);
+//    }
     /*
      * (non-Javadoc)
      *
@@ -72,7 +70,6 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
                 offerPriceJSON = "0";
             }
             minPriceOfferDouble = Double.parseDouble(offerPriceJSON);
-//            minPriceOffer = CurrencyFormatter.formatCurrency(offerPriceJSON); TODO
             minPriceOfferConverted = jsonObject.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
             totalOffers = jsonObject.optInt(RestConstants.JSON_TOTAL_TAG, 0);
 
@@ -120,37 +117,37 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
         return minPriceOfferConverted;
     }
 
-    public double getMinPriceOfferDouble() {
-        return minPriceOfferDouble;
-    }
-
-    public void setMinPriceOfferDouble(double minPriceOffer) {
-        this.minPriceOfferDouble = minPriceOfferDouble;
-    }
+//    public double getMinPriceOfferDouble() {
+//        return minPriceOfferDouble;
+//    }
+//
+//    public void setMinPriceOfferDouble(double minPriceOffer) {
+//        this.minPriceOfferDouble = minPriceOfferDouble;
+//    }
 
     public String getMinPriceOffer() {
         return minPriceOffer;
     }
 
-    public void setMinPriceOffer(String minPriceOffer) {
-        this.minPriceOffer = minPriceOffer;
-    }
-
-    public double getMinPriceOfferConverted() {
-        return minPriceOfferConverted;
-    }
-
-    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
-        this.minPriceOfferConverted = minPriceOfferConverted;
-    }
+//    public void setMinPriceOffer(String minPriceOffer) {
+//        this.minPriceOffer = minPriceOffer;
+//    }
+//
+//    public double getMinPriceOfferConverted() {
+//        return minPriceOfferConverted;
+//    }
+//
+//    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
+//        this.minPriceOfferConverted = minPriceOfferConverted;
+//    }
 
     public int getTotalOffers() {
         return totalOffers;
     }
 
-    public void setTotalOffers(int totalOffers) {
-        this.totalOffers = totalOffers;
-    }
+//    public void setTotalOffers(int totalOffers) {
+//        this.totalOffers = totalOffers;
+//    }
 
     /*
      * ############ PARCELABLE ############
@@ -182,10 +179,8 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
     }
 
     private ProductOffers(Parcel in) {
-
-        offers = new ArrayList<Offer>();
+        offers = new ArrayList<>();
         in.readList(offers, Offer.class.getClassLoader());
-
         minPriceOfferDouble = in.readDouble();
         minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();

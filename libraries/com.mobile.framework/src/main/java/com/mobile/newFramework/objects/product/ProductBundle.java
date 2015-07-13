@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  */
 public class ProductBundle implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = LogTagHelper.create(ProductBundle.class);
+    protected static final String TAG = ProductBundle.class.getSimpleName();
 
     private String bundleName;
     private String bundleId;
@@ -38,6 +37,7 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
     /**
      * Complete product bundle empty constructor.
      */
+    @SuppressWarnings("unused")
     public ProductBundle() {
         bundleName = "";
         bundleId = "";
@@ -108,61 +108,61 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
         return RequiredJson.OBJECT_DATA;
     }
 
-    public String getBundleName() {
-        return bundleName;
-    }
-
-    public void setBundleName(String bundleName) {
-        this.bundleName = bundleName;
-    }
+//    public String getBundleName() {
+//        return bundleName;
+//    }
+//
+//    public void setBundleName(String bundleName) {
+//        this.bundleName = bundleName;
+//    }
 
     public String getBundleId() {
         return bundleId;
     }
 
-    public void setBundleId(String bundleId) {
-        this.bundleId = bundleId;
-    }
-
-    public String getBundlePrice() {
-        return bundlePrice;
-    }
-
-    public void setBundlePrice(String bundlePrice) {
-        this.bundlePrice = bundlePrice;
-    }
-
-    public double getBundlePriceDouble() {
-        return bundlePriceDouble;
-    }
-
-    public void setBundlePriceDouble(double bundlePriceDouble) {
-        this.bundlePriceDouble = bundlePriceDouble;
-    }
-
-    public double getBundlePriceConverted() {
-        return bundlePriceConverted;
-    }
-
-    public void setBundlePriceConverted(double bundlePriceConverted) {
-        this.bundlePriceConverted = bundlePriceConverted;
-    }
-
-    public int getBundleLeaderPos() {
-        return bundleLeaderPos;
-    }
-
-    public void setBundleLeaderPos(int bundleLeaderPos) {
-        this.bundleLeaderPos = bundleLeaderPos;
-    }
+//    public void setBundleId(String bundleId) {
+//        this.bundleId = bundleId;
+//    }
+//
+//    public String getBundlePrice() {
+//        return bundlePrice;
+//    }
+//
+//    public void setBundlePrice(String bundlePrice) {
+//        this.bundlePrice = bundlePrice;
+//    }
+//
+//    public double getBundlePriceDouble() {
+//        return bundlePriceDouble;
+//    }
+//
+//    public void setBundlePriceDouble(double bundlePriceDouble) {
+//        this.bundlePriceDouble = bundlePriceDouble;
+//    }
+//
+//    public double getBundlePriceConverted() {
+//        return bundlePriceConverted;
+//    }
+//
+//    public void setBundlePriceConverted(double bundlePriceConverted) {
+//        this.bundlePriceConverted = bundlePriceConverted;
+//    }
+//
+//    public int getBundleLeaderPos() {
+//        return bundleLeaderPos;
+//    }
+//
+//    public void setBundleLeaderPos(int bundleLeaderPos) {
+//        this.bundleLeaderPos = bundleLeaderPos;
+//    }
 
     public ArrayList<ProductBundleProduct> getBundleProducts() {
         return bundleProducts;
     }
 
-    public void setBundleProducts(ArrayList<ProductBundleProduct> bundleProducts) {
-        this.bundleProducts = bundleProducts;
-    }
+//    public void setBundleProducts(ArrayList<ProductBundleProduct> bundleProducts) {
+//        this.bundleProducts = bundleProducts;
+//    }
 
 
     /*

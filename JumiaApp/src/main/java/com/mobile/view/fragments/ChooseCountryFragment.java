@@ -27,7 +27,6 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -45,7 +44,7 @@ import java.util.EnumSet;
  */
 public class ChooseCountryFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(ChooseCountryFragment.class);
+    private static final String TAG = ChooseCountryFragment.class.getSimpleName();
 
     private static final int SHOP_NOT_SELECTED = -1;
 

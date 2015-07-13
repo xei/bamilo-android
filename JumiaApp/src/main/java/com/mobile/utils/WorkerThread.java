@@ -1,6 +1,5 @@
 package com.mobile.utils;
 
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Iterator;
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class WorkerThread extends Thread{
 
-    private static final String TAG = LogTagHelper.create(WorkerThread.class);
+    private static final String TAG = WorkerThread.class.getSimpleName();
     //Must be volatile because all R/W operations must be done on main memory instead of CPU's cache.
     private volatile boolean mToStop;
     private volatile boolean mStopRequested;
@@ -136,7 +135,7 @@ public class WorkerThread extends Thread{
                 auxThread.notify();
             }
         }catch(IllegalMonitorStateException ex){
-            Print.e(auxThread.TAG, "IllegalMonitorStateException: notify()");
+            Print.e(TAG, "IllegalMonitorStateException: notify()");
         }
 
     }

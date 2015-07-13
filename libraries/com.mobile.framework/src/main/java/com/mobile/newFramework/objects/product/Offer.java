@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
@@ -22,7 +21,7 @@ import org.json.JSONObject;
  */
 public class Offer implements IJSONSerializable, Parcelable{
 
-    private static final String TAG = LogTagHelper.create(Offer.class);
+    protected static final String TAG = Offer.class.getSimpleName();
 
     private String sku;
     private String simpleSku;
@@ -39,8 +38,8 @@ public class Offer implements IJSONSerializable, Parcelable{
     /**
      * Complete product empty constructor.
      */
+    @SuppressWarnings("unused")
     public Offer() {
-
         sku ="";
         simpleSku = "";
         priceOffer = "";
@@ -101,7 +100,6 @@ public class Offer implements IJSONSerializable, Parcelable{
                     offerPriceJSON = "0";
                 }
                 priceOfferDouble = Double.parseDouble(offerPriceJSON);
-//                priceOffer = CurrencyFormatter.formatCurrency(offerPriceJSON); TODO
 
                 priceOfferConverted = productObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG,0.0);
 
@@ -111,7 +109,6 @@ public class Offer implements IJSONSerializable, Parcelable{
                     specialOfferPriceJSON = "0.0";
                 }
                 specialPriceOfferDouble = Double.parseDouble(specialOfferPriceJSON);
-//                specialPriceOffer = CurrencyFormatter.formatCurrency(specialOfferPriceJSON); TODO
 
                 specialPriceOfferConverted = productObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG,0.0);
 
@@ -165,49 +162,49 @@ public class Offer implements IJSONSerializable, Parcelable{
         return simpleSku;
     }
 
-    public void setSimpleSku(String simpleSku) {
-        this.simpleSku = simpleSku;
-    }
+//    public void setSimpleSku(String simpleSku) {
+//        this.simpleSku = simpleSku;
+//    }
 
     public String getPriceOffer() {
         return priceOffer;
     }
 
-    public void setPriceOffer(String priceOffer) {
-        this.priceOffer = priceOffer;
-    }
+//    public void setPriceOffer(String priceOffer) {
+//        this.priceOffer = priceOffer;
+//    }
 
     public double getPriceOfferDouble() {
         return priceOfferDouble;
     }
 
-    public void setPriceOfferDouble(double priceOfferDouble) {
-        this.priceOfferDouble = priceOfferDouble;
-    }
+//    public void setPriceOfferDouble(double priceOfferDouble) {
+//        this.priceOfferDouble = priceOfferDouble;
+//    }
 
-    public double getPriceOfferConverted() {
-        return priceOfferConverted;
-    }
-
-    public void setPriceOfferConverted(double priceOfferConverted) {
-        this.priceOfferConverted = priceOfferConverted;
-    }
+//    public double getPriceOfferConverted() {
+//        return priceOfferConverted;
+//    }
+//
+//    public void setPriceOfferConverted(double priceOfferConverted) {
+//        this.priceOfferConverted = priceOfferConverted;
+//    }
 
     public int getMaxDeliveryTime() {
         return maxDeliveryTime;
     }
 
-    public void setMaxDeliveryTime(int maxDeliveryTime) {
-        this.maxDeliveryTime = maxDeliveryTime;
-    }
+//    public void setMaxDeliveryTime(int maxDeliveryTime) {
+//        this.maxDeliveryTime = maxDeliveryTime;
+//    }
 
     public int getMinDeliveryTime() {
         return minDeliveryTime;
     }
 
-    public void setMinDeliveryTime(int minDeliveryTime) {
-        this.minDeliveryTime = minDeliveryTime;
-    }
+//    public void setMinDeliveryTime(int minDeliveryTime) {
+//        this.minDeliveryTime = minDeliveryTime;
+//    }
 
     public Seller getSeller() {
         return seller;
