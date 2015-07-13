@@ -61,10 +61,14 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, loginCustomer.getCustomer());
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
+
+        //TODO move to observable
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
@@ -77,25 +81,8 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
-        mRequester.onRequestComplete(bundle);
+
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-
-
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

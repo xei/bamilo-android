@@ -62,13 +62,25 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // Save customer
-//        Customer customer = (Customer) baseResponse.getMetadata().getData();
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperCheckoutFinish checkoutFinish = (SuperCheckoutFinish)baseResponse.getMetadata().getData();
+        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
+        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
+
+        // TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(checkoutFinish.getPaymentMethodForm());
         JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(checkoutFinish.getOrderNumber());
+    }
+
+//    @Override
+//    public void onRequestComplete(BaseResponse baseResponse) {
+//        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+//        // Save customer
+////        Customer customer = (Customer) baseResponse.getMetadata().getData();
+//        SuperCheckoutFinish checkoutFinish = (SuperCheckoutFinish)baseResponse.getMetadata().getData();
+//        JumiaApplication.INSTANCE.setPaymentMethodForm(checkoutFinish.getPaymentMethodForm());
+//        JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(checkoutFinish.getOrderNumber());
 
 //        // Parse the response
 //        try {
@@ -113,19 +125,13 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
 //            return parseErrorBundle(bundle);
 //        }
 
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
-        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
-        //bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        mRequester.onRequestComplete(bundle);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
+//        // Create bundle
+//        Bundle bundle = generateSuccessBundle(baseResponse);
+//        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
+//        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
+//        //bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
+//        mRequester.onRequestComplete(bundle);
+//    }
 
 
 

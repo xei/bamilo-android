@@ -35,20 +35,6 @@ public class SetForgotPasswordHelper extends SuperBaseHelper {
 //        new ForgotPassword(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.forgotPassword);
     }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
     
 //    /*
 //     * (non-Javadoc)

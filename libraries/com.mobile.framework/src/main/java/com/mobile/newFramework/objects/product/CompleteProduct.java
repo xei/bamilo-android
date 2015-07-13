@@ -321,23 +321,23 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     /**
      */
-    public String getIdCatalogConfig() {
-        return idCatalogConfig;
-    }
+//    public String getIdCatalogConfig() {
+//        return idCatalogConfig;
+//    }
 
     /**
      * @return the attributeSetId
      */
-    public String getAttributeSetId() {
-        return attributeSetId;
-    }
+//    public String getAttributeSetId() {
+//        return attributeSetId;
+//    }
 
     /**
      * @return the activatedAt
      */
-    public String getActivatedAt() {
-        return activatedAt;
-    }
+//    public String getActivatedAt() {
+//        return activatedAt;
+//    }
 
     /**
      * @return the special price as a Double
@@ -364,9 +364,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
      * @return the shipmentData
      */
     @Deprecated
-    public HashMap<String, String> getShipmentData() {
-        return shipmentData;
-    }
+//    public HashMap<String, String> getShipmentData() {
+//        return shipmentData;
+//    }
 
     /**
      * @return the simples
@@ -406,30 +406,30 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
      * @return the ratings_Url
      */
     @Deprecated
-    public String getRatingsUrl() {
-        return ratingsUrl;
-    }
+//    public String getRatingsUrl() {
+//        return ratingsUrl;
+//    }
 
     /**
      * @param idCatalogConfig the idCatalogConfig to set
      */
-    public void setIdCatalogConfig(String idCatalogConfig) {
-        this.idCatalogConfig = idCatalogConfig;
-    }
+//    public void setIdCatalogConfig(String idCatalogConfig) {
+//        this.idCatalogConfig = idCatalogConfig;
+//    }
 
     /**
      * @param attributeSetId the attributeSetId to set
      */
-    public void setAttributeSetId(String attributeSetId) {
-        this.attributeSetId = attributeSetId;
-    }
+//    public void setAttributeSetId(String attributeSetId) {
+//        this.attributeSetId = attributeSetId;
+//    }
 
     /**
      * @param activatedAt the activatedAt to set
      */
-    public void setActivatedAt(String activatedAt) {
-        this.activatedAt = activatedAt;
-    }
+//    public void setActivatedAt(String activatedAt) {
+//        this.activatedAt = activatedAt;
+//    }
 
     /**
      * @param description the description to set
@@ -455,16 +455,16 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     /**
      * @param shipmentData the shipmentData to set
      */
-    public void setShipmentData(HashMap<String, String> shipmentData) {
-        this.shipmentData = shipmentData;
-    }
+//    public void setShipmentData(HashMap<String, String> shipmentData) {
+//        this.shipmentData = shipmentData;
+//    }
 
     /**
      * @param simples the simples to set
      */
-    public void setSimples(ArrayList<ProductSimple> simples) {
-        this.simples = simples;
-    }
+//    public void setSimples(ArrayList<ProductSimple> simples) {
+//        this.simples = simples;
+//    }
 
     /**
      * @param imageList the imageList to set
@@ -554,9 +554,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
      *
      * @return
      */
-    public boolean hasSizeGuide() {
-        return TextUtils.isEmpty(mSizeGuideUrl);
-    }
+//    public boolean hasSizeGuide() {
+//        return TextUtils.isEmpty(mSizeGuideUrl);
+//    }
 
     public ProductBundle getProductBundle() {
         return productBundle;
@@ -570,25 +570,25 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return hasSeller;
     }
 
-    public void setHasSeller(boolean hasSeller) {
-        this.hasSeller = hasSeller;
-    }
+//    public void setHasSeller(boolean hasSeller) {
+//        this.hasSeller = hasSeller;
+//    }
 
     public boolean hasBundle() {
         return hasBundle;
     }
 
-    public void setHasBundle(boolean hasBundle) {
-        this.hasBundle = hasBundle;
-    }
+//    public void setHasBundle(boolean hasBundle) {
+//        this.hasBundle = hasBundle;
+//    }
 
     public Integer getReviewsCount() {
         return reviewsCount;
     }
 
-    public void setReviewsCount(Integer reviewsCount) {
-        this.reviewsCount = reviewsCount;
-    }
+//    public void setReviewsCount(Integer reviewsCount) {
+//        this.reviewsCount = reviewsCount;
+//    }
 
     public Seller getSeller() {
         return seller;
@@ -598,45 +598,45 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         this.seller = seller;
     }
 
-    public double getMinPriceOfferDouble() {
-        return minPriceOfferDouble;
-    }
+//    public double getMinPriceOfferDouble() {
+//        return minPriceOfferDouble;
+//    }
 
-    public void setMinPriceOfferDouble(double minPriceOffer) {
-        this.minPriceOfferDouble = minPriceOfferDouble;
-    }
+//    public void setMinPriceOfferDouble(double minPriceOffer) {
+//        this.minPriceOfferDouble = minPriceOfferDouble;
+//    }
 
     public String getMinPriceOffer() {
         return minPriceOffer;
     }
 
-    public void setMinPriceOffer(String minPriceOffer) {
-        this.minPriceOffer = minPriceOffer;
-    }
+//    public void setMinPriceOffer(String minPriceOffer) {
+//        this.minPriceOffer = minPriceOffer;
+//    }
 
-    public double getMinPriceOfferConverted() {
-        return minPriceOfferConverted;
-    }
+//    public double getMinPriceOfferConverted() {
+//        return minPriceOfferConverted;
+//    }
 
-    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
-        this.minPriceOfferConverted = minPriceOfferConverted;
-    }
+//    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
+//        this.minPriceOfferConverted = minPriceOfferConverted;
+//    }
 
     public int getTotalOffers() {
         return totalOffers;
     }
 
-    public void setTotalOffers(int totalOffers) {
-        this.totalOffers = totalOffers;
-    }
+//    public void setTotalOffers(int totalOffers) {
+//        this.totalOffers = totalOffers;
+//    }
 
     public ArrayList<ProductDetailsSpecification> getProductSpecifications() {
         return mProductSpecs;
     }
 
-    public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
-        this.mProductSpecs = specs;
-    }
+//    public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
+//        this.mProductSpecs = specs;
+//    }
 
     public ArrayList<RelatedProduct> getRelatedProducts() {
         return relatedProducts;
