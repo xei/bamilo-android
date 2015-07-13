@@ -962,11 +962,8 @@ public class DynamicFormItem {
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        RelativeLayout.LayoutParams lParams = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = View.inflate(this.context, R.layout.form_checkbox_terms, null);
         this.dataControl.setId(parent.getNextId());
-        this.dataControl.setLayoutParams(lParams);
         this.dataControl.setVisibility(View.VISIBLE);
 
         CheckBox mCheckBox = (CheckBox)this.dataControl.findViewById(R.id.checkbox_terms);
@@ -1889,7 +1886,7 @@ public class DynamicFormItem {
 
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         } else {
-            int inputType = android.text.InputType.TYPE_CLASS_TEXT;
+            int inputType = android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
             textDataControl.setInputType(inputType);
             //#RTL
             if (ShopSelector.isRtl())
