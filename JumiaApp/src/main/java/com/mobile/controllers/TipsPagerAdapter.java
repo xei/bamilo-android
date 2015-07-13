@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.mobile.components.viewpagerindicator.IconPagerAdapter;
 import com.mobile.view.R;
-import com.viewpagerindicator.IconPagerAdapter;
 
 /**
  * @author Andre Lopes

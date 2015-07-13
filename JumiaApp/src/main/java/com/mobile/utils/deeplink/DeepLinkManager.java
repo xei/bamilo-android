@@ -234,10 +234,10 @@ public class DeepLinkManager {
     /**
      *  method that adds the Deep link origin to all bundles
      * @param bundle
-     * @param origin
+     * @param data
      * @return
      */
-    private static Bundle addOriginGroupType(Uri data,Bundle bundle){
+    private static Bundle addOriginGroupType(Uri data, Bundle bundle){
         if(bundle != null && data != null){
             bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
         }
@@ -527,37 +527,37 @@ public class DeepLinkManager {
      * @param segments A list of segments
      * @return list of segments
      */
-    @Deprecated
-    private static List<String> isValidLink(String host, List<String> segments) {
-        Print.i(TAG, "DEEP LINK URI HOST: " + host);
-        Print.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
-        // Validate segments
-        if (segments.size() == 0) {
-            Print.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
-
+//    @Deprecated
+//    private static List<String> isValidLink(String host, List<String> segments) {
+//        Print.i(TAG, "DEEP LINK URI HOST: " + host);
+//        Print.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
+//         Validate segments
+//        if (segments.size() == 0) {
+//            Print.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
+//
             // Case -> JUMIA://ng/
-            if (isSupportedCountryCode(host)) {
-                List<String> array = new ArrayList<>();
-                array.add(host);
-                return array;
+//            if (isSupportedCountryCode(host)) {
+//                List<String> array = new ArrayList<>();
+//                array.add(host);
+//                return array;
 
                 // Case -> JUMIA://XXXX/
-            } else {
-                return null;
-            }
+//            } else {
+//                return null;
+//            }
 
             // Case -> JUMIA://eg/cart/
-        } else if (isSupportedCountryCode(host)) {
-            List<String> array = new ArrayList<>();
-            array.addAll(segments);
-            array.add(PATH_CC_POS, host);
-            return array;
-        }
-
+//        } else if (isSupportedCountryCode(host)) {
+//            List<String> array = new ArrayList<>();
+//            array.addAll(segments);
+//            array.add(PATH_CC_POS, host);
+//            return array;
+//        }
+//
         // Return default segments
         // Case -> JUMIA://com.mobile.jumia.dev/eg/cart
-        return segments;
-    }
+//        return segments;
+//    }
 
 
     /**
@@ -567,18 +567,18 @@ public class DeepLinkManager {
      * @param countryCode The country code
      * @author sergiopereira
      */
-    @Deprecated
-    private static void loadCountryCode(Context context, String countryCode) {
-        Print.d(TAG, "DEEP LINK URI PATH: " + countryCode);
-        // Get current country code
-        String selectedCountryCode = ShopPreferences.getShopId(context);
-        // Validate saved shop id
-        if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode)) {
-            locateCountryCode(context, countryCode);
-        } else {
-            Print.i(TAG, "DEEP LINK CC IS THE SAME");
-        }
-    }
+//    @Deprecated
+//    private static void loadCountryCode(Context context, String countryCode) {
+//        Print.d(TAG, "DEEP LINK URI PATH: " + countryCode);
+//         Get current country code
+//        String selectedCountryCode = ShopPreferences.getShopId(context);
+//         Validate saved shop id
+//        if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode)) {
+//            locateCountryCode(context, countryCode);
+//        } else {
+//            Print.i(TAG, "DEEP LINK CC IS THE SAME");
+//        }
+//    }
 
     /**
      * Locate the shop id and save it for a respective country code
@@ -586,26 +586,26 @@ public class DeepLinkManager {
      * @param countryCode The country code
      * @author sergiopereira
      */
-    @Deprecated
-    private static void locateCountryCode(Context context, String countryCode) {
-        // Validate countries available
-        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
-            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        }
+//    @Deprecated
+//    private static void locateCountryCode(Context context, String countryCode) {
+//         Validate countries available
+//        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
+//            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+//        }
         // Get the supported countries
-        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-            // Get the shop id for the country code
-            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
-                String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
-                Print.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-                if (supportedCountry.equalsIgnoreCase(countryCode)) {
-                    Print.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
-                    ShopPreferences.setShopId(context, i);
-                    break;
-                }
-            }
-        }
-    }
+//        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+//             Get the shop id for the country code
+//            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
+//                String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
+//                Print.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
+//                if (supportedCountry.equalsIgnoreCase(countryCode)) {
+//                    Print.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
+//                    ShopPreferences.setShopId(context, i);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Locate the shop id and save it for a respective country code
@@ -613,8 +613,8 @@ public class DeepLinkManager {
      * @param countryCode The country code
      * @author sergiopereira
      */
-    @Deprecated
-    private static boolean isSupportedCountryCode(String countryCode) {
+//    @Deprecated
+//    private static boolean isSupportedCountryCode(String countryCode) {
 //        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
 //            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
 //        }
@@ -627,8 +627,8 @@ public class DeepLinkManager {
 //            }
 //        }
 
-        return false;
-    }
+//        return false;
+//    }
 
     /**
      * Get all query parameters from Uri
@@ -636,27 +636,27 @@ public class DeepLinkManager {
      * @param uri The URI.
      * @return set of keys
      */
-    private static Set<String> getQueryParameterNames(Uri uri) {
-        String query = uri.getEncodedQuery();
-        if (query == null) {
-            return Collections.emptySet();
-        }
-        Set<String> names = new LinkedHashSet<>();
-        int start = 0;
-        do {
-            int next = query.indexOf('&', start);
-            int end = (next == -1) ? query.length() : next;
-            int separator = query.indexOf('=', start);
-            if (separator > end || separator == -1) {
-                separator = end;
-            }
-            String name = query.substring(start, separator);
-            names.add(Uri.decode(name));
+//    private static Set<String> getQueryParameterNames(Uri uri) {
+//        String query = uri.getEncodedQuery();
+//        if (query == null) {
+//            return Collections.emptySet();
+//        }
+//        Set<String> names = new LinkedHashSet<>();
+//        int start = 0;
+//        do {
+//            int next = query.indexOf('&', start);
+//            int end = (next == -1) ? query.length() : next;
+//            int separator = query.indexOf('=', start);
+//            if (separator > end || separator == -1) {
+//                separator = end;
+//            }
+//            String name = query.substring(start, separator);
+//            names.add(Uri.decode(name));
             // Move start to end of name.
-            start = end + 1;
-        } while (start < query.length());
-        return Collections.unmodifiableSet(names);
-    }
+//            start = end + 1;
+//        } while (start < query.length());
+//        return Collections.unmodifiableSet(names);
+//    }
 
     /*
      * ############ DEEP LINK VALIDATIONS ############
@@ -754,6 +754,7 @@ public class DeepLinkManager {
                 Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 bundle = loadDeepLink(data);
+                TrackerDelegator.trackPushNotification();
                 Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }

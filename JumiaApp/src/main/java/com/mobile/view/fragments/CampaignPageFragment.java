@@ -164,10 +164,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if(savedInstanceState.containsKey(BANNER_STATE)) 
                 bannerState = (BannerVisibility)savedInstanceState.getSerializable(BANNER_STATE);
         }
-        
         // Tracking
-        TrackerDelegator.trackCampaignView(mTeaserCampaign != null ? mTeaserCampaign.getTargetTitle() : "n.a.");
-        
+        TrackerDelegator.trackCampaignView(mTeaserCampaign);
     }
     
     /*

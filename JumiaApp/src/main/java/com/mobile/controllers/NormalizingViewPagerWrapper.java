@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.mobile.newFramework.utils.output.Print;
-import com.viewpagerindicator.IconPagerAdapter;
+import com.mobile.components.viewpagerindicator.IconPagerAdapter;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
     private final static String TAG = NormalizingViewPagerWrapper.class.getSimpleName();

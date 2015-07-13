@@ -53,22 +53,15 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         // Save credentials
         Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
         mContentValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
         Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        // Create bundle
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
     }
 
 //    /*

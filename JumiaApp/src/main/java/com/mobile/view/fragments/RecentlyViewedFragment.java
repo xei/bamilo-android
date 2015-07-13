@@ -176,38 +176,38 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      *
      * @author sergiopereira
      */
-    @Override
-    protected void onAddAllItemsToCart() {
-        Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
+//    @Override
+//    protected void onAddAllItemsToCart() {
+//        Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
         // Show progress
-        showActivityProgress();
+//        showActivityProgress();
         // Initialize cart vars
-        mAddedItemsCounter = 0;
-        mNumberOfItemsForCart = mAddableToCartList.size();
-        mItemsNotAddedToCart.clear();
-        // Validate all items
-        for (int i = 0; i < mNumberOfItemsForCart; i++) {
-            if (mAddableToCartList.get(i).isComplete()) {
+//        mAddedItemsCounter = 0;
+//        mNumberOfItemsForCart = mAddableToCartList.size();
+//        mItemsNotAddedToCart.clear();
+//         Validate all items
+//        for (int i = 0; i < mNumberOfItemsForCart; i++) {
+//            if (mAddableToCartList.get(i).isComplete()) {
                 // Add item to cart
-                triggerAddProductToCart(mAddableToCartList.get(i), i);
-            } else {
+//                triggerAddProductToCart(mAddableToCartList.get(i), i);
+//            } else {
                 // Increment counter
-                mAddedItemsCounter++;
-                Print.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
+//                mAddedItemsCounter++;
+//                Print.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
                 // Save the position
-                if (mItemsNotAddedToCart != null) {
-                    mItemsNotAddedToCart.add(i);
-                }
+//                if (mItemsNotAddedToCart != null) {
+//                    mItemsNotAddedToCart.add(i);
+//                }
                 // Case all items are incomplete
-                if (mAddedItemsCounter == mNumberOfItemsForCart) {
-                    // Show toast
-                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
-                    // Dismiss
-                    hideActivityProgress();
-                }
-            }
-        }
-    }
+//                if (mAddedItemsCounter == mNumberOfItemsForCart) {
+//                     Show toast
+//                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
+//                     Dismiss
+//                    hideActivityProgress();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * ######### TRIGGERS #########
@@ -233,8 +233,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * @author sergiopereira
      */
     @Override
-    protected void trackAddtoCart(String sku, AddableToCart addableToCart) {
-        super.trackAddtoCart(sku, addableToCart);
+    protected void trackAddToCart(String sku, AddableToCart addableToCart) {
+        super.trackAddToCart(sku, addableToCart);
     }
 
     /**

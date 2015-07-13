@@ -45,27 +45,18 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         SuperSetBillingAddress billing = (SuperSetBillingAddress) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, billing.getOrderSummary());
         Print.i(TAG, "ORDER SUMMARY: " + billing.getOrderSummary().toString());
         // Get and set next step
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(billing.getNextStep()));
-        mRequester.onRequestComplete(bundle);
     }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-    // TODO: Send the respective value
+// TODO: Send the respective value
     // billingForm[billingAddressId]
     // billingForm[shippingAddressDifferent]
     // billingForm[shippingAddressId]

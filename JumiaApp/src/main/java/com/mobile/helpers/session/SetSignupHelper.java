@@ -62,8 +62,9 @@ public class SetSignupHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+        //TODO move to observable
         // Save credentials
         if (saveCredentials) {
             Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
@@ -79,22 +80,10 @@ public class SetSignupHelper extends SuperBaseHelper {
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
+
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
 
 //    /*
 //     * (non-Javadoc)
