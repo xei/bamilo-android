@@ -9,7 +9,7 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.home.TeaserViewFactory;
 
 /**
- *
+ * Class used to represent the base of teasers.
  */
 public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,14 +37,21 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
         // Get view offset
         mOffset = TeaserViewFactory.getViewHolderOffset(context);
         // Set offset margin
-        apllyMargin();
+        applyMargin();
     }
 
     /**
-     * apply margins to view
+     * Apply margins to view
      */
-    public void apllyMargin(){
+    public void applyMargin(){
         itemView.setPadding(itemView.getPaddingLeft() + mOffset, itemView.getPaddingTop(), itemView.getPaddingRight() + mOffset, itemView.getPaddingBottom());
+    }
+
+    /**
+     * Method to update the view
+     */
+    public void onUpdate() {
+        // ...
     }
 
     /**
@@ -52,13 +59,5 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
      * @param group The teaser group
      */
     public abstract void onBind(BaseTeaserGroupType group);
-
-
-    /**
-     * Method to update the view
-     */
-    public abstract void onUpdate();
-
-
 
 }

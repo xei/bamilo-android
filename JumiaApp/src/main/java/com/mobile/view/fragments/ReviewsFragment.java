@@ -44,7 +44,6 @@ import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -63,7 +62,7 @@ import java.util.EnumSet;
  */
 public class ReviewsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewsFragment.class);
+    private static final String TAG = ReviewsFragment.class.getSimpleName();
     
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
@@ -110,8 +109,6 @@ public class ReviewsFragment extends BaseFragment {
     private TextView sellerRatingCount;
     
     private TextView writeReviewTitle;
-    
-    private TextView emptyScreenText;
     
     private View centerPoint;
     
@@ -222,7 +219,7 @@ public class ReviewsFragment extends BaseFragment {
         sellerRatingBar = (RatingBar) view.findViewById(R.id.seller_reviews_item_rating);
         sellerRatingCount = (TextView) view.findViewById(R.id.seller_reviews_item_reviews);
 
-        emptyScreenText = (TextView) view.findViewById(R.id.fragment_root_empty_text);
+        TextView emptyScreenText = (TextView) view.findViewById(R.id.fragment_root_empty_text);
         if(isProductRating){
             emptyScreenText.setText(getResources().getString(R.string.reviews_empty));
         } else {

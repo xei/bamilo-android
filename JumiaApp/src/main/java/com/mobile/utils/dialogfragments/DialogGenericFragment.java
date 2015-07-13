@@ -3,6 +3,7 @@ package com.mobile.utils.dialogfragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -23,7 +23,7 @@ import com.mobile.view.R;
  */
 public class DialogGenericFragment extends DialogFragment {
 
-    private static final String TAG = LogTagHelper.create(DialogGenericFragment.class);
+    private static final String TAG = DialogGenericFragment.class.getSimpleName();
 
     private static DialogGenericFragment dialogGenericFragment;
 
@@ -179,7 +179,15 @@ public class DialogGenericFragment extends DialogFragment {
         super.onPause();
         dismissAllowingStateLoss();
     }
-    
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager,tag);
+        } catch (IllegalStateException ex){
+            Print.e(TAG, "Error showing Dialog", ex);
+        }
+    }
 
     /**
      * Dialog

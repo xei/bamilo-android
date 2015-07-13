@@ -31,7 +31,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -46,7 +45,6 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class used to shoe the order
@@ -54,7 +52,7 @@ import java.util.Set;
  */
 public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutMyOrderFragment.class);
+    private static final String TAG = CheckoutMyOrderFragment.class.getSimpleName();
 
     private ViewGroup mProductsContainer;
 
@@ -560,9 +558,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private String getUserAgentAsExtraData(){
-        String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";      
+        //String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";
         //return "app=android&customer_device=" + device;
-        return device;
+        return getResources().getBoolean(R.bool.isTablet) ? "tablet" : "mobile";
     }
 
     /**

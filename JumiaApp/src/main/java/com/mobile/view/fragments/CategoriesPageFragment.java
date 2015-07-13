@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,7 +22,6 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class CategoriesPageFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CategoriesPageFragment.class);
+    private static final String TAG = CategoriesPageFragment.class.getSimpleName();
     
     private static final int NUMBER_OF_HEADERS = 1;
     
@@ -269,7 +269,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             // Get data
             mCurrentSubCategory = category;
             ArrayList<Category> child = category.getChildren();
-            String categoryName = category.getName();
+            //String categoryName = category.getName();
             // Set adapter, tag and listener
             SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
             mCategoryList.setTag(CLICK_FROM_DEFAULT_CONTAINER);
@@ -366,12 +366,16 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */    
     private void triggerGetCategories(String categoryKey) {
         Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
-        // Create bundle 
-        Bundle bundle = new Bundle();
+
         // Get per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         // Get category
-        if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        if(!TextUtils.isEmpty(categoryKey)) contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
@@ -385,11 +389,16 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
         // Show inner loading
         showLandscapeLoading();
-        // Create bundle 
-        Bundle bundle = new Bundle();
+
+        ContentValues contentValues = new ContentValues();
+
         // Get category per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
-        bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEventNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
 

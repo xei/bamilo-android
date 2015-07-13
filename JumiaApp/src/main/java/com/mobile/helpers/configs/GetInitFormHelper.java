@@ -10,7 +10,6 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Helper to get forms index Get forms index
@@ -35,21 +34,12 @@ public class GetInitFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         FormsIndex formsIndex = (FormsIndex) baseResponse.getMetadata().getData();
+        //TODO move to observable
         JumiaApplication.INSTANCE.setFormDataRegistry(formsIndex);
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
 
 //    @Override
 //    public Bundle generateRequestBundle(Bundle args) {

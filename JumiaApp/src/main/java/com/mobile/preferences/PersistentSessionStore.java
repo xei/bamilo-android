@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.utils.CustomerUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 
 import java.net.URISyntaxException;
@@ -24,6 +25,8 @@ import java.util.Map;
  * @date 2015/04/22
  */
 public class PersistentSessionStore extends CustomerUtils {
+
+    private static final String TAG = PersistentSessionStore.class.getSimpleName();
 
     public static final String SESSION_COOKIE_TAG = "session_cookie";
 
@@ -113,7 +116,7 @@ public class PersistentSessionStore extends CustomerUtils {
             try {
                 cookieStore.addEncodedSessionCookie(cookie);
             } catch (NullPointerException | URISyntaxException e) {
-                e.printStackTrace();
+                Print.w(TAG, "WARNING: EXCEPTION ON ADD ENCODED COOKIE", e);
                 clearCredentials();
             }
         }

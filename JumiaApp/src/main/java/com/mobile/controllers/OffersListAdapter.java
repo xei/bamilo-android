@@ -12,7 +12,6 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.Offer;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  */
 public class OffersListAdapter extends BaseAdapter {
     
-    public final static String TAG = LogTagHelper.create(OffersListAdapter.class);
+    public final static String TAG = OffersListAdapter.class.getSimpleName();
 
     public interface IOffersAdapterService {
         public void onAddOfferToCart(Offer offer);

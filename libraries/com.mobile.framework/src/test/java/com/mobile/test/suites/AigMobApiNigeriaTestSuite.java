@@ -16,13 +16,14 @@ import org.junit.runners.Suite;
 
 public class AigMobApiNigeriaTestSuite {
 
+    public static final String TAG = AigMobApiNigeriaTestSuite.class.getSimpleName();
+
     @BeforeClass
     public static void setUp() {
         Print.initializeTestingMode();
         //AigRestContract.initializeTestingMode();
         AigHttpClient.initializeTestingMode();
-        System.out.println("TEST SUITE STARTED");
+        Print.i(TAG, "SETUP");
     }
-
 
 }

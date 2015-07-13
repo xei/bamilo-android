@@ -1,16 +1,14 @@
 package com.mobile.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mobile.components.customfontviews.TextView;
-import android.content.res.Resources;
-import android.view.View;
 import android.view.ViewStub;
 
 import com.mobile.components.customfontviews.AutoResizeTextView;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.orders.OrderSummary;
@@ -131,26 +129,18 @@ public class CheckoutStepManager {
     /**
      * Method used for showing checkout total at checkout steps.
      *
-     * @param viewStub Viewstub with TextView (checkout_total_label).
-     * @param orderSummary OrderSummary to get total
-     * @param cart Cart in case orderSummary is null
+     * @param view View with TextView (checkout_total_label).
+     * @param value Value to show on checkout total
      */
-    public static void showCheckoutTotal(ViewStub viewStub, OrderSummary orderSummary, ShoppingCart cart){
-        String value = null;
-        if(orderSummary != null){
-            value = orderSummary.getTotal();
-        } else if(cart != null){
-            value = cart.getCartValue();
-        }
+    public static void showCheckoutTotal(View view, String value){
 
-        if(!TextUtils.isEmpty(value) && viewStub != null){
-            View inflatedView = viewStub.inflate();
-            Resources resources = inflatedView.getResources();
+        if(!TextUtils.isEmpty(value) && view != null){
+            Resources resources = view.getResources();
             final String title = resources.getString(R.string.order_summary_total_label);
             final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
             final int greyColor = resources.getColor(R.color.grey_middledark);
             final int redColor = resources.getColor(R.color.red_cc0000);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) inflatedView.findViewById(R.id.checkout_total_label));
+            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
             titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
             titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
                     greyColor, redColor));
@@ -164,6 +154,29 @@ public class CheckoutStepManager {
                 }
             });
 
+        }
+    }
+
+    /**
+     * Method used for showing checkout total at checkout steps.
+     *
+     * @param viewStub ViewStub or View with TextView (checkout_total_label).
+     * @param orderSummary OrderSummary to get total
+     * @param cart Cart in case orderSummary is null
+     */
+    public static void showCheckoutTotal(View viewStub, OrderSummary orderSummary, ShoppingCart cart){
+        String value = null;
+        if(orderSummary != null){
+            value = orderSummary.getTotal();
+        } else if(cart != null){
+            value = cart.getCartValue();
+        }
+
+        if(!TextUtils.isEmpty(value) && viewStub != null){
+            if(viewStub instanceof ViewStub){
+                viewStub = ((ViewStub) viewStub).inflate();
+            }
+            showCheckoutTotal(viewStub,value);
         }
     }
 

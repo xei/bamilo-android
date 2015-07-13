@@ -21,12 +21,14 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public ViewGroup container;
     public ViewGroup left;
     public ViewGroup middle;
     public ViewGroup right;
 
+    /**
+     * Constructor
+     */
     public HomeShopTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         container = (ViewGroup) view.findViewById(R.id.home_teaser_shop_container);
@@ -56,12 +58,8 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
             ((TextView) parent.findViewById(R.id.home_teaser_shop_title)).setText(object.getTitle());
             ((TextView) parent.findViewById(R.id.home_teaser_shop_sub_title)).setText(object.getSubTitle());
             RocketImageLoader.instance.loadImage(object.getImage(), (ImageView) parent.findViewById(R.id.home_teaser_item_image), parent.findViewById(R.id.home_teaser_item_progress), R.drawable.no_image_large);
-            TeaserViewFactory.setClickableView(parent, object, mParentClickListener);
+            TeaserViewFactory.setClickableView(parent, object, mParentClickListener, i);
         }
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }

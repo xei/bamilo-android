@@ -43,7 +43,6 @@ import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -66,7 +65,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author sergiopereira
@@ -74,7 +72,7 @@ import java.util.Set;
  */
 public class ShoppingCartFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
+    private static final String TAG = ShoppingCartFragment.class.getSimpleName();
 
     private final static String ID_CHANGE_QUANTITY = "id_change_quantity";
 

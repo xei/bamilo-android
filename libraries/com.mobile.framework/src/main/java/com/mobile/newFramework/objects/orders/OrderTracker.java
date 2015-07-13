@@ -15,7 +15,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +30,7 @@ import java.util.Iterator;
  */
 public class OrderTracker implements IJSONSerializable, Parcelable {
 
-	public final static String TAG = LogTagHelper.create( OrderTracker.class );
+	public final static String TAG = OrderTracker.class.getSimpleName();
 
     private String order_id;
     private String creation_date;
@@ -43,35 +42,36 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     /**
      * OrderTracker empty constructor.
      */
+	@SuppressWarnings("unused")
     public OrderTracker() {
     	order_id = "";
     	creation_date = "";
     	payment_method = "";
     	last_order_update = "";
-    	orderTracketItems = new ArrayList<OrderTrackerItem>();
+    	orderTracketItems = new ArrayList<>();
     }
 
-    /**
-     * OrderTracker constructor
-     *
-     * @param o order_id
-     *            	of the order
-     * @param d creation_date
-     *            	of the order
-     * @param oI order tracker items
-     * 			  	of the order
-     * @param p payment method
-     * 				of the order
-     * @param l last order status update
-     * 				of the order
-     */
-    public OrderTracker(String o, String d, String p, String l, ArrayList<OrderTrackerItem> oI) {
-    	this.order_id = o;
-    	this.creation_date = d;
-    	this.payment_method = p;
-    	this.last_order_update = l;
-    	this.orderTracketItems = oI;
-    }
+//    /**
+//     * OrderTracker constructor
+//     *
+//     * @param o order_id
+//     *            	of the order
+//     * @param d creation_date
+//     *            	of the order
+//     * @param oI order tracker items
+//     * 			  	of the order
+//     * @param p payment method
+//     * 				of the order
+//     * @param l last order status update
+//     * 				of the order
+//     */
+//    public OrderTracker(String o, String d, String p, String l, ArrayList<OrderTrackerItem> oI) {
+//    	this.order_id = o;
+//    	this.creation_date = d;
+//    	this.payment_method = p;
+//    	this.last_order_update = l;
+//    	this.orderTracketItems = oI;
+//    }
 
 
     public String getId(){
@@ -86,9 +86,9 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	return this.payment_method;
     }
 
-    public String getLastUpdateDate(){
-    	return this.last_order_update;
-    }
+//    public String getLastUpdateDate(){
+//    	return this.last_order_update;
+//    }
 
     public ArrayList<OrderTrackerItem> getOrderTrackerItems(){
     	return this.orderTracketItems;
@@ -130,7 +130,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     @Override
     public JSONObject toJSON() {
 
-        JSONObject jsonObject = new JSONObject();
+        return new JSONObject();
 //        try {
 //
 //            jsonObject.put(RestConstants.JSON_ORDER_ID_TAG, order_id);
@@ -142,7 +142,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        return jsonObject;
+//        return jsonObject;
     }
 
 	@Override
@@ -180,14 +180,13 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private OrderTracker(Parcel in) {
     	order_id = in.readString();
     	creation_date = in.readString();
     	payment_method = in.readString();
     	last_order_update = in.readString();
-    	orderTracketItems = new ArrayList<OrderTrackerItem>();
+    	orderTracketItems = new ArrayList<>();
     	in.readList(orderTracketItems, OrderTrackerItem.class.getClassLoader());
     }
 

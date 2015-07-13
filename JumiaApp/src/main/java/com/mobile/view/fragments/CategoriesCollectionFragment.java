@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -21,7 +20,7 @@ import java.util.EnumSet;
  */
 public class CategoriesCollectionFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CategoriesCollectionFragment.class);
+    private static final String TAG = CategoriesCollectionFragment.class.getSimpleName();
     
     private static final int BACK_STACK_EMPTY = 0;
 
@@ -71,9 +70,13 @@ public class CategoriesCollectionFragment extends BaseFragment {
         if (getChildFragmentManager().getBackStackEntryCount() == BACK_STACK_EMPTY) {
             Print.d(TAG, "SAVED IS NULL");
             // Switch content
-            Bundle args = new Bundle();
-            args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
-            onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
+            if(getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CATEGORY_ID)){
+                onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, getArguments());
+            } else {
+                Bundle args = new Bundle();
+                args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+                onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
+            }
         } else {
             Print.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
         }

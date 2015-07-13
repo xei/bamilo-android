@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
@@ -35,7 +34,8 @@ import java.util.ArrayList;
  * @modified ricardosoares
  */
 public class FormFactory {
-    private final static String TAG = LogTagHelper.create( FormFactory.class );
+
+    private final static String TAG = FormFactory.class.getSimpleName();
 
     private static FormFactory factory = null;
 
@@ -140,9 +140,8 @@ public class FormFactory {
                 break;
             case FormConstants.REVIEW_FORM:
             case FormConstants.RATING_FORM:
-                parent = createRatingOptionsForm(context, form, ctrlParams);
             case FormConstants.REVIEW_SELLER_FORM:
-                parent = createSellerReviewOptionsForm(context, form, ctrlParams);
+                parent = createRatingReviewOptionsForm(context, form, ctrlParams);
                 break;
             case FormConstants.CHANGE_PASSWORD_FORM:
                 parent = createChangePasswordForm(context,form, ctrlParams);
@@ -154,17 +153,14 @@ public class FormFactory {
     private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         if (null == ctrlParams) {
             final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = 0;
+            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
             final int CTRLMARGIN_RIGHT = 0;
             final int CTRLMARGIN_BOTTOM =0;
 
             ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
         }
 
-        DynamicForm dynamicForm = createGenericForm(context, form, ctrlParams);
-        int margin = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
-        ((LinearLayout.LayoutParams)dynamicForm.getContainer().getLayoutParams()).setMargins(margin, margin, margin, margin);
-        return dynamicForm;
+        return createGenericForm(context, form, ctrlParams);
     }
 
     /**
@@ -264,26 +260,10 @@ public class FormFactory {
         return createGenericForm(context, form, ctrlParams);
     }
 
-
-    private DynamicForm createRatingOptionsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
     /**
      * create the write seller review form
-     * @param context
-     * @param form
-     * @return
      */
-    private DynamicForm createSellerReviewOptionsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
+    private DynamicForm createRatingReviewOptionsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         if(ctrlParams == null) {
             final int CTRLMARGIN_LEFT = 0;
             final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
@@ -399,7 +379,6 @@ public class FormFactory {
      *
      * @param context The context where the form is to be inserted
      * @param form The definition provided by the framework
-     * @param ctrlParams
      * @return n instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
@@ -453,10 +432,6 @@ public class FormFactory {
 
     /**
      *
-     * @param CTRLMARGIN_LEFT
-     * @param CTRLMARGIN_TOP
-     * @param CTRLMARGIN_RIGHT
-     * @param CTRLMARGIN_BOTTOM
      * @return Params created based on margins
      */
     private LinearLayout.LayoutParams createParams(final int CTRLMARGIN_LEFT, final int CTRLMARGIN_TOP,final int CTRLMARGIN_RIGHT, final int CTRLMARGIN_BOTTOM){
@@ -468,10 +443,6 @@ public class FormFactory {
 
     /**
      * Prepare params for RTL.
-     *
-     * @param ctrlParams
-     * @param CTRLMARGIN_LEFT
-     * @param CTRLMARGIN_RIGHT
      */
     private void setRtl(LinearLayout.LayoutParams ctrlParams, final int CTRLMARGIN_LEFT, final int CTRLMARGIN_RIGHT){
         //#RTL

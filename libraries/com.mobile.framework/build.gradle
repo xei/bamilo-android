@@ -32,10 +32,9 @@ dependencies {
     compile 'com.adjust.sdk:adjust-android:4.0.8'
     compile 'net.hockeyapp.android:HockeySDK:3.5.0'
     /** LOCAL LIBS  **/
-    compile project(':libraries:FacebookSDK')
+    compile 'com.facebook.android:facebook-android-sdk:4.2.0' // Adjust the version accordingly
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/A4SSDK-GooglePlayServices-1.5.jar')
-    //compile files('libs/apptimize-android-2.7.1.jar')
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')

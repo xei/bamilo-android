@@ -41,7 +41,6 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
@@ -84,7 +83,7 @@ import java.util.regex.Pattern;
  *          2012/06/15
  */
 public class DynamicFormItem {
-    private final static String TAG = LogTagHelper.create(DynamicFormItem.class);
+    private final static String TAG = DynamicFormItem.class.getSimpleName();
 
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
@@ -100,12 +99,12 @@ public class DynamicFormItem {
     private TextView errorTextControl;
     private TextView mandatoryControl;
     private String errorText;
-    private OnFocusChangeListener editFocusListener;
+    //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-    private TextWatcher textWatcher;
+    //private TextWatcher textWatcher;
     private DialogDatePickerFragment dialogDate;
     private int errorColor;
-    private ArrayList<DynamicForm> childDynamicForm;
+    //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
 
     /**
@@ -190,14 +189,14 @@ public class DynamicFormItem {
         return this.entry.getValidation().isRequired();
     }
 
-    /**
-     * Gets the error text associated to this control
-     *
-     * @return the text that is displayed if the control has an error with its filling
-     */
-    public String getErrorText() {
-        return errorText;
-    }
+//    /**
+//     * Gets the error text associated to this control
+//     *
+//     * @return the text that is displayed if the control has an error with its filling
+//     */
+//    public String getErrorText() {
+//        return errorText;
+//    }
 
     /**
      * Sets the error text for this control, concerning the input of the user
@@ -466,7 +465,7 @@ public class DynamicFormItem {
                 ((EditText) this.dataControl).setText(text);
                 this.errorControl.setVisibility(View.GONE);
 
-                if (text.length() == 0) {
+                if (TextUtils.isEmpty(text)) {
                     if (this.mandatoryControl != null) {
                         this.mandatoryControl
                                 .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -719,6 +718,7 @@ public class DynamicFormItem {
                     if (this.dataControl instanceof IcsSpinner) {
                         valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
                     } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                        /*-
                         if (childDynamicForm != null && childDynamicForm.size() > 0) {
                             for (int i = 0; i < childDynamicForm.size(); i++) {
                                 if (!childDynamicForm.get(i).validate()) {
@@ -727,6 +727,7 @@ public class DynamicFormItem {
                                 }
                             }
                         }
+                        */
                         Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
@@ -929,7 +930,7 @@ public class DynamicFormItem {
      * @param listener The listener to be fired when the focus changes
      */
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
-        editFocusListener = listener;
+        //editFocusListener = listener;
     }
 
     /**
@@ -947,7 +948,7 @@ public class DynamicFormItem {
      * @param watcher The listener to be fired every time the text of an component changes
      */
     public void setTextWatcher(TextWatcher watcher) {
-        textWatcher = watcher;
+        //textWatcher = watcher;
     }
 
     private void buildCheckBoxForTerms(RelativeLayout.LayoutParams params, int controlWidth) {
@@ -1693,7 +1694,7 @@ public class DynamicFormItem {
          * because that option is only available on the  write product review screen and not on write seller review screen.
          */
 
-        if (!JumiaApplication.INSTANCE.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
+        if (!JumiaApplication.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
             addCustomRatingCheckbox(linearLayout, params, controlWidth);
         }
         this.dataControl = linearLayout;
@@ -1953,22 +1954,22 @@ public class DynamicFormItem {
         return dataContainer;
     }
 
-    /**
-     * @return the childDynamicForm
-     */
-    public ArrayList<DynamicForm> getChildDynamicForm() {
-        if (childDynamicForm == null) {
-            childDynamicForm = new ArrayList<>();
-        }
-        return childDynamicForm;
-    }
-
-    /**
-     * @param childDynamicForm the childDynamicForm to set
-     */
-    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
-        this.childDynamicForm = childDynamicForm;
-    }
+//    /**
+//     * @return the childDynamicForm
+//     */
+//    public ArrayList<DynamicForm> getChildDynamicForm() {
+//        if (childDynamicForm == null) {
+//            childDynamicForm = new ArrayList<>();
+//        }
+//        return childDynamicForm;
+//    }
+//
+//    /**
+//     * @param childDynamicForm the childDynamicForm to set
+//     */
+//    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
+//        this.childDynamicForm = childDynamicForm;
+//    }
 
     /**
      * Determines if this field is a part of a date

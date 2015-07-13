@@ -6,7 +6,6 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.text.DecimalFormat;
@@ -23,7 +22,7 @@ import java.util.Locale;
  */
 public class CurrencyFormatter {
     
-	private final static String TAG = LogTagHelper.create(CurrencyFormatter.class);
+	private final static String TAG = CurrencyFormatter.class.getSimpleName();
 	
 	public final static String EURO_CODE = "EUR";
 
@@ -72,7 +71,6 @@ public class CurrencyFormatter {
     
     /**
      * Validate locale is available.
-     * @param localeRequired
      * @return true or false
      */
     private static boolean isLocaleAvailable(Locale localeRequired) {
@@ -85,8 +83,6 @@ public class CurrencyFormatter {
     
     /**
      * Load currency info from country configurations.
-     * @param context
-     * @modified sergiopereira
      */
     public static void loadCurrencyInformation(Context context) {
     	SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -99,8 +95,6 @@ public class CurrencyFormatter {
     /**
      * Formats a string containing a numeric value into the proper formatted
      * currency of the country in question.
-     * 
-     * @param value
      * @return the formatted string
      */
     public static String formatCurrency(String value) {
@@ -155,7 +149,6 @@ public class CurrencyFormatter {
      * Otherwise returns the number format for the current Locale.<br>
      * @return NumberFormat
      * @author GuilhermeSilva
-     * @modified sergiopereira
      */
     @SuppressWarnings("unused")
     private static NumberFormat getNumberFormat() {
@@ -177,18 +170,13 @@ public class CurrencyFormatter {
 		return formatter;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public static String getCurrencyCode() {
     	return currencyCode;
     }
 
     /**
      * Test if text is number
-     * @param text
-     * @see http://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-a-numeric-type-in-java?answertab=active#tab-top
+     * @see "http://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-a-numeric-type-in-java?answertab=active#tab-top"
      * @return true or false
      */
     public static boolean isNumber(String text) {

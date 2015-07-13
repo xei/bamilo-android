@@ -7,7 +7,6 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -28,7 +27,7 @@ import java.util.Set;
  */
 public class Form implements IJSONSerializable, Parcelable {
 
-	private final static String TAG = LogTagHelper.create( Form.class );
+	public final static String TAG = Form.class.getSimpleName();
 
     public String id;
     public String name;
@@ -257,7 +256,6 @@ public class Form implements IJSONSerializable, Parcelable {
     
     /**
      * Parcel constructor
-     * @param in
      */
     private Form(Parcel in) {
         id = in.readString();

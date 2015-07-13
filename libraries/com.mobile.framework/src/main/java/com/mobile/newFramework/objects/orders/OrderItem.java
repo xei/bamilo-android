@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import org.json.JSONObject;
  */
 public class OrderItem implements IJSONSerializable, Parcelable {
 
-	public final static String TAG = LogTagHelper.create(OrderItem.class);
+	public final static String TAG = OrderItem.class.getSimpleName();
 
 	private int mProductQuantity;
 
@@ -35,6 +34,7 @@ public class OrderItem implements IJSONSerializable, Parcelable {
 	/**
 	 * OrderItem empty constructor.
 	 */
+    @SuppressWarnings("unused")
 	public OrderItem() {
 	    mProductQuantity = 0;
 	    mProductUnitPrice = 0.0d;
@@ -64,56 +64,53 @@ public class OrderItem implements IJSONSerializable, Parcelable {
         return mProductQuantity;
     }
 
-    public void setmProductQuantity(int mProductQuantity) {
-        this.mProductQuantity = mProductQuantity;
-    }
+//    public void setmProductQuantity(int mProductQuantity) {
+//        this.mProductQuantity = mProductQuantity;
+//    }
+//
+//    public double getmProductUnitPrice() {
+//        return mProductUnitPrice;
+//    }
+//
+//    public void setmProductUnitPrice(double mProductUnitPrice) {
+//        this.mProductUnitPrice = mProductUnitPrice;
+//    }
 
-    public double getmProductUnitPrice() {
-        return mProductUnitPrice;
-    }
-
-    public void setmProductUnitPrice(double mProductUnitPrice) {
-        this.mProductUnitPrice = mProductUnitPrice;
-    }
-
-    public String getmProductSku() {
-        return mProductSku;
-    }
-
-    public void setmProductSku(String mProductSku) {
-        this.mProductSku = mProductSku;
-    }
-
-    public String getmProductSimpleSku() {
-        return mProductSimpleSku;
-    }
-
-    public void setmProductSimpleSku(String mProductSimpleSku) {
-        this.mProductSimpleSku = mProductSimpleSku;
-    }
+//    public String getmProductSku() {
+//        return mProductSku;
+//    }
+//
+//    public void setmProductSku(String mProductSku) {
+//        this.mProductSku = mProductSku;
+//    }
+//
+//    public String getmProductSimpleSku() {
+//        return mProductSimpleSku;
+//    }
+//
+//    public void setmProductSimpleSku(String mProductSimpleSku) {
+//        this.mProductSimpleSku = mProductSimpleSku;
+//    }
 
     public double getmProductTotal() {
         return mProductTotal;
     }
 
     public String getmProductTotalString() {
-        String total = "";
-
-        total = String.valueOf(mProductTotal);
-        return total;
+        return String.valueOf(mProductTotal);
     }
 
-    public void setmProductTotal(double mProductTotal) {
-        this.mProductTotal = mProductTotal;
-    }
+//    public void setmProductTotal(double mProductTotal) {
+//        this.mProductTotal = mProductTotal;
+//    }
 
     public String getmProductName() {
         return mProductName;
     }
 
-    public void setmProductName(String mProductName) {
-        this.mProductName = mProductName;
-    }
+//    public void setmProductName(String mProductName) {
+//        this.mProductName = mProductName;
+//    }
 
     /*
 	 * (non-Javadoc)
@@ -143,7 +140,6 @@ public class OrderItem implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO
 		return null;
 	}
 

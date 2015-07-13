@@ -14,7 +14,6 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 //import com.mobile.newFramework.requests.checkout.GetShippingForm;
 
@@ -38,27 +37,16 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperGetShippingMethodsForm shippingMethodsForm = (SuperGetShippingMethodsForm) baseResponse.getMetadata().getData();
         ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
         form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
 
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
-
-        mRequester.onRequestComplete(bundle);
     }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-    
 //    {
 //        "success": true,
 //        "messages": {

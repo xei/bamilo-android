@@ -29,7 +29,6 @@ import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -40,7 +39,6 @@ import com.mobile.view.R;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Class used to show the order summary in the checkout process
@@ -49,7 +47,7 @@ import java.util.Set;
  */
 public class CheckoutSummaryFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
+    private static final String TAG = CheckoutSummaryFragment.class.getSimpleName();
 
     private ViewGroup mProductList;
 
@@ -380,22 +378,22 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView.setVisibility(View.VISIBLE);
     }
     
-    /**
-     * Show the shipping fee
-     *
-     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
-     * @author sergiopereira
-     */
-    @Deprecated
-    private void showShippingFees() {
-        if(!mCart.hasSumCosts()){
-            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
-        } else {
-            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
-        }
-        
-        mShippingFeeView.setVisibility(View.VISIBLE);
-    }
+//    /**
+//     * Show the shipping fee
+//     *
+//     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
+//     * @author sergiopereira
+//     */
+//    @Deprecated
+//    private void showShippingFees() {
+//        if(!mCart.hasSumCosts()){
+//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
+//        } else {
+//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
+//        }
+//
+//        mShippingFeeView.setVisibility(View.VISIBLE);
+//    }
     
     /**
      * Show voucher

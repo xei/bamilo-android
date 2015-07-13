@@ -22,7 +22,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
 	public static final String DB_NAME = "darwin.db";
 	
-	private static final int DATABASE_VERSION = 44;
+	private static final int DATABASE_VERSION = 45;
 	
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS %1$s";
     
@@ -46,7 +46,8 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
             new RelatedItemsTableHelper(),
             new SearchRecentQueriesTableHelper(),
             new CountriesConfigsTableHelper(),
-            new FavouriteTableHelper()
+            new FavouriteTableHelper(),
+            new BrandsTableHelper()
             };
 	
 	/**

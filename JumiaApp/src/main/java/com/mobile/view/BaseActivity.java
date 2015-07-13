@@ -14,8 +14,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.text.Editable;
@@ -64,7 +64,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
@@ -76,6 +75,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
@@ -102,9 +102,9 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
-    private static final String TAG = LogTagHelper.create(BaseActivity.class);
+    private static final String TAG = BaseActivity.class.getSimpleName();
 
     // private ShareActionProvider mShareActionProvider;
 
@@ -1326,6 +1326,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                         break;
                     case MyAccount:
                         // MY ACCOUNT
+//                        popBackStackUntilTag(FragmentType.MY_ACCOUNT.toString());
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
                                 FragmentController.ADD_TO_BACK_STACK);
@@ -1576,6 +1577,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         /*
          * NOTE: Others sign out methods are performed in {@link LogOut}.
          */
+        // Logout Facebook
+        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home

@@ -10,7 +10,6 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -93,7 +92,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
-
+            // Set default position
             pager.setCurrentItem(viewPagerPosition);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
@@ -105,20 +104,20 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
      * @param size The number of items
      * @return int
      */
-    @Deprecated
-    private int getDefaultPosition(int size) {
-        int position;
-        if(!isTablet) {
-            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
-        } else {
-            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
-        }
-        return position;
-    }
+//    @Deprecated
+//    private int getDefaultPosition(int size) {
+//        int position;
+//        if(!isTablet) {
+//            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
+//        } else {
+//            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
+//        }
+//        return position;
+//    }
 
     @Override
-    public void onUpdate() {
-
+    public void applyMargin() {
+        // ...
     }
 
     public int getViewPagerPosition() {
@@ -127,9 +126,5 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
                 : pager.getCurrentItem();
         return viewPagerPosition;
     }
-
-    @Override
-    public void apllyMargin() {
-
-    }
+    
 }

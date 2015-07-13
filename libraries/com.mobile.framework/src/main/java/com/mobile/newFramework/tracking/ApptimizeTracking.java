@@ -3,10 +3,7 @@ package com.mobile.newFramework.tracking;
 import android.content.Context;
 
 import com.mobile.framework.R;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
-
-//import com.apptimize.Apptimize;
 
 /**
  * 
@@ -14,7 +11,7 @@ import com.mobile.newFramework.utils.output.Print;
  * 
  */
 public class ApptimizeTracking {
-    private static final String TAG = LogTagHelper.create(ApptimizeTracking.class);
+    private static final String TAG = ApptimizeTracking.class.getSimpleName();
 
     public static void startup(Context context) {
         Print.d(TAG, "APPTIMIZE Startup");
@@ -23,7 +20,7 @@ public class ApptimizeTracking {
 
         if (isEnabled) {
             Print.d(TAG, "Apptimize -> INITITALIZED");
-            String apptimize_apikey = context.getString(R.string.apptimize_apikey);
+            //String apptimize_apikey = context.getString(R.string.apptimize_apikey);
             //Apptimize.setup(context, apptimize_apikey);
         } else {
             Print.d(TAG, "Apptimize is not enabled");

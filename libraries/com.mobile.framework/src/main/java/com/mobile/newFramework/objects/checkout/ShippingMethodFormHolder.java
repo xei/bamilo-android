@@ -24,7 +24,7 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
     public String type;
     public boolean required;
     public ArrayList<String> options;
-    public HashMap<String, ShippingMethodHolder> optionsShippingMethod;
+    public HashMap<String, ShippingMethodOption> optionsShippingMethod;
     public ArrayList<ShippingMethodSubFormHolder> shippingMethodsSubForms;
 
     /**
@@ -65,19 +65,17 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
             }
 
             JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
-            //Log.i(TAG, "options jsonobject: " +  optionsObject.toString());
 
             Iterator<?> opts = optionsObject.keys();
             while (opts.hasNext()) {
                 String key = opts.next().toString();
                 options.add(key);
-                ShippingMethodHolder shippingMethod = new ShippingMethodHolder();
+                ShippingMethodOption shippingMethod = new ShippingMethodOption();
                 shippingMethod.initialize(key, optionsObject.optJSONObject(key));
                 optionsShippingMethod.put(key, shippingMethod);
             }
 
         } catch (JSONException e) {
-//            Log.e(TAG, "initialize: error parsing jsonobject", e );
             return false;
         }
 

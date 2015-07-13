@@ -436,16 +436,25 @@
     <style name="button_fallback_retry">
         <item name="android:background">@drawable/btn_grey</item>
     </style>
-    <!--
-    style name="button_facebook">
+
+    <style name="button_facebook">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/button_big_height</item>
-        <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
-        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
-        <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
-        <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
-    </style
-    -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/button_big_height</item>
+        <item name="android:layout_margin">@dimen/rounded_margin_mid</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/button_facebook_padding</item>
+        <item name="android:paddingBottom">@dimen/button_facebook_padding</item>
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
+        <item name="android:background">@drawable/com_facebook_button_blue</item>
+        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
+    </style>
+
 
 
     <!-- BUTTON CONTAINER HAS ALWAYS A BOTTOM PADDING -->

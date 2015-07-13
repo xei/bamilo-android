@@ -26,7 +26,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
@@ -44,7 +43,7 @@ import java.util.List;
  */
 public class MyAccountUserDataFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
+    private static final String TAG = MyAccountUserDataFragment.class.getSimpleName();
 
     private final static int PASSWORD_MIN_LENGTH = 6;
 
@@ -76,7 +75,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
      */
     public MyAccountUserDataFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MyAccountUserData,
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
                 KeyboardState.ADJUST_CONTENT);
@@ -331,7 +330,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     protected void onSuccessGetChangePasswordFormEvent(Bundle bundle) {
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
-        ((ViewGroup)getView().findViewById(R.id.new_password_layout)).addView(dynamicForm.getContainer());
+        ((ViewGroup)getView().findViewById(R.id.changePasswordLayout)).addView(dynamicForm.getContainer());
         newPasswordText = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
         newPassword2Text = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
     }

@@ -106,6 +106,7 @@
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
     <dimen name="warning_text_size">10sp</dimen>
+    <dimen name="text_info">8.67sp</dimen>
 
 
     <!-- OLD MARGINS -->
@@ -128,7 +129,7 @@
     <dimen name="dialog_list_margin_horizontal">40dp</dimen>
     <dimen name="form_errormessage_margin">4dp</dimen>
 
-    <!-- better naming sceme for the text dimensions -->
+    <!-- better naming scheme for the text dimensions -->
     <!-- dimen name="text_xxs">14sp</dimen -->
     <dimen name="text_xs">12sp</dimen>
     <dimen name="text_s">14sp</dimen>
@@ -282,6 +283,7 @@
 
     <!-- MY PROFILE REDESIGN -->
     <dimen name="button_big_height">40dp</dimen>
+    <dimen name="button_facebook_padding">7dp</dimen>
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">60dp</dimen>
     <!-- rounded_margin_mid + button_big_height + button_container_height -->

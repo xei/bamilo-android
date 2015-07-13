@@ -86,7 +86,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private Bundle mLastSuccessResponse;
 
-    private ErrorLayoutFactory mErrorLayoutfactory;
+    private ErrorLayoutFactory mErrorLayoutFactory;
 
     /*
      * (non-Javadoc)
@@ -667,10 +667,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Show no network
         if(mErrorFallBackStub instanceof ViewStub) {
             mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();
-            mErrorLayoutfactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
-            mErrorLayoutfactory.showErrorLayout(type);
+            mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
+            mErrorLayoutFactory.showErrorLayout(type);
         } else {
-            mErrorLayoutfactory.showErrorLayout(type);
+            mErrorLayoutFactory.showErrorLayout(type);
         }
         // Set view
         try {

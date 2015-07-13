@@ -35,8 +35,8 @@ import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -57,7 +57,7 @@ import java.util.Iterator;
  */
 public class CheckoutPaymentMethodsFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutPaymentMethodsFragment.class);
+    private static final String TAG = CheckoutPaymentMethodsFragment.class.getSimpleName();
 
     private static final String SAVED_STATE = "saved_state";
 
@@ -79,6 +79,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private ContentValues mSavedState;
     
     private String paymentName = "";
+
+    private View checkoutTotalView;
     
     /**
      * Get new instance of CheckoutPaymentMethodsFragment.
@@ -143,6 +145,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
+
+        //checkout total view
+        if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
+            checkoutTotalView = view.findViewById(R.id.total_view_stub);
+            ((ViewStub) checkoutTotalView).setOnInflateListener(new ViewStub.OnInflateListener() {
+                @Override
+                public void onInflate(ViewStub stub, View inflated) {
+                    checkoutTotalView = inflated;
+                }
+            });
+        }
+
         // Get and show addresses
         triggerGetPaymentMethods();
     }
@@ -432,7 +446,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+            CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary, JumiaApplication.INSTANCE.getCart());
             if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;

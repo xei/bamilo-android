@@ -17,7 +17,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.JumiaViewPagerWithZoom;
 import com.mobile.utils.MyMenuItem;
@@ -36,7 +35,7 @@ import java.util.EnumSet;
  */
 public class ProductImageGalleryFragment extends BaseFragment {
 
-    public static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
+    public static final String TAG = ProductImageGalleryFragment.class.getSimpleName();
 
     private JumiaViewPagerWithZoom mViewPager;
 

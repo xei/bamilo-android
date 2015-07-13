@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -31,7 +30,7 @@ import java.util.EnumSet;
  */
 public class ProductSizeGuideFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductSizeGuideFragment.class);
+    private static final String TAG = ProductSizeGuideFragment.class.getSimpleName();
     
     private String mSizeGuideUrl;
 

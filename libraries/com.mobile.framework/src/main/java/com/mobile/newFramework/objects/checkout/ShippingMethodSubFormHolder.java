@@ -58,7 +58,7 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
             if(jsonObject.has(RestConstants.JSON_TYPE_TAG)){
                 type = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
             } else {
-                type = "metadata";
+                type = RestConstants.JSON_METADATA_TAG;
             }
 
             value = jsonObject.optString(RestConstants.JSON_VALUE_TAG);
@@ -80,7 +80,6 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
             }
 
         } catch (JSONException e) {
-//            Log.e(TAG, "initialize: error parsing jsonobject", e);
             return false;
         }
 

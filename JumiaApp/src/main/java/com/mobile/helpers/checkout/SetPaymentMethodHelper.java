@@ -41,27 +41,14 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperSetPaymentMethod responseData = (SuperSetPaymentMethod) baseResponse.getMetadata().getData();
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
         // Get order summary from response
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, responseData.getOrderSummary());
         Print.i(TAG, "ORDER SUMMARY: " + responseData.getOrderSummary().toString());
-         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(responseData.getNextStep()));
-        mRequester.onRequestComplete(bundle);
+        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(responseData.getNextStep()));
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-            
 //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)

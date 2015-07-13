@@ -30,10 +30,10 @@ import com.mobile.newFramework.objects.orders.OrderItem;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -52,9 +52,7 @@ import java.util.List;
  */
 public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
-    private static final String TAG = LogTagHelper.create(OrderHistoryFragment.class);
-
-    private static OrderHistoryFragment mOrderHistoryFragment;
+    private static final String TAG = OrderHistoryFragment.class.getSimpleName();
 
     private ArrayList<Order> ordersList = new ArrayList<>();
     
@@ -96,8 +94,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * @return
      */
     public static OrderHistoryFragment getInstance() {
-        mOrderHistoryFragment = new OrderHistoryFragment();
-        return mOrderHistoryFragment;
+        return new OrderHistoryFragment();
     }
 
     /**
@@ -286,7 +283,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             
             ArrayList<Order> ordersResponse =  bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             
-            if(ordersResponse == null || ordersResponse.size() == 0){
+            if(CollectionUtils.isEmpty(ordersList) && CollectionUtils.isEmpty(ordersResponse)){
                 // show error/empty screen
                 setEmptyScreenState(true);
                 showProductsLoading(false);
@@ -305,7 +302,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 if(pageIndex <= totalPages){
                     mIsLoadingMore = false;
                     
-                    if(ordersList != null && ordersList.size() > 0 && ordersAdapter != null){
+                    if(!CollectionUtils.isEmpty(ordersList) && ordersAdapter != null){
                         //does nothing because theres no new order
                           ordersList.addAll(ordersResponse);
                           ordersAdapter.updateOrders(ordersList);
@@ -615,8 +612,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * listview listener in order to load more products when last item is visible
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
-
-
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {

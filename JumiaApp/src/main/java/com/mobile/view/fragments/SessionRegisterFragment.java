@@ -38,7 +38,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -62,7 +61,7 @@ import java.util.List;
  */
 public class SessionRegisterFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
+    private static final String TAG = SessionRegisterFragment.class.getSimpleName();
 
     private Button registerButton;
 

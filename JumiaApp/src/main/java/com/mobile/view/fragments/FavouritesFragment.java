@@ -34,7 +34,6 @@ import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -63,7 +62,7 @@ import java.util.Set;
  */
 public class FavouritesFragment extends BaseFragment implements IResponseCallback, OnClickListener {
 
-    protected final static String TAG = LogTagHelper.create(FavouritesFragment.class);
+    protected final static String TAG = FavouritesFragment.class.getSimpleName();
 
     protected final static int SINGLE_ITEM = 1;
 
@@ -527,38 +526,38 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      * 
      */
-    @Deprecated
-    protected void onAddAllItemsToCart() {
-        Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
-        // Show progress
-        showActivityProgress();
-        // Initialize cart vars
-        mAddedItemsCounter = 0;
-        mNumberOfItemsForCart = mAddableToCartList.size();
-        mItemsNotAddedToCart.clear();
+//    @Deprecated
+//    protected void onAddAllItemsToCart() {
+//        Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
+//         Show progress
+//        showActivityProgress();
+//         Initialize cart vars
+//        mAddedItemsCounter = 0;
+//        mNumberOfItemsForCart = mAddableToCartList.size();
+//        mItemsNotAddedToCart.clear();
         // Validate all items
-        for (int i = 0; i < mNumberOfItemsForCart; i++) {
-            if (mAddableToCartList.get(i).isComplete()) {
+//        for (int i = 0; i < mNumberOfItemsForCart; i++) {
+//            if (mAddableToCartList.get(i).isComplete()) {
                 // Add item to cart
-                triggerAddProductToCart(mAddableToCartList.get(i), i);
-            } else {
-                // Increment counter
-                mAddedItemsCounter++;
-                Print.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
+//                triggerAddProductToCart(mAddableToCartList.get(i), i);
+//            } else {
+//                 Increment counter
+//                mAddedItemsCounter++;
+//                Print.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
                 // Save the position
-                if (mItemsNotAddedToCart != null) {
-                    mItemsNotAddedToCart.add(i);
-                }
+//                if (mItemsNotAddedToCart != null) {
+//                    mItemsNotAddedToCart.add(i);
+//                }
                 // Case all items are incomplete
-                if (mAddedItemsCounter == mNumberOfItemsForCart) {
-                    // Show toast
-                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
+//                if (mAddedItemsCounter == mNumberOfItemsForCart) {
+//                     Show toast
+//                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
-                    hideActivityProgress();
-                }
-            }
-        }
-    }
+//                    hideActivityProgress();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * ######### TRIGGERS #########
@@ -615,7 +614,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Trigger
         triggerContentEventNoLoading(new ShoppingCartAddItemHelper(), bundle, this);
         // Tracking
-        trackAddtoCart(sku, addableToCart);
+        trackAddToCart(sku, addableToCart);
     }
 
     /**
@@ -625,7 +624,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @param addableToCart
      * @author sergiopereira
      */
-    protected void trackAddtoCart(String sku, AddableToCart addableToCart) {
+    protected void trackAddToCart(String sku, AddableToCart addableToCart) {
         try {
             // Tracking
             Bundle bundle = new Bundle();
