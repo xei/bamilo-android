@@ -189,7 +189,7 @@ public class CheckVersion {
 
         if (crrAppVersion < infoVersion.getMinimumVersion()) {
             checkResult = UpdateStatus.FORCED_AVAILABLE;
-        } else if (crrAppVersion <= infoVersion.getCurrentVersion()) {
+        } else if (crrAppVersion < infoVersion.getCurrentVersion()) {
             if (unwantedVersion == infoVersion.getCurrentVersion()) {
                 checkResult = UpdateStatus.OPTIONAL_AVAILABLE_IGNORED;
             } else {
