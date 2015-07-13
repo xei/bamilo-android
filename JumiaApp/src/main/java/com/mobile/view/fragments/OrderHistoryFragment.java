@@ -53,7 +53,7 @@ import java.util.List;
  */
 public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
-    private static final String TAG = LogTagHelper.create(OrderHistoryFragment.class);
+    private static final String TAG = OrderHistoryFragment.class.getSimpleName();
 
     private static OrderHistoryFragment mOrderHistoryFragment;
 
@@ -78,7 +78,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     private int selectedProduct = -1;
     
     private static final int NUM_ORDERS = 25;
-    
+
     private int pageIndex = 1;
     
     private int totalPages = 0;
@@ -597,7 +597,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
       
       getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "onSaveInstanceState");
@@ -616,8 +616,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * listview listener in order to load more products when last item is visible
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
-
-
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
