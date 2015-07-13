@@ -104,16 +104,16 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
      * @param size The number of items
      * @return int
      */
-    @Deprecated
-    private int getDefaultPosition(int size) {
-        int position;
-        if(!isTablet) {
-            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
-        } else {
-            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
-        }
-        return position;
-    }
+//    @Deprecated
+//    private int getDefaultPosition(int size) {
+//        int position;
+//        if(!isTablet) {
+//            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
+//        } else {
+//            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
+//        }
+//        return position;
+//    }
 
     @Override
     public void applyMargin() {
@@ -126,5 +126,5 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
                 : pager.getCurrentItem();
         return viewPagerPosition;
     }
-
+    
 }

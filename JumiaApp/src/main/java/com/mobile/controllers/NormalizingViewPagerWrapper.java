@@ -5,11 +5,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.mobile.components.viewpagerindicator.IconPagerAdapter;
 import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.viewpagerindicator.IconPagerAdapter;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
+
     private final static String TAG = LogTagHelper.create(NormalizingViewPagerWrapper.class);
     public static final int MAX_REAL_ITEMS = 100;
     private static int OFFSCREEN_PAGE_LIMIT = 1;

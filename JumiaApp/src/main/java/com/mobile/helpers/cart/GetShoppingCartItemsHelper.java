@@ -39,22 +39,15 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getCartValue());
         // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        mRequester.onRequestComplete(bundle);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
     }
 
 //   private static final EventType EVENT_TYPE = EventType.GET_SHOPPING_CART_ITEMS_EVENT;

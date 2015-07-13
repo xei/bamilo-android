@@ -32,31 +32,18 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
         // Create bundle
         SuperGetPaymentMethodsForm responseData = (SuperGetPaymentMethodsForm) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
 
+        //TODO move to observable
+        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get("payment_method").paymentInfoList);
-        mRequester.onRequestComplete(bundle);
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-
-
-
 
 //    /*
 //     * (non-Javadoc)

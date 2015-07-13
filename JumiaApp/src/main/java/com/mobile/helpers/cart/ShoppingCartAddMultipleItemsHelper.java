@@ -72,27 +72,24 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createErrorBundleParams(baseResponse, bundle);
+        handleError(baseResponse, bundle);
+    }
+
+    @Override
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        //TODO move to observable
+        super.createSuccessBundleParams(baseResponse, bundle);
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getCartValue());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
-        // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        handleSuccess(baseResponse,bundle);
-        mRequester.onRequestComplete(bundle);
-    }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        handleError(baseResponse, bundle);
-        mRequester.onRequestError(bundle);
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+        handleSuccess(baseResponse, bundle);
     }
 
     private Map<String, String> createValues(HashMap<String, String> values) {

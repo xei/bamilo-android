@@ -40,11 +40,9 @@ public class GetBillingFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         SuperGetBillingForm billingForm = (SuperGetBillingForm)baseResponse.getMetadata().getData();
-
         // Create form
         Form form = billingForm.getForm();
         // Create addresses
@@ -52,23 +50,13 @@ public class GetBillingFormHelper extends SuperBaseHelper {
         // Get order summary
         OrderSummary orderSummary = billingForm.getOrderSummary();
         // Create bundle
-        Bundle bundle = generateSuccessBundle(baseResponse);
+
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-        mRequester.onRequestComplete(bundle);
     }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-    
-//    /*
+    //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
 //     */

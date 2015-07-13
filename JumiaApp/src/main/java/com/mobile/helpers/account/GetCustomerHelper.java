@@ -32,22 +32,13 @@ public class GetCustomerHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        mRequester.onRequestComplete(bundle);
+
+        //TODO move to observable
+        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
     }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
 
 //    /*
 //     * (non-Javadoc)
