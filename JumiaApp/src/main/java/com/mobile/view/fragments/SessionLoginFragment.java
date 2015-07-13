@@ -241,7 +241,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Print.i(TAG, "code1facebook onActivityResult");
-        Log.e("onActivityResult","requestCode:"+requestCode+" resultCode:"+resultCode+" data:"+data);
+        Log.e("onActivityResult", "requestCode:" + requestCode + " resultCode:" + resultCode + " data:" + data);
 //        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }

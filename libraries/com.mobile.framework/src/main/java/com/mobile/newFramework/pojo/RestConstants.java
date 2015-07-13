@@ -307,6 +307,10 @@ public class RestConstants {
     /**
      * Order Tracking TAGS
      */
+    public static final String JSON_ORDER_NR_TAG = "orderNr";
+    public static final String JSON_GRAND_TOTAL_TAG = "grandTotal";
+    public static final String JSON_GRAND_TOTAL_CONVERTED_TAG = "grandTotal_converted";
+
     public static final String JSON_ORDER_TAG = "order";
     public static final String JSON_ORDER_ID_TAG = "order_id";
     public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
