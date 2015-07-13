@@ -23,11 +23,11 @@ import java.util.Iterator;
  */
 public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
-    private String idCatalogConfig;
-    private String attributeSetId;
-    private String activatedAt;
+//    private String idCatalogConfig;
+//    private String attributeSetId;
+//    private String activatedAt;
     private String description;
-    private String ratingsUrl;
+//    private String ratingsUrl;
     private double specialPriceDouble;
     private Double maxSavingPercentage;
     private Double ratingsAverage;
@@ -110,9 +110,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
             sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
             brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-            idCatalogConfig = jsonObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
-            attributeSetId = jsonObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
-            activatedAt = jsonObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
+//            idCatalogConfig = jsonObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
+//            attributeSetId = jsonObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
+//            activatedAt = jsonObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
 
             url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
             mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
@@ -383,9 +383,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     /**
      * Get Better quality image.
-     *
-     * @param url
-     * @return
      */
     private String getImageUrl(String url) {
         // String modUrl = ImageResolutionHelper.replaceResolution(url);
@@ -401,31 +398,31 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return description;
     }
 
-    /**
-     * @return the ratings_Url
-     */
-    @Deprecated
+//    /**
+//     * @return the ratings_Url
+//     */
+//    @Deprecated
 //    public String getRatingsUrl() {
 //        return ratingsUrl;
 //    }
 
-    /**
-     * @param idCatalogConfig the idCatalogConfig to set
-     */
+//    /**
+//     * @param idCatalogConfig the idCatalogConfig to set
+//     */
 //    public void setIdCatalogConfig(String idCatalogConfig) {
 //        this.idCatalogConfig = idCatalogConfig;
 //    }
 
-    /**
-     * @param attributeSetId the attributeSetId to set
-     */
+//    /**
+//     * @param attributeSetId the attributeSetId to set
+//     */
 //    public void setAttributeSetId(String attributeSetId) {
 //        this.attributeSetId = attributeSetId;
 //    }
 
-    /**
-     * @param activatedAt the activatedAt to set
-     */
+//    /**
+//     * @param activatedAt the activatedAt to set
+//     */
 //    public void setActivatedAt(String activatedAt) {
 //        this.activatedAt = activatedAt;
 //    }
@@ -451,16 +448,16 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         this.attributes = attributes;
     }
 
-    /**
-     * @param shipmentData the shipmentData to set
-     */
+//    /**
+//     * @param shipmentData the shipmentData to set
+//     */
 //    public void setShipmentData(HashMap<String, String> shipmentData) {
 //        this.shipmentData = shipmentData;
 //    }
 
-    /**
-     * @param simples the simples to set
-     */
+//    /**
+//     * @param simples the simples to set
+//     */
 //    public void setSimples(ArrayList<ProductSimple> simples) {
 //        this.simples = simples;
 //    }
@@ -548,11 +545,11 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return mSizeGuideUrl;
     }
 
-    /**
-     * Set size guide
-     *
-     * @return
-     */
+//    /**
+//     * Set size guide
+//     *
+//     * @return
+//     */
 //    public boolean hasSizeGuide() {
 //        return TextUtils.isEmpty(mSizeGuideUrl);
 //    }
