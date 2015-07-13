@@ -18,7 +18,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.NavigationAction;
@@ -30,15 +29,13 @@ import com.mobile.view.R;
  */
 public class NavigationFragment extends BaseFragment implements OnClickListener{
 
-    private static final String TAG = LogTagHelper.create(NavigationFragment.class);
+    private static final String TAG = NavigationFragment.class.getSimpleName();
 
     private LinearLayout mNavigationOptions;
 
     private RelativeLayout mCategoryBack;
 
     private LayoutInflater mInflater;
-
-    private NavigationCategoryFragment navigationCategoryFragment;
 
     private FragmentType mSavedStateType;
 
@@ -306,7 +303,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             // No tag fragment on back stack
             filterType = null; 
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            navigationCategoryFragment = NavigationCategoryFragment.getInstance(bundle);
+            NavigationCategoryFragment navigationCategoryFragment = NavigationCategoryFragment.getInstance(bundle);
             fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
             break;
         default:

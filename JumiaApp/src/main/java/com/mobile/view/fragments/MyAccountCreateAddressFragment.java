@@ -12,7 +12,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -35,7 +34,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
-    private static final String TAG = LogTagHelper.create(MyAccountCreateAddressFragment.class);
+    private static final String TAG = MyAccountCreateAddressFragment.class.getSimpleName();
 
     protected boolean isFirstUserAddress;
 

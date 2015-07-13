@@ -21,7 +21,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -41,7 +40,7 @@ import java.util.List;
  */
 public class SessionForgotPasswordFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionForgotPasswordFragment.class);
+    private static final String TAG = SessionForgotPasswordFragment.class.getSimpleName();
 
     protected DynamicForm dynamicForm;
 

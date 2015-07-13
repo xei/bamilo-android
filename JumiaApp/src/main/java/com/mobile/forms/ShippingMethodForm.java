@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.utils.ShippingRadioGroupList;
 
 import java.util.ArrayList;
@@ -19,7 +18,8 @@ import java.util.HashMap;
  * 
  */
 public class ShippingMethodForm extends ShippingMethodFormHolder implements Parcelable {
-	private final static String TAG = LogTagHelper.create( ShippingMethodForm.class );
+
+	private final static String TAG = ShippingMethodForm.class.getSimpleName();
 
     private ShippingRadioGroupList mShippingRadioGroupList;
 
@@ -73,7 +73,6 @@ public class ShippingMethodForm extends ShippingMethodFormHolder implements Parc
     
     /**
      * Parcel constructor
-     * @param in
      */
     private ShippingMethodForm(Parcel in) {
         id = in.readString();

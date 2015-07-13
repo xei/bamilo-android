@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
@@ -22,7 +21,7 @@ import org.json.JSONObject;
  */
 public class ProductBundleSimple implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = LogTagHelper.create(ProductBundleSimple.class);
+    public static final String TAG = ProductBundleSimple.class.getSimpleName();
 
     private String simpleSku;
     private String simpleQuantity;
@@ -39,6 +38,7 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
     /**
      * Complete product bundle empty constructor.
      */
+    @SuppressWarnings("unused")
     public ProductBundleSimple() {
         simpleSku = "";
         simpleQuantity = "";
@@ -129,82 +129,82 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         return simpleSku;
     }
 
-    public void setSimpleSku(String simpleSku) {
-        this.simpleSku = simpleSku;
-    }
-
-    public String getSimpleQuantity() {
-        return simpleQuantity;
-    }
-
-    public void setSimpleQuantity(String simpleQuantity) {
-        this.simpleQuantity = simpleQuantity;
-    }
-
-    public String getSimpleSize() {
-        return simpleSize;
-    }
-
-    public void setSimpleSize(String simpleSize) {
-        this.simpleSize = simpleSize;
-    }
-
-    public String getSimplePrice() {
-        return simplePrice;
-    }
-
-    public void setSimplePrice(String simplePrice) {
-        this.simplePrice = simplePrice;
-    }
-
-    public double getSimplePriceDouble() {
-        return simplePriceDouble;
-    }
-
-    public void setSimplePriceDouble(double simplePriceDouble) {
-        this.simplePriceDouble = simplePriceDouble;
-    }
-
-    public double getSimplePriceConverted() {
-        return simplePriceConverted;
-    }
-
-    public void setSimplePriceConverted(double simplePriceConverted) {
-        this.simplePriceConverted = simplePriceConverted;
-    }
+//    public void setSimpleSku(String simpleSku) {
+//        this.simpleSku = simpleSku;
+//    }
+//
+//    public String getSimpleQuantity() {
+//        return simpleQuantity;
+//    }
+//
+//    public void setSimpleQuantity(String simpleQuantity) {
+//        this.simpleQuantity = simpleQuantity;
+//    }
+//
+//    public String getSimpleSize() {
+//        return simpleSize;
+//    }
+//
+//    public void setSimpleSize(String simpleSize) {
+//        this.simpleSize = simpleSize;
+//    }
+//
+//    public String getSimplePrice() {
+//        return simplePrice;
+//    }
+//
+//    public void setSimplePrice(String simplePrice) {
+//        this.simplePrice = simplePrice;
+//    }
+//
+//    public double getSimplePriceDouble() {
+//        return simplePriceDouble;
+//    }
+//
+//    public void setSimplePriceDouble(double simplePriceDouble) {
+//        this.simplePriceDouble = simplePriceDouble;
+//    }
+//
+//    public double getSimplePriceConverted() {
+//        return simplePriceConverted;
+//    }
+//
+//    public void setSimplePriceConverted(double simplePriceConverted) {
+//        this.simplePriceConverted = simplePriceConverted;
+//    }
 
 
     public int getProductParentPos() {
         return productParentPos;
     }
 
-    public void setProductParentPos(int productParentPos) {
-        this.productParentPos = productParentPos;
-    }
-
-    public String getSimpleSpecialPrice() {
-        return simpleSpecialPrice;
-    }
-
-    public void setSimpleSpecialPrice(String simpleSpecialPrice) {
-        this.simpleSpecialPrice = simpleSpecialPrice;
-    }
-
-    public double getSimpleSpecialPriceDouble() {
-        return simpleSpecialPriceDouble;
-    }
-
-    public void setSimpleSpecialPriceDouble(double simpleSpecialPriceDouble) {
-        this.simpleSpecialPriceDouble = simpleSpecialPriceDouble;
-    }
-
-    public double getSimpleSpecialPriceConverted() {
-        return simpleSpecialPriceConverted;
-    }
-
-    public void setSimpleSpecialPriceConverted(double simpleSpecialPriceConverted) {
-        this.simpleSpecialPriceConverted = simpleSpecialPriceConverted;
-    }
+//    public void setProductParentPos(int productParentPos) {
+//        this.productParentPos = productParentPos;
+//    }
+//
+//    public String getSimpleSpecialPrice() {
+//        return simpleSpecialPrice;
+//    }
+//
+//    public void setSimpleSpecialPrice(String simpleSpecialPrice) {
+//        this.simpleSpecialPrice = simpleSpecialPrice;
+//    }
+//
+//    public double getSimpleSpecialPriceDouble() {
+//        return simpleSpecialPriceDouble;
+//    }
+//
+//    public void setSimpleSpecialPriceDouble(double simpleSpecialPriceDouble) {
+//        this.simpleSpecialPriceDouble = simpleSpecialPriceDouble;
+//    }
+//
+//    public double getSimpleSpecialPriceConverted() {
+//        return simpleSpecialPriceConverted;
+//    }
+//
+//    public void setSimpleSpecialPriceConverted(double simpleSpecialPriceConverted) {
+//        this.simpleSpecialPriceConverted = simpleSpecialPriceConverted;
+//    }
 
     public double getPriceForTracking() {
         if(simpleSpecialPriceDouble == 0.0){

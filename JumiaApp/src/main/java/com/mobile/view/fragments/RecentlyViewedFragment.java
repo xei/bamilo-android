@@ -21,7 +21,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -38,7 +37,7 @@ import java.util.EnumSet;
  */
 public class RecentlyViewedFragment extends FavouritesFragment implements IResponseCallback {
 
-    protected final static String TAG = LogTagHelper.create(RecentlyViewedFragment.class);
+    protected final static String TAG = RecentlyViewedFragment.class.getSimpleName();
 
     private Button mClearAllButton;
 

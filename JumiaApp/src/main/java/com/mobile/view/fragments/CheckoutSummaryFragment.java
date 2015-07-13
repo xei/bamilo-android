@@ -29,7 +29,6 @@ import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -48,7 +47,7 @@ import java.util.Map;
  */
 public class CheckoutSummaryFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
+    private static final String TAG = CheckoutSummaryFragment.class.getSimpleName();
 
     private ViewGroup mProductList;
 
@@ -379,12 +378,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView.setVisibility(View.VISIBLE);
     }
     
-    /**
-     * Show the shipping fee
-     *
-     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
-     * @author sergiopereira
-     */
+//    /**
+//     * Show the shipping fee
+//     *
+//     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
+//     * @author sergiopereira
+//     */
 //    @Deprecated
 //    private void showShippingFees() {
 //        if(!mCart.hasSumCosts()){

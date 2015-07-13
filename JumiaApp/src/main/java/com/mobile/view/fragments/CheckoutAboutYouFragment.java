@@ -41,7 +41,6 @@ import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -68,7 +67,7 @@ import java.util.List;
  */
 public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
+    private static final String TAG = CheckoutAboutYouFragment.class.getSimpleName();
 
     private Form formResponse = null;
 
@@ -202,8 +201,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, mFacebookLoginDivider, mSignUpFacebookButton, mFacebookSignUpDivider);
 
         // Callback registration
-        mSignUpFacebookButton.registerCallback(callbackManager, facebookCallback);
-        mLoginFacebookButton.registerCallback(callbackManager, facebookCallback);
+        mSignUpFacebookButton.registerCallback(callbackManager, this);
+        mLoginFacebookButton.registerCallback(callbackManager, this);
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             Print.d(TAG, "TRIGGER: AUTO LOGIN");

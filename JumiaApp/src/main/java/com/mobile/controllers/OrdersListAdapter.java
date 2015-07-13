@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.orders.Order;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
@@ -26,7 +25,7 @@ import java.util.Collection;
  */
 public class OrdersListAdapter extends BaseAdapter {
     
-    public final static String TAG = LogTagHelper.create(OrdersListAdapter.class);
+    public final static String TAG = OrdersListAdapter.class.getSimpleName();
 
     public interface OnSelectedOrderChange {
         public void SelectedOrder(Order selectedOrder, ViewGroup productsContainer, boolean toShow, int selectedProd);

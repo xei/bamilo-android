@@ -7,14 +7,14 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Variation implements IJSONSerializable, Parcelable{
-	private static final String TAG = LogTagHelper.create(Variation.class);
+
+	private static final String TAG = Variation.class.getSimpleName();
 
 	private String sku;
 	private String link;
@@ -101,7 +101,6 @@ public class Variation implements IJSONSerializable, Parcelable{
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

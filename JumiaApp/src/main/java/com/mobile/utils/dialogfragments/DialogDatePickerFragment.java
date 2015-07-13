@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -29,7 +28,7 @@ import java.util.GregorianCalendar;
  */
 public class DialogDatePickerFragment extends DialogFragment implements OnClickListener {
     
-    private final static String TAG = LogTagHelper.create(DialogDatePickerFragment.class);
+    private final static String TAG = DialogDatePickerFragment.class.getSimpleName();
     
     private String mTitle;
     private String mId;
@@ -57,7 +56,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     
     
     /**
-     * 
+     *
      * @param activity
      * @param id
      * @param title
@@ -83,7 +82,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     
     
     /**
-     * 
+     *
      * @param activity
      * @param listener
      * @param id

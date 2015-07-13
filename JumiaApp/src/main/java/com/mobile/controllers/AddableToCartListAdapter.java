@@ -14,7 +14,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.AddableToCart;
 import com.mobile.newFramework.objects.product.Favourite;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
  */
 public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
-    public final static String TAG = LogTagHelper.create(AddableToCartListAdapter.class);
+    public final static String TAG = AddableToCartListAdapter.class.getSimpleName();
     
     private static int RECYCLED_VIEW_KEY = R.id.recycled_view;
 

@@ -37,7 +37,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -58,7 +57,7 @@ import java.util.Iterator;
  */
 public class CheckoutPaymentMethodsFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutPaymentMethodsFragment.class);
+    private static final String TAG = CheckoutPaymentMethodsFragment.class.getSimpleName();
 
     private static final String SAVED_STATE = "saved_state";
 
