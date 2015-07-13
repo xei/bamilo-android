@@ -53,8 +53,6 @@ public class FormsMapping {
         currMapping.put("password", 2);
         currMapping.put("password2", 3);
         currMapping.put("newsletter_categories_subscribed", 10); //8
-        currMapping.put("terms", 11);
-
         
         registrationForm = Collections.unmodifiableMap(currMapping);
     }    

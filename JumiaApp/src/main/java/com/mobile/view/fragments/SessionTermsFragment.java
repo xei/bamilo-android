@@ -49,7 +49,7 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
      * Empty constructor
      */
     public SessionTermsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Terms,
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
