@@ -13,7 +13,6 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Helper used to set the shipping address 

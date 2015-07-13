@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -33,7 +32,6 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
