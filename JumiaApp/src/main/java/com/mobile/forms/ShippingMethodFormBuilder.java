@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
@@ -17,28 +16,33 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 
 public class ShippingMethodFormBuilder implements Parcelable  {
-    private final static String TAG = ShippingMethodFormBuilder.class.getName();
+
+    public final static String TAG = ShippingMethodFormBuilder.class.getName();
 
     private ArrayList<ShippingRadioGroupList> groupList;
+
     public ShippingMethodFormBuilderHolder shippingMethodFormBuilderHolder;
 
+    /**
+     * Empty constructor
+     */
     public ShippingMethodFormBuilder(){
         super();
         this.groupList = new ArrayList<>();
     }
 
-    public View generateForm(Context context){
-        LinearLayout parent;
-
-        parent = new LinearLayout(context);
-        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        parent.setOrientation(LinearLayout.VERTICAL);
-        parent.setLayoutParams(frmParams);
-
-        generateForm(context, parent);
-                
-        return parent;
-    }
+//    public View generateForm(Context context){
+//        LinearLayout parent;
+//
+//        parent = new LinearLayout(context);
+//        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        parent.setOrientation(LinearLayout.VERTICAL);
+//        parent.setLayoutParams(frmParams);
+//
+//        generateForm(context, parent);
+//
+//        return parent;
+//    }
     
     
     /**
@@ -110,7 +114,6 @@ public class ShippingMethodFormBuilder implements Parcelable  {
     
     /**
      * Parcel constructor
-     * @param in
      */
     private ShippingMethodFormBuilder(Parcel in) {
         shippingMethodFormBuilderHolder.id = in.readString();

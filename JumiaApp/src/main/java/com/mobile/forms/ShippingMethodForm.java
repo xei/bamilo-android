@@ -15,6 +15,7 @@ import java.util.HashMap;
  * Class that represents an Shipping Method form.
  * 
  * @author Manuel Silva
+ * @modified sergiopereira
  * 
  */
 public class ShippingMethodForm extends ShippingMethodFormHolder implements Parcelable {

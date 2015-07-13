@@ -16,6 +16,7 @@ import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
 import com.mobile.newFramework.forms.PickUpStationObject;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShippingRadioGroupList extends RadioGroup {
+
     private final static String TAG = ShippingRadioGroupList.class.getSimpleName();
 
 //    public interface OnRadioGroupSelected {
@@ -130,7 +132,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                 }
             }
 
-            if (tmpSubForms != null && tmpSubForms.size() > 0) {
+            if (CollectionUtils.isNotEmpty(tmpSubForms)) {
                 subForms.put(mItems.get(idx), tmpSubForms);
             } else {
                 ShippingMethod shippingMethod = new ShippingMethod();
@@ -304,7 +306,6 @@ public class ShippingRadioGroupList extends RadioGroup {
         } else {
             result = mItems.get(mDefaultSelectedId);
         }
-
         return result;
     }
 
@@ -326,7 +327,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                         
                     }
                     if(selectedPickup != null){
-                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupId());
+                        mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupStationId());
                     }
                     Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
