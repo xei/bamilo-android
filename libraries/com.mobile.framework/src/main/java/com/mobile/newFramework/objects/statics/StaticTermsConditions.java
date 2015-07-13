@@ -36,15 +36,15 @@ public class StaticTermsConditions implements IJSONSerializable{
         return html;
     }
 
-    public void setHtml(String html) {
-        this.html = html;
-    }
+//    public void setHtml(String html) {
+//        this.html = html;
+//    }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 }
