@@ -12,12 +12,15 @@ import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
+
+    private static String TAG = SuperBaseHelper.class.getSimpleName();
 
     protected IResponseCallback mRequester;
 
@@ -88,23 +91,19 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return mEventTask;
     }
 
-    public Bundle generateSuccessBundle(BaseResponse baseResponse){
-        Bundle bundle = new Bundle();
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle){
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
         bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, baseResponse.getMessage());
-        return bundle;
     }
 
-    public Bundle generateErrorBundle(BaseResponse baseResponse){
-        Bundle bundle = new Bundle();
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle){
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, prioritary);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
     }
 
     protected EventTask setEventTask(){
@@ -130,6 +129,22 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
      */
     private void setPriority(Bundle args){
         prioritary = args != null && args.containsKey(Constants.BUNDLE_PRIORITY_KEY) ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY) : hasPriority();
+    }
+
+    @Override
+    public final void onRequestComplete(BaseResponse baseResponse) {
+        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+        Bundle bundle = new Bundle();
+        createSuccessBundleParams(baseResponse, bundle);
+        mRequester.onRequestComplete(bundle);
+    }
+
+    @Override
+    public final void onRequestError(BaseResponse baseResponse) {
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Bundle bundle = new Bundle();
+        createErrorBundleParams(baseResponse, bundle);
+        mRequester.onRequestError(bundle);
     }
 
 }

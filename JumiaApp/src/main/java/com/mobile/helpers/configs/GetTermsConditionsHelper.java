@@ -4,12 +4,10 @@ import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,26 +43,6 @@ public class GetTermsConditionsHelper extends SuperBaseHelper {
 //        new GetTermsConditions(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
     }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        // TODO: CREATE NEW OBJECT
-        //Terms terms = (Terms) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
-        //bundle.putString(Constants.BUNDLE_RESPONSE_KEY, terms.toString());
-        mRequester.onRequestComplete(bundle);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
 
 //
 //    @Override

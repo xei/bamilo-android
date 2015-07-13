@@ -4,4 +4,6 @@
     <!-- ANDROID 5.0: COLOR ACCENT -->
     <color name="color_accent">@color/orange_ffa200</color>
 
+    <color name="splash_backgroung_color">@android:color/white</color>
+
 </resources>

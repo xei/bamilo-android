@@ -2,12 +2,10 @@ package com.mobile.helpers.session;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Example helper
@@ -27,24 +25,9 @@ public class GetLogoutHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
 //        new LogoutCustomer(requestBundle, this).execute();
+        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.logoutCustomer);
     }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        mRequester.onRequestError(generateErrorBundle(baseResponse));
-    }
-
-
 
 
 //    @Override

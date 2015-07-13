@@ -75,8 +75,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         // Get recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         try {
@@ -93,16 +95,16 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         //
         Suggestions searchSuggestions = (Suggestions) baseResponse.getMetadata().getData();
         CollectionUtils.addAll(suggestions, searchSuggestions);
-        //
-        Bundle bundle = generateSuccessBundle(baseResponse);
+
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        mRequester.onRequestComplete(bundle);
     }
 
     @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createErrorBundleParams(baseResponse, bundle);
+
+        //TODO move to observable
         // Get the recent queries
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         // Get recent queries
@@ -119,12 +121,9 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
-        // Add error if no match
-        Bundle bundle = generateErrorBundle(baseResponse);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, suggestions.size() > 0);
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        mRequester.onRequestError(bundle);
     }
 
     /*
