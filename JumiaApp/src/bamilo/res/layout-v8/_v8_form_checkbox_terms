@@ -9,8 +9,7 @@
         android:id="@+id/textview_terms"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="@color/red"
-        android:text="Terms and Conditions"
+        android:textColor="@color/blue_basic"
         android:gravity="right|center_vertical"
         android:layout_weight="1"
         android:singleLine="true"
@@ -29,6 +28,5 @@
         android:textColor="@color/grey_middle"
         android:gravity="right|center_vertical"
         android:textSize="14sp"
-        android:text="I agree with the "
         android:background="@color/transparent"/>
 </LinearLayout>
