@@ -9,7 +9,6 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +22,7 @@ import org.json.JSONObject;
  */
 public class OrderSummary implements IJSONSerializable, Parcelable {
 
-    public final static String TAG = LogTagHelper.create(OrderSummary.class);
+    public final static String TAG = OrderSummary.class.getSimpleName();
 
     private String mGrandTotal;
 

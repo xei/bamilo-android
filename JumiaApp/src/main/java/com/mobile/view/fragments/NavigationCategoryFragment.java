@@ -27,7 +27,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.MainFragmentActivity;
@@ -41,7 +40,7 @@ import java.util.ArrayList;
  */
 public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
+    private static final String TAG = NavigationCategoryFragment.class.getSimpleName();
 
     private static final int HEADER_FOR_ALL_POSITION = 0;
 

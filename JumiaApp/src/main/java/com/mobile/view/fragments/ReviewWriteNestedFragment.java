@@ -35,7 +35,6 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -61,7 +60,7 @@ import java.util.Map;
  */
 public class ReviewWriteNestedFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewWriteNestedFragment.class);
+    private static final String TAG = ReviewWriteNestedFragment.class.getSimpleName();
     
     private static final String SHOWING_FORM = "showingForm";
     
@@ -76,8 +75,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private static final String RATINGS = "ratings";
 
     private CompleteProduct completeProduct;
-
-    private TextView productName;
 
     private LinearLayout ratingContainer;
 
@@ -161,7 +158,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        JumiaApplication.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -203,7 +200,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 completeProduct = (CompleteProduct)parcelableProduct;
             }
         }
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        JumiaApplication.setIsSellerReview(false);
 
         isExecutingSendReview = false;
         showFragmentLoading();
@@ -256,7 +253,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        JumiaApplication.setIsSellerReview(false);
         saveReview();
 
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
@@ -449,7 +446,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      */
     private void loadReviewAndRatingFormValues() {
         
-        ContentValues savedRatingReviewValues = new ContentValues();
+        ContentValues savedRatingReviewValues;
         
         if(formValues == null){
             savedRatingReviewValues = JumiaApplication.getRatingReviewValues();
@@ -725,7 +722,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
@@ -735,7 +732,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();

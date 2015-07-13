@@ -14,7 +14,6 @@ import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.controllers.PickupStationsAdapter;
 import com.mobile.newFramework.forms.PickUpStationObject;
 import com.mobile.newFramework.objects.checkout.ShippingMethodSubFormHolder;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -27,10 +26,12 @@ import java.util.HashMap;
  * 
  */
 public class ShippingMethodSubForm implements Parcelable {
-	private final static String TAG = LogTagHelper.create( ShippingMethodSubForm.class );
+
+	protected final static String TAG = ShippingMethodSubForm.class.getSimpleName();
 
 	private int lastID = 0x7f096000;
-	private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
+
+    private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
 
     public View dataControl;
 

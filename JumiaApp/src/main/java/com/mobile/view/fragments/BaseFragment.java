@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -413,36 +412,36 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //        }
     }
 
-    /**
-     * Recycle bitmaps
-     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
-     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
-     */
-    public void unbindDrawables(View view) {
-        Print.i(TAG, "UNBIND DRAWABLES");
-        try {
-
-            if (view.getBackground() != null) {
-                view.getBackground().setCallback(null);
-            } else if (view instanceof ViewGroup) {
-                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-                }
-                if (view instanceof AdapterView<?>) {
-                    return;
-                }
-
-                try {
-                    ((ViewGroup) view).removeAllViews();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } catch (RuntimeException e) {
-            Print.w(TAG, "" + e);
-        }
-    }
+//    /**
+//     * Recycle bitmaps
+//     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
+//     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
+//     */
+//    public void unbindDrawables(View view) {
+//        Print.i(TAG, "UNBIND DRAWABLES");
+//        try {
+//
+//            if (view.getBackground() != null) {
+//                view.getBackground().setCallback(null);
+//            } else if (view instanceof ViewGroup) {
+//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+//                }
+//                if (view instanceof AdapterView<?>) {
+//                    return;
+//                }
+//
+//                try {
+//                    ((ViewGroup) view).removeAllViews();
+//                } catch (IllegalArgumentException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        } catch (RuntimeException e) {
+//            Print.w(TAG, "" + e);
+//        }
+//    }
 
     /**
      * #### BACK PRESSED ####
@@ -630,9 +629,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
-     *
-     * @param type
-     * @param listener
      */
     protected final void showErrorFragment(int type, OnClickListener listener){
         if(mErrorView instanceof ViewStub){
@@ -742,7 +738,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
                 if(ShopSelector.isRtl()){
-                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                    inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
                 topCountry.setText(country.split(" ")[0].toUpperCase());

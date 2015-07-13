@@ -35,7 +35,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -62,7 +61,7 @@ import java.util.Set;
  */
 public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
-    private static final String TAG = LogTagHelper.create(CreateAddressFragment.class);
+    private static final String TAG = CreateAddressFragment.class.getSimpleName();
 
     protected static final String SHIPPING_FORM_TAG = "shipping";
 

@@ -28,7 +28,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -51,7 +50,7 @@ import java.util.List;
  */
 public class ProductOffersFragment extends BaseFragment implements OffersListAdapter.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(ProductOffersFragment.class);
+    private static final String TAG = ProductOffersFragment.class.getSimpleName();
     
     private String mCompleteProductUrl;
 

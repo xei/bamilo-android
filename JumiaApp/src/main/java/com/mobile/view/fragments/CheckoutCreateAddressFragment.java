@@ -18,7 +18,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -36,7 +35,7 @@ import java.util.EnumSet;
  */
 public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
-    private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
+    private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
 
     private OrderSummary orderSummary;
 

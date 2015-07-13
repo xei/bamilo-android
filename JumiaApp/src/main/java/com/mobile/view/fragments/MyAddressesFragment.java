@@ -16,7 +16,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
 import com.mobile.utils.MyMenuItem;
@@ -42,7 +41,7 @@ import java.util.Set;
  */
 public abstract class MyAddressesFragment extends BaseFragment implements IResponseCallback, RadioGroup.OnCheckedChangeListener{
 
-    private static final String TAG = LogTagHelper.create(MyAddressesFragment.class);
+    private static final String TAG = MyAddressesFragment.class.getSimpleName();
 
     private static final String IS_SAME_ADDRESS = "1";
 

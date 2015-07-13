@@ -74,6 +74,14 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         // Get cookies not expired
         List<HttpCookie> cookies = getCookieStore().getCookies();
         for (HttpCookie cookie : cookies) {
+//            Log.i(TAG, "TRY STORED COOKIE: " +
+//                    cookie.getDomain() + " " +
+//                    cookie.getName() + " " +
+//                    cookie.getValue() + " " +
+//                    cookie.hasExpired() + " " +
+//                    cookie.getPath()+ " " +
+//                    cookie.getMaxAge());
+
             if(!cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
                 store(cookie);
                 return;

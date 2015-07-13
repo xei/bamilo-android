@@ -14,7 +14,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.RatingStar;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -30,7 +29,7 @@ import java.util.EnumSet;
  */
 public class ReviewFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewFragment.class);
+    private static final String TAG = ReviewFragment.class.getSimpleName();
     
     private static final int RATING_TYPE_BY_LINE = 3;
     
@@ -259,7 +258,6 @@ public class ReviewFragment extends BaseFragment {
             }
             
             LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,RATING_TYPE_BY_LINE);
             
             typeLine.setOrientation(LinearLayout.HORIZONTAL);
             

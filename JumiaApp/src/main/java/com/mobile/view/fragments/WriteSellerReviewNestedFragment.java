@@ -22,7 +22,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -44,7 +43,7 @@ import java.util.Map;
  */
 public class WriteSellerReviewNestedFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(WriteSellerReviewNestedFragment.class);
+    private static final String TAG = WriteSellerReviewNestedFragment.class.getSimpleName();
 
     private static final String NAME = "name";
 
@@ -55,8 +54,6 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     private static final String SELLER_ID = "sellerId";
 
     private static final String RATINGS = "ratings";
-
-    private static WriteSellerReviewNestedFragment mWriteSellerReviewFragment;
 
     private LinearLayout mReviewContainer;
 
@@ -76,8 +73,6 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
     private String mSellerId = "";
 
-    private TextView mReviewTitle;
-
     private HashMap<String,String> mFormReviewValues = new HashMap<>();
 
     /**
@@ -86,11 +81,8 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
      * @return
      */
     public static WriteSellerReviewNestedFragment getInstance(Bundle bundle) {
-        Print.i(TAG, "getInstance");
-        mWriteSellerReviewFragment = new WriteSellerReviewNestedFragment();
-        if (bundle != null) {
-            mWriteSellerReviewFragment.setArguments(bundle);
-        }
+        WriteSellerReviewNestedFragment mWriteSellerReviewFragment = new WriteSellerReviewNestedFragment();
+        mWriteSellerReviewFragment.setArguments(bundle);
         return mWriteSellerReviewFragment;
     }
 
@@ -126,7 +118,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         isExecutingSendReview = false;
-        JumiaApplication.INSTANCE.setIsSellerReview(true);
+        JumiaApplication.setIsSellerReview(true);
         if(getArguments() != null){
             if(getArguments().containsKey(ProductDetailsFragment.SELLER_ID)){
                 mSellerId = getArguments().getString(ProductDetailsFragment.SELLER_ID);
@@ -158,7 +150,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.INSTANCE.setIsSellerReview(true);
+        JumiaApplication.setIsSellerReview(true);
         mReviewContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mMainContainer = view.findViewById(R.id.product_rating_container);
 
@@ -219,7 +211,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        JumiaApplication.INSTANCE.setIsSellerReview(true);
+        JumiaApplication.setIsSellerReview(true);
         if(mDynamicSellerReviewForm != null){
             saveTextReview(mDynamicSellerReviewForm);
             formValues = mDynamicSellerReviewForm.save();
@@ -334,7 +326,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
         mMainContainer.setVisibility(View.VISIBLE);
 
-        mReviewTitle = (TextView) getView().findViewById(R.id.write_title);
+        TextView mReviewTitle = (TextView) getView().findViewById(R.id.write_title);
 
         mReviewTitle.setText(R.string.review_this_seller);
 
@@ -355,7 +347,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
      */
     private void loadReviewFormValues() {
         
-        ContentValues savedReviewValues = new ContentValues();
+        ContentValues savedReviewValues;
         
         if(formValues == null){
             savedReviewValues = JumiaApplication.getSellerReviewValues();
@@ -420,11 +412,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
             try {
                 //Validate if fragment is nested
-                if(this.getParentFragment() instanceof ReviewsFragment){
-                    nestedFragment = true;
-                } else {
-                    nestedFragment = false;
-                }
+                nestedFragment = this.getParentFragment() instanceof ReviewsFragment;
             } catch (Exception e) {
                 e.printStackTrace();
                 nestedFragment = true;

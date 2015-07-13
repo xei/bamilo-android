@@ -11,7 +11,6 @@ import android.widget.RatingBar;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.InputType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -19,8 +18,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-//import com.mobile.newFramework.forms.InputType;
 
 /**
  * This Class defines the representation of a dynamic form
@@ -40,7 +37,8 @@ import java.util.Map;
  * 
  */
 public class DynamicForm implements Iterable<DynamicFormItem> {
-    private final static String TAG = LogTagHelper.create(DynamicForm.class);
+
+    private final static String TAG = DynamicForm.class.getSimpleName();
 
     private ViewGroup base;
     private List<DynamicFormItem> controls;
@@ -66,16 +64,16 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         this.text_watcher = null;
     }
 
-    /**
-     * Adds a control to the dynamic form
-     * 
-     * @param ctrl
-     *            an instance of a DynamicFormItem to be added to the form
-     */
-    public void addControl(DynamicFormItem ctrl) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        addControl(ctrl, params);
-    }
+//    /**
+//     * Adds a control to the dynamic form
+//     *
+//     * @param ctrl
+//     *            an instance of a DynamicFormItem to be added to the form
+//     */
+//    public void addControl(DynamicFormItem ctrl) {
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//        addControl(ctrl, params);
+//    }
 
     /**
      * Adds a control to the dynamic form
@@ -139,49 +137,49 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return controls.get(index);
     }
 
-    /**
-     * Gets one of the form controls with a specific id
-     * 
-     * @param id
-     *            The id of the item to return
-     * @return The instance of the DynamicFormItem that has the given id, null
-     *         if no control has the given id
-     */
-    public DynamicFormItem getItemById(int id) {
-        DynamicFormItem control = null;
-        boolean found = false;
-        // gets an iterator to the hash map
-        Iterator<DynamicFormItem> iterator = iterator();
-        // Map.Entry<?, ?> pairs;
-        while (iterator.hasNext() && !found) {
-            control = iterator.next();
-            // checks if there is a control with the same key as the one for the
-            // given value.
-            if (null != control && id == control.getEditControl().getId()) {
-                found = true;
-            }
-        }
-        //
-        if (!found) {
-            control = null;
-        }
-        return control;
-    }
+//    /**
+//     * Gets one of the form controls with a specific id
+//     *
+//     * @param id
+//     *            The id of the item to return
+//     * @return The instance of the DynamicFormItem that has the given id, null
+//     *         if no control has the given id
+//     */
+//    public DynamicFormItem getItemById(int id) {
+//        DynamicFormItem control = null;
+//        boolean found = false;
+//        // gets an iterator to the hash map
+//        Iterator<DynamicFormItem> iterator = iterator();
+//        // Map.Entry<?, ?> pairs;
+//        while (iterator.hasNext() && !found) {
+//            control = iterator.next();
+//            // checks if there is a control with the same key as the one for the
+//            // given value.
+//            if (null != control && id == control.getEditControl().getId()) {
+//                found = true;
+//            }
+//        }
+//        //
+//        if (!found) {
+//            control = null;
+//        }
+//        return control;
+//    }
 
-    public DynamicFormItem getItemById(String id) {
-
-        Iterator<DynamicFormItem> iterator = iterator();
-        // Map.Entry<?, ?> pairs;
-        while (iterator.hasNext()) {
-            DynamicFormItem control = iterator.next();
-            // checks if there is a control with the same key as the one for the
-            // given value.
-            if (null != control && control.getEntry().getId().equals(id)) {
-                return control;
-            }
-        }
-        return null;
-    }
+//    public DynamicFormItem getItemById(String id) {
+//
+//        Iterator<DynamicFormItem> iterator = iterator();
+//        // Map.Entry<?, ?> pairs;
+//        while (iterator.hasNext()) {
+//            DynamicFormItem control = iterator.next();
+//            // checks if there is a control with the same key as the one for the
+//            // given value.
+//            if (null != control && control.getEntry().getId().equals(id)) {
+//                return control;
+//            }
+//        }
+//        return null;
+//    }
 
     public DynamicFormItem getItemByKey(String key) {
         // gets an iterator to the hashmap

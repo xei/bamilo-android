@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,14 +17,13 @@ import org.json.JSONObject;
  */
 public class CategoryFilterOption extends CatalogFilterOption implements IJSONSerializable {
 	
-	protected final static String TAG = LogTagHelper.create(CategoryFilterOption.class);
+	protected final static String TAG = CategoryFilterOption.class.getSimpleName();
 	
 	private String mUrl;
 
 	private int mNumber;
 
 	/**
-	 * @param jsonObject
 	 * @throws JSONException
 	 */
 	public CategoryFilterOption(JSONObject jsonObject) throws JSONException {
@@ -102,7 +100,6 @@ public class CategoryFilterOption extends CatalogFilterOption implements IJSONSe
 	
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private CategoryFilterOption(Parcel in) {
 	    super(in);

@@ -34,7 +34,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -54,8 +53,6 @@ import java.util.List;
 public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
     private static final String TAG = OrderHistoryFragment.class.getSimpleName();
-
-    private static OrderHistoryFragment mOrderHistoryFragment;
 
     private ArrayList<Order> ordersList = new ArrayList<>();
     
@@ -78,7 +75,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     private int selectedProduct = -1;
     
     private static final int NUM_ORDERS = 25;
-
+    
     private int pageIndex = 1;
     
     private int totalPages = 0;
@@ -97,8 +94,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * @return
      */
     public static OrderHistoryFragment getInstance() {
-        mOrderHistoryFragment = new OrderHistoryFragment();
-        return mOrderHistoryFragment;
+        return new OrderHistoryFragment();
     }
 
     /**
@@ -597,7 +593,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
       
       getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
+    
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "onSaveInstanceState");

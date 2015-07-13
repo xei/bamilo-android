@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -23,7 +22,7 @@ import java.util.EnumSet;
  */
 public class SessionTermsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionTermsFragment.class);
+    private static final String TAG = SessionTermsFragment.class.getSimpleName();
 
     private TextView textView;
     

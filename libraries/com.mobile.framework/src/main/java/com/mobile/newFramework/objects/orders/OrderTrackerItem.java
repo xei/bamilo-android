@@ -15,7 +15,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +27,7 @@ import org.json.JSONObject;
  */
 public class OrderTrackerItem implements IJSONSerializable, Parcelable{
 
-	public final static String TAG = LogTagHelper.create( OrderTrackerItem.class );
+	public final static String TAG = OrderTrackerItem.class.getSimpleName();
 
     private String sku;
     private String name;
@@ -47,27 +46,27 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
     	status_update = "";
     }
 
-    /**
-     * OrderTrackerItem constructor
-     *
-     * @param s sku
-     *            	of the OrderTrackerItem
-     * @param n name
-     *            	of the OrderTrackerItem
-     * @param q quantity
-     * 			  	of the OrderTrackerItem
-     * @param st status
-     * 				of the OrderTrackerItem
-     * @param std status update date
-     * 				of the OrderTrackerItem
-     */
-    public OrderTrackerItem(String s, String n, String q, String st, String std) {
-    	this.sku = s;
-    	this.name = n;
-    	this.quantity = q;
-    	this.status = st;
-    	this.status_update = std;
-    }
+//    /**
+//     * OrderTrackerItem constructor
+//     *
+//     * @param s sku
+//     *            	of the OrderTrackerItem
+//     * @param n name
+//     *            	of the OrderTrackerItem
+//     * @param q quantity
+//     * 			  	of the OrderTrackerItem
+//     * @param st status
+//     * 				of the OrderTrackerItem
+//     * @param std status update date
+//     * 				of the OrderTrackerItem
+//     */
+//    public OrderTrackerItem(String s, String n, String q, String st, String std) {
+//    	this.sku = s;
+//    	this.name = n;
+//    	this.quantity = q;
+//    	this.status = st;
+//    	this.status_update = std;
+//    }
 
 
     public String getSku(){
@@ -86,9 +85,9 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
     	return this.status;
     }
 
-    public String getUpdateDate(){
-    	return this.status_update;
-    }
+//    public String getUpdateDate(){
+//    	return this.status_update;
+//    }
 
     /*
      * (non-Javadoc)
@@ -169,7 +168,6 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
 
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private OrderTrackerItem(Parcel in) {
     	this.sku = in.readString();
