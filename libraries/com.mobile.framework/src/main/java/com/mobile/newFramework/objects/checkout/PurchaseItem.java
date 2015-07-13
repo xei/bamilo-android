@@ -34,8 +34,8 @@ public class PurchaseItem implements Parcelable {
     /**
      * For WebCheckout
      */
-    public static List<PurchaseItem> parseItems(JSONArray itemsJson) {
-        List<PurchaseItem> items = new ArrayList<>();
+    public static ArrayList<PurchaseItem> parseItems(JSONArray itemsJson) {
+        ArrayList<PurchaseItem> items = new ArrayList<>();
         if (itemsJson != null) {
             for (int i = 0; i < itemsJson.length(); i++) {
                 try {

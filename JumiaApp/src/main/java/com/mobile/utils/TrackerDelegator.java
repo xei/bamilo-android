@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
@@ -33,7 +34,6 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,10 +89,6 @@ public class TrackerDelegator {
 
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
-
-    private static final String JSON_TAG_ORDER_NR = "orderNr";
-    private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
-    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
 
     private static final String SESSION_COUNTER = "sessionCounter";
     private static final String LAST_SESSION_SAVED = "lastSessionSaved";
@@ -439,92 +435,56 @@ public class TrackerDelegator {
     }
 
     // Got Web checkout response
-
     private static void trackPurchaseInt(Bundle params) {
+        Print.i(TAG, "TRACK SALE: STARTED");
         JSONObject result = null;
         try {
             result = new JSONObject(params.getString(PURCHASE_KEY));
-        } catch (JSONException e1) {
-            e1.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        Customer customer = params.getParcelable(CUSTOMER_KEY);
-
-        Print.i(TAG, "TRACK SALE: STARTED");
+        // Validate json
         if (result == null) {
             return;
         }
-
-        Print.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
-
         Print.d(TAG, "TRACK SALE: JSON " + result.toString());
 
-        String orderNr;
-        double value;
-        JSONArray itemsJson;
-        String coupon = "";
-        double valueConverted;
-        try {
-            orderNr = result.getString(JSON_TAG_ORDER_NR);
-            value = result.getDouble(JSON_TAG_GRAND_TOTAL);
-            itemsJson = result.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
-            valueConverted = result.optDouble(JSON_TAG_GRAND_TOTAL_CONVERTED, 0d);
-            Print.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
-        } catch (JSONException e) {
-            Print.e(TAG, "TRACK SALE: json parsing error: ", e);
-            return;
-        }
-
-        Double averageValue = 0d;
-        //ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
-
-        List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
-
-        ArrayList<String> skus = new ArrayList<>();
-        //int favoritesCount = 0;
-        for (PurchaseItem item : items) {
-            skus.add(item.sku);
-            averageValue += item.getPriceForTracking();//paidpriceAsDouble;
-            //favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
-        }
-        averageValue = averageValue / items.size();
-
-        AnalyticsGoogle.get().trackPurchase(orderNr, valueConverted, items);
-
-        boolean isFirstCustomer;
-        
-        if (customer == null) {
-            Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
-            // Send the track sale without customer id
-            isFirstCustomer = false;
+        // Validate customer
+        Customer customer = params.getParcelable(CUSTOMER_KEY);
+        boolean isFirstCustomer = false;
+        if (customer != null && checkFirstCustomer(customer)) {
+            isFirstCustomer = true;
+            removeFirstCustomer(customer);
         } else {
-            isFirstCustomer = checkFirstCustomer(customer);
-
-            if(isFirstCustomer)
-                removeFirstCustomer(customer);
+            Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
         }
 
-        Ad4PushTracker.get().trackCheckoutEnded(orderNr, valueConverted, value, averageValue, items.size(), coupon);
+        // Create external order
+        ExternalOrder order = new ExternalOrder(result);
 
+        // GA
+        AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
+        // AD4
+        Ad4PushTracker.get().trackCheckoutEnded(order.number, order.valueConverted, order.value, order.average, order.items.size(), order.coupon);
+        // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
-        bundle.putString(AdjustTracker.TRANSACTION_ID, orderNr);
-        bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, skus);
-        bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer.isGuest());
-        bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>) items);
-        bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, value);
-
+        bundle.putString(AdjustTracker.TRANSACTION_ID, order.number);
+        bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, order.skus);
+        bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer != null && customer.isGuest());
+        bundle.putParcelableArrayList(AdjustTracker.CART, order.items);
+        bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, order.value);
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
-
-        String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         //GTM
-        GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, value,orderNr, coupon, paymentMethod, "", "");
+        String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
+        GTMManager.get().gtmTrackTransaction(order.items, EUR_CURRENCY, order.value, order.number, order.coupon, paymentMethod, "", "");
         // FB
-        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, valueConverted, items.size());
+        FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
@@ -577,13 +537,13 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
         bundle.putString(AdjustTracker.TRANSACTION_ID, orderNr);
         bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, skus);
-        bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer.isGuest());
+        bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer != null && customer.isGuest());
         bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>) items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, cartValue);
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
