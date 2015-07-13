@@ -16,7 +16,6 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
