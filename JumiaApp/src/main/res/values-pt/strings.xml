@@ -193,7 +193,7 @@
     <string name="password_changed">Password alterada com sucesso</string>
     <string name="password_new_mincharacters">A nova senha tem que ter pelo menos 6 carateres</string>
     <string name="payment">Pagamento</string>
-    <string name="payment_method">Método de Pagamento</string>
+    <string name="payment_method">&lt;b>Método de Pagamento: &lt;/b> %s</string>
     <string name="personal_data_label">Os Seus Dados Pessoais</string>
     <string name="personal_data_title">Dados da Conta</string>
     <string name="pickup_station_address">Morada:</string>

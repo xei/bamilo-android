@@ -193,7 +193,7 @@
     <string name="password_changed">Password ေျပာင္းလဲၿပီးပါၿပီ</string>
     <string name="password_new_mincharacters">Password အသစ္တြင္ အနည္းဆံုး စာလံုးေရ ၆လံုးရွိရပါမည္။</string>
     <string name="payment">ေငြေပးေခ်မႈ</string>
-    <string name="payment_method">ေငြေပးေခ်မႈနည္းလမ္း</string>
+    <string name="payment_method">&lt;b>ေငြေပးေခ်မႈနည္းလမ္း: &lt;/b> %s</string>
     <string name="personal_data_label">သင္၏ ကုိယ္ေရးအခ်က္အလက္မ်ား</string>
     <string name="personal_data_title">အေကာင့္အခ်က္အလက္မ်ား</string>
     <string name="pickup_station_address">လိပ္စာ : </string>
