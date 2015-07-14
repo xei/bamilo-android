@@ -105,6 +105,7 @@ android {
         }
         release {
             minifyEnabled true
+            debuggable true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
         }
