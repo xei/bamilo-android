@@ -1,7 +1,6 @@
 package com.mobile.newFramework.forms;
 
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -21,7 +20,8 @@ import java.util.Map;
  * COPYRIGHT (C) Rocket Internet All Rights Reserved.
  */
 public class FormsMapping {
-    private final static String TAG = LogTagHelper.create( FormsMapping.class );
+
+    protected final static String TAG = FormsMapping.class.getSimpleName();
 	
     /**
      * The mapping for the login form. This mapping is based on the key form field returned by the API 

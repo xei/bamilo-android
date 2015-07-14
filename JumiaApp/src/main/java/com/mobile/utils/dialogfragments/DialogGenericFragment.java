@@ -13,7 +13,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -24,7 +23,7 @@ import com.mobile.view.R;
  */
 public class DialogGenericFragment extends DialogFragment {
 
-    private static final String TAG = LogTagHelper.create(DialogGenericFragment.class);
+    private static final String TAG = DialogGenericFragment.class.getSimpleName();
 
     private static DialogGenericFragment dialogGenericFragment;
 

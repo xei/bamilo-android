@@ -33,7 +33,8 @@ public enum NavigationAction {
     Checkout("checkout"),
     Offers("offers"),
     Seller("seller"),
-    ForgotPassword("forgotpassword");
+    ForgotPassword("forgotpassword"),
+    Terms("terms");
 
 	private final String action;
 

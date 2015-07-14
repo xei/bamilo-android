@@ -18,7 +18,6 @@ import android.widget.SpinnerAdapter;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
@@ -35,7 +34,7 @@ import java.util.List;
  */
 public class MyProfileActionProvider extends ActionProvider {
 
-    public final static String TAG = LogTagHelper.create(MyProfileActionProvider.class);
+    public final static String TAG = MyProfileActionProvider.class.getSimpleName();
     private List<NavigationAction> subMenuItems;
     private DismissibleSpinner mSpinner;
     private MyProfileAdapter mAdapter;
@@ -219,7 +218,7 @@ public class MyProfileActionProvider extends ActionProvider {
 
             ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
             TextView title = (TextView) view.findViewById(R.id.menu_item_title);
-            // counter for favourites total 
+            // counter for favourites total
             TextView counter = (TextView) view.findViewById(R.id.icon_counter);
             counter.setVisibility(View.INVISIBLE);
 
@@ -276,13 +275,11 @@ public class MyProfileActionProvider extends ActionProvider {
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return 0;
         }
 
         @Override
         public NavigationAction getItem(int position) {
-            // TODO Auto-generated method stub
             return null;
         }
     }

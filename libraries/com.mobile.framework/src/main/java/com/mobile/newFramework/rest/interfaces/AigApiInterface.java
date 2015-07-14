@@ -34,6 +34,7 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
+import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
@@ -92,7 +93,7 @@ public interface AigApiInterface {
     String getImageResolutions = "getImageResolutions";
 
     @GET("/")
-    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<BaseResponse>> callback);
+    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticTermsConditions>> callback);
 
     String getTermsAndConditions = "getTermsAndConditions";
 
@@ -315,8 +316,9 @@ public interface AigApiInterface {
 
     String addVoucher = "addVoucher";
 
-    @GET("/")
-    void removeVoucher(Callback<BaseResponse<ShoppingCart>> callback);
+    @FormUrlEncoded
+    @POST("/")
+    void removeVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     String removeVoucher = "removeVoucher";
 

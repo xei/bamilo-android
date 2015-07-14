@@ -18,7 +18,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -36,7 +35,7 @@ import java.util.EnumSet;
  */
 public class ProductDetailsSummaryFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductDetailsSummaryFragment.class);
+    private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
     private TextView mProductName;
     private TextView mProductPriceSpecial;
@@ -337,7 +336,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         super.onClickRetryButton(view);
         Print.d(TAG, "RETRY");
         onResume();        
-    };
+    }
     
     
     

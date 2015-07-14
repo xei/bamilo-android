@@ -16,8 +16,14 @@
     <!-- ############### ADJUST ################# -->
     <!-- ######################################## -->
 
-    <!-- Injoo: 6ohr47 -->
+    <!-- OOREDOO: 1ekhci -->
 
-    <!--<string name="adjust_default_tracker">6ohr47</string>-->
+    <string name="adjust_default_tracker">1ekhci</string>
+
+    <!-- ######################################## -->
+    <!-- ############### SLOGAN ################# -->
+    <!-- ######################################## -->
+
+    <string name="splash_slogan_powered_by">Shop original products across all Myanmar</string>
 
 </resources>

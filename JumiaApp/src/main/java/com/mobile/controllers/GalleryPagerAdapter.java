@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
-    private static final String TAG = LogTagHelper.create(GalleryPagerAdapter.class);
+    private static final String TAG = GalleryPagerAdapter.class.getSimpleName();
     
     private final static int MIN_NUM_OF_IMAGES = 3;
     

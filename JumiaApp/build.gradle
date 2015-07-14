@@ -190,7 +190,6 @@ android {
             resConfigs "en"
         }
 
-        /* TODO
         shopPreInstall {
             applicationId "com.shop.android"
             versionName "1.4"
@@ -201,7 +200,6 @@ android {
                 shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
             }
         }
-        */
 
         /**
          * #################### DARAZ ####################
@@ -256,6 +254,7 @@ dependencies {
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
     darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
     darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }

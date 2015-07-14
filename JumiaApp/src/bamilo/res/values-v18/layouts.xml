@@ -76,4 +76,6 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"         type="layout">@layout/_def_my_account_user_data_fragment</item>
 
+    <!-- DYNAMIC -->
+    <item name="form_checkbox_terms"         type="layout">@layout/_def_form_checkbox_terms</item>
 </resources>

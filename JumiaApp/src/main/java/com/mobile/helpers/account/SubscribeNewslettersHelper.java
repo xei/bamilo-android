@@ -1,15 +1,11 @@
 package com.mobile.helpers.account;
 
-import android.os.Bundle;
-
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Helper used to create an address 
@@ -37,27 +33,6 @@ public class SubscribeNewslettersHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.subscribeNewsletter);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-//        SuperCustomerNewsletterSubscription subscriptions = (SuperCustomerNewsletterSubscription) baseResponse.getMetadata().getData();
-//        // Save the newsletter subscriptions
-//        if (JumiaApplication.CUSTOMER != null) {
-//            JumiaApplication.CUSTOMER.setNewsletterSubscriptions(subscriptions);
-//        }
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-
-
-    
 //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)

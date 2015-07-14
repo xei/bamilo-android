@@ -24,21 +24,17 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
     public static final String SKU_TAG = RestConstants.JSON_SKU_TAG;
     public static final String PRICE_TAG = RestConstants.JSON_PRICE_TAG;
     public static final String SPECIAL_PRICE_TAG = RestConstants.JSON_SPECIAL_PRICE_TAG;
-    public static final String PRICE_CONVERTED_TAG = RestConstants.JSON_PRICE_CONVERTED_TAG;
-    public static final String SPECIAL_PRICE_CONVERTED_TAG = RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG;
     public static final String QUANTITY_TAG = RestConstants.JSON_QUANTITY_TAG;
-    public static final String VARIATION_TAG = RestConstants.JSON_VARIATION_TAG;
-    public static final String STOCK_TAG = RestConstants.JSON_STOCK_TAG;
     public static final String MIN_DELIVERY_TIME_TAG = "min_delivery_time";
     public static final String MAX_DELIVERY_TIME_TAG = "max_delivery_time";
 
     private HashMap<String, String> attributes;
 
     /**
-     * Product simple empry constructor.
+     * Empty constructor.
      */
     public ProductSimple() {
-        attributes = new HashMap<String, String>();
+        attributes = new HashMap<>();
     }
 
     /* (non-Javadoc)
@@ -49,7 +45,7 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
         attributes.clear();
         try {
 
-            JSONObject attributesObject = new JSONObject();
+            JSONObject attributesObject;
 
             //NORMAL COMPLETE SIMPLE PRODUCT
             if(jsonObject.optJSONObject(RestConstants.JSON_META_TAG) != null){
@@ -67,8 +63,8 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
                 attributes.put(key, value);
             }
 
-            if(attributes.containsKey("quantity")) {
-                attributes.put("real_quantity", attributes.get("quantity"));
+            if(attributes.containsKey(RestConstants.JSON_QUANTITY_TAG)) {
+                attributes.put(RestConstants.JSON_REAL_QUANTITY_TAG, attributes.get(RestConstants.JSON_QUANTITY_TAG));
             }
 
         } catch (JSONException e) {
@@ -143,7 +139,7 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
 	}
 	
 	private ProductSimple(Parcel in){
-		attributes = new HashMap<String, String>();
+		attributes = new HashMap<>();
 		in.readMap(attributes, String.class.getClassLoader());
 	}
 	

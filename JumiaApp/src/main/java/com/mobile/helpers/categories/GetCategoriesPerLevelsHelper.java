@@ -10,7 +10,6 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Class used to get categories from API:<br>
@@ -44,22 +43,13 @@ public class GetCategoriesPerLevelsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
         Categories categories = (Categories) baseResponse.getMetadata().getData();
-        Bundle bundle = generateSuccessBundle(baseResponse);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-        mRequester.onRequestComplete(bundle);
     }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
-//    /*
+    //    /*
 //     * (non-Javadoc)
 //     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
 //     */

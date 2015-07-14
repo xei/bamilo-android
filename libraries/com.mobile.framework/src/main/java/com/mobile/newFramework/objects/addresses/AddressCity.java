@@ -5,14 +5,13 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddressCity implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = LogTagHelper.create(AddressCity.class);
+	protected static final String TAG = AddressCity.class.getSimpleName();
 
 	private int id;
 	private String value;

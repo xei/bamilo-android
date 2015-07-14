@@ -6,14 +6,13 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddressRegion implements IJSONSerializable, Parcelable {
 
-	public static final String TAG = LogTagHelper.create(AddressRegion.class);
+	public static final String TAG = AddressRegion.class.getSimpleName();
 
 	private int id;
 	private String name;
@@ -132,8 +131,6 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Constructor with parcel
-	 *
-	 * @param in
 	 */
 	private AddressRegion(Parcel in) {
 		id = in.readInt();

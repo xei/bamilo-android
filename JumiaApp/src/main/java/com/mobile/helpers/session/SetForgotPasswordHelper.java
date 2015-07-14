@@ -1,15 +1,11 @@
 package com.mobile.helpers.session;
 
-import android.os.Bundle;
-
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Forgot Password Helper
@@ -35,20 +31,6 @@ public class SetForgotPasswordHelper extends SuperBaseHelper {
 //        new ForgotPassword(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.forgotPassword);
     }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        mRequester.onRequestComplete(generateSuccessBundle(baseResponse));
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = generateErrorBundle(baseResponse);
-        mRequester.onRequestError(bundle);
-    }
-
     
 //    /*
 //     * (non-Javadoc)

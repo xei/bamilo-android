@@ -36,7 +36,6 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.pojo.DynamicForm;
@@ -62,7 +61,7 @@ import java.util.Map;
  */
 public class ReviewWriteFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewWriteFragment.class);
+    private static final String TAG = ReviewWriteFragment.class.getSimpleName();
     
     private static final String SHOWING_FORM = "showingForm";
     
@@ -578,11 +577,9 @@ public class ReviewWriteFragment extends BaseFragment {
             
             //only needed for tracking purpose
             params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
-            
-            TrackerDelegator.trackItemReview(params);
+
+            TrackerDelegator.trackItemReview(params, isShowingRatingForm);
             String buttonMessageText = getResources().getString(R.string.dialog_to_product);
-            
-           
 
             //Validate if fragment is nested
             nestedFragment = getParentFragment() instanceof ReviewsFragment;

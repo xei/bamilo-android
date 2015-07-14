@@ -7,7 +7,6 @@ import android.util.SparseArray;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.LogTagHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,12 +20,12 @@ import java.util.Locale;
 /**
  * 
  * @author sergiopereira
- * @see https://wiki.jira.rocket-internet.de/display/NAFAMZ/Filters
+ * @see "https://wiki.jira.rocket-internet.de/display/NAFAMZ/Filters"
  * 
  */
 public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
-    public static final String TAG = LogTagHelper.create(CatalogFilter.class);
+    public static final String TAG = CatalogFilter.class.getSimpleName();
 
     private ArrayList<CatalogFilterOption> mFilterOptions;
 
@@ -123,14 +122,13 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
     /**
      * Method used to create sections for brands
-     * 
-     * @param objects
+     *
      * @return ArrayList<FilterOption>
      * @author sergiopereira
      */
     private static ArrayList<CatalogFilterOption> createSections(ArrayList<CatalogFilterOption> objects) {
         // Create new list with sections
-        ArrayList<CatalogFilterOption> listSections = new ArrayList<CatalogFilterOption>();
+        ArrayList<CatalogFilterOption> listSections = new ArrayList<>();
         // Init char
         char savedChar = 0;
         // For each option
@@ -143,7 +141,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
                 savedChar = currentChar;
                 CatalogFilterOption optionSection = new CatalogFilterOption();
                 optionSection.setSectionBrand(true);
-                optionSection.setLabel(String.valueOf((char) (currentChar)).toUpperCase(Locale.getDefault()));
+                optionSection.setLabel(String.valueOf(currentChar).toUpperCase(Locale.getDefault()));
                 listSections.add(optionSection);
                 listSections.add(option);
             } else {
@@ -208,13 +206,13 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
      * ########### SETTERS ###########
      */
 
-    public void setFilterOptions(ArrayList<CatalogFilterOption> mFilterOptions) {
-        this.mFilterOptions = mFilterOptions;
-    }
-
-    public void setFilterOption(CatalogFilterOption mFilterOption) {
-        this.mFilterOption = mFilterOption;
-    }
+//    public void setFilterOptions(ArrayList<CatalogFilterOption> mFilterOptions) {
+//        this.mFilterOptions = mFilterOptions;
+//    }
+//
+//    public void setFilterOption(CatalogFilterOption mFilterOption) {
+//        this.mFilterOption = mFilterOption;
+//    }
 
     public void setSelectedOption(SparseArray<CatalogFilterOption> selectedOption) {
         this.mSelectedOption = selectedOption;
@@ -249,9 +247,9 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
         this.mName = mName;
     }
 
-    public void setMulti(boolean mMulti) {
-        this.mMulti = mMulti;
-    }
+//    public void setMulti(boolean mMulti) {
+//        this.mMulti = mMulti;
+//    }
 
     public void setRangeValues(int min, int max) {
         mRangeValues = new int[2];
@@ -331,11 +329,9 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
     /**
      * Constructor with parcel
-     * 
-     * @param in
      */
     private CatalogFilter(Parcel in) {
-        mFilterOptions = new ArrayList<CatalogFilterOption>();
+        mFilterOptions = new ArrayList<>();
 
         mId = in.readString();
         mName = in.readString();
@@ -356,12 +352,11 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
             try {
                 mFilterOption = new CatalogFilterOption(new JSONObject(json));
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
 
-        ArrayList<String> filterOptions = new ArrayList<String>();
+        ArrayList<String> filterOptions = new ArrayList<>();
         in.readStringList(filterOptions);
         mFilterOptions = getFilterOptions(filterOptions);
 
@@ -389,7 +384,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
     };
 
     private ArrayList<String> getJSONList() {
-        ArrayList<String> jsonArrayList = new ArrayList<String>();
+        ArrayList<String> jsonArrayList = new ArrayList<>();
         for (CatalogFilterOption filterOption : mFilterOptions) {
             jsonArrayList.add(filterOption.toJSON().toString());
         }
@@ -398,7 +393,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
     }
 
     private ArrayList<CatalogFilterOption> getFilterOptions(ArrayList<String> json) {
-        ArrayList<CatalogFilterOption> options = new ArrayList<CatalogFilterOption>();
+        ArrayList<CatalogFilterOption> options = new ArrayList<>();
         CatalogFilterOption filterOption;
         JSONObject filterJSON;
         for (String filterOptionJson : json) {
@@ -408,7 +403,6 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
                 filterOption.initialize(filterJSON);
                 options.add(filterOption);
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -420,7 +414,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
      * Load the pre selected options
      */
     private void loadSelectedItems() {
-        mSelectedOption = new SparseArray<CatalogFilterOption>();
+        mSelectedOption = new SparseArray<>();
 
         // Copy all selected items
         for (int i = 0; i < mFilterOptions.size(); i++) {

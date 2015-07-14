@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -20,12 +17,10 @@ import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -41,7 +36,7 @@ import java.util.EnumSet;
  */
 public class CheckoutShippingMethodsFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutShippingMethodsFragment.class);
+    private static final String TAG = CheckoutShippingMethodsFragment.class.getSimpleName();
 
     private static final String SELECTION_STATE = "selection";
 
@@ -218,8 +213,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     
     /**
      * Load the dynamic form
-     * 
-     * @param form
      */
     private void loadForm(ShippingMethodFormBuilder form) {
         Print.i(TAG, "LOAD FORM");
@@ -286,7 +279,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         ContentValues values = mFormResponse.getValues();
         if(values != null && values.size() > 0){
-            // JumiaApplication.INSTANCE.setShippingMethod(values);
             triggerSubmitShippingMethod(values);
         }
     }
@@ -297,7 +289,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
   
     /**
      * Process the success response
-     * @param bundle
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
@@ -327,7 +318,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     /**
      * Process the error response
-     * @param bundle
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
@@ -345,15 +335,15 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         }
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
-            onErrorGetShippingMethods(bundle);
+            onErrorGetShippingMethods();
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            onErrorSetShippingMethods(bundle);
+            onErrorSetShippingMethods();
             break;
         default:
             break;
@@ -383,12 +373,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    public void onErrorGetShippingMethods(Bundle bundle){
+    public void onErrorGetShippingMethods(){
         Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
     }
 
-    public void onErrorSetShippingMethods(Bundle bundle){
+    public void onErrorSetShippingMethods(){
         Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
 
@@ -400,7 +390,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     
     /**
      * Trigger to set the shipping method
-     * @param values
      * @author sergiopereira
      */
     private void triggerSubmitShippingMethod(ContentValues values) {

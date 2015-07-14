@@ -51,9 +51,9 @@ import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.database.RelatedItemsTableHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.LastViewed;
 import com.mobile.newFramework.objects.product.ProductBundle;
@@ -1151,6 +1151,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         LastViewedTableHelper.insertLastViewedProduct(product);
+        BrandsTableHelper.updateBrandCounter(product.getBrand());
+
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
 
@@ -1307,26 +1309,26 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Method used to get the related products
      *
      */
-    @Deprecated
-    private void setRelatedItems(String sku) {
+//    @Deprecated
+//    private void setRelatedItems(String sku) {
         // Validate if is to show
-        if (!mShowRelatedItems) return;
+//        if (!mShowRelatedItems) return;
         // Show related items
-        Print.d(TAG, "ON GET RELATED ITEMS FOR: " + sku);
-        ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
-        if (relatedItemsList != null && relatedItemsList.size() > 1) {
-            for (int i = 0; i < relatedItemsList.size(); i++) {
-                String itemSku = relatedItemsList.get(i).getSku();
-                if (!TextUtils.isEmpty(itemSku) && itemSku.equalsIgnoreCase(sku)) {
-                    relatedItemsList.remove(i);
-                    break;
-                }
-            }
-            showRelatedItemsLayout(relatedItemsList);
-        } else {
-            Print.w(TAG, "ONLY OWN PRODUCT ON RELATED ITEMS FOR: " + sku);
-        }
-    }
+//        Print.d(TAG, "ON GET RELATED ITEMS FOR: " + sku);
+//        ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
+//        if (relatedItemsList != null && relatedItemsList.size() > 1) {
+//            for (int i = 0; i < relatedItemsList.size(); i++) {
+//                String itemSku = relatedItemsList.get(i).getSku();
+//                if (!TextUtils.isEmpty(itemSku) && itemSku.equalsIgnoreCase(sku)) {
+//                    relatedItemsList.remove(i);
+//                    break;
+//                }
+//            }
+//            showRelatedItemsLayout(relatedItemsList);
+//        } else {
+//            Print.w(TAG, "ONLY OWN PRODUCT ON RELATED ITEMS FOR: " + sku);
+//        }
+//    }
 
     /**
      * Method used to create the view

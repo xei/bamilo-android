@@ -49,7 +49,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.Toast;
@@ -69,7 +68,7 @@ import java.util.ArrayList;
  */
 public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback {
 
-    public static final String TAG = LogTagHelper.create(CampaignPageFragment.class);
+    public static final String TAG = CampaignPageFragment.class.getSimpleName();
     
     private final static String COUNTER_START_TIME = "start_time";
 
@@ -165,10 +164,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if(savedInstanceState.containsKey(BANNER_STATE)) 
                 bannerState = (BannerVisibility)savedInstanceState.getSerializable(BANNER_STATE);
         }
-        
         // Tracking
-        TrackerDelegator.trackCampaignView(mTeaserCampaign != null ? mTeaserCampaign.getTargetTitle() : "n.a.");
-        
+        TrackerDelegator.trackCampaignView(mTeaserCampaign);
     }
     
     /*

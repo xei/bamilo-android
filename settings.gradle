@@ -1,1 +1,1 @@
-include ':JumiaApp',':libraries:com.mobile.framework',':libraries:com.viewpagerindicator', ':JumiaWear'
+include ':JumiaApp',':libraries:com.mobile.framework', ':JumiaWear'

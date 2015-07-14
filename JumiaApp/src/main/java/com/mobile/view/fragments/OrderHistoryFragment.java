@@ -6,6 +6,8 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -53,16 +54,14 @@ import java.util.List;
  */
 public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
-    private static final String TAG = LogTagHelper.create(OrderHistoryFragment.class);
-
-    private static OrderHistoryFragment mOrderHistoryFragment;
+    private static final String TAG = OrderHistoryFragment.class.getSimpleName();
 
     private ArrayList<Order> ordersList = new ArrayList<>();
     
     private ListView ordersListView;
-        
-    private TextView ordersProductsPayment;
-    
+
+    private TextView orderListPaymentTitle;
+
     private TextView ordersProductDate;
     
     private TextView noOrders;
@@ -97,8 +96,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * @return
      */
     public static OrderHistoryFragment getInstance() {
-        mOrderHistoryFragment = new OrderHistoryFragment();
-        return mOrderHistoryFragment;
+        return new OrderHistoryFragment();
     }
 
     /**
@@ -160,8 +158,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         ordersListView.setOnScrollListener(onScrollListener);
         noOrders = (TextView) view.findViewById(R.id.no_orders_title);
         loadMore = (LinearLayout) view.findViewById(R.id.catalog_loading_more);
+
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
-            ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
+            orderListPaymentTitle = (TextView) view.findViewById(R.id.order_list_payment_title);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
             productsContainer = (RelativeLayout) view.findViewById(R.id.order_products_container);
             productsLandscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
@@ -553,7 +552,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if (productsLandscapeContainer.getChildCount() > 0) {
                 productsLandscapeContainer.removeAllViews();
             }
-            ordersProductsPayment.setText(order.getmPayment());
+
+            String paymentMethod = TextUtils.htmlEncode(order.getmPayment());
+            String paymentMethodLabel = String.format(getString(R.string.payment_method), paymentMethod);
+            orderListPaymentTitle.setText(Html.fromHtml(paymentMethodLabel));
             ordersProductDate.setText(order.getmDate());
         }
 
@@ -616,8 +618,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * listview listener in order to load more products when last item is visible
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
-
-
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {

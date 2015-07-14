@@ -2,7 +2,6 @@ package com.mobile.newFramework.objects.product;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -24,11 +23,11 @@ import java.util.Iterator;
  */
 public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
-    private String idCatalogConfig;
-    private String attributeSetId;
-    private String activatedAt;
+//    private String idCatalogConfig;
+//    private String attributeSetId;
+//    private String activatedAt;
     private String description;
-    private String ratingsUrl;
+//    private String ratingsUrl;
     private double specialPriceDouble;
     private Double maxSavingPercentage;
     private Double ratingsAverage;
@@ -111,9 +110,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
             sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
             brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-            idCatalogConfig = jsonObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
-            attributeSetId = jsonObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
-            activatedAt = jsonObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
+//            idCatalogConfig = jsonObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
+//            attributeSetId = jsonObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
+//            activatedAt = jsonObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
 
             url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
             mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
@@ -321,23 +320,23 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     /**
      */
-    public String getIdCatalogConfig() {
-        return idCatalogConfig;
-    }
+//    public String getIdCatalogConfig() {
+//        return idCatalogConfig;
+//    }
 
     /**
      * @return the attributeSetId
      */
-    public String getAttributeSetId() {
-        return attributeSetId;
-    }
+//    public String getAttributeSetId() {
+//        return attributeSetId;
+//    }
 
     /**
      * @return the activatedAt
      */
-    public String getActivatedAt() {
-        return activatedAt;
-    }
+//    public String getActivatedAt() {
+//        return activatedAt;
+//    }
 
     /**
      * @return the special price as a Double
@@ -364,9 +363,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
      * @return the shipmentData
      */
     @Deprecated
-    public HashMap<String, String> getShipmentData() {
-        return shipmentData;
-    }
+//    public HashMap<String, String> getShipmentData() {
+//        return shipmentData;
+//    }
 
     /**
      * @return the simples
@@ -384,9 +383,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     /**
      * Get Better quality image.
-     *
-     * @param url
-     * @return
      */
     private String getImageUrl(String url) {
         // String modUrl = ImageResolutionHelper.replaceResolution(url);
@@ -402,34 +398,34 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return description;
     }
 
-    /**
-     * @return the ratings_Url
-     */
-    @Deprecated
-    public String getRatingsUrl() {
-        return ratingsUrl;
-    }
+//    /**
+//     * @return the ratings_Url
+//     */
+//    @Deprecated
+//    public String getRatingsUrl() {
+//        return ratingsUrl;
+//    }
 
-    /**
-     * @param idCatalogConfig the idCatalogConfig to set
-     */
-    public void setIdCatalogConfig(String idCatalogConfig) {
-        this.idCatalogConfig = idCatalogConfig;
-    }
+//    /**
+//     * @param idCatalogConfig the idCatalogConfig to set
+//     */
+//    public void setIdCatalogConfig(String idCatalogConfig) {
+//        this.idCatalogConfig = idCatalogConfig;
+//    }
 
-    /**
-     * @param attributeSetId the attributeSetId to set
-     */
-    public void setAttributeSetId(String attributeSetId) {
-        this.attributeSetId = attributeSetId;
-    }
+//    /**
+//     * @param attributeSetId the attributeSetId to set
+//     */
+//    public void setAttributeSetId(String attributeSetId) {
+//        this.attributeSetId = attributeSetId;
+//    }
 
-    /**
-     * @param activatedAt the activatedAt to set
-     */
-    public void setActivatedAt(String activatedAt) {
-        this.activatedAt = activatedAt;
-    }
+//    /**
+//     * @param activatedAt the activatedAt to set
+//     */
+//    public void setActivatedAt(String activatedAt) {
+//        this.activatedAt = activatedAt;
+//    }
 
     /**
      * @param description the description to set
@@ -452,19 +448,19 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         this.attributes = attributes;
     }
 
-    /**
-     * @param shipmentData the shipmentData to set
-     */
-    public void setShipmentData(HashMap<String, String> shipmentData) {
-        this.shipmentData = shipmentData;
-    }
+//    /**
+//     * @param shipmentData the shipmentData to set
+//     */
+//    public void setShipmentData(HashMap<String, String> shipmentData) {
+//        this.shipmentData = shipmentData;
+//    }
 
-    /**
-     * @param simples the simples to set
-     */
-    public void setSimples(ArrayList<ProductSimple> simples) {
-        this.simples = simples;
-    }
+//    /**
+//     * @param simples the simples to set
+//     */
+//    public void setSimples(ArrayList<ProductSimple> simples) {
+//        this.simples = simples;
+//    }
 
     /**
      * @param imageList the imageList to set
@@ -549,14 +545,14 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return mSizeGuideUrl;
     }
 
-    /**
-     * Set size guide
-     *
-     * @return
-     */
-    public boolean hasSizeGuide() {
-        return TextUtils.isEmpty(mSizeGuideUrl);
-    }
+//    /**
+//     * Set size guide
+//     *
+//     * @return
+//     */
+//    public boolean hasSizeGuide() {
+//        return TextUtils.isEmpty(mSizeGuideUrl);
+//    }
 
     public ProductBundle getProductBundle() {
         return productBundle;
@@ -570,25 +566,25 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return hasSeller;
     }
 
-    public void setHasSeller(boolean hasSeller) {
-        this.hasSeller = hasSeller;
-    }
+//    public void setHasSeller(boolean hasSeller) {
+//        this.hasSeller = hasSeller;
+//    }
 
     public boolean hasBundle() {
         return hasBundle;
     }
 
-    public void setHasBundle(boolean hasBundle) {
-        this.hasBundle = hasBundle;
-    }
+//    public void setHasBundle(boolean hasBundle) {
+//        this.hasBundle = hasBundle;
+//    }
 
     public Integer getReviewsCount() {
         return reviewsCount;
     }
 
-    public void setReviewsCount(Integer reviewsCount) {
-        this.reviewsCount = reviewsCount;
-    }
+//    public void setReviewsCount(Integer reviewsCount) {
+//        this.reviewsCount = reviewsCount;
+//    }
 
     public Seller getSeller() {
         return seller;
@@ -598,45 +594,45 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         this.seller = seller;
     }
 
-    public double getMinPriceOfferDouble() {
-        return minPriceOfferDouble;
-    }
+//    public double getMinPriceOfferDouble() {
+//        return minPriceOfferDouble;
+//    }
 
-    public void setMinPriceOfferDouble(double minPriceOffer) {
-        this.minPriceOfferDouble = minPriceOfferDouble;
-    }
+//    public void setMinPriceOfferDouble(double minPriceOffer) {
+//        this.minPriceOfferDouble = minPriceOfferDouble;
+//    }
 
     public String getMinPriceOffer() {
         return minPriceOffer;
     }
 
-    public void setMinPriceOffer(String minPriceOffer) {
-        this.minPriceOffer = minPriceOffer;
-    }
+//    public void setMinPriceOffer(String minPriceOffer) {
+//        this.minPriceOffer = minPriceOffer;
+//    }
 
-    public double getMinPriceOfferConverted() {
-        return minPriceOfferConverted;
-    }
+//    public double getMinPriceOfferConverted() {
+//        return minPriceOfferConverted;
+//    }
 
-    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
-        this.minPriceOfferConverted = minPriceOfferConverted;
-    }
+//    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
+//        this.minPriceOfferConverted = minPriceOfferConverted;
+//    }
 
     public int getTotalOffers() {
         return totalOffers;
     }
 
-    public void setTotalOffers(int totalOffers) {
-        this.totalOffers = totalOffers;
-    }
+//    public void setTotalOffers(int totalOffers) {
+//        this.totalOffers = totalOffers;
+//    }
 
     public ArrayList<ProductDetailsSpecification> getProductSpecifications() {
         return mProductSpecs;
     }
 
-    public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
-        this.mProductSpecs = specs;
-    }
+//    public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
+//        this.mProductSpecs = specs;
+//    }
 
     public ArrayList<RelatedProduct> getRelatedProducts() {
         return relatedProducts;

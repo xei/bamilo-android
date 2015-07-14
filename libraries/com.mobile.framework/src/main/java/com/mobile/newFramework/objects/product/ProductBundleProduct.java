@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  */
 public class ProductBundleProduct extends BaseProduct implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = LogTagHelper.create(ProductBundleProduct.class);
+    public static final String TAG = ProductBundleProduct.class.getSimpleName();
 
     private String bundleProductMaxPrice;
     private double bundleProductMaxPriceDouble;
@@ -168,73 +167,73 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
         return bundleProductMaxPrice;
     }
 
-    public void setBundleProductMaxPrice(String bundleProductMaxPrice) {
-        this.bundleProductMaxPrice = bundleProductMaxPrice;
-    }
+//    public void setBundleProductMaxPrice(String bundleProductMaxPrice) {
+//        this.bundleProductMaxPrice = bundleProductMaxPrice;
+//    }
 
     public double getBundleProductMaxPriceDouble() {
         return bundleProductMaxPriceDouble;
     }
 
-    public void setBundleProductMaxPriceDouble(double bundleProductMaxPriceDouble) {
-        this.bundleProductMaxPriceDouble = bundleProductMaxPriceDouble;
-    }
-
-    public double getBundleProductMaxPriceConverted() {
-        return bundleProductMaxPriceConverted;
-    }
-
-    public void setBundleProductMaxPriceConverted(double bundleProductMaxPriceConverted) {
-        this.bundleProductMaxPriceConverted = bundleProductMaxPriceConverted;
-    }
+//    public void setBundleProductMaxPriceDouble(double bundleProductMaxPriceDouble) {
+//        this.bundleProductMaxPriceDouble = bundleProductMaxPriceDouble;
+//    }
+//
+//    public double getBundleProductMaxPriceConverted() {
+//        return bundleProductMaxPriceConverted;
+//    }
+//
+//    public void setBundleProductMaxPriceConverted(double bundleProductMaxPriceConverted) {
+//        this.bundleProductMaxPriceConverted = bundleProductMaxPriceConverted;
+//    }
 
     public String getBundleProductImage() {
         return bundleProductImage;
     }
 
-    public void setBundleProductImage(String bundleProductImage) {
-        this.bundleProductImage = bundleProductImage;
-    }
+//    public void setBundleProductImage(String bundleProductImage) {
+//        this.bundleProductImage = bundleProductImage;
+//    }
 
     public int getBundleProductLeaderPos() {
         return bundleProductLeaderPos;
     }
 
-    public void setBundleProductLeaderPos(int bundleProductLeaderPos) {
-        this.bundleProductLeaderPos = bundleProductLeaderPos;
-    }
+//    public void setBundleProductLeaderPos(int bundleProductLeaderPos) {
+//        this.bundleProductLeaderPos = bundleProductLeaderPos;
+//    }
 
     public String getBundleProductMaxSpecialPrice() {
         return bundleProductMaxSpecialPrice;
     }
 
-    public void setBundleProductMaxSpecialPrice(String bundleProductMaxSpecialPrice) {
-        this.bundleProductMaxSpecialPrice = bundleProductMaxSpecialPrice;
-    }
+//    public void setBundleProductMaxSpecialPrice(String bundleProductMaxSpecialPrice) {
+//        this.bundleProductMaxSpecialPrice = bundleProductMaxSpecialPrice;
+//    }
 
     public double getBundleProductMaxSpecialPriceDouble() {
         return bundleProductMaxSpecialPriceDouble;
     }
 
-    public void setBundleProductMaxSpecialPriceDouble(double bundleProductMaxSpecialPriceDouble) {
-        this.bundleProductMaxSpecialPriceDouble = bundleProductMaxSpecialPriceDouble;
-    }
+//    public void setBundleProductMaxSpecialPriceDouble(double bundleProductMaxSpecialPriceDouble) {
+//        this.bundleProductMaxSpecialPriceDouble = bundleProductMaxSpecialPriceDouble;
+//    }
 
-    public double getBundleProductMaxSpecialPriceConverted() {
-        return bundleProductMaxSpecialPriceConverted;
-    }
-
-    public void setBundleProductMaxSpecialPriceConverted(double bundleProductMaxSpecialPriceConverted) {
-        this.bundleProductMaxSpecialPriceConverted = bundleProductMaxSpecialPriceConverted;
-    }
-
-    public String getBundleProductSavingPercentage() {
-        return bundleProductSavingPercentage;
-    }
-
-    public void setBundleProductSavingPercentage(String bundleProductSavingPercentage) {
-        this.bundleProductSavingPercentage = bundleProductSavingPercentage;
-    }
+//    public double getBundleProductMaxSpecialPriceConverted() {
+//        return bundleProductMaxSpecialPriceConverted;
+//    }
+//
+//    public void setBundleProductMaxSpecialPriceConverted(double bundleProductMaxSpecialPriceConverted) {
+//        this.bundleProductMaxSpecialPriceConverted = bundleProductMaxSpecialPriceConverted;
+//    }
+//
+//    public String getBundleProductSavingPercentage() {
+//        return bundleProductSavingPercentage;
+//    }
+//
+//    public void setBundleProductSavingPercentage(String bundleProductSavingPercentage) {
+//        this.bundleProductSavingPercentage = bundleProductSavingPercentage;
+//    }
 
     public boolean hasDiscount() {
         return specialPriceDouble != 0.0 && specialPriceDouble != (priceDouble);
@@ -255,9 +254,9 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
         return bundleSimples;
     }
 
-    public void setBundleSimples(ArrayList<ProductBundleSimple> bundleSimples) {
-        this.bundleSimples = bundleSimples;
-    }
+//    public void setBundleSimples(ArrayList<ProductBundleSimple> bundleSimples) {
+//        this.bundleSimples = bundleSimples;
+//    }
 
     public boolean isChecked() {
         return isChecked;
