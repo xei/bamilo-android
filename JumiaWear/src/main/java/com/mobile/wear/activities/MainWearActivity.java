@@ -66,7 +66,6 @@ public class MainWearActivity extends BaseActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
-//        JumiaDataReceiverService.performSearch("green");
     }
 
 
