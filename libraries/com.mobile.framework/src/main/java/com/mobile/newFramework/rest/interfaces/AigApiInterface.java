@@ -316,8 +316,9 @@ public interface AigApiInterface {
 
     String addVoucher = "addVoucher";
 
-    @GET("/")
-    void removeVoucher(Callback<BaseResponse<ShoppingCart>> callback);
+    @FormUrlEncoded
+    @POST("/")
+    void removeVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     String removeVoucher = "removeVoucher";
 
