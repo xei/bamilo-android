@@ -6,6 +6,8 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +59,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     private ArrayList<Order> ordersList = new ArrayList<>();
     
     private ListView ordersListView;
-        
-    private TextView ordersProductsPayment;
-    
+
+    private TextView orderListPaymentTitle;
+
     private TextView ordersProductDate;
     
     private TextView noOrders;
@@ -156,8 +158,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         ordersListView.setOnScrollListener(onScrollListener);
         noOrders = (TextView) view.findViewById(R.id.no_orders_title);
         loadMore = (LinearLayout) view.findViewById(R.id.catalog_loading_more);
+
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
-            ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
+            orderListPaymentTitle = (TextView) view.findViewById(R.id.order_list_payment_title);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
             productsContainer = (RelativeLayout) view.findViewById(R.id.order_products_container);
             productsLandscapeContainer = (LinearLayout) view.findViewById(R.id.orders_products_landscape_list);
@@ -549,7 +552,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if (productsLandscapeContainer.getChildCount() > 0) {
                 productsLandscapeContainer.removeAllViews();
             }
-            ordersProductsPayment.setText(order.getmPayment());
+
+            String paymentMethod = TextUtils.htmlEncode(order.getmPayment());
+            String paymentMethodLabel = String.format(getString(R.string.payment_method), paymentMethod);
+            orderListPaymentTitle.setText(Html.fromHtml(paymentMethodLabel));
             ordersProductDate.setText(order.getmDate());
         }
 

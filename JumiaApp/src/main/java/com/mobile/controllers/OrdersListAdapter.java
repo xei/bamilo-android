@@ -2,6 +2,8 @@ package com.mobile.controllers;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -129,7 +131,7 @@ public class OrdersListAdapter extends BaseAdapter {
             item.orderTotalPrice = (TextView) itemView.findViewById(R.id.order_price);
             item.orderNumber = (TextView) itemView.findViewById(R.id.order_number);
             item.productDate = (TextView) itemView.findViewById(R.id.order_list_date);
-            item.productPaymentMethod = (TextView) itemView.findViewById(R.id.order_list_payment);
+            item.productPaymentMethod = (TextView) itemView.findViewById(R.id.order_list_payment_title);
             item.orderCheck = (ImageView) itemView.findViewById(R.id.order_check);
             item.orderArrow = (ImageView) itemView.findViewById(R.id.order_arrow);
             item.orderLine = itemView.findViewById(R.id.order_bottom_line);
@@ -137,7 +139,6 @@ public class OrdersListAdapter extends BaseAdapter {
             itemView.setTag(item);
 
         } else {
-
             item = (Item) itemView.getTag();
         }
 
@@ -154,7 +155,10 @@ public class OrdersListAdapter extends BaseAdapter {
         
         // Case portrait view
         if (item.productsCont != null) {
-            item.productPaymentMethod.setText(order.getmPayment());
+            String paymentMethod = TextUtils.htmlEncode(order.getmPayment());
+            String paymentMethodLabel = String.format(context.getString(R.string.payment_method), paymentMethod);
+            item.productPaymentMethod.setText(Html.fromHtml(paymentMethodLabel));
+//            item.productPaymentMethod.setText(order.getmPayment());
             item.productDate.setText(order.getmDate());
 
             if(selectedPosition != -1 && position == selectedPosition){
