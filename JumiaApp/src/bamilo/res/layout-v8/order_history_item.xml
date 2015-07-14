@@ -82,7 +82,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <View
             android:layout_width="match_parent"
@@ -122,36 +122,18 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/order_list_payment_cont"
-            android:layout_width="match_parent"
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_list_payment_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:text="@string/payment_method"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_s"
             android:layout_marginRight="8dp"
             android:layout_marginTop="20dp"
-            android:gravity="right|center_vertical"
-            android:orientation="horizontal" >
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/order_list_payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:fontFamily="roboto_regular"
-                android:gravity="right|center_vertical"
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/order_list_payment_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="roboto_bold"
-                android:gravity="right|center_vertical"
-                android:text="@string/payment_method"
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_gravity="right"
+            android:gravity="center_vertical"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_list_products_title"
