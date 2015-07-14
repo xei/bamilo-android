@@ -193,7 +193,7 @@
     <string name="password_changed">Le mot de passe a été modifié avec succès</string>
     <string name="password_new_mincharacters">Le nouveau mot de passe doit comprendre au moins 6 caractères</string>
     <string name="payment">Paiement</string>
-    <string name="payment_method">Méthode de Paiement</string>
+    <string name="payment_method">&lt;b>Méthode de Paiement: &lt;/b> %s</string>
     <string name="personal_data_label">Vos données personnelles</string>
     <string name="personal_data_title">Les données du compte</string>
     <string name="pickup_station_address">Address:</string>
