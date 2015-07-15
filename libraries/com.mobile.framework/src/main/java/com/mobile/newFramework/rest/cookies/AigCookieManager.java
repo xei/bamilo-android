@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.security.Base64;
 
 import java.io.ByteArrayInputStream;
@@ -19,10 +20,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * Class used to manage cookies.
+ *
  * @author sergiopereira
  */
 public class AigCookieManager extends CookieManager implements ISessionCookie {
@@ -54,35 +54,24 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         return COOKIE_PREFIX_TAG + AigRestContract.getShopDomain();
     }
 
+    /*
+     * #### STORE COOKIE INTO PREFERENCES  ####
+     */
+
     /**
-     * Override to save session cookie.
+     * Override to save session cookie.<br>
+     * Method used to validate cookies and save the session cookie into shared preferences
      */
     @Override
     public void put(URI uri, Map<String, List<String>> responseHeaders) throws IOException {
         super.put(uri, responseHeaders);
-        // Validate cookies and save the session cookie
-        saveSessionCookie();
-    }
-
-    /**
-     * Save the session cookie into shared preferences.
-     * @author spereira
-     */
-    public synchronized void saveSessionCookie() {
         // Get shop domain
         String shop = AigRestContract.getShopDomain();
-        // Get cookies not expired
+        // Get cookies
         List<HttpCookie> cookies = getCookieStore().getCookies();
+        // Validate cookies
         for (HttpCookie cookie : cookies) {
-//            Log.i(TAG, "TRY STORED COOKIE: " +
-//                    cookie.getDomain() + " " +
-//                    cookie.getName() + " " +
-//                    cookie.getValue() + " " +
-//                    cookie.hasExpired() + " " +
-//                    cookie.getPath()+ " " +
-//                    cookie.getMaxAge());
-
-            if(!cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
+            if (!cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
                 store(cookie);
                 return;
             }
@@ -93,6 +82,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      * Persist the session cookie.
      */
     private void store(HttpCookie cookie) {
+        //Print.i(TAG, "IS A CANDIDATE COOKIE TO STORE...");
         // Validate the cookie and the current
         if (mCurrentCookie == null || !mCurrentCookie.getValue().equals(cookie.getValue())) {
             mCurrentCookie = cookie;
@@ -100,16 +90,19 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
             String str = encodeCookie(new AigPersistentHttpCookie(cookie));
             prefsWriter.putString(getCookieKey(), str);
             prefsWriter.apply();
-            Log.i(TAG, "STORED COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
+            Print.i(TAG, "STORED COOKIE INTO COOKIE PREFS: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
         }
     }
+
+    /*
+     * #### LOAD COOKIE FROM PREFERENCES  ####
+     */
 
     /**
      * Load the session cookie from shared preferences.
      */
     private void loadSessionCookie(Context context) {
-        // Get shop domain
-        String shop = AigRestContract.getShopDomain();
+        Print.i(TAG, "LOADED COOKIE FROM COOKIE PERFS");
         // Get preferences
         mCookiePrefs = context.getSharedPreferences(PERSISTENT_COOKIES_FILE, Context.MODE_PRIVATE);
         // Get stored encoded cookie
@@ -117,21 +110,39 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         // Decode
         HttpCookie cookie = decodeCookie(encodedCookie);
         // Save
-        if (cookie != null && !cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
-            Log.i(TAG, "LOADED COOKIE FROM PERFS: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
-            getCookieStore().add(URI.create(cookie.getDomain()), cookie);
-            mCurrentCookie = cookie;
-        } else if(cookie != null && !cookie.hasExpired()){
-            Log.i(TAG, "LOADED COOKIE FROM PERFS: EXPIRED COOKIE" + cookie.getDomain() + " " + cookie.getName());
-        } else if(cookie != null && !cookie.getDomain().contains(shop) ){
-            Log.i(TAG, "LOADED COOKIE FROM PERFS: NO MATCH " + shop + " != " + cookie.getDomain());
-        } else {
-            Log.i(TAG, "LOADED COOKIE FROM PERFS: IS EMPTY");
-        }
+        addSessionCookie(cookie);
     }
 
     /**
+     * Method used to add a stored cookie
+     * @param cookie  - The stored cookie, from CookiePrefs or SessionPrefs
+     */
+    private boolean addSessionCookie(HttpCookie cookie) {
+        // Get shop domain
+        String shop = AigRestContract.getShopDomain();
+        // Save
+        if (cookie != null && !cookie.hasExpired() && cookie.getDomain().contains(shop) && cookie.getName().contains(PHP_SESSION_ID_TAG)) {
+            Print.i(TAG, "SET COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
+            getCookieStore().add(URI.create(AigRestContract.getShopUri()), cookie);
+            mCurrentCookie = cookie;
+            return true;
+        } else if (cookie != null && !cookie.hasExpired()) {
+            Print.w(TAG, "SET COOKIE: COOKIE EXPIRED " + cookie.getDomain() + " " + cookie.getName());
+        } else if (cookie != null && !cookie.getDomain().contains(shop)) {
+            Print.w(TAG, "SET COOKIE: COOKIE DOMAIN NO MATCH " + shop + " != " + cookie.getDomain());
+        } else {
+            Print.w(TAG, "SET COOKIE: COOKIE IS EMPTY");
+        }
+        return false;
+    }
+
+    /*
+     * ####### ENCODE/DECODE METHODS #######
+     */
+
+    /**
      * Encode a serialize cookie using Base64 into a String.
+     *
      * @return String or null
      */
     private String encodeCookie(AigPersistentHttpCookie cookie) {
@@ -143,7 +154,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);
             outputStream.writeObject(cookie);
         } catch (IOException e) {
-            Log.w(TAG, "WARNING: EXCEPTION IN ENCODE COOKIE", e);
+            Print.w(TAG, "WARNING: EXCEPTION IN ENCODE COOKIE", e);
             return null;
         }
         return Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
@@ -151,19 +162,20 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
 
     /**
      * Create a cookie from cookie string Base64.
+     *
      * @return Cookie or null
      * @author spereira
      */
     private HttpCookie decodeCookie(String encodedCookieString) {
         HttpCookie cookie = null;
-        if(!TextUtils.isEmpty(encodedCookieString)) {
+        if (!TextUtils.isEmpty(encodedCookieString)) {
             byte[] bytes = Base64.decode(encodedCookieString, Base64.DEFAULT);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                 cookie = ((AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
             } catch (IOException | ClassNotFoundException e) {
-                Log.w(TAG, "WARNING: EXCEPTION IN DECODE COOKIE", e);
+                Print.w(TAG, "WARNING: EXCEPTION IN DECODE COOKIE", e);
             }
         }
         return cookie;
@@ -190,6 +202,20 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         mCurrentCookie = null;
     }
 
+//    /**
+//     * Method used to print a cookie
+//     */
+//    private void print(HttpCookie cookie) {
+//        Print.i(TAG, "PRINT COOKIE: " +
+//                cookie.getDomain() + " " +
+//                cookie.getName() + " " +
+//                cookie.getValue() + " " +
+//                cookie.hasExpired() + " " +
+//                cookie.getPath() + " " +
+//                cookie.getDiscard() + " " +
+//                cookie.getMaxAge());
+//    }
+
     /*
      * ####### ICookieManager #######
      */
@@ -199,17 +225,16 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      */
     @Override
     public void addEncodedSessionCookie(String encodedCookie) throws NullPointerException, URISyntaxException {
+        Print.i(TAG, "LOADED COOKIE FROM SESSION PREFS");
         HttpCookie cookie = decodeCookie(encodedCookie);
-        if (cookie != null && !cookie.hasExpired()) {
-            getCookieStore().add(new URI(cookie.getDomain()), cookie);
-            Log.i(TAG, "STORED SESSION FROM PERSISTENT COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
-        } else {
+        if (!addSessionCookie(cookie)) {
             throw new NullPointerException("INVALID STORED SESSION FROM PERSISTENT COOKIE");
         }
     }
 
     /**
      * Get the current session cookie
+     *
      * @return Encoded session cookie or null
      */
     @Override
