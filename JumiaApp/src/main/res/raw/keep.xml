@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/ic_stat_notifications,@layout/com_ad4screen_sdk_template_banner_fullscreen">
+    tools:keep="@drawable/ic_stat_notifications,
+    @layout/com_ad4screen_sdk_template_banner_fullscreen,
+    @layout/com_ad4screen_sdk_template_banner_transparent,
+    @layout/com_ad4screen_sdk_template_banner_fullscreen_transparent,
+    @layout/com_ad4screen_sdk_template_banner,
+    @layout/com_ad4screen_sdk_template_text,
+    @layout/com_ad4screen_sdk_template_text_fullscreen">
     <!-- because the build system was not detecting the drawable as being used by the app,
  because its only used by the Ad4push SDK, the shrinkResources task was removing this at build time,
  causing the app to crash when it received a notification.
