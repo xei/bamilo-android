@@ -7,10 +7,10 @@ public class AigConfigurations {
      */
     public static final int CACHE_MAX_SIZE = 10 * 1024 * 1024; // 10 Megabytes of cache
 
-    /**
-     * Retry same request allowed - if value is set to 0 then the system does not provide the usage of the retry handler
-     */
-    public static final int RETRY = 3;
+//    /**
+//     * Retry same request allowed - if value is set to 0 then the system does not provide the usage of the retry handler
+//     */
+//    public static final int RETRY = 3;
 
     /**
      * ---- API Auth ---- These fields are not final because they are obfuscated by dexguard and being final decreases the access performance

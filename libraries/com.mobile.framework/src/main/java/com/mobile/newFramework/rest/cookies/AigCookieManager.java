@@ -117,7 +117,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      * Method used to add a stored cookie
      * @param cookie  - The stored cookie, from CookiePrefs or SessionPrefs
      */
-    private void addSessionCookie(HttpCookie cookie) {
+    private boolean addSessionCookie(HttpCookie cookie) {
         // Get shop domain
         String shop = AigRestContract.getShopDomain();
         // Save
@@ -125,6 +125,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
             Print.i(TAG, "SET COOKIE: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
             getCookieStore().add(URI.create(AigRestContract.getShopUri()), cookie);
             mCurrentCookie = cookie;
+            return true;
         } else if (cookie != null && !cookie.hasExpired()) {
             Print.w(TAG, "SET COOKIE: COOKIE EXPIRED " + cookie.getDomain() + " " + cookie.getName());
         } else if (cookie != null && !cookie.getDomain().contains(shop)) {
@@ -132,6 +133,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         } else {
             Print.w(TAG, "SET COOKIE: COOKIE IS EMPTY");
         }
+        return false;
     }
 
     /*
@@ -225,9 +227,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
     public void addEncodedSessionCookie(String encodedCookie) throws NullPointerException, URISyntaxException {
         Print.i(TAG, "LOADED COOKIE FROM SESSION PREFS");
         HttpCookie cookie = decodeCookie(encodedCookie);
-        if (cookie != null && !cookie.hasExpired()) {
-            addSessionCookie(cookie);
-        } else {
+        if (!addSessionCookie(cookie)) {
             throw new NullPointerException("INVALID STORED SESSION FROM PERSISTENT COOKIE");
         }
     }

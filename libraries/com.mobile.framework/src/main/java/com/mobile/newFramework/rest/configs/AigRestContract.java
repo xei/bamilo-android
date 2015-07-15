@@ -46,68 +46,66 @@ public class AigRestContract {
     }
 
     public static void init(Context context, String selectedId) {
-        Print.i(TAG, "code1configs initializing RestContract : " + selectedId);
+        Print.i(TAG, "Initializing RestContract : " + selectedId);
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-
-        REQUEST_HOST = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
-        Print.i(TAG, "code1configs REQUEST_HOST : " + REQUEST_HOST);
-        if (TextUtils.isEmpty(REQUEST_HOST)) {
-            throw new RuntimeException("The rest host has to be set and not beeing empty!");
-        }
-
-        USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
-        //
-        USE_ONLY_HTTP = context.getResources().getBoolean(R.bool.is_force_http);
-
-        REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
-        if (TextUtils.isEmpty(REST_BASE_PATH)) {
-            throw new RuntimeException("The rest base path has to be set and not beeing empty!");
-        }
-        Print.d(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
-
+        setRestHost(sharedPrefs);
+        setRestScheme(context, sharedPrefs);
+        setRestBasePath(context, R.string.global_server_api_version);
         setShopAuthentication(context);
-
         setCookieShopConfigs();
+        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
-        Print.i(TAG, "initializing RestContract");
-
-        REQUEST_HOST = context.getResources().getString(R.string.global_server_host);
-        if (TextUtils.isEmpty(REQUEST_HOST)) {
-            throw new RuntimeException("The rest host has to be set and not beeing empty!");
-        }
-
-        REST_BASE_PATH = context.getResources().getString(R.string.global_server_restbase_path);
-        if (TextUtils.isEmpty(REST_BASE_PATH)) {
-            throw new RuntimeException("The rest base path has to be set and not beeing empty!");
-        }
-        Print.d(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
-
+        Print.i(TAG, "Initializing RestContract");
+        setRestHost(context, R.string.global_server_host);
+        setRestBasePath(context, R.string.global_server_restbase_path);
         setShopAuthentication(context);
-
         setCookieShopConfigs();
+        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRY_CONFIGS_AVAILABLE        KEY_SELECTED_COUNTRY_URL
     public static void init(Context context, String requestHost, String basePath) {
-        Print.i(TAG, "initializing RestContract");
+        Print.i(TAG, "Initializing RestContract");
+        setRestHost(requestHost);
+        setRestBasePath(context, R.string.global_server_api_version);
+        setShopAuthentication(context);
+        setCookieShopConfigs();
+        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
+    }
 
+    /*
+     * ######### URI #########
+	 */
+
+    private static void setRestHost(SharedPreferences sharedPrefs){
+        setRestHost(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
+    }
+
+    private static void setRestHost(Context context, int stringId){
+        setRestHost(context.getResources().getString(stringId));
+    }
+
+    private static void setRestHost(String requestHost){
+        Print.i(TAG, "REQUEST HOST :" + REQUEST_HOST);
         REQUEST_HOST = requestHost;
         if (TextUtils.isEmpty(REQUEST_HOST)) {
-            throw new RuntimeException("The rest host has to be set and not beeing empty!");
+            throw new RuntimeException("The rest host has to be set and not being empty!");
         }
+    }
 
-        REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
+    private static void setRestScheme(Context context, SharedPreferences sharedPrefs){
+        USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
+        USE_ONLY_HTTP = context.getResources().getBoolean(R.bool.is_force_http);
+    }
+
+    private static void setRestBasePath(Context context, int stringId) {
+        REST_BASE_PATH = context.getResources().getString(stringId);
         if (TextUtils.isEmpty(REST_BASE_PATH)) {
-            throw new RuntimeException("The rest base path has to be set and not beeing empty!");
+            throw new RuntimeException("The rest base path has to be set and not being empty!");
         }
-        Print.d(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
-
-        setShopAuthentication(context);
-
-        setCookieShopConfigs();
     }
 
     /*
