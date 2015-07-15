@@ -201,7 +201,7 @@ public class JumiaDataReceiverService extends WearableListenerService {
         .setContentText(content)
         .setAutoCancel(true)
         .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.background))
-        .addAction(new NotificationCompat.Action.Builder(R.drawable.go_to_phone_00156, getApplicationContext().getString(R.string.common_open_on_phone), viewPendingIntent)
+        .addAction(new NotificationCompat.Action.Builder(R.drawable.ic_full_openonphone, getApplicationContext().getString(R.string.common_open_on_phone), viewPendingIntent)
                 .extend(new NotificationCompat.Action.WearableExtender().setAvailableOffline(false))
                 .build());
         // Get an instance of the NotificationManager service
