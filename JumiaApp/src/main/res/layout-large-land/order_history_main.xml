@@ -122,45 +122,22 @@
                         android:textSize="@dimen/text_s" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/order_list_payment_cont"
-                    android:layout_width="match_parent"
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/order_list_payment_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="roboto_regular"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:gravity="left|center_vertical|start"
-                    android:layout_below="@+id/order_list_date_cont"
+                    android:text="@string/payment_method"
+                    android:textColor="@color/grey_middle"
+                    android:textSize="@dimen/text_s"
+                    android:maxLines="2"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
-                    android:orientation="horizontal" >
-
-                    <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/order_list_payment_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="roboto_bold"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:gravity="center_vertical"
-                        android:text="@string/payment_method"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_s"
-                        android:textStyle="bold" />
-
-                    <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/order_list_payment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginStart="2dp"
-                        android:maxLines="2"
-                        android:layout_toRightOf="@+id/order_list_payment_title"
-                        android:fontFamily="roboto_regular|left|start"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_s" />
-                </RelativeLayout>
+                    android:layout_below="@+id/order_list_date_cont"/>
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/order_list_products_title"
@@ -168,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/order_list_payment_cont"
+                    android:layout_below="@+id/order_list_payment_title"
                     android:layout_marginBottom="13dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"

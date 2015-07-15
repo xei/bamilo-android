@@ -194,7 +194,7 @@
     <string name="password_changed">Password changed with success</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <string name="payment">Payment</string>
-    <string name="payment_method">Payment Method</string>
+    <string name="payment_method">&lt;b>Payment Method: &lt;/b> %s</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
     <string name="pickup_station_address">&lt;b>Address:&lt;/b> %s</string>
