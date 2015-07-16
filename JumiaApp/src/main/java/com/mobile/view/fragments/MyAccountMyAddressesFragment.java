@@ -214,11 +214,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
                 showContinueShopping();
                 break;
             case SET_DEFAULT_SHIPPING_ADDRESS:
+                setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
                 Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_LONG).show();
                 resetRequests();
                 break;
             case SET_DEFAULT_BILLING_ADDRESS:
+                setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
                 Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_LONG).show();
                 resetRequests();
