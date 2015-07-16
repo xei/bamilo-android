@@ -18,7 +18,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.checkout.CheckoutFinishHelper;
-import com.mobile.helpers.voucher.AddVoucherHelper;
+import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.PaymentMethodForm;
@@ -570,7 +570,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void triggerClearCart() {
         Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
-        triggerContentEventNoLoading(new AddVoucherHelper(), null, this);
+        triggerContentEventNoLoading(new RemoveVoucherHelper(), null, this);
     }
 
     /**
