@@ -87,6 +87,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 R.layout.home_fragment_main,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // Init position
+        HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
 
     /*
@@ -114,8 +116,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
+            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
         }
     }
 
@@ -133,8 +134,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
-
-
         // Validate shared prefs
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
@@ -146,7 +145,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         else {
             showFragmentErrorRetry();
         }
-
     }
 
     /*
