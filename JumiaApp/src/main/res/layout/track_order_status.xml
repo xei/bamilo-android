@@ -108,17 +108,9 @@
                 android:layout_below="@id/order_creation_date_title"
                 android:layout_marginEnd="@dimen/margin_x_small"
                 android:layout_marginRight="@dimen/margin_x_small"
-                android:text="@string/payment_method" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/order_payment_method_text"
-                style="@style/text_normal"
-                android:layout_alignBaseline="@id/order_payment_method_title"
-                android:layout_marginLeft="@dimen/margin_x_small"
-                android:layout_marginStart="@dimen/margin_x_small"
-                android:layout_toEndOf="@id/order_payment_method_title"
-                android:layout_toRightOf="@id/order_payment_method_title"
-                android:text="@string/payment_method" />
+                android:fontFamily="roboto_regular"
+                android:text="@string/payment_method"
+                android:maxLines="2"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_products_title"

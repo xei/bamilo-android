@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -350,7 +351,7 @@ public class TrackOrderFragment extends BaseFragment {
         setTipVisibility(false);
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# " + mOrderTracker.getId());
         ((TextView) getView().findViewById(R.id.order_creation_date_text)).setText(mOrderTracker.getDate());
-        ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
+        ((TextView) getView().findViewById(R.id.order_payment_method_title)).setText(com.mobile.newFramework.utils.TextUtils.placeHolderText(mOrderTracker.getPaymentMethod(), getString(R.string.payment_method)));
 
         inflateItemsList(mOrderTracker.getOrderTrackerItems());
         if (loadingTrackBarView != null) {
