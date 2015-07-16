@@ -1253,6 +1253,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void setActionProfile(Menu menu) {
         MenuItem myProfile = menu.findItem(MyMenuItem.MY_PROFILE.resId);
+        // Validate
         if (myProfile != null) {
             myProfile.setVisible(true);
             myProfile.setEnabled(true);
