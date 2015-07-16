@@ -93,7 +93,7 @@ public class Ad4PushTracker {
     private static final String FILTER_PRICE = "filterPrice";
     private static final String FILTER_SIZE = "filterSize";
 
-    private static final String FILTER_BRAND_KEY = "searchQuery";
+    private static final String FILTER_BRAND_KEY = "brand";
     private static final String FILTER_COLOR_KEY = "color_family";
     private static final String FILTER_PRICE_KEY = "price";
     private static final String FILTER_CATEGORY_KEY = "productUrl";

@@ -1109,10 +1109,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
-            if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
+            int categoriesSize = mCompleteProduct.getCategories().size();
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(categoriesSize - 1));
+            if (null != mCompleteProduct && categoriesSize > 1) {
                 bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories()
-                        .get(1));
+                        .get(categoriesSize - 2));
             }
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
