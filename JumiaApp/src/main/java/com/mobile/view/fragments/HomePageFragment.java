@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
@@ -347,11 +348,13 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
         // Validate state
         if (mScrollSavedPosition != null) {
-            // Scroll to saved position
-            mScrollView.post(new Runnable() {
-                public void run() {
+            // Wait until my scrollView is ready and scroll to saved position
+            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
                     Print.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
                     mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                    mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             });
         }
