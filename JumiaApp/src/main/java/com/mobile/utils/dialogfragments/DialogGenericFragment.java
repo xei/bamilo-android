@@ -185,7 +185,8 @@ public class DialogGenericFragment extends DialogFragment {
     public void show(FragmentManager manager, String tag) {
         try {
             super.show(manager,tag);
-            // Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
+            // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
+            // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
         } catch (IllegalStateException | WindowManager.BadTokenException ex){
             Print.e(TAG, "Error showing Dialog", ex);
         }
