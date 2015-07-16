@@ -14,7 +14,6 @@ import android.view.View;
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -29,7 +28,7 @@ import java.util.EnumSet;
  */
 public class CampaignsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CampaignsFragment.class);
+    private static final String TAG = CampaignsFragment.class.getSimpleName();
     
     public static final String CAMPAIGNS_TAG = "campaigns";
     

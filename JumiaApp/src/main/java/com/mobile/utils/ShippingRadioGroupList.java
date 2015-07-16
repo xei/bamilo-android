@@ -217,13 +217,13 @@ public class ShippingRadioGroupList extends RadioGroup {
         return idx;
     }
 
-    public String getItemByIndex(int idx) {
-        if (mItems == null)
-            return null;
-        if (idx < 0)
-            return null;
-        return mItems.get(idx);
-    }
+//    public String getItemByIndex(int idx) {
+//        if (mItems == null)
+//            return null;
+//        if (idx < 0)
+//            return null;
+//        return mItems.get(idx);
+//    }
 
     public void setSelection(int idx) {
         if (idx >= 0) {
@@ -331,7 +331,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                     }
                     Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
-                    if (selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
+                    if (selectedPickup != null && selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getRegions().get(0).getId());
                     }
                 }

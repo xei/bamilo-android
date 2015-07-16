@@ -14,7 +14,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -31,7 +30,7 @@ import java.util.List;
  */
 public class CheckoutEditAddressFragment extends EditAddressFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutEditAddressFragment.class);
+    private static final String TAG = CheckoutEditAddressFragment.class.getSimpleName();
 
     /**
      * 

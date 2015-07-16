@@ -23,12 +23,7 @@ import com.mobile.test.ShoppingCartUpdateQuantityTest;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
 import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.RunnerBuilder;
-
-import java.util.List;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

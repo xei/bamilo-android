@@ -20,7 +20,6 @@ import com.mobile.newFramework.objects.product.ProductDetailsSpecification;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -43,7 +42,7 @@ import java.util.Map;
  */
 public class ProductDetailsSpecificationsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductDetailsSpecificationsFragment.class);
+    private static final String TAG = ProductDetailsSpecificationsFragment.class.getSimpleName();
 
     private LinearLayout mProductSpecsContainer;
     private CompleteProduct mCompleteProduct;

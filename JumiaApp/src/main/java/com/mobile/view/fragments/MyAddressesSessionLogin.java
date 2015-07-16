@@ -8,7 +8,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
@@ -26,7 +25,7 @@ import com.mobile.view.BaseActivity;
  */
 public class MyAddressesSessionLogin extends SessionLoginFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
+    private static final String TAG = SessionLoginFragment.class.getSimpleName();
 
     /**
      *

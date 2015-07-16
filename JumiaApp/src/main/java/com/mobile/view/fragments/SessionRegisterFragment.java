@@ -38,7 +38,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -62,7 +61,7 @@ import java.util.List;
  */
 public class SessionRegisterFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
+    private static final String TAG = SessionRegisterFragment.class.getSimpleName();
 
     private Button registerButton;
 
@@ -81,8 +80,6 @@ public class SessionRegisterFragment extends BaseFragment {
     private DynamicFormItem termsLink;
 
     private DynamicFormItem newsletterSubscribe;
-
-    private String terms;
 
     private LinearLayout container;
 
@@ -172,7 +169,7 @@ public class SessionRegisterFragment extends BaseFragment {
         } else {
             triggerRegisterForm();
         }
-        setAppContentLayout();
+
         getFormComponents();
         setFormComponents();
     }
@@ -239,13 +236,6 @@ public class SessionRegisterFragment extends BaseFragment {
     /**
      * ##### LAYOUT ####
      */
-
-    /**
-     * Inflate this layout
-     */
-    public void setAppContentLayout() {
-        triggerTerms();
-    }
 
     /**
      * Get Components
@@ -506,11 +496,6 @@ public class SessionRegisterFragment extends BaseFragment {
                 loadForm(form);
             }
             break;
-        case GET_TERMS_EVENT:
-            terms = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-            // Remove the listener
-            // detailsListener();
-            break;
         default:
             break;
         }
@@ -584,9 +569,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 saveFormState();
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
-                getBaseActivity().onSwitchFragment(FragmentType.TERMS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.TERMS, null, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });
@@ -596,10 +579,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    mandatory.setVisibility(View.GONE);
-                } else {
-                    mandatory.setVisibility(View.VISIBLE);
+                if(termsLink.hasRules()) {
+                    if (((CheckBox) v).isChecked()) {
+                        mandatory.setVisibility(View.GONE);
+                    } else {
+                        mandatory.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if (serverForm != null && serverForm.checkRequired()) {
@@ -711,11 +696,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private void triggerRegisterForm() {
         triggerContentEvent(new GetRegisterFormHelper(), null, mCallBack);
-    }
-
-    private void triggerTerms() {
-        // TODO: Validate this process
-        //triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
     /**

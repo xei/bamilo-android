@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -28,13 +27,11 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -47,7 +44,7 @@ import java.util.EnumSet;
  */
 public class ChooseCountryFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(ChooseCountryFragment.class);
+    private static final String TAG = ChooseCountryFragment.class.getSimpleName();
 
     private static final int SHOP_NOT_SELECTED = -1;
 

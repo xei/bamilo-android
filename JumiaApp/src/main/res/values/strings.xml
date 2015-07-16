@@ -194,13 +194,14 @@
     <string name="password_changed">Password changed with success</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <string name="payment">Payment</string>
-    <string name="payment_method">Payment Method</string>
+    <string name="payment_method">&lt;b>Payment Method: &lt;/b> %s</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
     <string name="pickup_station_address">&lt;b>Address:&lt;/b> %s</string>
     <string name="pickup_station_city">&lt;b>City:&lt;/b> %s</string>
     <string name="pickup_station_opening_hours">&lt;b>Opening Hours:&lt;/b> %s</string>
     <string name="shipping_fee">&lt;b>Shipping Fee:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Fee added to Total Amount Payable\"</string>
     <string name="shipping_time">&lt;b>Shipping Time:&lt;/b> %s</string>
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
@@ -293,6 +294,7 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
+    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>

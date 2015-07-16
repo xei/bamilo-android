@@ -23,7 +23,6 @@ import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -41,7 +40,7 @@ import java.util.EnumSet;
  */
 public class RecentSearchFragment extends BaseFragment implements IResponseCallback {
     
-    private final static String TAG = LogTagHelper.create(RecentSearchFragment.class);
+    private final static String TAG = RecentSearchFragment.class.getSimpleName();
 
     private Context mContext;
 

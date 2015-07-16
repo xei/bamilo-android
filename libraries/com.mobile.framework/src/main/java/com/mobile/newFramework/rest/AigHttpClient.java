@@ -187,12 +187,14 @@ public class AigHttpClient extends OkClient {
     private static void setCookies(OkHttpClient okHttpClient, Context context) {
         // Case not in test mode
         if(context != null) {
+            Print.i(TAG, "ENABLED AIG COOKIE MANAGER RELEASE MODE");
             AigCookieManager cookieManager = new AigCookieManager(context);
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
         }
         // Case in test mode
         else {
+            Print.w(TAG, "WARNING: ENABLED THE COOKIE MANAGER TEST MODE");
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
@@ -204,7 +206,6 @@ public class AigHttpClient extends OkClient {
      * Add some http interceptors to debug.
      */
     @SuppressWarnings("unused")
-
     private static void addInterceptors(OkHttpClient okHttpClient) {
         okHttpClient.interceptors().add(new RequestInterceptor());
         okHttpClient.interceptors().add(new ResponseInterceptor());

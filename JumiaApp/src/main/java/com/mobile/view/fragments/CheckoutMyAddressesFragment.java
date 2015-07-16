@@ -27,7 +27,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -45,7 +44,7 @@ import java.util.List;
  */
 public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
+    private static final String TAG = CheckoutMyAddressesFragment.class.getSimpleName();
 
     /**
      * Get instance

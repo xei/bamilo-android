@@ -41,7 +41,6 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
@@ -84,7 +83,7 @@ import java.util.regex.Pattern;
  *          2012/06/15
  */
 public class DynamicFormItem {
-    private final static String TAG = LogTagHelper.create(DynamicFormItem.class);
+    private final static String TAG = DynamicFormItem.class.getSimpleName();
 
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
@@ -100,12 +99,12 @@ public class DynamicFormItem {
     private TextView errorTextControl;
     private TextView mandatoryControl;
     private String errorText;
-    private OnFocusChangeListener editFocusListener;
+    //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-    private TextWatcher textWatcher;
+    //private TextWatcher textWatcher;
     private DialogDatePickerFragment dialogDate;
     private int errorColor;
-    private ArrayList<DynamicForm> childDynamicForm;
+    //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
 
     /**
@@ -190,14 +189,14 @@ public class DynamicFormItem {
         return this.entry.getValidation().isRequired();
     }
 
-    /**
-     * Gets the error text associated to this control
-     *
-     * @return the text that is displayed if the control has an error with its filling
-     */
-    public String getErrorText() {
-        return errorText;
-    }
+//    /**
+//     * Gets the error text associated to this control
+//     *
+//     * @return the text that is displayed if the control has an error with its filling
+//     */
+//    public String getErrorText() {
+//        return errorText;
+//    }
 
     /**
      * Sets the error text for this control, concerning the input of the user
@@ -466,7 +465,7 @@ public class DynamicFormItem {
                 ((EditText) this.dataControl).setText(text);
                 this.errorControl.setVisibility(View.GONE);
 
-                if (text.length() == 0) {
+                if (TextUtils.isEmpty(text)) {
                     if (this.mandatoryControl != null) {
                         this.mandatoryControl
                                 .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -719,6 +718,7 @@ public class DynamicFormItem {
                     if (this.dataControl instanceof IcsSpinner) {
                         valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
                     } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                        /*-
                         if (childDynamicForm != null && childDynamicForm.size() > 0) {
                             for (int i = 0; i < childDynamicForm.size(); i++) {
                                 if (!childDynamicForm.get(i).validate()) {
@@ -727,6 +727,7 @@ public class DynamicFormItem {
                                 }
                             }
                         }
+                        */
                         Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
@@ -929,7 +930,7 @@ public class DynamicFormItem {
      * @param listener The listener to be fired when the focus changes
      */
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
-        editFocusListener = listener;
+        //editFocusListener = listener;
     }
 
     /**
@@ -947,7 +948,7 @@ public class DynamicFormItem {
      * @param watcher The listener to be fired every time the text of an component changes
      */
     public void setTextWatcher(TextWatcher watcher) {
-        textWatcher = watcher;
+        //textWatcher = watcher;
     }
 
     private void buildCheckBoxForTerms(RelativeLayout.LayoutParams params, int controlWidth) {
@@ -957,91 +958,81 @@ public class DynamicFormItem {
         // data controls
         params = new RelativeLayout.LayoutParams(controlWidth,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
+
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(controlWidth,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        this.dataControl = new LinearLayout(this.context);
-
-        CheckBox mCheckBox = new CheckBox(this.context);
-
-        mCheckBox.setTextColor(context.getResources().getColor(
-                R.color.form_text));
-        mCheckBox.setId(parent.getNextId());
+        this.dataControl = View.inflate(this.context, R.layout.form_checkbox_terms, null);
         this.dataControl.setId(parent.getNextId());
+        this.dataControl.setVisibility(View.VISIBLE);
 
-        lParams.setMargins((int) (3 * this.scale), 0, 0, 0);
-        this.dataControl.setLayoutParams(lParams);
+        CheckBox mCheckBox = (CheckBox)this.dataControl.findViewById(R.id.checkbox_terms);
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
-        mCheckBox.setButtonDrawable(R.drawable.selector_btn_check_holo_orange);
-        mCheckBox.setFocusable(false);
-        mCheckBox.setFocusableInTouchMode(false);
-        mCheckBox.setTextColor(this.context.getResources().getColor(
-                R.color.grey_middle));
-        mCheckBox.setTextSize(14);
         mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry
                 .getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
-        mCheckBox.setPadding((int) (25 * scale),
-                mCheckBox.getPaddingTop(), mCheckBox.getPaddingRight(),
-                mCheckBox.getPaddingBottom());
-
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
         }
 
-        mCheckBox.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                    mandatoryControl.setVisibility(View.GONE);
-                } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                    mandatoryControl.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
-
-        ((LinearLayout) this.dataControl).addView(mCheckBox);
-
-        TextView mLinkTextView = new TextView(this.context);
+        TextView mLinkTextView = (TextView)this.dataControl.findViewById(R.id.textview_terms);
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
-        mLinkTextView.setId(parent.getNextId());
         mLinkTextView.setTag(this.entry.getKey());
-        mLinkTextView.setTextColor(this.context.getResources().getColor(
-                R.color.blue_basic));
-        this.dataControl.setVisibility(View.VISIBLE);
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.RIGHT_OF, mCheckBox.getId());
-        mLinkTextView.setLayoutParams(params);
-        ((LinearLayout) this.dataControl).addView(mLinkTextView);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
-
-        this.mandatoryControl = new TextView(this.context);
-        this.mandatoryControl.setLayoutParams(params);
-        this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
-        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
 
         ((ViewGroup) this.control).addView(this.dataControl);
 
-        ((ViewGroup) this.control).addView(this.mandatoryControl);
+        if (hasRules()) {
+
+            //mandatory control
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            if (ShopSelector.isRtl()) {
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                params.leftMargin = MANDATORYSIGNALMARGIN;
+            } else {
+                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.rightMargin = MANDATORYSIGNALMARGIN;
+            }
+            params.addRule(RelativeLayout.CENTER_VERTICAL);
+
+            this.mandatoryControl = new TextView(this.context);
+            this.mandatoryControl.setLayoutParams(params);
+            this.mandatoryControl.setText("*");
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+            this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+
+            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
+                    : View.GONE);
+
+            ((ViewGroup) this.control).addView(this.mandatoryControl);
+            mCheckBox.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
+                        mandatoryControl.setVisibility(View.GONE);
+                    } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
+                        mandatoryControl.setVisibility(View.VISIBLE);
+                    }
+
+                }
+            });
+
+            //error control
+            this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            RelativeLayout.LayoutParams errorControlParams = (RelativeLayout.LayoutParams)this.errorControl.getLayoutParams();
+            errorControlParams.addRule(RelativeLayout.BELOW, this.dataControl.getId());
+            ((ViewGroup) this.control).addView(this.errorControl);
+        }
 
         ((ViewGroup) this.control).addView(dataContainer);
-
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
@@ -1703,7 +1694,7 @@ public class DynamicFormItem {
          * because that option is only available on the  write product review screen and not on write seller review screen.
          */
 
-        if (!JumiaApplication.INSTANCE.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
+        if (!JumiaApplication.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
             addCustomRatingCheckbox(linearLayout, params, controlWidth);
         }
         this.dataControl = linearLayout;
@@ -1963,22 +1954,22 @@ public class DynamicFormItem {
         return dataContainer;
     }
 
-    /**
-     * @return the childDynamicForm
-     */
-    public ArrayList<DynamicForm> getChildDynamicForm() {
-        if (childDynamicForm == null) {
-            childDynamicForm = new ArrayList<>();
-        }
-        return childDynamicForm;
-    }
-
-    /**
-     * @param childDynamicForm the childDynamicForm to set
-     */
-    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
-        this.childDynamicForm = childDynamicForm;
-    }
+//    /**
+//     * @return the childDynamicForm
+//     */
+//    public ArrayList<DynamicForm> getChildDynamicForm() {
+//        if (childDynamicForm == null) {
+//            childDynamicForm = new ArrayList<>();
+//        }
+//        return childDynamicForm;
+//    }
+//
+//    /**
+//     * @param childDynamicForm the childDynamicForm to set
+//     */
+//    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
+//        this.childDynamicForm = childDynamicForm;
+//    }
 
     /**
      * Determines if this field is a part of a date

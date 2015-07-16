@@ -34,7 +34,6 @@ import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
@@ -63,7 +62,7 @@ import java.util.Set;
  */
 public class FavouritesFragment extends BaseFragment implements IResponseCallback, OnClickListener {
 
-    protected final static String TAG = LogTagHelper.create(FavouritesFragment.class);
+    protected final static String TAG = FavouritesFragment.class.getSimpleName();
 
     protected final static int SINGLE_ITEM = 1;
 

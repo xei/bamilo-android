@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -21,7 +20,7 @@ import java.util.EnumSet;
  */
 public class CategoriesCollectionFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CategoriesCollectionFragment.class);
+    private static final String TAG = CategoriesCollectionFragment.class.getSimpleName();
     
     private static final int BACK_STACK_EMPTY = 0;
 

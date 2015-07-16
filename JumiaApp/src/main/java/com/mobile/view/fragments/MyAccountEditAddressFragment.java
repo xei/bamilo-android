@@ -6,7 +6,6 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public class MyAccountEditAddressFragment extends EditAddressFragment {
 
-    private static final String TAG = LogTagHelper.create(MyAccountEditAddressFragment.class);
+    private static final String TAG = MyAccountEditAddressFragment.class.getSimpleName();
 
     /**
      * Get instance

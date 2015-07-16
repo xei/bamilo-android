@@ -45,6 +45,7 @@ public class ShippingMethod {
             TextView shippingFeeView = (TextView) view.findViewById(R.id.shipping_fee_label_and_value);
             shippingFeeView.setText(Html.fromHtml(shippingFee));
             shippingFeeView.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.shipping_fee_info).setVisibility(View.VISIBLE);
         }
         return view;
     }

@@ -33,7 +33,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -62,7 +61,7 @@ import java.util.Set;
  */
 public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener {
 
-    private static final String TAG = LogTagHelper.create(EditAddressFragment.class);
+    private static final String TAG = EditAddressFragment.class.getSimpleName();
 
     public static final String SELECTED_ADDRESS = "selected_address";
 

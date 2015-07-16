@@ -21,10 +21,20 @@
         android:id="@+id/shipping_fee_label_and_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_20px"
         android:layout_marginTop="@dimen/margin_10px"
         android:fontFamily="roboto_light"
         android:textSize="@dimen/text_title"
+        android:visibility="gone" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/shipping_fee_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_20px"
+        android:layout_marginTop="@dimen/margin_10px"
+        android:fontFamily="roboto_light"
+        android:text="@string/shipping_fee_info"
+        android:textSize="@dimen/text_info"
         android:visibility="gone" />
 
 </LinearLayout>

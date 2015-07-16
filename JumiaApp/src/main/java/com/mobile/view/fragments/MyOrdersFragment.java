@@ -10,12 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.LogTagHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -32,7 +31,7 @@ import java.util.List;
  */
 public class MyOrdersFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
+    private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
     private RtlViewPager mMyOrdersPager;
 
@@ -87,7 +86,9 @@ public class MyOrdersFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
 
-        if (arguments != null) {
+        if(savedInstanceState != null){
+            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.MY_ORDER_POS,0);
+        } else if (arguments != null) {
             //If comes from login page, means that it has to go to OrderHistory
             if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
                 mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
@@ -122,24 +123,6 @@ public class MyOrdersFragment extends BaseFragment {
         mMyOrdersPagerTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
-        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
-            // Show the pre selection
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        } else {
-            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
-            mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
-            mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
-            if(ShopSelector.isRtl()){
-                mMyOrdersPager.enableRtl();
-            }
-            mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
-            // Show the pre selection
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        }
-    }
-
-    public void setPagerPosition(int pos) {
-        mMyOrdersPager.setCurrentItem(pos, true);
 
     }
 
@@ -163,6 +146,20 @@ public class MyOrdersFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
+            // Show the pre selection
+            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
+        } else {
+            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
+            mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
+            mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
+            if(ShopSelector.isRtl()){
+                mMyOrdersPager.enableRtl();
+            }
+            mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
+            // Show the pre selection
+            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
+        }
     }
 
     /*
@@ -238,7 +235,9 @@ public class MyOrdersFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
-        outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mPositionToStart);
+        if(mMyOrdersPager != null) {
+            outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mMyOrdersPager.getCurrentItem());
+        }
 
     }
 
