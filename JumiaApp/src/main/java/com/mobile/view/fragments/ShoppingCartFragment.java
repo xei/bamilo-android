@@ -80,8 +80,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     private List<ShoppingCartItem> items;
 
-    private ArrayList<CartItemValues> itemsValues;
-
     private LinearLayout lView;
 
     private Button checkoutButton;
@@ -244,7 +242,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      *
      */
     private void releaseVars() {
-        itemsValues = null;
         lView = null;
         checkoutButton = null;
         dialogList = null;
@@ -285,7 +282,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      *
-     * @param item
      */
     private void triggerRemoveItem(ShoppingCartItem item) {
 
@@ -326,7 +322,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to remove the submit a voucher value.
-     * @param values
      */
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
@@ -336,7 +331,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to remove the submitted voucher.
-     * @param values
      */
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
@@ -346,7 +340,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to add all items to cart (Deep link).
-     * @param values
      */
     private void triggerAddAllItems(HashMap<String, String> values) {
         Bundle bundle = new Bundle();
@@ -429,8 +422,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      *
-     * @param bundle
-     * @return
      */
     protected boolean onSuccessEvent(Bundle bundle) {
 
@@ -550,7 +541,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      *
-     * @param bundle
      */
     private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
         hideActivityProgress();
@@ -570,9 +560,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Present a dialog to remove all items from cart <br>
      * (Expectly used after user clicks "Call to Order")
-     * 
-     * @param shoppingCart
-     * @author André Lopes
      */
     private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
         // Dismiss any existing dialogs
@@ -614,8 +601,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      *
-     * @param bundle
-     * @return
      */
     protected boolean onErrorEvent(Bundle bundle) {
 
@@ -678,6 +663,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         items = new ArrayList<>(cart.getCartItems().values());
         if (items.size() == 0) {
             showNoItems();
+        } else if(getView() == null) {
+            showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
         } else {
             showFragmentContentContainer();
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
@@ -743,7 +730,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
-            itemsValues = new ArrayList<>();
             // Fix NAFAMZ-7848
             BigDecimal unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;
@@ -769,24 +755,20 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
-                itemsValues.add(values);
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
                 if (!item.getPrice().equals(item.getSpecialPrice())) {
                     cartHasReducedItem = true;
                 }
 
                 // Fix NAFAMZ-7848
-                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal()
-                        * item.getQuantity()));
+                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal() * item.getQuantity()));
                 Print.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
             if (cartHasReducedItem && unreduced_cart_price.intValue() > 0) {
-                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price
-                        .toString()));
-                priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags()
-                        | Paint.STRIKE_THRU_TEXT_FLAG);
+                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price.toString()));
+                priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 priceUnreduced.setVisibility(View.VISIBLE);
             } else {
                 priceUnreduced.setVisibility(View.INVISIBLE);
@@ -804,8 +786,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Replace voucher and update Coupon field
-     * 
-     * @param voucher
      */
     private void changeVoucher(String voucher) {
         Print.d(TAG, "changeVoucher to " + voucher);
@@ -828,8 +808,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Set the total value
-     * 
-     * @param cart
      * @author sergiopereira
      */
     private void setTotal(ShoppingCart cart) {
@@ -885,11 +863,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater,
-            CartItemValues item) {
+    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent,
-                false);
+        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;
@@ -936,11 +912,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
         prodItem.variancesContainer.setVisibility(View.GONE);
         if (prodItem.itemValues.variation != null) {
-
             // Map<String, String> simpleData = prodItem.itemValues.simpleData;
-
             String variation = prodItem.itemValues.variation;
-            if (variation != null && variation.length() > 0
+            if (variation.length() > 0
                     && !variation.equals("1")
                     && !variation.equals(",")
                     && !variation.equals("...")
@@ -993,14 +967,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-//        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
-//                R.string.continue_shopping, new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
-//                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//                    }
-//                });
         showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1014,8 +980,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Function to redirect to the selected product details.
-     * 
-     * @param productUrl
      */
     private void goToProductDetails(String productUrl) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
@@ -1025,29 +989,23 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void goToWebCheckout() {
         Print.d(TAG, "GOTO WEB CHECKOUT");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
-                FragmentType.CHECKOUT_BASKET);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void checkMinOrderAmount() {
         TrackerDelegator.trackCheckout(items);
-
         String restbase = getResources().getString(R.string.global_server_api_version);
-        if (restbase != null) {
-            if (restbase.contains("mobapi/v1")) {
-                triggerIsNativeCheckoutAvailable();
-            } else {
-                goToWebCheckout();
-            }
+        if (restbase.contains("mobapi/v1")) {
+            triggerIsNativeCheckoutAvailable();
+        } else {
+            goToWebCheckout();
         }
     }
 
