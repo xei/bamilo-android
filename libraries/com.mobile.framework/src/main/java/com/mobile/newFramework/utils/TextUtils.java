@@ -74,7 +74,7 @@ public class TextUtils {
      * @param placeHolder The placeholder String.
      * @return A spanned String.
      */
-    public static Spanned placeHolderText(String text, String placeHolder){
+    public static Spanned placeHolderText(String placeHolder, String text){
         String textEncoded = android.text.TextUtils.htmlEncode(text);
         String placeHolderText = String.format(placeHolder, textEncoded);
         return Html.fromHtml(placeHolderText);
