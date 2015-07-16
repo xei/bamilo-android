@@ -332,10 +332,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Trigger to remove the submitted voucher.
      */
-    private void triggerRemoveVoucher(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
+    private void triggerRemoveVoucher() {
+        triggerContentEventProgress(new RemoveVoucherHelper(), null, this);
     }
 
     /**
@@ -1134,7 +1132,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
-                        triggerRemoveVoucher(mContentValues);
+                        triggerRemoveVoucher();
                     }
                 } else {
                     Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
