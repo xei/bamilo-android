@@ -1,5 +1,7 @@
 package com.mobile.newFramework.utils;
 
+import android.content.ContentValues;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -160,6 +162,14 @@ public class CollectionUtils {
     }
 
     public static boolean isNotEmpty(Collection<?> coll) {
+        return !isEmpty(coll);
+    }
+
+    public static boolean isEmpty(ContentValues coll) {
+        return coll == null || coll.size() == 0;
+    }
+
+    public static boolean isNotEmpty(ContentValues coll) {
         return !isEmpty(coll);
     }
 
