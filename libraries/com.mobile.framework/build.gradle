@@ -10,6 +10,15 @@ android {
     }
 }
 
+// Exclude unused com.mobile.components
+sourceSets {
+    main {
+        java {
+            exclude 'com/mobile/components/_unused_/**'
+        }
+    }
+}
+
 dependencies {
     /** REMOTE MAVEN LIBS  **/
     compile 'com.android.support:appcompat-v7:22.2.0'
