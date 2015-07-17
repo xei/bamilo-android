@@ -193,7 +193,7 @@
     <string name="password_changed">رمز عبور با موفقیت تغییر یافت.</string>
     <string name="password_new_mincharacters">رمز عبور جدید می بایست حداقل ۶ کاراکتر داشته باشد.</string>
     <string name="payment">پرداخت</string>
-    <string name="payment_method">&lt;b>روش پرداخت: &lt;/b> %s></string>
+    <string name="payment_method">&lt;b>روش پرداخت: &lt;/b> %s</string>
     <string name="personal_data_label">اطلاعات شخصی شما</string>
     <string name="personal_data_title">اطلاعات حساب</string>
     <string name="pickup_station_address">نشانی:</string>

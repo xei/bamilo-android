@@ -20,13 +20,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int DEFAULT_POSITION_PHONE = 0;
-
-    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
-
-    private static final int DEFAULT_POSITION_TABLET = 1;
-
-    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
+    public static final int DEFAULT_POSITION = 0;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
+//
+//    private static final int DEFAULT_POSITION_TABLET = 1;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
 
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
@@ -56,7 +56,6 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         pager = (PreviewViewPager) itemView.findViewById(R.id.home_teaser_main_pager);
         // Set the preview offset
         pager.setPreviewOffset(mOffset);
-
     }
 
     /**
@@ -83,11 +82,9 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NULL");
             // Create adapter
             HomeMainTeaserAdapter adapter = new HomeMainTeaserAdapter(mContext, group.getData(), mParentClickListener, isTablet);
-
             InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(adapter);
             infinitePagerAdapter.setOneItemMode();
             infinitePagerAdapter.enableInfinitePages(adapter.getCount() > 1);
-
             // Add adapter to pager
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
