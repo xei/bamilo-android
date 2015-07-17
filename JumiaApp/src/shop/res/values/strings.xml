@@ -199,6 +199,9 @@
     <string name="pickup_station_address">လိပ္စာ : </string>
     <string name="pickup_station_city">ျမိဳ႕ : </string>
     <string name="pickup_station_opening_hours">ရံုးဖြင့္ခ်ိန္ : </string>
+    <string name="shipping_fee">&lt;b>သယ္ယူပို႔ေဆာင္ခ:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"အား စုစုေပါင္းပမာဏသို႕ထည္႕သြင္းျပီးပါျပီ\"</string>
+    <string name="shipping_time">သယ္ယူပို႔ေဆာင္ခ်ိန္</string>
     <string name="pinch_to_zoom_label">Pinch to zoom</string>
     <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ &#160;</string>
     <string name="poll_question_label">Poll Question</string>
@@ -265,8 +268,6 @@
     <string name="share_checkout_this_product">ဤပစၥည္းကို ၾကည္႔ရႈမည္။</string>
     <string name="share_subject">%s မွ်ေ၀ျခင္း</string>
     <string name="shipping">သယ္ယူပို႕ေဆာင္မွဳ</string>
-    <string name="shipping_fee">သယ္ယူပို႔ေဆာင္ခ</string>
-    <string name="shipping_time">သယ္ယူပို႔ေဆာင္ခ်ိန္</string>
     <string name="shopping_cart">ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="shoppingcart_alert_header">ျခင္းေတာင္း</string>
     <string name="shoppingcart_alert_message_no_items">ေစ်း၀ယ္လွည္းအလြတ္အတြင္း ပစၥည္းမ်ားထည္႔သြင္းပါ</string>
@@ -292,6 +293,7 @@
     <string name="some_products_not_added">အခ်ိဳ႕ ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္းသို႔ မထည္႔ရေသးပါ</string>
     <string name="splash_slogan">ျမန္မာႏိုင္ငံ၏ အႀကီးဆံုးအြန္လုိင္းေရွာ့ပင္း ၀န္ေဆာင္မႈ</string>
     <string name="splash_slogan_daraz">အြန္လုုိင္ ေစ်းဝယ္ရာတြင္ လုုိအပ္လာမည့္ အေကာင္းဆုုံးေသာေနရာတစ္ခုု !</string>
+    <string name="splash_slogan_powered_by"></string>
     <string name="stale_warning">Lost Connection</string>
     <string name="string_appearance">အသြင္အျပင္</string>
     <string name="string_price">ေစ်းႏႈန္း</string>
@@ -364,10 +366,10 @@
     <string name="address_creation_failed_main">ေက်းဇူျပဳရ်္ ပုုံစံတြင္ေပးထားေသာ လုုိအပ္ခ်က္မ်ားအားမွန္ကန္စြာျဖည့္စြတ္ပါ။</string>
     <!-- NEW 2.5 -->
     <string name="see_more_offers">အျခား အစီအစဥ္မ်ားကို ၾကည္႕ရွဳရန္</string>
-    <string name="shops_of_the_week">ဤအပတ္၏ အေရာင္းရဆံုးမ်ား</string>
+    <string name="shops_of_the_week">လူၾကိဳက္အမ်ားဆံုး တံဆိပ္မ်ား</string>
     <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
     <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
-    <string name="top_sellers">ေရာင္းအားအေကာင္းဆံုး ဆုိင္မ်ား</string>
+    <string name="top_sellers">အေရာင္းရဆံုး ပစၥည္းမ်ား</string>
     <string name="product_desc_summary_title">အႏွစ္ခ်ဳပ္</string>
     <string name="description">ေဖာ္ျပခ်က္</string>
     <string name="key_features">အဓိက အေၾကာင္းအရာမ်ား</string>
@@ -375,6 +377,6 @@
     <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
     <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
     <!-- NEW 2.6 -->
-    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-    <string name="com_facebook_loginview_log_in_button_long">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
+    <string name="facebook_permission">ဆက္လက္လုပ္ေဆာင္ရန္ Email ေပးပို႕ျခင္းကို ခြင့္ျပဳေပးပါ</string>
+    <string name="com_facebook_loginview_log_in_button_long">Facebook ျဖင့္ ၀င္မည္</string>
 </resources>

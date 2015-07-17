@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="account_name">My Account</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
@@ -294,7 +293,7 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"/>
+    <string name="splash_slogan_powered_by"></string>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>

@@ -199,6 +199,9 @@
     <string name="pickup_station_address">Morada:</string>
     <string name="pickup_station_city">Cidade:</string>
     <string name="pickup_station_opening_hours">Horário de Funcionamento:</string>
+    <string name="shipping_fee">&lt;b>Taxa de entrega:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Taxa adicionada ao Montante Total a Pagar\"</string>
+    <string name="shipping_time">Prazo de entrega:</string>
     <string name="pinch_to_zoom_label">Clique para ampliar</string>
     <string name="please_fill_all_data">Por favor preencha todos os campos</string>
     <string name="poll_question_label">Questionário</string>
@@ -265,8 +268,6 @@
     <string name="share_checkout_this_product">Veja este produto que encontrámos!</string>
     <string name="share_subject">Compartilha %s</string>
     <string name="shipping">Entrega</string>
-    <string name="shipping_fee">Taxa de entrega:</string>
-    <string name="shipping_time">Prazo de entrega:</string>
     <string name="shopping_cart">Carrinho de Compras</string>
     <string name="shoppingcart_alert_header">Carrinho</string>
     <string name="shoppingcart_alert_message_no_items">Carrinho vazio! Por favor adicione produtos.</string>
@@ -292,6 +293,7 @@
     <string name="some_products_not_added">Infelizmente alguns produtos não foram adicionados ao carrinho.</string>
     <string name="splash_slogan">O maior centro comercial online na África</string>
     <string name="splash_slogan_daraz">O único destino de que necessita para as suas compras online!</string>
+    <string name="splash_slogan_powered_by"></string>
     <string name="stale_warning">Perda de ligação</string>
     <string name="string_appearance">Aparência</string>
     <string name="string_price">Preço</string>
@@ -332,7 +334,7 @@
     <string name="voucher_remove">Remover</string>
     <string name="voucher_use">Utilizar</string>
     <string name="wizard_navigation">Acesso rápido a todas as suas categorias favoritas</string>
-    <string name="write_comment">Escreva um Comentário</string>
+    <string name="write_comment">Avaliar</string>
     <string name="write_full_review">Escrever um comentário</string>
     <string name="writereview_page_title">Escrever Avaliação</string>
     <string name="writereview_review_hint">Comentário</string>
@@ -375,6 +377,6 @@
     <string name="kickout_page_text1">A loja está atuamente lotada e não poderemos aceitar novos clientes neste momento.</string>
     <string name="kickout_page_text2">Queremos proporcionar-lhe a melhor experiência de compra possível, por isso gostaríamos de lhe pedir para tentar novamente mais tarde.</string>
     <!-- NEW 2.6 -->
-    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="facebook_permission">A autorização por email é obrigatória. Por favor permita-a.</string>
     <string name="com_facebook_loginview_log_in_button_long">Entrar com o Facebook</string>
 </resources>
