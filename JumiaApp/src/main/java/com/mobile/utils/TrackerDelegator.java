@@ -292,8 +292,8 @@ public class TrackerDelegator {
         try  {
             // AD4Push
             Ad4PushTracker.get().trackCategorySelection();
-        } catch (NullPointerException e) {
-            Print.i(TAG, "WARNING: NPE ON TRACK CATEGORY ");
+        } catch (NullPointerException | IllegalStateException e) {
+            Print.i(TAG, "WARNING: EXCEPTION ON TRACK CATEGORY ");
         }
     }
 
