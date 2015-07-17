@@ -1632,19 +1632,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Pop all back stack
+     * Pop back stack until tag, FC and FM are affected.
      *
-     * @param tag
-     * @author sergiopereira
-     */
-    protected void popAllBackStack(String tag) {
-        fragmentController.popAllBackStack(this, tag);
-    }
-
-    /**
-     * Pop back stack until tag
-     *
-     * @param tag
+     * @param tag - The fragment tag
      * @author sergiopereira
      */
     public boolean popBackStackUntilTag(String tag) {
@@ -1653,6 +1643,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Pop back stack entries until tag.
+     *
+     * @param tag - The fragment tag
+     * @author sergiopereira
+     */
+    public void popBackStackEntriesUntilTag(String tag) {
+        if (fragmentController.hasEntry(tag)) {
+            fragmentController.removeEntriesUntilTag(tag);
+        }
     }
 
     /**
