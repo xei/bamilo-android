@@ -108,7 +108,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean isLoadingMoreData = false;
 
     private int mNumberOfColumns;
-    
+
     private int mTopButtonActivateLine;
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
@@ -939,7 +939,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onLoadingMoreRequestError(bundle);
         }
         // Case error on request data with filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
             Print.i(TAG, "ON SHOW FILTER NO RESULT");
             showFilterNoResult();
         }
@@ -952,9 +952,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
         }
         // Case network errors except No network
-        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK
+        else if(errorCode != null && errorCode.isNetworkError()
+                && errorCode != ErrorCode.NO_NETWORK
                 && errorCode != ErrorCode.HTTP_STATUS
-                && errorCode != ErrorCode.SERVER_OVERLOAD){
+                && errorCode != ErrorCode.SERVER_OVERLOAD
+                && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
+                && CollectionUtils.isNotEmpty(mCurrentFilterValues)){
             showFilterUnexpectedError();
         }
         // Case No Network
