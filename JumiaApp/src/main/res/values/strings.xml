@@ -75,7 +75,7 @@
     <string name="error_ismandatory">Please fill in the</string>
     <string name="error_login_title">Login failed</string>
     <string name="error_no_connection">No connection</string>
-    <string name="error_occured">Sorry, an error occured.</string>
+    <string name="error_occured">Sorry, an error occurred.</string>
     <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
     <string name="error_register_title">Registration failed</string>
@@ -193,7 +193,7 @@
     <string name="password_changed">Password changed with success</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <string name="payment">Payment</string>
-    <string name="payment_method">&lt;b>Payment Method: &lt;/b> %s</string>
+    <string name="payment_method">&lt;b>Payment Method:&lt;/b> %s</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
     <string name="pickup_station_address">&lt;b>Address:&lt;/b> %s</string>
@@ -264,7 +264,7 @@
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>
     <string name="server_error">We have encountered a small problem fetching the data.</string>
-    <string name="server_error_title">Problem occured</string>
+    <string name="server_error_title">Problem occurred</string>
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
@@ -293,7 +293,7 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"></string>
+    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
