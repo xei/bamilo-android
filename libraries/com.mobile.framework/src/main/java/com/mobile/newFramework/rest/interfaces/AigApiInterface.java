@@ -396,13 +396,13 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultShippingAddress = "setDefaultShippingAddress";
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultBillingAddress = "setDefaultBillingAddress";
 
