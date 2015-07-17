@@ -199,6 +199,9 @@
     <string name="pickup_station_address">Address:</string>
     <string name="pickup_station_city">Ville:</string>
     <string name="pickup_station_opening_hours">Heures d\'ouverture:</string>
+    <string name="shipping_fee">&lt;b>Frais de livraison:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Frais ajoutés au total de votre montant\"</string>
+    <string name="shipping_time">Délai de livraison:</string>
     <string name="pinch_to_zoom_label">Pincez pour zommer</string>
     <string name="please_fill_all_data">Veuillez entrer toutes les données</string>
     <string name="poll_question_label">Questionnaire</string>
@@ -265,8 +268,6 @@
     <string name="share_checkout_this_product">Découvre vite le produit que j\'ai trouvé !</string>
     <string name="share_subject">Découvrez %s</string>
     <string name="shipping">Livraison</string>
-    <string name="shipping_fee">Frais de livraison:</string>
-    <string name="shipping_time">Délai de livraison:</string>
     <string name="shopping_cart">Panier d\'achat</string>
     <string name="shoppingcart_alert_header">Panier</string>
     <string name="shoppingcart_alert_message_no_items">Panier vide ! Ajoutez-y des produits</string>
@@ -292,6 +293,7 @@
     <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier.</string>
     <string name="splash_slogan">La boutique en ligne N°1 en Afrique</string>
     <string name="splash_slogan_daraz">La seule destination de shopping en ligne que vous aurez besoin!</string>
+    <string name="splash_slogan_powered_by"></string>
     <string name="stale_warning">Connexion perdue</string>
     <string name="string_appearance">Apparence</string>
     <string name="string_price">Prix</string>
@@ -345,7 +347,7 @@
     <string name="install_jumia_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application Jumia</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
-    <string name="app_social">Cammunauté de l\'App</string>
+    <string name="app_social">Communauté de l\'App</string>
     <string name="sort_by">Trier par</string>
     <!-- PLURALS -->
     <string name="plurals_rating">%d évaluation</string>
@@ -375,6 +377,6 @@
     <string name="kickout_page_text1">Le magasin est actuellement plein, et on ne peut pas accueillir de nouveaux clients pour le moment.</string>
     <string name="kickout_page_text2">Nous voulons vous offrir la meilleure expérience de shopping possible, alors nous aimerions vous demander de réessayer plus tard.</string>
     <!-- NEW 2.6 -->
-    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-    <string name="com_facebook_loginview_log_in_button_long">Se connecter via Facebook</string>
+    <string name="facebook_permission">Une autorisation mail est obligatoire. Merci de la valider</string>
+    <string name="com_facebook_loginview_log_in_button_long">se connecter avec Facebook</string>
 </resources>

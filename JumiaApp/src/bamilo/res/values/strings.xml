@@ -12,6 +12,7 @@
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه گردیدند</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
     <string name="all_label">همه</string>
+    <string name="app_name">بامیلو</string>
     <string name="back_label">بازگشت</string>
     <string name="back_level">مرحله قابل</string>
     <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
@@ -195,11 +196,12 @@
     <string name="payment_method">&lt;b>روش پرداخت: &lt;/b> %s></string>
     <string name="personal_data_label">اطلاعات شخصی شما</string>
     <string name="personal_data_title">اطلاعات حساب</string>
-    <string name="pickup_station_address">&lt;b>نشانی:&lt;/b> %s</string>
-    <string name="pickup_station_city">&lt;b>شهر:&lt;/b> %s</string>
-    <string name="pickup_station_opening_hours">&lt;b>ساعت های کاری:&lt;/b> %s</string>
-    <string name="shipping_fee">&lt;b>زینه ارسال :&lt;/b> %s</string>
-    <string name="shipping_time">&lt;b>زمان ارسال:&lt;/b> %s</string>
+    <string name="pickup_station_address">نشانی:</string>
+    <string name="pickup_station_city">شهر:</string>
+    <string name="pickup_station_opening_hours">ساعت های کاری:</string>
+    <string name="shipping_fee">&lt;b>هزینه ارسال :&lt;/b> %s></string>
+    <string name="shipping_fee_info">\"هزینه به مبلغ قابل پرداخت اضافه شد\"</string>
+    <string name="shipping_time">زمان ارسال:</string>
     <string name="pinch_to_zoom_label">باز و بسته کردن دو انگشت برای تغییر بزرگنمایی</string>
     <string name="please_fill_all_data">لطفا تمامی موارد خواسته شده را پر نمایید.</string>
     <string name="poll_question_label">سوال نظرخواهی</string>
@@ -291,6 +293,7 @@
     <string name="some_products_not_added">متاسفانه برخی از کالاها به سبد خرید اضافه نشدند.</string>
     <string name="splash_slogan">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
     <string name="splash_slogan_daraz">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
+    <string name="splash_slogan_powered_by"></string>
     <string name="stale_warning">اتصال قطع شده است.</string>
     <string name="string_appearance">تنظیمات ظاهری</string>
     <string name="string_price">قیمت</string>
@@ -374,6 +377,6 @@
     <string name="kickout_page_text1">به اندازه ای که ظرفیت فروشگاه تکمیل گردیده و امکان خدمت رسانی به مشتریان جدید در این زمان امکان پذیر نمی باشد.</string>
     <string name="kickout_page_text2">ما می خواهیم تجربه ی خریدی دلپذیر را برای شما فراهم آوریم، و به همین دلیل از شما تقاضا می کنیم که دقایقی دیگر مراجعه نمائید.</string>
     <!-- NEW 2.6 -->
-    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-    <string name="com_facebook_loginview_log_in_button_long">ورود با فیس بوک</string>
+    <string name="facebook_permission">اجازه دسترسی به ایمیل ضروری است. لطفاً اجازه دسترسی را قبول کنید</string>
+    <string name="com_facebook_loginview_log_in_button_long">ورود با فیسبوک</string>
 </resources>
