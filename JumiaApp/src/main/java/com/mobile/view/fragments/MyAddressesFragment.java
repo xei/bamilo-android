@@ -222,7 +222,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(isVisible()){
+                if (isVisible()) {
                     // Show address
                     showAddresses(view.isChecked());
                 }
@@ -420,6 +420,16 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         }
         // Show content
         showFragmentContentContainer();
+    }
+
+    public void setDefaultChecked(boolean isSameAddress){
+        mBottomRadioGroup.clearCheckGroup();
+        if(!isSameAddress){
+            // Set Billing address (checked) and others
+            mBottomRadioGroup.setCheckedItem(0);
+        }
+        // Set Shipping Address (checked)
+        mTopRadioGroup.setCheckedItem(0);
     }
 
     /**

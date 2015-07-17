@@ -10,6 +10,15 @@ android {
     }
 }
 
+// Exclude unused com.mobile.components
+sourceSets {
+    main {
+        java {
+            exclude 'com/mobile/components/_unused_/**'
+        }
+    }
+}
+
 dependencies {
     /** REMOTE MAVEN LIBS  **/
     compile 'com.android.support:appcompat-v7:22.2.0'
@@ -33,7 +42,7 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:3.5.0'
     /** LOCAL LIBS  **/
     compile 'com.facebook.android:facebook-android-sdk:4.2.0' // Adjust the version accordingly
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'libs', include: ['*.jar'], exclude:["json.jar"])
     compile files('libs/A4SSDK-GooglePlayServices-1.5.jar')
     /** TESTS **/
     testCompile 'junit:junit:4.12'

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 R.layout.home_fragment_main,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // Init position
+        HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
 
     /*
@@ -114,8 +117,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            //Print.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY, 0);
+            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
         }
     }
 
@@ -133,8 +135,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
-
-
         // Validate shared prefs
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
@@ -146,7 +146,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         else {
             showFragmentErrorRetry();
         }
-
     }
 
     /*
@@ -346,17 +345,21 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void restoreScrollState() {
         Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-        // Validate state
+        // Has saved position
         if (mScrollSavedPosition != null) {
             // Wait until my scrollView is ready and scroll to saved position
-            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    Print.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-                    mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
-                    mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
+            try {
+                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public void onGlobalLayout() {
+                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                });
+            } catch (NullPointerException | IllegalStateException e) {
+                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
+            }
         }
     }
 

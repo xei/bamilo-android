@@ -316,9 +316,8 @@ public interface AigApiInterface {
 
     String addVoucher = "addVoucher";
 
-    @FormUrlEncoded
-    @POST("/")
-    void removeVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    @GET("/")
+    void removeVoucher( Callback<BaseResponse<ShoppingCart>> callback);
 
     String removeVoucher = "removeVoucher";
 
@@ -397,13 +396,13 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultShippingAddress = "setDefaultShippingAddress";
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultBillingAddress = "setDefaultBillingAddress";
 

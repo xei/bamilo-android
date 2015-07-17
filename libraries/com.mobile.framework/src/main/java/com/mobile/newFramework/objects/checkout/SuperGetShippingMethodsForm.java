@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.newFramework.objects.checkout;
 
 import android.os.Parcel;
@@ -39,15 +36,8 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get shipping methods
         form = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
-
-        JSONObject cartJSON = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
-
-        if(cartJSON != null)
-//                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-
         // Get order
         orderSummary = new OrderSummary(jsonObject);
-
         return true;
     }
 
@@ -58,7 +48,6 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
      */
     @Override
     public JSONObject toJSON() {
-
         return null;
     }
 

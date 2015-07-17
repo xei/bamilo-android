@@ -55,8 +55,6 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
 
             fields.clear();
 
-
-
             JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
@@ -68,8 +66,6 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
                     } else {
                         ShippingMethodSubFormHolder subForm = new ShippingMethodSubFormHolder();
                         subForm.initialize(fieldsArray.getJSONObject(i));
-
-//                        Log.i(TAG, "code1subForms : subForm :  "+subForm.name+" "+subForm.toString());
                         for ( int j = 0; j < fields.size(); j++) {
                             if(fields.get(j).options.contains(subForm.scenario)){
                                 fields.get(j).shippingMethodsSubForms.add(subForm);
@@ -78,9 +74,7 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
                     }
                 }
             }
-
         } catch (JSONException e) {
-//            Log.e(TAG, "initialize: error parsing jsonobject", e );
             return false;
         }
 
