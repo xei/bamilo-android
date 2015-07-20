@@ -336,7 +336,6 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
             }
 
             id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
-//            Log.i("CUSTOMER ID", " => " + id);
             firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
