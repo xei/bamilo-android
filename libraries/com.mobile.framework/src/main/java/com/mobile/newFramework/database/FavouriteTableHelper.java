@@ -271,7 +271,7 @@ public class FavouriteTableHelper extends BaseTable {
 	 */
 	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException {
 		 
-		DarwinDatabaseSemaphore.getInstance().getLock();
+		//DarwinDatabaseSemaphore.getInstance().getLock();
 		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("SELECT 1 FROM ").append(TABLE_NAME).append(" WHERE ").append(_FAVOURITE_SKU).append(" = ?").toString();
@@ -290,7 +290,7 @@ public class FavouriteTableHelper extends BaseTable {
 		// Validate cursor and db
 		if (db != null && db.isOpen()) db.close();
 
-		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		//DarwinDatabaseSemaphore.getInstance().releaseLock();
 		
 		return result;
 	}

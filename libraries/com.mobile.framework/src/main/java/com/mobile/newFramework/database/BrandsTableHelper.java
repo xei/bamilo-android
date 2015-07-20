@@ -107,7 +107,7 @@ public class BrandsTableHelper extends BaseTable {
      */
     public synchronized static String getTopBrand() throws InterruptedException {
 
-        DarwinDatabaseSemaphore.getInstance().getLock();
+        //DarwinDatabaseSemaphore.getInstance().getLock();
 
         // Get readable access
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
@@ -136,7 +136,7 @@ public class BrandsTableHelper extends BaseTable {
         } finally {
             db.close();
         }
-        DarwinDatabaseSemaphore.getInstance().releaseLock();
+        //DarwinDatabaseSemaphore.getInstance().releaseLock();
         Print.i(TAG, "TOP BRAND: " + brand + " " + counter);
         // Return name
         return brand;

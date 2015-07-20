@@ -168,7 +168,7 @@ public class CategoriesTableHelper extends BaseTable {
      */
     public synchronized static String getTopCategory() throws InterruptedException {
         
-        DarwinDatabaseSemaphore.getInstance().getLock();
+        //DarwinDatabaseSemaphore.getInstance().getLock();
         
         // Get readable access
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
@@ -191,13 +191,13 @@ public class CategoriesTableHelper extends BaseTable {
             }
             // Close cursor
             if(cursor != null) cursor.close();
-            
+
         } catch (SQLException e) {
             Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
         } finally {
             db.close();
         }
-        DarwinDatabaseSemaphore.getInstance().releaseLock();
+        //DarwinDatabaseSemaphore.getInstance().releaseLock();
         Print.i(TAG, "TOP CATEGORY: " + category + " " + counter);
         // Return name
         return category;

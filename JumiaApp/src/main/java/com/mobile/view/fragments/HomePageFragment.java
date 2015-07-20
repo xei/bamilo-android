@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -344,17 +345,21 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void restoreScrollState() {
         Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-        // Validate state
+        // Has saved position
         if (mScrollSavedPosition != null) {
             // Wait until my scrollView is ready and scroll to saved position
-            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    Print.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-                    mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
-                    mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
+            try {
+                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public void onGlobalLayout() {
+                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                });
+            } catch (NullPointerException | IllegalStateException e) {
+                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
+            }
         }
     }
 

@@ -51,6 +51,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -181,7 +182,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         view.findViewById(R.id.checkout_login_form_button_enter).setOnClickListener(this);
         // Forget button
         view.findViewById(R.id.checkout_login_form_button_password).setOnClickListener(this);
-
         // Sign toggle
         signupToogle = view.findViewById(R.id.checkout_signup_toogle);
         signupToogle.setOnClickListener(this);
@@ -191,7 +191,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         signupFormContainer = (ViewGroup) view.findViewById(R.id.checkout_signup_form_container);
         // Sign button
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
-
         // FACEBOOK
         mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
         mSignUpFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
@@ -199,10 +198,20 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         mFacebookSignUpDivider = view.findViewById(R.id.checkout_signup_form_divider_facebook);
         // Set Facebook
         FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, mFacebookLoginDivider, mSignUpFacebookButton, mFacebookSignUpDivider);
-
         // Callback registration
         mSignUpFacebookButton.registerCallback(callbackManager, this);
         mLoginFacebookButton.registerCallback(callbackManager, this);
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Print.i(TAG, "ON START");
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             Print.d(TAG, "TRIGGER: AUTO LOGIN");
@@ -215,17 +224,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             boolean temp2 = (signupFormResponse != null) ? loadSignUpForm(signupFormResponse) : triggerSignupForm();
             Print.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
         }
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -908,6 +906,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                         showErrorDialog(errors, R.string.error_login_title);
                         showFragmentContentContainer();
                     }
+                } else {
+                    showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
                 }
                 break;
             case SET_SIGNUP_EVENT:
@@ -921,6 +921,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                         Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
                     }
                     showFragmentContentContainer();
+                } else {
+                    showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
                 }
                 break;
             case GET_SIGNUP_FORM_EVENT:
@@ -929,7 +931,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                     triggerInitForm();
                     retryForms++;
                 }
-
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 Print.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");
