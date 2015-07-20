@@ -9,7 +9,7 @@
         android:layout_height="@dimen/wizard_product_height"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/product_tip_top_margin"
-        android:paddingTop="@dimen/product_tip_padding"
+        android:paddingTop="@dimen/product_tip_variations_top_margin"
         android:src="@drawable/img_instructions_swipe" />
 
     <View

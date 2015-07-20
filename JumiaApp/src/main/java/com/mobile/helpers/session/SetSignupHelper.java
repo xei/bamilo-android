@@ -57,7 +57,6 @@ public class SetSignupHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new SignUpCustomer(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.signUpCustomer);
     }
 
