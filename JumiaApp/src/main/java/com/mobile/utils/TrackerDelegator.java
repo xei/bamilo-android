@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -289,12 +290,16 @@ public class TrackerDelegator {
      *
      */
     public static void trackCategoryView() {
-        try  {
-            // AD4Push
-            Ad4PushTracker.get().trackCategorySelection();
-        } catch (NullPointerException | IllegalStateException e) {
-            Print.i(TAG, "WARNING: EXCEPTION ON TRACK CATEGORY ");
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try  {
+                    // AD4Push
+                    Ad4PushTracker.get().trackCategorySelection();
+                } catch (NullPointerException | IllegalStateException e) {
+                    Print.i(TAG, "WARNING: EXCEPTION ON TRACK CATEGORY ");
+                }
+            }
+        }).start();
     }
 
     /**
@@ -746,13 +751,12 @@ public class TrackerDelegator {
 
     /**
      * Tracking a campaign
-     * @param teaserCampaign
      */
     public static void trackCampaignView(TeaserCampaign teaserCampaign) {
         // GA
         AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTargetTitle() : "n.a.");
         // Ad4Push
-        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign.getCampaignId());
+        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getCampaignId() : "n.a.");
     }
 
 
@@ -1207,4 +1211,66 @@ public class TrackerDelegator {
 //        editor.putString(key, value);
 //        editor.commit();
 //    }
+
+
+    /**
+     * Track catalog page
+     * Fire the track catalog page for Adjust Tracker
+     */
+    public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree, String searchQuery) {
+
+        if (catalogPage != null) {
+            // Track Adjust screen
+            Bundle bundle = new Bundle();
+
+            if (!TextUtils.isEmpty(catalogPage.getCategoryId())) {
+                bundle.putString(AdjustTracker.CATEGORY_ID, catalogPage.getCategoryId());
+                // last viewed category Id
+                TrackerDelegator.trackLastViewedCategory(catalogPage.getCategoryId());
+            }
+            if (!TextUtils.isEmpty(catalogPage.getName())) {
+                bundle.putString(AdjustTracker.CATEGORY, catalogPage.getName());
+            }
+            if (!CollectionUtils.isEmpty(catalogPage.getProducts())) {
+                bundle.putParcelableArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, catalogPage.getProducts());
+            }
+            if (!TextUtils.isEmpty(categoryTree)) {
+                bundle.putString(AdjustTracker.TREE, categoryTree);
+            }
+            TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+
+            // Search
+            if (!TextUtils.isEmpty(searchQuery)) {
+                TrackerDelegator.trackCatalogSearch(catalogPage);
+            }
+        }
+    }
+
+    /**
+     * fires the search event for all trackers
+     */
+    public static void trackCatalogSearch(CatalogPage catalogPage) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SEARCH_CRITERIA_KEY, catalogPage.getSearchTerm());
+        bundle.putLong(TrackerDelegator.SEARCH_RESULTS_KEY, catalogPage.getTotal());
+        if (!TextUtils.isEmpty(catalogPage.getCategoryId())) {
+            bundle.putString(AdjustTracker.CATEGORY_ID, catalogPage.getCategoryId());
+        }
+        if (!TextUtils.isEmpty(catalogPage.getName())) {
+            bundle.putString(AdjustTracker.CATEGORY, catalogPage.getName());
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    TrackerDelegator.trackSearch(bundle);
+                } catch (NullPointerException e) {
+                    Print.i(TAG, "WARNING: EXCEPTION ON TRACK SEARCH ");
+                }
+            }
+        }).start();
+
+    }
+
 }

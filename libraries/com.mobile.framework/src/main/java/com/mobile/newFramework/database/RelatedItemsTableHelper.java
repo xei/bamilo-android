@@ -149,7 +149,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 		Print.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
 		
-		DarwinDatabaseSemaphore.getInstance().getLock();
+		// DarwinDatabaseSemaphore.getInstance().getLock();
 		try {
 			db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			// Begin
@@ -168,7 +168,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 				db.close();
 			} 
 		}
-		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		// DarwinDatabaseSemaphore.getInstance().releaseLock();
 	}
 	
 	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
