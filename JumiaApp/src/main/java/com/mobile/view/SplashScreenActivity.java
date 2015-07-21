@@ -309,16 +309,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onUserLeaveHint()
-    */
-    @Override
-    public void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        Print.e(TAG, "onUserLeaveHint");
-        shouldHandleEvent = false;
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see android.app.Activity#onUserLeaveHint()
+//    */
+//    @Override
+//    public void onUserLeaveHint() {
+//        super.onUserLeaveHint();
+//        Print.e(TAG, "onUserLeaveHint");
+//        shouldHandleEvent = false;
+//    }
 
     /**
      * ######## RESPONSES ########
