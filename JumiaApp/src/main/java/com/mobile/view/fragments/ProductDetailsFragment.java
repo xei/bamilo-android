@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteMisuseException;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -1174,7 +1175,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 mImageFavourite.setSelected(false);
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLiteMisuseException e) {
             e.printStackTrace();
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
             mImageFavourite.setSelected(false);
