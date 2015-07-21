@@ -136,7 +136,11 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         Bundle bundle = new Bundle();
         createSuccessBundleParams(baseResponse, bundle);
-        mRequester.onRequestComplete(bundle);
+        if(mRequester != null) {
+            mRequester.onRequestComplete(bundle);
+        } else {
+            Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST COMPLETE FOR " + mEventType);
+        }
     }
 
     @Override
@@ -144,7 +148,11 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
         Bundle bundle = new Bundle();
         createErrorBundleParams(baseResponse, bundle);
-        mRequester.onRequestError(bundle);
+        if(mRequester != null) {
+            mRequester.onRequestError(bundle);
+        } else {
+            Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST ERROR FOR " + mEventType);
+        }
     }
 
 }

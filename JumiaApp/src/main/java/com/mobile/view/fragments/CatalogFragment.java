@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
@@ -654,23 +655,27 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onClickSwitchColumnsButton(View button) {
         Print.i(TAG, "ON CLICK COLUMNS BUTTON");
-        // Case selected is showing the GRID LAYOUT and the LIST ICON
-        boolean mIsToShowGridLayout = button.isSelected();
-        // Save user preference 
-        CustomerPreferences.saveCatalogLayout(getBaseActivity(), !mIsToShowGridLayout);
-        // Update the icon
-        button.setSelected(!mIsToShowGridLayout);
-        //change back to top line number
-        mTopButtonActivateLine = setButtonActiveLine(!mIsToShowGridLayout);
-        // Update the number of columns
-        mNumberOfColumns = getResources().getInteger(!mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
-        // Update the columns and layout
-        GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
-        manager.setSpanCount(mNumberOfColumns);
-        manager.requestLayout();
-        ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!mIsToShowGridLayout);
-        // Track catalog
-        TrackerDelegator.trackCatalogSwitchLayout((!mIsToShowGridLayout) ? TRACK_LIST : TRACK_GRID);
+        try {
+            // Case selected is showing the GRID LAYOUT and the LIST ICON
+            boolean mIsToShowGridLayout = button.isSelected();
+            // Save user preference
+            CustomerPreferences.saveCatalogLayout(getBaseActivity(), !mIsToShowGridLayout);
+            // Update the icon
+            button.setSelected(!mIsToShowGridLayout);
+            //change back to top line number
+            mTopButtonActivateLine = setButtonActiveLine(!mIsToShowGridLayout);
+            // Update the number of columns
+            mNumberOfColumns = getResources().getInteger(!mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
+            // Update the columns and layout
+            GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
+            manager.setSpanCount(mNumberOfColumns);
+            manager.requestLayout();
+            ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!mIsToShowGridLayout);
+            // Track catalog
+            TrackerDelegator.trackCatalogSwitchLayout((!mIsToShowGridLayout) ? TRACK_LIST : TRACK_GRID);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SWITCH CATALOG COLUMNS", e);
+        }
     }
 
     /**
