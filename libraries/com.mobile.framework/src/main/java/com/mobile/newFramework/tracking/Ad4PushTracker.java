@@ -463,7 +463,7 @@ public class Ad4PushTracker {
      */
     public void trackSignup(String customerId, String customerGender, String firstName, String lastName, String customerDob) {
         if (isEnabled) {
-            Lead lead = new Lead("Registration done with customer ID", customerId);
+            Lead lead = new Lead("Registration done with customer ID", String.valueOf(customerId));
             mA4S.trackLead(lead);
             // Get status in application
             String userStatus = statusInApp();

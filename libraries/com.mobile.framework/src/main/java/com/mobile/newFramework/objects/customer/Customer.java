@@ -3,8 +3,10 @@ package com.mobile.newFramework.objects.customer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,14 +16,12 @@ import java.util.Iterator;
 
 /**
  * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste
-
- * @author GuilhermeSilva
  *
+ * @author GuilhermeSilva
  */
-public class Customer implements com.mobile.newFramework.objects.IJSONSerializable, Parcelable{
+public class Customer implements IJSONSerializable, Parcelable {
 
-    //@SuppressLint("SimpleDateFormat")
-    //private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private static final java.lang.String TAG = Customer.class.getSimpleName();
 
     private String id;
     private CustomerPrefix prefix;
@@ -34,10 +34,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     private String createdAt;
     private boolean guest;
     private String mBirthday;
-
     private ArrayList<String> addresses;
-
-//    private ArrayList<CustomerNewsletterSubscription> mNewsletterSubscriptions;
 
     /**
      * Customer empty constructor
@@ -61,14 +58,14 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     }
 
     /**
-     * @param id of the customer.
-     * @param firstName of the customer
-     * @param middleName of the customer.
-     * @param lastName of the customer.
-     * @param email of the customer.
-     * @param password of the customer.
-     * @param gender of the customer.
-     * @param birthday of the customer.
+     * @param id             of the customer.
+     * @param firstName      of the customer
+     * @param middleName     of the customer.
+     * @param lastName       of the customer.
+     * @param email          of the customer.
+     * @param password       of the customer.
+     * @param gender         of the customer.
+     * @param birthday       of the customer.
      * @param customerPrefix of the customer.
      */
     public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender,
@@ -89,6 +86,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
     /**
      * Get user birthday.
+     *
      * @return String or null
      * @author sergiopereira
      */
@@ -96,14 +94,15 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
         return mBirthday;
     }
 
-    /**
-     * Set user birthday.
-     * @param birthday
-     * @author sergiopereira
-     */
-    public void setBirthday(String birthday) {
-        this.mBirthday = birthday;
-    }
+//    /**
+//     * Set user birthday.
+//     *
+//     * @param birthday
+//     * @author sergiopereira
+//     */
+//    public void setBirthday(String birthday) {
+//        this.mBirthday = birthday;
+//    }
 
     /**
      * gets the customer's id
@@ -133,14 +132,14 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
         return firstName;
     }
 
-    /**
-     * gets the customer middle name
-     *
-     * @return the middle name
-     */
-    public String getMiddleName() {
-        return middleName;
-    }
+//    /**
+//     * gets the customer middle name
+//     *
+//     * @return the middle name
+//     */
+//    public String getMiddleName() {
+//        return middleName;
+//    }
 
     /**
      * gets the customer last name
@@ -179,71 +178,63 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     }
 
 
-    /**
-     * @param firstName
-     *            the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+//    /**
+//     * @param firstName the firstName to set
+//     */
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    /**
+//     * @param middleName the middleName to set
+//     */
+//    public void setMiddleName(String middleName) {
+//        this.middleName = middleName;
+//    }
+//
+//    /**
+//     * @param lastName the lastName to set
+//     */
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
 
     /**
-     * @param middleName
-     *            the middleName to set
-     */
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    /**
-     * @param lastName
-     *            the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * @param email
-     *            the email to set
+     * @param email the email to set
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * @param gender
-     *            the gender to set
+     * @param gender the gender to set
      */
     public void setGender(CustomerGender gender) {
         this.gender = gender;
     }
 
     /**
-     * @param password
-     *            the password to set
+     * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * @return the prefix
-     */
-    public CustomerPrefix getPrefix() {
-        return prefix;
-    }
+//    /**
+//     * @return the prefix
+//     */
+//    public CustomerPrefix getPrefix() {
+//        return prefix;
+//    }
+//
+//    /**
+//     * @param prefix the prefix to set
+//     */
+//    public void setPrefix(CustomerPrefix prefix) {
+//        this.prefix = prefix;
+//    }
 
     /**
-     * @param prefix
-     *            the prefix to set
-     */
-    public void setPrefix(CustomerPrefix prefix) {
-        this.prefix = prefix;
-    }
-
-    /**
-     *
      * @return The User Account creation date.
      */
     public String getCreatedAt() {
@@ -251,7 +242,6 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     }
 
     /**
-     *
      * @param created_at - The User Account creation date.
      */
     public void setCreatedAt(String created_at) {
@@ -272,13 +262,14 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
         this.addresses = addresses;
     }
 
-    /**
-     * Method that validate if user has addresses
-     * @return true/false
-     */
-    public boolean hasAddresses(){
-        return this.addresses != null && this.addresses.size() > 0;
-    }
+//    /**
+//     * Method that validate if user has addresses
+//     *
+//     * @return true/false
+//     */
+//    public boolean hasAddresses() {
+//        return this.addresses != null && this.addresses.size() > 0;
+//    }
 
 //    /**
 //     * Get newsletter subscriptions
@@ -329,10 +320,13 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     public boolean initialize(JSONObject jsonObject) {
         try {
 
+            // Case: METADATA:DATA:USER
+            if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
+                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
+            }
+            // Case: METADATA:USER
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
-            } else if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
 
             id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
@@ -343,11 +337,11 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
             mBirthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
 
             String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
-            if(genderString == null) {
+            if (genderString == null) {
                 gender = CustomerGender.UNKNOWN;
             } else if (genderString.equals("male")) {
                 gender = CustomerGender.Male;
-            } else if(genderString.equals("female")) {
+            } else if (genderString.equals("female")) {
                 gender = CustomerGender.Female;
             } else {
                 gender = CustomerGender.Gender;
@@ -355,7 +349,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
             // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
             JSONObject addressesJson = jsonObject.optJSONObject(RestConstants.JSON_CUSTOMER_ADDRESS_COLLECTION_TAG);
-            if(addressesJson != null && addressesJson.length() > 0 ){
+            if (addressesJson != null && addressesJson.length() > 0) {
                 addresses = new ArrayList<>();
                 Iterator<?> iterator = addressesJson.keys();
                 while (iterator.hasNext()) {
@@ -364,21 +358,8 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
                 }
             }
 
-//            mNewsletterSubscriptions = new ArrayList<>();
-//            JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
-//            if(newsletterArray != null) {
-//                for (int i = 0; i < newsletterArray.length(); i++) {
-//                    JSONObject object = newsletterArray.optJSONObject(i);
-//                    if(object != null) {
-//                        CustomerNewsletterSubscription newsletter = new CustomerNewsletterSubscription();
-//                        newsletter.initialize(object);
-//                        mNewsletterSubscriptions.add(newsletter);
-//                    }
-//                }
-//            }
-
         } catch (JSONException e) {
-//            Log.e( TAG, "Error parsing the jsonobject to customer", e );
+            Print.e(TAG, "Error parsing the jsonobject to customer", e);
             return false;
         }
         return true;
@@ -390,15 +371,12 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
     @Override
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
-
         try {
             jsonObject.put(RestConstants.JSON_ID_CUSTOMER_TAG, id);
             jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
             jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
             jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
-
-            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender==CustomerGender.Male?"male":"female");
-
+            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender == CustomerGender.Male ? "male" : "female");
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -414,6 +392,7 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
     /**
      * ########### Parcelable ###########
+     *
      * @author sergiopereira
      */
 
@@ -447,7 +426,6 @@ public class Customer implements com.mobile.newFramework.objects.IJSONSerializab
 
     /**
      * Parcel constructor
-     * @param in
      */
     private Customer(Parcel in) {
         this.id = in.readString();

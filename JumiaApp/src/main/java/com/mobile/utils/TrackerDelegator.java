@@ -357,7 +357,7 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, customer.getIdAsString(), 0l);
         // AD4
-        Ad4PushTracker.get().trackSignup(customer.getIdAsString(), customer.getGender().toString(), customer.getFirstName(), customer.getLastName(), customer.getBirthday());
+        Ad4PushTracker.get().trackSignup(customer.getIdAsString(), String.valueOf(customer.getGender()), customer.getFirstName(), customer.getLastName(), customer.getBirthday());
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);

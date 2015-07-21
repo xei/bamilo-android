@@ -622,7 +622,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param saveCredentials
      */
     private void triggerSignup(ContentValues values, boolean saveCredentials) {
-        Print.i(TAG, "TRIGGER: SIGNUP " + values.toString());
+        Print.i(TAG, "TRIGGER: SIGN UP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
