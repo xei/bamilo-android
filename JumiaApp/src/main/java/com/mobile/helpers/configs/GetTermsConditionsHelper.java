@@ -1,93 +1,112 @@
-/**
- * @author Manuel Silva
- * 
- */
 package com.mobile.helpers.configs;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.Bundle;
 
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.Utils;
-import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.statics.StaticTermsConditions;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
+import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
-import de.akquinet.android.androlog.Log;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Get Product Information helper
- * 
- * @author Manuel Silva
- * 
  */
-public class GetTermsConditionsHelper extends BaseHelper {
+public class GetTermsConditionsHelper extends SuperBaseHelper {
 
     private static String TAG = GetTermsConditionsHelper.class.getSimpleName();
-    
-    private static final EventType EVENT_TYPE = EventType.GET_TERMS_EVENT;
+
+    public static final String KEY = "key";
 
     @Override
-    public Bundle generateRequestBundle(Bundle args) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_TERMS_EVENT.action);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
-                HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        return bundle;
+    public EventType getEventType() {
+        return EventType.GET_TERMS_EVENT;
     }
 
     @Override
-    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
-        String text = "";
-        JSONArray dataArray;
-        try {
-            dataArray = jsonObject
-                    .getJSONArray(RestConstants.JSON_DATA_TAG);
-
-            if (dataArray.length() > 0) {
-                text = dataArray.getString(0);
-            }
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, text);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_TERMS_EVENT);
-//        Log.i("REQUEST", "event EVENT_TYPE response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
-        return bundle;
-    }
-    
-    
-    @Override
-    public Bundle parseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "parseErrorBundle GetTermsHelper");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_PRIORITARY;
     }
 
     @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-        return bundle;
+    protected Map<String, String> getRequestData(Bundle args) {
+        Map<String, String> data = new HashMap<>();
+        data.put(KEY, "terms_mobile");
+        return data;
     }
-    
+
     @Override
-    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-        return parseResponseErrorBundle(bundle);
+    protected void onRequest(RequestBundle requestBundle) {
+//        new GetTermsConditions(requestBundle, this).execute();
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
     }
+
+    @Override
+    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+        super.createSuccessBundleParams(baseResponse, bundle);
+        StaticTermsConditions termsConditions = (StaticTermsConditions) baseResponse.getMetadata().getData();
+        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, termsConditions.getHtml());
+    }
+
+//    @Override
+//    public Bundle generateRequestBundle(Bundle args) {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_TERMS_EVENT.action);
+//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
+//                HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
+//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+//        return bundle;
+//    }
+
+//    @Override
+//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
+//        Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
+//        String text = "";
+//        JSONArray dataArray;
+//        try {
+//            dataArray = jsonObject
+//                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+//
+//            if (dataArray.length() > 0) {
+//                text = dataArray.getString(0);
+//            }
+//        } catch (JSONException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, text);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
+//        return bundle;
+//    }
+//
+//
+//    @Override
+//    public Bundle parseErrorBundle(Bundle bundle) {
+//        Log.d(TAG, "parseErrorBundle GetTermsHelper");
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle) {
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
+//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+//        return bundle;
+//    }
+//
+//    @Override
+//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+//        return parseResponseErrorBundle(bundle);
+//    }
     
 }

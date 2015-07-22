@@ -23,19 +23,19 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.forms.Form;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetRatingFormHelper;
 import com.mobile.helpers.configs.GetReviewFormHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.RatingReviewProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
@@ -50,8 +50,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  *
  *  * This class represents the write product review screen framgent when the user uses landscape view on Reviews fragment and manages all interactions about it's form.
@@ -62,7 +60,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ReviewWriteNestedFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ReviewWriteNestedFragment.class);
+    private static final String TAG = ReviewWriteNestedFragment.class.getSimpleName();
     
     private static final String SHOWING_FORM = "showingForm";
     
@@ -77,8 +75,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private static final String RATINGS = "ratings";
 
     private CompleteProduct completeProduct;
-
-    private TextView productName;
 
     private LinearLayout ratingContainer;
 
@@ -138,7 +134,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -149,7 +145,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -161,8 +157,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        Print.i(TAG, "ON VIEW CREATED");
+        JumiaApplication.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -180,7 +176,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
         
     }
 
@@ -192,7 +188,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
 
         // Get arguments
         Bundle arguments = getArguments();
@@ -204,7 +200,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 completeProduct = (CompleteProduct)parcelableProduct;
             }
         }
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        JumiaApplication.setIsSellerReview(false);
 
         isExecutingSendReview = false;
         showFragmentLoading();
@@ -215,8 +211,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
         setRatingReviewFlag();
 
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
             // load complete product URL
             if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
@@ -227,7 +221,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-                isShowingRatingForm = true;
+//                isShowingRatingForm = true;
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
@@ -247,9 +241,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     }
                 }
             }
-        } else {
-            showFragmentErrorRetry();
-        }
         
     }
 
@@ -261,8 +252,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        Print.i(TAG, "ON PAUSE");
+        JumiaApplication.setIsSellerReview(false);
         saveReview();
 
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
@@ -278,7 +269,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
 
     }
 
@@ -290,7 +281,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -396,7 +387,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     private void restoreTextReview(DynamicForm form){
         mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
-        if(form != null && form.getItemByKey(NAME) != null){
+        if(form != null && form.getItemByKey(NAME) != null && form.getItemByKey(NAME).getValue().equals("")){
             if(mFormReviewValues != null)
                 form.getItemByKey(NAME).setValue(mFormReviewValues.get(NAME));
         }
@@ -455,7 +446,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      */
     private void loadReviewAndRatingFormValues() {
         
-        ContentValues savedRatingReviewValues = new ContentValues();
+        ContentValues savedRatingReviewValues;
         
         if(formValues == null){
             savedRatingReviewValues = JumiaApplication.getRatingReviewValues();
@@ -472,7 +463,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     try {
                         item.loadState(savedRatingReviewValues);
                     } catch (NullPointerException e) {
-                        Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
+                        Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                     }
                 }
             }
@@ -502,29 +493,28 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
-        Log.i(TAG, "onSuccessEvent eventType : " + eventType);
+        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
         case REVIEW_RATING_PRODUCT_EVENT:
 
-            Log.d(TAG, "review product completed: success");
+            Print.d(TAG, "review product completed: success");
             // Clean options after success
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
             
             //only needed for tracking purpose
             params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
-            
-            TrackerDelegator.trackItemReview(params);
+
+            TrackerDelegator.trackItemReview(params, isShowingRatingForm);
             String buttonMessageText = getResources().getString(R.string.dialog_to_product);
-            
            
             //Validate if fragment is nested
             nestedFragment = this.getParentFragment() instanceof ReviewsFragment;
@@ -556,7 +546,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             return false;
 
         case GET_FORM_RATING_EVENT:
-            Log.i(TAG, "GET_FORM_RATING_EVENT");
+            Print.i(TAG, "GET_FORM_RATING_EVENT");
             ratingForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setRatingLayout(ratingForm);
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
@@ -567,15 +557,15 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             return true;
             
         case GET_FORM_REVIEW_EVENT:
-            Log.i(TAG, "GET_FORM_REVIEW_EVENT");
+            Print.i(TAG, "GET_FORM_REVIEW_EVENT");
             reviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            if(ratingForm == null)
+            if(ratingForm == null || !isShowingRatingForm)
                 setRatingLayout(reviewForm);
             showFragmentContentContainer();
             return true;
 
         case GET_PRODUCT_EVENT:
-            Log.d(TAG, "GOT GET_PRODUCT_EVENT");
+            Print.d(TAG, "GOT GET_PRODUCT_EVENT");
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
@@ -603,11 +593,11 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         
@@ -732,7 +722,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
@@ -742,7 +732,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
@@ -775,7 +765,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         getRatingFormValues(values,form);
         
         bundle.putString(RatingReviewProductHelper.ACTION, action);
-        bundle.putParcelable(RatingReviewProductHelper.RATING_REVIEW_CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         
         triggerContentEventProgress(new RatingReviewProductHelper(), bundle, mCallBack);
         
@@ -808,7 +798,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
+        Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         saveReview();
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
         super.onSaveInstanceState(outState);

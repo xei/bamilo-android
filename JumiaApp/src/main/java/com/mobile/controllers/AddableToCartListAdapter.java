@@ -11,17 +11,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.objects.LastViewedAddableToCart;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.product.AddableToCart;
+import com.mobile.newFramework.objects.product.Favourite;
+import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * This Class is used to create an adapter for the list of items addableToCart.
@@ -33,7 +32,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
-    public final static String TAG = LogTagHelper.create(AddableToCartListAdapter.class);
+    public final static String TAG = AddableToCartListAdapter.class.getSimpleName();
     
     private static int RECYCLED_VIEW_KEY = R.id.recycled_view;
 
@@ -125,7 +124,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        Log.i(TAG, "ON DATA SET CHANGED");
+        Print.i(TAG, "ON DATA SET CHANGED");
     }
     
     /**
@@ -256,7 +255,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             // Validate special price
             if (null != addableToCart.getSpecialPrice() && !addableToCart.getSpecialPrice().equals(addableToCart.getPrice())) {
                 // Set discount 
-                prodItem.discount.setText(addableToCart.getSpecialPrice());
+                prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
                 Double discountPercentage = addableToCart.getMaxSavingPercentage();
                 if (discountPercentage != null) {
                     prodItem.discountPercentage.setText("-" + discountPercentage.intValue() + "%");
@@ -264,7 +263,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 prodItem.discount.setVisibility(View.VISIBLE);
                 prodItem.discountPercentage.setVisibility(View.VISIBLE);
                 // Set price
-                prodItem.price.setText(addableToCart.getPrice());
+                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 prodItem.price.setSelected(true);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
@@ -273,7 +272,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 // Set price
                 prodItem.discount.setVisibility(View.GONE);
                 prodItem.discountPercentage.setVisibility(View.INVISIBLE);
-                prodItem.price.setText(addableToCart.getPrice());
+                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));

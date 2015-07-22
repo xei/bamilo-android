@@ -6,18 +6,20 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.Form;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.OrderSummary;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -26,8 +28,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  *
  * @author sergiopereira
@@ -35,9 +35,10 @@ import de.akquinet.android.androlog.Log;
  */
 public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
-    private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
+    private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
 
     private OrderSummary orderSummary;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -72,27 +73,27 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-                triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null && regions != null){
-                loadCreateAddressForm(mFormResponse);
-            } else {
-                triggerCreateAddressForm();
-            }
-        } else {
-            showFragmentErrorRetry();
-        }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            triggerInitForm();
+        } else if(mFormResponse != null && orderSummary != null && regions != null){
+            loadCreateAddressForm(mFormResponse);
+        } else {
+            triggerCreateAddressForm();
+        }
+    }
 
     protected void loadCreateAddressForm(Form form) {
         super.loadCreateAddressForm(form);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
+
+        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     @Override
@@ -125,7 +126,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Get next step
         FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
         if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
-            Log.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
+            Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.MY_ADDRESSES;
         }
         Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
@@ -160,13 +161,11 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-//            @SuppressWarnings("unchecked")
-//            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
+            Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
+            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode);
         }
     }
 }

@@ -1,15 +1,17 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
+import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
+import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
-import com.viewpagerindicator.CirclePageIndicator;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Main teaser
@@ -18,13 +20,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int DEFAULT_POSITION_PHONE = 0;
-
-    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
-
-    private static final int DEFAULT_POSITION_TABLET = 1;
-
-    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
+    public static final int DEFAULT_POSITION = 0;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
+//
+//    private static final int DEFAULT_POSITION_TABLET = 1;
+//
+//    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
 
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
@@ -34,16 +36,18 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     public PreviewViewPager pager;
 
-    public CirclePageIndicator indicator;
+    public InfiniteCirclePageIndicator indicator;
 
     public View container;
+
+    public static int viewPagerPosition;
 
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
         super(context, itemView, onClickListener);
         // Tablet flag
         isTablet = DeviceInfoHelper.isTabletDevice(mContext);
         // Pager indicator
-        indicator = (CirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
+        indicator = (InfiniteCirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
         // Pager indicator
         container = itemView.findViewById(R.id.home_teaser_main_container);
         // Set height
@@ -52,7 +56,6 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         pager = (PreviewViewPager) itemView.findViewById(R.id.home_teaser_main_pager);
         // Set the preview offset
         pager.setPreviewOffset(mOffset);
-
     }
 
     /**
@@ -79,12 +82,15 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NULL");
             // Create adapter
             HomeMainTeaserAdapter adapter = new HomeMainTeaserAdapter(mContext, group.getData(), mParentClickListener, isTablet);
+            InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(adapter);
+            infinitePagerAdapter.setOneItemMode();
+            infinitePagerAdapter.enableInfinitePages(adapter.getCount() > 1);
             // Add adapter to pager
-            pager.setAdapter(adapter);
+            pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
             // Set default position
-            pager.setCurrentItem(getDefaultPosition(adapter.getCount()));
+            pager.setCurrentItem(viewPagerPosition);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }
@@ -95,18 +101,27 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
      * @param size The number of items
      * @return int
      */
-    private int getDefaultPosition(int size) {
-        int position;
-        if(!isTablet) {
-            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
-        } else {
-            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
-        }
-        return position;
-    }
+//    @Deprecated
+//    private int getDefaultPosition(int size) {
+//        int position;
+//        if(!isTablet) {
+//            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
+//        } else {
+//            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
+//        }
+//        return position;
+//    }
 
     @Override
-    public void onUpdate() {
-
+    public void applyMargin() {
+        // ...
     }
+
+    public int getViewPagerPosition() {
+        viewPagerPosition = (pager.getAdapter() instanceof InfinitePagerAdapter) ?
+                ((InfinitePagerAdapter) pager.getAdapter()).getVirtualPosition(pager.getCurrentItem())
+                : pager.getCurrentItem();
+        return viewPagerPosition;
+    }
+    
 }

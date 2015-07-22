@@ -3,9 +3,8 @@ package com.mobile.utils.dialogfragments;
 
 import android.content.Context;
 
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
-
-import de.akquinet.android.androlog.Log;
 
 public class WizardFactory {
     
@@ -36,7 +35,7 @@ public class WizardFactory {
             WizardGenericFragment.getInstance(type, R.layout.wizard_navigation_categories, R.id.wizard_nav_button).show(fragmentManager, tag);*/
             break;
         default:
-            Log.w(TAG, "WARNING ON SHOW WIZARD: UNKNOWN TYPE");
+            Print.w(TAG, "WARNING ON SHOW WIZARD: UNKNOWN TYPE");
             break;
         }
     }

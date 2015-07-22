@@ -2,6 +2,8 @@ package com.mobile.controllers;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,9 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Order;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.orders.Order;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Collection;
  */
 public class OrdersListAdapter extends BaseAdapter {
     
-    public final static String TAG = LogTagHelper.create(OrdersListAdapter.class);
+    public final static String TAG = OrdersListAdapter.class.getSimpleName();
 
     public interface OnSelectedOrderChange {
         public void SelectedOrder(Order selectedOrder, ViewGroup productsContainer, boolean toShow, int selectedProd);
@@ -130,7 +131,7 @@ public class OrdersListAdapter extends BaseAdapter {
             item.orderTotalPrice = (TextView) itemView.findViewById(R.id.order_price);
             item.orderNumber = (TextView) itemView.findViewById(R.id.order_number);
             item.productDate = (TextView) itemView.findViewById(R.id.order_list_date);
-            item.productPaymentMethod = (TextView) itemView.findViewById(R.id.order_list_payment);
+            item.productPaymentMethod = (TextView) itemView.findViewById(R.id.order_list_payment_title);
             item.orderCheck = (ImageView) itemView.findViewById(R.id.order_check);
             item.orderArrow = (ImageView) itemView.findViewById(R.id.order_arrow);
             item.orderLine = itemView.findViewById(R.id.order_bottom_line);
@@ -138,14 +139,14 @@ public class OrdersListAdapter extends BaseAdapter {
             itemView.setTag(item);
 
         } else {
-
             item = (Item) itemView.getTag();
         }
 
-        item.orderDate.setText(orders.get(position).getmDate());
-        item.orderTotalPrice.setText(CurrencyFormatter.formatCurrency(orders.get(position).getmOrderTotal()));
+        final Order order = orders.get(position);
+        item.orderDate.setText(order.getmDate());
+        item.orderTotalPrice.setText(CurrencyFormatter.formatCurrency(order.getmOrderTotal()));
         item.orderNumber.setText(context.getString(R.string.my_order_number_label) + " "
-                + orders.get(position).getmOrderNumber());
+                + order.getmOrderNumber());
 
         if (position == orders.size() - 1)
             item.orderLine.setVisibility(View.GONE);
@@ -154,14 +155,17 @@ public class OrdersListAdapter extends BaseAdapter {
         
         // Case portrait view
         if (item.productsCont != null) {
-            item.productPaymentMethod.setText(orders.get(position).getmPayment());
-            item.productDate.setText(orders.get(position).getmDate());
+            String paymentMethod = TextUtils.htmlEncode(order.getmPayment());
+            String paymentMethodLabel = String.format(context.getString(R.string.payment_method), paymentMethod);
+            item.productPaymentMethod.setText(Html.fromHtml(paymentMethodLabel));
+//            item.productPaymentMethod.setText(order.getmPayment());
+            item.productDate.setText(order.getmDate());
 
             if(selectedPosition != -1 && position == selectedPosition){
                 item.orderArrow.setSelected(true);
                 item.productsCont.setVisibility(View.VISIBLE);
                 item.products.setVisibility(View.VISIBLE);
-                oderSelected.SelectedOrder(orders.get(position), item.products, true, position);
+                oderSelected.SelectedOrder(order, item.products, true, position);
             } else {
                 item.orderArrow.setSelected(false);
                 item.productsCont.setVisibility(View.GONE);
@@ -177,13 +181,13 @@ public class OrdersListAdapter extends BaseAdapter {
                         item.productsCont.setVisibility(View.GONE);
                         item.products.setVisibility(View.GONE);
                         selectedPosition = -1;
-                        oderSelected.SelectedOrder(orders.get(position), item.products, false, -1);
+                        oderSelected.SelectedOrder(order, item.products, false, -1);
                     } else {
                         item.orderArrow.setSelected(true);
                         item.productsCont.setVisibility(View.VISIBLE);
                         item.products.setVisibility(View.VISIBLE);
                         selectedPosition = position;
-                        oderSelected.SelectedOrder(orders.get(position), item.products, true, position);
+                        oderSelected.SelectedOrder(order, item.products, true, position);
                     }
                 }
             });
@@ -200,10 +204,10 @@ public class OrdersListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if (selectedPosition == position) {
-                        oderSelected.SelectedOrder(orders.get(position), item.products, false, position);
+                        oderSelected.SelectedOrder(order, item.products, false, position);
                     } else {
                         selectedPosition = position;
-                        oderSelected.SelectedOrder(orders.get(position), item.products, true, position);
+                        oderSelected.SelectedOrder(order, item.products, true, position);
                     }
                 }
             });

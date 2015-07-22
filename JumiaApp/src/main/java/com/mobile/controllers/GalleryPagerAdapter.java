@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.utils.photoview.PhotoViewAttacher;
@@ -18,11 +18,9 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
-    private static final String TAG = LogTagHelper.create(GalleryPagerAdapter.class);
+    private static final String TAG = GalleryPagerAdapter.class.getSimpleName();
     
     private final static int MIN_NUM_OF_IMAGES = 3;
     
@@ -66,7 +64,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     public void replaceAll(ArrayList<String> images) {
         this.mImageUrls = images;
         notifyDataSetChanged();
-        Log.d(TAG, "replaceAll: done - notfied");
+        Print.d(TAG, "replaceAll: done - notfied");
     }
 
     /*
@@ -88,7 +86,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         View view = null;
         try {
             if (this.isZoomAvailable) {
-                Log.i(TAG, " full_screen_gallery: " + position);
+                Print.i(TAG, " full_screen_gallery: " + position);
                 view = mInflater.inflate(R.layout.full_screen_gallery, container, false);
             } else {
                 view = mInflater.inflate(R.layout.image_loadable, container, false);
@@ -157,7 +155,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 mAttacher.setScaleType(ScaleType.FIT_CENTER);
                 mAttacher = null;
             } catch (IllegalStateException | NullPointerException e) {
-                Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
+                Print.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
             }
         }
     }

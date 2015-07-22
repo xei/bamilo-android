@@ -1,58 +1,49 @@
 package com.mobile.app;
 
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
-import com.mobile.forms.Form;
-import com.mobile.forms.FormData;
-import com.mobile.forms.PaymentMethodForm;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.DarwinDatabaseHelper;
-import com.mobile.framework.objects.CountryObject;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.PaymentInfo;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.objects.VersionInfo;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
-import com.mobile.framework.rest.ICurrentCookie;
-import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.service.IRemoteService;
-import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.service.RemoteService;
-import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.ApptimizeTracking;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.ImageResolutionHelper;
-import com.mobile.framework.utils.SingletonMap;
-import com.mobile.helpers.BaseHelper;
+import com.facebook.FacebookSdk;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.DarwinDatabaseHelper;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.forms.PaymentInfo;
+import com.mobile.newFramework.forms.PaymentMethodForm;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.objects.configs.VersionInfo;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.cookies.ISessionCookie;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.ApptimizeTracking;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.ImageResolutionHelper;
+import com.mobile.newFramework.utils.SingletonMap;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
-import com.mobile.utils.ServiceSingleton;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.boye.httpclientandroidlib.client.CookieStore;
-import de.akquinet.android.androlog.Log;
 
 public class JumiaApplication extends A4SApplication {
 
@@ -61,8 +52,6 @@ public class JumiaApplication extends A4SApplication {
     private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
     // Application
     public static JumiaApplication INSTANCE;
-    // Service flag
-    public static boolean mIsBound = false;
     // Shop
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
@@ -97,16 +86,12 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-    /**
-     * The md5 registry
-     */
-    public HashMap<String, IResponseCallback> responseCallbacks;
-    boolean resendInitializationSignal = false;
-    private Handler resendHandler;
-    private Handler resendMenuHandler;
-    private Message resendMsg;
-
-    private IRemoteServiceCallback callBackWaitingService;
+//    /**
+//     * The md5 registry
+//     */
+//    boolean resendInitializationSignal = false;
+//    private Handler resendHandler;
+//    private Message resendMsg;
 
     /**
      * Payment methods Info
@@ -119,8 +104,7 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-    //    private ArrayList<String> bannerSkus = new ArrayList<>();
-    private HashMap<String,TeaserGroupType> bannerSkus = new HashMap<>();
+    private HashMap<String, TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -128,26 +112,24 @@ public class JumiaApplication extends A4SApplication {
      */
     @Override
     public void onApplicationCreate() {
-        Log.i(TAG, "ON APPLICATION CREATE");
-        Log.init(getApplicationContext());
+        Print.initializeAndroidMode(getApplicationContext());
+        Print.i(TAG, "ON APPLICATION CREATE");
         INSTANCE = this;
-        // Service
-        doBindService();
         // Init image loader
         RocketImageLoader.init(this);
         // Init apptimize
         ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
-        countriesAvailable = new ArrayList<>();
-        responseCallbacks = new HashMap<>();
+        // Init image resolution
+        ImageResolutionHelper.init(this);
         // Get the current shop id and name
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        //
+        // Init cached data
+        countriesAvailable = new ArrayList<>();
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-        ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
 
         /**
@@ -155,22 +137,34 @@ public class JumiaApplication extends A4SApplication {
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */
-        Log.i(TAG, "INIT CURRENCY");
+        Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if(!TextUtils.isEmpty(currencyCode)){
+        if (!TextUtils.isEmpty(currencyCode)) {
             CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
         }
+
+        /**
+         * When app try recover from background
+         */
+        if(!TextUtils.isEmpty(SHOP_ID)) {
+            Darwin.initialize(getApplicationContext(), SHOP_ID);
+            getCustomerUtils();
+        }
+        // Initialize the SDK before executing any other operations,
+        // especially, if you're using Facebook UI elements.
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+
     }
 
     public synchronized void init(Handler initializationHandler) {
-        Log.d(TAG, "ON INIT");
+        Print.d(TAG, "ON INIT");
         // isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
 
         for (ApplicationComponent component : COMPONENTS.values()) {
             ErrorCode result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
-                Log.i(TAG, "code1configs : " + result);
+                Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -178,179 +172,60 @@ public class JumiaApplication extends A4SApplication {
 
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+        Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
         // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        // Disabled for Samsung and Blackberry (check_version_enabled) 
+        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
-        Log.d(TAG, "ON HANDLE");
+        Print.d(TAG, "ON HANDLE");
         // isInitializing = false;
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-        Log.d(TAG, "Handle initialization result: " + errorType);
+        Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE ||
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
-                errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-                && ServiceSingleton.getInstance().getService() == null ){
-            Log.d(TAG, "ON HANDLE WITH ERROR");
-            resendInitializationSignal = true;
-            resendHandler = initializationHandler;
-            resendMsg = msg;
-            doBindService();
-        } else {
-            Log.d(TAG, "ON INIT HANDLE");
-            initializationHandler.sendMessage(msg);
-        }
+        // Send result message
+        initializationHandler.sendMessage(msg);
+
+//        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
+//
+////            //&& ServiceSingleton.getInstance().getService() == null) {
+////
+////            Print.d(TAG, "ON HANDLE WITH ERROR");
+////            resendInitializationSignal = true;
+////            resendHandler = initializationHandler;
+////            resendMsg = msg;
+////
+////            doBindService();
+//
+//            initializationHandler.sendMessage(msg);
+//
+//
+//        } else {
+//            Print.d(TAG, "ON INIT HANDLE");
+//            initializationHandler.sendMessage(msg);
+//        }
     }
 
-    public void registerFragmentCallback(IRemoteServiceCallback mCallback) {
-        Log.d(TAG, "ON REGISTER CALL BACK FRAGMENT");
-        if (mCallback == null) {
-            Log.i(TAG, "mCallback is null");
-        }
-        if (ServiceSingleton.getInstance().getService() == null) {
-            Log.i(TAG, "ServiceSingleton.getInstance().getService() is null");
-            // Try connect with service
-            doBindService();
-            // Save the call back
-            callBackWaitingService = mCallback;
-            return;
-        }
-        try {
-            ServiceSingleton.getInstance().getService().registerCallback(mCallback);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void unRegisterFragmentCallback(IRemoteServiceCallback mCallback) {
-        if (mCallback == null) {
-            Log.i(TAG, "mCallback is null");
-        }
-        if (ServiceSingleton.getInstance().getService() != null) {
-            try {
-                ServiceSingleton.getInstance().getService().unregisterCallback(mCallback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    /**
-     * Method used to register the call back that is waiting for service.
-     *
-     * @author sergiopereira
+    /*
+    ###########################
      */
-    private void registerCallBackIsWaiting() {
-        try {
-            // Validate the current call back waiting by service
-            if (callBackWaitingService != null) {
-                ServiceSingleton.getInstance().getService().registerCallback(callBackWaitingService);
-                callBackWaitingService = null;
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Triggers the request for a new api call
-     * @return the md5 of the reponse
      */
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-        if (helper == null) {
-            return "";
-        }
-        final Bundle requestBundle = helper.newRequestBundle(args);
-
-        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
-
-        Log.d("TRACK", "sendRequest");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
-                //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-
-                JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
-
-                    @Override
-                    public void onRequestComplete(Bundle bundle) {
-
-                        /**
-                         * ###################################################
-                         * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
-                         * # - Alternative -> ParseSuccessAsyncTask          #
-                         * # @author sergiopereira                           #
-                         * ###################################################
-                         */
-                        //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
-                        //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());                        
-                        //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
-
-                        Log.d("TRACK", "onRequestComplete BaseActivity");
-                        // We have to parse this bundle to the final one
-                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
-                        if (responseCallback != null) {
-                            // CASE: Error parsing
-                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                                // Remove request from cache
-                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
-                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-                                helper.removeRequestFromHttpCache(url, type);
-                                // Callback
-                                responseCallback.onRequestError(responseBundle);
-                            }
-                            // CASE: Success
-                            else {
-                                responseCallback.onRequestComplete(responseBundle);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onRequestError(Bundle bundle) {
-                        Log.d("TRACK", "onRequestError  BaseActivity");
-                        // We have to parse this bundle to the final one
-                        Bundle responseBundle = helper.parseErrorBundle(bundle);
-                        if (responseCallback != null) {
-                            responseCallback.onRequestError(responseBundle);
-                        }
-                    }
-                });
-
-                if (!sendRequest(requestBundle)) {
-                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                }
-            }
-        }).start();
-
-        return md5;
+    public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
+        helper.sendRequest(args, responseCallback);
     }
-
-    public boolean sendRequest(Bundle bundle) {
-        if(ServiceSingleton.getInstance().getService() != null){
-            try {
-                ServiceSingleton.getInstance().getService().sendRequest(bundle);
-                return true;
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
+    /*
+    #################################
+     */
 
     /**
      * @return the mMobApiVersionInfo
@@ -360,8 +235,7 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param mVersionInfo
-     *            the mMobApiVersionInfo to set
+     * @param mVersionInfo the mMobApiVersionInfo to set
      */
     public void setMobApiVersionInfo(VersionInfo mVersionInfo) {
         this.mMobApiVersionInfo = mVersionInfo;
@@ -372,12 +246,12 @@ public class JumiaApplication extends A4SApplication {
      */
     public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
-            CookieStore cookieStore = null;
+            ISessionCookie cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
-                cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+                cookieStore = AigHttpClient.getInstance().getCurrentCookie();
             }
-            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
+            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore);
         }
         return mCustomerUtils;
     }
@@ -390,16 +264,14 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param cart
-     *            the cart to set
+     * @param cart the cart to set
      */
     public void setCart(ShoppingCart cart) {
         this.cart = cart;
     }
 
     /**
-     * @param itemSimpleDataRegistry
-     *            the itemSimpleDataRegistry to set
+     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
      */
     public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
         this.itemSimpleDataRegistry = itemSimpleDataRegistry;
@@ -413,24 +285,29 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param formDataRegistry
-     *            the formDataRegistry to set
+     * @param formDataRegistry the formDataRegistry to set
      */
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
     }
 
-    public void doBindService() {
-        if (!mIsBound) {
-            /**
-             * Establish a connection with the service. We use an explicit class
-             * name because we want a specific service implementation that we
-             * know will be running in our own process (and thus won't be
-             * supporting component replacement by other applications).
-             */
-            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
+//    public void doBindService() {
+//
+//        if (resendInitializationSignal) {
+//            resendHandler.sendMessage(resendMsg);
+//            resendInitializationSignal = false;
+//        }
+//
+//        if (!mIsBound) {
+//            /**
+//             * Establish a connection with the service. We use an explicit class
+//             * name because we want a specific service implementation that we
+//             * know will be running in our own process (and thus won't be
+//             * supporting component replacement by other applications).
+//             */
+//            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
+//        }
+//    }
 
     /**
      * @return the loggedIn
@@ -448,48 +325,48 @@ public class JumiaApplication extends A4SApplication {
     }
 
 
-    public void setResendHandler(Handler mHandler) {
-        resendInitializationSignal = true;
-        resendMsg = new Message();
-        resendHandler = mHandler;
-    }
+//    public void setResendHandler(Handler mHandler) {
+//        resendInitializationSignal = true;
+//        resendMsg = new Message();
+//        resendHandler = mHandler;
+//    }
 
-    /**
-     * Service Stuff
-     */
-
-    public ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.i(TAG, "onServiceDisconnected");
-            mIsBound = false;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // This is called when the connection with the service has been
-            // established, giving us the service object we can use to
-            // interact with the service. We are communicating with our
-            // service through an IDL interface, so get a client-side
-            // representation of that from the raw service object.
-            Log.i(TAG, "onServiceConnected");
-            mIsBound = true;
-            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-
-            if (resendInitializationSignal) {
-                resendHandler.sendMessage(resendMsg);
-                resendInitializationSignal = false;
-            }
-
-            if (resendMenuHandler != null) {
-                resendMenuHandler.sendEmptyMessage(0);
-                resendMenuHandler = null;
-            }
-            // Register the fragment callback
-            registerCallBackIsWaiting();
-        }
-    };
+//    /**
+//     * Service Stuff
+//     */
+//
+//    public ServiceConnection mConnection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            Log.i(TAG, "onServiceDisconnected");
+//            mIsBound = false;
+//        }
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            // This is called when the connection with the service has been
+//            // established, giving us the service object we can use to
+//            // interact with the service. We are communicating with our
+//            // service through an IDL interface, so get a client-side
+//            // representation of that from the raw service object.
+//            Log.i(TAG, "onServiceConnected");
+//            mIsBound = true;
+//            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
+//
+//            if (resendInitializationSignal) {
+//                resendHandler.sendMessage(resendMsg);
+//                resendInitializationSignal = false;
+//            }
+//
+//            if (resendMenuHandler != null) {
+//                resendMenuHandler.sendEmptyMessage(0);
+//                resendMenuHandler = null;
+//            }
+//            // Register the fragment callback
+//            registerCallBackIsWaiting();
+//        }
+//    };
 
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
@@ -598,7 +475,6 @@ public class JumiaApplication extends A4SApplication {
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
-        responseCallbacks.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;

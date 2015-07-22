@@ -92,10 +92,16 @@
             </intent-filter>
 
         </activity>
-        <activity
-            android:name="com.facebook.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--<activity-->
+            <!--android:name="com.facebook.LoginActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
         <activity
             android:name="com.mobile.view.MainFragmentActivity"
             android:exported="true"
@@ -118,10 +124,6 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
 
-        <service
-            android:name="com.mobile.framework.service.RemoteService"
-            android:exported="false" />
-
         <!-- ################################################# -->
         <!-- ############# GOOGLE PLAY SERVICES ############## -->
         <!-- ################################################# -->
@@ -137,6 +139,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationName"
+            android:value="@string/app_name" />
 
         <!-- ######################################## -->
         <!-- ############# AD4Push GCM ############## -->

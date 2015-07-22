@@ -4,10 +4,12 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -19,20 +21,18 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.CategoriesTableHelper;
-import com.mobile.framework.objects.Category;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to shoe the categories in the navigation container
@@ -40,7 +40,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
+    private static final String TAG = NavigationCategoryFragment.class.getSimpleName();
 
     private static final int HEADER_FOR_ALL_POSITION = 0;
 
@@ -82,7 +82,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -93,11 +93,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         Bundle bundle = savedInstanceState == null ? getArguments() : savedInstanceState;
         // Get data
         if(bundle != null) {
-            Log.i(TAG, "ON LOAD SAVED STATE");
+            Print.i(TAG, "ON LOAD SAVED STATE");
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
         }
     }
@@ -109,7 +109,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get category list view
         mCategoryList = (ListView) view.findViewById(R.id.nav_sub_categories_grid);
 
@@ -125,7 +125,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
         // Case recover from background
         else {
-            Log.w(TAG, "APPLICATION IS ON BIND PROCESS");
             showRetry();
         }
     }
@@ -138,7 +137,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -149,7 +148,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -159,7 +158,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putString(ConstantsIntentExtra.CATEGORY_ID, mCategoryKey);
     }
 
@@ -171,7 +170,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -182,7 +181,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -193,7 +192,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -226,7 +225,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showRootCategories(ArrayList<Category> categories) {
-        Log.i(TAG, "ON SHOW ROOT CATEGORIES");
+        Print.i(TAG, "ON SHOW ROOT CATEGORIES");
         CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getBaseActivity(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
         mCategoryList.setOnItemClickListener(this);
@@ -239,7 +238,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showSubCategory(Category category) {
-        Log.i(TAG, "ON SHOW NESTED CATEGORIES");
+        Print.i(TAG, "ON SHOW NESTED CATEGORIES");
         try {
             //Show back button
             ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
@@ -278,7 +277,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             // Set listener
             mCategoryList.setOnItemClickListener(this);
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
+            Print.w(TAG, "WARNING NPE ON SHOW NESTED CATEGORIES: GOTO ROOT CATEGORIES");
             showRetry();
         }
     }
@@ -289,7 +288,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showRetry() {
-        Log.i(TAG, "ON SHOW RETRY");
+        Print.i(TAG, "ON SHOW RETRY");
         verifyBackButton();
         showFragmentErrorRetry();
     }
@@ -302,13 +301,19 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param categoryKey
      */
     private void triggerGetCategories(String categoryKey) {
-        Log.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
-        // Create bundle 
-        Bundle bundle = new Bundle();
+        Print.i(TAG, "GET CATEGORY PER LEVEL: " + categoryKey);
+
+        ContentValues contentValues = new ContentValues();
+
+
         // Get per levels
-        bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
+        contentValues.put(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         // Get category
-        if(!TextUtils.isEmpty(categoryKey)) bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+        if(!TextUtils.isEmpty(categoryKey)) contentValues.put(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
+
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
         // Trigger
         triggerContentEvent(new GetCategoriesPerLevelsHelper(), bundle, this);
     }
@@ -336,7 +341,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICKED: " + position);
+        Print.d(TAG, "ON ITEM CLICKED: " + position);
         // Case root
         if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
             // Case branch or leaf
@@ -356,7 +361,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
                 // Show sub level
             else gotoSubCategory(category.getUrlKey());
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK ROOT CATEGORY");
+            Print.w(TAG, "WARNING: NPE ON CLICK ROOT CATEGORY");
         }
     }
 
@@ -382,7 +387,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
                     break;
             }
         } catch (Exception e) {
-            Log.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position);
+            Print.w(TAG, "WARNING NPE ON CLICK NESTED CATEGORY POS: " + position);
         }
     }
 
@@ -425,7 +430,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void gotoParentCategoryFromType(FragmentType type){
-        Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
+        Print.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
             case NAVIGATION_CATEGORIES_ROOT_LEVEL:
                 ((NavigationFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
@@ -434,7 +439,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
                 ((NavigationFragment) getParentFragment()).goToParentCategory();
                 break;
             default:
-                Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
+                Print.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
                 break;
         }
     }
@@ -448,7 +453,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
         // Get categories
@@ -463,7 +468,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR EVENT");
+        Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
 
@@ -496,13 +501,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     }
 
     @Override
-    protected void onInflateNoNetwork(View inflated) {
-        super.onInflateNoNetwork(inflated);
+    protected void onInflateErrorLayout(ViewStub stub, View inflated) {
+        super.onInflateErrorLayout(stub, inflated);
         // Show back button
         verifyBackButton();
         // Set no network view
-        ((TextView) inflated.findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
-        ((TextView) inflated.findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
+        ((TextView) inflated.findViewById(R.id.fragment_root_error_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
+        ((TextView) inflated.findViewById(R.id.fragment_root_error_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
     }
 
     @Override

@@ -26,14 +26,14 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -42,15 +42,13 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * @author sergiopereira
  * 
  */
 public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(CheckoutThanksFragment.class);
+    private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
     private static String order_number;
     
@@ -88,13 +86,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get values
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if(arguments != null &&
@@ -114,25 +112,20 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            prepareLayout();
-        } else {
-            showFragmentErrorRetry();
-        }
+        Print.i(TAG, "ON VIEW CREATED");
+        prepareLayout();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");        
+        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, getLoadTime(), false);
     }
 
@@ -148,19 +141,19 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /**
@@ -220,7 +213,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     }
 
     private void triggerClearCart() {
-        Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
+        Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
     }
 
@@ -327,7 +320,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         public void onClick(View view) {
             int viewId = view.getId();
             if (viewId == R.id.order_status_text) {
-                Log.d(TAG, "ON CLICK SPAN: " + view.getId());
+                Print.d(TAG, "ON CLICK SPAN: " + view.getId());
                 onClickSpannableString(view);
             }
         }
@@ -361,7 +354,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        Log.d(TAG, "VIEW ID: " + view.getId() + " " + R.id.order_status_text);
+        Print.d(TAG, "VIEW ID: " + view.getId() + " " + R.id.order_status_text);
         // CASE continue
         if (view.getId() == R.id.btn_checkout_continue) onClickContinue();
         // CASE order number
@@ -451,7 +444,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         return true;
     }
 
@@ -464,7 +457,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         return false;
     }

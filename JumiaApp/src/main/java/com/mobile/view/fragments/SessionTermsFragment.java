@@ -9,22 +9,25 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.helpers.configs.GetTermsConditionsHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * @author Manuel Silva
  * 
  */
-public class SessionTermsFragment extends BaseFragment {
+public class SessionTermsFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(SessionTermsFragment.class);
+    private static final String TAG = SessionTermsFragment.class.getSimpleName();
 
     private TextView textView;
     
@@ -45,8 +48,8 @@ public class SessionTermsFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionTermsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Terms,
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
                 KeyboardState.NO_ADJUST_CONTENT);
@@ -60,7 +63,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -71,12 +74,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
-        // Get arguments
-        Bundle arguments = getArguments();
-        if(arguments != null) {
-            termsText = arguments.getString(ConstantsIntentExtra.TERMS_CONDITIONS);
-        }
+        Print.i(TAG, "ON CREATE");
     }
     
     /*
@@ -86,9 +84,13 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         textView = (TextView) view.findViewById(R.id.terms_text);
-        setupView();
+        triggerTerms();
+    }
+
+    private void triggerTerms() {
+        triggerContentEvent(new GetTermsConditionsHelper(), null, this);
     }
 
     /*
@@ -99,7 +101,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -110,7 +112,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -121,7 +123,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -132,7 +134,7 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -143,10 +145,44 @@ public class SessionTermsFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
-    
-    private void setupView() {
-            textView.setText(termsText);     
+
+    @Override
+    public void onRequestComplete(Bundle bundle) {
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (getBaseActivity() != null) {
+            super.handleSuccessEvent(bundle);
+        } else {
+            return;
+        }
+
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+            case GET_TERMS_EVENT:
+                showFragmentContentContainer();
+                termsText = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+                textView.setText(termsText);
+        }
+    }
+
+    @Override
+    public void onRequestError(Bundle bundle) {
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        super.handleErrorEvent(bundle);
+
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        triggerTerms();
     }
 }

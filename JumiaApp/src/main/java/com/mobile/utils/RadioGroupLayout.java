@@ -10,18 +10,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
 public class RadioGroupLayout extends LinearLayout {
 
-    private final static String TAG = LogTagHelper.create(RadioGroupLayout.class);
+    private final static String TAG = RadioGroupLayout.class.getSimpleName();
 
     public static final int NO_DEFAULT_SELECTION = -1;
 
@@ -57,7 +54,7 @@ public class RadioGroupLayout extends LinearLayout {
     }
 
     public void setItems(ArrayList<?> items, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
+        Print.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         mDefaultSelected = defaultSelected;
         updateRadioGroup();

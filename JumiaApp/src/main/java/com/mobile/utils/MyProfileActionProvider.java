@@ -18,13 +18,12 @@ import android.widget.SpinnerAdapter;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * ActionProvider to present a Menu on ActionBar. used on main_menu.xml
@@ -35,7 +34,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class MyProfileActionProvider extends ActionProvider {
 
-    public final static String TAG = LogTagHelper.create(MyProfileActionProvider.class);
+    public final static String TAG = MyProfileActionProvider.class.getSimpleName();
     private List<NavigationAction> subMenuItems;
     private DismissibleSpinner mSpinner;
     private MyProfileAdapter mAdapter;
@@ -74,7 +73,7 @@ public class MyProfileActionProvider extends ActionProvider {
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
 
         // Case in Bamilo and API 17 set spinner as gone
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && context.getResources().getBoolean(R.bool.is_bamilo_specific)) 
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && ShopSelector.isRtl())
             mSpinner.setVisibility(View.GONE);
 
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
@@ -109,7 +108,7 @@ public class MyProfileActionProvider extends ActionProvider {
         subMenuItems.add(NavigationAction.MyAccount);
         subMenuItems.add(NavigationAction.MyOrders);
 
-        if(!getContext().getResources().getBoolean(R.bool.is_bamilo_specific) && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
+        if(!ShopSelector.isRtl() && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
             subMenuItems.add(NavigationAction.Country);
         }
     }
@@ -151,7 +150,7 @@ public class MyProfileActionProvider extends ActionProvider {
      * Change selection on Spinner to force a dismiss
      */
     public void dismissSpinner() {
-        Log.d(TAG, "dismissSpinner");
+        Print.d(TAG, "dismissSpinner");
         mSpinner.dismiss();
     }
 
@@ -219,7 +218,7 @@ public class MyProfileActionProvider extends ActionProvider {
 
             ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
             TextView title = (TextView) view.findViewById(R.id.menu_item_title);
-            // counter for favourites total 
+            // counter for favourites total
             TextView counter = (TextView) view.findViewById(R.id.icon_counter);
             counter.setVisibility(View.INVISIBLE);
 
@@ -267,7 +266,7 @@ public class MyProfileActionProvider extends ActionProvider {
                 icon.setImageResource(R.drawable.ico_dropdown_changecountry);
                 break;
             default:
-                Log.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
+                Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
                 break;
             }
 
@@ -276,13 +275,11 @@ public class MyProfileActionProvider extends ActionProvider {
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return 0;
         }
 
         @Override
         public NavigationAction getItem(int position) {
-            // TODO Auto-generated method stub
             return null;
         }
     }

@@ -17,6 +17,7 @@
     <dimen name="text_button">25sp</dimen>
     <dimen name="text_button_item">16sp</dimen>
     <dimen name="warning_text_size">13sp</dimen>
+    <dimen name="text_info">14sp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">48dp</dimen>
@@ -83,6 +84,7 @@
 
     <!-- MY PROFILE REDESIGN -->
     <dimen name="button_big_height">60dp</dimen>
+    <dimen name="button_facebook_padding">15dp</dimen>
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">90dp</dimen>
     <!-- rounded_margin_mid + button_big_height + button_container_height -->

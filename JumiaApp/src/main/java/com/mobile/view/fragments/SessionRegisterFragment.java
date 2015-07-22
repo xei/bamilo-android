@@ -24,25 +24,24 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.forms.Form;
-import com.mobile.forms.NewsletterOption;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.Errors;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.gtm.GTMValues;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.configs.GetTermsConditionsHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
-import com.mobile.helpers.session.GetRegisterHelper;
+import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.NewsletterOption;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -56,15 +55,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * @author sergiopereira
  * 
  */
 public class SessionRegisterFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
+    private static final String TAG = SessionRegisterFragment.class.getSimpleName();
 
     private Button registerButton;
 
@@ -83,8 +80,6 @@ public class SessionRegisterFragment extends BaseFragment {
     private DynamicFormItem termsLink;
 
     private DynamicFormItem newsletterSubscribe;
-
-    private String terms;
 
     private LinearLayout container;
 
@@ -117,7 +112,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -128,7 +123,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -152,7 +147,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -163,28 +158,20 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
-
+        Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
-
         // Used for UG
         forceInputAlignToLeft();
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            if (JumiaApplication.INSTANCE.registerForm != null) {
-                Log.d(TAG, " ON RESUME -> load From");
-                loadForm(JumiaApplication.INSTANCE.registerForm);
-                JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-            } else {
-                triggerRegisterForm();
-            }
-            setAppContentLayout();
-            getFormComponents();
-            setFormComponents();
+        if (JumiaApplication.INSTANCE.registerForm != null) {
+            Print.d(TAG, " ON RESUME -> load From");
+            loadForm(JumiaApplication.INSTANCE.registerForm);
+            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
         } else {
-            showFragmentErrorRetry();
+            triggerRegisterForm();
         }
-      
+
+        getFormComponents();
+        setFormComponents();
     }
 
     /*
@@ -195,7 +182,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -206,7 +193,7 @@ public class SessionRegisterFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
 
         if (container != null) {
             try {
@@ -219,7 +206,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
+        Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         if (null != serverForm) {
 
             for (DynamicFormItem item : serverForm) {
@@ -234,7 +221,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     public void saveFormState() {
         if (null != serverForm) {
-            Log.d(TAG, "  -----> SAVE FORM STATE <--------- ");
+            Print.d(TAG, "  -----> SAVE FORM STATE <--------- ");
 
             if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
@@ -249,13 +236,6 @@ public class SessionRegisterFragment extends BaseFragment {
     /**
      * ##### LAYOUT ####
      */
-
-    /**
-     * Inflate this layout
-     */
-    public void setAppContentLayout() {
-        triggerTerms();
-    }
 
     /**
      * Get Components
@@ -291,7 +271,7 @@ public class SessionRegisterFragment extends BaseFragment {
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Log.d(TAG, "registerButton onClick");
+                Print.d(TAG, "registerButton onClick");
 
 //                if (serverForm != null && !serverForm.checkRequired()) {
 //                    registerRequiredText.setVisibility(View.VISIBLE);
@@ -328,7 +308,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-                Log.d(TAG, "register canceled via login click");
+                Print.d(TAG, "register canceled via login click");
             }
         });
     }
@@ -428,7 +408,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void checkInputFields() {
         if (getView() == null) {
-            Log.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
+            Print.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
             return;
         }
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
@@ -469,7 +449,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -500,26 +480,21 @@ public class SessionRegisterFragment extends BaseFragment {
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
 
-            // Persist user email or empty that value after successfull login
+            // Persist user email or empty that value after successfully login
             CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
 
             // Finish
             getActivity().onBackPressed();
-            Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
+            Print.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
             return false;
         case GET_REGISTRATION_FORM_EVENT:
             showFragmentContentContainer();
             Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            Log.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
+            Print.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
             if (null != form) {
                 JumiaApplication.INSTANCE.registerForm = form;
                 loadForm(form);
             }
-            break;
-        case GET_TERMS_EVENT:
-            terms = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-            // Remove the listener
-            // detailsListener();
             break;
         default:
             break;
@@ -594,9 +569,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 saveFormState();
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
-                getBaseActivity().onSwitchFragment(FragmentType.TERMS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.TERMS, null, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });
@@ -606,10 +579,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    mandatory.setVisibility(View.GONE);
-                } else {
-                    mandatory.setVisibility(View.VISIBLE);
+                if(termsLink.hasRules()) {
+                    if (((CheckBox) v).isChecked()) {
+                        mandatory.setVisibility(View.GONE);
+                    } else {
+                        mandatory.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if (serverForm != null && serverForm.checkRequired()) {
@@ -625,10 +600,10 @@ public class SessionRegisterFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        Log.d(TAG, "ON ERROR EVENT");
+        Print.d(TAG, "ON ERROR EVENT");
         
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
@@ -687,26 +662,25 @@ public class SessionRegisterFragment extends BaseFragment {
         return false;
     }
 
-    /**
-     * #### FUNTIONS NOT USED ON REGISTER ACTIVITY ####
-     */
-
-    /**
-     * Measures a text against a text textview size to determine if the text will fit
-     * 
-     * @param v
-     *            The textview to measure against
-     * @param text
-     *            The text to measure
-     * @param width
-     *            the max width it can have
-     * @return True, if the textsize is bigger than the width; False, if the textsize is smaller
-     *         than the width
-     */
-    public boolean isToBig(TextView v, String text, int width) {
-
-        return (v.getPaint().measureText(text) > width);
-    }
+//    /**
+//     * #### FUNCTIONS NOT USED ON REGISTER ACTIVITY ####
+//     */
+//
+//    /**
+//     * Measures a text against a text textview size to determine if the text will fit
+//     *
+//     * @param v
+//     *            The textview to measure against
+//     * @param text
+//     *            The text to measure
+//     * @param width
+//     *            the max width it can have
+//     * @return True, if the textsize is bigger than the width; False, if the textsize is smaller
+//     *         than the width
+//     */
+//    public boolean isToBig(TextView v, String text, int width) {
+//        return (v.getPaint().measureText(text) > width);
+//    }
 
     /**
      * TRIGGERS
@@ -716,16 +690,12 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void triggerRegister(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetRegisterHelper.REGISTER_CONTENT_VALUES, values);
-        triggerContentEvent(new GetRegisterHelper(), bundle, mCallBack);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEvent(new RegisterHelper(), bundle, mCallBack);
     }
 
     private void triggerRegisterForm() {
         triggerContentEvent(new GetRegisterFormHelper(), null, mCallBack);
-    }
-
-    private void triggerTerms() {
-        triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
     /**

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="account_name">My Account</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
@@ -76,7 +75,7 @@
     <string name="error_ismandatory">Please fill in the</string>
     <string name="error_login_title">Login failed</string>
     <string name="error_no_connection">No connection</string>
-    <string name="error_occured">Sorry, an error occured.</string>
+    <string name="error_occured">Sorry, an error occurred.</string>
     <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
     <string name="error_register_title">Registration failed</string>
@@ -85,8 +84,6 @@
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="extra_costs">Extra Costs:</string>
     <string name="extra_costs_label">Extra Costs</string>
-    <string name="facebook_login_button_text">Login with Facebook</string>
-    <string name="facebook_signup_button_text">Sign up with Facebook</string>
     <string name="fallback_audio">Audio &amp; Video</string>
     <string name="fallback_best">best online shopping experience</string>
     <string name="fallback_books">Books</string>
@@ -196,12 +193,15 @@
     <string name="password_changed">Password changed with success</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <string name="payment">Payment</string>
-    <string name="payment_method">Payment Method</string>
+    <string name="payment_method">&lt;b>Payment Method:&lt;/b> %s</string>
     <string name="personal_data_label">Your Personal Data</string>
     <string name="personal_data_title">Account Data</string>
-    <string name="pickup_station_address">Address:</string>
-    <string name="pickup_station_city">City:</string>
-    <string name="pickup_station_opening_hours">Opening Hours:</string>
+    <string name="pickup_station_address">&lt;b>Address:&lt;/b> %s</string>
+    <string name="pickup_station_city">&lt;b>City:&lt;/b> %s</string>
+    <string name="pickup_station_opening_hours">&lt;b>Opening Hours:&lt;/b> %s</string>
+    <string name="shipping_fee">&lt;b>Shipping Fee:&lt;/b> %s</string>
+    <string name="shipping_fee_info">\"Fee added to Total Amount Payable\"</string>
+    <string name="shipping_time">&lt;b>Shipping Time:&lt;/b> %s</string>
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="poll_question_label">Poll Question</string>
@@ -264,12 +264,10 @@
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>
     <string name="server_error">We have encountered a small problem fetching the data.</string>
-    <string name="server_error_title">Problem occured</string>
+    <string name="server_error_title">Problem occurred</string>
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
-    <string name="shipping_fee">Shipping Fee: </string>
-    <string name="shipping_time">Shipping Time: </string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="shoppingcart_alert_header">Basket</string>
     <string name="shoppingcart_alert_message_no_items">Basket empty! Please add products to the cart.</string>
@@ -378,4 +376,7 @@
     <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
+    <!-- NEW 2.6 -->
+    <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
+    <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
 </resources>

@@ -1,13 +1,14 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.components.recycler.HorizontalListView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  *
@@ -16,9 +17,11 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public HorizontalListView horizontalListView;
 
+    /**
+     * Constructor
+     */
     public HomeTopSellersTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         // Get horizontal container
@@ -38,11 +41,6 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
         }
-    }
-
-    @Override
-    public void onUpdate() {
-
     }
 
 }

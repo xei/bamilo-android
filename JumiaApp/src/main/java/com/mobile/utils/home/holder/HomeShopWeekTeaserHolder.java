@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -18,7 +18,6 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
 
     public static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    // Data
     public ImageView leftImage;
     public ViewGroup leftContainer;
     public View leftProgress;
@@ -26,6 +25,9 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
     public ImageView rightImage;
     public View rightProgress;
 
+    /**
+     * Constructor
+     */
     public HomeShopWeekTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         leftContainer = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_left);
@@ -42,13 +44,9 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
         BaseTeaserObject rightX = group.getData().get(1);
         RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
         RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
-        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener);
-        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener);
+        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener, 0);
+        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }
 

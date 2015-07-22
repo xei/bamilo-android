@@ -10,28 +10,25 @@ import android.widget.GridView;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.AddableToCartListAdapter;
-import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.product.AddableToCart;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show all last viewed items from database
@@ -40,7 +37,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class RecentlyViewedFragment extends FavouritesFragment implements IResponseCallback {
 
-    protected final static String TAG = LogTagHelper.create(RecentlyViewedFragment.class);
+    protected final static String TAG = RecentlyViewedFragment.class.getSimpleName();
 
     private Button mClearAllButton;
 
@@ -72,7 +69,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Retain the instance to receive callbacks from add all to cart
         setRetainInstance(true);
         // Track page name
@@ -88,7 +85,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
         mAddableToCartGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
         // Get clear all button
@@ -103,11 +100,11 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Show Loading View
         showFragmentLoading();
         // Get RecentlyViewed
-        Log.i(TAG, "LOAD LAST VIEWED ITEMS");
+        Print.i(TAG, "LOAD LAST VIEWED ITEMS");
         new GetRecentlyViewedHelper(this);
 
     }
@@ -127,7 +124,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mClearAllButton.setOnClickListener(null);
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, this);
+//        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, this);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
     }
 
     /**
@@ -149,7 +147,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             onClickClearAll();
         } else {
             // Case unknown
-            Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+            Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
         }
     }
 
@@ -159,7 +157,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * @author sergiopereira
      */
     private void onClickClearAll() {
-        Log.i(TAG, "ON CLICK CLEAR ALL ITEMS");
+        Print.i(TAG, "ON CLICK CLEAR ALL ITEMS");
         // Show progress
         showActivityProgress();
         // Delete all items in database
@@ -177,38 +175,38 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      *
      * @author sergiopereira
      */
-    @Override
-    protected void onAddAllItemsToCart() {
-        Log.i(TAG, "ON EXECUTE ADD ALL TO CART");
+//    @Override
+//    protected void onAddAllItemsToCart() {
+//        Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
         // Show progress
-        showActivityProgress();
+//        showActivityProgress();
         // Initialize cart vars
-        mAddedItemsCounter = 0;
-        mNumberOfItemsForCart = mAddableToCartList.size();
-        mItemsNotAddedToCart.clear();
-        // Validate all items
-        for (int i = 0; i < mNumberOfItemsForCart; i++) {
-            if (mAddableToCartList.get(i).isComplete()) {
+//        mAddedItemsCounter = 0;
+//        mNumberOfItemsForCart = mAddableToCartList.size();
+//        mItemsNotAddedToCart.clear();
+//         Validate all items
+//        for (int i = 0; i < mNumberOfItemsForCart; i++) {
+//            if (mAddableToCartList.get(i).isComplete()) {
                 // Add item to cart
-                triggerAddProductToCart(mAddableToCartList.get(i), i);
-            } else {
+//                triggerAddProductToCart(mAddableToCartList.get(i), i);
+//            } else {
                 // Increment counter
-                mAddedItemsCounter++;
-                Log.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
+//                mAddedItemsCounter++;
+//                Print.w(TAG, "WARNING ITEM NOT COMPLETED: " + i + " " + mAddableToCartList.get(i).getName() + " " + mAddedItemsCounter);
                 // Save the position
-                if (mItemsNotAddedToCart != null) {
-                    mItemsNotAddedToCart.add(i);
-                }
+//                if (mItemsNotAddedToCart != null) {
+//                    mItemsNotAddedToCart.add(i);
+//                }
                 // Case all items are incomplete
-                if (mAddedItemsCounter == mNumberOfItemsForCart) {
-                    // Show toast
-                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
-                    // Dismiss
-                    hideActivityProgress();
-                }
-            }
-        }
-    }
+//                if (mAddedItemsCounter == mNumberOfItemsForCart) {
+//                     Show toast
+//                    Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
+//                     Dismiss
+//                    hideActivityProgress();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * ######### TRIGGERS #########
@@ -223,7 +221,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     protected synchronized void triggerAddProductToCart(AddableToCart addableToCart, int position) {
-        triggerAddProductToCart(addableToCart, position, GetShoppingCartAddItemHelper.REMOVE_RECENTLYVIEWED_TAG);
+        triggerAddProductToCart(addableToCart, position, ShoppingCartAddItemHelper.REMOVE_RECENTLYVIEWED_TAG);
     }
 
     /**
@@ -234,8 +232,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * @author sergiopereira
      */
     @Override
-    protected void trackAddtoCart(String sku, AddableToCart addableToCart) {
-        super.trackAddtoCart(sku, addableToCart);
+    protected void trackAddToCart(String sku, AddableToCart addableToCart) {
+        super.trackAddToCart(sku, addableToCart);
     }
 
     /**
@@ -249,24 +247,24 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Log.i(TAG, "ON RESPONSE COMPLETE " + getId());
+        Print.i(TAG, "ON RESPONSE COMPLETE " + getId());
         // Get event type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate the current state
         if (isOnStoppingProcess && eventType != EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
-            Log.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
+            Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
         // Validate the event type
         switch (eventType) {
             case GET_RECENLTLY_VIEWED_LIST:
-                Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
+                Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
                 mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
-                Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
+                Print.d(TAG, "NUMBER : " + mAddableToCartList.size());
                 if (!CollectionUtils.isEmpty(mAddableToCartList)) {
                     triggerValidateRecentlyViewed(mAddableToCartList);
                 } else {
-                    Log.i(TAG, "ON SHOW IS EMPTY");
+                    Print.i(TAG, "ON SHOW IS EMPTY");
                     showEmpty();
                 }
                 break;
@@ -274,9 +272,9 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 // Update counter
                 mAddedItemsCounter++;
                 // Get data
-                int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
-                String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
-                Log.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
+                int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
+                String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+                Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
                 // Validate current counter
                 validateResponseCounter(true, pos, NO_ERROR);
                 break;
@@ -292,7 +290,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 //            new updateRecentViewedDatabaseTask().execute(mAddableToCartList);
                 break;
             default:
-                Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
+                Print.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
                 break;
         }
     }
@@ -304,17 +302,17 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON ERROR RESPONSE");
+        Print.i(TAG, "ON ERROR RESPONSE");
         // Get type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate the current state
         if (isOnStoppingProcess && eventType != EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
-            Log.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
+            Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
 
         if (super.handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             hideActivityProgress();
             return;
         }
@@ -322,17 +320,17 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         // Validate type
         switch (eventType) {
             case GET_RECENLTLY_VIEWED_LIST:
-                Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
+                Print.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
                 showFragmentContentContainer();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                Log.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
+                Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 // Inc counter
                 mAddedItemsCounter++;
                 // Get item set stock error
-                int pos = bundle.getInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
-                String sku = bundle.getString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
-                Log.i(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
+                int pos = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, AddableToCart.NO_SIMPLE_SELECTED);
+                String sku = bundle.getString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+                Print.i(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
                 // Save the position
                 if (mItemsNotAddedToCart != null) {
                     mItemsNotAddedToCart.add(pos);
@@ -343,11 +341,11 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 validateResponseCounter(false, pos, error);
                 break;
             case VALIDATE_PRODUCTS:
-                Log.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
+                Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
                 showContent();
                 break;
             default:
-                Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
+                Print.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
                 break;
         }
     }
@@ -382,7 +380,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     protected void getNotAddedItems() {
-        Log.i(TAG, "ON GET NOT ADDED ITEMS");
+        Print.i(TAG, "ON GET NOT ADDED ITEMS");
         // Create new array
         ArrayList<AddableToCart> array = new ArrayList<>();
         // Add items not added to cart
@@ -410,7 +408,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.CONTENT_VALUES, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
 
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
     }

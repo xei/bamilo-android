@@ -9,25 +9,23 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class that represents the fragment that shows the product information, related to description and key features.
@@ -37,7 +35,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductDetailsSummaryFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductDetailsSummaryFragment.class);
+    private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
     private TextView mProductName;
     private TextView mProductPriceSpecial;
@@ -80,7 +78,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -91,7 +89,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
@@ -111,7 +109,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
             mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
@@ -129,7 +127,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -140,23 +138,21 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
 
         /**
          * Validate product
          * If null is assumed that the system clean some data
          */
-        if(mCompleteProduct != null && mainView != null) {
+        if (mCompleteProduct != null && mainView != null) {
             getViews();
             displayProductInformation();
-        }else{
-            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mCompleteProductUrl)) {
-                Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-                triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
-            } else {
-                showFragmentErrorRetry();
-            }
+        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+        } else {
+            showFragmentErrorRetry();
         }
     }
 
@@ -168,12 +164,12 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "ON SAVE INSTANCE STATE");
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null)
             outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         super.onSaveInstanceState(outState);
@@ -187,7 +183,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -198,7 +194,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -208,7 +204,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
         mainView = null;
         mCompleteProduct = null;
         System.gc();
@@ -251,12 +247,12 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         } else*/
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
             // display only the special price
-            mProductPriceSpecial.setText(unitPrice);
+            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mProductPriceNormal.setVisibility(View.GONE);
         } else {
             // display special and normal price
-            mProductPriceSpecial.setText(specialPrice);
-            mProductPriceNormal.setText(unitPrice);
+            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            mProductPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
             mProductPriceNormal.setVisibility(View.VISIBLE);
             mProductPriceNormal.setPaintFlags(mProductPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
@@ -269,7 +265,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         String shortDescription = mCompleteProduct.getShortDescription();
         // Don't show the features box if there is no content for it
         if (TextUtils.isEmpty(shortDescription)) {
-            Log.i(TAG, "shortDescription : empty");
+            Print.i(TAG, "shortDescription : empty");
             if(mProductFeaturesContainer != null){
                 mProductFeaturesContainer.setVisibility(View.GONE);
             }
@@ -302,7 +298,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
 
         if (TextUtils.isEmpty(longDescription)) {
-            Log.i(TAG, "longDescription : empty");
+            Print.i(TAG, "longDescription : empty");
             if(mProductDescriptionContainer != null){
                 mProductDescriptionContainer.setVisibility(View.GONE);
             }
@@ -338,9 +334,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      */
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        Log.d(TAG,"RETRY");
+        Print.d(TAG, "RETRY");
         onResume();        
-    };
+    }
     
     
     
@@ -361,7 +357,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -370,7 +366,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
         super.handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
@@ -400,7 +396,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -409,7 +405,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 
         case GET_PRODUCT_EVENT:

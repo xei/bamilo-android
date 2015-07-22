@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.database.LastViewedTableHelper;
-import com.mobile.framework.objects.CountryObject;
-import com.mobile.framework.utils.Constants;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.BrandsTableHelper;
+import com.mobile.newFramework.database.CountriesConfigsTableHelper;
+import com.mobile.newFramework.database.FavouriteTableHelper;
+import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to save the shared preferences for a shop
@@ -36,7 +35,7 @@ public class ShopPreferences {
     public static String getShopId(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, SHOP_NOT_SELECTED);
-        Log.d(TAG, "SHOP ID: " + shopId);
+        Print.d(TAG, "SHOP ID: " + shopId);
         return shopId;
     }
 
@@ -48,7 +47,7 @@ public class ShopPreferences {
     public static String getShopName(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String name = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-        Log.i(TAG, "SHOP NAME: " + name);
+        Print.i(TAG, "SHOP NAME: " + name);
         return name;
     }
 
@@ -60,7 +59,7 @@ public class ShopPreferences {
     public static String getShopCountryCurrencyIso(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String currency = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        Log.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
+        Print.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
         return currency;
     }
 
@@ -70,14 +69,12 @@ public class ShopPreferences {
     public static String getShopCountryISO(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
-        Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
+        Print.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
         return shopCountryISO;
     }
     
     /**
      * Method used to set the shop with the position
-     * @param context
-     * @param shopPosition
      * @author sergiopereira
      */
     public static void setShopId(Context context, int shopPosition) {
@@ -85,31 +82,30 @@ public class ShopPreferences {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         /**
          * Save the Selected Country Configs 
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
          */
-        Log.i(TAG, "code1DarwinComponent : selected : "+JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
+        Print.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryFlag());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
-        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.apply();
 
         // Clean other
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
         LastViewedTableHelper.deleteAllLastViewed();
         FavouriteTableHelper.deleteAllFavourite();
+        BrandsTableHelper.clearBrands();
         
     }
     
     /**
      * Method used to set a shop country from xml
-     * @param context
      * @author sergiopereira
      */
     public static void setShopFromConfigs(Context context) {
@@ -131,9 +127,8 @@ public class ShopPreferences {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, countryObject.getCountryFlag());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
-        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         editor.apply();
         // Delete old data
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();

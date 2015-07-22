@@ -3,12 +3,10 @@ package com.mobile.controllers;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * This Class is responsible by all the application workflow. Contains all
@@ -30,13 +28,13 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class ActivitiesWorkFlow {
-	protected final static String TAG = LogTagHelper.create(ActivitiesWorkFlow.class);
+	protected final static String TAG = ActivitiesWorkFlow.class.getSimpleName();
     // private static DialogFragment dialog;
 	
 
 	
 	public static void splashActivityNewTask(Activity activity ) {
-	    Log.i(TAG, "START ACTIVITY: splashActivity");
+	    Print.i(TAG, "START ACTIVITY: splashActivity");
 	    Intent intent = new Intent(activity.getApplicationContext(), SplashScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         activity.startActivity(intent);

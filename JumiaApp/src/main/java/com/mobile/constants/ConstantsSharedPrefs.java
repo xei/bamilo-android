@@ -26,13 +26,9 @@ public class ConstantsSharedPrefs {
     public static String KEY_SHOW_PRODUCT_DETAILS_TIPS = "show_product_details_tips";
     public static String KEY_SHOW_GALLERY_TIPS = "show_gallery_tips";
 
-    public static String KEY_SHOW_PROMOTIONS = "show_promotions";
-
     public static String KEY_SHOW_LIST_LAYOUT = "showList";
 
     public static String KEY_COUNTRY = "country";
-
-    public static String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
 
     public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";
 

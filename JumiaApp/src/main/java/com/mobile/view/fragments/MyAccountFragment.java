@@ -17,9 +17,10 @@ import com.mobile.controllers.AppSharingAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.tracking.AnalyticsGoogle;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -34,7 +35,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class MyAccountFragment extends BaseFragment implements OnItemClickListener{
 
-    private static final String TAG = LogTagHelper.create(MyAccountFragment.class);
+    private static final String TAG = MyAccountFragment.class.getSimpleName();
 
     public final static int POSITION_USER_DATA = 0;
 
@@ -47,7 +48,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private ListView optionsList;
     
     private ListView appSharingList;
-    
+
+    private MyAccountPushPreferences mPreferencesFragment;
+
     /**
      * Get instance
      * 
@@ -76,7 +79,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -87,7 +90,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
     
     /*
@@ -97,8 +100,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         showMyAccount(view);
+        showPreferences();
         showAppSharing(view);
     }
 
@@ -110,7 +114,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -121,7 +125,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -132,7 +136,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -143,7 +147,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -153,10 +157,18 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      */
     @Override
     public void onDestroyView() {
+        Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
+        // Remove PreferencesFragment
+        FragmentController.removeChildFragmentById(this, mPreferencesFragment.getId());
     }
-    
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "ON DESTROY");
+        super.onDestroy();
+    }
+
     /**
      * Shows my account options
      */
@@ -172,6 +184,14 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Set Listener for all items
         optionsList.setOnItemClickListener(this);
         
+    }
+
+    /**
+     * Shows user preferences
+     */
+    private void showPreferences() {
+        mPreferencesFragment = new MyAccountPushPreferences();
+        FragmentController.addChildFragment(this, R.id.account_preferences_frame, mPreferencesFragment);
     }
     
     /**
@@ -198,8 +218,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     
     /**
      *  Handles the item click of childs of options list.
-     *
-     * @param position
      */
     private void handleOnOptionsListItemClick(int position) {
         switch (position) {
@@ -226,15 +244,13 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     /**
      *  Handles the item click of childs of app sharing list.
-     *
-     * @param position
      */
     private void handleOnAppSharingListItemClick(int position) {
         switch (position) {
         case POSITION_SHARE_APP:
             String text;
             String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
-            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if(ShopSelector.isRtl()){
                 text = getString(R.string.share_app_link) + " " + preText;
             } else {
                 text = preText + " " + getString(R.string.share_app_link);

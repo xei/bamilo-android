@@ -7,14 +7,12 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show categories with support for multi levels.
@@ -22,7 +20,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class CategoriesCollectionFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CategoriesCollectionFragment.class);
+    private static final String TAG = CategoriesCollectionFragment.class.getSimpleName();
     
     private static final int BACK_STACK_EMPTY = 0;
 
@@ -57,7 +55,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
     
     /*
@@ -67,16 +65,20 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         // Validate saved state
         if (getChildFragmentManager().getBackStackEntryCount() == BACK_STACK_EMPTY) {
-            Log.d(TAG, "SAVED IS NULL");
+            Print.d(TAG, "SAVED IS NULL");
             // Switch content
-            Bundle args = new Bundle();
-            args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
-            onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
+            if(getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CATEGORY_ID)){
+                onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, getArguments());
+            } else {
+                Bundle args = new Bundle();
+                args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+                onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
+            }
         } else {
-            Log.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
+            Print.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
         }
     }
 
@@ -88,7 +90,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -99,7 +101,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -109,7 +111,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
     }
 
     /*
@@ -120,7 +122,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
     
     /*
@@ -131,7 +133,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -142,7 +144,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
+        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -152,7 +154,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -161,7 +163,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
      */
     @Override
     public boolean allowBackPressed() {
-        Log.i(TAG, "ON ALLOW BACK PRESSED");
+        Print.i(TAG, "ON ALLOW BACK PRESSED");
         boolean result = false;
         // Case multi level
         if(getChildFragmentManager().getBackStackEntryCount() > 1) {
@@ -180,7 +182,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
-        Log.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
+        Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
         case NAVIGATION_CATEGORIES_SUB_LEVEL:
             // No tag fragment on back stack
@@ -190,7 +192,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
             fragmentChildManagerTransition(R.id.categories_fragments_container, filterType, fragment, false, true);
             break;
         default:
-            Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
+            Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
             break;
         }
     }

@@ -11,6 +11,6 @@ import android.os.Bundle;
  * 
  */
 public interface OnActivityFragmentInteraction {
-    public boolean allowBackPressed();
-    public void notifyFragment(Bundle bundle);
+    boolean allowBackPressed();
+    void notifyFragment(Bundle bundle);
 }

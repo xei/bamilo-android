@@ -2,23 +2,23 @@ package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.utils.DateTimeUtils;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DateTimeUtils;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Campaign teaser
@@ -29,7 +29,6 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
     private static final int MAIN_POSITION = 0;
 
-    // Data
     public View container;
     public ImageView image;
     public View progress;
@@ -40,6 +39,9 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     private ArrayList<BaseTeaserObject> campaigns;
     private CountDownTimer counter;
 
+    /**
+     * Constructor
+     */
     public HomeCampaignTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         container = view.findViewById(R.id.home_teaser_campaign_container);
@@ -62,6 +64,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
     @Override
     public void onUpdate() {
+        super.onUpdate();
         loadMainCampaign();
     }
 
@@ -131,7 +134,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         // Set countdown
         setCountDown(campaign);
         // Set click listener
-        TeaserViewFactory.setClickableView(container, campaign, listener);
+        TeaserViewFactory.setClickableView(container, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
     }
 
     /**
@@ -140,7 +143,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     private void setMoreButton(BaseTeaserObject campaign) {
         // Has more campaigns
         if(campaigns.size() > 1) {
-            TeaserViewFactory.setClickableView(more, campaign, listener);
+            TeaserViewFactory.setClickableView(more, campaign, listener, TeaserViewFactory.DEFAULT_POSITION);
         } else {
             more.setOnClickListener(null);
             more.setVisibility(View.GONE);
@@ -178,26 +181,19 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
      * @param timeInMilliSeconds The remaining time in ms
      */
     private void startCampaignTimer(long timeInMilliSeconds) {
-        /*
-        if(counter != null) {
-            Log.i(TAG, "RESTART COUNTDOWN: " + timeInMilliSeconds);
-            counter.onTick(timeInMilliSeconds);
-            counter.start();
-        } else {
-        */
-            Log.i(TAG, "START COUNTDOWN: " + timeInMilliSeconds);
-            counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));
-                }
-                @Override
-                public void onFinish() {
-                    popOutDatedMainCampaign();
-                }
-            };
-            counter.start();
-        //}
+        Log.i(TAG, "START COUNTDOWN: " + timeInMilliSeconds);
+        counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+                popOutDatedMainCampaign();
+            }
+        };
+        counter.start();
     }
 
 }

@@ -16,7 +16,8 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.JumiaViewPagerWithZoom;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -24,12 +25,8 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.ProductImageGalleryActivity;
 import com.mobile.view.R;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author manuelsilva
@@ -38,7 +35,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductImageGalleryFragment extends BaseFragment {
 
-    public static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
+    public static final String TAG = ProductImageGalleryFragment.class.getSimpleName();
 
     private JumiaViewPagerWithZoom mViewPager;
 
@@ -110,7 +107,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -121,7 +118,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if(arguments != null) {
@@ -141,7 +138,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
         mViewPagerIndicator = (InfiniteCirclePageIndicator) getView().findViewById(R.id.view_pager_indicator);
         // Set view pager
@@ -157,7 +154,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -168,7 +165,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         // Set the current position
         if(mViewPager != null) mViewPager.setCurrentItem(ProductImageGalleryFragment.sSharedSelectedPosition);
     }
@@ -181,7 +178,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE");
+        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
         outState.putBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT, isNestedFragment);
     }
@@ -194,7 +191,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
         ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
@@ -206,7 +203,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
 
@@ -292,7 +289,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
          */
         @Override
         public boolean onDown(MotionEvent e) {
-            Log.i(TAG, "onShowPress");
+            Print.i(TAG, "onShowPress");
 //            mViewPager.setSelected(true);
 
             return false;
@@ -303,7 +300,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
          */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            Log.i(TAG, "onScroll");
+            Print.i(TAG, "onScroll");
             // i'm only scrolling along the X axis
 //            mViewPager.setSelected(false);
 
@@ -338,10 +335,10 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "NOTIFY FRAGMENT: " + sSharedSelectedPosition);
+        Print.i(TAG, "NOTIFY FRAGMENT: " + sSharedSelectedPosition);
         // Validate if fragment is on the screen
         if (!isVisible()) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate the shared current position
@@ -363,7 +360,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         // Case close button
         if (id == R.id.gallery_button_close) onClickCloseButton();
         // Unknown
-        else Log.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
+        else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
     
     /**
@@ -371,7 +368,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void onClickCloseButton() {
-        Log.i(TAG, "ON CLICK CLOSE BUTTON");
+        Print.i(TAG, "ON CLICK CLOSE BUTTON");
         ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
         getBaseActivity().onBackPressed();
     }
@@ -387,10 +384,10 @@ public class ProductImageGalleryFragment extends BaseFragment {
                     ? ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) 
                     : mViewPager.getCurrentItem();            
         } catch (NullPointerException e) {
-            Log.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
+            Print.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
             return 0;
         } catch (ClassCastException e) {
-            Log.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
+            Print.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
             return 0;
         }
     }

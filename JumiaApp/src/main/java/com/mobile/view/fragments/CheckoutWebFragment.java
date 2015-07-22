@@ -25,19 +25,19 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.PaymentMethodForm;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.rest.RestContract;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.PaymentMethodForm;
+import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -48,18 +48,18 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpCookie;
 import java.util.EnumSet;
 import java.util.List;
 
-import ch.boye.httpclientandroidlib.cookie.Cookie;
-import de.akquinet.android.androlog.Log;
+//import com.mobile.framework.rest.RestClientSingleton;
 
 /**
  * @author sergiopereira
  */
 public class CheckoutWebFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutWebFragment.class);
+    private static final String TAG = CheckoutWebFragment.class.getSimpleName();
 
     private static final String CHECKOUT_URL_WITH_PARAM = "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
 
@@ -107,9 +107,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public boolean allowBackPressed() {
         if (webview == null) {
-            Log.d(TAG, "onBackPressed");
+            Print.d(TAG, "onBackPressed");
         } else {
-            Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
         }
         boolean result = false;
         if (webview != null) {
@@ -130,7 +130,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.i(TAG, "ON ATTACH");
+        Print.i(TAG, "ON ATTACH");
 
     }
 
@@ -142,15 +142,9 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE");
-        //Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            triggerGetCustomer();
-            triggerGetShoppingCartItems();
-        } else {
-            showFragmentErrorRetry();
-        }
-
+        Print.i(TAG, "ON CREATE");
+        triggerGetCustomer();
+        triggerGetShoppingCartItems();
     }
 
     private void triggerGetCustomer() {
@@ -161,7 +155,6 @@ public class CheckoutWebFragment extends BaseFragment {
     private void triggerGetShoppingCartItems() {
         // Defining event as having no priority
         Bundle args = new Bundle();
-        args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
     }
 
@@ -188,7 +181,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
+        Print.i(TAG, "ON VIEW CREATED");
 
         webview = (WebView) view.findViewById(R.id.webview);
         // webview = new WebView(getActivity());
@@ -216,7 +209,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");
+        Print.i(TAG, "ON START");
     }
 
     /*
@@ -227,7 +220,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
@@ -252,7 +245,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON PAUSE");
+        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -266,7 +259,7 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON STOP");
+        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -278,7 +271,7 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        Log.i(TAG, "ON DESTROY");
+        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -289,9 +282,7 @@ public class CheckoutWebFragment extends BaseFragment {
             try {
                 webview.removeAllViews();
             } catch (IllegalArgumentException e) {
-                // TODO: handle exception
             }
-
             webview.destroy();
             webview = null;
         }
@@ -302,7 +293,7 @@ public class CheckoutWebFragment extends BaseFragment {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Log.e(getTag(), "LOW MEM");
+        Print.e(getTag(), "LOW MEM");
         System.gc();
     }
 
@@ -325,9 +316,9 @@ public class CheckoutWebFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
+        checkoutUrl = "https://" + AigRestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
         setProxy();
-        Log.d(TAG, "Loading Url: " + checkoutUrl);
+        Print.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }
@@ -347,14 +338,15 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
+        // GET COOKIES FROM FRAMEWORK
+        List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
+        //
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());
             // sync all the cookies in the httpclient with the webview by
             // generating cookie string
-
-            for (Cookie cookie : cookies) {
+            for (HttpCookie cookie : cookies) {
                 String normDomain = prepareCookie(cookie);
                 String cookieString = cookie.getName() + "=" + cookie.getValue() + "; Domain=" + cookie.getDomain();
                 // Log.d( TAG, "prepareCookieStore: adding cookie = " + cookieString);
@@ -365,15 +357,15 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
 
-    private String prepareCookie(Cookie cookie) {
+    private String prepareCookie(HttpCookie cookie) {
         String transDomain = cookie.getDomain();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             if (cookie.getDomain().startsWith(".")) {
                 transDomain = transDomain.substring(1);
-                Log.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
+                Print.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
                         + transDomain);
             } else {
-                Log.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
+                Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
             }
         }
         return transDomain;
@@ -406,7 +398,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, int errorCode,
                                     String description, final String failingUrl) {
-            Log.e(TAG, "Received error: " + errorCode + " " + description + " "
+            Print.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
 
             failedPageRequest = failingUrl;
@@ -430,8 +422,8 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
                                               HttpAuthHandler handler, String host, String realm) {
-            handler.proceed(RestContract.AUTHENTICATION_USER,
-                    RestContract.AUTHENTICATION_PASS);
+            handler.proceed(AigRestContract.AUTHENTICATION_USER,
+                    AigRestContract.AUTHENTICATION_PASS);
         }
 
         /*
@@ -443,13 +435,13 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d(TAG, "onPageFinished: url = " + url);
+            Print.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
-                Log.d(TAG, "onPageFinished: resetting error page inforamtion");
+                Print.d(TAG, "onPageFinished: resetting error page inforamtion");
                 wasLoadingErrorPage = false;
                 failedPageRequest = null;
             } else if (url.equals(failedPageRequest)) {
-                Log.d(TAG, "onPageFinished: page was saved failed page");
+                Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
@@ -463,7 +455,7 @@ public class CheckoutWebFragment extends BaseFragment {
                  * This line causes a JNI exception only in the emulators 2.3.X.
                  * @see http://code.google.com/p/android/issues/detail?id=12987
                  */
-                Log.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
+                Print.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
                 view.loadUrl(JAVASCRIPT_PROCESS);
                 //view.loadUrl(JAVASCRIPT_PRINT);
             }
@@ -476,9 +468,9 @@ public class CheckoutWebFragment extends BaseFragment {
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
             try {
-                Log.d(TAG, "onLoadResource: url = " + url);
+                Print.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
-                Log.d(TAG, "onLoadResource: url = OOF");
+                Print.d(TAG, "onLoadResource: url = OOF");
                 e.printStackTrace();
             }
 
@@ -490,7 +482,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d(TAG, "onPageStarted: url = " + url);
+            Print.d(TAG, "onPageStarted: url = " + url);
             if (url.equals(failedPageRequest)) {
                 return;
             }
@@ -515,7 +507,7 @@ public class CheckoutWebFragment extends BaseFragment {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
                                        SslError error) {
-            Log.w(TAG, "Received ssl error: " + error);
+            Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
                 Toast.makeText(
                         getActivity(),
@@ -537,10 +529,9 @@ public class CheckoutWebFragment extends BaseFragment {
         @JavascriptInterface
         public void processContent(String content) {
             try {
-                Log.d(TAG, "Got checkout response: " + content);
+                Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
@@ -570,9 +561,9 @@ public class CheckoutWebFragment extends BaseFragment {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             } catch (ParseException e) {
-                Log.e(TAG, "parse exception:", e);
+                Print.e(TAG, "parse exception:", e);
             } catch (JSONException e) {
-                Log.e(TAG, "json parse exception:", e);
+                Print.e(TAG, "json parse exception:", e);
             }
         }
     }

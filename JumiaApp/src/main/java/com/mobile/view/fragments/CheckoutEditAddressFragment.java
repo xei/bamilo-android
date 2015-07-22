@@ -11,10 +11,10 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.Form;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -23,8 +23,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * 
  * @author sergiopereira
@@ -32,7 +30,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class CheckoutEditAddressFragment extends EditAddressFragment {
 
-    private static final String TAG = LogTagHelper.create(CheckoutEditAddressFragment.class);
+    private static final String TAG = CheckoutEditAddressFragment.class.getSimpleName();
 
     /**
      * 
@@ -69,21 +67,20 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-                triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null && mRegions != null){
-                loadEditAddressForm(mFormResponse);
-            } else {
-                triggerEditAddressForm();
-            }
-        } else {
-            showFragmentErrorRetry();
-        }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Get and show form
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
+            triggerInitForm();
+        } else if(mFormResponse != null && orderSummary != null && mRegions != null){
+            loadEditAddressForm(mFormResponse);
+        } else {
+            triggerEditAddressForm();
+        }
+    }
     @Override
     protected void loadEditAddressForm(Form form) {
         super.loadEditAddressForm(form);
@@ -127,7 +124,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
         }
     }

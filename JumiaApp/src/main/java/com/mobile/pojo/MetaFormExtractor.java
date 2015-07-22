@@ -1,10 +1,11 @@
 package com.mobile.pojo;
 
-import com.mobile.forms.FormField;
-import com.mobile.forms.FormFieldMeta;
-import com.mobile.forms.IFormField;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
+
+import com.mobile.newFramework.forms.FormField;
+import com.mobile.newFramework.forms.FormFieldMeta;
+import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +13,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.akquinet.android.androlog.Log;
-
 public class MetaFormExtractor {
-	private final static String TAG = LogTagHelper.create( MetaFormExtractor.class );
+
+	private final static String TAG = MetaFormExtractor.class.getSimpleName();
 	
 	private static HashMap<String, Set<String>> metaFieldMapping;
 	private static HashMap<String, InputType> metaFieldInputType;
@@ -32,13 +32,13 @@ public class MetaFormExtractor {
 	
 	private static ArrayList<IFormField> generateMetaField( ArrayList<FormField> fields, String metaFieldKey ) {
 		IFormField foundMetaField = null;
-		for( IFormField field: fields ) {
+		for(IFormField field: fields ) {
 			if ( field.getKey().equals( metaFieldKey))
 				foundMetaField = field;
 		}
-		Log.i(TAG, "code1checked MetaFormExtractor");
+		Print.i(TAG, "code1checked MetaFormExtractor");
 		if ( foundMetaField == null) {
-		    Log.i(TAG, "code1checked foundMetaField == null");
+		    Print.i(TAG, "code1checked foundMetaField == null");
 			return straightCopyFields(fields);
 		}
 		
@@ -50,7 +50,7 @@ public class MetaFormExtractor {
 		ArrayList<IFormField> transformedFields = new ArrayList<>();
 		
 		for( IFormField field: fields ) {	
-		    Log.i(TAG, "code1checked  field.getKey() : "+ field.getKey());
+		    Print.i(TAG, "code1checked  field.getKey() : " + field.getKey());
 			if ( field.getKey().equals( newMetaField.getKey()))
 				transformedFields.add( newMetaField );
 			else if ( subFieldKeys.contains( field.getKey()))
@@ -82,9 +82,9 @@ public class MetaFormExtractor {
 	
 	public static void dumpIFormField( ArrayList<IFormField> formFields ) {
 		for( IFormField field: formFields ) {
-			Log.d( TAG, "dumpIFormField: key = " + field.getKey());
+			Print.d(TAG, "dumpIFormField: key = " + field.getKey());
 			if ( field instanceof FormFieldMeta ){
-				Log.d( TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta)field).subFieldKeyString());
+				Print.d(TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta) field).subFieldKeyString());
 			}
 		}
 		

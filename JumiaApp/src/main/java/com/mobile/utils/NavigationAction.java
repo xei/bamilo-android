@@ -16,6 +16,9 @@ public enum NavigationAction {
     Categories("categories"),
     Home("shop"),
     MyAccount("account"),
+    MyAccountUserData("user_data"),
+    MyAccountMyAddresses("addresses"),
+    MyAccountEmailNotification("email_notification"),
     MyProfile("profile"),
     Favorite("favourite"),
     RecentSearch("recentsearch"),
@@ -30,7 +33,8 @@ public enum NavigationAction {
     Checkout("checkout"),
     Offers("offers"),
     Seller("seller"),
-    ForgotPassword("forgotpassword");
+    ForgotPassword("forgotpassword"),
+    Terms("terms");
 
 	private final String action;
 

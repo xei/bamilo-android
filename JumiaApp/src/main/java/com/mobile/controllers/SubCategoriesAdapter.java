@@ -3,15 +3,13 @@ package com.mobile.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Category;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.objects.category.Category;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ import java.util.List;
  */
 public class SubCategoriesAdapter extends BaseAdapter {
 	@SuppressWarnings("unused" )
-	private final static String TAG = LogTagHelper.create( SubCategoriesAdapter.class );
+	private final static String TAG =  SubCategoriesAdapter.class.getSimpleName();
 
 	public final static int TYPE_ALL_CATEGORIES = 0;
 	public final static int TYPE_SUBCATEGORIES = 1;
@@ -47,8 +45,6 @@ public class SubCategoriesAdapter extends BaseAdapter {
     private final int CATEGORIES_LAYOUT = R.layout.category_inner_childcat;
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
 	private Category headCategory;
-    private String selectedCategoryId = "";
-    private Activity mActivity;
 
 
     /**
@@ -65,15 +61,11 @@ public class SubCategoriesAdapter extends BaseAdapter {
      *            NOT USED
      * @param categories
      *            The arraylist containing the sub categories
-     * @param imageLoader
-     *            NOT USED
      */
     public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, Category category) {
         this.categories = categories;
         this.headCategory = category;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mActivity = activity;
-        selectedCategoryId = "";
     }
 
     /*
@@ -106,11 +98,11 @@ public class SubCategoriesAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setAdapterData(List<Category> children, Category category) {
-    	this.headCategory = category;
-        this.categories = children;
-        notifyDataSetChanged();
-    }
+//    public void setAdapterData(List<Category> children, Category category) {
+//    	this.headCategory = category;
+//        this.categories = children;
+//        notifyDataSetChanged();
+//    }
     
     @Override
     public int getItemViewType(int position) {
@@ -173,8 +165,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
         }
     }
 
-    public void setSelectedCategory(String catId){
-        selectedCategoryId = catId;
-        notifyDataSetChanged();
-    }
+//    public void setSelectedCategory(String catId){
+//        selectedCategoryId = catId;
+//        notifyDataSetChanged();
+//    }
 }

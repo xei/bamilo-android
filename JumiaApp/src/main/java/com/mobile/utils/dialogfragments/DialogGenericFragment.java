@@ -3,19 +3,19 @@ package com.mobile.utils.dialogfragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -24,7 +24,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class DialogGenericFragment extends DialogFragment {
 
-    private static final String TAG = LogTagHelper.create(DialogGenericFragment.class);
+    private static final String TAG = DialogGenericFragment.class.getSimpleName();
 
     private static DialogGenericFragment dialogGenericFragment;
 
@@ -67,7 +67,7 @@ public class DialogGenericFragment extends DialogFragment {
             String button2_title,
             OnClickListener click) {
 
-        Log.d(TAG, "NEW INSTANCE: 2 Buttons");
+        Print.d(TAG, "NEW INSTANCE: 2 Buttons");
 
         dialogGenericFragment = new DialogGenericFragment();
         // dialogGenericFragment.hasHeader = has_header;
@@ -104,7 +104,7 @@ public class DialogGenericFragment extends DialogFragment {
                                                     String button2_title,
                                                     String button3_title, OnClickListener click) {
 
-        Log.d(TAG, "NEW INSTANCE: 3 Buttons");
+        Print.d(TAG, "NEW INSTANCE: 3 Buttons");
 
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
         // dialogGenericFragment.hasHeader = has_header;
@@ -135,7 +135,7 @@ public class DialogGenericFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
-        Log.i(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -146,7 +146,7 @@ public class DialogGenericFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "ON CREATE VIEW");
+        Print.i(TAG, "ON CREATE VIEW");
         View view;
         if (buttonTitle3 == null) {
             view = inflater.inflate(R.layout.dialog_generic, container);
@@ -180,7 +180,17 @@ public class DialogGenericFragment extends DialogFragment {
         super.onPause();
         dismissAllowingStateLoss();
     }
-    
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager,tag);
+            // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
+            // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
+        } catch (IllegalStateException | WindowManager.BadTokenException ex){
+            Print.e(TAG, "Error showing Dialog", ex);
+        }
+    }
 
     /**
      * Dialog
@@ -276,7 +286,7 @@ public class DialogGenericFragment extends DialogFragment {
             final android.view.View.OnClickListener cancelClickListener,
             final boolean finishActivity) {
 
-        Log.d(TAG, "CREATE NO NETWORK DIALOG");
+        Print.d(TAG, "CREATE NO NETWORK DIALOG");
 
         return DialogGenericFragment.newInstance(true, false,
                 activity.getResources().getString(R.string.no_internet_access_warning_title),
@@ -350,7 +360,7 @@ public class DialogGenericFragment extends DialogFragment {
             final Activity activity,
             final android.view.View.OnClickListener retryClickListener, final boolean finishActivity) {
 
-        Log.d(TAG, "CREATE ERROR DIALOG");
+        Print.d(TAG, "CREATE ERROR DIALOG");
 
         return DialogGenericFragment.newInstance(true, false,
                 title, message, activity

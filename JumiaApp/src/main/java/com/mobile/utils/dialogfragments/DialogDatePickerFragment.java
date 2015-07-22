@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.text.ParseException;
@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import de.akquinet.android.androlog.Log;
 //import org.holoeverywhere.widget.DatePicker;
 
 /**
@@ -30,7 +28,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class DialogDatePickerFragment extends DialogFragment implements OnClickListener {
     
-    private final static String TAG = LogTagHelper.create(DialogDatePickerFragment.class);
+    private final static String TAG = DialogDatePickerFragment.class.getSimpleName();
     
     private String mTitle;
     private String mId;
@@ -58,7 +56,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     
     
     /**
-     * 
+     *
      * @param activity
      * @param id
      * @param title
@@ -68,7 +66,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
      * @return
      */
     public static DialogDatePickerFragment newInstance(Activity activity, String id, String title, int year, int month, int day){
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         DialogDatePickerFragment dialogDatePickerFragment = new DialogDatePickerFragment();
         dialogDatePickerFragment.mActivity = activity;
         if (dialogDatePickerFragment.mActivity instanceof OnDatePickerDialogListener) {
@@ -84,7 +82,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     
     
     /**
-     * 
+     *
      * @param activity
      * @param listener
      * @param id
@@ -95,7 +93,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
      * @return
      */
     public static DialogDatePickerFragment newInstance(Activity activity, OnDatePickerDialogListener listener, String id, String title, int year, int month, int day){
-        Log.d(TAG, "NEW INSTANCE");
+        Print.d(TAG, "NEW INSTANCE");
         DialogDatePickerFragment dialogDatePickerFragment = new DialogDatePickerFragment();
         dialogDatePickerFragment.mActivity = activity;
         dialogDatePickerFragment.mListener = listener;
@@ -208,7 +206,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         } catch (ParseException e) {
             // if the date has the wrong format
             // there cant be more done
-            Log.d(TAG, "setDate: cant parse date: " + dateString);
+            Print.d(TAG, "setDate: cant parse date: " + dateString);
             return;
         }
         Calendar cal = new GregorianCalendar();

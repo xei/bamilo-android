@@ -1,16 +1,17 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.components.recycler.HorizontalListView;
-import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 
+import de.akquinet.android.androlog.Log;
+
 /**
- *
+ * Class used that represents the brand teasers.
  */
 public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
 
@@ -18,6 +19,9 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
 
     public HorizontalListView container;
 
+    /**
+     * Constructor
+     */
     public HomeBrandTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         // Get horizontal container
@@ -39,8 +43,4 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    @Override
-    public void onUpdate() {
-
-    }
 }
