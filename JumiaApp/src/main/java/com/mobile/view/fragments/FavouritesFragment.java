@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,7 +95,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
-
+    @SuppressLint("ValidFragment")
     protected FavouritesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state);
     }

@@ -343,14 +343,14 @@ public class DialogFilterFragment extends DialogFragment {
      * Class used to create the main fragment that shows the list of supported filters
      * @author sergiopereira
      */
-    static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
+    public static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
         private DialogFilterFragment mParent;
         
         private ListView mFilterListView;
         
         private ContentValues mContentValues;
-        
+
         /**
          * Constructor
          * @param parent
