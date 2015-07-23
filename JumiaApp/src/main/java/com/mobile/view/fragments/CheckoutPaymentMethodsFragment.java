@@ -523,6 +523,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                     TrackerDelegator.trackFailedPayment(paymentMethod, JumiaApplication.INSTANCE.getCart().getCartValueEuroConverted());
                 }
             }
+            showUnexpectedErrorWarning();
+            showFragmentContentContainer();
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
