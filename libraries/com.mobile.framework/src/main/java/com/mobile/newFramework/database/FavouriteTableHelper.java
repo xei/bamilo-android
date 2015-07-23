@@ -3,6 +3,7 @@ package com.mobile.newFramework.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
@@ -211,7 +212,7 @@ public class FavouriteTableHelper extends BaseTable {
 	/**
 	 * Update favourite with variations values
 	 */
-	public static void updateFavouriteProduct(CompleteProduct completeProduct) {
+	public static void updateFavouriteProduct(CompleteProduct completeProduct) throws IllegalStateException {
 	    
 	    // Get data 
         String sku = completeProduct.getSku();
@@ -269,7 +270,7 @@ public class FavouriteTableHelper extends BaseTable {
 	 * @return
 	 * @throws InterruptedException 
 	 */
-	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException {
+	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException, SQLiteException {
 		 
 		//DarwinDatabaseSemaphore.getInstance().getLock();
 		
