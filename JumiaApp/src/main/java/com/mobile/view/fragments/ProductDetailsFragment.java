@@ -1152,8 +1152,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             locateSimplePosition(mDeepLinkSimpleSize, product);
         }
 
-        LastViewedTableHelper.insertLastViewedProduct(product);
-        BrandsTableHelper.updateBrandCounter(product.getBrand());
+        try {
+            LastViewedTableHelper.insertLastViewedProduct(product);
+            BrandsTableHelper.updateBrandCounter(product.getBrand());
+        } catch (IllegalStateException | SQLiteException e) {
+            // ...
+        }
 
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();

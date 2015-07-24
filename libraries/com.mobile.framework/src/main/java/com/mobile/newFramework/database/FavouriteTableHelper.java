@@ -212,7 +212,7 @@ public class FavouriteTableHelper extends BaseTable {
 	/**
 	 * Update favourite with variations values
 	 */
-	public static void updateFavouriteProduct(CompleteProduct completeProduct) throws IllegalStateException {
+	public static void updateFavouriteProduct(CompleteProduct completeProduct) throws IllegalStateException, SQLiteException {
 	    
 	    // Get data 
         String sku = completeProduct.getSku();

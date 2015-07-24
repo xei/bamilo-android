@@ -1,5 +1,6 @@
 package com.mobile.helpers.products;
 
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -87,7 +88,7 @@ public class GetFavouriteHelper implements IResponseCallback {
             CompleteProduct completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             try {
                 FavouriteTableHelper.updateFavouriteProduct(completeProduct);
-            } catch (IllegalStateException e) {
+            } catch (IllegalStateException | SQLiteException e) {
                 Print.w(TAG, "WARNING: ISE ON UPDATE FAVOURITES");
             }
             // Get all items already update and send to callback
