@@ -13,7 +13,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text"
         style="@style/dialog_list_itemtext"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -23,7 +23,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
         style="@style/dialog_list_itemtext"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
