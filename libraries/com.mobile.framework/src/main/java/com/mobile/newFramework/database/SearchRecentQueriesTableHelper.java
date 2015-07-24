@@ -156,7 +156,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     public static synchronized ArrayList<Suggestion> getRecentQueries(String query) throws InterruptedException{
     	Print.i(TAG, "SQL QUERY: " + query);
     	// Lock access
-    	DarwinDatabaseSemaphore.getInstance().getLock();
+    	// DarwinDatabaseSemaphore.getInstance().getLock();
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		// Get results
@@ -187,7 +187,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
             Print.w(TAG, "WARNING: ISE ON GET RECENT QUERIES", e);
         }
         // Unlock access
-		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		// DarwinDatabaseSemaphore.getInstance().releaseLock();
 		// Return
 		return recentSuggestions;
     }

@@ -94,12 +94,12 @@ public class Offer implements IJSONSerializable, Parcelable{
 
                 sku = productObject.optString(RestConstants.JSON_SKU_TAG);
 
-                String offerPriceJSON = productObject.optString(RestConstants.JSON_PRICE_TAG);
+                priceOffer = productObject.optString(RestConstants.JSON_PRICE_TAG);
 
-                if (!CurrencyFormatter.isNumber(offerPriceJSON)) {
-                    offerPriceJSON = "0";
+                if (!CurrencyFormatter.isNumber(priceOffer)) {
+                    priceOffer = "0";
                 }
-                priceOfferDouble = Double.parseDouble(offerPriceJSON);
+                priceOfferDouble = Double.parseDouble(priceOffer);
 
                 priceOfferConverted = productObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG,0.0);
 
