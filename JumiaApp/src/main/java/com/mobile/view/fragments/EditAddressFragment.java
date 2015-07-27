@@ -580,7 +580,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Show
                 showFragmentContentContainer();
                 Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
+                //alexandrapires: webchekout disabled for v. 2.7
+          //      super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
+                super.showUnexpectedErrorWarning(); //unexpected error
             }
         }
     }
@@ -682,7 +684,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-                    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
+                    //alexandrapires: webchekout disabled for v. 2.7
+                //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
+                    super.showFragmentErrorRetry(); //unexpected error
                 }
                 break;
             case GET_CITIES_EVENT:
