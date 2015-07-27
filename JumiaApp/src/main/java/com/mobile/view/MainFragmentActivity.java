@@ -32,7 +32,6 @@ import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
-import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
 import com.mobile.view.fragments.HomePageFragment;
@@ -302,9 +301,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case SHOPPING_CART:
                 fragment = ShoppingCartFragment.getInstance(bundle);
                 break;
-            case CHECKOUT_BASKET:
-                fragment = CheckoutWebFragment.getInstance();
-                break;
+       /*     case CHECKOUT_BASKET:
+                fragment = CheckoutWebFragment.getInstance();   //  web checkout disabled 2.7 version
+                break;*/
             case REGISTER:
                 fragment = SessionRegisterFragment.getInstance(bundle);
                 break;
