@@ -692,7 +692,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                                 dismissDialogFragment();
 
                            //     gotoWebCheckout(errorMessages.get(0));    //alexandrapires: webchekout disabled for v. 2.7
-                                super.showFragmentErrorRetry();
+                                  showFragmentErrorRetry();
                             }
                         }
                     });
