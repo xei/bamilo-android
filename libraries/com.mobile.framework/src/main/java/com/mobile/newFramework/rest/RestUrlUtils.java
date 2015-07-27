@@ -4,10 +4,6 @@ import android.net.Uri;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
-import com.mobile.newFramework.utils.output.Print;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import de.akquinet.android.androlog.Log;
 
