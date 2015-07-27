@@ -41,8 +41,6 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
@@ -529,6 +527,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Method used to redirect the native checkout to the old checkout method
      */
+
+    /*
+    *  alexandra pires: Webcheckout disabled for 2.7 version
+    *
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
         Print.w(TAG, "WARNING: GOTO WEB CHECKOUT");
         // Tracking
@@ -542,7 +544,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
+    }*/
 
     /**
      * Set screen response to keyboard request
