@@ -36,9 +36,9 @@
 	<item name="shopping_basket_subtotal_element" 	    type="layout">@layout/_def_shopping_basket_subtotal_element</item>
 	
 	<!-- ACTION BAR -->
-    <item name="action_bar_menu_item_layout" 		type="layout">@layout/_def_action_bar_menu_item_layout</item>
-    <item name="recent_search_suggestion_list_item" type="layout">@layout/_def_recent_search_suggestion_list_item</item>
-    <item name="search_suggestion_list_item"        type="layout">@layout/_def_search_suggestion_list_item</item>
+    <item name="action_bar_menu_item_layout" 		    type="layout">@layout/_def_action_bar_menu_item_layout</item>
+    <item name="recent_search_suggestion_list_item"     type="layout">@layout/_def_recent_search_suggestion_list_item</item>
+    <item name="search_suggestion_list_item"            type="layout">@layout/_def_search_suggestion_list_item</item>
     
 	<!-- FRAGMENT ROOT -->
 	<item name="error_button_layout" 		            type="layout">@layout/_def_error_button_retry</item>
