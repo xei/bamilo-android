@@ -54,12 +54,17 @@ import java.util.List;
 
 //import com.mobile.framework.rest.RestClientSingleton;
 
+@Deprecated
+
+/**
+ * alexandrapires: deprecated reason -  webcheckout disabled for 2.7 version
+ */
+
+
 /**
  * @author sergiopereira
  */
 
-
-// alexandrapires: Disabled for 2.7 version: delete checkoutweb layout in case of deleting this class
 
 public class CheckoutWebFragment extends BaseFragment {
 
