@@ -57,6 +57,10 @@ import java.util.List;
 /**
  * @author sergiopereira
  */
+
+
+// alexandrapires: Disabled for 2.7 version: delete checkoutweb layout in case of deleting this class
+
 public class CheckoutWebFragment extends BaseFragment {
 
     private static final String TAG = CheckoutWebFragment.class.getSimpleName();
