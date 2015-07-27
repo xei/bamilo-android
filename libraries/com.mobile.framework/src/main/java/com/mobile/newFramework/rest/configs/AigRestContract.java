@@ -159,7 +159,7 @@ public class AigRestContract {
     }
 
     /**
-     * FOR TESTS
+     * TODO: FOR TESTS
      */
     public static URL buildCompleteUrl(String apiServicePath) throws MalformedURLException {
         URL url = new URL("https", REQUEST_HOST + "/" + REST_BASE_PATH, apiServicePath);
