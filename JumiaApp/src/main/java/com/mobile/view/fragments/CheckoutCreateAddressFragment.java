@@ -170,10 +170,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
-        } //  alexandrapires: show no internet connection screen
-        else if (ErrorCode.isNetworkError(errorCode))
-        {
-            super.showFragmentNoNetworkRetry();
         }
         else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
