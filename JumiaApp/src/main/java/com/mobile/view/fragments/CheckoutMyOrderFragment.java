@@ -274,8 +274,13 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void showMyOrder() {
         // Validate order
         if(mOrderFinish == null) {
-            Print.w(TAG, "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
+
+            //alexandra pires: webcheckout disabled for 2.7 version
+        //    Print.w(TAG, "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
+        //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
+
+            Print.w(TAG, "WARNING: ORDER IS NULL - SHOWS UNEXPECTED ERROR");
+            super.showFragmentErrorRetry();
             return;
         }
         // Get cart
@@ -646,7 +651,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                     showFragmentContentContainer();
                 } else {
                     Print.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
-                    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                    // webcheckout disabled for 2.7 version
+                  //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                    super.showFragmentErrorRetry();
                 }
                 break;
             default:
@@ -683,14 +690,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dismissDialogFragment();
-                                gotoWebCheckout(errorMessages.get(0));
+
+                           //     gotoWebCheckout(errorMessages.get(0));    //alexandrapires: webchekout disabled for v. 2.7
+
                             }
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
             Print.w(TAG, "ERROR ON FINISH CHECKOUT");
-            gotoWebCheckout("ERROR ON FINISH CHECKOUT");
+          //  gotoWebCheckout("ERROR ON FINISH CHECKOUT"); //alexandrapires: webchekout disabled for v. 2.7
         }
     }
     
@@ -698,10 +707,13 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * Redirect for web checkout
      * @author sergiopereira
      */
-    private void gotoWebCheckout(String error){
+/*
+   * alexandrapires: webcheckout  disabled for 2.7 version
+   *
+   private void gotoWebCheckout(String error){
         Print.w(TAG, "GO TO WEBCKECOUT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), error);
-    }
+    }*/
 
     /*
      * (non-Javadoc)
