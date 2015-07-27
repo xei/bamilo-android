@@ -40,10 +40,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private RtlViewPager mProductInfoPager;
 
-    private ProductInfoPagerAdapter mProductInfoPagerAdapter;
-
-    private SlidingTabLayout mProductInfoTabStrip;
-
     public static int mPositionToStart = 0;
 
     private int mTabsCount = 2;
@@ -52,8 +48,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static ProductDetailsInfoFragment getInstance(Bundle bundle) {
         ProductDetailsInfoFragment fragment = new ProductDetailsInfoFragment();
@@ -113,7 +107,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         // Get view pager
         mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
-        mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
+        SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
         int layout = R.layout.tab_simple_half_item;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
@@ -122,7 +116,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
-        mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
+        ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
         if (mProductInfoPagerAdapter != null && mProductInfoPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);

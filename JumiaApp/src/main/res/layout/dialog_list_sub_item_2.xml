@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="42dp"
     android:background="@drawable/selector_clickableitem_highlight"
-    android:layoutDirection="locale"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/margin_mid"
     android:paddingEnd="@dimen/margin_large"
     android:paddingLeft="@dimen/margin_large"
     android:paddingRight="@dimen/margin_large"
     android:paddingStart="@dimen/margin_large"
-    android:paddingTop="@dimen/margin_mid" >
+    android:paddingTop="@dimen/margin_mid">
 
     <ImageView
         android:id="@+id/dialog_item_color_box"
@@ -20,7 +19,8 @@
         android:layout_marginEnd="@dimen/margin_large"
         android:layout_marginRight="@dimen/margin_large"
         android:src="@drawable/shape_border_flag"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="@string/dialog_to_product"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
@@ -28,9 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="roboto_regular"
-        android:text="Title"
         android:gravity="left|start"
+        android:text="Title"
         android:textColor="@color/grey_dark"
+        android:textDirection="locale"
         android:textSize="@dimen/text_xl" />
 
     <com.mobile.components.customfontviews.CheckBox

@@ -77,8 +77,6 @@ public class ReviewWriteFragment extends BaseFragment {
 
     private CompleteProduct completeProduct;
 
-    private TextView productName;
-
     private LinearLayout ratingContainer;
 
     private DialogGenericFragment dialog_review_submitted;
@@ -453,8 +451,8 @@ public class ReviewWriteFragment extends BaseFragment {
             
         } else {
             mainContainer.setVisibility(View.VISIBLE);
-            
-            productName = (TextView) getView().findViewById(R.id.product_detail_name);
+
+            TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
 
