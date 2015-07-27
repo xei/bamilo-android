@@ -9,6 +9,9 @@ import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * The Interface Defines important constants to access the SQLite DB and the Rest Methods
  *
@@ -153,6 +156,15 @@ public class AigRestContract {
     public static String getShopUri() {
         Print.i(TAG, "COOKIE SHOP URI: " + COOKIE_SHOP_URI);
         return COOKIE_SHOP_URI;
+    }
+
+    /**
+     * FOR TESTS
+     */
+    public static URL buildCompleteUrl(String apiServicePath) throws MalformedURLException {
+        URL url = new URL("https", REQUEST_HOST + "/" + REST_BASE_PATH, apiServicePath);
+        Print.i(TAG, "CREATED URI: " + url);
+        return url;
     }
 
 }

@@ -33,7 +33,7 @@
     <item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
-    <item name="price_rules_element"                        type="layout">@layout/_def_price_rules_element</item>
+    <item name="price_rules_element"                    type="layout">@layout/_def_price_rules_element</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>
@@ -72,6 +72,10 @@
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
+    <item name="product_details_fragment_image"         type="layout">@layout/_def_product_details_fragment_image</item>
+    <item name="product_details_fragment_info"          type="layout">@layout/_def_product_details_fragment_info</item>
+    <item name="product_details_fragment_offers"        type="layout">@layout/_def_product_details_fragment_offers</item>
+    <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -109,8 +113,11 @@
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
 
     <!-- MY ACCOUNT -->
-    <item name="my_account_user_data_fragment"         type="layout">@layout/_def_my_account_user_data_fragment</item>
+    <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
 
     <!-- DYNAMIC -->
-    <item name="form_checkbox_terms"         type="layout">@layout/_def_form_checkbox_terms</item>
+    <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
+
+    <!-- DIALOG -->
+    <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
 </resources>

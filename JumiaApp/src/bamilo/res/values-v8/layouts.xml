@@ -46,38 +46,44 @@
 	<item name="error_button_layout" 		        type="layout">@layout/_v8_error_button_retry</item>
 
     <!-- CATALOG -->
-    <item name="catalog_fragment_main" 				type="layout">@layout/_v8_catalog_fragment_main</item>
-    <item name="catalog_fragment_tool_bar" 			type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
-    <item name="catalog_fragment_wizard_favourite" 	type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
-    <item name="catalog_fragment_no_result" 		type="layout">@layout/_v8_catalog_fragment_no_result</item>
-    <item name="catalog_item_grid_rounded" 		    type="layout">@layout/_v8_catalog_item_grid_rounded</item>
-    <item name="catalog_item_list_rounded" 		    type="layout">@layout/_v8_catalog_item_list_rounded</item>
+    <item name="catalog_fragment_main" 				    type="layout">@layout/_v8_catalog_fragment_main</item>
+    <item name="catalog_fragment_tool_bar" 			    type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
+    <item name="catalog_fragment_wizard_favourite" 	    type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
+    <item name="catalog_fragment_no_result" 		    type="layout">@layout/_v8_catalog_fragment_no_result</item>
+    <item name="catalog_item_grid_rounded" 		        type="layout">@layout/_v8_catalog_item_grid_rounded</item>
+    <item name="catalog_item_list_rounded" 		        type="layout">@layout/_v8_catalog_item_list_rounded</item>
 
     <!-- PDV -->
-    <item name="product_details_fragment_seller_info" type="layout">@layout/_v8_product_details_fragment_seller_info</item>
-    <item name="product_details_fragment_info"      type="layout">@layout/_v8_product_details_fragment_info</item>
-    <item name="product_summary_fragment"           type="layout">@layout/_v8_product_summary_fragment</item>
-    <item name="product_specs_fragment"             type="layout">@layout/_v8_product_specs_fragment</item>
-    <item name="product_specs_container"            type="layout">@layout/_v8_product_specs_container</item>
-    <item name="product_specs_container_item"       type="layout">@layout/_v8_product_specs_container_item</item>
+    <item name="product_details_fragment_seller_info"   type="layout">@layout/_v8_product_details_fragment_seller_info</item>
+    <item name="product_details_fragment_info"          type="layout">@layout/_v8_product_details_fragment_info</item>
+    <item name="product_summary_fragment"               type="layout">@layout/_v8_product_summary_fragment</item>
+    <item name="product_specs_fragment"                 type="layout">@layout/_v8_product_specs_fragment</item>
+    <item name="product_specs_container"                type="layout">@layout/_v8_product_specs_container</item>
+    <item name="product_specs_container_item"           type="layout">@layout/_v8_product_specs_container_item</item>
+    <item name="product_details_fragment_image"         type="layout">@layout/_v8_product_details_fragment_image</item>
+    <item name="product_details_fragment_offers"        type="layout">@layout/_v8_product_details_fragment_offers</item>
+    <item name="product_details_fragment_header"        type="layout">@layout/_v8_product_details_fragment_header</item>
 
     <!-- NAVIGATION DRAWER -->
-    <item name="navigation_fragment_main"           type="layout">@layout/_v8_navigation_fragment_main</item>
+    <item name="navigation_fragment_main"               type="layout">@layout/_v8_navigation_fragment_main</item>
 
     <!-- CATEGORY -->
-    <item name="category"                           type="layout">@layout/_v8_category</item>
-    <item name="category_inner_top_back"            type="layout">@layout/_v8_category_inner_top_back</item>
-    <item name="category_inner_childcat"            type="layout">@layout/_v8_category_inner_childcat</item>
-    <item name="category_inner_currentcat"          type="layout">@layout/_v8_category_inner_currentcat</item>
-    <item name="navigation_fragment_categories"     type="layout">@layout/_v8_navigation_fragment_categories</item>
+    <item name="category"                               type="layout">@layout/_v8_category</item>
+    <item name="category_inner_top_back"                type="layout">@layout/_v8_category_inner_top_back</item>
+    <item name="category_inner_childcat"                type="layout">@layout/_v8_category_inner_childcat</item>
+    <item name="category_inner_currentcat"              type="layout">@layout/_v8_category_inner_currentcat</item>
+    <item name="navigation_fragment_categories"         type="layout">@layout/_v8_navigation_fragment_categories</item>
 
     <!-- HOME -->
-    <item name="home_teaser_campaign"               type="layout">@layout/_v8_home_teaser_campaign</item>
-    <item name="home_teaser_featured_stores_item"   type="layout">@layout/_v8_home_teaser_featured_stores_item</item>
+    <item name="home_teaser_campaign"                   type="layout">@layout/_v8_home_teaser_campaign</item>
+    <item name="home_teaser_featured_stores_item"       type="layout">@layout/_v8_home_teaser_featured_stores_item</item>
 
     <!-- MY ACCOUNT -->
-    <item name="my_account_user_data_fragment"      type="layout">@layout/_v8_my_account_user_data_fragment</item>
+    <item name="my_account_user_data_fragment"          type="layout">@layout/_v8_my_account_user_data_fragment</item>
 
     <!-- DYNAMIC -->
-    <item name="form_checkbox_terms"         type="layout">@layout/_v8_form_checkbox_terms</item>
+    <item name="form_checkbox_terms"                    type="layout">@layout/_v8_form_checkbox_terms</item>
+
+    <!-- DIALOG -->
+    <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
 </resources>

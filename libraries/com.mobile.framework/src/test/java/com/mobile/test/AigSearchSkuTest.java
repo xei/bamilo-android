@@ -1,37 +1,39 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import android.test.suitebuilder.annotation.SmallTest;
+
+import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.requests.BaseRequest;
+import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AigLoginCustomerTest extends AigTestCase {
+public class AigSearchSkuTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.LOGIN_EVENT;
+        return EventType.SEARCH_PRODUCT;
     }
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.loginCustomer;
+        return AigApiInterface.searchSku;
     }
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"/customer/login/";
+        return "https://www.jumia.com.ng/mobapi/v1.7/catalog/detail/";
     }
 
     @Override
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
-        data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
-        data.put("Alice_Module_Customer_Model_LoginForm[password]", "1234567");
+        data.put("sku", "AP044ELABRH2NGAMZ");
         return data;
     }
 
@@ -39,11 +41,10 @@ public class AigLoginCustomerTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
+        CompleteProduct completeProduct = (CompleteProduct) response.getMetadata().getData();
+        assertNotNull("Product is null",completeProduct);
+        assertNotNull("Product Name is null",completeProduct.getName());
 
-        CheckoutStepLogin login_response = (CheckoutStepLogin) response.getMetadata().getData();
-        assertNotNull("Customer is null", login_response.getCustomer());
-        assertNotNull("Customer First Name is null", login_response.getCustomer().getFirstName());
-        //assertNotNull("Customer Middle Name is null", login_response.getCustomer().getMiddleName());
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");
     }
