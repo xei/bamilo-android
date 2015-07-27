@@ -708,7 +708,9 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         // Get next step
         if (mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
             Print.w(TAG, "NEXT STEP IS NULL");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
+            //alexandrapires: webchekout disabled for v. 2.7
+        //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
+            super.showFragmentErrorRetry();
         } else {
             Print.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Clean stack for new native checkout on the back stack (auto login)
