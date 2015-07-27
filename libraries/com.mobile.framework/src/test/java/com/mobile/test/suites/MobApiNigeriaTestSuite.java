@@ -2,23 +2,23 @@ package com.mobile.test.suites;
 
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.test.GetApiInformationTest;
-import com.mobile.test.GetAvailableCountriesTest;
-import com.mobile.test.GetCampaignTest;
-import com.mobile.test.GetCatalogFilteredTest;
-import com.mobile.test.GetCategoriesPaginatedTest;
-import com.mobile.test.GetCategoryPaginatedTest;
-import com.mobile.test.GetCountryConfigurationsTest;
-import com.mobile.test.GetHomePageTest;
-import com.mobile.test.GetImageResolutionsTest;
-import com.mobile.test.GetProductBundleTest;
-import com.mobile.test.GetProductDetailTest;
-import com.mobile.test.GetProductOffersTest;
-import com.mobile.test.GetShopInShopTest;
-import com.mobile.test.GetShoppingCartTest;
+import com.mobile.test.AigGetApiInformationTest;
+import com.mobile.test.AigGetAvailableCountriesTest;
+import com.mobile.test.AigGetCampaignTest;
+import com.mobile.test.AigGetCatalogFilteredTest;
+import com.mobile.test.AigGetCategoriesPaginatedTest;
+import com.mobile.test.AigGetCategoryPaginatedTest;
+import com.mobile.test.AigGetCountryConfigurationsTest;
+import com.mobile.test.AigGetHomePageTest;
+import com.mobile.test.AigGetImageResolutionsTest;
+import com.mobile.test.AigGetProductBundleTest;
+import com.mobile.test.AigGetProductDetailTest;
+import com.mobile.test.AigGetProductOffersTest;
+import com.mobile.test.AigGetShopInShopTest;
+import com.mobile.test.AigGetShoppingCartTest;
 import com.mobile.test.LoginCustomerTest;
-import com.mobile.test.LogoutCustomerTest;
-import com.mobile.test.ShoppingCartAddItemTest;
+import com.mobile.test.AigLogoutCustomerTest;
+import com.mobile.test.AigShoppingCartAddItemTest;
 import com.mobile.test.ShoppingCartUpdateQuantityTest;
 
 import org.junit.BeforeClass;
@@ -28,33 +28,33 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         // SPLASH REQUESTS
-        GetAvailableCountriesTest.class,
-        GetCountryConfigurationsTest.class,
-        GetApiInformationTest.class,
-        GetImageResolutionsTest.class,
+        AigGetAvailableCountriesTest.class,
+        AigGetCountryConfigurationsTest.class,
+        AigGetApiInformationTest.class,
+        AigGetImageResolutionsTest.class,
         // HOME REQUESTS
-        GetHomePageTest.class,
-        GetShoppingCartTest.class,
+        AigGetHomePageTest.class,
+        AigGetShoppingCartTest.class,
         LoginCustomerTest.class,
 
         // NAVIGATION
-        GetCategoriesPaginatedTest.class,
-        GetCategoryPaginatedTest.class,
+        AigGetCategoriesPaginatedTest.class,
+        AigGetCategoryPaginatedTest.class,
         // CATALOG
-        GetCatalogFilteredTest.class,
+        AigGetCatalogFilteredTest.class,
         // PRODUCT DETAIL
-        GetProductDetailTest.class,
-        GetProductBundleTest.class,
-        GetProductOffersTest.class,
+        AigGetProductDetailTest.class,
+        AigGetProductBundleTest.class,
+        AigGetProductOffersTest.class,
         // CAMPAIGN
-        GetCampaignTest.class,
+        AigGetCampaignTest.class,
         // SHOP IN SHOP
-        GetShopInShopTest.class,
+        AigGetShopInShopTest.class,
         // CART
-        GetShoppingCartTest.class,
-        ShoppingCartAddItemTest.class,
+        AigGetShoppingCartTest.class,
+        AigShoppingCartAddItemTest.class,
         ShoppingCartUpdateQuantityTest.class,
-        LogoutCustomerTest.class,
+        AigLogoutCustomerTest.class,
 })
 
 public class MobApiNigeriaTestSuite {

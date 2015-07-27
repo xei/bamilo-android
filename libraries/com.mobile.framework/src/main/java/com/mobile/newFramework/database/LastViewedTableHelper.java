@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
@@ -118,7 +119,7 @@ public class LastViewedTableHelper extends BaseTable {
 	 * 
 	 * @param completeProduct
 	 */
-	public static void insertLastViewedProduct(CompleteProduct completeProduct) {
+	public static void insertLastViewedProduct(CompleteProduct completeProduct) throws IllegalStateException, SQLiteException {
 		if (completeProduct != null) {
 			String sku = completeProduct.getSku();
 			if (!verifyIfExist(sku)) {
