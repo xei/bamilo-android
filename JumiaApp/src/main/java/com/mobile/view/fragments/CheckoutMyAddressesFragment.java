@@ -175,7 +175,9 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     protected void onGetBillingFormEventErrorEvent() {
         Print.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     /**
@@ -189,7 +191,9 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         this.addresses = addresses;
         // Validate response
         if(!isValidateResponse()){
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+            //alexandrapires: webchekout disabled for v. 2.7
+        //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+            super.showFragmentErrorRetry(); //unexpected error
             return;
         }
         // Show addresses using saved value, if is the same address for Bill and Ship
@@ -214,9 +218,16 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
-        }else{
+        }//  alexandrapires: show no internet connection warning
+        else if (ErrorCode.isNetworkError(errorCode))
+        {
+            super.showNoNetworkWarning();
+        }
+        else{
             Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
+            //alexandrapires: webchekout disabled for v. 2.7
+         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
+            super.showUnexpectedErrorWarning();
         }
     }
 
