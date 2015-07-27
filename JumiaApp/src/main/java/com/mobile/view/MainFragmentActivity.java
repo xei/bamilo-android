@@ -122,7 +122,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
+            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
@@ -402,9 +402,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return;
         }
 
-        // Validate menu flag and pop entries until home
-        if (removeEntries) {
-            popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+        if(removeEntries){
+            popBackStackUntilTag(FragmentType.HOME.toString());
         }
 
         Print.i(TAG, "ON SWITCH FRAGMENT: " + type);
@@ -506,7 +505,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (bundle != null) {
             // Get fragment type
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
             if (fragmentType != FragmentType.UNKNOWN) {
                 // Restart back stack and fragment manager
