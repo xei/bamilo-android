@@ -3,16 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_huge"
+    android:paddingStart="@dimen/margin_huge"
     android:background="@drawable/selector_clickableitem_highlight" >
+
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="15dp"
+        android:layout_height="@dimen/item_height_normal"
+        android:contentDescription="@string/app_name"
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/magnlens" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
         style="@style/text_header"
         android:layout_height="@dimen/item_height_normal"
+        android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
-        android:layout_toLeftOf="@+id/item_img"
-        android:gravity="center_vertical|right"
+        android:layout_toRightOf="@+id/item_img"
+        android:layout_toEndOf="@+id/item_img"
+        android:gravity="center_vertical|left"
         android:paddingLeft="@dimen/margin_mid"
+        android:paddingStart="@dimen/margin_mid"
         android:text="Search suggestion"
         android:textColor="@color/grey_dark"
         tools:ignore="HardcodedText" />
@@ -24,24 +39,17 @@
         style="@style/text_normal"
         android:layout_height="@dimen/item_height_normal"
         android:ellipsize="none"
-        android:layout_toLeftOf="@+id/item_img"
+        android:paddingEnd="@dimen/margin_huge"
         android:paddingLeft="@dimen/margin_huge"
         android:paddingRight="@dimen/margin_huge"
-        android:gravity="center_vertical|right"
+        android:paddingStart="@dimen/margin_huge"
+         android:layout_toRightOf="@+id/item_img"
+        android:layout_toEndOf="@+id/item_img"
+        android:gravity="center_vertical|left"
         android:text="(9000 items)"
         android:textColor="@color/grey_dividerlight"
         android:textSize="@dimen/text_s"
         android:visibility="gone"
         tools:ignore="HardcodedText" />
-
-    <ImageView
-        android:id="@+id/item_img"
-        android:layout_width="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_height="@dimen/item_height_normal"
-        android:contentDescription="@string/app_name"
-        android:gravity="center_vertical"
-        android:paddingRight="@dimen/margin_huge"
-        android:src="@drawable/magnlens" />
 
 </RelativeLayout>

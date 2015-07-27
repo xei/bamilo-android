@@ -69,23 +69,23 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
         Suggestion sug = getItem(position);
         // Get views
         TextView sugText = (TextView) view.findViewById(R.id.item_text_suggestion);
-        TextView sugItems = (TextView) view.findViewById(R.id.item_text_n_items);
+        //TextView sugItems = (TextView) view.findViewById(R.id.item_text_n_items);
         // Set icon
         if(sug.isRecentQuery()) ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.ico_recent);
         else ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.magnlens);
         // Set suggestion
         setColorOnQuery(sugText, sug.getResult(), mQuery);
-        // Set number of suggestions
-        int resultValue = sug.getResultValue();
-        if (resultValue > 0) {
-            sugItems.setText("(" + resultValue + " " + 
-                            ((resultValue > 1) 
-                            ? getContext().getString(R.string.my_order_items_label) 
-                            : getContext().getString(R.string.my_order_item_label)) +
-                            ")");
-        } else {
-            sugItems.setVisibility(View.GONE);
-        }
+//        // Set number of suggestions
+//        int resultValue = sug.getResultValue();
+//        if (resultValue > 0) {
+//            sugItems.setText("(" + resultValue + " " +
+//                            ((resultValue > 1)
+//                            ? getContext().getString(R.string.my_order_items_label)
+//                            : getContext().getString(R.string.my_order_item_label)) +
+//                            ")");
+//        } else {
+//            sugItems.setVisibility(View.GONE);
+//        }
 
         return view;
     }
