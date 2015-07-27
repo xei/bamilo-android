@@ -219,10 +219,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
             setDefaultChecked(Boolean.parseBoolean(sameAddress));
-        }//  alexandrapires: show no internet connection warning
-        else if (ErrorCode.isNetworkError(errorCode))
-        {
-            super.showNoNetworkWarning();
         }
         else{
             Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
