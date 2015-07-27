@@ -375,13 +375,17 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onErrorGetShippingMethods(){
         Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+    //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        super.showFragmentErrorRetry();
+
     }
 
     public void onErrorSetShippingMethods(){
         Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
-
+        //alexandrapires: webchekout disabled for v. 2.7
+     //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
+        super.showUnexpectedErrorWarning();
     }
 
     /**
