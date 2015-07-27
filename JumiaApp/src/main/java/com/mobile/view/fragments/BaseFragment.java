@@ -954,6 +954,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                                     }
                                 }
                             });
+
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
                 case SERVER_OVERLOAD:
