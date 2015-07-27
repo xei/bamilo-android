@@ -97,17 +97,23 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
         super.onGetEditAddressFormErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+     //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetRegionsErrorEvent(Bundle bundle){
         super.onGetRegionsErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_REGIONS_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+    //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_REGIONS_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
         super.onGetCitiesErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+    //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onEditAddressErrorEvent(Bundle bundle){
@@ -118,9 +124,16 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors);
             showFragmentContentContainer();
-        } else {
+        } //  alexandrapires: show no internet connection screen
+        else if (ErrorCode.isNetworkError(errorCode))
+        {
+            super.showFragmentNoNetworkRetry();
+        }
+        else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            //alexandrapires: webchekout disabled for v. 2.7
+       //     super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            super.showFragmentErrorRetry();
         }
     }
 }
