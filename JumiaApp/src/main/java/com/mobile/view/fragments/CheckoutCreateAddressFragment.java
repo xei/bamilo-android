@@ -133,19 +133,25 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
         super.onGetCreateAddressFormErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetRegionsErrorEvent(Bundle bundle) {
         super.onGetRegionsErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        //alexandrapires: webchekout disabled for v. 2.7
+     //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetCitiesErrorEvent(Bundle bundle) {
         super.onGetCitiesErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        ////alexandrapires: webchekout disabled for v. 2.7
+      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
@@ -161,9 +167,16 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 //            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
-        } else {
+        } //  alexandrapires: show no internet connection screen
+        else if (ErrorCode.isNetworkError(errorCode))
+        {
+            super.showFragmentNoNetworkRetry();
+        }
+        else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
+            //alexandrapires: webchekout disabled for v. 2.7
+         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
+            super.showFragmentErrorRetry();
         }
     }
 }
