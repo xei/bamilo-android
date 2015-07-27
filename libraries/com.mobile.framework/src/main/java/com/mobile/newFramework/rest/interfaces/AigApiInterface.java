@@ -11,7 +11,6 @@ import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
-import com.mobile.newFramework.objects.checkout.CheckoutStepSignUp;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetBillingForm;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
@@ -316,9 +315,8 @@ public interface AigApiInterface {
 
     String addVoucher = "addVoucher";
 
-    @FormUrlEncoded
-    @POST("/")
-    void removeVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    @GET("/")
+    void removeVoucher( Callback<BaseResponse<ShoppingCart>> callback);
 
     String removeVoucher = "removeVoucher";
 
@@ -345,15 +343,16 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepSignUp>> callback);
+    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
 
-    String registerCustomer = "registerCustomer";
+    String signUpCustomer = "signUpCustomer";
+
 
     @FormUrlEncoded
     @POST("/")
     void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
 
-    String signUpCustomer = "signUpCustomer";
+    String registerCustomer = "registerCustomer";
 
     @FormUrlEncoded
     @POST("/")
@@ -397,13 +396,13 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultShippingAddress = "setDefaultShippingAddress";
 
     @FormUrlEncoded
     @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse> callback);
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultBillingAddress = "setDefaultBillingAddress";
 

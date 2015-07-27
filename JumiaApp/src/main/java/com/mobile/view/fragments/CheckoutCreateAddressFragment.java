@@ -73,6 +73,11 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
@@ -163,8 +168,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-//            @SuppressWarnings("unchecked")
-//            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } //  alexandrapires: show no internet connection screen

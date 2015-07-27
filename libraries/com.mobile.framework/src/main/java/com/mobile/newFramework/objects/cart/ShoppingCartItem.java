@@ -38,7 +38,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	private String variation;
 	private String price;
 	private String specialPrice;
-	private Double savingPercentage;
+	private double savingPercentage;
 	private double priceVal = 0;
 	private double specialPriceVal = 0;
 	private double mPriceValueConverted = 0;
@@ -108,10 +108,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 			stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
 			variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
 
-			/*-if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
-			    priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
-			}
-			price = CurrencyFormatter.formatCurrency(priceVal);*/
 			// Fix NAFAMZ-7848
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
@@ -127,14 +123,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 
 			mPriceValueConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_PRICE_CONVERTED_TAG, 0d);
 
-			/*-if (!jsonObject.isNull(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) && jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) > 0 ) {
-			    specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
-			}
-			else {
-			    specialPriceVal = priceVal;
-			//                specialPrice = CurrencyFormatter.formatCurrency(0.0);
-			}
-			specialPrice = CurrencyFormatter.formatCurrency(specialPriceVal);*/
 			// Fix NAFAMZ-7848
 			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(specialPriceJSON)) {
@@ -151,8 +139,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 			taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
 			savingPercentage = 100 - specialPriceVal / priceVal * 100;
 
-			// cartRuleDiscount =
-			// jsonObject.getDouble(RestConstants.JSON_CART_RULE_DISCOUNT );
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -218,12 +204,12 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return quantity;
 	}
 
-	/*
-	 * @param max quantity of the product
-	 */
-	public void setMaxQuantity(int maxQuantity) {
-		this.maxQuantity = maxQuantity;
-	}
+//	/*
+//	 * @param max quantity of the product
+//	 */
+//	public void setMaxQuantity(int maxQuantity) {
+//		this.maxQuantity = maxQuantity;
+//	}
 
 	/**
 	 * @return the maxQuantity
@@ -232,12 +218,12 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return maxQuantity;
 	}
 
-	/**
-	 * @return the configId
-	 */
-	public String getConfigId() {
-		return configId;
-	}
+//	/**
+//	 * @return the configId
+//	 */
+//	public String getConfigId() {
+//		return configId;
+//	}
 
 	/**
 	 * @return the name
@@ -281,12 +267,12 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return priceVal;
 	}
 
-	/**
-	 * @return the taxAmount
-	 */
-	public double getTaxAmount() {
-		return taxAmount;
-	}
+//	/**
+//	 * @return the taxAmount
+//	 */
+//	public double getTaxAmount() {
+//		return taxAmount;
+//	}
 
 	/**
 	 * @return the savingPercentage
@@ -310,13 +296,13 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return simpleData;
 	}
 
-	/**
-	 * @param simpleData
-	 *            the simpleData to set
-	 */
-	public void setSimpleData(Map<String, String> simpleData) {
-		this.simpleData = simpleData;
-	}
+//	/**
+//	 * @param simpleData
+//	 *            the simpleData to set
+//	 */
+//	public void setSimpleData(Map<String, String> simpleData) {
+//		this.simpleData = simpleData;
+//	}
 
 	public String getVariation() {
 		return variation;
@@ -333,35 +319,35 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return url;
 	}
 
-	/**
-	 * @return the priceValueEuroConverted
-	 */
-	public double getPriceValueEuroConverted() {
-		return mPriceValueConverted;
-	}
-
-	/**
-	 * @param priceValueEuroConverted
-	 *            the priceValueEuroConverted to set
-	 */
-	public void setPriceValueEuroConverted(double priceValueEuroConverted) {
-		this.mPriceValueConverted = priceValueEuroConverted;
-	}
-
-	/**
-	 * @return the specialPriceValueEuroConverted
-	 */
-	public double getSpecialPriceConverted() {
-		return mSpecialPriceConverted;
-	}
-
-	/**
-	 * @param specialPriceValueEuroConverted
-	 *            the specialPriceValueEuroConverted to set
-	 */
-	public void setSpecialPriceConverted(double specialPriceValueEuroConverted) {
-		this.mSpecialPriceConverted = specialPriceValueEuroConverted;
-	}
+//	/**
+//	 * @return the priceValueEuroConverted
+//	 */
+//	public double getPriceValueEuroConverted() {
+//		return mPriceValueConverted;
+//	}
+//
+//	/**
+//	 * @param priceValueEuroConverted
+//	 *            the priceValueEuroConverted to set
+//	 */
+//	public void setPriceValueEuroConverted(double priceValueEuroConverted) {
+//		this.mPriceValueConverted = priceValueEuroConverted;
+//	}
+//
+//	/**
+//	 * @return the specialPriceValueEuroConverted
+//	 */
+//	public double getSpecialPriceConverted() {
+//		return mSpecialPriceConverted;
+//	}
+//
+//	/**
+//	 * @param specialPriceValueEuroConverted
+//	 *            the specialPriceValueEuroConverted to set
+//	 */
+//	public void setSpecialPriceConverted(double specialPriceValueEuroConverted) {
+//		this.mSpecialPriceConverted = specialPriceValueEuroConverted;
+//	}
 
 	/**
 	 * Return the price or special price used for tracking
@@ -380,7 +366,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	 * @author sergiopereira
 	 */
 	public boolean hasDiscount() {
-	    return mSpecialPriceConverted > 0 ? true : false;
+	    return mSpecialPriceConverted > 0;
 	}
 
 	/**
@@ -429,8 +415,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Parcel constructor
-	 *
-	 * @param in
 	 */
 	private ShoppingCartItem(Parcel in) {
 		imageUrl = in.readString();
@@ -446,7 +430,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		savingPercentage = in.readDouble();
 		price = in.readString();
 		taxAmount = in.readDouble();
-		simpleData = new HashMap<String, String>();
+		simpleData = new HashMap<>();
 		in.readMap(simpleData, String.class.getClassLoader());
 		variation = in.readString();
 		priceVal = in.readDouble();

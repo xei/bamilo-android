@@ -86,7 +86,9 @@ public class MyOrdersFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
 
-        if (arguments != null) {
+        if(savedInstanceState != null){
+            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.MY_ORDER_POS,0);
+        } else if (arguments != null) {
             //If comes from login page, means that it has to go to OrderHistory
             if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
                 mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
@@ -233,7 +235,9 @@ public class MyOrdersFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
-        outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mPositionToStart);
+        if(mMyOrdersPager != null) {
+            outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mMyOrdersPager.getCurrentItem());
+        }
 
     }
 

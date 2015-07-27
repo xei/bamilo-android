@@ -3,6 +3,7 @@ package com.mobile.newFramework.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
@@ -211,7 +212,7 @@ public class FavouriteTableHelper extends BaseTable {
 	/**
 	 * Update favourite with variations values
 	 */
-	public static void updateFavouriteProduct(CompleteProduct completeProduct) {
+	public static void updateFavouriteProduct(CompleteProduct completeProduct) throws IllegalStateException, SQLiteException {
 	    
 	    // Get data 
         String sku = completeProduct.getSku();
@@ -269,9 +270,9 @@ public class FavouriteTableHelper extends BaseTable {
 	 * @return
 	 * @throws InterruptedException 
 	 */
-	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException {
+	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException, SQLiteException {
 		 
-		DarwinDatabaseSemaphore.getInstance().getLock();
+		//DarwinDatabaseSemaphore.getInstance().getLock();
 		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("SELECT 1 FROM ").append(TABLE_NAME).append(" WHERE ").append(_FAVOURITE_SKU).append(" = ?").toString();
@@ -280,7 +281,7 @@ public class FavouriteTableHelper extends BaseTable {
 		boolean result = false;
 		try {
 	        Cursor cursor = db.rawQuery(query, new String[] {sku});
-	        result = (cursor != null && cursor.getCount() > 0 ) ? true : false;
+	        result = cursor != null && cursor.getCount() > 0;
 	        //Log.i(TAG, "SQL RESULT: " + (cursor != null ? cursor.getCount() : 0) + " result is : " + result);
 	        // Validate cursor and db
 	        if (cursor != null) cursor.close();
@@ -290,13 +291,13 @@ public class FavouriteTableHelper extends BaseTable {
 		// Validate cursor and db
 		if (db != null && db.isOpen()) db.close();
 
-		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		//DarwinDatabaseSemaphore.getInstance().releaseLock();
 		
 		return result;
 	}
 
 	public static ArrayList<String> getIncompleteFavouriteList() {
-		ArrayList<String> incomplete = new ArrayList<String>();
+		ArrayList<String> incomplete = new ArrayList<>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE_NAME + " WHERE " + _FAVOURITE_IS_COMPLETE + " == '0'";
 		Cursor cursor = db.rawQuery(query, null);

@@ -117,16 +117,16 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.6"
-            versionCode getAppVersionCode(51)
+            versionName "2.6.1"
+            versionCode getAppVersionCode(53)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.6"
-            versionCode 51
+            versionName "2.6.1"
+            versionCode 53
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -136,8 +136,8 @@ android {
 
         jumiaSamsung {
             applicationId "com.jumia.android"
-            versionName "2.6"
-            versionCode 51
+            versionName "2.6.1"
+            versionCode 53
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -147,8 +147,8 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.6"
-            versionCode 51
+            versionName "2.6.1"
+            versionCode 53
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -158,7 +158,7 @@ android {
 
         jumiaNokiaX {
             applicationId "com.jumia.nokiax"
-            versionName "2.6"
+            versionName "2.6.1"
             versionCode 14
             signingConfig signingConfigs.jumiaNokiaxSigning
             resConfigs "en", "fr", "pt"
@@ -169,7 +169,7 @@ android {
 
         jumiaBlackberry {
             applicationId "com.jumia.blackberry"
-            versionName "2.6"
+            versionName "2.6.1"
             versionCode 10
             signingConfig signingConfigs.jumiaBlackberrySigning
             resConfigs "en", "fr", "pt"

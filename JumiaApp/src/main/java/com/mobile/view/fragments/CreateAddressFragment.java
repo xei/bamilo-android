@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;

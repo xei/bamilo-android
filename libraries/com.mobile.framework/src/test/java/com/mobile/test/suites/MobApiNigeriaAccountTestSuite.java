@@ -1,8 +1,8 @@
 package com.mobile.test.suites;
 
 import com.mobile.test.ChangePasswordTest;
-import com.mobile.test.GetCustomerDetailsTest;
-import com.mobile.test.GetOrdersListTest;
+import com.mobile.test.AigGetCustomerDetailsTest;
+import com.mobile.test.AigGetOrdersListTest;
 import com.mobile.test.LoginCustomerTest;
 import com.mobile.test.SubscribeNewsletterTest;
 
@@ -14,9 +14,9 @@ import org.junit.runners.Suite;
 
         LoginCustomerTest.class,
         SubscribeNewsletterTest.class,
-        GetCustomerDetailsTest.class,
+        AigGetCustomerDetailsTest.class,
         ChangePasswordTest.class,
-        GetOrdersListTest.class,
+        AigGetOrdersListTest.class,
 
 
 })

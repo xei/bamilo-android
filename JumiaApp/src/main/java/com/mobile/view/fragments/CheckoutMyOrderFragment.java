@@ -692,7 +692,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                                 dismissDialogFragment();
 
                            //     gotoWebCheckout(errorMessages.get(0));    //alexandrapires: webchekout disabled for v. 2.7
-
+                                super.showFragmentErrorRetry();
                             }
                         }
                     });
@@ -700,6 +700,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         } else {
             Print.w(TAG, "ERROR ON FINISH CHECKOUT");
           //  gotoWebCheckout("ERROR ON FINISH CHECKOUT"); //alexandrapires: webchekout disabled for v. 2.7
+            super.showFragmentErrorRetry();
         }
     }
     

@@ -163,8 +163,8 @@ public class RestConstants {
     // ProductsPage Tags
     public static final String JSON_RESULTS_TAG = "results";
     public static final String JSON_PRODUCT_COUNT_TAG = "product_count";
-    public static final String JSON_CATALOG_NAME_TAG = "name";
-    public static final String JSON_CATALOG_IDS_TAG = "id";
+    public static final String JSON_CATALOG_NAME_TAG = "category_name";
+    public static final String JSON_CATALOG_IDS_TAG = "category_ids";
 
     // Product Tags
     public static final String JSON_IMAGES_TAG = "images";

@@ -218,7 +218,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mMaxPages = calcMaxPages();
         // Case replace data
         if(mPage == FIRST_PAGE) mProducts = catalog.getProducts();
-            // Case append data
+        // Case append data
         else CollectionUtils.addAll(mProducts, catalog.getProducts());
     }
 

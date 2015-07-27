@@ -218,6 +218,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
+            setDefaultChecked(Boolean.parseBoolean(sameAddress));
         }//  alexandrapires: show no internet connection warning
         else if (ErrorCode.isNetworkError(errorCode))
         {

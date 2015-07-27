@@ -114,7 +114,10 @@ public class PersistentSessionStore extends CustomerUtils {
     protected void storeCookie(String cookie){
         if(!TextUtils.isEmpty(cookie) && cookieStore != null){
             try {
+                // Add the saved cookie
                 cookieStore.addEncodedSessionCookie(cookie);
+                // Remove the saved cookie
+                values.remove(SESSION_COOKIE_TAG);
             } catch (NullPointerException | URISyntaxException e) {
                 Print.w(TAG, "WARNING: EXCEPTION ON ADD ENCODED COOKIE", e);
                 clearCredentials();

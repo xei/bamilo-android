@@ -51,6 +51,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -910,6 +911,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                         showErrorDialog(errors, R.string.error_login_title);
                         showFragmentContentContainer();
                     }
+                } else {
+                    showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
                 }
                 break;
             case SET_SIGNUP_EVENT:
@@ -923,6 +926,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                         Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
                     }
                     showFragmentContentContainer();
+                } else {
+                    showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
                 }
                 break;
             case GET_SIGNUP_FORM_EVENT:

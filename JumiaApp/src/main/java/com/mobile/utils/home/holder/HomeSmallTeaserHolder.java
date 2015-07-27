@@ -17,11 +17,13 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 
     public static final int NUMBER_OF_PIECES = 3;
 
-    private int mItemWidth;
+    private int minItemWidth;
 
     public HorizontalListView horizontal;
 
     private boolean secondTime = false;
+
+    private Context context;
 
     /**
      * Constructor
@@ -34,8 +36,8 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
         horizontal.setHorizontalFadingEdgeEnabled(mOffset == NO_OFFSET);
         // Validate orientation
         horizontal.enableRtlSupport(isRtl);
-        // Calculate the width for each item: SCREEN_WIDTH - LEFT_OFFSET - RIGHT_OFFSET / NUMBER_OF_PIECES
-        mItemWidth = (DeviceInfoHelper.getWidth(context) - (2 * mOffset)) / NUMBER_OF_PIECES;
+
+        this.context = context;
     }
 
     /**
@@ -49,7 +51,7 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontal.setHasFixedSize(true);
             // Set adapter
-            horizontal.setAdapter(new HomeSmallTeaserAdapter(group.getData(), mParentClickListener, mItemWidth));
+            horizontal.setAdapter(new HomeSmallTeaserAdapter(group.getData(), mParentClickListener, minItemWidth));
         }
     }
 
@@ -58,10 +60,22 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
      * @param group
      */
     public void setTeaserGroupTypeMargins(BaseTeaserGroupType group) {
-        if (group.getData() != null && group.getData().size() == NUMBER_OF_PIECES) {
-            secondTime = true;
-            applyMargin();
+        // Calculate the width for each item: SCREEN_WIDTH - LEFT_OFFSET - RIGHT_OFFSET / NUMBER_OF_PIECES
+        minItemWidth = (DeviceInfoHelper.getWidth(context) - (2 * mOffset)) / NUMBER_OF_PIECES;
+
+        int numPieces = group.getData().size();
+
+        if (numPieces > NUMBER_OF_PIECES){
+            int sizePiece = (DeviceInfoHelper.getWidth(context)) / numPieces;
+            //If the calculated new size (without offset) is bigger than min width defined
+            if (sizePiece > minItemWidth) {
+                minItemWidth = sizePiece;
+            }
+            //Offset is discarted
+            mOffset = 0;
         }
+        secondTime = true;
+        applyMargin();
     }
 
     @Override
