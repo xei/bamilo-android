@@ -631,10 +631,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             bundle.putDouble(TrackerDelegator.RATING_KEY, addableToCart.getRatingsAverage());
             bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, addableToCart.getMaxSavingPercentage());
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
-            if (null != addableToCart && addableToCart.getCategories().size() > 0){
+            if (addableToCart.getCategories().size() > 0){
                 int categoriesSize = addableToCart.getCategories().size();
                 bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories().get(categoriesSize - 1));
-                if (null != addableToCart && categoriesSize > 1) {
+                if (categoriesSize > 1) {
                     bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, addableToCart.getCategories()
                             .get(categoriesSize - 2));
                 }

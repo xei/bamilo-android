@@ -131,12 +131,10 @@ public class OffersListAdapter extends BaseAdapter {
 
         item.offerPrice.setText(offers.get(position).getPriceOffer());
         item.offerProductOwner.setText(offers.get(position).getSeller().getName());
-        String reviews = context.getResources().getString(R.string.reviews);
-        if(offers.get(position).getSeller().getRatingCount() == 1){
-            reviews = context.getResources().getString(R.string.review);
-        } else {
-            reviews = context.getResources().getString(R.string.reviews);
-        }
+        String reviews = offers.get(position).getSeller().getRatingCount() == 1 ?
+                context.getResources().getString(R.string.review) :
+                context.getResources().getString(R.string.reviews);
+
         item.offerReview.setText(offers.get(position).getSeller().getRatingCount()+ " "+reviews);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
 

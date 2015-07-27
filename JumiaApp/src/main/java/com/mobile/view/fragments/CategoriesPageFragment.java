@@ -235,7 +235,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showCategoryList(ArrayList<Category> categories) {
         // Case root
-        if(mCategoryKey == ROOT_CATEGORIES) showRootCategories(categories);
+        if(mCategoryKey.equals(ROOT_CATEGORIES)) showRootCategories(categories);
         // Case branch
         else if(categories != null && categories.size() > 0) showSubCategory(categories.get(0));
         // Case error
@@ -328,7 +328,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showChildrenInLandscape(Category category) {
         // Create and add the header for back
-        if(mLandscapeCategoryChildrenList.getHeaderViewsCount() == 0 && mCategoryKey != ROOT_CATEGORIES) {
+        if(mLandscapeCategoryChildrenList.getHeaderViewsCount() == 0 && !mCategoryKey.equals(ROOT_CATEGORIES)) {
             View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label));
             mLandscapeCategoryChildrenList.addHeaderView(headerForBack);
         }
@@ -455,16 +455,24 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             case CLICK_FROM_DEFAULT_CONTAINER:
                 Print.i(TAG, "CLICK_FROM_DEFAULT_CONTAINER");
                 // Case root
-                if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
+                if(mCategoryKey.equals(ROOT_CATEGORIES)){
+                    onClickRootCategory(parent, position);
+                }
                 // Case branch or leaf
-                else onClickNestedCategory(parent, position);
+                else{
+                    onClickNestedCategory(parent, position);
+                }
                 break;
             case CLICK_FROM_LANDSCAPE_CONTAINER:
                 Print.i(TAG, "CLICK_FROM_LANDSCAPE_CONTAINER");
                 // Case root level from landscape without back button
-                if(mCategoryKey == ROOT_CATEGORIES) onClickSubCategoryWithoutBack(parent, position);
+                if(mCategoryKey.equals(ROOT_CATEGORIES)){
+                    onClickSubCategoryWithoutBack(parent, position);
+                }
                 // Case other level from landscape with back button
-                else onClickSubCategoryWithBack(parent, position);
+                else {
+                    onClickSubCategoryWithBack(parent, position);
+                }
                 break;
             default:
                 Print.w(TAG, "WARNING: UNKNOWN CLICK");

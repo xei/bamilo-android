@@ -253,12 +253,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public String getErrorMessage() {
-        String result = mContext.getString(R.string.register_required_text);
-
-        result = generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0)
-                .getMessage();
-
-        return result;
+        return generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0).getMessage();
     }
 
     public ContentValues getSubFieldParameters() {

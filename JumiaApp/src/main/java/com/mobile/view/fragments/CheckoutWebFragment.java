@@ -551,7 +551,7 @@ public class CheckoutWebFragment extends BaseFragment {
                     JumiaApplication.INSTANCE.setPaymentMethodForm(new PaymentMethodForm());
 
                     String order_number = result.optString("orderNr");
-                    String grandTotal = result.optString("grandTotal");
+//                    String grandTotal = result.optString("grandTotal");
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(order_number);
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(true);
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCustomerFirstName((customer != null) ? customer.getFirstName() : "");

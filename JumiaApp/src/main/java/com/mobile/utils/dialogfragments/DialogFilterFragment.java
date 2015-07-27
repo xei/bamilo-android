@@ -502,7 +502,7 @@ public class DialogFilterFragment extends DialogFragment {
                     addPriceFilter(filter, contentValues);
                 }
 
-                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
+//                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
             }
             return contentValues;
         }

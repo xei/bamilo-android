@@ -903,13 +903,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         /**
          * Simple selected but is null
          */
-        if (getSelectedSimple() == null) {
+//        if (getSelectedSimple() == null) {
             // Log.d(TAG, "code1stock STOCK:  SIMPLE IS NULL " + mSelectedSimple);
             // Bundle bundle = new Bundle();
             // bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, -1);
             // FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment,
             // bundle, 4);
-        }
+//        }
 
         /**
          * Simple selected
@@ -1081,12 +1081,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
-        String priceAsString;
-
-        priceAsString = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-        if (priceAsString == null) {
-            priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
-        }
+//        String priceAsString;
+//
+//        priceAsString = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
+//        if (priceAsString == null) {
+//            priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
+//        }
 
         // Long price = getPriceForTrackingAsLong(simple);
 
@@ -1464,9 +1464,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                         int id = v.getId();
                         if (id == R.id.button1) {
                             mDialogAddedToCart.dismiss();
-                        } else if (id == R.id.button2) {
-
                         }
+//                        else if (id == R.id.button2) {
+//
+//                        }
                     }
                 });
 

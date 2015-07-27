@@ -113,7 +113,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        prepareLayout();
+        prepareLayout(view);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     /**
      * Show content
      */
-    private void prepareLayout() {
+    private void prepareLayout(View view) {
         
         // String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null) {
@@ -174,11 +174,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Order number
-        TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
+        TextView tV = (TextView) view.findViewById(R.id.order_number_id);
         tV.setText(order_number);
         tV.setOnClickListener(this);
         // Continue button
-        getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
+        view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(order_number);
     }

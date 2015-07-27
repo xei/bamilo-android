@@ -673,7 +673,7 @@ public class ReviewsFragment extends BaseFragment {
                 if(reviews != null && pageNumber == 1){
                     reviews.clear();
                     reviews =  productRatingPage.getReviewComments();
-                } else if(reviews != null && pageNumber != 1){
+                } else if(reviews != null){
                     if(reviews.size() != productRatingPage.getCommentsCount()){
                         reviews.addAll(productRatingPage.getReviewComments());
                     }
@@ -922,7 +922,7 @@ public class ReviewsFragment extends BaseFragment {
             }
             
             LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,ReviewsFragment.RATING_TYPE_BY_LINE);
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,ReviewsFragment.RATING_TYPE_BY_LINE);
             
             typeLine.setOrientation(LinearLayout.HORIZONTAL);
             
