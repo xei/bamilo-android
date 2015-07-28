@@ -234,7 +234,6 @@ public class ReviewsFragment extends BaseFragment {
 
     }
     
-    
     /*
      * (non-Javadoc)
      * 
@@ -583,9 +582,9 @@ public class ReviewsFragment extends BaseFragment {
             // Validate the current rating page
             if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
             
-            if(bundle.containsKey(GetProductReviewsHelper.PAGE) && bundle.containsKey(GetProductReviewsHelper.TOTAL_PAGES)){
-                pageNumber = bundle.getInt(GetProductReviewsHelper.PAGE);
-                totalPages = bundle.getInt(GetProductReviewsHelper.TOTAL_PAGES);
+            if(productRatingPage.getCurrentPage() != 0 && productRatingPage.getTotalPages() != 0){
+                pageNumber = productRatingPage.getCurrentPage();
+                totalPages = productRatingPage.getTotalPages();
             }
             showFragmentContentOfSeller();
             // Append the new page to the current
@@ -1048,7 +1047,7 @@ public class ReviewsFragment extends BaseFragment {
             }
             
         }
-        setScrollListener();    
+        setScrollListener();
         
         // TRACKER
         Bundle params = new Bundle();
