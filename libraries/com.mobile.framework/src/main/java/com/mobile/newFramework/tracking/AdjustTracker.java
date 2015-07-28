@@ -873,7 +873,7 @@ public class AdjustTracker {
 
         event.addCallbackParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
         event.addPartnerParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
-        if (bundle.containsKey(USER_ID) && !bundle.getString(USER_ID).equals("")) {
+        if (bundle.containsKey(USER_ID) && !TextUtils.isEmpty(bundle.getString(USER_ID))) {
             event.addCallbackParameter(AdjustKeys.USER_ID, bundle.getString(USER_ID));
             event.addPartnerParameter(AdjustKeys.USER_ID, bundle.getString(USER_ID));
         } else if (bundle.getParcelable(CUSTOMER) != null) {

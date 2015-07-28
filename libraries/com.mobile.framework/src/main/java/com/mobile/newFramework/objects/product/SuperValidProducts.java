@@ -1,6 +1,8 @@
 package com.mobile.newFramework.objects.product;
 
 
+import android.database.sqlite.SQLiteException;
+
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  */
 public class SuperValidProducts extends ArrayList<LastViewedAddableToCart> implements IJSONSerializable {
 
-    private static final String TAG = SuperValidProducts.class.getSimpleName();
+    protected static final String TAG = SuperValidProducts.class.getSimpleName();
 
     /**
      * Empty constructor
@@ -95,18 +97,16 @@ public class SuperValidProducts extends ArrayList<LastViewedAddableToCart> imple
 
     /**
      * update recentely viewed products on database
-     *
-     * @param validProducts
-     * @return
      */
-    private boolean updateRecentlyViewedDatabase(ArrayList<LastViewedAddableToCart> validProducts) {
-
-        if (CollectionUtils.isEmpty(validProducts)) {
-            LastViewedTableHelper.deleteAllLastViewed();
-            return false;
-        } else {
-            LastViewedTableHelper.updateLastViewed(validProducts);
-            return true;
+    private void updateRecentlyViewedDatabase(ArrayList<LastViewedAddableToCart> validProducts) {
+        try {
+            if (CollectionUtils.isEmpty(validProducts)) {
+                LastViewedTableHelper.deleteAllLastViewed();
+            } else {
+                LastViewedTableHelper.updateLastViewed(validProducts);
+            }
+        } catch (IllegalStateException | SQLiteException e) {
+            //...
         }
     }
 

@@ -361,7 +361,7 @@ public class DeviceInfoHelper {
      */
     public static void executeCodeBasedOnVersion(int version, IDeviceVersionBasedCode iDeviceVersionBasedCode){
         if(iDeviceVersionBasedCode != null) {
-            if (android.os.Build.VERSION.SDK_INT > version) {
+            if (android.os.Build.VERSION.SDK_INT >= version) {
                 iDeviceVersionBasedCode.highVersionCallback();
             } else {
                 iDeviceVersionBasedCode.lowerVersionCallback();

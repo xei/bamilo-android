@@ -65,6 +65,13 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
             triggerInitForm();
@@ -73,6 +80,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         } else {
             triggerEditAddressForm();
         }
+
     }
 
     @Override

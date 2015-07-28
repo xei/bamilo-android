@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +25,7 @@ import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -350,7 +350,7 @@ public class TrackOrderFragment extends BaseFragment {
         setTipVisibility(false);
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# " + mOrderTracker.getId());
         ((TextView) getView().findViewById(R.id.order_creation_date_text)).setText(mOrderTracker.getDate());
-        ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
+        ((TextView) getView().findViewById(R.id.order_payment_method_title)).setText(TextUtils.placeHolderText(getString(R.string.payment_method), mOrderTracker.getPaymentMethod()));
 
         inflateItemsList(mOrderTracker.getOrderTrackerItems());
         if (loadingTrackBarView != null) {

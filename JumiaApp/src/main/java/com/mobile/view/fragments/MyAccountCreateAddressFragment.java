@@ -74,13 +74,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormResponse != null && regions != null){
-            loadCreateAddressForm(mFormResponse);
-        } else {
-            triggerCreateAddressForm();
-        }
 
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
         if(orderSummaryLayout != null){
@@ -88,6 +81,18 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         }
 
         ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            triggerInitForm();
+        } else if(mFormResponse != null && regions != null){
+            loadCreateAddressForm(mFormResponse);
+        } else {
+            triggerCreateAddressForm();
+        }
     }
 
     @Override

@@ -6,12 +6,14 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -251,6 +253,17 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         super.onDismiss(dialog);
         if(mSelectListener != null){
             mSelectListener.onDismiss();
+        }
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager,tag);
+            // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
+            // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
+        } catch (IllegalStateException | WindowManager.BadTokenException ex){
+            Print.e(TAG, "Error showing Dialog", ex);
         }
     }
 

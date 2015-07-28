@@ -12,7 +12,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="@dimen/product_tip_padding_side"
         android:layout_marginRight="@dimen/product_tip_padding_side"
-        android:layout_marginTop="@dimen/product_tip_top_margin"
+        android:layout_marginTop="@dimen/product_tip_variations_top_margin"
         android:src="@drawable/img_instructions_right_tap" />
 
     <View

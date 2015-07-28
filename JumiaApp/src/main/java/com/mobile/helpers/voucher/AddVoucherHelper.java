@@ -28,7 +28,6 @@ public class AddVoucherHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new AddVoucher(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.addVoucher);
     }
 

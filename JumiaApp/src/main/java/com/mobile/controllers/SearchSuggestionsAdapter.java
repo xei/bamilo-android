@@ -30,7 +30,7 @@ public class SearchSuggestionsAdapter extends ArrayAdapter<Suggestion> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.recentsearch_suggestion_list_item, parent, false);
+            view = mInflater.inflate(R.layout.recent_search_suggestion_list_item, parent, false);
         } else {
             view = convertView;
         }

@@ -1,5 +1,8 @@
 package com.mobile.newFramework.utils;
 
+import android.text.Html;
+import android.text.Spanned;
+
 public class TextUtils {
 
     private static String[] EMPTY_STRING_ARRAY = new String[]{};
@@ -62,5 +65,18 @@ public class TextUtils {
         } else {
             return text.split(expression, -1);
         }
+    }
+
+    /**
+     * Constructs a String based on placeholder with HTML support.
+     *
+     * @param text The normal text.
+     * @param placeHolder The placeholder String.
+     * @return A spanned String.
+     */
+    public static Spanned placeHolderText(String placeHolder, String text){
+        String textEncoded = android.text.TextUtils.htmlEncode(text);
+        String placeHolderText = String.format(placeHolder, textEncoded);
+        return Html.fromHtml(placeHolderText);
     }
 }

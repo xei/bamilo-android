@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
@@ -234,8 +231,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         getBaseActivity().warningFactory.hideWarning();
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-
-//        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, this);
         showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
     }
 
@@ -288,15 +283,15 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         }
     }
 
-    /**
-     * Process the click on continue button
-     * 
-     * @author Andre Lopes
-     */
-    protected void onClickContinueShopping() {
-        Print.i(TAG, "ON CLICK CONTINUE SHOPPING");
-        getBaseActivity().onBackPressed();
-    }
+//    /**
+//     * Process the click on continue button
+//     *
+//     * @author Andre Lopes
+//     */
+//    protected void onClickContinueShopping() {
+//        Print.i(TAG, "ON CLICK CONTINUE SHOPPING");
+//        getBaseActivity().onBackPressed();
+//    }
 
     /**
      * Process the click on variation button
@@ -636,9 +631,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, addableToCart.getMaxSavingPercentage());
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             if (null != addableToCart && addableToCart.getCategories().size() > 0){
-                bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories().get(0));
-                if (null != addableToCart && addableToCart.getCategories().size() > 1){
-                    bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, addableToCart.getCategories().get(1));
+                int categoriesSize = addableToCart.getCategories().size();
+                bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories().get(categoriesSize - 1));
+                if (null != addableToCart && categoriesSize > 1) {
+                    bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, addableToCart.getCategories()
+                            .get(categoriesSize - 2));
                 }
             } else {
                 bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -689,7 +686,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         case GET_FAVOURITE_LIST:
             Print.i(TAG, "ON RESPONSE COMPLETE: GET_FAVOURITE_LIST");
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
-            Print.d(TAG, "NUMBER : " + mAddableToCartList.size());
+            //Print.d(TAG, "NUMBER : " + mAddableToCartList.size());
             // Show content
             showContent();
 
