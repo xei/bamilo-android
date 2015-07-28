@@ -14,6 +14,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -129,8 +130,15 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
      * Arrays.asList(FacebookHelper.FB_PERMISSION_EMAIL)
      */
     public void repeatFacebookEmailRequest(){
-        showFragmentLoading();
-        LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList(FacebookHelper.FB_PERMISSION_EMAIL));
+
+        if(!isOnStoppingProcess) {
+            showFragmentLoading();
+            try {
+                LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList(FacebookHelper.FB_PERMISSION_EMAIL));
+            } catch (NullPointerException ex) {
+                Print.e(TAG, "Error trying to launch facebook dialog for requesting permissions", ex);
+            }
+        }
     }
 
     /*
@@ -144,7 +152,13 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         // Validate required permission
         String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
         if (TextUtils.isEmpty(email)) {
-            repeatFacebookEmailRequest();
+            this.getView().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    repeatFacebookEmailRequest();
+                }
+            },5000);
+
             return;
         }
         // Trigger
