@@ -75,17 +75,19 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
         else ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.magnlens);
         // Set suggestion
         setColorOnQuery(sugText, sug.getResult(), mQuery);
-//        // Set number of suggestions
-//        int resultValue = sug.getResultValue();
-//        if (resultValue > 0) {
-//            sugItems.setText("(" + resultValue + " " +
-//                            ((resultValue > 1)
-//                            ? getContext().getString(R.string.my_order_items_label)
-//                            : getContext().getString(R.string.my_order_item_label)) +
-//                            ")");
-//        } else {
-//            sugItems.setVisibility(View.GONE);
-//        }
+        /*-
+        // Set number of suggestions
+        int resultValue = sug.getResultValue();
+        if (resultValue > 0) {
+            sugItems.setText("(" + resultValue + " " +
+                            ((resultValue > 1)
+                            ? getContext().getString(R.string.my_order_items_label)
+                            : getContext().getString(R.string.my_order_item_label)) +
+                            ")");
+        } else {
+            sugItems.setVisibility(View.GONE);
+        }
+        */
 
         return view;
     }
@@ -97,8 +99,7 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      * @author sergiopereira
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>SpannableString</href>
      */
-    private void setColorOnQuery(TextView textView, String mainText, String query) {
-        String titleString = mainText;
+    private void setColorOnQuery(TextView textView, String titleString, String query) {
         int index = titleString.toLowerCase().indexOf(query.toLowerCase());
         if(index != -1) {
             SpannableString title = new SpannableString(titleString);

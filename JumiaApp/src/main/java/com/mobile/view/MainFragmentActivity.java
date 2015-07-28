@@ -272,7 +272,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
-                if(bundle != null && bundle.containsKey(ConstantsIntentExtra.REMOVE_ENTRIES)){
+                if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
                 } else {
