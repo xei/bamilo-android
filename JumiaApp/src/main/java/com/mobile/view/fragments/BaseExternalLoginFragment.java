@@ -152,13 +152,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         // Validate required permission
         String email = user.optString(FacebookHelper.FACEBOOK_EMAIL_TAG);
         if (TextUtils.isEmpty(email)) {
-            this.getView().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    repeatFacebookEmailRequest();
-                }
-            },5000);
-
+            repeatFacebookEmailRequest();
             return;
         }
         // Trigger
