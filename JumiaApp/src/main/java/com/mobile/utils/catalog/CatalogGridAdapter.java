@@ -1,7 +1,7 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteMisuseException;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -254,7 +254,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         boolean isFavourite = false;
         try {
             isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
-        } catch (InterruptedException | SQLiteMisuseException e) {
+        } catch (InterruptedException | SQLiteException e) {
             e.printStackTrace();
         }
         // Set favourite data

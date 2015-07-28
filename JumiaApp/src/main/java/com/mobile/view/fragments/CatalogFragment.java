@@ -1,7 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
-import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -57,7 +57,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Set;
 
 /**
  * Catalog fragment.
@@ -167,7 +166,29 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+
+            // Get filters from deep link
+            String urlWithFilters = arguments.getString(ConstantsIntentExtra.CATALOG_QUERIE);
+            if (!TextUtils.isEmpty(urlWithFilters)) {
+                try {
+                    UrlQuerySanitizer query = new UrlQuerySanitizer(urlWithFilters);
+                    for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
+                        // Search query
+                        if (GetCatalogPageHelper.QUERY.equals(filter.mParameter)) {
+                            mSearchQuery = filter.mValue;
+                        }
+                        // Other filters
+                        else if (!GetCatalogPageHelper.PAGE.equals(filter.mParameter) || !GetCatalogPageHelper.MAX_ITEMS.equals(filter.mParameter) ||
+                                !GetCatalogPageHelper.SORT.equals(filter.mParameter) || !GetCatalogPageHelper.DIRECTION.equals(filter.mParameter)) {
+                            mCurrentFilterValues.put(filter.mParameter, filter.mValue);
+                        }
+                    }
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "WARNING: NPE ON PARSE FILTER FROM DEEP LINK");
+                }
+            }
         }
+
         // Get data from saved instance
         if (savedInstanceState != null) {
             Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
@@ -839,20 +860,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
         // Get filters
-        if(getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CATALOG_QUERIE)){
-            Uri data = getArguments().getParcelable(ConstantsIntentExtra.CATALOG_QUERIE);
-            if(data != null) {
-                Set<String> filters = data.getQueryParameterNames();
-                // Get all params
-                if (filters.size() > 0) {
-                    for (String key : filters) {
-                        mCurrentFilterValues.put(key, data.getQueryParameter(key));
-                    }
-                }
-            }
-        }
         catalogValues.putAll(mCurrentFilterValues);
-
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);

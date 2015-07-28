@@ -4,7 +4,7 @@
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
     android:layout_marginTop="@dimen/rounded_margin_small"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <!-- TITLE -->
 
@@ -21,7 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/checkout_voucher_box_height"
-        android:layout_gravity="center_horizontal" >
+        android:layout_gravity="center_horizontal">
 
         <!-- RIGHT BUTTON -->
 
@@ -56,8 +56,8 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/voucher_btn"
             android:layout_toStartOf="@id/voucher_btn"
-            android:orientation="vertical" 
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
@@ -68,7 +68,7 @@
                 android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/login_margin_medium"
                 android:hint="@string/voucher_message_hint"
-                android:layoutDirection="locale" />
+                android:textDirection="locale" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/voucher_error_message"

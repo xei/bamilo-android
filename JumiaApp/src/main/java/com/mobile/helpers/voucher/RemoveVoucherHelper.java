@@ -33,7 +33,6 @@ public class RemoveVoucherHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new RemoveVoucher(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.removeVoucher);
     }
 

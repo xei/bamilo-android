@@ -18,6 +18,7 @@
         android:layout_toStartOf="@+id/option_stars"
         android:layout_marginLeft="6dp"
         android:ellipsize="end"
+        android:textDirection="locale"
         android:singleLine="true"
         android:text="@string/rating_quality" />
 

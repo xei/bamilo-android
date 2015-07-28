@@ -56,7 +56,7 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_detail_name"
                         style="@style/text_header"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_marginEnd="@dimen/margin_x_small"
                         android:layout_marginRight="@dimen/margin_x_small"
                         android:ellipsize="end"
