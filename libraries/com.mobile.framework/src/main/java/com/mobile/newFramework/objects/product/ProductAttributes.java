@@ -244,7 +244,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 
         try {
             isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-        } catch (InterruptedException | SQLiteException e) {
+        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
             e.printStackTrace();
         }
 

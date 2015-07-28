@@ -270,7 +270,7 @@ public class FavouriteTableHelper extends BaseTable {
 	 * @return
 	 * @throws InterruptedException 
 	 */
-	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException, SQLiteException {
+	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException, SQLiteException,  IllegalMonitorStateException {
 		 
 		//DarwinDatabaseSemaphore.getInstance().getLock();
 		
