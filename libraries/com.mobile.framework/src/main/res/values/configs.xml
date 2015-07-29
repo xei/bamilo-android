@@ -35,6 +35,8 @@
     <string name="global_server_user"></string>
     <string name="global_server_password"></string>
     <string name="global_server_api_version"></string>
+    <!-- alexandrapires: api version 1.8 access -->
+    <string name="global_server_api_test_next_version"></string>
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool"></item>
