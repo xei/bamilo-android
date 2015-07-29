@@ -31,7 +31,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.CheckVersion;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -170,10 +169,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
-        // Disabled for Samsung and Blackberry (check_version_enabled)
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(getActivity());
-        }
     }
 
     /**
