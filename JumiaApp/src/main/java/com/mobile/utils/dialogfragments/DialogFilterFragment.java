@@ -85,10 +85,7 @@ public class DialogFilterFragment extends DialogFragment {
     public DialogFilterFragment() { }
 
     /**
-     * 
-     * @param bundle
-     * @param mParentFragment
-     * @return
+     * Create new instance
      */
     public static DialogFilterFragment newInstance(Bundle bundle, OnDialogFilterListener mParentFragment) {
         Print.d(TAG, "NEW INSTANCE");

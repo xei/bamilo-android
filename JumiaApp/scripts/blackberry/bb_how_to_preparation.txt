@@ -13,6 +13,8 @@ RocketInternet2014
 > BlackBerry World Account
 laurent.detapol@jumia.com
 Jumia2014
+> BBID Token
+jumiablackberry
 
 ##### 
 # 2 - Create Ventore Account to publish

@@ -1,9 +1,11 @@
 package com.mobile.test;
 
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class AigLoginCustomerTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/customer/login/";
+        return AigMobApiNigeriaTestSuite.HOST+"/customer/login/";
     }
 
     @Override
@@ -37,6 +39,11 @@ public class AigLoginCustomerTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
+
+        CheckoutStepLogin login_response = (CheckoutStepLogin) response.getMetadata().getData();
+        assertNotNull("Customer is null", login_response.getCustomer());
+        assertNotNull("Customer First Name is null", login_response.getCustomer().getFirstName());
+        //assertNotNull("Customer Middle Name is null", login_response.getCustomer().getMiddleName());
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");
     }
