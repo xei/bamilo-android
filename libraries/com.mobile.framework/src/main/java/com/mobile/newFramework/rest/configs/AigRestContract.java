@@ -42,6 +42,10 @@ public class AigRestContract {
 	public static final String REST_PARAM_SELLER_RATING =               "seller_rating";
 
 
+	//alexandrapires: access to rest base api 1.8
+	public static String REST_BASE_PATH_v18 = null;
+
+
 	public static void init(Context context, String selectedId) {
 		Print.i(TAG, "code1configs initializing RestContract : " + selectedId);
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -62,6 +66,14 @@ public class AigRestContract {
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
+
+		//alexandrapires: get base rest v 1.8 - this can be removed when app works fully with 1.8 api
+		REST_BASE_PATH_v18 = context.getResources().getString(R.string.global_server_api_test_next_version);
+		if (TextUtils.isEmpty(REST_BASE_PATH_v18)) {
+			throw new RuntimeException("The rest base path for api 1.8 has to be set and not beeing empty!");
+		}
+		//----------------------------------------------------------------------
+
 		Print.d(TAG, "Initilizing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
 		AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
 		AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
