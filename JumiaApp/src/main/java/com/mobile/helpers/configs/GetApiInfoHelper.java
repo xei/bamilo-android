@@ -11,6 +11,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.database.ImageResolutionTableHelper;
 import com.mobile.newFramework.database.SectionsTablesHelper;
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.Section;
 import com.mobile.newFramework.objects.configs.Sections;
@@ -57,8 +58,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
 
         // Get api info
-        ApiInformation apiInformation = (ApiInformation) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
+        ApiInformationStruct apiInformation = new ApiInformationStruct((ApiInformation) baseResponse.getMetadata().getData());
 
         //TODO move to observable
         // Save mob api version
@@ -74,8 +74,10 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
-            clearOutDatedMainSections(outDatedSections, bundle);
+            clearOutDatedMainSections(outDatedSections, apiInformation);
         }
+
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation);
     }
 
 
@@ -136,9 +138,9 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     /**
      * Clears the database of outdated sections
-     * @param bundle 
+     * @param apiInformationStruct
      */
-    private void clearOutDatedMainSections(List<Section> sections, Bundle bundle) {
+    private void clearOutDatedMainSections(List<Section> sections, ApiInformationStruct apiInformationStruct) {
         Print.d(TAG, "ON CLEAR OUT DATED SECTIONS");
         // Update each outdated section
         for (Section section : sections) {
@@ -178,7 +180,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                     break;
                 // Case country configs
                 case Section.SECTION_NAME_CONFIGURATIONS:
-                    bundle.putBoolean(Section.SECTION_NAME_CONFIGURATIONS, true);
+                    apiInformationStruct.setSectionNameConfigurations(true);
                     break;
             }
         }
@@ -291,4 +293,24 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 //    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
 //        return parseResponseErrorBundle(bundle);
 //    }
+
+    public class ApiInformationStruct extends ApiInformation {
+        private boolean sectionNameConfigurations;
+
+        public ApiInformationStruct(){
+        }
+
+        public ApiInformationStruct(ApiInformation apiInformation){
+            super(apiInformation);
+        }
+
+
+        public boolean isSectionNameConfigurations() {
+            return sectionNameConfigurations;
+        }
+
+        public void setSectionNameConfigurations(boolean sectionNameConfigurations) {
+            this.sectionNameConfigurations = sectionNameConfigurations;
+        }
+    }
 }

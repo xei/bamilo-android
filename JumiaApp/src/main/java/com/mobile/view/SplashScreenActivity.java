@@ -491,8 +491,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(Bundle bundle) {
         Print.i(TAG, "ON PROCESS API EVENT");
+        GetApiInfoHelper.ApiInformationStruct apiInformation = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         // Validate out dated sections
-        if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
+        if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
