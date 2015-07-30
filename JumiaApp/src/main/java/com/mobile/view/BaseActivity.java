@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -81,6 +82,7 @@ import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -1096,8 +1098,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void processErrorSearchEvent(Bundle bundle) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
+
+        ArrayList suggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
+
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
+        String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
@@ -1141,10 +1148,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void processSuccessSearchEvent(Bundle bundle) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        List<Suggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        ArrayList suggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
-        Print.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
+        String requestQuery = suggestionsStruct.getSearchParam();
+        Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
 
         // Validate current objects
         if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
@@ -1170,7 +1179,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
         mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
         mSearchAutoComplete.showDropDown();
     }

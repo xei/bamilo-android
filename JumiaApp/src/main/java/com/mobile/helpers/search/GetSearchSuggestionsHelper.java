@@ -20,6 +20,7 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,8 +97,9 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         Suggestions searchSuggestions = (Suggestions) baseResponse.getMetadata().getData();
         CollectionUtils.addAll(suggestions, searchSuggestions);
 
-        bundle.putString(SEACH_PARAM, mQuery);
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(searchSuggestions);
+        suggestionsStruct.setSearchParam(mQuery);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestionsStruct);
     }
 
     @Override
@@ -122,8 +124,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, suggestions.size() > 0);
-        bundle.putString(SEACH_PARAM, mQuery);
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
+//        bundle.putString(SEACH_PARAM, mQuery);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+        suggestionsStruct.setSearchParam(mQuery);
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestionsStruct);
     }
 
     /*
@@ -306,4 +310,27 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 //    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
 //        return parseResponseErrorBundle(bundle);
 //    }
+
+    public class SuggestionsStruct extends Suggestions {
+
+        private String searchParam;
+
+        public SuggestionsStruct(){}
+
+        public SuggestionsStruct(Suggestions suggestions){
+            super(suggestions);
+        }
+
+        public SuggestionsStruct(List<Suggestion> suggestions){
+            super(suggestions);
+        }
+
+        public String getSearchParam() {
+            return searchParam;
+        }
+
+        public void setSearchParam(String searchParam) {
+            this.searchParam = searchParam;
+        }
+    }
 }

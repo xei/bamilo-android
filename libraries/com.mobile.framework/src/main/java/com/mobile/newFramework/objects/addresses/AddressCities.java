@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddressCities extends ArrayList<AddressCity> implements IJSONSerializable {
 
@@ -20,10 +21,14 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
     public AddressCities() {
     }
 
-	public AddressCities(AddressCities addressCities) {
+	public AddressCities(List<AddressCity> addressCities) {
 		for(AddressCity addressCity : addressCities){
 			add(addressCity);
 		}
+	}
+
+	public AddressCities(AddressCities addressCities){
+		this((List)addressCities);
 	}
 
 	/**
