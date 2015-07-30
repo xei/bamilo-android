@@ -27,6 +27,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -974,9 +975,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCitiesSuccessEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-        Print.d(TAG, "REQUESTED REGION FROM FIELD: " + bundle.getString(GetCitiesHelper.CUSTOM_TAG));
-        String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
-        ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+        ArrayList<AddressCity> citiesArray = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+        GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
+
+        String requestedRegionAndField = cities.getCustomTag();
+        Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
+
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
         // Show
         showFragmentContentContainer();

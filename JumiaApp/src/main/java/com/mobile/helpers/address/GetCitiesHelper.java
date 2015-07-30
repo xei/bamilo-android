@@ -49,7 +49,8 @@ public class GetCitiesHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        AddressCities cities = (AddressCities) baseResponse.getMetadata().getData();
+        AddressCitiesStruct cities = new AddressCitiesStruct( (AddressCities)baseResponse.getMetadata().getData());
+        cities.setCustomTag(customTag);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
         bundle.putString(CUSTOM_TAG, customTag);
     }
@@ -140,4 +141,23 @@ public class GetCitiesHelper extends SuperBaseHelper {
 //    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
 //        return parseResponseErrorBundle(bundle);
 //    }
+
+    public class AddressCitiesStruct extends AddressCities {
+        private String customTag;
+
+        public AddressCitiesStruct(){}
+
+        public AddressCitiesStruct(AddressCities addressCities){
+            super(addressCities);
+        }
+
+
+        public String getCustomTag() {
+            return customTag;
+        }
+
+        public void setCustomTag(String customTag) {
+            this.customTag = customTag;
+        }
+    }
 }

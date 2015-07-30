@@ -44,7 +44,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
 
     @Override
-    public void onRequest(RequestBundle requestBundle) {;
+    public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getApiInformation);
     }
 

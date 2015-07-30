@@ -20,6 +20,12 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
     public AddressCities() {
     }
 
+	public AddressCities(AddressCities addressCities) {
+		for(AddressCity addressCity : addressCities){
+			add(addressCity);
+		}
+	}
+
 	/**
 	 * ############### IJSON ###############
 	 */
