@@ -48,7 +48,7 @@ done
 #########################
 ##### DEF CONSTANTS #####
 #########################
-STOREPASS="jumiablackberry"
+STOREPASS="jumia2015"
 STUDIO_MOBILE_PACKAGE="JumiaApp"
 STORE_CRT_FOLDER=~/.rim/
 
