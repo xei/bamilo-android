@@ -40,11 +40,31 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
         SuperGetShippingMethodsForm shippingMethodsForm = (SuperGetShippingMethodsForm) baseResponse.getMetadata().getData();
-        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-        form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
+        ShippingMethodFormStruct shippingMethodFormStruct = new ShippingMethodFormStruct(shippingMethodsForm);
+
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, shippingMethodFormStruct);
+    }
+
+    public class ShippingMethodFormStruct extends SuperGetShippingMethodsForm {
+        private ShippingMethodFormBuilder formBuilder;
+
+        public ShippingMethodFormStruct(){}
+
+        ShippingMethodFormStruct(SuperGetShippingMethodsForm shippingMethodsForm){
+            super(shippingMethodsForm);
+            formBuilder = new ShippingMethodFormBuilder();
+            formBuilder.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
+        }
+
+
+        public ShippingMethodFormBuilder getFormBuilder() {
+            return formBuilder;
+        }
+
+        public void setFormBuilder(ShippingMethodFormBuilder formBuilder) {
+            this.formBuilder = formBuilder;
+        }
     }
 
 //    {

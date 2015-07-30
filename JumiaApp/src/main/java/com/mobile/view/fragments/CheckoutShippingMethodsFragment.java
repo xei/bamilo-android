@@ -17,6 +17,7 @@ import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
@@ -354,12 +355,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onSuccessGetShippingMethods(Bundle bundle){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+
+        GetShippingMethodsHelper.ShippingMethodFormStruct shippingMethodsForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+
         // Get order summary
-        OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        OrderSummary orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
-        // Form
-        ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        loadForm(form);
+
+        loadForm(shippingMethodsForm.getFormBuilder());
 
         //Total price
         CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());

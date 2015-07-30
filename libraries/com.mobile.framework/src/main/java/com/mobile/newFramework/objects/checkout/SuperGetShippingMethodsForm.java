@@ -25,6 +25,11 @@ public class SuperGetShippingMethodsForm implements IJSONSerializable, Parcelabl
     public SuperGetShippingMethodsForm() {
     }
 
+    public SuperGetShippingMethodsForm(SuperGetShippingMethodsForm shippingMethodsForm) {
+        orderSummary = shippingMethodsForm.orderSummary;
+        form = shippingMethodsForm.form;
+    }
+
     /*
      * (non-Javadoc)
      *
