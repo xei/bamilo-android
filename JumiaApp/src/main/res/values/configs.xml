@@ -18,9 +18,6 @@
     <string name="global_server_user">@string/jumia_global_user</string>
     <string name="global_server_password">@string/jumia_global_password</string>
     <string name="global_server_api_version">@string/jumia_global_api_version</string>
-    <!-- alexandrapires: get 1.8 api version access -->
-    <string name="global_server_api_test_next_version">@string/jumia_global_api_test_next_version</string>
-
 
     <!-- USER PREFERENCES -->
     <item name="default_vibrate" type="bool">false</item>

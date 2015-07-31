@@ -42,14 +42,8 @@ public class RestUrlUtils {
         //
         Uri.Builder builder = uri.buildUpon();
         //
-        //alexandrapires: if goes to the campaign list, use 1.8 api
-        String restBasePath = AigRestContract.REST_BASE_PATH;
-        if(uri.toString().equals("http:/campaign/get/"))
-            restBasePath = AigRestContract.REST_BASE_PATH_v18;  //- this is temporary until all app uses 1.8 api
-
         if (uri.getAuthority() == null) {
-        //    builder.authority(AigRestContract.REQUEST_HOST).path(AigRestContract.REST_BASE_PATH + uri.getPath());
-            builder.authority(AigRestContract.REQUEST_HOST).path(restBasePath + uri.getPath());
+            builder.authority(AigRestContract.REQUEST_HOST).path(AigRestContract.REST_BASE_PATH + uri.getPath());
             Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
         }
         //
