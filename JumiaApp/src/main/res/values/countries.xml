@@ -7,7 +7,6 @@
     <string name="jumia_global_user">rocket</string>
     <string name="jumia_global_password">z7euN7qfRD769BP</string>
     <string name="jumia_global_restbase_path">mobapi</string>
-    <!-- test -->
     <string name="jumia_global_api_version">mobapi/v1.8</string>
     
     <!-- Share App -->
