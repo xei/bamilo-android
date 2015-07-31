@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -1109,10 +1110,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
-            if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
+            int categoriesSize = mCompleteProduct.getCategories().size();
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(categoriesSize - 1));
+            if (null != mCompleteProduct && categoriesSize > 1) {
                 bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories()
-                        .get(1));
+                        .get(categoriesSize - 2));
             }
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -1150,8 +1152,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             locateSimplePosition(mDeepLinkSimpleSize, product);
         }
 
-        LastViewedTableHelper.insertLastViewedProduct(product);
-        BrandsTableHelper.updateBrandCounter(product.getBrand());
+        try {
+            LastViewedTableHelper.insertLastViewedProduct(product);
+            BrandsTableHelper.updateBrandCounter(product.getBrand());
+        } catch (IllegalStateException | SQLiteException e) {
+            // ...
+        }
 
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
@@ -1173,7 +1179,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 mImageFavourite.setSelected(false);
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
             e.printStackTrace();
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
             mImageFavourite.setSelected(false);

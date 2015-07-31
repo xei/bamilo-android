@@ -62,7 +62,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private static final String TARGET_TYPE_CAMPAIGN = "campaign";
 
-    private static final int WEB_VIEW_LOAD_DELAY = 300;
+    private static final int WEB_VIEW_LOAD_DELAY = 400;
 
     private String mTitle;
 
@@ -133,7 +133,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Get web view
         mWebView = (WebView) view.findViewById(R.id.shop_web_view);
         // Set the client
-        mWebView.setWebViewClient(InnerShopWebClient);
+        mWebView.setWebViewClient(mInnerShopWebClient);
         // Enable java script
         mWebView.getSettings().setJavaScriptEnabled(true);
         // Validate the data (load/request/continue)
@@ -344,7 +344,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
      * link is catalog::http://... - Case campaign: the link is campaign::http://...
      */
-    private WebViewClient InnerShopWebClient = new WebViewClient() {
+    private WebViewClient mInnerShopWebClient = new WebViewClient() {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -432,6 +432,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

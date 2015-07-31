@@ -172,7 +172,11 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SearchRecentQueriesTableHelper.insertQuery(query);
+                try {
+                    SearchRecentQueriesTableHelper.insertQuery(query);
+                } catch (IllegalStateException e){
+                    // ...
+                }
             }
         }).start();
     }

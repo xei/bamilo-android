@@ -93,7 +93,7 @@ public class Ad4PushTracker {
     private static final String FILTER_PRICE = "filterPrice";
     private static final String FILTER_SIZE = "filterSize";
 
-    private static final String FILTER_BRAND_KEY = "searchQuery";
+    private static final String FILTER_BRAND_KEY = "brand";
     private static final String FILTER_COLOR_KEY = "color_family";
     private static final String FILTER_PRICE_KEY = "price";
     private static final String FILTER_CATEGORY_KEY = "productUrl";
@@ -463,7 +463,7 @@ public class Ad4PushTracker {
      */
     public void trackSignup(String customerId, String customerGender, String firstName, String lastName, String customerDob) {
         if (isEnabled) {
-            Lead lead = new Lead("Registration done with customer ID", customerId);
+            Lead lead = new Lead("Registration done with customer ID", String.valueOf(customerId));
             mA4S.trackLead(lead);
             // Get status in application
             String userStatus = statusInApp();
@@ -673,7 +673,7 @@ public class Ad4PushTracker {
                 prefs.putString(MOST_VISITED_CATEGORY, category);
                 mA4S.updateDeviceInfo(prefs);
                 Print.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
-            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
+            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException | IllegalMonitorStateException e) {
                 e.printStackTrace();
             }
         }

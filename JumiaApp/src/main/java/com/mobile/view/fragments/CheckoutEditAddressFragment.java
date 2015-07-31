@@ -66,6 +66,12 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
             triggerInitForm();
@@ -75,7 +81,6 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             triggerEditAddressForm();
         }
     }
-
     @Override
     protected void loadEditAddressForm(Form form) {
         super.loadEditAddressForm(form);

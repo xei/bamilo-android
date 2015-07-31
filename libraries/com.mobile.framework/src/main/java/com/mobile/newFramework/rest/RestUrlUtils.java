@@ -75,5 +75,4 @@ public class RestUrlUtils {
         return uri;
     }
 
-
 }

@@ -6,9 +6,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
@@ -74,6 +76,17 @@ public class DialogProgressFragment extends DialogFragment {
         if(divider != null) divider.setBackgroundColor(getResources().getColor(R.color.transparent));
         // Return layout
         return dialog;
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            super.show(manager,tag);
+            // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
+            // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
+        } catch (IllegalStateException | WindowManager.BadTokenException ex){
+            Print.e(TAG, "Error showing Dialog", ex);
+        }
     }
     
     /* (non-Javadoc)

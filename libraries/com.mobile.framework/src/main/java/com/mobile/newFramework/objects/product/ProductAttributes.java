@@ -1,5 +1,6 @@
 package com.mobile.newFramework.objects.product;
 
+import android.database.sqlite.SQLiteException;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -243,7 +244,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 
         try {
             isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
             e.printStackTrace();
         }
 
