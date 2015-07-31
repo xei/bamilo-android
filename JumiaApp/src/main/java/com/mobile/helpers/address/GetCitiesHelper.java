@@ -52,7 +52,6 @@ public class GetCitiesHelper extends SuperBaseHelper {
         AddressCitiesStruct cities = new AddressCitiesStruct( (AddressCities)baseResponse.getMetadata().getData());
         cities.setCustomTag(customTag);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
-        bundle.putString(CUSTOM_TAG, customTag);
     }
 
 //    /*
