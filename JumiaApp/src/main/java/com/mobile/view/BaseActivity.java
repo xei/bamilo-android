@@ -981,11 +981,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_PRODUCTS_EVENT.action+ "?q="+searchText);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+//        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+//        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
