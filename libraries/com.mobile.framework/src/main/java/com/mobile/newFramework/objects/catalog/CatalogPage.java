@@ -77,7 +77,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
-        mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
+        mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products

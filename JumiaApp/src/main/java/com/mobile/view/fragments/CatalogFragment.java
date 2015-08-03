@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
-import android.net.Uri;
 import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -114,7 +113,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mCategoryTree;
 
-    private ContentValues values;
+    private ContentValues mQueryValues;
 
     /**
      * Create and return a new instance.
@@ -157,37 +156,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            values = new ContentValues();
+            mQueryValues = new ContentValues();
             setParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL));
-//            mCatalogUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-//            mSearchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
-//            if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
-//                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-//            }
+            if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
+                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            }
 //            // Verify if catalog page was open via navigation drawer
-//            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
-//            mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
-//
-//            // Get filters from deep link
-//            String urlWithFilters = arguments.getString(ConstantsIntentExtra.CATALOG_QUERIE);
-//            if (!TextUtils.isEmpty(urlWithFilters)) {
-//                try {
-//                    UrlQuerySanitizer query = new UrlQuerySanitizer(urlWithFilters);
-//                    for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
-//                        // Search query
-//                        if (GetCatalogPageHelper.QUERY.equals(filter.mParameter)) {
-//                            mSearchQuery = filter.mValue;
-//                        }
-//                        // Other filters
-//                        else if (!GetCatalogPageHelper.PAGE.equals(filter.mParameter) || !GetCatalogPageHelper.MAX_ITEMS.equals(filter.mParameter) ||
-//                                !GetCatalogPageHelper.SORT.equals(filter.mParameter) || !GetCatalogPageHelper.DIRECTION.equals(filter.mParameter)) {
-//                            mCurrentFilterValues.put(filter.mParameter, filter.mValue);
-//                        }
-//                    }
-//                } catch (NullPointerException e) {
-//                    Log.w(TAG, "WARNING: NPE ON PARSE FILTER FROM DEEP LINK");
-//                }
-//            }
+            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
+            mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
 
         // Get data from saved instance
@@ -195,9 +171,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+            mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
             mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
-
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
@@ -206,17 +182,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     private void setParameters(String url){
-        Uri.Builder uri = new Uri.Builder();
-        Uri u = uri.query(url).build();
-
         UrlQuerySanitizer query = new UrlQuerySanitizer(url);
         mCatalogUrl = url.substring(0, url.indexOf('?'));
-        values.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
-        values.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-        values.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+        mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
+        mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+        mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
         for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
-            values.put(filter.mParameter,filter.mValue);
+            mQueryValues.put(filter.mParameter, filter.mValue);
         }
     }
 
@@ -300,6 +273,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Save the current content
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putString(ConstantsIntentExtra.CONTENT_URL, mCatalogUrl);
+        outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
@@ -359,7 +333,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (TextUtils.isEmpty(mCatalogUrl) && (values.containsKey(GetCatalogPageHelper.CATEGORY) || values.containsKey(GetCatalogPageHelper.QUERY))) {
+        if (TextUtils.isEmpty(mCatalogUrl) && (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) || !mQueryValues.containsKey(GetCatalogPageHelper.QUERY))) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -375,7 +349,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog was recover
         else {
             onRecoverCatalogContainer(mCatalogPage);
-            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, values.getAsString(GetCatalogPageHelper.CATEGORY));
+            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY));
         }
     }
 
@@ -868,13 +842,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Create catalog request parameters
 //        ContentValues catalogValues = new ContentValues();
 //        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
-        values.put(GetCatalogPageHelper.PAGE, page);
+        mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
-        values.putAll(mCurrentFilterValues);
+        mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
@@ -927,7 +901,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
 
             if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, values.getAsString(GetCatalogPageHelper.CATEGORY));
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY));
             }
 
         }

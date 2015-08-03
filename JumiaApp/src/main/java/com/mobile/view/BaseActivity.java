@@ -114,7 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    // REMOVED FINAL ATRIBUTE
+    // REMOVED FINAL ATTRIBUTE
     private NavigationAction action;
 
     protected View contentContainer;
