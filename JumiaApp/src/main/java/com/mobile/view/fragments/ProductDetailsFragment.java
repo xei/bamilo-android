@@ -1179,7 +1179,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 mImageFavourite.setSelected(false);
             }
-        } catch (InterruptedException | SQLiteException e) {
+        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
             e.printStackTrace();
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
             mImageFavourite.setSelected(false);

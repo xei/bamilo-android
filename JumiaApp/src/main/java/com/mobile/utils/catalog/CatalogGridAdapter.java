@@ -254,7 +254,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         boolean isFavourite = false;
         try {
             isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
-        } catch (InterruptedException | SQLiteException e) {
+        } catch (InterruptedException | SQLiteException | IllegalMonitorStateException e) {
             e.printStackTrace();
         }
         // Set favourite data

@@ -42,7 +42,6 @@ public class GetProductHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-//        new GetProductDetail(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductDetail);
     }
 

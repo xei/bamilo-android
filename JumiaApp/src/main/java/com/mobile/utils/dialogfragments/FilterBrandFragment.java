@@ -32,16 +32,11 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
 
     private CatalogFilter mCatalogFilter;
 
-    private static int mPinnedListId = R.id.dialog_filter_pinnedlist;
-
     private FilterOptionArrayAdapter mOptionArray;
 
 
     /**
-     * 
-     * @param parent
-     * @param bundle
-     * @return
+     * Create new instance
      */
     public static FilterBrandFragment newInstance(DialogFilterFragment parent, Bundle bundle) {
         Print.d(TAG, "NEW INSTANCE: BRAND");
@@ -98,11 +93,11 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         // Save button
         view.findViewById(mDoneButtonId).setOnClickListener(this);
         // Filter list
-        ((PinnedSectionListView) view.findViewById(mPinnedListId)).setOnItemClickListener(this);
+        ((PinnedSectionListView) view.findViewById(R.id.dialog_filter_pinnedlist)).setOnItemClickListener(this);
         // Create adapter
         mOptionArray = new FilterOptionArrayAdapter(getActivity(), mCatalogFilter.getFilterOptions());
         // Set adapter
-        ((PinnedSectionListView) view.findViewById(mPinnedListId)).setAdapter(mOptionArray);
+        ((PinnedSectionListView) view.findViewById(R.id.dialog_filter_pinnedlist)).setAdapter(mOptionArray);
     }
     
     /*
@@ -163,8 +158,6 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
     
     /**
      * Method used to save multiple options
-     * @param parent
-     * @param position
      * @author sergiopereira
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
@@ -183,8 +176,6 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
     
     /**
      * Method used to save only one option
-     * @param parent
-     * @param position
      * @author sergiopereira
      */
     private void processSingleSelection(AdapterView<?> parent, int position){
@@ -241,7 +232,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         /**
          * Class used to fill the pinned list view
          * Receives an list sorted alphabetic and with section items
-         * @param context
+         * @param context the application context
          * @param objects is setted on the parse of the CatalogFilter.
          */
         public FilterOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
