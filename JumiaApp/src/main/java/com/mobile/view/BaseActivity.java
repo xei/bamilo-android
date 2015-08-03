@@ -299,6 +299,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
 
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        /**
+         * Validate current version to show the upgrade dialog.
+         * Disabled for Samsung and Blackberry (check_version_enabled).
+         */
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(this);
+        }
+    }
 
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
