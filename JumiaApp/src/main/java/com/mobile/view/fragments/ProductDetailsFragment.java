@@ -258,6 +258,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private View mSellerDeliveryContainer;
 
+    private boolean mHideWizard = false;
+
     /**
      * Empty constructor
      */
@@ -297,6 +299,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             } else {
                 categoryTree = "";
             }
+            // Get wizard flag
+            mHideWizard = arguments.getBoolean(ConstantsIntentExtra.TO_SHOW_WIZARD);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -1142,7 +1146,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void displayProduct(CompleteProduct product) {
         Print.d(TAG, "SHOW PRODUCT");
         // Show wizard
-        isToShowWizard();
+        if(!mHideWizard){
+            isToShowWizard();
+        }
         // Call phone
         setCallPhone();
         // validate specifications layout
