@@ -321,13 +321,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 mVoucher = voucherCode.getText().toString();
                 getBaseActivity().hideKeyboard();
                 if (!TextUtils.isEmpty(mVoucher)) {
-                    ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Print.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+                        ContentValues mContentValues = new ContentValues();
+                        mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
                         triggerSubmitVoucher(mContentValues);
                     } else {
-                        triggerRemoveVoucher(mContentValues);
+                        triggerRemoveVoucher();
                     }
                 } else {
                     Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
@@ -553,10 +553,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
     }
     
-    private void triggerRemoveVoucher(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
+    private void triggerRemoveVoucher() {
+        triggerContentEventProgress(new RemoveVoucherHelper(), null, this);
     }
     
     private void triggerGetPaymentMethods(){

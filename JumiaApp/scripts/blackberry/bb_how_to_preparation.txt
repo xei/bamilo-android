@@ -13,6 +13,13 @@ RocketInternet2014
 > BlackBerry World Account
 laurent.detapol@jumia.com
 Jumia2014
+> BlackBerry ID token
+jumia2015
+
+##### Errors with BBID Token
+https://developer.blackberry.com/codesigning
+https://supportforums.blackberry.com/t5/Testing-and-Deployment/Error-BBID-Token-has-expired/ta-p/2998718
+https://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/The-specified-CSK-password-is-not-valid/m-p/2787561/highlight/true#M42924
 
 ##### 
 # 2 - Create Ventore Account to publish

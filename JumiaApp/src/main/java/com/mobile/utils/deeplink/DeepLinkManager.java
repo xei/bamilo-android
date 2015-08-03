@@ -499,7 +499,7 @@ public class DeepLinkManager {
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putParcelable(ConstantsIntentExtra.CATALOG_QUERIE, data);
+        bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, data.toString());
         bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;

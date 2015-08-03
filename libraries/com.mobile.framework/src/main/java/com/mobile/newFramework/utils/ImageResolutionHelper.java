@@ -105,7 +105,7 @@ public class ImageResolutionHelper {
     	// Validate hash map
     	if(resolutionMap == null) resolutionMap = new WeakHashMap<>();
     	// Resolution
-    	ImageResolution imageResolution;
+    	ImageResolution imageResolution = null;
     	// Check cache
     	if (resolutionMap.containsKey(resolutionTag)) {
     		Print.i(TAG, "GET BEST RESOLUTION FROM CACHE: " + resolutionTag);
@@ -113,10 +113,14 @@ public class ImageResolutionHelper {
         	imageResolution = resolutionMap.get(resolutionTag);
     	} else {
     		Print.i(TAG, "GET BEST RESOLUTION FROM DATABASE: " + resolutionTag);
-    		// Get resolution from database
-    		imageResolution = ImageResolutionTableHelper.getBestImageResolution(resolutionTag);
-    		// Save resolution on cache
-    		resolutionMap.put(resolutionTag, imageResolution);
+			try {
+				// Get resolution from database
+				imageResolution = ImageResolutionTableHelper.getBestImageResolution(resolutionTag);
+				// Save resolution on cache
+				resolutionMap.put(resolutionTag, imageResolution);
+			} catch (IllegalStateException e) {
+				// ...
+			}
     	}
     	// Validate resolution
     	if (imageResolution != null)
