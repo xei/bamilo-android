@@ -119,6 +119,7 @@ public class RestConstants {
     public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
     public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_IS_NEW_TAG = "is_new";
+    public static final String JSON_IS_WISHLIST = "is_wishlist";
     public static final String JSON_PROD_UNIQUES_TAG = "uniques";
     public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
     public static final String JSON_SIZE_GUIDE_URL_TAG = "size_guide";

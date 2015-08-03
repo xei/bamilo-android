@@ -173,6 +173,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 
             // Get the is new JSON tag
             isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_WISHLIST, false);
 
 			/*
 			try {

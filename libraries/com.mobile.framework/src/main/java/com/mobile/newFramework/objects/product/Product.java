@@ -27,7 +27,7 @@ public class Product implements IJSONSerializable, Parcelable {
 
     public final static String TAG = Product.class.getName();
 
-    private String id;
+//    private String id;
     private ProductAttributes attributes;
     private ArrayList<Image> images;
     private String firstImageURL;
@@ -37,7 +37,7 @@ public class Product implements IJSONSerializable, Parcelable {
      * simple product constructor.
      */
     public Product() {
-        id = "";
+//        id = "";
         attributes = new ProductAttributes();
         images = new ArrayList<>();
         imagesTablet = new ArrayList<>();
@@ -46,9 +46,9 @@ public class Product implements IJSONSerializable, Parcelable {
     /**
      * @return the id
      */
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
     /**
      * @return the attributes
@@ -78,17 +78,9 @@ public class Product implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
+//            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
 
-            JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
-            if(attributesObject != null){
-                attributes.initialize(attributesObject);
-            }
-
-            JSONObject attributes2Object = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
-            if(attributes2Object != null) {
-                attributes.initialize(attributes2Object);
-            }
+            attributes.initialize(jsonObject);
 
             images.clear();
             imagesTablet.clear();
@@ -147,7 +139,7 @@ public class Product implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+//            jsonObject.put(RestConstants.JSON_ID_TAG, id);
             jsonObject.put(RestConstants.JSON_DATA_TAG, attributes.toJSON());
             jsonObject.put(RestConstants.JSON_PROD_ATTRIBUTES_TAG, attributes.toJSON());
 
@@ -291,14 +283,14 @@ public class Product implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+//        dest.writeString(id);
         dest.writeValue(attributes);
         dest.writeList(images);
         dest.writeList(imagesTablet);
     }
 
     protected Product(Parcel in) {
-        id = in.readString();
+//        id = in.readString();
         attributes = (ProductAttributes) in.readValue(ProductAttributes.class.getClassLoader());
         images = new ArrayList<Image>();
         in.readList(images, Image.class.getClassLoader());
