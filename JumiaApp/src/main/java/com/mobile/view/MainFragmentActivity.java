@@ -403,7 +403,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         }
 
         if(removeEntries){
-            popBackStackUntilTag(FragmentType.HOME.toString());
+         //   popBackStackUntilTag(FragmentType.HOME.toString());
+            popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         }
 
         Print.i(TAG, "ON SWITCH FRAGMENT: " + type);
