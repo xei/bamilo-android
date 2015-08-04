@@ -157,9 +157,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mQueryValues = new ContentValues();
-            setParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL));
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            }
+            setQueryParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL));
+            // In case of searching by keyword
+            if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
+                mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
             }
 //            // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
@@ -181,9 +185,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
-    private void setParameters(String url){
+    private void setQueryParameters(String url){
+        int indexOfParameters = url.indexOf('?');
+        mCatalogUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
+
         UrlQuerySanitizer query = new UrlQuerySanitizer(url);
-        mCatalogUrl = url.substring(0, url.indexOf('?'));
         mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
         mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
