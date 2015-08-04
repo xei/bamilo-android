@@ -981,7 +981,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_PRODUCTS_EVENT.action);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);

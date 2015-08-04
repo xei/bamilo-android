@@ -36,6 +36,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -165,7 +166,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
                 mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
             }
-//            // Verify if catalog page was open via navigation drawer
+            // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
@@ -186,8 +187,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     private void setQueryParameters(String url){
-        int indexOfParameters = url.indexOf('?');
-        mCatalogUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
+        if(!TextUtils.isEmpty(url)) {
+            int indexOfParameters = url.indexOf('?');
+            mCatalogUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
+        } else {
+            mCatalogUrl = EventType.GET_PRODUCTS_EVENT.action;
+        }
 
         UrlQuerySanitizer query = new UrlQuerySanitizer(url);
         mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
