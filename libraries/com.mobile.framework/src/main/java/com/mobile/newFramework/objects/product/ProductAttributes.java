@@ -22,7 +22,7 @@ import org.json.JSONObject;
 public class ProductAttributes extends BaseProduct implements IJSONSerializable {
 
     private static final String TAG = ProductAttributes.class.getName();
-    private String description;
+//    private String description;
     private Double maxSavingPercentage;
     private Integer reviews;
     private Double rating;
@@ -33,7 +33,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
      */
     public ProductAttributes() {
         super();
-        description = "";
+//        description = "";
         maxSavingPercentage = 0.0;
         reviews = 0;
         rating = .0;
@@ -57,9 +57,9 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
     /**
      * @return the description
      */
-    public String getDescription() {
-        return description;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
 
     /**
      * @return the discountPercentage
@@ -132,7 +132,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
             sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             name = jsonObject.optString(RestConstants.JSON_PROD_NAME_TAG);
             url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG);
-            description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+//            description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
             brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 
             // Throw JSONException if JSON_PRICE_TAG is not present
@@ -204,7 +204,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
             jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
             jsonObject.put(RestConstants.JSON_PROD_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_PROD_URL_TAG, url);
-            jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
+//            jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
 			/*--jsonObject.put(RestConstants.JSON_MAX_PRICE_TAG, maxPrice);*/
             jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
 
@@ -228,7 +228,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(description);
+//        dest.writeString(description);
         dest.writeDouble(maxSavingPercentage);
         dest.writeInt(reviews);
         dest.writeDouble(rating);
@@ -236,7 +236,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 
     private ProductAttributes(Parcel in) {
         super(in);
-        description = in.readString();
+//        description = in.readString();
 		/*--maxPrice = in.readString();*/
 		/*--maxSpecialPrice = in.readString();*/
         maxSavingPercentage = in.readDouble();

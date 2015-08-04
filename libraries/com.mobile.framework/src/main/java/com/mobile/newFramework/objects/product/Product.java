@@ -184,9 +184,9 @@ public class Product implements IJSONSerializable, Parcelable {
     /**
      * @return the description
      */
-    public String getDescription() {
-        return attributes.getDescription();
-    }
+//    public String getDescription() {
+//        return attributes.getDescription();
+//    }
 
     /**
      * @return the price
