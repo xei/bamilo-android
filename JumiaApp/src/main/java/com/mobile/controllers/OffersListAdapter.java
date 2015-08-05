@@ -130,11 +130,10 @@ public class OffersListAdapter extends BaseAdapter {
 
         item.offerPrice.setText(CurrencyFormatter.formatCurrency(offers.get(position).getFinalPriceString()));
         item.offerProductOwner.setText(offers.get(position).getSeller().getName());
-        String reviews = offers.get(position).getSeller().getRatingCount() == 1 ?
-                context.getResources().getString(R.string.review) :
-                context.getResources().getString(R.string.reviews);
 
-        item.offerReview.setText(offers.get(position).getSeller().getRatingCount()+ " "+reviews);
+        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, offers.get(position).getSeller().getRatingCount() );
+
+        item.offerReview.setText(offers.get(position).getSeller().getRatingCount() + " " + reviewLabel);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
 
         if( !(offers.get(position).getMinDeliveryTime() == 0 && offers.get(position).getMaxDeliveryTime() == 0) ) {
