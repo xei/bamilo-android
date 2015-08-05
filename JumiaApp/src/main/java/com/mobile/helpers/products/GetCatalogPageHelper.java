@@ -72,15 +72,15 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         return super.createRequest(args);
     }
 
-//    @Override
-//    protected String getRequestUrl(Bundle args) {
-//        // Get catalog URL
-//        String baseUrl = args.getString(URL);
-//        // Case search then url is empty
-//        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
-//        //
-//        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
-//    }
+    @Override
+    protected String getRequestUrl(Bundle args) {
+        // Get catalog URL
+        String baseUrl = args.getString(URL);
+        // Case search then url is empty
+        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
+        //
+        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
+    }
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
