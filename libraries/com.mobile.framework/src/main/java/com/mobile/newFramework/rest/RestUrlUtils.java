@@ -1,9 +1,12 @@
 package com.mobile.newFramework.rest;
 
+import android.content.ContentValues;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.utils.TextUtils;
 
 import de.akquinet.android.androlog.Log;
 
@@ -69,4 +72,19 @@ public class RestUrlUtils {
         return uri;
     }
 
+    /**
+     * Get all parameters from url query and insert them all on ContentValues.
+     * Sintax example: ?category=womens-dresses&sort=price&dir=asc
+     * @param url
+     * @param queryValues
+     */
+    public static void getQueryParameters(String url, ContentValues queryValues){
+        if(!TextUtils.isEmpty(url) && queryValues != null) {
+            UrlQuerySanitizer query = new UrlQuerySanitizer(url);
+
+            for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
+                queryValues.put(filter.mParameter, filter.mValue);
+            }
+        }
+    }
 }

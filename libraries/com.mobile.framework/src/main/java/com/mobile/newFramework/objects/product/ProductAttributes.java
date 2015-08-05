@@ -202,7 +202,7 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 
         try {
             jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
-            jsonObject.put(RestConstants.JSON_PROD_NAME_TAG, name);
+//            jsonObject.put(RestConstants.JSON_PROD_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_PROD_URL_TAG, url);
 //            jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
 			/*--jsonObject.put(RestConstants.JSON_MAX_PRICE_TAG, maxPrice);*/

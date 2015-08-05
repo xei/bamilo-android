@@ -476,7 +476,7 @@ public class DeepLinkManager {
 //        // create the url with more that one segment:
 //        // case ng/c/?category=womens-dresses&sort=price&dir=asc
         String deeplinkUrl = data.toString();
-        String catalogUrlKey = EventType.GET_PRODUCTS_EVENT.action + deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
+        String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
 
         // Log
         Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);

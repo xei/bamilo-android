@@ -30,6 +30,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -84,8 +85,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private View mTopButton;
 
-    private String mCatalogUrl;
-
     private CatalogPage mCatalogPage;
 
     private String mTitle;
@@ -114,7 +113,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mCategoryTree;
 
-    private ContentValues mQueryValues;
+    private ContentValues mQueryValues = new ContentValues();
 
     /**
      * Create and return a new instance.
@@ -157,11 +156,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mQueryValues = new ContentValues();
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
-            setQueryParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL));
+
+            mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
+            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
+            RestUrlUtils.getQueryParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL), mQueryValues);
+
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
                 mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
@@ -175,7 +179,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (savedInstanceState != null) {
             Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+//            mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
             mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
             mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
@@ -186,23 +190,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
-    private void setQueryParameters(String url){
-        if(!TextUtils.isEmpty(url)) {
-            int indexOfParameters = url.indexOf('?');
-            mCatalogUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
-        } else {
-            mCatalogUrl = EventType.GET_PRODUCTS_EVENT.action;
-        }
-
-        UrlQuerySanitizer query = new UrlQuerySanitizer(url);
-        mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
-        mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-        mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
-
-        for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
-            mQueryValues.put(filter.mParameter, filter.mValue);
-        }
-    }
+//    private void setQueryParameters(String url){
+//        if(!TextUtils.isEmpty(url)) {
+//            int indexOfParameters = url.indexOf('?');
+//            mCatalogUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
+//        } else {
+//            mCatalogUrl = EventType.GET_PRODUCTS_EVENT.action;
+//        }
+//
+//    }
 
     /*
      * (non-Javadoc)
@@ -283,7 +279,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the current content
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putString(ConstantsIntentExtra.CONTENT_URL, mCatalogUrl);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
@@ -344,7 +339,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (TextUtils.isEmpty(mCatalogUrl) && (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) || !mQueryValues.containsKey(GetCatalogPageHelper.QUERY))) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -858,7 +853,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
-        bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
+//        bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
