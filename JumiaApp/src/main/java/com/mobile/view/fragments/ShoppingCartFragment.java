@@ -423,6 +423,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     protected boolean onSuccessEvent(Bundle bundle) {
 
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -490,6 +491,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
+            //alexandrapires: loading dismiss
+            hideActivityProgress();
             ShoppingCart shoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             //showFragmentContentContainer();
             params = new Bundle();
