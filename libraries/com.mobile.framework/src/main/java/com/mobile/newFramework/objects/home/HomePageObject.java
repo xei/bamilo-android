@@ -81,7 +81,8 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get name
-        mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
+        //alexandrapires: action_name not needed in v 1.8
+  //      mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
         // Get teaser
         JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         int size = data.length();
