@@ -74,7 +74,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject metadataObject) throws JSONException {
 //        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
-        mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
+        mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
