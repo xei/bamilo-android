@@ -210,7 +210,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set brand
         holder.brand.setText(item.getBrand());
         // Set is new image
-        holder.recent.setSelected(item.getAttributes().isNew());
+        holder.recent.setSelected(item.isNew());
         // Set image
         RocketImageLoader.instance.loadImage(item.getFirstImageURL(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
@@ -261,7 +261,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(isFavourite);
         holder.favourite.setOnClickListener(this);
-        item.getAttributes().setFavourite(isFavourite);
+        item.setFavourite(isFavourite);
     }
     
     /**
@@ -419,10 +419,10 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get item
         Product product = mDataSet.get(position);
         // Remove from favorite
-        if(product.getAttributes().isFavourite()) {
+        if(product.isFavourite()) {
             // Remove from table and notify user
             FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
-            product.getAttributes().setFavourite(false);
+            product.setFavourite(false);
             view.setSelected(false);
             TrackerDelegator.trackRemoveFromFavorites(product.getSKU(), product.getPriceForTracking(),product.getRating());
             ToastFactory.REMOVED_FAVOURITE.show(mContext);
@@ -430,7 +430,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Remove to favorite 
         else {
           FavouriteTableHelper.insertPartialFavouriteProduct(product);
-          product.getAttributes().setFavourite(true);
+          product.setFavourite(true);
           view.setSelected(true);
           TrackerDelegator.trackAddToFavorites(product.getSKU(),product.getBrand(),product.getPriceForTracking(), product.getRating(),product.getMaxSavingPercentage(), true, null);
           ToastFactory.ADDED_FAVOURITE.show(mContext);            

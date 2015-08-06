@@ -1,12 +1,15 @@
 package com.mobile.newFramework.objects.product;
 
 
+import android.database.sqlite.SQLiteException;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,12 +26,18 @@ import java.util.ArrayList;
  * @modified Manuel Silva
  *
  */
-public class Product implements IJSONSerializable, Parcelable {
+public class Product extends BaseProduct implements IJSONSerializable, Parcelable {
 
     public final static String TAG = Product.class.getName();
 
-    private String id;
-    private ProductAttributes attributes;
+//    private String id;
+
+    private Double maxSavingPercentage;
+    private Integer reviews;
+    private Double rating;
+    private boolean isNew;
+    private boolean isFavourite;
+
     private ArrayList<Image> images;
     private String firstImageURL;
     private ArrayList<Image> imagesTablet;
@@ -37,25 +46,21 @@ public class Product implements IJSONSerializable, Parcelable {
      * simple product constructor.
      */
     public Product() {
-        id = "";
-        attributes = new ProductAttributes();
+//        id = "";
         images = new ArrayList<>();
         imagesTablet = new ArrayList<>();
+        maxSavingPercentage = 0.0;
+        reviews = 0;
+        rating = .0;
+        rating = 0.0;
     }
 
     /**
      * @return the id
      */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * @return the attributes
-     */
-    public ProductAttributes getAttributes() {
-        return attributes;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
     /**
      * @return the images of the simple product.
@@ -78,17 +83,58 @@ public class Product implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
+//            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
 
-            JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
-            if(attributesObject != null){
-                attributes.initialize(attributesObject);
+            //BaseProduct attributes
+
+            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+            name = jsonObject.optString(RestConstants.JSON_PROD_NAME_TAG);
+            url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG);
+//            description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+            brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
+
+            // Throw JSONException if JSON_PRICE_TAG is not present
+            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+            if (CurrencyFormatter.isNumber(priceJSON)) {
+                price = priceJSON;
+                priceDouble = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+            } else {
+                throw new JSONException("Price is not a number!");
             }
 
-            JSONObject attributes2Object = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
-            if(attributes2Object != null) {
-                attributes.initialize(attributes2Object);
+            priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+
+            //
+            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            if (CurrencyFormatter.isNumber(specialPriceJSON)) {
+                specialPrice = specialPriceJSON;
+                specialPriceDouble = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            } else {
+                specialPrice = price;
+                specialPriceDouble = priceDouble;
             }
+
+            specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
+
+
+            maxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0);
+
+            if (maxSavingPercentage == 0 && !price.equals(specialPrice) && priceDouble >= 0) {
+                maxSavingPercentage = (double) Math.round(specialPriceDouble / priceDouble);
+            }
+
+            JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+            if (ratings != null) {
+                reviews = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG);
+                rating = ratings.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG);
+            }
+
+            // Get the is new JSON tag
+            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_WISHLIST, false);
+
+
+            //Product attributes
 
             images.clear();
             imagesTablet.clear();
@@ -147,9 +193,9 @@ public class Product implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
-            jsonObject.put(RestConstants.JSON_DATA_TAG, attributes.toJSON());
-            jsonObject.put(RestConstants.JSON_PROD_ATTRIBUTES_TAG, attributes.toJSON());
+//            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+//            jsonObject.put(RestConstants.JSON_DATA_TAG, attributes.toJSON());
+//            jsonObject.put(RestConstants.JSON_PROD_ATTRIBUTES_TAG, attributes.toJSON());
 
             JSONArray imageArray = new JSONArray();
             for(Image image : images) {
@@ -172,99 +218,111 @@ public class Product implements IJSONSerializable, Parcelable {
      * @return the product sku
      */
     public String getSKU() {
-        return attributes.getSku();
+        return sku;
     }
 
     /**
      * @return the product name
      */
     public String getName() {
-        return attributes.getName();
+        return name;
     }
 
     /**
      * @return the product brand
      */
     public String getBrand() {
-        return attributes.getBrand();
+        return brand;
     }
 
     /**
      * @return the description
      */
-    public String getDescription() {
-        return attributes.getDescription();
-    }
+//    public String getDescription() {
+//        return attributes.getDescription();
+//    }
 
     /**
      * @return the price
      */
     public String getPrice() {
-        return attributes.getPrice();
+        return price;
     }
 
     /**
      * @return the price
      */
     public double getPriceAsDouble() {
-        return attributes.getPriceDouble();
+        return priceDouble;
     }
 
     /**
      * @return the price
      */
     public double getSpecialPriceAsDouble() {
-        return attributes.getSpecialPriceDouble();
+        return specialPriceDouble;
     }
 
     /**
      * Validate if product has special price
      */
     public boolean hasDiscountPercentage() {
-        return getMaxSavingPercentage() > 0;
+        return maxSavingPercentage > 0;
     }
 
     /**
      * @return the max saving percentage
      */
     public Double getMaxSavingPercentage() {
-        return attributes.getMaxSavingPercentage();
+        return maxSavingPercentage;
     }
 
     /**
      * @return the rating.
      */
     public Double getRating() {
-        return attributes.getRating();
+        return rating;
     }
 
     public Integer getReviews() {
-        return attributes.getReviews();
+        return reviews;
     }
 
     public String getUrl() {
-        return attributes.getUrl();
+        return url;
     }
 
     /**
      * @return the specialPrice
      */
     public String getSpecialPrice() {
-        return attributes.getSpecialPrice();
+        return specialPrice;
     }
 
     /**
      * @return the specialPrice
      */
     public double getPriceConverted() {
-        return attributes.getPriceConverted();
+        return priceConverted;
     }
 
     /**
      * @return the specialPrice
      */
     public double getSpecialPriceConverted() {
-        return attributes.getSpecialPriceConverted();
+        return specialPriceConverted;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean isFavourite) {
+        this.isFavourite = isFavourite;
     }
 
     /**
@@ -274,7 +332,7 @@ public class Product implements IJSONSerializable, Parcelable {
      * @author sergiopereira
      */
     public double getPriceForTracking() {
-        return attributes.getPriceForTracking();
+        return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
     }
 
     /**
@@ -291,18 +349,28 @@ public class Product implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeValue(attributes);
+//        dest.writeString(id);
+        dest.writeDouble(maxSavingPercentage);
+        dest.writeInt(reviews);
+        dest.writeDouble(rating);
         dest.writeList(images);
         dest.writeList(imagesTablet);
     }
 
     protected Product(Parcel in) {
-        id = in.readString();
-        attributes = (ProductAttributes) in.readValue(ProductAttributes.class.getClassLoader());
-        images = new ArrayList<Image>();
+//        id = in.readString();
+        maxSavingPercentage = in.readDouble();
+        reviews = in.readInt();
+        rating = in.readDouble();
+        try {
+            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
+            e.printStackTrace();
+        }
+
+        images = new ArrayList<>();
         in.readList(images, Image.class.getClassLoader());
-        imagesTablet = new ArrayList<Image>();
+        imagesTablet = new ArrayList<>();
         in.readList(imagesTablet, Image.class.getClassLoader());
 
         firstImageURL = "";
@@ -320,5 +388,4 @@ public class Product implements IJSONSerializable, Parcelable {
             return new Product[size];
         }
     };
-
 }

@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
-import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,6 +29,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -83,12 +83,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private View mTopButton;
 
-    private String mCatalogUrl;
-
-    private String mSearchQuery;
-
-    private String mBrandQuery;
-
     private CatalogPage mCatalogPage;
 
     private String mTitle;
@@ -116,6 +110,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private String mCategoryId; // Verify if catalog page was open via navigation drawer
 
     private String mCategoryTree;
+
+    private ContentValues mQueryValues = new ContentValues();
 
     /**
      * Create and return a new instance.
@@ -158,46 +154,34 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mCatalogUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mSearchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            }
+
+            // Default catalog values
+            mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
+            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
+            // Url and parameters
+            RestUrlUtils.getQueryParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL), mQueryValues);
+
+            // In case of searching by keyword
+            if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
+                mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
-
-            // Get filters from deep link
-            String urlWithFilters = arguments.getString(ConstantsIntentExtra.CATALOG_QUERIE);
-            if (!TextUtils.isEmpty(urlWithFilters)) {
-                try {
-                    UrlQuerySanitizer query = new UrlQuerySanitizer(urlWithFilters);
-                    for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
-                        // Search query
-                        if (GetCatalogPageHelper.QUERY.equals(filter.mParameter)) {
-                            mSearchQuery = filter.mValue;
-                        }
-                        // Other filters
-                        else if (!GetCatalogPageHelper.PAGE.equals(filter.mParameter) || !GetCatalogPageHelper.MAX_ITEMS.equals(filter.mParameter) ||
-                                !GetCatalogPageHelper.SORT.equals(filter.mParameter) || !GetCatalogPageHelper.DIRECTION.equals(filter.mParameter)) {
-                            mCurrentFilterValues.put(filter.mParameter, filter.mValue);
-                        }
-                    }
-                } catch (NullPointerException e) {
-                    Log.w(TAG, "WARNING: NPE ON PARSE FILTER FROM DEEP LINK");
-                }
-            }
         }
 
         // Get data from saved instance
         if (savedInstanceState != null) {
             Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
-            mSearchQuery = savedInstanceState.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
             mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
-            mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
@@ -284,11 +268,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the current content
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putString(ConstantsIntentExtra.CONTENT_URL, mCatalogUrl);
-        outState.putString(ConstantsIntentExtra.SEARCH_QUERY, mSearchQuery);
+        outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
-        outState.putString(ConstantsIntentExtra.CATALOG_FILTER_BRAND, mBrandQuery);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
         outState.putBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED, mSortOrFilterApplied);
     }
@@ -346,7 +328,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (TextUtils.isEmpty(mCatalogUrl) && TextUtils.isEmpty(mSearchQuery)) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -362,7 +344,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog was recover
         else {
             onRecoverCatalogContainer(mCatalogPage);
-            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mSearchQuery);
+            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
         }
     }
 
@@ -649,14 +631,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         // Contains the new search query (Brand filter)
-        if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
-            // Used to indicate that has filter q=<BRAND>
-            mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-        }
-        // Clean brand filter
-        else {
-            mBrandQuery = null;
-        }
+//        if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
+//            // Used to indicate that has filter q=<BRAND>
+//            mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
+//        }
+//        // Clean brand filter
+//        else {
+//            mBrandQuery = null;
+//        }
         // Save the current filter values
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
@@ -853,18 +835,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
         // Create catalog request parameters
-        ContentValues catalogValues = new ContentValues();
-        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
-        catalogValues.put(GetCatalogPageHelper.PAGE, page);
-        catalogValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
-        catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-        catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+//        ContentValues catalogValues = new ContentValues();
+//        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
+        mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
-        catalogValues.putAll(mCurrentFilterValues);
+        mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
-        bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, catalogValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
@@ -917,7 +895,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
 
             if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mSearchQuery);
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
             }
 
         }
@@ -1032,4 +1010,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
+    private String getCatalogCategory(){
+        String mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY);
+        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(mSearchQuery)){
+            mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
+        }
+        return mSearchQuery;
+    }
 }
