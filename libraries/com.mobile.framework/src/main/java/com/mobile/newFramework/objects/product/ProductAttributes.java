@@ -1,10 +1,8 @@
 package com.mobile.newFramework.objects.product;
 
-import android.database.sqlite.SQLiteException;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -174,14 +172,6 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
             // Get the is new JSON tag
             isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
-			/*
-			try {
-				isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			*/
-
         } catch (JSONException e) {
 //            Log.e(TAG, "Error Parsing the product json", e);
             return false;
@@ -241,13 +231,6 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
         maxSavingPercentage = in.readDouble();
         reviews = in.readInt();
         rating = in.readDouble();
-
-        try {
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {

@@ -137,7 +137,7 @@ public class TrackerDelegator {
             Ad4PushTracker.get().trackFacebookConnect(customer.getIdAsString());
         }
 
-        Ad4PushTracker.get().trackLogin(customer.getIdAsString(), customer.getFirstName(),customer.getLastName(), customer.getBirthday(), customer.getGender().toString());
+        Ad4PushTracker.get().trackLogin(customer.getIdAsString(), customer.getFirstName(),customer.getLastName(), customer.getBirthday(), customer.getGender());
 
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -781,8 +781,15 @@ public class TrackerDelegator {
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(String productSku, String productBrand, double productPrice,
-            double averageRating, double productDiscount, boolean fromCatalog, ArrayList<String> categories) {
+    public static void trackAddToFavorites(CompleteProduct completeProduct) {
+        String productSku = completeProduct.getSku();
+        String productBrand = completeProduct.getBrand();
+        double productPrice = completeProduct.getPriceForTracking();
+        double averageRating = completeProduct.getRatingsAverage();
+        double productDiscount = completeProduct.getMaxSavingPercentage();
+        boolean fromCatalog = false;
+        ArrayList<String> categories = completeProduct.getCategories();
+
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
 
@@ -823,7 +830,11 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(String productSku, double price, double averageRatingTotal) {
+    public static void trackRemoveFromFavorites(CompleteProduct completeProduct) {
+        String productSku = completeProduct.getSku();
+        double price = completeProduct.getPriceForTracking();
+        double averageRatingTotal = completeProduct.getRatingsAverage();
+
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
 

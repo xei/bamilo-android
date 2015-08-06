@@ -46,7 +46,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
             new RelatedItemsTableHelper(),
             new SearchRecentQueriesTableHelper(),
             new CountriesConfigsTableHelper(),
-            new FavouriteTableHelper(),
             new BrandsTableHelper()
             };
 	

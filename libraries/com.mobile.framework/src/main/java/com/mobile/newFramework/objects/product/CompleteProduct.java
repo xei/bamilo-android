@@ -41,6 +41,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     private ArrayList<Variation> variations;
     private ArrayList<String> known_variations;
     private boolean isNew;
+    private boolean isWishList;
     private String mSizeGuideUrl;
     private ProductBundle productBundle;
     private boolean hasSeller;
@@ -107,13 +108,12 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     public boolean initialize(JSONObject jsonObject) {
         try {
 
+            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+            isWishList = jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG, false);
+
             sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
             brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-//            idCatalogConfig = jsonObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
-//            attributeSetId = jsonObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
-//            activatedAt = jsonObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
-
             url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
             mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
             // Throw JSONException if JSON_PRICE_TAG is not present
@@ -149,28 +149,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 ratingsCount = ratingsSummaryObject.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG, 0);
                 reviewsCount = ratingsSummaryObject.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG, 0);
             }
-
-//          JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
-//          if (ratingsTotalObject != null) {
-//              ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
-//              ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
-//          }
-//
-
-
-
-
-			/*
-            if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
-				maxSavingPercentage = (double) Math.round(specialPriceDouble * 100 / priceDouble);
-			}
-			*/
-
-            categories.clear();
-            JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
-            for (int i = 0; i < categoriesArray.length(); ++i) {
-                categories.add(categoriesArray.getString(i));
-            }
             // attributes
             attributes.clear();
             JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
@@ -186,15 +164,10 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
             // simples
             simples.clear();
             JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
-
             for (int i = 0; i < simpleArray.length(); ++i) {
                 ProductSimple simple = new ProductSimple();
                 JSONObject simpleObject = simpleArray.getJSONObject(i);
                 simple.initialize(simpleObject);
-
-                // String simpleSKU =
-                // simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
-
                 simples.add(simple);
             }
             // image_list
@@ -230,7 +203,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 }
 
             }
-            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+
 
             hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
             hasSeller = jsonObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
@@ -508,6 +481,10 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     public boolean isNew() {
         return isNew;
+    }
+
+    public boolean isWishList() {
+        return isWishList;
     }
 
     public void setNew(boolean isNew) {

@@ -7,14 +7,13 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
-    //alexandrapires: action_name not needed in v 1.8
-//    public static final String JSON_ACTION_NAME_TAG = "action_name";
     public static final String JSON_ID_TAG = "id";
     public final static String JSON_SUCCESS_TAG = "success";
     public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
     public final static String JSON_MESSAGES_TAG = "messages";
     public final static String JSON_SESSION_TAG = "session";
     public final static String JSON_MD5_TAG = "md5";
+    public final static String JSON_IS_WISH_LIST_TAG = "is_wishlist";
 
     // ConfigurationService Tags
     public static final String JSON_METADATA_TAG = "metadata";
@@ -22,12 +21,9 @@ public class RestConstants {
 
     // VersionInfo Tags
     public static final String JSON_VERSION_TAG = "version";
-
-    // CustomerAccountService Tags
-    public static final String JSON_USER_TAG = "user";
+    public static final String JSON_CUSTOMER_ENTITY_TAG = "customer_entity";
 
     // Customer Tags
-    public static final String JSON_ID_CUSTOMER_TAG = "id_customer";
     public static final String JSON_FIRST_NAME_TAG = "first_name";
     public static final String JSON_LAST_NAME_TAG = "last_name";
     public static final String JSON_EMAIL_TAG = "email";
@@ -101,9 +97,6 @@ public class RestConstants {
     // CompleteProduct Tags
     public static final String JSON_SKU_TAG = "sku";
     public static final String JSON_PROD_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_ID_CATALOG_CONFIG_TAG = "id_catalog_config";
-    public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
-    public static final String JSON_ACTIVATED_AT_TAG = "activated_at";
     public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
@@ -279,7 +272,6 @@ public class RestConstants {
     // PurchaseItem Tags
     public static final String JSON_PURCHASE_NAME_TAG = "name";
     public static final String JSON_CATEGORY_TAG = "category";
-    public static final String JSON_PAID_PRICE_TAG = "paidprice";
     public static final String JSON_PAID_PRICE_CONVERTED_TAG = "paidprice_converted";
 
     // Section Tags
@@ -347,7 +339,6 @@ public class RestConstants {
     public static final String JSON_HIDDEN_TAG = "hidden";
     public static final String JSON_CREATED_BY_TAG = "created_by";
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
-    public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
     public static final String JSON_API_CALL_TAG = "api_call";
     public static final String JSON_ID_ADDRESS_REGION_TAG = "id_customer_address_region";
@@ -357,6 +348,10 @@ public class RestConstants {
      * Native Checkout
      */
     public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
+
+    public static final String JSON_MULTI_STEP_ENTITY_TAG = "multistep_entity";
+
+
     public static final String JSON_NEXT_STEP_TAG = "next_step";
     public static final String JSON_NATIVE_CHECKOUT_AVAILABLE = "native_checkout_mobile_api";
     public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";

@@ -232,9 +232,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      * displays information related to the product price
      */
     private void displayPriceInformation() {
-        String unitPrice = mCompleteProduct.getPrice();
+        String unitPrice = String.valueOf(mCompleteProduct.getPrice());
         /*--if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();*/
-        String specialPrice = mCompleteProduct.getSpecialPrice();
+        String specialPrice = String.valueOf(mCompleteProduct.getSpecialPrice());
         /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
 
         displayPriceInfo(unitPrice, specialPrice);

@@ -53,7 +53,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.LastViewed;
@@ -1171,20 +1170,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         // Set favourite
-        try {
-            if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-                mImageFavourite.setSelected(true);
-            } else {
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-                mImageFavourite.setSelected(false);
-            }
-        } catch (InterruptedException | SQLiteException |  IllegalMonitorStateException e) {
-            e.printStackTrace();
-            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-            mImageFavourite.setSelected(false);
-        }
-        
+        mImageFavourite.setSelected(mCompleteProduct.isNew());
         // Validate gallery
         setProductGallery(product);
         // Validate related items
@@ -1607,47 +1593,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * 
      */
     private void onClickFavouriteButton() {
-
-        boolean isFavourite = false;
-        if (mCompleteProduct != null && mCompleteProduct.getAttributes() != null) {
-            Object isFavoriteObject = mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_FAVOURITE_TAG);
-            if (isFavoriteObject != null && isFavoriteObject instanceof String) {
-                isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
-            }
-        } else {
-            Print.w(TAG, "mCompleteProduct is null or doesn't have attributes");
-            return;
-        }
-
-        //int fragmentMessage = 0;
-
-        String sku = mCompleteProduct.getSku();
-        if (getSelectedSimple() != null)
-            sku = getSelectedSimple().getAttributeByKey(RestConstants.JSON_SKU_TAG);
-
-        if (!isFavourite) {
-            //fragmentMessage = BaseFragment.FRAGMENT_VALUE_SET_FAVORITE;
-            FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
-            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-            mImageFavourite.setSelected(true);
-
-            TrackerDelegator.trackAddToFavorites(sku, mCompleteProduct.getBrand(),
-                    mCompleteProduct.getPriceForTracking(),
-                    mCompleteProduct.getRatingsAverage(),
-                    mCompleteProduct.getMaxSavingPercentage(), false,
-                    mCompleteProduct.getCategories());
-            Print.e("TOAST", "USE SuperToast");
-            Toast.makeText(getBaseActivity(), getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
-        } else {
-            //fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
-            FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
-            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
+        if (mCompleteProduct.isWishList()) {
+            // Remove from wish list
             mImageFavourite.setSelected(false);
-
-            TrackerDelegator.trackRemoveFromFavorites(sku, mCompleteProduct.getPriceForTracking(), mCompleteProduct.getRatingsAverage());
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
+        } else {
+            // Add to wishlist
+            mImageFavourite.setSelected(true);
+            Toast.makeText(getBaseActivity(), getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     /**

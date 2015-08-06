@@ -1,7 +1,6 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,14 +16,12 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.product.Product;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
@@ -250,18 +247,11 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param position - the current position
      */
     private void setFavourite(ProductViewHolder holder, Product item, int position) {
-        // TODO: REMOVE THIS PLEASE :)
-        boolean isFavourite = false;
-        try {
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
-        } catch (InterruptedException | SQLiteException | IllegalMonitorStateException e) {
-            e.printStackTrace();
-        }
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
-        holder.favourite.setSelected(isFavourite);
+        holder.favourite.setSelected(item.isWishList());
         holder.favourite.setOnClickListener(this);
-        item.getAttributes().setFavourite(isFavourite);
+        item.getAttributes().setFavourite(item.isWishList());
     }
     
     /**
@@ -418,22 +408,16 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         int position = (Integer) view.getTag(R.id.position);
         // Get item
         Product product = mDataSet.get(position);
-        // Remove from favorite
-        if(product.getAttributes().isFavourite()) {
-            // Remove from table and notify user
-            FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
-            product.getAttributes().setFavourite(false);
+        if (product.isWishList()) {
+            // Remove from wish list
             view.setSelected(false);
-            TrackerDelegator.trackRemoveFromFavorites(product.getSKU(), product.getPriceForTracking(),product.getRating());
+            //product.setWishList(false);
             ToastFactory.REMOVED_FAVOURITE.show(mContext);
-        }
-        // Remove to favorite 
-        else {
-          FavouriteTableHelper.insertPartialFavouriteProduct(product);
-          product.getAttributes().setFavourite(true);
-          view.setSelected(true);
-          TrackerDelegator.trackAddToFavorites(product.getSKU(),product.getBrand(),product.getPriceForTracking(), product.getRating(),product.getMaxSavingPercentage(), true, null);
-          ToastFactory.ADDED_FAVOURITE.show(mContext);            
+        } else {
+            // Add to wishlist
+            view.setSelected(true);
+            //product.setWishList(true);
+            ToastFactory.ADDED_FAVOURITE.show(mContext);
         }
     }
 

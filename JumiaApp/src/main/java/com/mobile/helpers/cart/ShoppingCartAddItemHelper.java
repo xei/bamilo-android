@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -31,8 +30,6 @@ import com.mobile.utils.TrackerDelegator;
 public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     
     private static String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
-    
-    //private static final EventType EVENT_TYPE = EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT;
     
     public static final String PRODUCT_TAG = "p";
     
@@ -106,17 +103,6 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
 
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        /*
-         * Favourites
-         */
-        // Add specific data
-        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-        bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
-        // Validate if is to remove from favourite
-        if (isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) {
-            FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
-            TrackerDelegator.trackRemoveFromFavorites(mCurrentSku, mCurrentPrice, mCurrentRating);
-        }
         /*
          * LastViewed
          */

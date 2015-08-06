@@ -16,10 +16,8 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
-import com.mobile.helpers.products.GetFavouriteHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.AddableToCart;
 import com.mobile.newFramework.objects.product.ProductSimple;
@@ -53,7 +51,7 @@ import java.util.Set;
 
 /**
  * Class used to show all favourite items from database
- * 
+ *
  * @author Andre Lopes
  * @modified sergiopereira
  */
@@ -101,7 +99,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Get a new instance
-     * 
+     *
      * @return FavouritesFragment
      */
     public static FavouritesFragment getInstance() {
@@ -110,7 +108,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -123,7 +121,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -138,14 +136,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         mAddAllToCartButton.setOnClickListener(this);
         // Show Loading View
         showFragmentLoading();
-        // Get favourites
-        Print.i(TAG, "LOAD FAVOURITE ITEMS");
-        new GetFavouriteHelper(this);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onResume()
      */
     @Override
@@ -158,7 +153,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
@@ -169,7 +164,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onPause()
      */
     @Override
@@ -180,7 +175,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -191,7 +186,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
      */
     @Override
@@ -206,7 +201,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Show content after get items
-     * 
+     *
      * @author sergiopereira
      */
     protected void showContent() {
@@ -224,7 +219,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Show empty content
-     * 
+     *
      * @author Andre Lopes
      */
     protected void showEmpty() {
@@ -240,7 +235,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -263,7 +258,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Case unknown
         else Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
-    
+
     /**
      * Process the click on size guide.
      * @author sergiopereira
@@ -295,7 +290,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on variation button
-     * 
+     *
      * @param view
      * @author sergiopereira
      */
@@ -315,7 +310,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on item
-     * 
+     *
      * @param view
      * @author sergiopereira
      */
@@ -336,7 +331,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on delete button
-     * 
+     *
      * @param view
      * @author sergiopereira
      */
@@ -349,8 +344,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 throw new NullPointerException();
             }
             AddableToCart addableToCart = mAddableToCartList.get(position);
-            // Remove item from database
-            FavouriteTableHelper.removeFavouriteProduct(addableToCart.getSku());
             // Remove from cache
             mAddableToCartList.remove(addableToCart);
             // Update layout
@@ -359,8 +352,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             String sku = addableToCart.getSku();
             if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
                 sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getAttributeByKey(RestConstants.JSON_SKU_TAG);
-
-            TrackerDelegator.trackRemoveFromFavorites(sku, addableToCart.getPriceForTracking(), addableToCart.getRatingsAverage());
 
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
@@ -371,7 +362,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on add all button
-     * 
+     *
      * @author sergiopereira
      */
     protected void onClickAddAllToCart() {
@@ -393,7 +384,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on add button
-     * 
+     *
      * @param view
      * @author sergiopereira
      */
@@ -422,7 +413,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Validate all items has selected variation
-     * 
+     *
      * @return boolean
      * @author sergiopereira
      */
@@ -443,7 +434,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Validate if item has a selected variation
-     * 
+     *
      * @param item
      * @return boolean
      * @author sergiopereira
@@ -463,7 +454,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Add an item to cart if completed
-     * 
+     *
      * @param addableToCart
      * @param position
      * @author sergiopereira
@@ -486,16 +477,16 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Add all items to cart if completed
-     * 
-     * 
+     *
+     *
      */
     protected void addAllItemsToCart() throws IllegalStateException{
         Print.i(TAG, "ON EXECUTE ADD ALL TO CART");
         // Initialize cart vars
-        
+
         mNumberOfItemsForCart = mAddableToCartList.size();
         HashMap<String, String> productBySku = new HashMap<>();
-        
+
         for (int i = 0; i < mNumberOfItemsForCart; i++) {
             AddableToCart addableToCart = mAddableToCartList.get(i);
             if (addableToCart.isComplete()) {
@@ -517,9 +508,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Add all items to cart if completed
-     * Deprecated, use {@link #addAllItemsToCart()} instead. 
+     * Deprecated, use {@link #addAllItemsToCart()} instead.
      * @author sergiopereira
-     * 
+     *
      */
 //    @Deprecated
 //    protected void onAddAllItemsToCart() {
@@ -560,7 +551,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Trigger to add all items to cart
-     * 
+     *
      * @author ricardo
      */
     private void triggerAddAllItems(HashMap<String, String> values) {
@@ -569,10 +560,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Trigger
         triggerContentEventNoLoading(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
     }
-    
+
     /**
      * Trigger to add an item to cart
-     * 
+     *
      * @param addableToCart
      * @param position
      * @author sergiopereira
@@ -583,7 +574,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Trigger to add an item to cart
-     * 
+     *
      * @param addableToCart
      * @param position
      * @param keyRemoveTable
@@ -614,7 +605,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Track add to cart
-     * 
+     *
      * @param sku
      * @param addableToCart
      * @author sergiopereira
@@ -648,7 +639,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Get the seleted simple
-     * 
+     *
      * @param addableToCart
      * @return ProductSimple
      * @author sergiopereira
@@ -668,7 +659,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
@@ -725,7 +716,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
@@ -777,7 +768,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     }
 
     /**
-     * 
+     *
      * @author ricardo
      */
     private void onAddItemsToShoppingCartRequestError(Bundle bundle){
@@ -797,17 +788,16 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     }
 
     /**
-     * 
+     *
      * @author ricardo
      */
     private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
         hideActivityProgress();
-        
+
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY)) {
             ArrayList<String> added = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
-            
+
             for (String aSku : added) {
-                FavouriteTableHelper.removeFavouriteProduct(aSku);
                 int index = -1;
                 for(int i = 0; i<mAddableToCartList.size(); i++){
                     if(mAddableToCartList.get(i).getSku().equals(aSku)){
@@ -819,10 +809,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 }
             }
         }
-        
+
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
             ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            
+
             if (!CollectionUtils.isEmpty(notAdded)) {
                 if (notAdded.size() == 1) {
                     ToastFactory.ERROR_PRODUCT_OUT_OF_STOCK.show(getBaseActivity());
@@ -834,10 +824,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         updateLayoutAfterAction();
         getBaseActivity().updateCartInfo();
     }
-    
+
     /**
      * Method used to validate the error response
-     * 
+     *
      * @param bundle
      * @param pos
      * @return int - The string id
@@ -885,7 +875,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Validates the response counter from success or error
-     * 
+     *
      * @param success
      *            - from respective response
      * @param pos
@@ -917,7 +907,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Validate the item was added to cart
-     * 
+     *
      * @param success
      *            - from respective response
      * @param pos
@@ -953,7 +943,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Validate all items were added to cart
-     * 
+     *
      * @author sergiopereira
      */
     protected void validateItemsNotAddedToCart() {
@@ -981,7 +971,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Get not added items
-     * 
+     *
      * @author sergiopereira
      */
     protected void getNotAddedItems() {
@@ -1001,7 +991,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Update the layout after user action
-     * 
+     *
      * @author sergiopereira
      */
     protected synchronized void updateLayoutAfterAction() {
@@ -1012,7 +1002,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         if (mAddableToCartList.isEmpty()) {
             showEmpty();
         }
-        
+
         // Dismiss progress, used because of onClickClearAll() on RecentlyViewedFragment
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -1089,7 +1079,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
             /**
              * TODO: Uncommented to validate the stock
-             * 
+             *
              * @author sergiopereira
              */
             // String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
@@ -1141,5 +1131,5 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
         return sb.toString();
     }
-    
+
 }

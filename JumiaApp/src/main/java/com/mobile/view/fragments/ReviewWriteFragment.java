@@ -508,9 +508,9 @@ public class ReviewWriteFragment extends BaseFragment {
      * @param productPriceSpecial
      */
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = completeProduct.getPrice();
+        String unitPrice = String.valueOf(completeProduct.getPrice());
         /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-        String specialPrice = completeProduct.getSpecialPrice();
+        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
         /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
 
         displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);

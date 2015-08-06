@@ -61,8 +61,6 @@ public enum EventType {
 
     CHANGE_PASSWORD_EVENT("https:/customer/changepass/", AigRestContract.NO_CACHE),
 
-    //GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME), // TODO - implement
-
     GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
@@ -73,7 +71,6 @@ public enum EventType {
 
     GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", AigRestContract.MAX_CACHE_TIME),
 
-    //GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME),
     GET_TERMS_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", AigRestContract.MAX_CACHE_TIME),
@@ -132,8 +129,6 @@ public enum EventType {
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
-//    SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
-
     GET_REGIONS_EVENT("https:/customer/address/regions/", AigRestContract.NO_CACHE),
 
     GET_CITIES_EVENT("https:/customer/address/cities/", AigRestContract.NO_CACHE),
@@ -188,7 +183,14 @@ public enum EventType {
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
 
-    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME);
+    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+
+    ADD_PRODUCT_TO_WISH_LIST("http:/wishlist/addproduct/", AigRestContract.NO_CACHE),
+
+    REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/", AigRestContract.NO_CACHE),
+
+    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE);
+
 
     public final String action;
     public final Integer cacheTime;

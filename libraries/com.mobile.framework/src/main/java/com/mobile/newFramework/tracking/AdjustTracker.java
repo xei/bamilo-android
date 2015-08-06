@@ -935,14 +935,7 @@ public class AdjustTracker {
     }
     
     private String getGender(Customer customer){
-        String gender = "";
-        if (customer.getGender() != CustomerGender.Female && customer.getGender() != CustomerGender.Male) {
-            gender = CustomerGender.UNKNOWN.name();
-        } else {
-            gender = customer.getGender().name();
-        }
-        
-        return gender;        
+        return customer != null ? customer.getGender() : "n.a";
     }
 
     private String getAppVersion() {

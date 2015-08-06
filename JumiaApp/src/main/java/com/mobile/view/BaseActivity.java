@@ -51,7 +51,6 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
@@ -1289,8 +1288,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                         // Validate provider
                         if (myProfileActionProvider != null) {
                             myProfileActionProvider.showSpinner();
+                            /*
                             int totalFavourites = FavouriteTableHelper.getTotalFavourites();
                             myProfileActionProvider.setTotalFavourites(totalFavourites);
+                            */
                         }
                         break;
                     case LoginOut:
@@ -1321,33 +1322,27 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case Favorite:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE,
-                                FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case RecentSearch:
                         // RECENT SEARCHES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
-                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST,
-                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case RecentlyView:
                         // RECENTLY VIEWED
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
-                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST,
-                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case MyAccount:
                         // MY ACCOUNT
-//                        popBackStackUntilTag(FragmentType.MY_ACCOUNT.toString());
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
-                                FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case MyOrders:
                         // TRACK ORDER
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
-                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE,
-                                FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case Country:
                         onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

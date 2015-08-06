@@ -32,6 +32,7 @@ public class Product implements IJSONSerializable, Parcelable {
     private ArrayList<Image> images;
     private String firstImageURL;
     private ArrayList<Image> imagesTablet;
+    private boolean isWishList;
 
     /**
      * simple product constructor.
@@ -70,6 +71,10 @@ public class Product implements IJSONSerializable, Parcelable {
 
     public ArrayList<Image> getImagesTablet() {
         return imagesTablet;
+    }
+
+    public boolean isWishList() {
+        return isWishList;
     }
 
     /* (non-Javadoc)

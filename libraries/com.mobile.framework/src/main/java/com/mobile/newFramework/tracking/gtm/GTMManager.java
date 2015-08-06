@@ -254,21 +254,16 @@ public class GTMManager {
 
     public void gtmTrackLogin(Customer customer, TrackingEvent event, String location) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackLogin -> ");
-        
-        String method = GTMValues.EMAILAUTH;
-        if(event == TrackingEvent.LOGIN_FB_SUCCESS) method = GTMValues.FACEBOOK;
-//        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
-//                location, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERAGE,
-//                customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
-//
-//        sendEvent(message);
-        Print.d(TAG, "gtmTrackLogin" + " method:" + method + " location:" + location + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getCreatedAt():" + customer.getCreatedAt() + " customer.getGender():" + customer.getGender());
-      
-      //working
-      Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
-      location, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERGENDER, customer.getGender().toString());
 
-      sendEvent(message);
+        String method = GTMValues.EMAILAUTH;
+        if (event == TrackingEvent.LOGIN_FB_SUCCESS) method = GTMValues.FACEBOOK;
+        Print.d(TAG, "gtmTrackLogin" + " method:" + method + " location:" + location + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getGender():" + customer.getGender());
+
+        //working
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_LOGIN, GTMKeys.LOGINMETHOD, method, GTMKeys.LOGINLOCATION,
+                location, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.USERGENDER, customer.getGender());
+
+        sendEvent(message);
     }
     
     public void gtmTrackLoginFailed(String location, String method) {
@@ -282,16 +277,9 @@ public class GTMManager {
     }
 
     public void gtmTrackAutoLogin(Customer customer) {
-        Print.i(TAG, " GTM TRACKING -> gtmTrackAutoLogin -> (created at: " + customer.getCreatedAt() + ") ");
-//        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(),
-//                GTMKeys.USERAGE,customer.getAge(), GTMKeys.USERGENDER, customer.getGender() ,GTMKeys.NUMBERPURCHASES, customer.getPurchaseNumber());
-//
-//        sendEvent(message);
-        
-        Print.d(TAG, "gtmTrackAutoLogin" + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getCreatedAt():" + customer.getCreatedAt() + " customer.getGender():" + customer.getGender());
+        Print.d(TAG, "gtmTrackAutoLogin" + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getGender():" + customer.getGender());
 
-      Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(),
-              GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERGENDER, customer.getGender().toString());
+      Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(), GTMKeys.USERGENDER, customer.getGender());
 
       sendEvent(message);
     }
