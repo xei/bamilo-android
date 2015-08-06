@@ -129,6 +129,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public long quantity;
         public String image;
         public Double discount_value;
+        public long stock;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
@@ -439,33 +440,17 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
         case ADD_VOUCHER:
-            ShoppingCart addVoucherShoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
             hideActivityProgress();
             removeVoucher = true;
-
-            // verify if "Call to Order" was used
-            if (isCallInProgress) {
-                isCallInProgress = false;
-                askToRemoveProductsAfterOrder(addVoucherShoppingCart);
-            } else {
-                displayShoppingCart(addVoucherShoppingCart);
-            }
+            triggerGetShoppingCart();
             return true;
         case REMOVE_VOUCHER:
-            ShoppingCart removeVoucherShoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
             hideActivityProgress();
-
-            // verify if "Call to Order" was used
-            if (isCallInProgress) {
-                isCallInProgress = false;
-                askToRemoveProductsAfterOrder(removeVoucherShoppingCart);
-            } else {
-                displayShoppingCart(removeVoucherShoppingCart);
-            }
+            triggerGetShoppingCart();
             removeVoucher = false;
             return true;
         case NATIVE_CHECKOUT_AVAILABLE:
@@ -704,7 +689,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             String couponCope = cart.getCouponCode();
             if (!TextUtils.isEmpty(couponDiscount)) {
                 double couponDiscountValue = Double.parseDouble(couponDiscount);
-                if (couponDiscountValue >= 0) {
+                if (couponDiscountValue > 0) {
                     // Fix NAFAMZ-7848
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
@@ -715,14 +700,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     }
                 } else {
                     voucherContainer.setVisibility(View.GONE);
-                    couponButton.setText(getString(R.string.voucher_use));
-                    voucherError.setVisibility(View.VISIBLE);
                     // Clean Voucher
                     removeVoucher();
                 }
             } else {
                 voucherContainer.setVisibility(View.GONE);
-                couponButton.setText(getString(R.string.voucher_use));
                 // Clean Voucher
                 removeVoucher();
             }
@@ -764,6 +746,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.image = item.getImageUrl();
                 values.price_disc = CurrencyFormatter.formatCurrency(item.getSpecialPrice());
                 values.discount_value = (double) Math.round(item.getSavingPercentage());
+                values.stock = item.getStock();
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
@@ -949,8 +932,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
+        long actualMaxQuantity = prodItem.itemValues.stock < prodItem.itemValues.maxQuantity ? prodItem.itemValues.stock : prodItem.itemValues.maxQuantity;
         prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        if(prodItem.itemValues.maxQuantity > 1) {
+        if(actualMaxQuantity > 1) {
             prodItem.quantityBtn.setEnabled(true);
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
 
@@ -1045,7 +1029,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<>();
-        for (int i = 1; i <= items.get(position).getMaxQuantity(); i++) {
+        long stock = items.get(position).getStock();
+        int maxQuantity = items.get(position).getMaxQuantity();
+        long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
+        for (int i = 1; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));
         }
         final long crrQuantity = items.get(position).getQuantity();
@@ -1091,7 +1078,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
             params.putDouble(TrackerDelegator.RATING_KEY, -1d);
             params.putString(TrackerDelegator.NAME_KEY, item.getName());
-            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategoriesIds());
+
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
 
             if (quantity > prods) {

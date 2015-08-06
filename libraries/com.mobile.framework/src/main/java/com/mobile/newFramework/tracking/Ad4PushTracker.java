@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
@@ -24,7 +25,6 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DateTimeUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;

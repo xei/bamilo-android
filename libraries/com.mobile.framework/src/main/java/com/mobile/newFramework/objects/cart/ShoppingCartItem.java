@@ -20,19 +20,20 @@ import java.util.Map;
  * Shopping Cart Item used when an item is added to the shopping cart
  * 
  * @author GuilhermeSilva
- * @modified Paulo Carvalho
  * 
  */
 public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 
 	private String imageUrl;
 	private String productUrl;
-	private String mSKU;
-	private String mSimpleSku;
+	private String configSKU;
+	private String configSimpleSKU;
 	private long quantity;
 	private int maxQuantity;
 	private String configId;
 	private String name;
+	private long stock;
+	private double taxAmount;
 	private Map<String, String> simpleData;
 	private String variation;
 	private String price;
@@ -42,12 +43,48 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	private double specialPriceVal = 0;
 	private double mPriceValueConverted = 0;
 	private double mSpecialPriceConverted = 0;
-	private String mCategoriesIds;
-	private String mAttributeSetId;
 
-	public ShoppingCartItem() {
-
+	/**
+	 * @param simpleData
+	 *            registry
+	 */
+	public ShoppingCartItem(HashMap<String, String> simpleData) {
+		this.configSimpleSKU = null;
+		this.simpleData = simpleData;
 	}
+
+	/**
+	 * @param configSimpleSKU
+	 *            of the product simple
+	 * @param simpleData
+	 *            registry
+	 */
+	public ShoppingCartItem(String configSimpleSKU, HashMap<String, String> simpleData) {
+		this.configSimpleSKU = configSimpleSKU;
+		this.simpleData = simpleData;
+	}
+
+    public ShoppingCartItem(final ShoppingCartItem shoppingCartItem){
+        imageUrl = shoppingCartItem.imageUrl;
+        productUrl = shoppingCartItem.productUrl;
+        configSKU = shoppingCartItem.configSKU;
+        configSimpleSKU= shoppingCartItem.configSimpleSKU;
+        quantity = shoppingCartItem.quantity;
+        maxQuantity = shoppingCartItem.maxQuantity;
+        configId = shoppingCartItem.configId;
+        name = shoppingCartItem.name;
+        stock = shoppingCartItem.stock;
+        taxAmount = shoppingCartItem.taxAmount;
+        simpleData = shoppingCartItem.simpleData;
+        variation = shoppingCartItem.variation;
+        price = shoppingCartItem.price;
+        specialPrice = shoppingCartItem.specialPrice;
+        savingPercentage = shoppingCartItem.savingPercentage;
+        priceVal = shoppingCartItem.priceVal;
+        specialPriceVal = shoppingCartItem.specialPriceVal ;
+        mPriceValueConverted = shoppingCartItem.mPriceValueConverted;
+        mSpecialPriceConverted  = shoppingCartItem.mSpecialPriceConverted;
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -63,14 +100,14 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		try {
 			imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
 			productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
-			mSKU = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-			mSimpleSku = jsonObject.getString(RestConstants.JSON_SIMPLE_SKU_TAG);
+			configSKU = jsonObject.getString(RestConstants.JSON_CONFIG_SKU_TAG);
 			quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
 			maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY);
+			configId = jsonObject.getString(RestConstants.JSON_CONFIG_ID);
 			name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);
-			mAttributeSetId = jsonObject.optString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
+			stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
 			variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
-			mCategoriesIds = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
+
 			// Fix NAFAMZ-7848
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
@@ -99,6 +136,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 
 			mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
+			taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
 			savingPercentage = 100 - specialPriceVal / priceVal * 100;
 
 
@@ -142,14 +180,14 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	 * @return The product SKU (short form)
 	 */
 	public String getConfigSKU() {
-		return mSKU;
+		return configSKU;
 	}
 
 	/**
 	 * @return The configuration/variant SKU of the product
 	 */
 	public String getConfigSimpleSKU() {
-		return mSimpleSku;
+		return configSimpleSKU;
 	}
 
 	/*
@@ -166,12 +204,26 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return quantity;
 	}
 
+//	/*
+//	 * @param max quantity of the product
+//	 */
+//	public void setMaxQuantity(int maxQuantity) {
+//		this.maxQuantity = maxQuantity;
+//	}
+
 	/**
 	 * @return the maxQuantity
 	 */
 	public int getMaxQuantity() {
 		return maxQuantity;
 	}
+
+//	/**
+//	 * @return the configId
+//	 */
+//	public String getConfigId() {
+//		return configId;
+//	}
 
 	/**
 	 * @return the name
@@ -180,6 +232,12 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return name;
 	}
 
+	/**
+	 * @return the stock
+	 */
+	public long getStock() {
+		return stock;
+	}
 
 	/**
 	 * @return the special price
@@ -209,6 +267,13 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return priceVal;
 	}
 
+//	/**
+//	 * @return the taxAmount
+//	 */
+//	public double getTaxAmount() {
+//		return taxAmount;
+//	}
+
 	/**
 	 * @return the savingPercentage
 	 */
@@ -216,12 +281,28 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return savingPercentage;
 	}
 
+	// public double getCartRuleDiscount() {
+	// return cartRuleDiscount;
+	// }
+	//
+	// public void setCartRuleDiscount( double cartRuleDiscount ) {
+	// this.cartRuleDiscount = cartRuleDiscount;
+	// }
+
 	/**
 	 * @return the simpleData
 	 */
 	public Map<String, String> getSimpleData() {
 		return simpleData;
 	}
+
+//	/**
+//	 * @param simpleData
+//	 *            the simpleData to set
+//	 */
+//	public void setSimpleData(Map<String, String> simpleData) {
+//		this.simpleData = simpleData;
+//	}
 
 	public String getVariation() {
 		return variation;
@@ -238,21 +319,35 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		return url;
 	}
 
-	/**
-	 *
-	 * @return category id from the item
-	 */
-	public String getCategoriesIds() {
-		return mCategoriesIds;
-	}
-
-	/**
-	 *
-	 * @return category id from the item
-	 */
-	public String getAttributeSetId() {
-		return mAttributeSetId;
-	}
+//	/**
+//	 * @return the priceValueEuroConverted
+//	 */
+//	public double getPriceValueEuroConverted() {
+//		return mPriceValueConverted;
+//	}
+//
+//	/**
+//	 * @param priceValueEuroConverted
+//	 *            the priceValueEuroConverted to set
+//	 */
+//	public void setPriceValueEuroConverted(double priceValueEuroConverted) {
+//		this.mPriceValueConverted = priceValueEuroConverted;
+//	}
+//
+//	/**
+//	 * @return the specialPriceValueEuroConverted
+//	 */
+//	public double getSpecialPriceConverted() {
+//		return mSpecialPriceConverted;
+//	}
+//
+//	/**
+//	 * @param specialPriceValueEuroConverted
+//	 *            the specialPriceValueEuroConverted to set
+//	 */
+//	public void setSpecialPriceConverted(double specialPriceValueEuroConverted) {
+//		this.mSpecialPriceConverted = specialPriceValueEuroConverted;
+//	}
 
 	/**
 	 * Return the price or special price used for tracking
@@ -299,23 +394,23 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(imageUrl);
 		dest.writeString(productUrl);
-		dest.writeString(mSKU);
-		dest.writeString(mSimpleSku);
+		dest.writeString(configSKU);
+		dest.writeString(configSimpleSKU);
 		dest.writeLong(quantity);
 		dest.writeInt(maxQuantity);
 		dest.writeString(configId);
 		dest.writeString(name);
+		dest.writeLong(stock);
 		dest.writeString(specialPrice);
 		dest.writeDouble(savingPercentage);
 		dest.writeString(price);
+		dest.writeDouble(taxAmount);
 		dest.writeMap(simpleData);
 		dest.writeString(variation);
 		dest.writeDouble(priceVal);
 		dest.writeDouble(specialPriceVal);
 		dest.writeDouble(mPriceValueConverted);
 		dest.writeDouble(mSpecialPriceConverted);
-		dest.writeString(mCategoriesIds);
-		dest.writeString(mAttributeSetId);
 	}
 
 	/**
@@ -324,15 +419,17 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	private ShoppingCartItem(Parcel in) {
 		imageUrl = in.readString();
 		productUrl = in.readString();
-		mSKU = in.readString();
-		mSimpleSku = in.readString();
+		configSKU = in.readString();
+		configSimpleSKU = in.readString();
 		quantity = in.readLong();
 		maxQuantity = in.readInt();
 		configId = in.readString();
 		name = in.readString();
+		stock = in.readLong();
 		specialPrice = in.readString();
 		savingPercentage = in.readDouble();
 		price = in.readString();
+		taxAmount = in.readDouble();
 		simpleData = new HashMap<>();
 		in.readMap(simpleData, String.class.getClassLoader());
 		variation = in.readString();
@@ -340,8 +437,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		specialPriceVal = in.readDouble();
 		mPriceValueConverted = in.readDouble();
 		mSpecialPriceConverted = in.readDouble();
-		mCategoriesIds = in.readString();
-		mAttributeSetId = in.readString();
 	}
 
 	/**
