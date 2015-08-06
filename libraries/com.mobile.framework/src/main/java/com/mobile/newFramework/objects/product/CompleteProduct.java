@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class that manages the full representation of a given product.
@@ -33,7 +34,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     private Double ratingsAverage;
     private Integer ratingsCount;
     private Integer reviewsCount;
-    private ArrayList<String> categories;
+    private String categories;
     private HashMap<String, String> attributes;
     private HashMap<String, String> shipmentData;
     private ArrayList<ProductSimple> simples;
@@ -61,7 +62,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
      */
     public CompleteProduct() {
         super();
-        categories = new ArrayList<>();
         attributes = new HashMap<>();
         shipmentData = new HashMap<>();
         simples = new ArrayList<>();
@@ -166,11 +166,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 			}
 			*/
 
-            categories.clear();
-            JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
-            for (int i = 0; i < categoriesArray.length(); ++i) {
-                categories.add(categoriesArray.getString(i));
-            }
+            categories = jsonObject.getString(RestConstants.JSON_CATEGORIES_TAG);
             // attributes
             attributes.clear();
             JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
@@ -348,8 +344,12 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     /**
      * @return the categories
      */
-    public ArrayList<String> getCategories() {
+    public String getCategories() {
         return categories;
+    }
+
+    public String[] getCategoriesList(){
+        return categories.split(",");
     }
 
     /**
@@ -362,7 +362,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     /**
      * @return the shipmentData
      */
-    @Deprecated
+//    @Deprecated
 //    public HashMap<String, String> getShipmentData() {
 //        return shipmentData;
 //    }
@@ -437,7 +437,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     /**
      * @param categories the categories to set
      */
-    public void setCategories(ArrayList<String> categories) {
+    public void setCategories(String categories) {
         this.categories = categories;
     }
 
@@ -660,7 +660,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeList(categories);
+        dest.writeString(categories);
         dest.writeMap(attributes);
         dest.writeMap(shipmentData);
         dest.writeList(simples);
@@ -691,8 +691,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
     private CompleteProduct(Parcel in) {
         super(in);
-        categories = new ArrayList<>();
-        in.readList(categories, String.class.getClassLoader());
+        categories = in.readString();
 
         attributes = new HashMap<>();
         in.readMap(attributes, String.class.getClassLoader());

@@ -64,6 +64,7 @@ import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -94,6 +95,8 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -413,13 +416,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         restoreParams(bundle);
 
-        // Get url
-        mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        ContentValues mQueryValues = new ContentValues();
+        // Url and parameters
+        String url = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        int indexOfParameters = url.indexOf('?');
+        mCompleteProductUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
+        RestUrlUtils.getQueryParameters(url, mQueryValues);
         // Validate url and load product
         if (mCompleteProductUrl == null) {
             getBaseActivity().onBackPressed();
         } else {
-            loadProduct();
+            loadProduct(mQueryValues);
         }
     }
 
@@ -647,11 +654,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     /**
      * 
      */
-    private void loadProduct() {
+    private void loadProduct(ContentValues mQueryValues) {
         Print.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
     }
 
@@ -1109,12 +1117,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            int categoriesSize = mCompleteProduct.getCategories().size();
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(categoriesSize - 1));
+        if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 0) {
+            int categoriesSize = mCompleteProduct.getCategoriesList().length;
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategoriesList()[categoriesSize - 1]);
             if (null != mCompleteProduct && categoriesSize > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories()
-                        .get(categoriesSize - 2));
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategoriesList()[categoriesSize - 2]);
             }
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -1421,10 +1428,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
 
-        if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
-            if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
+        if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 0) {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategoriesList()[0]);
+            if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 1) {
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategoriesList()[1]);
             }
         }
         return bundle;
@@ -1635,7 +1642,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     mCompleteProduct.getPriceForTracking(),
                     mCompleteProduct.getRatingsAverage(),
                     mCompleteProduct.getMaxSavingPercentage(), false,
-                    mCompleteProduct.getCategories());
+                    new ArrayList<>(Arrays.asList(mCompleteProduct.getCategoriesList())));
             Print.e("TOAST", "USE SuperToast");
             Toast.makeText(getBaseActivity(), getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
         } else {
@@ -1675,7 +1682,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
-            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories().get(0));
+            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategoriesList()[0]);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON CLICK SHARE");
         } catch (IndexOutOfBoundsException e) {

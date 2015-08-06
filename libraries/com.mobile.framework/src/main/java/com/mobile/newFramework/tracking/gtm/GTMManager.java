@@ -491,13 +491,14 @@ public class GTMManager {
     
     public void gtmTrackRateProduct(CompleteProduct product,String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
-        Map<String, Object> message = null;
-        String category = "";
-        String subCategory = "";
-        if(null != product && product.getCategories().size() > 0){
-            category = product.getCategories().get(0);
-            if(null != product && product.getCategories().size() > 1){
-                subCategory = product.getCategories().get(1);
+        Map<String, Object> message;
+        String category = null;
+        String subCategory = null;
+
+        if(null != product && product.getCategoriesList().length>0){
+            category = product.getCategoriesList()[0];
+            if(null != product && product.getCategoriesList().length > 1){
+                subCategory = product.getCategoriesList()[1];
             }
         }
         
@@ -524,13 +525,14 @@ public class GTMManager {
     public void gtmTrackViewRating(CompleteProduct product, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
 
-        Map<String, Object> message = null;
-        String category = "";
-        String subCategory = "";
-        if(null != product && product.getCategories().size() > 0){
-            category = product.getCategories().get(0);
-            if(null != product && product.getCategories().size() > 1){
-                subCategory = product.getCategories().get(1);
+        Map<String, Object> message;
+        String category = null;
+        String subCategory = null;
+
+        if(null != product && product.getCategoriesList().length>0){
+            category = product.getCategoriesList()[0];
+            if(null != product && product.getCategoriesList().length > 1){
+                subCategory = product.getCategoriesList()[1];
             }
         }
         
