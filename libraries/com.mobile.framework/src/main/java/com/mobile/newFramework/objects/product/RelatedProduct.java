@@ -22,11 +22,10 @@ import java.util.ArrayList;
  */
 public class RelatedProduct extends LastViewed {
 
-    private ArrayList<String> categories;
+    private String categories;
 
     public RelatedProduct(){
         super();
-        categories = new ArrayList<>();
     }
 
     public boolean initialize(JSONObject relatedProductJsonObject){
@@ -58,12 +57,7 @@ public class RelatedProduct extends LastViewed {
             setSpecialPriceConverted(specialPriceEuroConverted);
 
 
-            JSONArray categoriesJsonArray = relatedProductJsonObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
-            if(categoriesJsonArray !=null){
-                for(int i = 0; i< categoriesJsonArray.length();i++){
-                    getCategories().add(categoriesJsonArray.getString(i));
-                }
-            }
+            categories = relatedProductJsonObject.getString(RestConstants.JSON_CATEGORIES_TAG);
 
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the related product", e);
@@ -72,7 +66,7 @@ public class RelatedProduct extends LastViewed {
         return true;
     }
 
-    public ArrayList<String> getCategories() {
+    public String getCategories() {
         return categories;
     }
 }

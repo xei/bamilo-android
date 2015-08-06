@@ -263,7 +263,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     RelatedProduct relatedProduct = new RelatedProduct();
                     JSONObject relatedProductJsonObject = relatedProductsJsonArray.optJSONObject(i);
                     if (relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)) {
-                        getRelatedProducts().add(relatedProduct);
+                        relatedProducts.add(relatedProduct);
                     }
                 }
             }
