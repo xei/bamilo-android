@@ -27,6 +27,7 @@ public class GetProductHelper extends SuperBaseHelper {
     
     public static final String PRODUCT_URL = "productUrl";
 
+    public static final String SKU_TAG = "sku";
 
     @Override
     public EventType getEventType() {

@@ -48,7 +48,6 @@ import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -96,7 +95,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -446,7 +444,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private boolean hasArgumentsFromDeepLink(Bundle bundle) {
         // Get the sku
-        String sku = bundle.getString(GetSearchProductHelper.SKU_TAG);
+        String sku = bundle.getString(GetProductHelper.SKU_TAG);
         // Get the simple size
         mDeepLinkSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
         // Validate
@@ -454,8 +452,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
             mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-            mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
+            ContentValues mQueryValues = new ContentValues();
+            mQueryValues.put(GetProductHelper.SKU_TAG, sku);
+            loadProduct(mQueryValues);
             return true;
         }
         return false;
