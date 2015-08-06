@@ -17,12 +17,15 @@ import org.json.JSONObject;
  *
  * @author nutzer2
  */
-public class SuperSetShippingMethod extends CheckoutStepObject implements Parcelable {
-
+public class SetBillingAddress extends CheckoutStepObject implements Parcelable {
 
     private OrderSummary orderSummary;
 
-    public SuperSetShippingMethod() {
+    /**
+     * Empty constructor
+     */
+    public SetBillingAddress() {
+        // ...
     }
 
     /*
@@ -34,11 +37,8 @@ public class SuperSetShippingMethod extends CheckoutStepObject implements Parcel
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get and set next step
-        setCheckoutNextStep(jsonObject);
-        // Get order summary from response
+        super.initialize(jsonObject);
         orderSummary = new OrderSummary(jsonObject);
-//            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());
         return true;
     }
 
@@ -66,23 +66,20 @@ public class SuperSetShippingMethod extends CheckoutStepObject implements Parcel
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(orderSummary);
-//        dest.writeValue(fragmentType);
 
     }
 
-    private SuperSetShippingMethod(Parcel in) {
+    private SetBillingAddress(Parcel in) {
         orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
-//        fragmentType = (FragmentType) in.readValue(FragmentType.class.getClassLoader());
-
     }
 
-    public static final Creator<SuperSetShippingMethod> CREATOR = new Creator<SuperSetShippingMethod>() {
-        public SuperSetShippingMethod createFromParcel(Parcel in) {
-            return new SuperSetShippingMethod(in);
+    public static final Creator<SetBillingAddress> CREATOR = new Creator<SetBillingAddress>() {
+        public SetBillingAddress createFromParcel(Parcel in) {
+            return new SetBillingAddress(in);
         }
 
-        public SuperSetShippingMethod[] newArray(int size) {
-            return new SuperSetShippingMethod[size];
+        public SetBillingAddress[] newArray(int size) {
+            return new SetBillingAddress[size];
         }
     };
 
