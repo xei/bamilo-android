@@ -226,11 +226,6 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void searchProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
-
-    String searchProductDetail = "searchProductDetail";
-
-    @GET("/")
     void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
 
     String getProductDetail = "getProductDetail";
