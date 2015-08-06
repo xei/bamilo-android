@@ -98,7 +98,7 @@ import org.junit.runners.Suite;
 public class AigMobApiNigeriaTestSuite {
 
     public static final String TAG = AigMobApiNigeriaTestSuite.class.getSimpleName();
-        public static String HOST = "https://alice-staging.jumia.com.ng/mobapi/v1.7";
+        public static String HOST = "https://integration-mobile-www.jumia.com.ng/mobapi/v1.8";
 
         @BeforeClass
     public static void setUp() {

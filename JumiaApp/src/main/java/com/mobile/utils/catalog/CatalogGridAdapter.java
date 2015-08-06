@@ -207,7 +207,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set brand
         holder.brand.setText(item.getBrand());
         // Set is new image
-        holder.recent.setSelected(item.getAttributes().isNew());
+        holder.recent.setSelected(item.isNew());
         // Set image
         RocketImageLoader.instance.loadImage(item.getFirstImageURL(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
@@ -251,7 +251,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
         holder.favourite.setOnClickListener(this);
-        item.getAttributes().setFavourite(item.isWishList());
+        item.setFavourite(item.isWishList());
     }
     
     /**

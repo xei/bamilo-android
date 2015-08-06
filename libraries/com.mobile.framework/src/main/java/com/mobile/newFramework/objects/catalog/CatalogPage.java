@@ -74,10 +74,10 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject metadataObject) throws JSONException {
 //        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
-        mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
+        mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
-        mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
+        mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products
@@ -104,6 +104,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         }*/
 
         // Get the other filters
+        /* TODO: uncomment to support filters
         if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
             JSONArray jsonArray = metadataObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -114,7 +115,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 // save filter
                 mFilters.add(catalogFilter);
             }
-        }
+        }*/
 
         //Get Banner
         if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){

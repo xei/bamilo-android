@@ -113,6 +113,7 @@ public class RestConstants {
     public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
     public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_IS_NEW_TAG = "is_new";
+    public static final String JSON_IS_WISHLIST = "is_wishlist";
     public static final String JSON_PROD_UNIQUES_TAG = "uniques";
     public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
     public static final String JSON_SIZE_GUIDE_URL_TAG = "size_guide";
@@ -157,6 +158,7 @@ public class RestConstants {
     // ProductsPage Tags
     public static final String JSON_RESULTS_TAG = "results";
     public static final String JSON_PRODUCT_COUNT_TAG = "product_count";
+    public static final String JSON_TOTAL_PRODUCTS_TAG = "total_products";
     public static final String JSON_CATALOG_NAME_TAG = "category_name";
     public static final String JSON_CATALOG_IDS_TAG = "category_ids";
 
