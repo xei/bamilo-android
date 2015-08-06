@@ -36,7 +36,6 @@ public class Product extends BaseProduct implements IJSONSerializable, Parcelabl
     private Integer reviews;
     private Double rating;
     private boolean isNew;
-    private boolean isFavourite;
 
     private ArrayList<Image> images;
     private String firstImageURL;
@@ -315,14 +314,6 @@ public class Product extends BaseProduct implements IJSONSerializable, Parcelabl
 
     public boolean isNew() {
         return isNew;
-    }
-
-    public boolean isFavourite() {
-        return isFavourite;
-    }
-
-    public void setFavourite(boolean isFavourite) {
-        this.isFavourite = isFavourite;
     }
 
     /**

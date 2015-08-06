@@ -117,17 +117,16 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
             url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
             mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
             // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(priceJSON)) {
+            price = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+            if (!CurrencyFormatter.isNumber(price)) {
                 throw new JSONException("Price is not a number!");
             }
-            priceDouble = Double.parseDouble(priceJSON);
-            price = priceJSON;
+            priceDouble = Double.parseDouble(price);
             priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
             if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceJSON = priceJSON;
+                specialPriceJSON = price;
             }
             specialPriceDouble = Double.parseDouble(specialPriceJSON);
 
@@ -135,11 +134,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
             specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
             String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-            if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
-                maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
-            } else {
-                maxSavingPercentage = 0d;
-            }
+
+            maxSavingPercentage = CurrencyFormatter.isNumber(maxSavingPercentageJSON) ? Double.parseDouble(maxSavingPercentageJSON): 0d;
+
             // TODO: ratings need to be completed
 
             JSONObject ratingsSummaryObject = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
@@ -222,11 +219,10 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     if (value != null && !value.equalsIgnoreCase("")) {
                         this.known_variations.add(value);
                     }
-
                 }
-
             }
             isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_WISHLIST, false);
 
             hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
             hasSeller = jsonObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
@@ -245,7 +241,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 String offerPriceJSON = offers.optString(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
 
                 if (!CurrencyFormatter.isNumber(offerPriceJSON)) {
-                    offerPriceJSON = priceJSON;
+                    offerPriceJSON = price;
                 }
                 minPriceOfferDouble = Double.parseDouble(offerPriceJSON);
 
