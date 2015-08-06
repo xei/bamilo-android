@@ -418,10 +418,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         ContentValues mQueryValues = new ContentValues();
         // Url and parameters
-        String url = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        int indexOfParameters = url.indexOf('?');
-        mCompleteProductUrl = indexOfParameters != -1 ? url.substring(0, indexOfParameters) : url;
-        RestUrlUtils.getQueryParameters(url, mQueryValues);
+        mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        RestUrlUtils.getQueryParameters(mCompleteProductUrl, mQueryValues);
         // Validate url and load product
         if (mCompleteProductUrl == null) {
             getBaseActivity().onBackPressed();
@@ -658,7 +656,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Print.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
     }
@@ -666,11 +664,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     /**
      * 
      */
-    private void loadProductPartial() {
+    private void loadProductPartial(ContentValues mQueryValues) {
         mBeginRequestMillis = System.currentTimeMillis();
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         triggerContentEventNoLoading(new GetProductHelper(), bundle, responseCallback);
     }
 
@@ -1297,12 +1296,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                         return;
                     // Saved the selected URL
                     mCompleteProductUrl = url;
+                    ContentValues mQueryValues = new ContentValues();
+                    RestUrlUtils.getQueryParameters(mCompleteProductUrl, mQueryValues);
                     // Show loading rating
                     loadingRating.setVisibility(View.VISIBLE);
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    loadProductPartial();
+                    loadProductPartial(mQueryValues);
                 }
             });
         }
