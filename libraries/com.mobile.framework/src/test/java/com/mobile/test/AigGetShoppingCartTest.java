@@ -28,7 +28,7 @@ public class AigGetShoppingCartTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"order/cartdata/";
+        return AigMobApiNigeriaTestSuite.HOST+"/order/cartdata/";
     }
 
     @Override

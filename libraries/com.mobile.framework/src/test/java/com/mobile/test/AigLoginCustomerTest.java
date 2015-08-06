@@ -31,7 +31,7 @@ public class AigLoginCustomerTest extends AigTestCase {
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
-        data.put("Alice_Module_Customer_Model_LoginForm[password]", "1234567");
+        data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
         return data;
     }
 
