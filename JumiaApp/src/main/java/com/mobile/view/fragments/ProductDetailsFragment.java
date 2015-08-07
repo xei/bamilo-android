@@ -418,9 +418,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Url and parameters
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         RestUrlUtils.getQueryParameters(mCompleteProductUrl, mQueryValues);
+
         // Validate url and load product
-        if (mCompleteProductUrl == null) {
-            getBaseActivity().onBackPressed();
+        if (TextUtils.isEmpty(mCompleteProductUrl)) {
+            Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    getBaseActivity().onBackPressed();
+                }
+            });
         } else {
             loadProduct(mQueryValues);
         }
