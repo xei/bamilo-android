@@ -39,14 +39,17 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         return EventType.GET_PRODUCT_OFFERS;
     }
 
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
-    }
+//    @Override
+//    protected String getRequestUrl(Bundle args) {
+//        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
+//    }
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = super.getRequestData(args);
+        if(data == null){
+            data = new HashMap<>();
+        }
         data.put(ALL_OFFERS, "1");
         return data;
     }

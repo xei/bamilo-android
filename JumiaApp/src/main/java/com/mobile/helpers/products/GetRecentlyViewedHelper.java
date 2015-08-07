@@ -20,7 +20,7 @@ public class GetRecentlyViewedHelper {
 
     public static String TAG = GetRecentlyViewedHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.GET_RECENLTLY_VIEWED_LIST;
+    private static final EventType EVENT_TYPE = EventType.GET_RECENTLY_VIEWED_LIST;
 
     /**
      * 
