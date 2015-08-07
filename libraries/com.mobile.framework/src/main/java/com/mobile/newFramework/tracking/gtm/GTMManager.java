@@ -495,10 +495,11 @@ public class GTMManager {
         String category = null;
         String subCategory = null;
 
-        if(null != product && product.getCategoriesList().length>0){
-            category = product.getCategoriesList()[0];
-            if(null != product && product.getCategoriesList().length > 1){
-                subCategory = product.getCategoriesList()[1];
+        String[] categoriesList = product.getCategoriesList();
+        if(null != product && categoriesList.length>0){
+            category = categoriesList[0];
+            if(categoriesList.length > 1){
+                subCategory = categoriesList[1];
             }
         }
         
@@ -529,10 +530,11 @@ public class GTMManager {
         String category = null;
         String subCategory = null;
 
-        if(null != product && product.getCategoriesList().length>0){
-            category = product.getCategoriesList()[0];
-            if(null != product && product.getCategoriesList().length > 1){
-                subCategory = product.getCategoriesList()[1];
+        String[] categoriesList = product.getCategoriesList();
+        if(null != product && categoriesList.length>0){
+            category = categoriesList[0];
+            if(categoriesList.length > 1){
+                subCategory = categoriesList[1];
             }
         }
         

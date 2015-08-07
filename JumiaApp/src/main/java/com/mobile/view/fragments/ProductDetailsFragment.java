@@ -1122,11 +1122,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 0) {
-            int categoriesSize = mCompleteProduct.getCategoriesList().length;
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategoriesList()[categoriesSize - 1]);
-            if (null != mCompleteProduct && categoriesSize > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategoriesList()[categoriesSize - 2]);
+
+        String[] categoriesList = mCompleteProduct.getCategoriesList();
+
+        if (null != mCompleteProduct && categoriesList.length > 0) {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[categoriesList.length - 1]);
+            if (categoriesList.length > 1) {
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[categoriesList.length - 2]);
             }
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -1435,10 +1437,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
 
-        if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategoriesList()[0]);
-            if (null != mCompleteProduct && mCompleteProduct.getCategoriesList().length > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategoriesList()[1]);
+        String[] categoriesList = mCompleteProduct.getCategoriesList();
+        if (null != mCompleteProduct && categoriesList.length > 0) {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[0]);
+            if (categoriesList.length > 1) {
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[1]);
             }
         }
         return bundle;
