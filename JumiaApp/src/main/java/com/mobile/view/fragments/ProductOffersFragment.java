@@ -5,6 +5,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.mobile.newFramework.objects.product.Offer;
 import com.mobile.newFramework.objects.product.ProductOffers;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -162,6 +164,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Bundle arg = new Bundle();
         if(productOffers == null){
             arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
+            arg.putParcelable(Constants.BUNDLE_DATA_KEY, RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
             triggerContentEvent(new GetProductOffersHelper(), arg, this);
         } else {
             setAppContent();
@@ -326,7 +329,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
             showFragmentContentContainer();
-            showFragmentNoNetworkRetry();
+            showFragmentErrorRetry();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
 //            mBundleButton.setEnabled(true);

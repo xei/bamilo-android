@@ -24,6 +24,7 @@ public class BaseProduct implements Parcelable {
     protected double specialPriceDouble;
     protected double specialPriceConverted;
     protected double priceConverted;
+    protected boolean isFavourite;
 
     public BaseProduct(){
         sku = "";
@@ -191,7 +192,14 @@ public class BaseProduct implements Parcelable {
     public void setPriceConverted(double mPriceConverted) {
         this.priceConverted = mPriceConverted;
     }
+    
+    public boolean isFavourite() {
+        return isFavourite;
+    }
 
+    public void setFavourite(boolean isFavourite) {
+        this.isFavourite = isFavourite;
+    }
 
     /*
 	 * ############ PARCELABLE ############
