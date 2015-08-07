@@ -198,7 +198,7 @@ public class FavouriteTableHelper extends BaseTable {
 			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, product.getMaxSavingPercentage());
 			values.put(FavouriteTableHelper._FAVOURITE_URL, product.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, (product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
-			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, product.getAttributes().isNew());
+			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, product.isNew());
 			values.put(FavouriteTableHelper._FAVOURITE_SIMPLES_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_VARIATIONS_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_KNOWN_VARIATIONS_LIST, "");

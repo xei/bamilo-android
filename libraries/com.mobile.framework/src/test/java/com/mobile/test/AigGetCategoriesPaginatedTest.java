@@ -10,6 +10,7 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class AigGetCategoriesPaginatedTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "http://www.jumia.com.ng/mobapi/v1.7/catalog/categories/";
+        return AigMobApiNigeriaTestSuite.HOST+"/catalog/categories/";
     }
 
     @Override

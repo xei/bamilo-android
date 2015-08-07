@@ -69,6 +69,7 @@ public class ConstantsIntentExtra {
 
     // ########### Catalog ##############
     public static final String CATALOG_PAGE = mPackage + "catalogPage";
+    public static final String CATALOG_QUERY_VALUES = mPackage + "queryValues";
     public static final String CATALOG_FILTER_VALUES = mPackage + "catalogFilter";
     public static final String CATALOG_FILTER_BRAND = mPackage + "catalogBrand";
     public static final String CATALOG_SORT = mPackage + "catalogSort";
