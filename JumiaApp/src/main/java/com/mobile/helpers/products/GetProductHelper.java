@@ -46,7 +46,15 @@ public class GetProductHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> requestData = super.getRequestData(args);
-        return (requestData != null) ? requestData : new HashMap<String, String>();
+        if(requestData == null){
+            requestData = new HashMap<>();
+        }
+
+        if(args.containsKey(SKU_TAG)){
+            requestData.put(SKU_TAG,args.getString(SKU_TAG));
+        }
+
+        return requestData;
     }
 
     @Override

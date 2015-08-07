@@ -427,7 +427,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             });
         } else {
             // Url and parameters
-            loadProduct(null);
+            loadProduct();
         }
     }
 
@@ -457,9 +457,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
             mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-            ContentValues mQueryValues = new ContentValues();
-            mQueryValues.put(GetProductHelper.SKU_TAG, sku);
-            loadProduct(mQueryValues);
+            mBeginRequestMillis = System.currentTimeMillis();
+            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
             return true;
         }
         return false;
@@ -656,14 +655,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     /**
      * 
      */
-    private void loadProduct(ContentValues mQueryValues) {
+    private void loadProduct() {
         Print.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, mCompleteProductUrl);
-        if(mQueryValues != null) {
-            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        }
         triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
     }
 
