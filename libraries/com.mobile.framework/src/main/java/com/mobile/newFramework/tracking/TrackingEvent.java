@@ -151,6 +151,10 @@ public enum TrackingEvent {
 
 	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase),
 
+	TOP_SELLER_BANNER_CLICK(R.string.gtopsellerbanner, R.string.gPurchase),
+
+	UNKNOWN_BANNER_CLICK(R.string.gunknown, R.string.gunknown),
+
 	HOME_BANNER_CLICK(-1, R.string.gBannerClick);
 	
 	/**
