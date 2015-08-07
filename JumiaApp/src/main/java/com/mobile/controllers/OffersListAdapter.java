@@ -131,7 +131,8 @@ public class OffersListAdapter extends BaseAdapter {
         item.offerPrice.setText(CurrencyFormatter.formatCurrency(offers.get(position).getFinalPriceString()));
         item.offerProductOwner.setText(offers.get(position).getSeller().getName());
 
-        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, offers.get(position).getSeller().getRatingCount() );
+        int ratingCount = offers.get(position).getSeller().getRatingCount();
+        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
 
         item.offerReview.setText(offers.get(position).getSeller().getRatingCount() + " " + reviewLabel);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());

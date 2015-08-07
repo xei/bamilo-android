@@ -51,8 +51,8 @@
 
     <!-- REVIEW -->
     <plurals name="reviews_array">
-        <item quantity="one">@string/review</item>
-        <item quantity="other">@string/reviews</item>
+        <item quantity="one">@string/review_plural</item>
+        <item quantity="other">@string/reviews_plural</item>
     </plurals>
 
 </resources>
