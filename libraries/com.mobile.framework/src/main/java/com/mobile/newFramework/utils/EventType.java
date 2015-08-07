@@ -181,13 +181,13 @@ public enum EventType {
 
     GET_FAVOURITE_LIST,
 
-    GET_RECENLTLY_VIEWED_LIST,
+    GET_RECENTLY_VIEWED_LIST,
 
     GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", AigRestContract.NO_CACHE),
 
     ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
 
-    GET_PRODUCT_OFFERS,
+    GET_PRODUCT_OFFERS(GET_PRODUCT_EVENT.action, AigRestContract.NO_CACHE),
 
     GET_SELLER_REVIEWS,
 

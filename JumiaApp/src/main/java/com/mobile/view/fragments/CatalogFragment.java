@@ -168,7 +168,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
 //            RestUrlUtils.getQueryParameters(url, mQueryValues);
             if(url != null) {
-                RestUrlUtils.getQueryParameterNames(Uri.parse(url), mQueryValues);
+                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(url)));
             }
 
             // In case of searching by keyword

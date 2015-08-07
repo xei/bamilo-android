@@ -96,16 +96,17 @@ public class RestUrlUtils {
      * Get all parameters from url query and insert them all on ContentValues.
      * Syntax example: ?category=womens-dresses&sort=price&dir=asc
      * @param uri
-     * @param queryValues
      */
-    public static void getQueryParameterNames(Uri uri, ContentValues queryValues) {
+    public static ContentValues getQueryParameters(Uri uri) {
         if (uri.isOpaque()) {
             throw new UnsupportedOperationException("This isn't a hierarchical URI.");
         }
 
+        ContentValues queryValues = new ContentValues();
+
         String query = uri.getEncodedQuery();
         if (query == null) {
-            return;
+            return queryValues;
         }
 
         int start = 0;
@@ -124,5 +125,6 @@ public class RestUrlUtils {
             // Move start to end of name.
             start = end + 1;
         } while (start < query.length());
+        return queryValues;
     }
 }
