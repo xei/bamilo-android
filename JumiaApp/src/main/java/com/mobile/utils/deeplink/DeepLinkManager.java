@@ -10,7 +10,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -357,7 +357,7 @@ public class DeepLinkManager {
         String size = data.getQueryParameter(PDV_SIZE_TAG);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchProductHelper.SKU_TAG, sku);
+        bundle.putString(GetProductHelper.SKU_TAG, sku);
         bundle.putString(PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
