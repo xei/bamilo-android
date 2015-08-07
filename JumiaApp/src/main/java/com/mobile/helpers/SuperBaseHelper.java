@@ -3,12 +3,14 @@ package com.mobile.helpers;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
@@ -30,6 +32,8 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     private boolean prioritary;
 
+    private ContentValues parameters;
+
     public SuperBaseHelper(){
         mEventType = getEventType();
     }
@@ -46,6 +50,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
                 .setUrl(getRequestUrl(args))
                 .setCache(mEventType.cacheTime);
+
         // Validate data
         Map<String, String> data = getRequestData(args);
         if (data != null) {
@@ -56,11 +61,22 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     }
 
     protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
+        String baseUrl = (args != null) ? args.getString(Constants.BUNDLE_URL_KEY) : null;
+        if(TextUtils.isEmpty(baseUrl)) {
+            return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
+        } else {
+            Uri uri = Uri.parse(baseUrl);
+            appendParameters(RestUrlUtils.getQueryParameters(uri));
+            return uri.getScheme()+"://" + uri.getHost() + uri.getPath();
+        }
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
-        return (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY))? convertContentValuesToMap((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY)) : null;
+        if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
+            appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
+        }
+
+        return CollectionUtils.isNotEmpty(parameters) ? convertContentValuesToMap(parameters): null;
     }
 
     /**
@@ -152,6 +168,15 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             mRequester.onRequestError(bundle);
         } else {
             Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST ERROR FOR " + mEventType);
+        }
+    }
+
+    protected final void appendParameters(ContentValues parameters){
+        if(CollectionUtils.isNotEmpty(parameters)){
+            if(this.parameters == null){
+                this.parameters = new ContentValues();
+            }
+            this.parameters.putAll(parameters);
         }
     }
 
