@@ -81,7 +81,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
 
-        return CollectionUtils.isNotEmpty(parameters) ? convertContentValuesToMap(parameters): null;
+        return CollectionUtils.isNotEmpty(parameters) ? CollectionUtils.convertContentValuesToMap(parameters): null;
     }
 
     /**
@@ -95,15 +95,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     protected abstract void onRequest(RequestBundle requestBundle);
 
     public abstract EventType getEventType();
-
-    // TODO: Move this method to CollectionUtils
-    public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
-        Map<String, String> data = new HashMap<>();
-        for (Map.Entry entrySet: contentValues.valueSet()) {
-            data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
-        }
-        return data;
-    }
 
     public EventTask getEventTask() {
         if (mEventTask == null) {
