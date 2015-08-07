@@ -426,10 +426,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 }
             });
         } else {
-            ContentValues mQueryValues = new ContentValues();
             // Url and parameters
-            RestUrlUtils.getQueryParameterNames(Uri.parse(mCompleteProductUrl), mQueryValues);
-            loadProduct(mQueryValues);
+            loadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
         }
     }
 
@@ -1304,14 +1302,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                         return;
                     // Saved the selected URL
                     mCompleteProductUrl = url;
-                    ContentValues mQueryValues = new ContentValues();
-                    RestUrlUtils.getQueryParameterNames(Uri.parse(mCompleteProductUrl), mQueryValues);
                     // Show loading rating
                     loadingRating.setVisibility(View.VISIBLE);
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    loadProductPartial(mQueryValues);
+                    loadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
                 }
             });
         }
