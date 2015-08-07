@@ -163,8 +163,8 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Print.i(TAG, "ON RESUME");
         Bundle arg = new Bundle();
         if(productOffers == null){
-            arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
-            arg.putParcelable(Constants.BUNDLE_DATA_KEY, RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+            arg.putString(Constants.BUNDLE_URL_KEY, mCompleteProductUrl);
+//            arg.putParcelable(Constants.BUNDLE_DATA_KEY, RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
             triggerContentEvent(new GetProductOffersHelper(), arg, this);
         } else {
             setAppContent();
