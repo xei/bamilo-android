@@ -487,6 +487,10 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return isWishList;
     }
 
+    public void setIsWishList(boolean bool) {
+        isWishList = bool;
+    }
+
     public void setNew(boolean isNew) {
         this.isNew = isNew;
     }

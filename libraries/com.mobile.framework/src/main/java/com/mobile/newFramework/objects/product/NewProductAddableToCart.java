@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by spereira on 8/4/15.
  */
-public class NewProductAddableToCart extends NewBaseProduct {
+public class NewProductAddableToCart extends NewProductBase {
 
     private String mVariationName;
     private ArrayList<NewProductSimple> mSimples;

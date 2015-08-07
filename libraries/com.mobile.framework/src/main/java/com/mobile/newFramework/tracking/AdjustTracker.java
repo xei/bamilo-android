@@ -404,8 +404,7 @@ public class AdjustTracker {
                 int skusCount = 0;
                 
                 for (Product sku : skus) {
-//                    sku = "\""+sku+"\"";
-                    sbSkus.append(sku.getSKU()).append(",");
+                    sbSkus.append(sku.getSku()).append(",");
                     skusCount++;
                     if (skusLimit <= skusCount) {
                         break;

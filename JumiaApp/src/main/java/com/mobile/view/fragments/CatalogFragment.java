@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,10 +17,12 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.helpers.products.wishlist.AddToWishListHelper;
+import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
-import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -36,6 +37,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -63,7 +65,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener, OnHeaderClickListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
@@ -450,11 +452,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Method responsible for validating if the catalog page has banner, and if it so, show it
      */
-    private void showHeaderBanner(){
+    private void showHeaderBanner() {
         // Show header
-        if(mGridView != null && mCatalogPage.getmCatalogBanner() != null){
-            ((CatalogGridAdapter) mGridView.getAdapter()).setOnHeaderClickListener(this);
-            mGridView.setHeaderView(mCatalogPage);
+        if (mGridView != null && mCatalogPage.getCatalogBanner() != null) {
+            mGridView.setHeaderView(mCatalogPage.getCatalogBanner());
         }
     }
 
@@ -545,7 +546,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
      */
     @Override
-    public void onViewHolderClick(Adapter<?> adapter, int position) {
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         Product product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
@@ -560,6 +561,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             ToastFactory.ERROR_OCCURRED.show(getBaseActivity());
+        }
+    }
+
+    @Override
+    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+        Product product = ((CatalogGridAdapter) adapter).getItem(position);
+        try {
+            // Get item
+            if (product.isWishList()) {
+                triggerRemoveFromWishList(product.getSku());
+            } else {
+                // Add to wish list
+                triggerAddToWishList(product.getSku());
+            }
+            // Update value
+            view.setSelected(!product.isWishList());
+            product.setIsWishList(!product.isWishList());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON ADD ITEM TO WISHLIST", e);
         }
     }
 
@@ -630,15 +650,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
-        // Contains the new search query (Brand filter)
-//        if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
-//            // Used to indicate that has filter q=<BRAND>
-//            mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-//        }
-//        // Clean brand filter
-//        else {
-//            mBrandQuery = null;
-//        }
         // Save the current filter values
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
@@ -811,6 +822,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * ############## TRIGGERS ##############
      */
 
+    private void triggerAddToWishList(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
+    }
+
+    private void triggerRemoveFromWishList(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
+    }
+
     /**
      * Trigger the initialized catalog.<br> Used for filter and sort.
      */
@@ -879,30 +906,40 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        Print.i(TAG, "ON SUCCESS");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment state
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Get the catalog
-        CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        // Case valid success response
-        if (catalogPage != null && catalogPage.hasProducts()) {
-            // Mark to reload an initial catalog
-            mSortOrFilterApplied = false;
-            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
-            onUpdateCatalogContainer(catalogPage);
 
-            if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
-            }
-
-        }
-        // Case invalid success response
-        else {
-            Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
-            showContinueShopping();
+        switch (eventType) {
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+                ToastFactory.REMOVED_FAVOURITE.show(getBaseActivity());
+                break;
+            case ADD_PRODUCT_TO_WISH_LIST:
+                ToastFactory.ADDED_FAVOURITE.show(getBaseActivity());
+                break;
+            default:
+                // Get the catalog
+                CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                // Case valid success response
+                if (catalogPage != null && catalogPage.hasProducts()) {
+                    // Mark to reload an initial catalog
+                    mSortOrFilterApplied = false;
+                    Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+                    onUpdateCatalogContainer(catalogPage);
+                    if (catalogPage.getPage() == 1) {
+                        TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+                    }
+                }
+                // Case invalid success response
+                else {
+                    Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
+                    showContinueShopping();
+                }
+                break;
         }
     }
 
@@ -918,44 +955,62 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
         // Get error code
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
-        // Case error on load more data
-        if (isLoadingMoreData) {
-            Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
-            onLoadingMoreRequestError(bundle);
+
+        switch (eventType) {
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+            case ADD_PRODUCT_TO_WISH_LIST:
+                // Hide dialog progress
+                hideActivityProgress();
+                // Validate error
+                if (!super.handleErrorEvent(bundle)) {
+                    showUnexpectedErrorWarning();
+                }
+                // TODO Remove from wishlist
+                break;
+            default:
+                // Case error on load more data
+                if (isLoadingMoreData) {
+                    Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
+                    onLoadingMoreRequestError(bundle);
+                }
+                // Case error on request data with filters
+                else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
+                    Print.i(TAG, "ON SHOW FILTER NO RESULT");
+                    showFilterNoResult();
+                }
+                // Case error on request data without filters
+                else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
+                    Print.i(TAG, "ON SHOW NO RESULT");
+                    // Get feature box
+                    FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
+                    // Show no result layout
+                    showFeaturedBoxNoResult(featuredBox);
+                }
+                // Case network errors except No network
+                else if (errorCode != null && errorCode.isNetworkError()
+                        && errorCode != ErrorCode.NO_NETWORK
+                        && errorCode != ErrorCode.HTTP_STATUS
+                        && errorCode != ErrorCode.SERVER_OVERLOAD
+                        && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
+                        && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
+                    showFilterUnexpectedError();
+                }
+                // Case No Network
+                else if (super.handleErrorEvent(bundle)) {
+                    Print.i(TAG, "HANDLE BASE FRAGMENT");
+                }
+                // Case unexpected error
+                else {
+                    showContinueShopping();
+                }
+                break;
         }
-        // Case error on request data with filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
-            Print.i(TAG, "ON SHOW FILTER NO RESULT");
-            showFilterNoResult();
-        }
-        // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
-            Print.i(TAG, "ON SHOW NO RESULT");
-            // Get feature box
-            FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
-            // Show no result layout
-            showFeaturedBoxNoResult(featuredBox);
-        }
-        // Case network errors except No network
-        else if(errorCode != null && errorCode.isNetworkError()
-                && errorCode != ErrorCode.NO_NETWORK
-                && errorCode != ErrorCode.HTTP_STATUS
-                && errorCode != ErrorCode.SERVER_OVERLOAD
-                && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
-                && CollectionUtils.isNotEmpty(mCurrentFilterValues)){
-            showFilterUnexpectedError();
-        }
-        // Case No Network
-        else if (super.handleErrorEvent(bundle)) {
-            Print.i(TAG, "HANDLE BASE FRAGMENT");
-        }
-        // Case unexpected error
-        else {
-            showContinueShopping();
-        }
+
     }
 
     /**

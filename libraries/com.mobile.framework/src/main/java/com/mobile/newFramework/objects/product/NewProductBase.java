@@ -20,7 +20,7 @@ import org.json.JSONObject;
  * @version 2.0
  * @date 2015/08/04
  */
-public class NewBaseProduct implements Parcelable, IJSONSerializable {
+public class NewProductBase implements Parcelable, IJSONSerializable {
 
     protected String mSku;
     protected String mName;
@@ -39,7 +39,7 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
     /**
      * Empty constructor
      */
-    public NewBaseProduct(){
+    public NewProductBase(){
         // ...
     }
 
@@ -53,10 +53,10 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
         mUrl = jsonObject.getString(RestConstants.JSON_URL_TAG);
-        mImageUrl = jsonObject.getString(RestConstants.JSON_IMAGE_URL_TAG);
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
         mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         // Optional
+        mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
@@ -108,14 +108,6 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
         return mSpecialPrice;
     }
 
-    public double getPriceConverted() {
-        return mPriceConverted;
-    }
-
-    public double getSpecialPriceConverted() {
-        return mSpecialPriceConverted;
-    }
-
     public int getMaxSavingPercentage() {
         return mMaxSavingPercentage;
     }
@@ -126,6 +118,10 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
 
     public boolean isWishList() {
         return isWishList;
+    }
+
+    public void setIsWishList(boolean isWishList) {
+        this.isWishList = isWishList;
     }
 
     public String getSizeGuideUrl() {
@@ -144,7 +140,7 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
 	 * ############ PARCELABLE ############
 	 */
 
-    protected NewBaseProduct(Parcel in) {
+    protected NewProductBase(Parcel in) {
         // TODO
     }
 
@@ -159,15 +155,15 @@ public class NewBaseProduct implements Parcelable, IJSONSerializable {
     }
 
     @SuppressWarnings("unused")
-    public static final Creator<NewBaseProduct> CREATOR = new Creator<NewBaseProduct>() {
+    public static final Creator<NewProductBase> CREATOR = new Creator<NewProductBase>() {
         @Override
-        public NewBaseProduct createFromParcel(Parcel in) {
-            return new NewBaseProduct(in);
+        public NewProductBase createFromParcel(Parcel in) {
+            return new NewProductBase(in);
         }
 
         @Override
-        public NewBaseProduct[] newArray(int size) {
-            return new NewBaseProduct[size];
+        public NewProductBase[] newArray(int size) {
+            return new NewProductBase[size];
         }
     };
 

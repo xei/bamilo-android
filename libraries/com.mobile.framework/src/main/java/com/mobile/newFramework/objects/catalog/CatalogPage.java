@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class CatalogPage implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = CatalogPage.class.getSimpleName();
+    protected static final String TAG = CatalogPage.class.getSimpleName();
 
     public static final int MAX_ITEMS_PER_PAGE = 24;
 
@@ -44,8 +44,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private ArrayList<CatalogFilter> mFilters;
 
     private Banner mCatalogBanner;
-    private String mSearchTerm;
 
+    private String mSearchTerm;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -72,7 +72,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-//        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
         mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
@@ -184,9 +183,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return number or pages
      */
     private int calcMaxPages() {
-        int i = (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
-//        Log.i(TAG, "MAX PAGES: " + i);
-        return i;
+        return (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
@@ -284,7 +281,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mName;
     }
 
-    public Banner getmCatalogBanner() {
+    public Banner getCatalogBanner() {
         return mCatalogBanner;
     }
 
@@ -302,13 +299,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      */
     public String getCategoryId(){
         return mId;
-    }
-
-    /**
-     * Set search term
-     */
-    public void setSearchTerm(String searchTerm){
-        mSearchTerm = searchTerm;
     }
 
     /*

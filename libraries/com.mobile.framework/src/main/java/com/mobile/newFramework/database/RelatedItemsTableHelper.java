@@ -77,11 +77,6 @@ public class RelatedItemsTableHelper extends BaseTable {
 
     /**
      * Insert related items into database
-     * @param sku
-     * @param name
-     * @param price
-     * @param url
-     * @param image
      */
     public static void insertRelatedItem(SQLiteDatabase db, String sku, String brand, String name, String price, String url, String image){
     	// Validate sku
@@ -140,9 +135,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 	}*/
 
 	/**
-	 * TODO
-	 * @param ctx
-	 * @param mProducts
+	 *
 	 * @throws InterruptedException 
 	 */
 	public synchronized static void insertRelatedItemsAndClear(ArrayList<Product> mProducts) throws InterruptedException {
@@ -177,13 +170,8 @@ public class RelatedItemsTableHelper extends BaseTable {
 		Print.d(TAG, "RELATED ITEMS COUNT: " + mProducts.size());
 		for (Product product : mProducts) {
 			Print.d(TAG, "RELATED ITEM: " + product.getBrand());
-			insertRelatedItem(db, 
-							product.getSKU(), 
-							product.getBrand(),
-							product.getName(), 
-							product.getSpecialPrice(),
-							product.getUrl(),
-							(product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
+			insertRelatedItem(db, product.getSku(), product.getBrand(), product.getName(),
+					String.valueOf(product.getSpecialPrice()), product.getUrl(), product.getImageUrl());
 			// Validate counter
 			if(count == MAX_SAVED_PRODUCTS) break;
 			// Inc counter

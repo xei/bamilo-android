@@ -12,7 +12,6 @@ import com.mobile.controllers.NewAddableToCartListAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.products.wishlist.AddToWishListHelper;
 import com.mobile.helpers.products.wishlist.GetWishListHelper;
 import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -88,9 +87,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
         // List view
         mListView = (GridView) view.findViewById(R.id.wish_list_grid);
 
-        triggerAddToWishList();
-        //triggerGetWishListInitialPage();
-        //triggerRemoveFromWishList();
+        triggerGetWishListInitialPage();
     }
 
     /*
@@ -329,17 +326,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
         triggerContentEvent(new GetWishListHelper(), null, this);
     }
 
-    private void triggerAddToWishList() {
-        ContentValues values = new ContentValues();
-        values.put("sku", "IN311ELAEQG7NAFAMZ-449912");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new AddToWishListHelper(), bundle, this);
-    }
-
     private void triggerRemoveFromWishList(String sku) {
         ContentValues values = new ContentValues();
-        values.put("sku", sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new RemoveFromWishListHelper(), bundle, this);
