@@ -134,7 +134,7 @@ public class OffersListAdapter extends BaseAdapter {
         int ratingCount = offers.get(position).getSeller().getRatingCount();
         String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
 
-        item.offerReview.setText(offers.get(position).getSeller().getRatingCount() + " " + reviewLabel);
+        item.offerReview.setText(reviewLabel);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
 
         if( !(offers.get(position).getMinDeliveryTime() == 0 && offers.get(position).getMaxDeliveryTime() == 0) ) {
