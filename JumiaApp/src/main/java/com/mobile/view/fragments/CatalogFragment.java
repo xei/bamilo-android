@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -164,7 +165,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
             // Url and parameters
-            RestUrlUtils.getQueryParameters(arguments.getString(ConstantsIntentExtra.CONTENT_URL), mQueryValues);
+            String url = new String(arguments.getString(ConstantsIntentExtra.CONTENT_URL));
+//            RestUrlUtils.getQueryParameters(url, mQueryValues);
+            RestUrlUtils.getQueryParameterNames(Uri.parse(url), mQueryValues);
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
