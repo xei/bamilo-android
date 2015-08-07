@@ -257,8 +257,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
         // Validate the event type
         switch (eventType) {
-            case GET_RECENLTLY_VIEWED_LIST:
-                Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
+            case GET_RECENTLY_VIEWED_LIST:
+                Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
                 mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
                 Print.d(TAG, "NUMBER : " + mAddableToCartList.size());
                 if (!CollectionUtils.isEmpty(mAddableToCartList)) {
@@ -319,7 +319,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         // Validate type
         switch (eventType) {
-            case GET_RECENLTLY_VIEWED_LIST:
+            case GET_RECENTLY_VIEWED_LIST:
                 Print.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
                 showFragmentContentContainer();
                 break;
