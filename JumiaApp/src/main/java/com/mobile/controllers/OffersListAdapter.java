@@ -33,8 +33,6 @@ public class OffersListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
-    int counter = 1;
-
     private Context context;
 
     private IOffersAdapterService offerSelected;
@@ -130,15 +128,13 @@ public class OffersListAdapter extends BaseAdapter {
             item = (Item) itemView.getTag();
         }
 
-        item.offerPrice.setText(CurrencyFormatter.formatCurrency(offers.get(position).getPriceOffer()));
+        item.offerPrice.setText(CurrencyFormatter.formatCurrency(offers.get(position).getFinalPriceString()));
         item.offerProductOwner.setText(offers.get(position).getSeller().getName());
-        String reviews = context.getResources().getString(R.string.reviews);
-        if(offers.get(position).getSeller().getRatingCount() == 1){
-            reviews = context.getResources().getString(R.string.review);
-        } else {
-            reviews = context.getResources().getString(R.string.reviews);
-        }
-        item.offerReview.setText(offers.get(position).getSeller().getRatingCount()+ " "+reviews);
+
+        int ratingCount = offers.get(position).getSeller().getRatingCount();
+        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
+
+        item.offerReview.setText(reviewLabel);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
 
         if( !(offers.get(position).getMinDeliveryTime() == 0 && offers.get(position).getMaxDeliveryTime() == 0) ) {

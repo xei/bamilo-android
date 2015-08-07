@@ -54,6 +54,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     public static final String SORT = "sort";
     public static final String DIRECTION = "dir";
     public static final String QUERY = "q";
+    public static final String CATEGORY = "category";
     public static final String BRAND = "brand";
     // Flag used to save some items as related items
     private boolean isToSaveRelatedItems = false;
@@ -71,15 +72,15 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         return super.createRequest(args);
     }
 
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        // Get catalog URL
-        String baseUrl = args.getString(URL);
-        // Case search then url is empty
-        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
-        //
-        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
-    }
+//    @Override
+//    protected String getRequestUrl(Bundle args) {
+//        // Get catalog URL
+//        String baseUrl = args.getString(URL);
+//        // Case search then url is empty
+//        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
+//        //
+//        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
+//    }
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {

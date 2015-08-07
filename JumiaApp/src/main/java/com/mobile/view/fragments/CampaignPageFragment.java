@@ -38,7 +38,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.campaign.Campaign;
@@ -488,7 +488,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchProductHelper.SKU_TAG, prod);
+        bundle.putString(GetProductHelper.SKU_TAG, prod);
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
