@@ -40,18 +40,24 @@ public class Address implements IJSONSerializable, Parcelable {
     private String postcode;
     private String phone;
     private String additionalPhone;
-    private int fkCustomer;
+    //alexandrapires: not come in mobapi 1.8
+/*    private int fkCustomer;
     private int fkCountry;
     private int fkCustomerAddressRegion;
-    private int fkCustomerAddressCity;
+    private int fkCustomerAddressCity;*/
     private boolean isDefaultBilling;
     private boolean isDefaultShipping;
-    private boolean hidden;
+    //not in mobapi 1.8
+/*    private boolean hidden;
     private String createdAt;
     private String updatedAt;
     private int createdBy;
-    private int updatedBy;
+    private int updatedBy;*/
     private String region;
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
     /**
      * Constructor
@@ -67,30 +73,42 @@ public class Address implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject dataObject) {
         Print.d(TAG, "INITIALIZE");
-        id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
-        if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2))
-            id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG_2);
 
+        //alexandrapires:  mobapi 1.8 change
+        id = Integer.parseInt(dataObject.optString(RestConstants.JSON_ID_TAG)); //id instead of id_customer_address":
         firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
         lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
         address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
         address2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
-        city = dataObject.optString(RestConstants.JSON_CITY_TAG);
+        city = dataObject.optString(RestConstants.JSON_CITY_TAG);   //city instead of fk_customer_address_city
         postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
         phone = dataObject.optString(RestConstants.JSON_PHONE_TAG);
+        isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
+        isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
+        region = dataObject.optString(RestConstants.JSON_REGION);   //region instead of id_customer_address_region
+        additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
+
+        //alexandrapires: not in mobapi 1.8
+    /*
+        /*   id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
+        if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2))
+            id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG_2);
+
+         middleName = dataObject.optString(RestConstants.JSON_MIDDLE_NAME_TAG);
+        region = dataObject.optString(RestConstants.JSON_REGION_NAME_TAG);
         additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
         fkCustomer = dataObject.optInt(RestConstants.JSON_CUSTOMER_ID_TAG);
         fkCountry = dataObject.optInt(RestConstants.JSON_COUNTRY_ID_TAG);
         fkCustomerAddressRegion = dataObject.optInt(RestConstants.JSON_REGION_ID_TAG);
         fkCustomerAddressCity = dataObject.optInt(RestConstants.JSON_CITY_ID_TAG);
-        isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
-        isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
-        hidden = dataObject.optBoolean(RestConstants.JSON_HIDDEN_TAG);
+          hidden = dataObject.optBoolean(RestConstants.JSON_HIDDEN_TAG);
         createdAt = dataObject.optString(RestConstants.JSON_CREATED_AT_TAG);
         updatedAt = dataObject.optString(RestConstants.JSON_UPDATED_AT_TAG);
         createdBy = dataObject.optInt(RestConstants.JSON_CREATED_BY_TAG);
         updatedBy = dataObject.optInt(RestConstants.JSON_UPDATED_BY_TAG);
-        region = dataObject.optString(RestConstants.JSON_REGION_NAME_TAG);
+
+        */
+
         return true;
     }
 
@@ -168,19 +186,21 @@ public class Address implements IJSONSerializable, Parcelable {
         return additionalPhone;
     }
 
+
+
     /**
      * @return the fkCustomerAddressRegion
      */
-    public int getFkCustomerAddressRegion() {
+ /*   public int getFkCustomerAddressRegion() { //not in mobapi 1.8
         return fkCustomerAddressRegion;
-    }
+    }*/
 
     /**
      * @return the fkCustomerAddressCity
      */
-    public int getFkCustomerAddressCity() {
+ /*   public int getFkCustomerAddressCity() {
         return fkCustomerAddressCity;
-    }
+    }*/
 
     /**
      * @return the region
@@ -255,16 +275,17 @@ public class Address implements IJSONSerializable, Parcelable {
     /**
      * @param fkCustomerAddressRegion the fkCustomerAddressRegion to set
      */
-    public void setFkCustomerAddressRegion(int fkCustomerAddressRegion) {
+    /*
+    public void setFkCustomerAddressRegion(int fkCustomerAddressRegion) {   //nor in mobapi 1.8
         this.fkCustomerAddressRegion = fkCustomerAddressRegion;
-    }
+    }*/
 
     /**
      * @param fkCustomerAddressCity the fkCustomerAddressCity to set
      */
-    public void setFkCustomerAddressCity(int fkCustomerAddressCity) {
+ /*   public void setFkCustomerAddressCity(int fkCustomerAddressCity) {
         this.fkCustomerAddressCity = fkCustomerAddressCity;
-    }
+    }*/
 
     /**
      * ########### PARCEL ###########
@@ -294,7 +315,8 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(postcode);
         dest.writeString(phone);
         dest.writeString(additionalPhone);
-        dest.writeInt(fkCustomer);
+        //not in mobapi 1.8
+  /*      dest.writeInt(fkCustomer);
         dest.writeInt(fkCountry);
         dest.writeInt(fkCustomerAddressRegion);
         dest.writeInt(fkCustomerAddressCity);
@@ -302,7 +324,7 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(createdAt);
         dest.writeString(updatedAt);
         dest.writeInt(createdBy);
-        dest.writeInt(updatedBy);
+        dest.writeInt(updatedBy);*/
         dest.writeString(region);
     }
 
@@ -320,7 +342,8 @@ public class Address implements IJSONSerializable, Parcelable {
         postcode = in.readString();
         phone = in.readString();
         additionalPhone = in.readString();
-        fkCustomer = in.readInt();
+        //not in mobapi 1.8
+/*        fkCustomer = in.readInt();
         fkCountry = in.readInt();
         fkCustomerAddressRegion = in.readInt();
         fkCustomerAddressCity = in.readInt();
@@ -328,7 +351,7 @@ public class Address implements IJSONSerializable, Parcelable {
         createdAt = in.readString();
         updatedAt = in.readString();
         createdBy = in.readInt();
-        updatedBy = in.readInt();
+        updatedBy = in.readInt();*/
         region = in.readString();
     }
 
