@@ -62,12 +62,17 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected String getRequestUrl(Bundle args) {
         String baseUrl = (args != null) ? args.getString(Constants.BUNDLE_URL_KEY) : null;
+
         if(TextUtils.isEmpty(baseUrl)) {
             return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
         } else {
             Uri uri = Uri.parse(baseUrl);
             appendParameters(RestUrlUtils.getQueryParameters(uri));
-            return uri.getScheme()+"://" + uri.getHost() + uri.getPath();
+            if (uri.getHost() != null) {
+                return uri.getScheme()+"://" + uri.getHost() + uri.getPath();
+            } else {
+                return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
+            }
         }
     }
 
