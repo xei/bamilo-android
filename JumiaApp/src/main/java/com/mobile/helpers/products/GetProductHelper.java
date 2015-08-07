@@ -14,6 +14,9 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Get Product Information helper
  * 
@@ -38,6 +41,13 @@ public class GetProductHelper extends SuperBaseHelper {
 //    protected String getRequestUrl(Bundle args) {
 //        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
 //    }
+
+
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        Map<String, String> requestData = super.getRequestData(args);
+        return (requestData != null) ? requestData : new HashMap<String, String>();
+    }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {

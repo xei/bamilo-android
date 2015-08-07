@@ -427,7 +427,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             });
         } else {
             // Url and parameters
-            loadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+            loadProduct(null);
         }
     }
 
@@ -660,20 +660,21 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Print.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
-//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        bundle.putString(Constants.BUNDLE_URL_KEY, mCompleteProductUrl);
+        if(mQueryValues != null) {
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        }
         triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
     }
 
     /**
      * 
      */
-    private void loadProductPartial(ContentValues mQueryValues) {
+    private void loadProductPartial() {
         mBeginRequestMillis = System.currentTimeMillis();
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
-//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEventNoLoading(new GetProductHelper(), bundle, responseCallback);
     }
 
@@ -1307,7 +1308,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    loadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+                    loadProductPartial();
                 }
             });
         }
