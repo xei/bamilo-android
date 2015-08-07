@@ -414,10 +414,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         restoreParams(bundle);
 
-        ContentValues mQueryValues = new ContentValues();
-        // Url and parameters
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        RestUrlUtils.getQueryParameters(mCompleteProductUrl, mQueryValues);
 
         // Validate url and load product
         if (TextUtils.isEmpty(mCompleteProductUrl)) {
@@ -429,6 +426,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 }
             });
         } else {
+            ContentValues mQueryValues = new ContentValues();
+            // Url and parameters
+            RestUrlUtils.getQueryParameterNames(Uri.parse(mCompleteProductUrl), mQueryValues);
             loadProduct(mQueryValues);
         }
     }
@@ -1305,7 +1305,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     // Saved the selected URL
                     mCompleteProductUrl = url;
                     ContentValues mQueryValues = new ContentValues();
-                    RestUrlUtils.getQueryParameters(mCompleteProductUrl, mQueryValues);
+                    RestUrlUtils.getQueryParameterNames(Uri.parse(mCompleteProductUrl), mQueryValues);
                     // Show loading rating
                     loadingRating.setVisibility(View.VISIBLE);
                     // Hide bundle container
