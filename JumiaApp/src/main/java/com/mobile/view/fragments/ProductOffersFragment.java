@@ -253,7 +253,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     private void orderOffersByLowerPrice(ProductOffers productOffersArray){
         if(productOffersArray != null){
             ArrayList<Offer> offers = productOffersArray.getOffers();
-            if(offers != null && offers.size() > 0){
+            if(CollectionUtils.isNotEmpty(offers)){
                 Collections.sort(offers, new CustomComparator());
                 productOffers.setOffers(offers); 
           }
@@ -266,7 +266,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     public class CustomComparator implements Comparator<Offer> {
         @Override
         public int compare(Offer o1, Offer o2) {
-            return ((Double)o1.getPriceOfferDouble()).compareTo(o2.getPriceOfferDouble());
+            return ((Double)o1.getFinalPrice()).compareTo(o2.getFinalPrice());
         }
     }
     
@@ -419,7 +419,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onAddOfferToCart(Offer offer) {
         // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getPriceForTracking());
+        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
     }
     
     private void executeAddToShoppingCartCompleted() {

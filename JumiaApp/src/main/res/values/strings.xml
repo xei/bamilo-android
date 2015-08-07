@@ -379,4 +379,7 @@
     <!-- NEW 2.6 -->
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
     <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
+    <!-- NEW 2.7 -->
+    <string name="review_plural">%d review</string>
+    <string name="reviews_plural">%d reviews</string>
 </resources>
