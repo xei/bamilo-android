@@ -8,6 +8,10 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.utils.TextUtils;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import de.akquinet.android.androlog.Log;
 
 public class RestUrlUtils {
@@ -72,19 +76,55 @@ public class RestUrlUtils {
         return uri;
     }
 
+//    /**
+//     * Get all parameters from url query and insert them all on ContentValues.
+//     * Sintax example: ?category=womens-dresses&sort=price&dir=asc
+//     * @param url
+//     * @param queryValues
+//     */
+//    public static void getQueryParameters(String url, ContentValues queryValues){
+//        if(!TextUtils.isEmpty(url) && queryValues != null) {
+//            UrlQuerySanitizer query = new UrlQuerySanitizer(url);
+//
+//            for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
+//                queryValues.put(filter.mParameter, filter.mValue);
+//            }
+//        }
+//    }
+
     /**
      * Get all parameters from url query and insert them all on ContentValues.
-     * Sintax example: ?category=womens-dresses&sort=price&dir=asc
-     * @param url
-     * @param queryValues
+     * Syntax example: ?category=womens-dresses&sort=price&dir=asc
+     * @param uri
      */
-    public static void getQueryParameters(String url, ContentValues queryValues){
-        if(!TextUtils.isEmpty(url) && queryValues != null) {
-            UrlQuerySanitizer query = new UrlQuerySanitizer(url);
-
-            for (UrlQuerySanitizer.ParameterValuePair filter : query.getParameterList()) {
-                queryValues.put(filter.mParameter, filter.mValue);
-            }
+    public static ContentValues getQueryParameters(Uri uri) {
+        if (uri.isOpaque()) {
+            throw new UnsupportedOperationException("This isn't a hierarchical URI.");
         }
+
+        ContentValues queryValues = new ContentValues();
+
+        String query = uri.getEncodedQuery();
+        if (query == null) {
+            return queryValues;
+        }
+
+        int start = 0;
+        do {
+            int next = query.indexOf('&', start);
+            int end = (next == -1) ? query.length() : next;
+
+            int separator = query.indexOf('=', start);
+            if (separator > end || separator == -1) {
+                separator = end;
+            }
+
+            String name = Uri.decode(query.substring(start, separator));
+            queryValues.put(name, uri.getQueryParameter(name));
+
+            // Move start to end of name.
+            start = end + 1;
+        } while (start < query.length());
+        return queryValues;
     }
 }

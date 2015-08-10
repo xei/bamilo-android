@@ -51,7 +51,6 @@ import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.wishlist.AddToWishListHelper;
 import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -66,6 +65,7 @@ import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -97,6 +97,7 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -416,13 +417,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         restoreParams(bundle);
 
-        // Get url
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+
         // Validate url and load product
-        if (mCompleteProductUrl == null) {
-            getBaseActivity().onBackPressed();
+        if (TextUtils.isEmpty(mCompleteProductUrl)) {
+            Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    getBaseActivity().onBackPressed();
+                }
+            });
         } else {
-            triggerLoadProduct();
+            // Url and parameters
+            loadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
         }
     }
 
@@ -444,7 +452,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private boolean hasArgumentsFromDeepLink(Bundle bundle) {
         // Get the sku
-        String sku = bundle.getString(GetSearchProductHelper.SKU_TAG);
+        String sku = bundle.getString(GetProductHelper.SKU_TAG);
         // Get the simple size
         mDeepLinkSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
         // Validate
@@ -452,8 +460,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
             mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-            mBeginRequestMillis = System.currentTimeMillis();
-            triggerContentEvent(new GetSearchProductHelper(), bundle, this);
+            ContentValues mQueryValues = new ContentValues();
+            mQueryValues.put(GetProductHelper.SKU_TAG, sku);
+            loadProduct(mQueryValues);
             return true;
         }
         return false;
@@ -588,6 +597,30 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             offersContainer.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 
+     */
+    private void loadProduct(ContentValues mQueryValues) {
+        Print.d(TAG, "LOAD PRODUCT");
+        mBeginRequestMillis = System.currentTimeMillis();
+        Bundle bundle = new Bundle();
+//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+    }
+
+    /**
+     * 
+     */
+    private void loadProductPartial(ContentValues mQueryValues) {
+        mBeginRequestMillis = System.currentTimeMillis();
+        mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
+        Bundle bundle = new Bundle();
+//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        triggerContentEventNoLoading(new GetProductHelper(), bundle, responseCallback);
     }
 
     /**
@@ -997,12 +1030,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            int categoriesSize = mCompleteProduct.getCategories().size();
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(categoriesSize - 1));
-            if (null != mCompleteProduct && categoriesSize > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories()
-                        .get(categoriesSize - 2));
+
+        String[] categoriesList = mCompleteProduct.getCategoriesList();
+
+        if (null != mCompleteProduct && categoriesList.length > 0) {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[categoriesList.length - 1]);
+            if (categoriesList.length > 1) {
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[categoriesList.length - 2]);
             }
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -1153,7 +1187,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    triggerLoadProductPartial();
+                    loadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
                 }
             });
         }
@@ -1279,10 +1313,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
 
-        if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
-            if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
+        String[] categoriesList = mCompleteProduct.getCategoriesList();
+        if (null != mCompleteProduct && categoriesList.length > 0) {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[0]);
+            if (categoriesList.length > 1) {
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[1]);
             }
         }
         return bundle;
@@ -1492,7 +1527,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
-            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories().get(0));
+            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategoriesList()[0]);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON CLICK SHARE");
         } catch (IndexOutOfBoundsException e) {

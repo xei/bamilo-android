@@ -101,14 +101,14 @@ public class Offer implements IJSONSerializable, Parcelable{
                 }
                 priceOfferDouble = Double.parseDouble(priceOffer);
 
-                priceOfferConverted = productObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG,0.0);
+                priceOfferConverted = productObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0.0);
 
-                String specialOfferPriceJSON = productObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+                specialPriceOffer = productObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 
-                if (!CurrencyFormatter.isNumber(specialOfferPriceJSON)) {
-                    specialOfferPriceJSON = "0.0";
+                if (!CurrencyFormatter.isNumber(specialPriceOffer)) {
+                    specialPriceOffer = "0.0";
                 }
-                specialPriceOfferDouble = Double.parseDouble(specialOfferPriceJSON);
+                specialPriceOfferDouble = Double.parseDouble(specialPriceOffer);
 
                 specialPriceOfferConverted = productObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG,0.0);
 
@@ -174,9 +174,9 @@ public class Offer implements IJSONSerializable, Parcelable{
 //        this.priceOffer = priceOffer;
 //    }
 
-    public double getPriceOfferDouble() {
-        return priceOfferDouble;
-    }
+//    public double getPriceOfferDouble() {
+//        return priceOfferDouble;
+//    }
 
 //    public void setPriceOfferDouble(double priceOfferDouble) {
 //        this.priceOfferDouble = priceOfferDouble;
@@ -214,15 +214,13 @@ public class Offer implements IJSONSerializable, Parcelable{
         this.seller = seller;
     }
 
-    public double getPriceForTracking() {
-        if(specialPriceOfferDouble == 0.0){
-            return priceOfferDouble;
-        } else {
-            return specialPriceOfferDouble;
-        }
+    public double getFinalPrice() {
+        return specialPriceOfferDouble == 0.0 ? priceOfferDouble : specialPriceOfferDouble;
     }
 
-
+    public String getFinalPriceString() {
+        return specialPriceOfferDouble == 0.0 ? priceOffer : specialPriceOffer;
+    }
 
     /*
      * ############ PARCELABLE ############
