@@ -26,8 +26,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     public static final String TAG = HomePageObject.class.getSimpleName();
 
-    private String mName;
-
     private ArrayList<BaseTeaserGroupType> mTeasers;
 
     /**
@@ -40,15 +38,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     /*
      * ########## GETTERS ##########
      */
-
-    /**
-     * Get the name.
-     *
-     * @return The name
-     */
-    public String getName() {
-        return mName;
-    }
 
     /**
      * Get the list of group of teasers.
@@ -80,9 +69,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get name
-        //alexandrapires: action_name not needed in v 1.8
-  //      mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
         // Get teaser
         JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         int size = data.length();
@@ -143,8 +129,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         try {
             if( type != TeaserGroupType.UNKNOWN) {
                 teaserGroup = new BaseTeaserGroupType(type, json);
-            } else {
-                //Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
             }
         } catch (JSONException e) {
             //Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
@@ -169,7 +153,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
         if (mTeasers == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -179,7 +162,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     }
 
     private HomePageObject(Parcel in) {
-        mName = in.readString();
         if (in.readByte() == 0x01) {
             mTeasers = new ArrayList<>();
             in.readList(mTeasers, BaseTeaserGroupType.class.getClassLoader());

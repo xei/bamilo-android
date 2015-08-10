@@ -42,7 +42,6 @@ public class AigGetHomePageTest extends AigTestCase {
 
         HomePageObject home = (HomePageObject) response.getMetadata().getData();
         assertNotNull("Home is null", home);
-        assertNotNull("Home Name is null", home.getName());
         assertNotNull("Home Has Teasers is null", home.hasTeasers());
         if (home.hasTeasers()) {
             for (BaseTeaserGroupType teaser_group : home.getTeasers()) {
