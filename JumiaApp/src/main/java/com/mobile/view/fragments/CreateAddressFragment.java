@@ -23,7 +23,6 @@ import com.mobile.helpers.address.GetFormAddAddressHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
@@ -172,7 +171,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mIsSameCheckBox.setChecked(true);
         // Next button
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-
     }
 
     /*
@@ -632,9 +630,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Method used to create the content values
      *
-     * @param dynamicForm
-     * @param isDefaultShipping
-     * @param isDefaultBilling
      * @return new content values
      * @author sergiopereira
      */
@@ -775,8 +770,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 // Show
                 showFragmentContentContainer();
                 Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-                //alexandra pires: webcheckout disabled for 2.7 version
-            //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");    //alexandra pires: webcheckout disabled for 2.7 version
                 super.showUnexpectedErrorWarning(); //unexpected error
             }
         }
@@ -797,8 +790,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Update the container according with check box
-     *
-     * @param isSame
      * @author sergiopereira
      */
     private void updateContainers(Boolean isSame) {
@@ -834,8 +825,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     /**
      * Trigger to create an address
-     *
-     * @param values
      * @author sergiopereira
      */
     protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
@@ -868,8 +857,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Trigger to get regions
-     *
-     * @param apiCall
      * @author sergiopereira
      */
     protected void triggerGetRegions(String apiCall) {
@@ -881,10 +868,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Trigger to get cities
-     *
-     * @param apiCall
-     * @param region      id
-     * @param selectedTag
      * @author sergiopereira
      */
     protected void triggerGetCities(String apiCall, int region, String selectedTag) {
@@ -923,7 +906,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Filter the success response
      *
-     * @param bundle
      * @return boolean
      * @author sergiopereira
      */
@@ -969,8 +951,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCreateAddressFormSuccessEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
-        // Get order summary
-        //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         // Save and load form
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         mFormResponse = form;
@@ -987,8 +967,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         } else {
             Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-            //alexandra pires: webcheckout disabled for 2.7 version
-         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY"); alexandrapires: webcheckout disabled for 2.7 version
             super.showFragmentErrorRetry();
         }
     }
@@ -1009,8 +987,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Filter the error response
-     *
-     * @param bundle
      * @return boolean
      * @author sergiopereira
      */
@@ -1027,8 +1003,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:

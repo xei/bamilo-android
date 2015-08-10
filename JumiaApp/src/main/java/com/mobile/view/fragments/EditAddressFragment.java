@@ -682,9 +682,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-                    //alexandrapires: webchekout disabled for v. 2.7
-                //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
-                    super.showFragmentErrorRetry(); //unexpected error
+                    super.showFragmentErrorRetry();
                 }
                 break;
             case GET_CITIES_EVENT:
