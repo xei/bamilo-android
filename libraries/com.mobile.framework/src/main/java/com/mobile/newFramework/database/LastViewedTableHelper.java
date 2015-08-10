@@ -132,10 +132,10 @@ public class LastViewedTableHelper extends BaseTable {
 				values.put(LastViewedTableHelper._PRODUCT_BRAND, completeProduct.getBrand());
 				values.put(LastViewedTableHelper._PRODUCT_NAME, completeProduct.getName());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE, completeProduct.getPrice());
-				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPriceDouble());
+				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPrice());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE_CONVERTED, completeProduct.getPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, completeProduct.getSpecialPrice());
-				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());
+				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPrice());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_CONVERTED, completeProduct.getSpecialPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
@@ -200,11 +200,7 @@ public class LastViewedTableHelper extends BaseTable {
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			if (cursor.getInt(0) >= 1) {
-				result = true;
-			} else {
-				result = false;
-			}
+			result = cursor.getInt(0) >= 1;
 			// Log result
 			Print.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
 		}

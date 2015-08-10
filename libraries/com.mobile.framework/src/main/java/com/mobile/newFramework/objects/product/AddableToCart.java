@@ -3,8 +3,6 @@ package com.mobile.newFramework.objects.product;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -63,25 +61,6 @@ public class AddableToCart extends BaseProduct {
 		priceConverted = 0d;
 		mRatingsAverage = 0.0;
 		mSizeGuideUrl = "";
-	}
-
-	public AddableToCart(CompleteProduct completeProduct) {
-        super(completeProduct);
-		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
-        isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
-		isComplete = true;
-		imageList = completeProduct.getImageList();
-		simples = completeProduct.getSimples();
-		variations = completeProduct.getVariations();
-		knownVariations = completeProduct.getKnownVariations();
-		favoriteSelected = NO_SIMPLE_SELECTED;
-		hasVariations = null;
-		mSelectedSimpleValue = "...";
-		// Validate if has only one simple
-		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
-		mCategories = completeProduct.getCategories();
-		mRatingsAverage = completeProduct.getRatingsAverage();
-		mSizeGuideUrl = completeProduct.getSizeGuideUrl();
 	}
 
 	/**

@@ -4,11 +4,8 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved

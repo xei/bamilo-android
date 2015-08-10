@@ -104,8 +104,16 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
         return mPrice;
     }
 
+    public double getPriceConverted() {
+        return mPriceConverted;
+    }
+
     public double getSpecialPrice() {
         return mSpecialPrice;
+    }
+
+    public double getSpecialPriceConverted() {
+        return mSpecialPriceConverted;
     }
 
     public int getMaxSavingPercentage() {

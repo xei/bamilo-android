@@ -2,15 +2,9 @@ package com.mobile.newFramework.rest;
 
 import android.content.ContentValues;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
-import com.mobile.newFramework.utils.TextUtils;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 

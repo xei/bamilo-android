@@ -97,7 +97,6 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,8 +182,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private String mNavigationPath;
 
     private String mNavigationSource;
-
-    private boolean mShowRelatedItems;
 
     private RelativeLayout loadingRating;
 
@@ -274,9 +271,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
-     * @param bundle
-     * @return
+     *
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
@@ -421,16 +416,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Validate url and load product
         if (TextUtils.isEmpty(mCompleteProductUrl)) {
-            Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-            getView().post(new Runnable() {
-                @Override
-                public void run() {
-                    getBaseActivity().onBackPressed();
-                }
-            });
+            getBaseActivity().onBackPressed();
         } else {
             // Url and parameters
-            loadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+            triggerLoadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
         }
     }
 
@@ -439,16 +428,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
-        mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
         isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
     }
 
     /**
      * Validate and loads the received arguments comes from deep link process.
-     * 
-     * @param bundle
-     * @return boolean
-     * @author sergiopereira
      */
     private boolean hasArgumentsFromDeepLink(Bundle bundle) {
         // Get the sku
@@ -462,7 +446,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             ContentValues mQueryValues = new ContentValues();
             mQueryValues.put(GetProductHelper.SKU_TAG, sku);
-            loadProduct(mQueryValues);
+            triggerLoadProduct(mQueryValues);
             return true;
         }
         return false;
@@ -602,30 +586,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * 
      */
-    private void loadProduct(ContentValues mQueryValues) {
-        Print.d(TAG, "LOAD PRODUCT");
-        mBeginRequestMillis = System.currentTimeMillis();
-        Bundle bundle = new Bundle();
-//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
-    }
-
-    /**
-     * 
-     */
-    private void loadProductPartial(ContentValues mQueryValues) {
-        mBeginRequestMillis = System.currentTimeMillis();
-        mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
-        Bundle bundle = new Bundle();
-//        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        triggerContentEventNoLoading(new GetProductHelper(), bundle, responseCallback);
-    }
-
-    /**
-     * 
-     */
     private void preselectASimpleItem() {
         if (mSelectedSimple != NO_SIMPLE_SELECTED)
             return;
@@ -758,15 +718,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void displayPriceInfoOverallOrForSimple() {
         ProductSimple simple = getSelectedSimple();
         if (mSelectedSimple == NO_SIMPLE_SELECTED || simple == null) {
-            String unitPrice = mCompleteProduct.getPrice();
-            String specialPrice = mCompleteProduct.getSpecialPrice();
-            int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
+            String unitPrice = String.valueOf(mCompleteProduct.getPrice());
+            String specialPrice = String.valueOf(mCompleteProduct.getSpecialPrice());
+            int discountPercentage = mCompleteProduct.getMaxSavingPercentage();
             displayPriceInfo(unitPrice, specialPrice, discountPercentage);
         } else {
             // Simple Products prices don't come with currency formatted
             String unitPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
             String specialPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-            int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
+            int discountPercentage = mCompleteProduct.getMaxSavingPercentage();
             displayPriceInfo(unitPrice, specialPrice, discountPercentage);
         }
     }
@@ -1002,14 +962,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
 
         String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
-        String priceAsString;
-
-        priceAsString = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-        if (priceAsString == null) {
-            priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
-        }
-
-        // Long price = getPriceForTrackingAsLong(simple);
 
         if (TextUtils.isEmpty(sku)) {
             isAddingProductToCart = false;
@@ -1076,7 +1028,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
 
         // Set favourite
-        mImageFavourite.setSelected(mCompleteProduct.isNew());
+        mImageFavourite.setSelected(mCompleteProduct.isWishList());
         // Validate gallery
         setProductGallery(product);
         // Validate related items
@@ -1187,7 +1139,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    loadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+                    triggerLoadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
                 }
             });
         }
@@ -1202,31 +1154,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * ################# RELATED ITEMS #################
      */
-
-    /**
-     * Method used to get the related products
-     *
-     */
-//    @Deprecated
-//    private void setRelatedItems(String sku) {
-        // Validate if is to show
-//        if (!mShowRelatedItems) return;
-        // Show related items
-//        Print.d(TAG, "ON GET RELATED ITEMS FOR: " + sku);
-//        ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
-//        if (relatedItemsList != null && relatedItemsList.size() > 1) {
-//            for (int i = 0; i < relatedItemsList.size(); i++) {
-//                String itemSku = relatedItemsList.get(i).getSku();
-//                if (!TextUtils.isEmpty(itemSku) && itemSku.equalsIgnoreCase(sku)) {
-//                    relatedItemsList.remove(i);
-//                    break;
-//                }
-//            }
-//            showRelatedItemsLayout(relatedItemsList);
-//        } else {
-//            Print.w(TAG, "ONLY OWN PRODUCT ON RELATED ITEMS FOR: " + sku);
-//        }
-//    }
 
     /**
      * Method used to create the view
@@ -1608,31 +1535,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ############## TODO TRIGGERS ##############
      */
 
-    /**
-     *
-     */
-    private void triggerLoadProduct() {
+    private void triggerLoadProduct(ContentValues mQueryValues) {
         Print.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         triggerContentEvent(new GetProductHelper(), bundle, this);
     }
 
-    /**
-     *
-     */
-    private void triggerLoadProductPartial() {
+    private void triggerLoadProductPartial(ContentValues mQueryValues) {
         mBeginRequestMillis = System.currentTimeMillis();
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         triggerContentEventNoLoading(new GetProductHelper(), bundle, this);
     }
 
-    /**
-     * Add one item to cart
-     */
     private void triggerAddItemToCart(String sku, String simpleSKU) {
         ContentValues values = new ContentValues();
         values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);

@@ -47,7 +47,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     private LinearLayout mProductSpecsContainer;
     private CompleteProduct mCompleteProduct;
     private View mainView;
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
     private ArrayList<ProductDetailsSpecification> mProductSpecifications;
     private LayoutInflater inflater;
     private static final String SPECIFICATION = "specification";
@@ -98,10 +98,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Bundle arguments = getArguments();
         if(arguments != null) {
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+            mCompleteProductSku = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct)parcelableProduct;
+                mCompleteProduct = (CompleteProduct) parcelableProduct;
             }
         }
     }
@@ -116,7 +116,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
 //            mProductSpecifications = savedInstanceState.getParcelableArrayList(SPECIFICATION);
         }
         // Load views
@@ -153,9 +153,9 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         if (mCompleteProduct != null && mainView != null) {
             getViews();
             displaySpecification();
-        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+        } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductSku);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -177,7 +177,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null) {
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductSku);
 //            outState.putParcelableArrayList(SPECIFICATION, mProductSpecifications);
         }
         super.onSaveInstanceState(outState);

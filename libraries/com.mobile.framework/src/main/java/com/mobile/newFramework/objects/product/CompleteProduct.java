@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
@@ -15,35 +16,27 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Class that manages the full representation of a given product.
  *
  * @author GuilhermeSilva
  */
-public class CompleteProduct extends BaseProduct implements IJSONSerializable {
+public class CompleteProduct extends NewProductAddableToCart implements IJSONSerializable {
 
-//    private String idCatalogConfig;
-//    private String attributeSetId;
-//    private String activatedAt;
+    private static final String TAG = CompleteProduct.class.getSimpleName();
+
     private String description;
-//    private String ratingsUrl;
-    private double specialPriceDouble;
-    private Double maxSavingPercentage;
     private Double ratingsAverage;
     private Integer ratingsCount;
     private Integer reviewsCount;
     private String categories;
     private HashMap<String, String> attributes;
     private HashMap<String, String> shipmentData;
-    private ArrayList<ProductSimple> simples;
+    //private ArrayList<ProductSimple> simples;
     private ArrayList<String> imageList;
     private ArrayList<Variation> variations;
     private ArrayList<String> known_variations;
-    private boolean isNew;
-    private boolean isWishList;
-    private String mSizeGuideUrl;
     private ProductBundle productBundle;
     private boolean hasSeller;
     private boolean hasBundle;
@@ -56,8 +49,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     private String mShortDescription;
     private ArrayList<ProductDetailsSpecification> mProductSpecs;
 
-//	private int simpleSkuPosition;
-
     /**
      * Complete product empty constructor.
      */
@@ -65,19 +56,14 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         super();
         attributes = new HashMap<>();
         shipmentData = new HashMap<>();
-        simples = new ArrayList<>();
+        //simples = new ArrayList<>();
         imageList = new ArrayList<>();
         variations = new ArrayList<>();
         known_variations = new ArrayList<>();
         description = "";
-        specialPrice = "0";
-        maxSavingPercentage = 0.0;
         ratingsAverage = 0.0;
         ratingsCount = 0;
         reviewsCount = 0;
-        isNew = false;
-        specialPriceConverted = 0d;
-        mSizeGuideUrl = "";
         productBundle = null;
         hasSeller = false;
         hasBundle = false;
@@ -107,67 +93,21 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-
-            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
-            isWishList = jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG, false);
-
-            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-            name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
-            brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-            url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
-            mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
-            // Throw JSONException if JSON_PRICE_TAG is not present
-            price = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(price)) {
-                throw new JSONException("Price is not a number!");
-            }
-            priceDouble = Double.parseDouble(price);
-            priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
-
-            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceJSON = price;
-            }
-            specialPriceDouble = Double.parseDouble(specialPriceJSON);
-
-            specialPrice = specialPriceJSON;
-            specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
-
-            String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-
-            maxSavingPercentage = CurrencyFormatter.isNumber(maxSavingPercentageJSON) ? Double.parseDouble(maxSavingPercentageJSON): 0d;
-
-            // TODO: ratings need to be completed
-
+            // Base
+            super.initialize(jsonObject);
+            // Complete
+            categories = jsonObject.getString(RestConstants.JSON_CATEGORIES_TAG);
+            hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG);
+            // Rating
             JSONObject ratingsSummaryObject = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
-
             if (ratingsSummaryObject != null) {
                 ratingsAverage = ratingsSummaryObject.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG, .0);
                 ratingsCount = ratingsSummaryObject.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG, 0);
                 reviewsCount = ratingsSummaryObject.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG, 0);
             }
-
-//          JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
-//          if (ratingsTotalObject != null) {
-//              ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
-//              ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
-//          }
-//
-
-
-
-
-			/*
-            if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
-				maxSavingPercentage = (double) Math.round(specialPriceDouble * 100 / priceDouble);
-			}
-			*/
-
-            categories = jsonObject.getString(RestConstants.JSON_CATEGORIES_TAG);
-            // attributes
+            // Attributes
             attributes.clear();
             JSONObject attributesObject = jsonObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
-
             if (attributesObject != null) {
                 JSONArray attributesNames = attributesObject.names();
                 for (int i = 0; i < attributesNames.length(); ++i) {
@@ -176,24 +116,25 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     attributes.put(key, value);
                 }
             }
-            // simples
-            simples.clear();
-            JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
-            for (int i = 0; i < simpleArray.length(); ++i) {
-                ProductSimple simple = new ProductSimple();
-                JSONObject simpleObject = simpleArray.getJSONObject(i);
-                simple.initialize(simpleObject);
-                simples.add(simple);
-            }
-            // image_list
+//            // Simples
+//            simples.clear();
+//            JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
+//            for (int i = 0; i < simpleArray.length(); ++i) {
+//                ProductSimple simple = new ProductSimple();
+//                JSONObject simpleObject = simpleArray.getJSONObject(i);
+//                simple.initialize(simpleObject);
+//                simples.add(simple);
+//            }
+            // Images
             imageList.clear();
             JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
             if (null != imageArray) {
                 for (int i = 0; i < imageArray.length(); ++i) {
                     JSONObject imageJsonObject = imageArray.getJSONObject(i);
-                    imageList.add(getImageUrl(imageJsonObject.getString("url")));
+                    imageList.add(imageJsonObject.getString("url"));
                 }
             }
+            // Uniques
             if (jsonObject.has(RestConstants.JSON_PROD_UNIQUES_TAG)
                     && jsonObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG) != null
                     && jsonObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
@@ -207,7 +148,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 while (iterUniques.hasNext()) {
                     String key = (String) iterUniques.next();
                     String value = "";
-
                     if (uniquesObject.has(key)) {
                         value = uniquesObject.getString(key);
                     }
@@ -216,11 +156,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     }
                 }
             }
-            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
-            isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_WISHLIST, false);
-
-
-            hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
+            // Seller
             hasSeller = jsonObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
             if (hasSeller) {
                 JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
@@ -228,27 +164,19 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     seller = new Seller(sellerObject);
                 }
             }
-
             //Offers
             JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
-
             if (offers != null) {
-
                 String offerPriceJSON = offers.optString(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-
                 if (!CurrencyFormatter.isNumber(offerPriceJSON)) {
-                    offerPriceJSON = price;
+                    offerPriceJSON = ""+mPrice;
                 }
                 minPriceOfferDouble = Double.parseDouble(offerPriceJSON);
-
                 minPriceOffer = offerPriceJSON;
-
-
                 minPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
                 totalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG, 0);
             }
-
-            // Handle related products
+            // Related products
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
             if (relatedProductsJsonArray != null) {
                 for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
@@ -265,7 +193,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 description = summaryObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
                 mShortDescription = summaryObject.optString(RestConstants.JSON_SHORT_DESC_TAG, "");
             }
-
+            // Specs
             JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.JSON_SPECIFICATIONS_TAG);
             if (specificationsArray != null && specificationsArray.length() > 0) {
                 for (int i = 0; i < specificationsArray.length(); i++) {
@@ -274,7 +202,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     mProductSpecs.add(prodSpecs);
                 }
             }
-
+            // Variations
             JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
             if (variationsObject == null)
                 return true;
@@ -287,10 +215,8 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                 variation.initialize(key, variationObject);
                 this.variations.add(variation);
             }
-
-
         } catch (JSONException e) {
-            //Log.e(TAG, "Error initializing the complete product", e);
+            Print.e(TAG, "Error initializing the complete product", e);
             return false;
         }
         return true;
@@ -304,33 +230,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     @Override
     public JSONObject toJSON() {
         return null;
-    }
-
-    /**
-     */
-//    public String getIdCatalogConfig() {
-//        return idCatalogConfig;
-//    }
-
-    /**
-     * @return the attributeSetId
-     */
-//    public String getAttributeSetId() {
-//        return attributeSetId;
-//    }
-
-    /**
-     * @return the activatedAt
-     */
-//    public String getActivatedAt() {
-//        return activatedAt;
-//    }
-
-    /**
-     * @return the special price as a Double
-     */
-    public double getSpecialPriceAsDouble() {
-        return specialPriceDouble;
     }
 
     /**
@@ -351,20 +250,12 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return attributes;
     }
 
-    /**
-     * @return the shipmentData
-     */
-//    @Deprecated
-//    public HashMap<String, String> getShipmentData() {
-//        return shipmentData;
+//    /**
+//     * @return the simples
+//     */
+//    public ArrayList<ProductSimple> getSimples() {
+//        return simples;
 //    }
-
-    /**
-     * @return the simples
-     */
-    public ArrayList<ProductSimple> getSimples() {
-        return simples;
-    }
 
     /**
      * @return the imageList
@@ -374,50 +265,11 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     }
 
     /**
-     * Get Better quality image.
-     */
-    private String getImageUrl(String url) {
-        // String modUrl = ImageResolutionHelper.replaceResolution(url);
-        // if(modUrl != null)
-        // return modUrl;
-        return url;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
         return description;
     }
-
-//    /**
-//     * @return the ratings_Url
-//     */
-//    @Deprecated
-//    public String getRatingsUrl() {
-//        return ratingsUrl;
-//    }
-
-//    /**
-//     * @param idCatalogConfig the idCatalogConfig to set
-//     */
-//    public void setIdCatalogConfig(String idCatalogConfig) {
-//        this.idCatalogConfig = idCatalogConfig;
-//    }
-
-//    /**
-//     * @param attributeSetId the attributeSetId to set
-//     */
-//    public void setAttributeSetId(String attributeSetId) {
-//        this.attributeSetId = attributeSetId;
-//    }
-
-//    /**
-//     * @param activatedAt the activatedAt to set
-//     */
-//    public void setActivatedAt(String activatedAt) {
-//        this.activatedAt = activatedAt;
-//    }
 
     /**
      * @param description the description to set
@@ -427,32 +279,11 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     }
 
     /**
-     * @param categories the categories to set
-     */
-    public void setCategories(String categories) {
-        this.categories = categories;
-    }
-
-    /**
      * @param attributes the attributes to set
      */
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
-
-//    /**
-//     * @param shipmentData the shipmentData to set
-//     */
-//    public void setShipmentData(HashMap<String, String> shipmentData) {
-//        this.shipmentData = shipmentData;
-//    }
-
-//    /**
-//     * @param simples the simples to set
-//     */
-//    public void setSimples(ArrayList<ProductSimple> simples) {
-//        this.simples = simples;
-//    }
 
     /**
      * @param imageList the imageList to set
@@ -462,32 +293,18 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     }
 
     /**
-     * @return the maxSavingPercentage
-     */
-    public Double getMaxSavingPercentage() {
-        return maxSavingPercentage;
-    }
-
-    /**
      * @return the ratings average
      */
     public Double getRatingsAverage() {
         return ratingsAverage;
     }
 
-    /**
-     * @return
-     */
     public Integer getRatingsCount() {
         return ratingsCount;
     }
 
     public String getShortDescription() {
         return mShortDescription;
-    }
-
-    public boolean hasDiscount() {
-        return specialPrice != null && !specialPrice.equalsIgnoreCase(price);
     }
 
     public ArrayList<Variation> getVariations() {
@@ -497,62 +314,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     public ArrayList<String> getKnownVariations() {
         return known_variations;
     }
-
-    public boolean isNew() {
-        return isNew;
-    }
-
-    public boolean isWishList() {
-        return isWishList;
-    }
-
-    public void setIsWishList(boolean bool) {
-        isWishList = bool;
-    }
-
-    public void setNew(boolean isNew) {
-        this.isNew = isNew;
-    }
-
-    /**
-     * Return the paid price for tracking.
-     *
-     * @return double
-     * @author sergiopereira
-     */
-    public double getPriceForTracking() {
-        //Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-        //Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
-        return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
-    }
-
-
-//    public int getSimpleSkuPosition() {
-//        return simpleSkuPosition;
-//    }
-//
-//    public void setSimpleSkuPosition(int simpleSkuPosition) {
-//        this.simpleSkuPosition = simpleSkuPosition;
-//    }
-//
-
-    /**
-     * Get size guide URL
-     *
-     * @return
-     */
-    public String getSizeGuideUrl() {
-        return mSizeGuideUrl;
-    }
-
-//    /**
-//     * Set size guide
-//     *
-//     * @return
-//     */
-//    public boolean hasSizeGuide() {
-//        return TextUtils.isEmpty(mSizeGuideUrl);
-//    }
 
     public ProductBundle getProductBundle() {
         return productBundle;
@@ -566,25 +327,13 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         return hasSeller;
     }
 
-//    public void setHasSeller(boolean hasSeller) {
-//        this.hasSeller = hasSeller;
-//    }
-
     public boolean hasBundle() {
         return hasBundle;
     }
 
-//    public void setHasBundle(boolean hasBundle) {
-//        this.hasBundle = hasBundle;
-//    }
-
     public Integer getReviewsCount() {
         return reviewsCount;
     }
-
-//    public void setReviewsCount(Integer reviewsCount) {
-//        this.reviewsCount = reviewsCount;
-//    }
 
     public Seller getSeller() {
         return seller;
@@ -594,45 +343,17 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         this.seller = seller;
     }
 
-//    public double getMinPriceOfferDouble() {
-//        return minPriceOfferDouble;
-//    }
-
-//    public void setMinPriceOfferDouble(double minPriceOffer) {
-//        this.minPriceOfferDouble = minPriceOfferDouble;
-//    }
-
     public String getMinPriceOffer() {
         return minPriceOffer;
     }
-
-//    public void setMinPriceOffer(String minPriceOffer) {
-//        this.minPriceOffer = minPriceOffer;
-//    }
-
-//    public double getMinPriceOfferConverted() {
-//        return minPriceOfferConverted;
-//    }
-
-//    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
-//        this.minPriceOfferConverted = minPriceOfferConverted;
-//    }
 
     public int getTotalOffers() {
         return totalOffers;
     }
 
-//    public void setTotalOffers(int totalOffers) {
-//        this.totalOffers = totalOffers;
-//    }
-
     public ArrayList<ProductDetailsSpecification> getProductSpecifications() {
         return mProductSpecs;
     }
-
-//    public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
-//        this.mProductSpecs = specs;
-//    }
 
     public ArrayList<RelatedProduct> getRelatedProducts() {
         return relatedProducts;
@@ -663,20 +384,13 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         dest.writeString(categories);
         dest.writeMap(attributes);
         dest.writeMap(shipmentData);
-        dest.writeList(simples);
+        //dest.writeList(simples);
         dest.writeList(imageList);
         dest.writeList(variations);
-        dest.writeString(url);
         dest.writeString(description);
-        dest.writeString(specialPrice);
-        dest.writeDouble(maxSavingPercentage);
         dest.writeDouble(ratingsAverage);
         dest.writeInt(ratingsCount);
         dest.writeInt(reviewsCount);
-        dest.writeDouble(priceConverted);
-        dest.writeDouble(specialPriceConverted);
-        dest.writeString(mSizeGuideUrl);
-        dest.writeByte((byte) (isNew ? 1 : 0));
         dest.writeByte((byte) (hasSeller ? 1 : 0));
         dest.writeByte((byte) (hasBundle ? 1 : 0));
         dest.writeParcelable(seller, flags);
@@ -699,8 +413,8 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         shipmentData = new HashMap<>();
         in.readMap(shipmentData, String.class.getClassLoader());
 
-        simples = new ArrayList<>();
-        in.readList(simples, ProductSimple.class.getClassLoader());
+//        simples = new ArrayList<>();
+//        in.readList(simples, ProductSimple.class.getClassLoader());
 
         imageList = new ArrayList<>();
         in.readList(imageList, null);
@@ -708,17 +422,10 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
         variations = new ArrayList<>();
         in.readList(variations, Variation.class.getClassLoader());
 
-        url = in.readString();
         description = in.readString();
-        specialPrice = in.readString();
-        maxSavingPercentage = in.readDouble();
         ratingsAverage = in.readDouble();
         ratingsCount = in.readInt();
         reviewsCount = in.readInt();
-        priceConverted = in.readDouble();
-        specialPriceConverted = in.readDouble();
-        mSizeGuideUrl = in.readString();
-        isNew = in.readByte() == 1;
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
         seller = in.readParcelable(Seller.class.getClassLoader());

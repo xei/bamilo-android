@@ -788,7 +788,7 @@ public class TrackerDelegator {
         double averageRating = completeProduct.getRatingsAverage();
         double productDiscount = completeProduct.getMaxSavingPercentage();
         boolean fromCatalog = false;
-        ArrayList<String> categories = completeProduct.getCategories();
+        String categories = completeProduct.getCategories();
 
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
@@ -810,20 +810,12 @@ public class TrackerDelegator {
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.ADD_TO_WISHLIST, bundle);
         String location = GTMValues.PRODUCTDETAILPAGE;
         if(fromCatalog) location = GTMValues.CATALOG;
-        String category = "";
-        String subCategory = "";
-        if(CollectionUtils.isNotEmpty(categories)){
-           category = categories.get(0);
-            if(categories.size() > 1){
-               subCategory = categories.get(1);
-            }
-        }
 
         //GTM
         GTMManager.get().gtmTrackAddToWishList(productSku, productBrand, productPrice, averageRating,
-                productDiscount, CurrencyFormatter.getCurrencyCode(),location, category, subCategory);
+                productDiscount, CurrencyFormatter.getCurrencyCode(),location, categories, "");
         // FB
-        FacebookTracker.get(sContext).trackAddedToWishlist(productSku, productPrice, category);
+        FacebookTracker.get(sContext).trackAddedToWishlist(productSku, productPrice, categories);
     }
 
     /**
