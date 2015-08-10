@@ -122,7 +122,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
+            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
@@ -301,9 +301,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case SHOPPING_CART:
                 fragment = ShoppingCartFragment.getInstance(bundle);
                 break;
-       /*     case CHECKOUT_BASKET:
-                fragment = CheckoutWebFragment.getInstance();   //  web checkout disabled 2.7 version
-                break;*/
             case REGISTER:
                 fragment = SessionRegisterFragment.getInstance(bundle);
                 break;
@@ -402,8 +399,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return;
         }
 
-        if(removeEntries){
-         //   popBackStackUntilTag(FragmentType.HOME.toString());
+        // Validate menu flag and pop entries until home
+        if (removeEntries) {
             popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         }
 
@@ -506,7 +503,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (bundle != null) {
             // Get fragment type
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-            Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
             if (fragmentType != FragmentType.UNKNOWN) {
                 // Restart back stack and fragment manager

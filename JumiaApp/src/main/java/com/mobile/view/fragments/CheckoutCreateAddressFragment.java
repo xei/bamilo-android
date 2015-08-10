@@ -6,7 +6,6 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -88,13 +87,12 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         }
     }
 
-
     protected void loadCreateAddressForm(Form form) {
         super.loadCreateAddressForm(form);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     @Override
@@ -138,24 +136,18 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
         super.onGetCreateAddressFormErrorEvent(bundle);
-        //alexandrapires: webchekout disabled for v. 2.7
-      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetRegionsErrorEvent(Bundle bundle) {
         super.onGetRegionsErrorEvent(bundle);
-        //alexandrapires: webchekout disabled for v. 2.7
-     //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetCitiesErrorEvent(Bundle bundle) {
         super.onGetCitiesErrorEvent(bundle);
-        ////alexandrapires: webchekout disabled for v. 2.7
-      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
         super.showFragmentErrorRetry();
     }
 
@@ -164,18 +156,14 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.onCreateAddressErrorEvent(bundle);
         //GTM
         TrackerDelegator.trackAddAddress(false);
-
+        // Error
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
-            showFragmentContentContainer();
+        } else {
+            Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
+            super.showUnexpectedErrorWarning();
         }
-        else {
-            Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
-            //alexandrapires: webchekout disabled for v. 2.7
-         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode.name());
-            super.showFragmentErrorRetry();
-        }
+        showFragmentContentContainer();
     }
 }

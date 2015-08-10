@@ -182,7 +182,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         view.findViewById(R.id.checkout_login_form_button_enter).setOnClickListener(this);
         // Forget button
         view.findViewById(R.id.checkout_login_form_button_password).setOnClickListener(this);
-
         // Sign toggle
         signupToogle = view.findViewById(R.id.checkout_signup_toogle);
         signupToogle.setOnClickListener(this);
@@ -192,7 +191,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         signupFormContainer = (ViewGroup) view.findViewById(R.id.checkout_signup_form_container);
         // Sign button
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
-
         // FACEBOOK
         mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
         mSignUpFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
@@ -200,10 +198,20 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         mFacebookSignUpDivider = view.findViewById(R.id.checkout_signup_form_divider_facebook);
         // Set Facebook
         FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, mFacebookLoginDivider, mSignUpFacebookButton, mFacebookSignUpDivider);
-
         // Callback registration
         mSignUpFacebookButton.registerCallback(callbackManager, this);
         mLoginFacebookButton.registerCallback(callbackManager, this);
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Print.i(TAG, "ON START");
         // Validate current state
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             Print.d(TAG, "TRIGGER: AUTO LOGIN");
@@ -216,17 +224,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             boolean temp2 = (signupFormResponse != null) ? loadSignUpForm(signupFormResponse) : triggerSignupForm();
             Print.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
         }
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -625,7 +622,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param saveCredentials
      */
     private void triggerSignup(ContentValues values, boolean saveCredentials) {
-        Print.i(TAG, "TRIGGER: SIGNUP " + values.toString());
+        Print.i(TAG, "TRIGGER: SIGN UP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
@@ -709,8 +706,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         // Get next step
         if (mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
             Print.w(TAG, "NEXT STEP IS NULL");
-            //alexandrapires: webchekout disabled for v. 2.7
-        //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
             super.showFragmentErrorRetry();
         } else {
             Print.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
@@ -936,7 +931,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                     triggerInitForm();
                     retryForms++;
                 }
-
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 Print.w(TAG, "ON ERRER RECEIVED: GET_SHOPPING_CART_ITEMS_EVENT");

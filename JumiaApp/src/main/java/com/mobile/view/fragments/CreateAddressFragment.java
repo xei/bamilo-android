@@ -10,7 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
@@ -1084,7 +1083,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Dialog used to show an error
      *
-     * @param errorMessage
      * @author sergiopereira
      */
     protected void showErrorDialog(String errorMessage ,String dialogTitle) {

@@ -525,28 +525,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Method used to redirect the native checkout to the old checkout method
-     */
-
-    /*
-    *  alexandra pires: Webcheckout disabled for 2.7 version
-    *
-    public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
-        Print.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        // Tracking
-        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
-        // Warning user
-        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
-        // Remove native checkout
-        getBaseActivity().removeAllNativeCheckoutFromBackStack();
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }*/
-
-    /**
      * Set screen response to keyboard request
      *
      * @param newAdjustState
@@ -954,7 +932,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                                     }
                                 }
                             });
-
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
                 case SERVER_OVERLOAD:

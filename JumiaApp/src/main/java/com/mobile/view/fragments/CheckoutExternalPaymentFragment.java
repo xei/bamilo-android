@@ -289,8 +289,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         } else {
-            //alexandrapires: webchekout disabled for v. 2.7
-       //     super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
             super.showFragmentErrorRetry();
             return;
         }

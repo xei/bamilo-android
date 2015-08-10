@@ -580,9 +580,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Show
                 showFragmentContentContainer();
                 Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-                //alexandrapires: webchekout disabled for v. 2.7
-          //      super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
-                super.showUnexpectedErrorWarning(); //unexpected error
+                super.showUnexpectedErrorWarning();
             }
         }
     }
