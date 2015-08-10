@@ -99,7 +99,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
         }
         // Set listener and tags
-        holder.mContainer.setTag(item.getUrl());
+        holder.mContainer.setTag(R.id.target_sku, item.getSku());
         holder.mContainer.setOnClickListener(mParentClickListener);
     }
 

@@ -321,7 +321,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             AddableToCart addableToCart = mAddableToCartList.get(position);
             addableToCart.setFavoriteSelected(position);
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, addableToCart.getUrl());
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, addableToCart.getSku());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {

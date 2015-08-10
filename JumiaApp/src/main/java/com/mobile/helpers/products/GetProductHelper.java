@@ -25,9 +25,6 @@ public class GetProductHelper extends SuperBaseHelper {
     
     protected static String TAG = GetProductHelper.class.getSimpleName();
 
-    @Deprecated
-    public static final String PRODUCT_URL = "productUrl";
-
     public static final String SKU_TAG = "sku";
 
     @Override

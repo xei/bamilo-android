@@ -45,15 +45,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	private double mSpecialPriceConverted = 0;
 
 	/**
-	 * @param simpleData
-	 *            registry
-	 */
-	public ShoppingCartItem(HashMap<String, String> simpleData) {
-		this.configSimpleSKU = null;
-		this.simpleData = simpleData;
-	}
-
-	/**
 	 * @param configSimpleSKU
 	 *            of the product simple
 	 * @param simpleData
@@ -63,28 +54,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		this.configSimpleSKU = configSimpleSKU;
 		this.simpleData = simpleData;
 	}
-
-    public ShoppingCartItem(final ShoppingCartItem shoppingCartItem){
-        imageUrl = shoppingCartItem.imageUrl;
-        productUrl = shoppingCartItem.productUrl;
-        configSKU = shoppingCartItem.configSKU;
-        configSimpleSKU= shoppingCartItem.configSimpleSKU;
-        quantity = shoppingCartItem.quantity;
-        maxQuantity = shoppingCartItem.maxQuantity;
-        configId = shoppingCartItem.configId;
-        name = shoppingCartItem.name;
-        stock = shoppingCartItem.stock;
-        taxAmount = shoppingCartItem.taxAmount;
-        simpleData = shoppingCartItem.simpleData;
-        variation = shoppingCartItem.variation;
-        price = shoppingCartItem.price;
-        specialPrice = shoppingCartItem.specialPrice;
-        savingPercentage = shoppingCartItem.savingPercentage;
-        priceVal = shoppingCartItem.priceVal;
-        specialPriceVal = shoppingCartItem.specialPriceVal ;
-        mPriceValueConverted = shoppingCartItem.mPriceValueConverted;
-        mSpecialPriceConverted  = shoppingCartItem.mSpecialPriceConverted;
-    }
 
 	/*
 	 * (non-Javadoc)

@@ -20,8 +20,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
-import com.mobile.helpers.products.wishlist.AddToWishListHelper;
-import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
@@ -38,7 +36,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -558,7 +555,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSku());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
@@ -832,7 +829,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
+        //triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -840,7 +837,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
+        //triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
     }
 
     /**
@@ -911,40 +908,30 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS");
         // Validate fragment state
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Get the catalog
+        CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        // Case valid success response
+        if (catalogPage != null && catalogPage.hasProducts()) {
+            // Mark to reload an initial catalog
+            mSortOrFilterApplied = false;
+            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+            onUpdateCatalogContainer(catalogPage);
 
-        switch (eventType) {
-            case REMOVE_PRODUCT_FROM_WISH_LIST:
-                ToastFactory.REMOVED_FAVOURITE.show(getBaseActivity());
-                break;
-            case ADD_PRODUCT_TO_WISH_LIST:
-                ToastFactory.ADDED_FAVOURITE.show(getBaseActivity());
-                break;
-            default:
-                // Get the catalog
-                CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                // Case valid success response
-                if (catalogPage != null && catalogPage.hasProducts()) {
-                    // Mark to reload an initial catalog
-                    mSortOrFilterApplied = false;
-                    Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
-                    onUpdateCatalogContainer(catalogPage);
-                    if (catalogPage.getPage() == 1) {
-                        TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
-                    }
-                }
-                // Case invalid success response
-                else {
-                    Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
-                    showContinueShopping();
-                }
-                break;
+            if (catalogPage.getPage() == 1) {
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+            }
+
+        }
+        // Case invalid success response
+        else {
+            Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
+            showContinueShopping();
         }
     }
 
@@ -960,62 +947,44 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Get error code
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
-
-        switch (eventType) {
-            case REMOVE_PRODUCT_FROM_WISH_LIST:
-            case ADD_PRODUCT_TO_WISH_LIST:
-                // Hide dialog progress
-                hideActivityProgress();
-                // Validate error
-                if (!super.handleErrorEvent(bundle)) {
-                    showUnexpectedErrorWarning();
-                }
-                // TODO Remove from wishlist
-                break;
-            default:
-                // Case error on load more data
-                if (isLoadingMoreData) {
-                    Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
-                    onLoadingMoreRequestError(bundle);
-                }
-                // Case error on request data with filters
-                else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
-                    Print.i(TAG, "ON SHOW FILTER NO RESULT");
-                    showFilterNoResult();
-                }
-                // Case error on request data without filters
-                else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
-                    Print.i(TAG, "ON SHOW NO RESULT");
-                    // Get feature box
-                    FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
-                    // Show no result layout
-                    showFeaturedBoxNoResult(featuredBox);
-                }
-                // Case network errors except No network
-                else if (errorCode != null && errorCode.isNetworkError()
-                        && errorCode != ErrorCode.NO_NETWORK
-                        && errorCode != ErrorCode.HTTP_STATUS
-                        && errorCode != ErrorCode.SERVER_OVERLOAD
-                        && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
-                        && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
-                    showFilterUnexpectedError();
-                }
-                // Case No Network
-                else if (super.handleErrorEvent(bundle)) {
-                    Print.i(TAG, "HANDLE BASE FRAGMENT");
-                }
-                // Case unexpected error
-                else {
-                    showContinueShopping();
-                }
-                break;
+        // Case error on load more data
+        if (isLoadingMoreData) {
+            Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
+            onLoadingMoreRequestError(bundle);
         }
-
+        // Case error on request data with filters
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
+            Print.i(TAG, "ON SHOW FILTER NO RESULT");
+            showFilterNoResult();
+        }
+        // Case error on request data without filters
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
+            Print.i(TAG, "ON SHOW NO RESULT");
+            // Get feature box
+            FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
+            // Show no result layout
+            showFeaturedBoxNoResult(featuredBox);
+        }
+        // Case network errors except No network
+        else if(errorCode != null && errorCode.isNetworkError()
+                && errorCode != ErrorCode.NO_NETWORK
+                && errorCode != ErrorCode.HTTP_STATUS
+                && errorCode != ErrorCode.SERVER_OVERLOAD
+                && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
+                && CollectionUtils.isNotEmpty(mCurrentFilterValues)){
+            showFilterUnexpectedError();
+        }
+        // Case No Network
+        else if (super.handleErrorEvent(bundle)) {
+            Print.i(TAG, "HANDLE BASE FRAGMENT");
+        }
+        // Case unexpected error
+        else {
+            showContinueShopping();
+        }
     }
 
     /**
@@ -1044,15 +1013,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 onClickCatalog(url, title, bundle);
                 break;
             case CAMPAIGN:
-                //http://integration-www.jumia.ug/mobapi/v1.7/campaign/get/?campaign_slug=samsung_madness
                 onClickCampaign(url, title, bundle);
                 break;
             case PRODUCT:
-                // http://integration-www.jumia.ug/mobapi/v1.7/blue-long-sleeves-shirt-straight-cut-24932.html
                 onClickProduct(url, bundle);
                 break;
             case SHOP:
-                // http://integration-www.jumia.ug/mobapi/1.7/main/getstatic/?key=buy-2-get-1-free
                 onClickInnerShop(url, title, bundle);
                 break;
             default:

@@ -46,7 +46,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private TextView mProductDescriptionText;
     private CompleteProduct mCompleteProduct;
     private View mainView;
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
 
     /**
      * Get instance
@@ -93,8 +93,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof CompleteProduct){
                 mCompleteProduct = (CompleteProduct) parcelableProduct;
@@ -112,7 +111,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
         }
         // Load views
         mainView = view;
@@ -147,9 +146,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         if (mCompleteProduct != null && mainView != null) {
             getViews();
             displayProductInformation();
-        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+        } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -171,7 +170,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null)
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
     }
     

@@ -1109,10 +1109,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Process the product click
      * @author sergiopereira
      */
-    protected void onClickProduct(String targetUrl, Bundle bundle) {
+    protected void onClickProduct(String sku, Bundle bundle) {
         Print.i(TAG, "ON CLICK PRODUCT");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+        if (sku != null) {
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);

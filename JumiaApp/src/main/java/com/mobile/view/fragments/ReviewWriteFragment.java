@@ -83,7 +83,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
     private boolean isExecutingSendReview = false;
 
-    private String mCompleteProductUrl = "";
+    private String mCompleteProductSku = "";
     
     private View mainContainer;
 
@@ -208,8 +208,7 @@ public class ReviewWriteFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof CompleteProduct){
                 completeProduct = (CompleteProduct)parcelableProduct;
@@ -231,14 +230,14 @@ public class ReviewWriteFragment extends BaseFragment {
         }
         setRatingReviewFlag();
             // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
+            if (mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
+                String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
+                mCompleteProductSku = sku != null ? sku : "";
             }
             
             if (completeProduct == null) {
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 /* Commented due to unnecessary data being fetched
@@ -324,9 +323,9 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     private void setRatingLayout(Form form) {
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -441,9 +440,9 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setGenericLayout(){
         
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -798,23 +797,19 @@ public class ReviewWriteFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(reviewForm.action, dynamicRatingForm);

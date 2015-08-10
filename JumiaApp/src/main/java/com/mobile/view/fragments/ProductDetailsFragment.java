@@ -49,8 +49,6 @@ import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.products.wishlist.AddToWishListHelper;
-import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -65,7 +63,6 @@ import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -91,7 +88,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.ui.CompleteProductUtils;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -157,7 +153,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mVarianceContainer;
 
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
 
     private int mSelectedSimple = NO_SIMPLE_SELECTED;
 
@@ -291,6 +287,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get arguments
         Bundle arguments = getArguments();
         if(arguments != null) {
+            // Get sku
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            // Categories
             if (arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)) {
                 categoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV";
             } else {
@@ -412,14 +411,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         restoreParams(bundle);
 
-        mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-
         // Validate url and load product
-        if (TextUtils.isEmpty(mCompleteProductUrl)) {
+        if (TextUtils.isEmpty(mCompleteProductSku)) {
             getBaseActivity().onBackPressed();
         } else {
             // Url and parameters
-            triggerLoadProduct(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+            triggerLoadProduct(mCompleteProductSku);
         }
     }
 
@@ -444,9 +441,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
             mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-            ContentValues mQueryValues = new ContentValues();
-            mQueryValues.put(GetProductHelper.SKU_TAG, sku);
-            triggerLoadProduct(mQueryValues);
+            triggerLoadProduct(sku);
             return true;
         }
         return false;
@@ -1017,7 +1012,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
 
         mCompleteProduct = product;
-        mCompleteProductUrl = product.getUrl();
+        mCompleteProductSku = product.getSku();
 
         // Set Title
         // #RTL
@@ -1120,36 +1115,27 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mVariationsListView.setSelectedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
                 @Override
-                public void onViewSelected(View view, int position, String url) {
-                    Print.i(TAG, "ON SELECTED ITEM: " + position + " " + url);
-                    // Validate if current product has variations
-                    if (mCompleteProduct.getVariations() == null
-                            || (mCompleteProduct.getVariations().size() <= position))
-                        return;
-                    // Validate is invalid URL
-                    if (TextUtils.isEmpty(url))
-                        return;
-                    // Validate if is the current product
-                    if (url.equals(mCompleteProduct.getUrl()))
+                public void onViewSelected(View view, int position, String sku) {
+                    Print.i(TAG, "ON SELECTED ITEM: " + position + " " + sku);
+                    // Validate if current product has variations and if is invalid URL and if is the current product
+                    if (CollectionUtils.isEmpty(mCompleteProduct.getVariations()) ||
+                            mCompleteProduct.getVariations().size() <= position ||
+                            TextUtils.isEmpty(sku) || sku.equals(mCompleteProduct.getSku()))
                         return;
                     // Saved the selected URL
-                    mCompleteProductUrl = url;
+                    mCompleteProductSku = sku;
                     // Show loading rating
                     loadingRating.setVisibility(View.VISIBLE);
                     // Hide bundle container
                     hideBundle();
                     // Get product to update partial data
-                    triggerLoadProductPartial(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteProductUrl)));
+                    triggerLoadProductPartial(mCompleteProductSku);
                 }
             });
         }
         // Show container
         mVariationsContainer.setVisibility(View.VISIBLE);
     }
-
-    /**
-     * ################# IMAGE GALLERY #################
-     */
 
     /**
      * ################# RELATED ITEMS #################
@@ -1179,7 +1165,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                         public void onClick(View v) {
                             // Show related item
                             Bundle bundle = new Bundle();
-                            bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
+                            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, (String) v.getTag(R.id.target_sku));
                             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
                             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
                             // For tracking as a related item
@@ -1535,19 +1521,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ############## TODO TRIGGERS ##############
      */
 
-    private void triggerLoadProduct(ContentValues mQueryValues) {
-        Print.d(TAG, "LOAD PRODUCT");
+    private void triggerLoadProduct(String sku) {
         mBeginRequestMillis = System.currentTimeMillis();
+        ContentValues values = new ContentValues();
+        values.put(GetProductHelper.SKU_TAG, sku);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new GetProductHelper(), bundle, this);
     }
 
-    private void triggerLoadProductPartial(ContentValues mQueryValues) {
+    private void triggerLoadProductPartial(String sku) {
         mBeginRequestMillis = System.currentTimeMillis();
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
+        ContentValues values = new ContentValues();
+        values.put(GetProductHelper.SKU_TAG, sku);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventNoLoading(new GetProductHelper(), bundle, this);
     }
 
@@ -1566,7 +1555,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
+        //triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -1574,7 +1563,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
+        //triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
     }
 
 
@@ -1633,12 +1622,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.handleSuccessEvent(bundle);
 
         switch (eventType) {
-        case REMOVE_PRODUCT_FROM_WISH_LIST:
-            ToastFactory.REMOVED_FAVOURITE.show(mImageFavourite.getContext());
-            break;
-        case ADD_PRODUCT_TO_WISH_LIST:
-            ToastFactory.ADDED_FAVOURITE.show(mImageFavourite.getContext());
-            break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
@@ -1732,73 +1715,66 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
-            case REMOVE_PRODUCT_FROM_WISH_LIST:
-            case ADD_PRODUCT_TO_WISH_LIST:
-                if (!super.handleErrorEvent(bundle)) {
-                    showUnexpectedErrorWarning();
-                }
-                // TODO Remove from wishlist
-                break;
-            case ADD_PRODUCT_BUNDLE:
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                mBundleButton.setEnabled(true);
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        case ADD_PRODUCT_BUNDLE:
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            mBundleButton.setEnabled(true);
+            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
-                    if (errorMessages != null) {
-                        int titleRes = R.string.error_add_to_cart_failed;
-                        int msgRes = -1;
+                if (errorMessages != null) {
+                    int titleRes = R.string.error_add_to_cart_failed;
+                    int msgRes = -1;
 
-                        String message = null;
-                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
-                            msgRes = R.string.product_outof_stock;
-                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
-                            msgRes = R.string.error_add_to_shopping_cart_quantity;
-                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                            List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                            if (validateMessages != null && validateMessages.size() > 0) {
-                                message = validateMessages.get(0);
-                            } else {
-                                msgRes = R.string.error_add_to_cart_failed;
-                            }
+                    String message = null;
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                        msgRes = R.string.product_outof_stock;
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                        msgRes = R.string.error_add_to_shopping_cart_quantity;
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                        List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                        if (validateMessages != null && validateMessages.size() > 0) {
+                            message = validateMessages.get(0);
+                        } else {
+                            msgRes = R.string.error_add_to_cart_failed;
                         }
+                    }
 
-                        if (msgRes != -1) {
-                            message = getString(msgRes);
-                        } else if (message == null) {
-                            return;
-                        }
-
-                        FragmentManager fm = getFragmentManager();
-                        dialog = DialogGenericFragment.newInstance(true, false,
-                                getString(titleRes),
-                                message,
-                                getString(R.string.ok_label), "", new OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        int id = v.getId();
-                                        if (id == R.id.button1) {
-                                            dismissDialogFragment();
-                                        }
-                                    }
-                                });
-                        dialog.show(fm, null);
+                    if (msgRes != -1) {
+                        message = getString(msgRes);
+                    } else if (message == null) {
                         return;
                     }
-                }
-                if (!errorCode.isNetworkError()) {
-                    addToShoppingCartFailed();
+
+                    FragmentManager fm = getFragmentManager();
+                    dialog = DialogGenericFragment.newInstance(true, false,
+                            getString(titleRes),
+                            message,
+                            getString(R.string.ok_label), "", new OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+                                    int id = v.getId();
+                                    if (id == R.id.button1) {
+                                        dismissDialogFragment();
+                                    }
+                                }
+                            });
+                    dialog.show(fm, null);
                     return;
                 }
-            case SEARCH_PRODUCT:
-            case GET_PRODUCT_EVENT:
-                showContinueShopping();
-            case GET_PRODUCT_BUNDLE:
-                hideBundle();
-                break;
-            default:
-                break;
+            }
+            if (!errorCode.isNetworkError()) {
+                addToShoppingCartFailed();
+                return;
+            }
+        case SEARCH_PRODUCT:
+        case GET_PRODUCT_EVENT:
+            showContinueShopping();
+        case GET_PRODUCT_BUNDLE:
+            hideBundle();
+            break;
+        default:
+            break;
         }
     }
 

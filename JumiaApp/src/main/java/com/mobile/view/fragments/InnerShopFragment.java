@@ -18,11 +18,13 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -415,8 +417,9 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void gotoProduct(String url) {
         Print.i(TAG, "PDV: " + url);
+        // TODO: SHOULD RECEIVE SKU
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG));
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

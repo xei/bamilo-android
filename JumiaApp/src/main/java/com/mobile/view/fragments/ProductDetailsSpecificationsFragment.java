@@ -116,8 +116,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
-//            mProductSpecifications = savedInstanceState.getParcelableArrayList(SPECIFICATION);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
         }
         // Load views
         mainView = view;
@@ -155,7 +154,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             displaySpecification();
         } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductSku);
+            bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -177,8 +176,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null) {
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductSku);
-//            outState.putParcelableArrayList(SPECIFICATION, mProductSpecifications);
+            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         }
         super.onSaveInstanceState(outState);
     }

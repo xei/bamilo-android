@@ -16,6 +16,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -25,6 +26,7 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -443,11 +445,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoProductDetail(String url, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO PRODUCT DETAIL: " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        // TODO: SHOULD RECEIVE SKU
+        if(TextUtils.isEmpty(url)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG));
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**

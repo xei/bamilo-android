@@ -37,9 +37,6 @@ public class AigRestContract {
     // AUTH CONSTANTS
     public static boolean USE_ONLY_HTTP = false;
 
-    public static final String REST_PARAM_RATING = "rating";
-    public static final String REST_PARAM_SELLER_RATING = "seller_rating";
-
     // COOKIE MANAGER
     public static String COOKIE_SHOP_DOMAIN;
     public static String COOKIE_SHOP_URI;

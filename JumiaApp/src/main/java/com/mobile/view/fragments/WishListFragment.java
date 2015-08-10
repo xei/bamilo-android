@@ -12,8 +12,6 @@ import com.mobile.controllers.NewAddableToCartListAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.products.wishlist.GetWishListHelper;
-import com.mobile.helpers.products.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.product.NewProductAddableToCart;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -323,7 +321,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
      */
 
     private void triggerGetWishListInitialPage() {
-        triggerContentEvent(new GetWishListHelper(), null, this);
+        //triggerContentEvent(new GetWishListHelper(), null, this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -331,7 +329,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new RemoveFromWishListHelper(), bundle, this);
+        //triggerContentEvent(new RemoveFromWishListHelper(), bundle, this);
     }
 
 

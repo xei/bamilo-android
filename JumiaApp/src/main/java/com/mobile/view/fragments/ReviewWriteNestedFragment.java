@@ -82,7 +82,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
     private boolean isExecutingSendReview = false;
 
-    private String mCompleteProductUrl = "";
+    private String mCompleteProductSku;
     
     private View mainContainer;
 
@@ -193,8 +193,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            mCompleteProductSku  = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof CompleteProduct){
                 completeProduct = (CompleteProduct)parcelableProduct;
@@ -211,36 +210,27 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
         setRatingReviewFlag();
 
-            // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
-            }
-            
-            if (completeProduct == null) {
-                Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-//                isShowingRatingForm = true;
-            } else {
-                /* Commented due to unnecessary data being fetched
-                triggerAutoLogin();
-                triggerCustomer();*/
-                if(ratingForm != null || reviewForm != null){
-                    loadReviewAndRatingFormValues();
-                    if(isShowingRatingForm){
-                        setRatingLayout(ratingForm);
-                    } else {
-                        setRatingLayout(reviewForm);
-                    }
+        // load complete product URL
+        if (completeProduct == null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+            triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+        } else {
+            if(ratingForm != null || reviewForm != null){
+                loadReviewAndRatingFormValues();
+                if(isShowingRatingForm){
+                    setRatingLayout(ratingForm);
                 } else {
-                    if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true)){
-                        triggerRatingForm();
-                    } else if(!getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
-                        triggerReviewForm();
-                    }
+                    setRatingLayout(reviewForm);
+                }
+            } else {
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true)){
+                    triggerRatingForm();
+                } else if(!getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
+                    triggerReviewForm();
                 }
             }
+        }
         
     }
 
@@ -300,9 +290,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      */
     private void setRatingLayout(Form form) {
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showFragmentErrorRetry();
@@ -408,9 +398,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private void setGenericLayout(){
         
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!TextUtils.isEmpty(mCompleteProductSku)) {
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showFragmentErrorRetry();
@@ -418,15 +408,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             
         } else {
             mainContainer.setVisibility(View.VISIBLE);
-            
-//            productName = (TextView) getView().findViewById(R.id.product_detail_name);
-//            TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-//            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-
-//            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-//            displayPriceInformation(productPriceNormal, productPriceSpecial);       
         }
     }
     
