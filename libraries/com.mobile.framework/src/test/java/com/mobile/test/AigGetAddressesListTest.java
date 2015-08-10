@@ -30,7 +30,7 @@ public class AigGetAddressesListTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"/customer/address/list/";
+        return AigMobApiNigeriaTestSuite.HOST+"/customer/getaddresslist/";
     }
 
     @Override
