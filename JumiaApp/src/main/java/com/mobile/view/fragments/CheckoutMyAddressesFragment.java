@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -175,8 +174,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     protected void onGetBillingFormEventErrorEvent() {
         Print.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-        //alexandrapires: webchekout disabled for v. 2.7
-      //  super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
         super.showFragmentErrorRetry();
     }
 
@@ -191,9 +188,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         this.addresses = addresses;
         // Validate response
         if(!isValidateResponse()){
-            //alexandrapires: webchekout disabled for v. 2.7
-        //    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
-            super.showFragmentErrorRetry(); //unexpected error
+            super.showFragmentErrorRetry();
             return;
         }
         // Show addresses using saved value, if is the same address for Bill and Ship
@@ -206,26 +201,23 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
 
     }
 
     protected void onSetBillingAddressErrorEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-        showFragmentContentContainer();
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
             setDefaultChecked(Boolean.parseBoolean(sameAddress));
-        }
-        else{
-            Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
-            //alexandrapires: webchekout disabled for v. 2.7
-         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
+        } else{
+            Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();
         }
+        showFragmentContentContainer();
     }
 
     protected void onSetBillingAddressSuccessEvent(Bundle bundle) {
