@@ -1113,7 +1113,7 @@ public class TrackerDelegator {
                             while (it.hasNext()) {
                                 Map.Entry pair = (Map.Entry)it.next();
 
-                                if (pair.getKey().equals(item.sku)) {
+                                if (skus.containsKey(item.sku)) {
                                     Print.e(TAG, "BANNER KEY:" + pair.getKey() + " VALUE:" + pair.getValue());
                                     // fires the GA event when the user finish a order, originating in one of the home teasers
                                     AnalyticsGoogle.get().trackBannerFlowPurchase((String) pair.getValue(),
@@ -1148,7 +1148,7 @@ public class TrackerDelegator {
      */
     public static int getCategoryFromTeaserGroupType(TeaserGroupType groupType){
         // Default value
-        TrackingEvent event = TrackingEvent.UNKNOWN_BANNER_CLICK;
+        TrackingEvent event;
         switch (groupType){
             case MAIN_TEASERS:
                 event = TrackingEvent.MAIN_BANNER_CLICK;
@@ -1174,7 +1174,7 @@ public class TrackerDelegator {
             case TOP_SELLERS:
                 event =  TrackingEvent.TOP_SELLER_BANNER_CLICK;
                 break;
-            case UNKNOWN:
+            default:
                 event =  TrackingEvent.UNKNOWN_BANNER_CLICK;
                 Print.w(TAG, "UNKNOWN TEASER GROUP");
                 break;
