@@ -25,8 +25,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
 
     private String mImage;
 
-    private ArrayList<String> mImages;
-
     private int mStockPercentage;
 
     private double mMaxSavingPercentage;
@@ -80,15 +78,18 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
         mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
 
+        //alexandrapires: api 1.8 item image is not an array
+        mImage =jsonObject.optString(RestConstants.JSON_ITEM_IMAGE_TAG);
+
         // Save images
-        JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
+    /*    JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
         if (imagesA != null && imagesA.length() > 0) {
             mImage = imagesA.optString(0);
             mImages = new ArrayList<>();
             for (int i = 0; i < imagesA.length(); i++) {
                 mImages.add(imagesA.optString(i));
             }
-        }
+        }*/
 
         // Save sizes
         JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
@@ -146,12 +147,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         return mImage;
     }
 
-    /**
-     * @return the mImages
-     */
-    public ArrayList<String> getImages() {
-        return mImages;
-    }
 
     /**
      * @return the mStockPercentage
@@ -257,13 +252,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         this.mImage = mImage;
     }
 
-    /**
-     * @param mImages
-     *            the mImages to set
-     */
-    public void setImages(ArrayList<String> mImages) {
-        this.mImages = mImages;
-    }
 
     /**
      * @param mStockPercentage
@@ -347,8 +335,7 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         dest.writeString(sku);
         dest.writeString(brand);
         dest.writeString(name);
-        dest.writeString(mImage);
-        dest.writeList(mImages);
+        dest.writeString(mImage);   //mImages arraylist removed mobapi 1.8
         dest.writeInt(mStockPercentage);
         dest.writeDouble(mMaxSavingPercentage);
         dest.writeBooleanArray(new boolean[] { hasUniqueSize });
@@ -372,9 +359,7 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         sku = in.readString();
         brand = in.readString();
         name = in.readString();
-        mImage = in.readString();
-        mImages = new ArrayList<>();
-        in.readList(mImages, String.class.getClassLoader());
+        mImage = in.readString();   //mImages arraylist removed mobapi 1.8
         mStockPercentage = in.readInt();
         mMaxSavingPercentage = in.readDouble();
         boolean[] bolArray = new boolean[1];

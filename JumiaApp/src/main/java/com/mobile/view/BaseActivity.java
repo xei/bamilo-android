@@ -114,7 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    // REMOVED FINAL ATRIBUTE
+    // REMOVED FINAL ATTRIBUTE
     private NavigationAction action;
 
     protected View contentContainer;
@@ -996,7 +996,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+//        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

@@ -37,7 +37,7 @@ public class AddableToCart extends BaseProduct {
 	protected String mSelectedSimpleValue;
 	protected Boolean mChooseVariationWarning = false;
 	protected boolean mStockVariationWarning = false;
-	protected ArrayList<String> mCategories;
+	protected String mCategories;
 	protected Double mRatingsAverage;
 	protected String mSizeGuideUrl;
 
@@ -61,7 +61,6 @@ public class AddableToCart extends BaseProduct {
 		selectedSimple = NO_SIMPLE_SELECTED;
 		specialPriceConverted = 0d;
 		priceConverted = 0d;
-		mCategories = new ArrayList<>();
 		mRatingsAverage = 0.0;
 		mSizeGuideUrl = "";
 	}
@@ -80,7 +79,7 @@ public class AddableToCart extends BaseProduct {
 		mSelectedSimpleValue = "...";
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
-		if(CollectionUtils.isNotEmpty(completeProduct.getCategories())) mCategories = completeProduct.getCategories(); 
+		mCategories = completeProduct.getCategories();
 		mRatingsAverage = completeProduct.getRatingsAverage();
 		mSizeGuideUrl = completeProduct.getSizeGuideUrl();
 	}
@@ -266,15 +265,19 @@ public class AddableToCart extends BaseProduct {
 	   /**
      * @return the categories
      */
-    public ArrayList<String> getCategories() {
+    public String getCategories() {
         return mCategories;
     }
-    
+
+	public String[] getCategoriesList(){
+		return mCategories.split(",");
+	}
+
     /**
      * @param categories
      *            the categories to set
      */
-    public void setCategories(ArrayList<String> categories) {
+    public void setCategories(String categories) {
         this.mCategories = categories;
     }
     
@@ -355,7 +358,7 @@ public class AddableToCart extends BaseProduct {
 		dest.writeString(mSelectedSimpleValue);
 		dest.writeByte((byte) (mChooseVariationWarning ? 1 : 0));
 		dest.writeByte((byte) (mStockVariationWarning ? 1 : 0));
-		dest.writeList(mCategories);
+		dest.writeString(mCategories);
 		dest.writeDouble(mRatingsAverage);
 		dest.writeString(mSizeGuideUrl);
 	}
@@ -379,8 +382,7 @@ public class AddableToCart extends BaseProduct {
 		mSelectedSimpleValue = in.readString();
 		mChooseVariationWarning = in.readByte() == 1;
 		mStockVariationWarning = in.readByte() == 1;
-        mCategories = new ArrayList<>();
-        in.readList(mCategories, String.class.getClassLoader());
+		mCategories = in.readString();
         mRatingsAverage = in.readDouble();
         mSizeGuideUrl = in.readString();
 	}
