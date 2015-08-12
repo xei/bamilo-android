@@ -31,7 +31,6 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
 import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
-import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -313,13 +312,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     /**
-     * Trigger to get if is native checkout is available.
-     */
-    private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventNoLoading(new GetNativeCheckoutAvailableHelper(), null, this);
-    }
-
-    /**
      * Trigger to remove the submit a voucher value.
      */
     private void triggerSubmitVoucher(ContentValues values) {
@@ -444,7 +436,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
                 removeVoucher = true;
-
                 // verify if "Call to Order" was used
                 if (isCallInProgress) {
                     isCallInProgress = false;
@@ -458,7 +449,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 couponButton.setText(getString(R.string.voucher_use));
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
-
+                removeVoucher = false;
                 // verify if "Call to Order" was used
                 if (isCallInProgress) {
                     isCallInProgress = false;
@@ -466,18 +457,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 } else {
                     displayShoppingCart(removeVoucherShoppingCart);
                 }
-                removeVoucher = false;
-                return true;
-            case NATIVE_CHECKOUT_AVAILABLE:
-                boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
-                if (isAvailable) {
-                    Print.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
-                    Bundle mBundle = new Bundle();
-                    getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
-                } else {
-                    Print.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
-                    goToWebCheckout();
-                }
+
                 return true;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
@@ -635,10 +615,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-            case NATIVE_CHECKOUT_AVAILABLE:
-                Print.d(TAG, "ON ERROR EVENT: NATIVE_CHECKOUT_AVAILABLE");
-                goToWebCheckout();
-                break;
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
                 voucherCode.setText("");
@@ -715,14 +691,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     }
                 } else {
                     voucherContainer.setVisibility(View.GONE);
-                    couponButton.setText(getString(R.string.voucher_use));
-                    voucherError.setVisibility(View.VISIBLE);
                     // Clean Voucher
                     removeVoucher();
                 }
             } else {
                 voucherContainer.setVisibility(View.GONE);
-                couponButton.setText(getString(R.string.voucher_use));
                 // Clean Voucher
                 removeVoucher();
             }
@@ -1009,21 +982,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private void goToWebCheckout() {
-        Print.d(TAG, "GOTO WEB CHECKOUT");
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
     private void checkMinOrderAmount() {
         TrackerDelegator.trackCheckout(items);
-        String restbase = getResources().getString(R.string.global_server_api_version);
-        if (restbase.contains("mobapi/v1")) {
-            triggerIsNativeCheckoutAvailable();
-        } else {
-            goToWebCheckout();
-        }
+        Bundle mBundle = new Bundle();
+        getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

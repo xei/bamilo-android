@@ -33,13 +33,11 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private double mTotalConverted = 0d;
 	private int mCartCount;
 	private String mVatValue;
-	private String mVatValueConverted;
 	private double mShippingValue;
 	private double mExtraCosts;
 	private String mSumCostsValue;
 	private boolean hasSumCosts;
 	private String mCouponDiscount;
-	private String mCouponDiscountConverted;
 	private String mCouponCode;
 
 	private HashMap<String, String> mPriceRules;
@@ -64,70 +62,72 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		JSONObject cartEntity = jsonObject.optJSONObject(RestConstants.JSON_CART_ENTITY);
-		if (cartEntity == null){
-			return false;
-		}
-		// Get cart value as string and double
-		mTotal = cartEntity.getString(RestConstants.JSON_CART_TOTAL);
-		mTotalDouble = cartEntity.optDouble(RestConstants.JSON_CART_TOTAL, 0);
-		// Get cart value converted
-		mTotalConverted = cartEntity.optDouble(RestConstants.JSON_CART_TOTAL_CONVERTED, 0d);
-		// Get cart sub total
-		mSubTotal = cartEntity.optString(RestConstants.JSON_CART_SUB_TOTAL);
-		mSubTotalDouble = cartEntity.optDouble(RestConstants.JSON_CART_SUB_TOTAL,0d);
-		mSubTotalConvertedDouble = cartEntity.optDouble(RestConstants.JSON_CART_SUB_TOTAL_CONVERTED, 0d);
-		// Get cart count
-		mCartCount = cartEntity.getInt(RestConstants.JSON_CART_COUNT_TAG);
-		// VAT
-		JSONObject vatObject = cartEntity.optJSONObject(RestConstants.JSON_CART_VAT);
-		if(vatObject != null){
-			mVatValue = vatObject.optString(RestConstants.JSON_CART_VALUE_TAG);
-			mVatValueConverted = vatObject.optString(RestConstants.JSON_CART_VALUE_CONVERTED_TAG);
-			mVatLabelEnable = vatObject.optBoolean(RestConstants.JSON_CART_VAT_LABEL_ENABLE);
-		}
-		// Delivery
-		JSONObject deliveryObject = cartEntity.optJSONObject(RestConstants.JSON_CART_DELIVERY);
-		if(deliveryObject != null){
-			setShippingValue(deliveryObject.optDouble(RestConstants.JSON_CART_SHIPPING_VALUE_TAG));
-		}
-		// Coupon
-		JSONObject couponObject = cartEntity.optJSONObject(RestConstants.JSON_CART_COUPON);
-		if(couponObject != null){
-			mCouponCode = couponObject.optString(RestConstants.JSON_CART_COUPON_CODE_TAG);
-			mCouponDiscount = couponObject.optString(RestConstants.JSON_CART_VALUE_TAG);
-			mCouponDiscountConverted = couponObject.optString(RestConstants.JSON_CART_VALUE_CONVERTED_TAG);
-		}
+		try {
+
+			JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.JSON_CART_ENTITY);
+			// Get cart value as string and double
+			mTotal = cartEntity.getString(RestConstants.JSON_CART_TOTAL);
+			mTotalDouble = cartEntity.optDouble(RestConstants.JSON_CART_TOTAL, 0);
+			// Get cart value converted
+			mTotalConverted = cartEntity.optDouble(RestConstants.JSON_CART_TOTAL_CONVERTED, 0d);
+			// Get cart sub total
+			mSubTotal = cartEntity.optString(RestConstants.JSON_CART_SUB_TOTAL);
+			mSubTotalDouble = cartEntity.optDouble(RestConstants.JSON_CART_SUB_TOTAL,0d);
+			mSubTotalConvertedDouble = cartEntity.optDouble(RestConstants.JSON_CART_SUB_TOTAL_CONVERTED, 0d);
+			// Get cart count
+			mCartCount = cartEntity.getInt(RestConstants.JSON_CART_COUNT_TAG);
+			// VAT
+			JSONObject vatObject = cartEntity.optJSONObject(RestConstants.JSON_CART_VAT);
+			if(vatObject != null){
+				mVatValue = vatObject.optString(RestConstants.JSON_CART_VALUE_TAG);
+				mVatLabelEnable = vatObject.optBoolean(RestConstants.JSON_CART_VAT_LABEL_ENABLE);
+			}
+			// Delivery
+			JSONObject deliveryObject = cartEntity.optJSONObject(RestConstants.JSON_CART_DELIVERY);
+			if(deliveryObject != null){
+				setShippingValue(deliveryObject.optDouble(RestConstants.JSON_CART_SHIPPING_VALUE_TAG));
+			}
+			// Coupon
+			JSONObject couponObject = cartEntity.optJSONObject(RestConstants.JSON_CART_COUPON);
+			if(couponObject != null){
+				mCouponCode = couponObject.optString(RestConstants.JSON_CART_COUPON_CODE_TAG);
+				mCouponDiscount = couponObject.optString(RestConstants.JSON_CART_VALUE_TAG);
+			}
 
 
-		boolean sCosts = cartEntity.optBoolean(RestConstants.JSON_CART_SUM_COSTS_TAG);
-		if (!sCosts) {
-			hasSumCosts = false;
-		} else {
-			hasSumCosts = true;
-			mSumCostsValue = cartEntity.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
-		}
+			boolean sCosts = cartEntity.optBoolean(RestConstants.JSON_CART_SUM_COSTS_TAG);
+			if (!sCosts) {
+				hasSumCosts = false;
+			} else {
+				hasSumCosts = true;
+				mSumCostsValue = cartEntity.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
+			}
 
-		mExtraCosts = cartEntity.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG, 0);
-		if (mCartCount > 0 && cartEntity.has(RestConstants.JSON_CART_PRODUCTS_TAG)) {
-			fillCartHashMap(cartEntity.getJSONArray(RestConstants.JSON_CART_PRODUCTS_TAG));
-		}
+			mExtraCosts = cartEntity.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG, 0);
+			if (mCartCount > 0 && cartEntity.has(RestConstants.JSON_CART_PRODUCTS_TAG)) {
+				fillCartHashMap(cartEntity.getJSONArray(RestConstants.JSON_CART_PRODUCTS_TAG));
+			}
 
-		JSONArray priceRules = cartEntity.optJSONArray(RestConstants.JSON_CART_PRICE_RULES_TAG);
-		if (priceRules != null && priceRules.length() > 0) {
-			mPriceRules = new HashMap<>();
-			for (int i = 0; i < priceRules.length(); i++) {
-				JSONObject pRulesElement = priceRules.optJSONObject(i);
-				if (pRulesElement != null) {
-					Print.d("code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
-							+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
-					mPriceRules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG),
-							pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+			JSONArray priceRules = cartEntity.optJSONArray(RestConstants.JSON_CART_PRICE_RULES_TAG);
+			if (priceRules != null && priceRules.length() > 0) {
+				mPriceRules = new HashMap<>();
+				for (int i = 0; i < priceRules.length(); i++) {
+					JSONObject pRulesElement = priceRules.optJSONObject(i);
+					if (pRulesElement != null) {
+						Print.d("code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
+								+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+						mPriceRules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG),
+								pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+					}
 				}
 			}
+			Print.d("CART INIT: " + mTotal + " " + mTotalDouble + " " + mTotalConverted + " " + mCouponCode);
+			return true;
+
+		} catch (JSONException e){
+			return false;
 		}
-		Print.d("CART INIT: " + mTotal + " " + mTotalDouble + " " + mTotalConverted + " " + mCouponCode);
-		return true;
+
 	}
 
 	/**
@@ -262,14 +262,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		return mSubTotal;
 	}
 
-	public String getCouponDiscountConverted() {
-		return mCouponDiscountConverted;
-	}
-
-	public String getVatValueConverted() {
-		return mVatValueConverted;
-	}
-
 	/*
 	 * ########### PARCELABLE ###########
 	 */
@@ -308,8 +300,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeDouble(mSubTotalDouble);
 		dest.writeDouble(mSubTotalConvertedDouble);
 		dest.writeBooleanArray(new boolean[]{mVatLabelEnable});
-		dest.writeString(mCouponDiscountConverted);
-		dest.writeString(mVatValueConverted);
 	}
 
 	/**
@@ -336,8 +326,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mSubTotalDouble = in.readDouble();
 		mSubTotalConvertedDouble = in.readDouble();
 		in.readBooleanArray(new boolean[] { mVatLabelEnable });
-		mCouponDiscountConverted = in.readString();
-		mVatValueConverted = in.readString();
 	}
 
 	/**
