@@ -417,7 +417,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private int getCityPosition(ArrayList<AddressCity> cities, Address selecedAddress){
         for (int i = 0; i < cities.size(); i++) {
-            //alexandrapires: changed in mobapi 1.8
+            //alexandrapires: changed in mobapi 1.8 //see this behaviour when form loads properly
         //    if(cities.get(i).getId() == selecedAddress.getFkCustomerAddressCity()) return i;
            // if(cities.get(i).getId() == selecedAddress.getCity()) return i;
         }
