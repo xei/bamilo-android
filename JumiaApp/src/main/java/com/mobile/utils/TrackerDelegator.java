@@ -39,9 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1108,27 +1106,13 @@ public class TrackerDelegator {
                 @Override
                 public void run() {
                     for (PurchaseItem item : items) {
-                        Iterator it = skus.entrySet().iterator();
-                        try{
-                            while (it.hasNext()) {
-                                Map.Entry pair = (Map.Entry)it.next();
-
-                                if (skus.containsKey(item.sku)) {
-                                    Print.e(TAG, "BANNER KEY:" + pair.getKey() + " VALUE:" + pair.getValue());
-                                    // fires the GA event when the user finish a order, originating in one of the home teasers
-                                    AnalyticsGoogle.get().trackBannerFlowPurchase((String) pair.getValue(),
-                                            TrackingEvent.MAIN_BANNER_CLICK.getAction(),
-                                            item.sku,
-                                            (long) item.getPriceForTracking());
-
-                                    it.remove();
-                                }
+                            if (skus.containsKey(item.sku)) {
+                                Print.e(TAG, "BANNER KEY:" +item.sku + " VALUE:" + skus.get(item.sku));
+                                // fires the GA event when the user finish a order, originating in one of the home teasers
+                                AnalyticsGoogle.get().trackBannerFlowPurchase(skus.get(item.sku),
+                                        TrackingEvent.MAIN_BANNER_CLICK.getAction(),
+                                        item.sku, (long) item.getPriceForTracking());
                             }
-                        }catch(ConcurrentModificationException e){
-                            JumiaApplication.INSTANCE.clearBannerFlowSkus();
-                            return;
-                        }
-
                     }
                     JumiaApplication.INSTANCE.clearBannerFlowSkus();
                 }
