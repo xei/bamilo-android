@@ -1,12 +1,8 @@
 package com.mobile.newFramework.objects.product;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.IJSONSerializable;
-import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,72 +12,68 @@ import org.json.JSONObject;
  * @author GuilhermeSilva
  *
  */
-public class NewProductSimple implements IJSONSerializable, Parcelable {
+public class NewProductSimple extends NewProductBase {
 
-    private static final String TAG = NewProductSimple.class.getSimpleName();
+    private String mVariation;
+    private int mQuantity;
+    private int mMinDeliveryTime;
+    private int mMaxDeliveryTime;
 
-    protected String mSku;
-    protected String mValue;
-    protected double mPrice;
-    protected double mSpecialPrice;
-    protected double mPriceConverted;
-    protected double mSpecialPriceConverted;
-    protected int mStockQuantity;
 
     /**
-     * Empty constructor
+     * Empty constructor.
      */
     public NewProductSimple() {
-        // ...
+        super();
     }
 
     /* (non-Javadoc)
-         * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+     */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            // Mandatory
-            mSku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-            mValue = jsonObject.getString(RestConstants.JSON_VARIATION_VALUE_TAG);
-            mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            mStockQuantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
-            // Optional
-            mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
-            mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
-        } catch (JSONException e) {
-            Print.w(TAG, "WARNING: JSE ON PARSE PRODUCT SIMPLE", e);
-            return false;
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        //NORMAL COMPLETE SIMPLE PRODUCT
+        if(jsonObject.optJSONObject(RestConstants.JSON_META_TAG) != null){
+            jsonObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
         }
+        // Base
+        super.initialize(jsonObject);
+
+        // TODO
+        mVariation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
+        mVariation = jsonObject.optString(RestConstants.JSON_SIZE_TAG);
+
+        mQuantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+        mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_MIN_DELIVERY_TAG);
+        mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_MAX_DELIVERY_TAG);
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        return null;
+
+    public String getVariationValue() {
+        return mVariation;
+    }
+
+    public int getQuantity() {
+        return mQuantity;
+    }
+
+    public int getMinDeliveryTime() {
+        return mMinDeliveryTime;
+    }
+
+    public int getMaxDeliveryTime() {
+        return mMaxDeliveryTime;
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
-    }
-
-    /*
-	 * ############ PARCELABLE ############
-	 */
-
-	@Override
 	public int describeContents() {
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO
+        // TODO
 	}
 
 	private NewProductSimple(Parcel in){

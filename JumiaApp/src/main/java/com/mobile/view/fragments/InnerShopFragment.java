@@ -32,6 +32,7 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -417,11 +418,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void gotoProduct(String url) {
         Print.i(TAG, "PDV: " + url);
-        // TODO: SHOULD RECEIVE SKU
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG));
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        // Validate sku TODO: SHOULD RECEIVE SKU
+        String sku = RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG);
+        if (TextUtils.isNotEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+        }
     }
 
     /**

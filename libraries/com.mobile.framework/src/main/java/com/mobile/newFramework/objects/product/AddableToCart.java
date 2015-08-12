@@ -3,9 +3,6 @@ package com.mobile.newFramework.objects.product;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
-
 import java.util.ArrayList;
 
 /**
@@ -16,21 +13,18 @@ import java.util.ArrayList;
  * @author Andre Lopes
  * 
  */
-public class AddableToCart extends BaseProduct {
+public class AddableToCart extends NewProductPartial {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
-	private static final String TAG = AddableToCart.class.getSimpleName();
+	protected static final String TAG = AddableToCart.class.getSimpleName();
 
-	protected Double maxSavingPercentage;
-	protected boolean isNew;
 	protected int selectedSimple;
 	protected boolean isComplete;
 	protected ArrayList<String> imageList;
-	protected ArrayList<ProductSimple> simples;
+	protected ArrayList<NewProductSimple> simples;
 	protected ArrayList<Variation> variations;
 	protected ArrayList<String> knownVariations;
-	protected int favoriteSelected;
 	public Boolean hasVariations;
 	protected String mSelectedSimpleValue;
 	protected Boolean mChooseVariationWarning = false;
@@ -47,50 +41,11 @@ public class AddableToCart extends BaseProduct {
 		simples = new ArrayList<>();
 		variations = new ArrayList<>();
 		knownVariations = new ArrayList<>();
-		priceDouble = 0.0;
-		specialPriceDouble = 0.0;
-		price = "0";
-		specialPrice = "0";
-		maxSavingPercentage = 0.0;
-		url = "";
-		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
 		selectedSimple = NO_SIMPLE_SELECTED;
-		specialPriceConverted = 0d;
-		priceConverted = 0d;
 		mRatingsAverage = 0.0;
 		mSizeGuideUrl = "";
-	}
-
-	/**
-	 * @return the maxSavingPercentage
-	 */
-	public Double getMaxSavingPercentage() {
-		return maxSavingPercentage;
-	}
-
-	/**
-	 * @param maxSavingPercentage
-	 *            the maxSavingPercentage to set
-	 */
-	public void setMaxSavingPercentage(Double maxSavingPercentage) {
-		this.maxSavingPercentage = maxSavingPercentage;
-	}
-
-	/**
-	 * @return the isNew
-	 */
-	public boolean isNew() {
-		return isNew;
-	}
-
-	/**
-	 * @param isNew
-	 *            the isNew to set
-	 */
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
 	}
 
 	/**
@@ -134,17 +89,9 @@ public class AddableToCart extends BaseProduct {
 	}
 
 	/**
-	 * @param imageList
-	 *            the imageList to set
-	 */
-	public void setImageList(ArrayList<String> imageList) {
-		this.imageList = imageList;
-	}
-
-	/**
 	 * @return the simples
 	 */
-	public ArrayList<ProductSimple> getSimples() {
+	public ArrayList<NewProductSimple> getSimples() {
 		return simples;
 	}
 
@@ -152,7 +99,7 @@ public class AddableToCart extends BaseProduct {
 	 * @param simples
 	 *            the simples to set
 	 */
-	public void setSimples(ArrayList<ProductSimple> simples) {
+	public void setSimples(ArrayList<NewProductSimple> simples) {
 		this.simples = simples;
 	}
 
@@ -186,21 +133,6 @@ public class AddableToCart extends BaseProduct {
 		this.knownVariations = knownVariations;
 	}
 
-	/**
-	 * @return the favoriteSelected
-	 */
-	public int getFavoriteSelected() {
-		return favoriteSelected;
-	}
-
-	/**
-	 * @param favoriteSelected
-	 *            the favoriteSelected to set
-	 */
-	public void setFavoriteSelected(int favoriteSelected) {
-		this.favoriteSelected = favoriteSelected;
-	}
-
 	public boolean hasSimples() {
 		return simples != null && simples.size() > 1;
 	}
@@ -229,18 +161,6 @@ public class AddableToCart extends BaseProduct {
 		return mStockVariationWarning;
 	}
 
-	/**
-	 * Return the paid price for tracking.
-	 * 
-	 * @return double
-	 * @author sergiopereira
-	 */
-	public double getPriceForTracking() {
-		Print.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Print.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
-		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
-	}
-	
 	   /**
      * @return the categories
      */
@@ -266,16 +186,7 @@ public class AddableToCart extends BaseProduct {
     public Double getRatingsAverage() {
         return mRatingsAverage;
     }
-    
-    /**
-     * Validate special price.
-     * @return true or false
-     * @author sergiopereira
-     */
-    public boolean hasDiscount() {
-        return specialPriceConverted > 0;
-    }
-    
+
     /**
      * Set size guide URL
      * @author sergiopereira
@@ -291,15 +202,6 @@ public class AddableToCart extends BaseProduct {
      */
     public String getSizeGuideUrl() {
         return mSizeGuideUrl;
-    }
-    
-    /**
-     * Validate size guide url
-     * @return true or false
-     * @author sergiopereira
-     */
-    public boolean hasSizeGuide() {
-        return TextUtils.isEmpty(mSizeGuideUrl);
     }
 
 	/*
@@ -324,15 +226,12 @@ public class AddableToCart extends BaseProduct {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-		dest.writeDouble(maxSavingPercentage);
-		dest.writeByte((byte) (isNew ? 1 : 0));
 		dest.writeInt(selectedSimple);
 		dest.writeByte((byte) (isComplete ? 1 : 0));
 		dest.writeList(imageList);
 		dest.writeList(simples);
 		dest.writeList(variations);
 		dest.writeList(knownVariations);
-		dest.writeInt(favoriteSelected);
 		dest.writeByte((byte) (hasVariations ? 1 : 0));
 		dest.writeString(mSelectedSimpleValue);
 		dest.writeByte((byte) (mChooseVariationWarning ? 1 : 0));
@@ -344,19 +243,16 @@ public class AddableToCart extends BaseProduct {
 
 	private AddableToCart(Parcel in) {
         super(in);
-		maxSavingPercentage = in.readDouble();
-		isNew = in.readByte() == 1;
 		selectedSimple = in.readInt();
 		isComplete = in.readByte() == 1;
 		imageList = new ArrayList<>();
 		in.readList(imageList, String.class.getClassLoader());
 		simples = new ArrayList<>();
-		in.readList(simples, ProductSimple.class.getClassLoader());
+		in.readList(simples, NewProductSimple.class.getClassLoader());
 		variations = new ArrayList<>();
 		in.readList(variations, Variation.class.getClassLoader());
 		knownVariations = new ArrayList<>();
 		in.readList(knownVariations, String.class.getClassLoader());
-		favoriteSelected = in.readInt();
 		hasVariations = in.readByte() == 1;
 		mSelectedSimpleValue = in.readString();
 		mChooseVariationWarning = in.readByte() == 1;

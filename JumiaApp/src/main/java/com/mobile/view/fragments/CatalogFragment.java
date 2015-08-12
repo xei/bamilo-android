@@ -28,7 +28,7 @@ import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.NewProductPartial;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -550,7 +550,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
-        Product product = ((CatalogGridAdapter) adapter).getItem(position);
+        NewProductPartial product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
         if (product != null) {
             // Show product
@@ -568,7 +568,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     @Override
     public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
-        Product product = ((CatalogGridAdapter) adapter).getItem(position);
+        NewProductPartial product = ((CatalogGridAdapter) adapter).getItem(position);
         try {
             // Get item
             if (product.isWishList()) {

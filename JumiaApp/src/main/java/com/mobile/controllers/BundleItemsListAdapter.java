@@ -72,15 +72,15 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     }
     
     public interface OnItemSelected {
-        public void SelectedItem();
+        void SelectedItem();
     }
     
     public interface OnItemChecked {
-        public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos);
+        void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos);
     }
     
     public interface OnSimplePressed {
-        public void PressedSimple(ProductBundleProduct selectedProduct);
+        void PressedSimple(ProductBundleProduct selectedProduct);
     }
 
     /**
@@ -120,12 +120,12 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         // Set title
         holder.mTitle.setText(item.getName());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
         if(item.hasDiscount() ){
-            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxSpecialPrice()));
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
         } else {
-            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxPrice()));
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
         }
         
         // Set listener and tags

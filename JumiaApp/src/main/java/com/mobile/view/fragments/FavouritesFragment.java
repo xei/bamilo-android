@@ -20,7 +20,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.ProductSimple;
+import com.mobile.newFramework.objects.product.NewProductSimple;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -301,7 +301,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
             AddableToCart addableToCart = mAddableToCartList.get(position);
-            addableToCart.setFavoriteSelected(position);
+            //addableToCart.setFavoriteSelected(position);
             showVariantsDialog(addableToCart);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON CLICK VARIATION");
@@ -319,7 +319,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         try {
             int position = Integer.parseInt(view.getTag().toString());
             AddableToCart addableToCart = mAddableToCartList.get(position);
-            addableToCart.setFavoriteSelected(position);
+            //addableToCart.setFavoriteSelected(position);
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, addableToCart.getSku());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -351,7 +351,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
             String sku = addableToCart.getSku();
             if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
-                sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getAttributeByKey(RestConstants.JSON_SKU_TAG);
+                sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getSku();
 
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
@@ -490,8 +490,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         for (int i = 0; i < mNumberOfItemsForCart; i++) {
             AddableToCart addableToCart = mAddableToCartList.get(i);
             if (addableToCart.isComplete()) {
-                ProductSimple simple = getSelectedSimple(addableToCart);
-                String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
+                NewProductSimple simple = getSelectedSimple(addableToCart);
+                String sku = simple.getSku();
 
                 productBySku.put(sku, addableToCart.getSku());
             }
@@ -582,8 +582,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     protected synchronized void triggerAddProductToCart(AddableToCart addableToCart, int position, String keyRemoveTable) {
         Print.i(TAG, "ON TRIGGER ADD TO CART: " + position);
-        ProductSimple simple = getSelectedSimple(addableToCart);
-        String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
+        NewProductSimple simple = getSelectedSimple(addableToCart);
+        String sku = simple.getSku();
         // Item data
         ContentValues values = new ContentValues();
         values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, addableToCart.getSku());
@@ -644,12 +644,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @return ProductSimple
      * @author sergiopereira
      */
-    protected ProductSimple getSelectedSimple(AddableToCart addableToCart) {
+    protected NewProductSimple getSelectedSimple(AddableToCart addableToCart) {
         Print.i(TAG, "ON GET SELECTED SIMPLE: " + addableToCart.getSimples().size());
         // Get item
         int selectedSimple = addableToCart.getSelectedSimple();
-//         if (selectedSimple >= addableToCart.getSimples().size()) return null;
-//         else if (selectedSimple == AddableToCart.NO_SIMPLE_SELECTED) return null;
         return addableToCart.getSimples().get(selectedSimple);
     }
 
@@ -1062,7 +1060,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     protected ArrayList<String> createSimpleVariants(AddableToCart addableToCart, ArrayList<String> mSimpleVariantsAvailable) {
         Print.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants" + addableToCart.getName());
-        ArrayList<ProductSimple> simples = new ArrayList<>(addableToCart.getSimples());
+        ArrayList<NewProductSimple> simples = new ArrayList<>(addableToCart.getSimples());
         ArrayList<String> variations = addableToCart.getKnownVariations();
         if (variations == null || variations.size() == 0) {
             variations = new ArrayList<>();
@@ -1073,9 +1071,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(addableToCart.getSimples(), variations);
 
         ArrayList<String> variationValues = new ArrayList<>();
-        for (ProductSimple simple : simples) {
+        for (NewProductSimple simple : simples) {
             Print.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants in");
-            String value = calcVariationStringForSimple(simple, foundKeys);
+            String value = simple.getVariationValue(); // calcVariationStringForSimple(simple, foundKeys);
 
             /**
              * TODO: Uncommented to validate the stock
@@ -1095,41 +1093,41 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         return variationValues;
     }
 
-    protected Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples, ArrayList<String> variations) {
+    protected Set<String> scanSimpleAttributesForKnownVariants(final ArrayList<NewProductSimple> simples, final ArrayList<String> variations) {
         Set<String> foundVariations = new HashSet<>();
         Print.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants");
-        for (ProductSimple simple : simples) {
+        for (NewProductSimple simple : simples) {
             Print.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants in");
-            scanSimpleForKnownVariants(simple, foundVariations, variations);
+            // TODO scanSimpleForKnownVariants(simple, foundVariations, variations);
         }
         return foundVariations;
     }
 
-    protected void scanSimpleForKnownVariants(ProductSimple simple, Set<String> foundVariations, ArrayList<String> variations) {
-        for (String variation : variations) {
-            String attr = simple.getAttributeByKey(variation);
-            Print.i(TAG, "scanSimpleForKnownVariations: variation = " + variation + " attr = " + attr);
-            if (attr == null) {
-                continue;
-            }
-            foundVariations.add(variation);
-        }
-    }
+//    protected void scanSimpleForKnownVariants(NewProductSimple simple, Set<String> foundVariations, ArrayList<String> variations) {
+//        for (String variation : variations) {
+//            String attr = simple.getAttributeByKey(variation);
+//            Print.i(TAG, "scanSimpleForKnownVariations: variation = " + variation + " attr = " + attr);
+//            if (attr == null) {
+//                continue;
+//            }
+//            foundVariations.add(variation);
+//        }
+//    }
 
-    protected String calcVariationStringForSimple(ProductSimple simple, Set<String> keys) {
-        String delim = ";";
-        String loopDelim = "";
-        StringBuilder sb = new StringBuilder();
-        for (String key : keys) {
-            String value = simple.getAttributeByKey(key);
-            if (value != null) {
-                sb.append(loopDelim);
-                sb.append(value);
-                loopDelim = delim;
-            }
-        }
-
-        return sb.toString();
-    }
+//    protected String calcVariationStringForSimple(NewProductSimple simple, Set<String> keys) {
+//        String delim = ";";
+//        String loopDelim = "";
+//        StringBuilder sb = new StringBuilder();
+//        for (String key : keys) {
+//            String value = simple.getAttributeByKey(key);
+//            if (value != null) {
+//                sb.append(loopDelim);
+//                sb.append(value);
+//                loopDelim = delim;
+//            }
+//        }
+//
+//        return sb.toString();
+//    }
 
 }

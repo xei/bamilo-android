@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,12 +55,13 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.LastViewed;
+import com.mobile.newFramework.objects.product.NewProductBase;
+import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.NewProductSimple;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductBundleProduct;
 import com.mobile.newFramework.objects.product.ProductBundleSimple;
-import com.mobile.newFramework.objects.product.ProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -95,9 +97,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 
@@ -147,7 +147,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private DialogListFragment dialogListFragment;
 
-    private CompleteProduct mCompleteProduct;
+    private NewProductComplete mCompleteProduct;
 
     private Button mAddToCartButton;
 
@@ -162,8 +162,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private TextView mProductRatingCount;
 
     private Button mVarianceButton;
-
-    private boolean mHideVariationSelection;
 
     private TextView mVarianceText;
 
@@ -185,7 +183,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isAddingProductToCart = false;
 
-    private ArrayList<String> variations;
+    //private ArrayList<String> variations;
 
     private String mDeepLinkSimpleSize;
 
@@ -353,13 +351,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Save the current fragment type on orientation change
-        if (!mHideVariationSelection) {
-            outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
-        }
         // Save product bundle
         if (mProductBundle != null) {
             outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
+            outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
         }
     }
 
@@ -465,8 +460,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mPriceText = (TextView) view.findViewById(R.id.product_price_normal);
         // Variations
         mVarianceContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_variant_container);
-        mVarianceText = (TextView) view.findViewById(R.id.product_detail_product_variant_text);
-        mVarianceButton = (Button) view.findViewById(R.id.product_detail_product_variant_button);
+        mVarianceText = (TextView) view.findViewById(R.id.product_detail_product_variant_text); // TODO
+        mVarianceButton = (Button) view.findViewById(R.id.product_detail_product_variant_button); // TODO
         mVarianceButton.setOnClickListener(this);
         // Rating
         ViewGroup mProductRatingContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_rating_container);
@@ -546,28 +541,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    /**
-     * 
-     */
-    private void setContentInformation() {
-        Print.d(TAG, "SET DATA");
-        updateVariants();
-        updateStockInfo();
-        preselectASimpleItem();
-        displayPriceInfoOverallOrForSimple();
-        displayRatingInfo();
-        displayVariantsContainer();
-        displaySellerInfo();
-        displayOffersInfo();
-    }
-
-    private void displayOffersInfo() {
+    private void setOffersInfo() {
         if (mCompleteProduct != null && mCompleteProduct.getTotalOffers() > 0) {
             offersContainer.setVisibility(View.VISIBLE);
-
             numOffers.setText(" (" + mCompleteProduct.getTotalOffers() + ")");
             minOffers.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getMinPriceOffer()));
-
             if (DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())) {
                 offersContent.setOnClickListener(this);
             } else {
@@ -580,177 +558,81 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * 
-     */
-    private void preselectASimpleItem() {
-        if (mSelectedSimple != NO_SIMPLE_SELECTED)
-            return;
-
-        ArrayList<ProductSimple> ps = mCompleteProduct.getSimples();
-        Set<String> knownVariations = scanSimpleAttributesForKnownVariants(ps);
-
-        if (ps.size() == 1) {
-            if (knownVariations.size() <= 1) {
-                mSelectedSimple = 0;
-                mHideVariationSelection = true;
-            } else {
-                mSelectedSimple = NO_SIMPLE_SELECTED;
-            }
-        } else {
-            mHideVariationSelection = false;
-            mSelectedSimple = NO_SIMPLE_SELECTED;
-        }
-
-    }
-
-    /**
-     * 
-     * @param simples
-     * @return
-     */
-    private Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples) {
-        Set<String> foundVariations = new HashSet<>();
-        Print.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants");
-        for (ProductSimple simple : simples) {
-            Print.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants in");
-            scanSimpleForKnownVariants(simple, foundVariations);
-        }
-        return foundVariations;
-    }
-
-    /**
-     * 
-     * @param simple
-     * @param foundVariations
-     */
-    private void scanSimpleForKnownVariants(ProductSimple simple, Set<String> foundVariations) {
-        for (String variation : variations) {
-            String attr = simple.getAttributeByKey(variation);
-            Print.i(TAG, "scanSimpleForKnownVariations: variation = " + variation + " attr = " + attr);
-            if (attr == null)
-                continue;
-            foundVariations.add(variation);
-        }
-    }
-
-    /**
-     * 
      * @return
      */
     private ArrayList<String> createSimpleVariants() {
-        Print.i(TAG,
-                "scanSimpleForKnownVariations : createSimpleVariants" + mCompleteProduct.getName());
-        ArrayList<ProductSimple> simples = new ArrayList<>(
-                mCompleteProduct.getSimples());
-        variations = mCompleteProduct.getKnownVariations();
-        if (variations == null || variations.size() == 0) {
-            variations = new ArrayList<>();
-            variations.add("size");
-            variations.add("color");
-            variations.add("variation");
-        }
-        Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
-
+        Print.i(TAG, "CREATE VALID SIMPLE VARIATIONS");
+        // Available simples
         mSimpleVariantsAvailable = new ArrayList<>();
         ArrayList<String> variationValues = new ArrayList<>();
-        for (ProductSimple simple : simples) {
-            Print.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants in");
-            String value = calcVariationStringForSimple(simple, foundKeys);
-            String quantity = simple.getAttributeByKey(ProductSimple.QUANTITY_TAG);
-
-            if (quantity != null && Long.parseLong(quantity) > 0) {
+        for (NewProductSimple simple : mCompleteProduct.getSimples()) {
+            String value = simple.getVariationValue();
+            int quantity = simple.getQuantity();
+            Print.i(TAG, "SIMPLE VARIATION: " + value + " " + quantity);
+            if (quantity > 0) {
                 variationValues.add(value);
                 mSimpleVariantsAvailable.add(value);
             } else {
                 variationValues.add(value);
             }
-
         }
         return variationValues;
     }
 
     /**
      * 
-     * @param simple
-     * @param keys
      * @return
      */
-    private String calcVariationStringForSimple(ProductSimple simple, Set<String> keys) {
-        String delim = ";";
-        String loopDelim = "";
-        StringBuilder sb = new StringBuilder();
-        for (String key : keys) {
-            String value = simple.getAttributeByKey(key);
-            if (value != null) {
-                sb.append(loopDelim);
-                sb.append(value);
-                loopDelim = delim;
-            }
+    private @Nullable NewProductSimple getSelectedSimple() {
+        // Case Own simple variation
+        if(mCompleteProduct.hasOwnSimpleVariation()) {
+            return  mCompleteProduct.getSimples().get(0);
         }
-
-        return sb.toString();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private ProductSimple getSelectedSimple() {
-        ProductSimple simple = null;
-        try {
-            // Case invalid selection
-            if (!(mSelectedSimple >= mCompleteProduct.getSimples().size()) && !(mSelectedSimple == NO_SIMPLE_SELECTED)) {
-                simple = mCompleteProduct.getSimples().get(mSelectedSimple);
-            }
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON GET SELECTED SIMPLE");
+        // Case Multi simple variations
+        else if(mCompleteProduct.hasMultiSimpleVariations() && mSelectedSimple != NO_SIMPLE_SELECTED && mSelectedSimple < mCompleteProduct.getSimples().size()) {
+            return mCompleteProduct.getSimples().get(mSelectedSimple);
         }
-        return simple;
+        // Case invalid
+        else {
+            return null;
+        }
     }
 
     /**
      * 
      */
-    private void displayPriceInfoOverallOrForSimple() {
-        ProductSimple simple = getSelectedSimple();
-        if (mSelectedSimple == NO_SIMPLE_SELECTED || simple == null) {
-            String unitPrice = String.valueOf(mCompleteProduct.getPrice());
-            String specialPrice = String.valueOf(mCompleteProduct.getSpecialPrice());
-            int discountPercentage = mCompleteProduct.getMaxSavingPercentage();
-            displayPriceInfo(unitPrice, specialPrice, discountPercentage);
+    private void setPriceInfoOverallOrForSimple() {
+        // Get selected simple variation
+        NewProductSimple simple = getSelectedSimple();
+        // Case valid simple
+        if (simple != null) {
+            setProductPriceInfo(simple);
         } else {
-            // Simple Products prices don't come with currency formatted
-            String unitPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
-            String specialPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-            int discountPercentage = mCompleteProduct.getMaxSavingPercentage();
-            displayPriceInfo(unitPrice, specialPrice, discountPercentage);
+            setProductPriceInfo(mCompleteProduct);
         }
     }
 
     /**
-     * 
-     * @param unitPrice
-     * @param specialPrice
-     * @param discountPercentage
+     *
      */
-    private void displayPriceInfo(String unitPrice, String specialPrice, int discountPercentage) {
-        Print.d(TAG, "displayPriceInfo: unitPrice = " + unitPrice + " specialPrice = " + specialPrice);
-        if (specialPrice == null || specialPrice.equals(unitPrice)) {
-            // display only the normal price
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-            mPriceText.setVisibility(View.GONE);
-        } else {
+    private void setProductPriceInfo(NewProductBase productBase) {
+        Print.d(TAG, "SHOW PRICE INFO: " + productBase.getPrice() + " " + productBase.getSpecialPrice());
+        if (productBase.hasDiscount()) {
             // display reduced and special price
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(specialPrice));
+            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
             mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-            mPriceText.setText(CurrencyFormatter.formatCurrency(unitPrice));
+            mPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
+        } else {
+            // display only the normal price
+            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+            mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
+            mPriceText.setVisibility(View.GONE);
         }
         // Set discount percentage value
-        if (discountPercentage > 0) {
-            String discount = String.format(getString(R.string.format_discount_percentage), discountPercentage);
-            Print.i(TAG, "displayPriceInfo:" + discount);
+        if (productBase.getMaxSavingPercentage() > 0) {
+            String discount = String.format(getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage());
             mDiscountPercentageText.setText(discount);
             mDiscountPercentageText.setVisibility(View.VISIBLE);
         } else {
@@ -758,110 +640,38 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    private void updateStockInfo() {
-        /**
-         * No simple selected show the stock for the current product
-         */
-        ProductSimple currentSimple = mCompleteProduct.getSimples().get(0);
-        if (mSelectedSimple == NO_SIMPLE_SELECTED && currentSimple != null) {
-            // try {
-            // long stockQuantity = -1;
-            // stockQuantity =
-            // Long.valueOf(currentSimple.getAttributeByKey(ProductSimple.QUANTITY_TAG));
-            // // Log.d(TAG, "code1stock STOCK:  NO SIMPLE SELECTED " + stockQuantity);
-            // Bundle bundle = new Bundle();
-            // bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
-            // FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment,
-            // bundle, 4);
-            return;
-            // } catch (NumberFormatException e) {
-            // Log.w(TAG, "code1stock STOCK INFO: quantity in simple is null: ", e);
-            // }
-        }
-
-        /**
-         * Simple selected but is null
-         */
-        if (getSelectedSimple() == null) {
-            // Log.d(TAG, "code1stock STOCK:  SIMPLE IS NULL " + mSelectedSimple);
-            // Bundle bundle = new Bundle();
-            // bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, -1);
-            // FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment,
-            // bundle, 4);
-        }
-
-        /**
-         * Simple selected
-         */
-        // Log.d(TAG, "code1stock SIMPLE " + mSelectedSimple);
-        /*-long stockQuantity = 0;
-        try {
-            stockQuantity = Long.valueOf(getSelectedSimple().getAttributeByKey(
-                    ProductSimple.QUANTITY_TAG));
-        } catch (NumberFormatException e) {
-            Log.w(TAG, "code1stock: quantity in simple is not a number:", e);
-        }
-
-        if (stockQuantity > 0) {
-            mAddToCartButton.setBackgroundResource(R.drawable.btn_orange);
-        } else {
-            mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
-        }*/
-
-        // Log.d(TAG, "code1stock UPDATE STOCK INFO: " + stockQuantity);
-
-        // Bundle bundle = new Bundle();
-        // bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, stockQuantity);
-        // FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment,
-        // bundle, 4);
-
-    }
-
-    private void displayRatingInfo() {
-
-        float ratingAverage = mCompleteProduct.getRatingsAverage().floatValue();
-        Integer ratingCount = mCompleteProduct.getRatingsCount();
-        Integer reviewsCount = mCompleteProduct.getReviewsCount();
-
+    /**
+     * TODO: Use Placeholders
+     */
+    private void setRatingInfo() {
+        float ratingAverage = (float) mCompleteProduct.getAvgRating();
+        Integer ratingCount = mCompleteProduct.getTotalRatings();
+        Integer reviewsCount = mCompleteProduct.getTotalReviews();
         mProductRating.setRating(ratingAverage);
-
         String rating = getString(R.string.string_ratings).toLowerCase();
         if (ratingCount == 1)
             rating = getString(R.string.string_rating).toLowerCase();
-
         String review = getString(R.string.reviews).toLowerCase();
         if (reviewsCount == 1)
             review = getString(R.string.review).toLowerCase();
-
-        mProductRatingCount.setText("( " + String.valueOf(ratingCount) + " " + rating + " / "
-                + String.valueOf(reviewsCount) + " " + review + ")");
-
-        // if(ratingCount == 1){
-        // mProductRatingCount.setText(String.valueOf(ratingCount) + " " +
-        // getString(R.string.review) );
-        // } else {
-        // mProductRatingCount.setText(String.valueOf(ratingCount) + " " +
-        // getString(R.string.reviews) );
-        // }
-        //
-        // mProductRatingCount.setText("(" + String.valueOf(ratingCount) + ")");
+        mProductRatingCount.setText("( " + String.valueOf(ratingCount) + " " + rating + " / " + String.valueOf(reviewsCount) + " " + review + ")");
         loadingRating.setVisibility(View.GONE);
     }
 
-    public void displayVariantsContainer() {
-        if (mHideVariationSelection) {
-            Print.d(TAG, "HIDE VARIATIONS");
-            mVarianceContainer.setVisibility(View.GONE);
-        } else {
-            Print.d(TAG, "SHOW VARIATIONS");
+    public void setSimpleVariationsContainer() {
+        Print.d(TAG, "PRODUCT HAS SIMPLE VARIATIONS: " + mCompleteProduct.hasMultiSimpleVariations());
+        if (mCompleteProduct.hasMultiSimpleVariations()) {
             mVarianceContainer.setVisibility(View.VISIBLE);
+            updateSelectedProductSimple();
+        } else {
+            mVarianceContainer.setVisibility(View.GONE);
         }
     }
 
     /**
      * function responsible for showing the seller info
      */
-    public void displaySellerInfo() {
+    public void setSellerInfo() {
         if (mCompleteProduct.hasSeller()) {
             sellerView.setVisibility(View.VISIBLE);
             mSellerName.setText(mCompleteProduct.getSeller().getName());
@@ -872,14 +682,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
             //
             int visibility = View.GONE;
+            // TODO placeholder
             if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
-                    mCompleteProduct.getSimples().get(0).hasAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG) &&
-                    mCompleteProduct.getSimples().get(0).hasAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG) &&
-                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG).equals("0") &&
-                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0")) {
+                    mCompleteProduct.getSimples().get(0).getMinDeliveryTime() > 0 &&
+                    mCompleteProduct.getSimples().get(0).getMaxDeliveryTime() > 0) {
                 //
-                String min = mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG);
-                String max = mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG);
+                String min = "" + mCompleteProduct.getSimples().get(0).getMinDeliveryTime();
+                String max = "" + mCompleteProduct.getSimples().get(0).getMaxDeliveryTime();
                 mSellerDeliveryTime.setText(min + " - " + max + " " + getString(R.string.product_delivery_days));
                 visibility = View.VISIBLE;
             }
@@ -889,109 +698,74 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    public void updateVariants() {
-        // Log.i(TAG, "code1stock size selected : "+mSelectedSimple);
+    public void updateSelectedProductSimple() {
+        Log.i(TAG, "UPDATE THE SELECTED PRODUCT SIMPLE: " + mSelectedSimple);
+
         if (mSelectedSimple == NO_SIMPLE_SELECTED) {
             mVarianceButton.setText("...");
         }
 
         mSimpleVariants = createSimpleVariants();
         Print.i(TAG, "scanSimpleForKnownVariations : updateVariants " + mSimpleVariants.size());
-        ProductSimple simple = getSelectedSimple();
-
-        // mVariantChooseError.setVisibility(View.GONE);
-
+        NewProductSimple selectedSimple = getSelectedSimple();
         // Log.i(TAG, "code1stock size selected!" + mSelectedSimple);
-        if (simple != null) {
+
+        if (selectedSimple != null) {
+            // Set variation label
+            mVarianceText.setText(mCompleteProduct.getVariationName());
+            mVarianceText.setTextColor(getResources().getColor(R.color.grey_middle));
+            // Set variation value
             Print.i(TAG, "size is : " + mSimpleVariants.get(mSelectedSimple));
-
-            // mVariantPriceContainer.setVisibility(View.VISIBLE);
-            String normPrice = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
-            String specPrice = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-
-            if (TextUtils.isEmpty(specPrice)) {
-                //normPrice = currencyFormatHelper(normPrice);
-                // display only the normal price
-                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(normPrice));
+            mVarianceButton.setText(mSimpleVariants.get(mSelectedSimple));
+            // Set product price
+            if (selectedSimple.hasDiscount()) {
+                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(selectedSimple.getPrice()));
                 mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
                 mPriceText.setVisibility(View.GONE);
-            }
-            else {
-                //normPrice = currencyFormatHelper(normPrice);
-                //specPrice = currencyFormatHelper(specPrice);
-                // display reduced and special price
-                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(specPrice));
+            } else {
+                mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(selectedSimple.getSpecialPrice()));
                 mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-                mPriceText.setText(CurrencyFormatter.formatCurrency(normPrice));
+                mPriceText.setText(CurrencyFormatter.formatCurrency(selectedSimple.getPrice()));
                 mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 mPriceText.setVisibility(View.VISIBLE);
             }
-
-            mVarianceButton.setText(mSimpleVariants.get(mSelectedSimple));
-            mVarianceText.setTextColor(getResources().getColor(R.color.grey_middle));
         }
-
     }
 
 
     private void executeAddProductToCart() {
-        ProductSimple simple = getSelectedSimple();
+        // Get selected simple
+        NewProductSimple simple = getSelectedSimple();
+        // Validate simple
         if (simple == null) {
-//            getBaseActivity().showWarningVariation(true);
             showVariantsDialog();
             return;
         }
-
-        long quantity = 0;
-        try {
-            quantity = Long.valueOf(simple.getAttributeByKey(ProductSimple.QUANTITY_TAG));
-        } catch (NumberFormatException e) {
-            Print.e(TAG, "executeAddProductToCart: quantity in simple is not a quantity", e);
-        }
-
-        if (quantity == 0) {
-            Toast.makeText(getBaseActivity(), R.string.product_outof_stock, Toast.LENGTH_SHORT)
-                    .show();
+        // Validate quantity
+        if (simple.getQuantity() == 0) {
+            Toast.makeText(getBaseActivity(), R.string.product_outof_stock, Toast.LENGTH_SHORT).show();
             isAddingProductToCart = false;
             return;
         }
-
-        String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
-
-        if (TextUtils.isEmpty(sku)) {
-            isAddingProductToCart = false;
-            return;
-        }
-
+        // Validate simple sku
+        String simpleSku = simple.getSku();
         // Add one unity to cart
-        triggerAddItemToCart(mCompleteProduct.getSku(), sku);
-
-        // Log.i(TAG, "code1price : " + price);
-
+        triggerAddItemToCart(mCompleteProduct.getSku(), simpleSku);
+        // Tracking
         Bundle bundle = new Bundle();
-        bundle.putString(TrackerDelegator.SKU_KEY, sku);
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
-        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-
-        String[] categoriesList = mCompleteProduct.getCategoriesList();
-
-        if (null != mCompleteProduct && categoriesList.length > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[categoriesList.length - 1]);
-            if (categoriesList.length > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[categoriesList.length - 2]);
-            }
-        } else {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
-        }
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
-    private void displayProduct(CompleteProduct product) {
+    private void displayProduct(NewProductComplete product) {
         Print.d(TAG, "SHOW PRODUCT");
         // Show wizard
         isToShowWizard();
@@ -1027,15 +801,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate gallery
         setProductGallery(product);
         // Validate related items
-
-        ArrayList<LastViewed> RelatedItemsArrayList = new ArrayList<LastViewed>(mCompleteProduct.getRelatedProducts());
+        ArrayList<NewProductPartial> RelatedItemsArrayList = new ArrayList<>(mCompleteProduct.getRelatedProducts());
         showRelatedItemsLayout(RelatedItemsArrayList);
-
         // Validate variations
         setProductVariations();
         // Show product info
-        setContentInformation();
-        // Bundles
+        setSimpleVariationsContainer();
+        setPriceInfoOverallOrForSimple();
+        setRatingInfo();
+        setSellerInfo();
+        setOffersInfo();
         setBundles(product);
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
@@ -1048,7 +823,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param completeProduct
      * @author sergiopereira
      */
-    private void setProductGallery(CompleteProduct completeProduct) {
+    private void setProductGallery(NewProductComplete completeProduct) {
         // Show loading
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         // Case product without images
@@ -1061,7 +836,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * 
      * @param product
      */
-    private void setBundles(CompleteProduct product) {
+    private void setBundles(NewProductComplete product) {
         if (product.getProductBundle() != null && product.getProductBundle().getBundleProducts().size() > 0) {
             displayBundle(product.getProductBundle());
         } else
@@ -1143,11 +918,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Method used to create the view
-     * 
-     * @param relatedItemsList
      * @modified sergiopereira
      */
-    private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) {
+    private void showRelatedItemsLayout(ArrayList<NewProductPartial> relatedItemsList) {
         if(relatedItemsList == null){
             mRelatedContainer.setVisibility(View.GONE);
             return;
@@ -1223,16 +996,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
-        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
-
-        String[] categoriesList = mCompleteProduct.getCategoriesList();
-        if (null != mCompleteProduct && categoriesList.length > 0) {
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, categoriesList[0]);
-            if (categoriesList.length > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, categoriesList[1]);
-            }
-        }
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories());
         return bundle;
     }
 
@@ -1243,13 +1009,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param product
      * @author sergiopereira
      */
-    private void locateSimplePosition(String simpleSize, CompleteProduct product) {
+    private void locateSimplePosition(String simpleSize, NewProductComplete product) {
         Print.d(TAG, "DEEP LINK SIMPLE SIZE: " + simpleSize);
         if (product != null && product.getSimples() != null && product.getSimples().size() > 0)
             for (int i = 0; i < product.getSimples().size(); i++) {
-                ProductSimple simple = product.getSimples().get(i);
-                if (simple != null && simple.getAttributeByKey("size") != null
-                        && simple.getAttributeByKey("size").equals(simpleSize))
+                NewProductSimple simple = product.getSimples().get(i);
+                if (simple != null && simple.getVariationValue() != null && simple.getVariationValue().equals(simpleSize))
                     mSelectedSimple = i;
             }
         Print.d(TAG, "DEEP LINK SIMPLE POSITION: " + mSelectedSimple);
@@ -1332,7 +1097,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void goToProductOffers() {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProduct.getName());
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1340,18 +1105,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * 
      */
     private void onClickRating() {
-
         JumiaApplication.cleanRatingReviewValues();
         JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
-
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProduct.getSku());
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
-        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
-                bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1361,7 +1122,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (null != mCompleteProduct && (!CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) ||
                 (!TextUtils.isEmpty(mCompleteProduct.getShortDescription()) && !TextUtils.isEmpty(mCompleteProduct.getDescription())) )) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -1430,17 +1190,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param completeProduct
      * @author sergiopereira
      */
-    private void onClickShare(CompleteProduct completeProduct) {
+    private void onClickShare(NewProductComplete completeProduct) {
         try {
             String extraSubject = getString(R.string.share_subject, getString(R.string.app_name_placeholder));
-            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
-            String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mCompleteProduct.getUrl().replace(apiVersion, "");
+            String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mCompleteProduct.getShareUrl();
             Intent shareIntent = getBaseActivity().createShareIntent(extraSubject, extraMsg);
-
             shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
-            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategoriesList()[0]);
+            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories());
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON CLICK SHARE");
         } catch (IndexOutOfBoundsException e) {
@@ -1507,9 +1265,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onDialogListItemSelect(int position, String value) {
         mSelectedSimple = position;
         Print.i(TAG, "size selected! onDialogListItemSelect : " + mSelectedSimple);
-        updateVariants();
+        updateSelectedProductSimple();
 //        updateStockInfo();
-        displayPriceInfoOverallOrForSimple();
+        setPriceInfoOverallOrForSimple();
 
         if(isAddingProductToCart) {
             executeAddProductToCart();
@@ -1627,9 +1385,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             isAddingProductToCart = false;
             mAddToCartButton.setEnabled(true);
             break;
-        case SEARCH_PRODUCT:
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getBaseActivity().onBackPressed();
                 return;
@@ -1767,8 +1524,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 addToShoppingCartFailed();
                 return;
             }
-        case SEARCH_PRODUCT:
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             showContinueShopping();
         case GET_PRODUCT_BUNDLE:
             hideBundle();
@@ -1845,9 +1601,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             if (bundleProducts.get(i).isChecked()) {
                 if (bundleProducts.get(i).hasDiscount()) {
-                    total = total + bundleProducts.get(i).getSpecialPriceDouble();
+                    total = total + bundleProducts.get(i).getSpecialPrice();
                 } else {
-                    total = total + bundleProducts.get(i).getPriceDouble();
+                    total = total + bundleProducts.get(i).getPrice();
                 }
             }
         }
@@ -1937,9 +1693,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos) {
         // if isChecked is false then item was deselected
-        double priceChange = selectedProduct.getBundleProductMaxSpecialPriceDouble();
+        double priceChange = selectedProduct.getSpecialPrice();
         if (priceChange == 0) {
-            priceChange = selectedProduct.getBundleProductMaxPriceDouble();
+            priceChange = selectedProduct.getPrice();
         }
         double totalPrice = (Double) mBundleTextTotal.getTag();
 
@@ -2031,7 +1787,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         JumiaApplication.INSTANCE.setFormReviewValues(null);
 
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProduct.getSku());
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
         bundle.putString(SELLER_ID, mCompleteProduct.getSeller().getSellerId());

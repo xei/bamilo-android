@@ -51,7 +51,6 @@ public class Seller implements IJSONSerializable, Parcelable {
      */
     public Seller(JSONObject sellerObject) {
         super();
-//        Log.i(TAG, "JSON constructor");
         initialize(sellerObject);
     }
 
@@ -71,36 +70,12 @@ public class Seller implements IJSONSerializable, Parcelable {
         this.mUrl = mUrl;
     }
 
-    public int getMinDeliveryTime() {
-        return mMinDeliveryTime;
-    }
-
-    public void setMinDeliveryTime(int mMinDeliveryTime) {
-        this.mMinDeliveryTime = mMinDeliveryTime;
-    }
-
-    public int getMaxDeliveryTime() {
-        return mMaxDeliveryTime;
-    }
-
-    public void setMaxDeliveryTime(int mMaxDeliveryTime) {
-        this.mMaxDeliveryTime = mMaxDeliveryTime;
-    }
-
     public int getRatingCount() {
         return mRatingCount;
     }
 
-    public void setRatingCount(int mRatingCount) {
-        this.mRatingCount = mRatingCount;
-    }
-
     public int getRatingValue() {
         return mRatingValue;
-    }
-
-    public void setRatingValue(int mRatingValue) {
-        this.mRatingValue = mRatingValue;
     }
 
     public String getSellerId() {
@@ -174,7 +149,6 @@ public class Seller implements IJSONSerializable, Parcelable {
 
     /**
      * Parcel constructor
-     * @param in
      */
     protected Seller(Parcel in) {
         mName = in.readString();

@@ -1,14 +1,12 @@
 package com.mobile.newFramework.database;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.newFramework.objects.product.LastViewed;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.NewProductPartial;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -138,7 +136,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 	 *
 	 * @throws InterruptedException 
 	 */
-	public synchronized static void insertRelatedItemsAndClear(ArrayList<Product> mProducts) throws InterruptedException {
+	public synchronized static void insertRelatedItemsAndClear(ArrayList<NewProductPartial> mProducts) throws InterruptedException {
 		Print.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
 		
@@ -164,53 +162,22 @@ public class RelatedItemsTableHelper extends BaseTable {
 		// DarwinDatabaseSemaphore.getInstance().releaseLock();
 	}
 	
-	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
+	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<NewProductPartial> mProducts) {
 		clearRelatedItems(db);
 		int count = 1;
 		Print.d(TAG, "RELATED ITEMS COUNT: " + mProducts.size());
-		for (Product product : mProducts) {
+		for (NewProductPartial product : mProducts) {
 			Print.d(TAG, "RELATED ITEM: " + product.getBrand());
 			insertRelatedItem(db, product.getSku(), product.getBrand(), product.getName(),
-					String.valueOf(product.getSpecialPrice()), product.getUrl(), product.getImageUrl());
+					String.valueOf(product.getSpecialPrice()), "", product.getImageUrl());
+			// product.getUrl()
 			// Validate counter
 			if(count == MAX_SAVED_PRODUCTS) break;
 			// Inc counter
 			count++;
 		}
 	}
-	
-    /**
-     * Get the Related Items list of entries
-     * @return
-     */
-    public static ArrayList<LastViewed> getRelatedItemsList(){
-    	ArrayList<LastViewed> lastViewed = new ArrayList<>();
-    	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query ="select * from "+TABLE_NAME+" order by "+_ID+" desc";
-    	Cursor cursor = db.rawQuery(query, null);
-    	if (cursor != null && cursor.getCount() >0 ) {
-    		
-    		while (cursor.moveToNext()) {
-    			LastViewed lViewed = new LastViewed();
-    			lViewed.setSku(cursor.getString(1));
-    			lViewed.setBrand(cursor.getString(2));
-    			lViewed.setName(cursor.getString(3));
-    			lViewed.setPrice(cursor.getString(4));
-    			lViewed.setUrl(cursor.getString(5));
-    			lViewed.setImageUrl(cursor.getString(6));
-    			lastViewed.add(lViewed);
-    		}
-		}
-    	
-		// Validate cursor
-		if(cursor != null){
-			cursor.close();
-		}
-		
-		db.close();
-		return lastViewed;
-    }
-    
+
     /**
      * Delete all LastViewes
      */

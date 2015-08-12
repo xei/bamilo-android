@@ -26,7 +26,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.objects.orders.SuperOrder;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.objects.product.ProductBundle;
 import com.mobile.newFramework.objects.product.ProductOffers;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
@@ -181,7 +181,7 @@ public interface AigApiInterface {
     String getCatalogFiltered = "getCatalogFiltered";
 
     @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<NewProductComplete>> callback);
 
     String searchSku = "searchSku";
 
@@ -226,7 +226,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<NewProductComplete>> callback);
 
     String getProductDetail = "getProductDetail";
 

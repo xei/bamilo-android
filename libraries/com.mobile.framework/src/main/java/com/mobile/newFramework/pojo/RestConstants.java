@@ -118,10 +118,7 @@ public class RestConstants {
     public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
     public static final String JSON_SIZE_GUIDE_URL_TAG = "size_guide";
     public static final String JSON_RELATED_PRODUCTS = "related_products";
-
     public static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
-    public static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";
-    public static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
 
     //NEW RATING V1.6
     public static final String JSON_RATINGS_SUMMARY_TAG = "rating_reviews_summary";
@@ -144,12 +141,13 @@ public class RestConstants {
 
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";
+    public static final String JSON_SHARE_URL_TAG = "share_url";
 
     // Seller tags
     public static final String JSON_HAS_SELLER_TAG = "has_seller";
     public static final String JSON_SELLER_TAG = "seller";
-    public static final String JSON_SELLER_MIN_DELIVERY_TAG = "min_delivery_time";
-    public static final String JSON_SELLER_MAX_DELIVERY_TAG = "max_delivery_time";
+    public static final String JSON_MIN_DELIVERY_TAG = "min_delivery_time";
+    public static final String JSON_MAX_DELIVERY_TAG = "max_delivery_time";
 
     // Variation Tags
     public static final String JSON_LINK_TAG = "link";

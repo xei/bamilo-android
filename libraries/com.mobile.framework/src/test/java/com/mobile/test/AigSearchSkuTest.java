@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -14,7 +14,7 @@ public class AigSearchSkuTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.SEARCH_PRODUCT;
+        return EventType.GET_PRODUCT_DETAIL;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class AigSearchSkuTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        CompleteProduct completeProduct = (CompleteProduct) response.getMetadata().getData();
+        NewProductComplete completeProduct = (NewProductComplete) response.getMetadata().getData();
         assertNotNull("Product is null",completeProduct);
         assertNotNull("Product Name is null",completeProduct.getName());
 

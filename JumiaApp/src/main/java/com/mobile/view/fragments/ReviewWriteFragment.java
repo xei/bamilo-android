@@ -33,7 +33,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -75,7 +75,7 @@ public class ReviewWriteFragment extends BaseFragment {
     
     private static final String RATINGS = "ratings";
 
-    private CompleteProduct completeProduct;
+    private NewProductComplete completeProduct;
 
     private LinearLayout ratingContainer;
 
@@ -210,8 +210,8 @@ public class ReviewWriteFragment extends BaseFragment {
         if (arguments != null) {
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                completeProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof NewProductComplete){
+                completeProduct = (NewProductComplete)parcelableProduct;
             }
 
         }
@@ -630,9 +630,9 @@ public class ReviewWriteFragment extends BaseFragment {
             showFragmentContentContainer();
             return true;
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             Print.d(TAG, "GOT GET_PRODUCT_EVENT");
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
@@ -704,7 +704,7 @@ public class ReviewWriteFragment extends BaseFragment {
             return false;
             
             
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 

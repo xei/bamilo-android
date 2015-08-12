@@ -114,8 +114,8 @@ public class Offer implements IJSONSerializable, Parcelable{
 
                 JSONArray simplesArray = productObject.optJSONArray(RestConstants.JSON_SIMPLES_TAG);
 
-                minDeliveryTime = productObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
-                maxDeliveryTime = productObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
+                minDeliveryTime = productObject.optInt(RestConstants.JSON_MIN_DELIVERY_TAG);
+                maxDeliveryTime = productObject.optInt(RestConstants.JSON_MAX_DELIVERY_TAG);
 
                 //Simple array it's only supposed to have one simple, is a "buy now" kind of product
                 if(simplesArray != null && simplesArray.length() > 0){

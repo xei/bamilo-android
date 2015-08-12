@@ -12,7 +12,6 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.Favourite;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -106,8 +105,6 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // Set clickable views
         if (itemsClass == LastViewedAddableToCart.class) {
             setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
-        } else if (itemsClass == Favourite.class) {
-            setClickableViews(position, prodItem.container, prodItem.deleteButton, prodItem.addToCartButton, prodItem.varianceButton);
         } else {
             setClickableViews(position, prodItem.container, prodItem.deleteButton, prodItem.addToCartButton, prodItem.varianceButton);
         }
@@ -187,8 +184,6 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
 
     /**
      * Set this as clickable
-     * @param position
-     * @param views...
      * @author sergiopereira
      */
     private void setClickableViews(int position, View... views){
@@ -201,9 +196,6 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
     /**
      * Set the variation container
-     * @param prodItem
-     * @param addableToCart
-     * @param position
      * @author sergiopereira
      */
     private void setVariationContent(Item prodItem, AddableToCart addableToCart){
@@ -253,13 +245,12 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             // Set name
             prodItem.name.setText(addableToCart.getName());
             // Validate special price
-            if (null != addableToCart.getSpecialPrice() && !addableToCart.getSpecialPrice().equals(addableToCart.getPrice())) {
+            if (addableToCart.hasDiscount()) {
                 // Set discount 
                 prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
-                Double discountPercentage = addableToCart.getMaxSavingPercentage();
-                if (discountPercentage != null) {
-                    prodItem.discountPercentage.setText("-" + discountPercentage.intValue() + "%");
-                }
+                // TODO placeholder
+                int discountPercentage = addableToCart.getMaxSavingPercentage();
+                prodItem.discountPercentage.setText("-" + discountPercentage + "%");
                 prodItem.discount.setVisibility(View.VISIBLE);
                 prodItem.discountPercentage.setVisibility(View.VISIBLE);
                 // Set price

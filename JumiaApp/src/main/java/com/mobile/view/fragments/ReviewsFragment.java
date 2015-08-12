@@ -37,7 +37,7 @@ import com.mobile.helpers.products.GetProductReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
@@ -66,7 +66,7 @@ public class ReviewsFragment extends BaseFragment {
     
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
-    private CompleteProduct selectedProduct;
+    private NewProductComplete selectedProduct;
 
     private LayoutInflater inflater;
     
@@ -181,8 +181,8 @@ public class ReviewsFragment extends BaseFragment {
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
 
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                selectedProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof NewProductComplete){
+                selectedProduct = (NewProductComplete)parcelableProduct;
             }
         }
         // Load saved state
@@ -553,7 +553,7 @@ public class ReviewsFragment extends BaseFragment {
      * framework.
      */
     private void getMoreReviews() {
-        if (selectedProduct.getUrl() != null) {
+        if (selectedProduct.getSku() != null) {
             Print.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
             pageNumber++;
             triggerReviews(selectedProduct.getSku(), pageNumber);
@@ -571,7 +571,7 @@ public class ReviewsFragment extends BaseFragment {
         }
         
         switch (eventType) {
-        case GET_PRODUCT_REVIEWS_EVENT:
+        case GET_PRODUCT_REVIEWS:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
             // Validate the current rating page
@@ -586,8 +586,8 @@ public class ReviewsFragment extends BaseFragment {
             displayReviews(productRatingPage, true);
             showFragmentContentContainer();
             break;
-        case GET_PRODUCT_EVENT:
-          if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+          if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
               Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
               getActivity().onBackPressed();
               return;
@@ -625,7 +625,7 @@ public class ReviewsFragment extends BaseFragment {
         showFragmentContentContainer();
         
         switch (eventType) {
-        case GET_PRODUCT_REVIEWS_EVENT:
+        case GET_PRODUCT_REVIEWS:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
             // Valdiate current rating page
@@ -633,7 +633,7 @@ public class ReviewsFragment extends BaseFragment {
             // Append the new page to the current
             displayReviews(productRatingPage, true);
             break;
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
@@ -1045,7 +1045,7 @@ public class ReviewsFragment extends BaseFragment {
         // TRACKER
         Bundle params = new Bundle();
         params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
-        params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
+        params.putFloat(TrackerDelegator.RATING_KEY, (float) selectedProduct.getAvgRating());
         
         TrackerDelegator.trackViewReview(selectedProduct);
         

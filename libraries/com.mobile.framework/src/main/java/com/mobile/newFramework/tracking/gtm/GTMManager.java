@@ -19,7 +19,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.tracking.ContainerHolderSingleton;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
@@ -70,7 +70,7 @@ public class GTMManager {
     }
 
     private GTMManager() {
-    };
+    }
 
     public static void init(Context context) {
         gtmTrackingManager = new GTMManager(context);
@@ -477,28 +477,15 @@ public class GTMManager {
     }
     
     
-    public void gtmTrackRateProduct(CompleteProduct product,String currencyName) {
+    public void gtmTrackRateProduct(NewProductComplete product,String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
         Map<String, Object> message;
         String category = null;
         String subCategory = null;
-
-        String[] categoriesList = product.getCategoriesList();
-        if(null != product && categoriesList.length>0){
-            category = categoriesList[0];
-            if(categoriesList.length > 1){
-                subCategory = categoriesList[1];
-            }
-        }
-        
-        
         Print.d(TAG, "gtmTrackRateProduct" + " currencyName:" + currencyName + " product.getSku():" + product.getSku() +
-                " PRODUCTPRICE:" + product.getPriceForTracking() + " currencyName:" + currencyName + " PRODUCTRATING:" + product.getRatingsAverage());
-//        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTCATEGORY,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.RATINGPRICE, notPresent,
-//                GTMKeys.RATINGAPPEARANCE, notPresent,GTMKeys.RATINGQUALITY, notPresent, GTMKeys.PRODUCTRATING, product.getRatingsAverage());
-        
+                " PRODUCTPRICE:" + product.getPriceForTracking() + " currencyName:" + currencyName + " PRODUCTRATING:" + product.getAvgRating());
         message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
-                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.PRODUCTRATING, product.getRatingsAverage());
+                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.PRODUCTRATING, product.getAvgRating());
         
         if(!TextUtils.isEmpty(category)) 
             message.put(GTMKeys.PRODUCTCATEGORY, category);
@@ -511,29 +498,20 @@ public class GTMManager {
 
     }
     
-    public void gtmTrackViewRating(CompleteProduct product, String currencyName) {
+    public void gtmTrackViewRating(NewProductComplete product, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
 
         Map<String, Object> message;
         String category = null;
         String subCategory = null;
-
-        String[] categoriesList = product.getCategoriesList();
-        if(null != product && categoriesList.length>0){
-            category = categoriesList[0];
-            if(categoriesList.length > 1){
-                subCategory = categoriesList[1];
-            }
-        }
         
-        
-        Print.d(TAG, "gtmTrackViewRating" + " productSku:" + product.getSku() + " AVERAGERATINGTOTAL:" + product.getRatingsAverage() + " productPrice:" + product.getPriceForTracking() + " currencyName:" + currencyName);
+        Print.d(TAG, "gtmTrackViewRating" + " productSku:" + product.getSku() + " AVERAGERATINGTOTAL:" + product.getAvgRating() + " productPrice:" + product.getPriceForTracking() + " currencyName:" + currencyName);
 
 //      message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.AVERAGERATINGPRICE, notPresent,
 //              GTMKeys.AVERAGERATINGAPPEARANCE, notPresent, GTMKeys.AVERAGERATINGQUALITY, notPresent, GTMKeys.AVERAGERATINGTOTAL, product.getRatingsAverage());
 
       message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
-              GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.AVERAGERATINGTOTAL, product.getRatingsAverage());
+              GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.AVERAGERATINGTOTAL, product.getAvgRating());
       
       if(!TextUtils.isEmpty(category)) 
           message.put(GTMKeys.PRODUCTCATEGORY, category);

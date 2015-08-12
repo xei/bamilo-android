@@ -8,7 +8,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.RelatedItemsTableHelper;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.NewProductPartial;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -105,7 +105,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         //TODO move to observable
         // Persist related Items when initially loading products for POPULARITY tab
         if (isToSaveRelatedItems) {
-            final ArrayList<Product> aux = new ArrayList<>(catalog.getCatalogPage().getProducts());
+            final ArrayList<NewProductPartial> aux = new ArrayList<>(catalog.getCatalogPage().getProducts());
             new Thread(new Runnable() {
                 @Override
                 public void run() {

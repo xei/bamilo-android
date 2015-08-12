@@ -16,7 +16,7 @@ public class AigGetReviewsTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCT_REVIEWS_EVENT;
+        return EventType.GET_PRODUCT_REVIEWS;
     }
 
     @Override

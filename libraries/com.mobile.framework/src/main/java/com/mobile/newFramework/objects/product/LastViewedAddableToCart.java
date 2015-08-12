@@ -1,11 +1,11 @@
 package com.mobile.newFramework.objects.product;
 
 
+import android.database.Cursor;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Object that contains one of the last viewed products<br>
@@ -23,8 +22,25 @@ import java.util.Map;
  * @modified Paulo Carvalho
  */
 public class LastViewedAddableToCart extends AddableToCart implements IJSONSerializable {
+
     public LastViewedAddableToCart() {
         super();
+    }
+
+    public LastViewedAddableToCart(Cursor cursor, int index) {
+        mSku = cursor.getString(index++);
+        mName = cursor.getString(index++);
+        cursor.getString(index++); // price as string
+        mPrice = cursor.getDouble(index++);
+        mPriceConverted = cursor.getDouble(index++);
+        cursor.getString(index++); // url
+        mImageUrl = cursor.getString(index++);
+        mBrand = cursor.getString(index++);
+        cursor.getString(index++); // special price as string
+        mSpecialPrice = cursor.getDouble(index++);
+        mSpecialPriceConverted = cursor.getDouble(index++);
+        mMaxSavingPercentage = cursor.getInt(index++);
+        cursor.getInt(index++); // is new TODO
     }
 
 
@@ -32,36 +48,6 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
     public boolean initialize(JSONObject jsonObject) {
 
         try {
-            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-            name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
-            brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-            url = jsonObject.getString(RestConstants.JSON_URL_TAG);
-
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(priceJSON)) {
-                throw new JSONException("Price is not a number!");
-            }
-            priceDouble = Double.parseDouble(priceJSON);
-            price = priceJSON;
-            priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
-
-            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceJSON = priceJSON;
-            }
-            specialPriceDouble = Double.parseDouble(specialPriceJSON);
-
-            specialPrice = specialPriceJSON;
-            specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
-
-            String maxSavingPercentageJSON = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-            if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
-                maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
-            } else {
-                maxSavingPercentage = 0d;
-            }
-
-            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
             mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
 
@@ -70,7 +56,6 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
             String image = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
             images.add(image);
             imageList = images;
-
 
             ArrayList<String> variations = new ArrayList<>();
             knownVariations.clear();
@@ -83,23 +68,23 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
             JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
 
             for (int i = 0; i < simpleArray.length(); ++i) {
-                ProductSimple simple = new ProductSimple();
+                NewProductSimple simple = new NewProductSimple();
                 JSONObject simpleObject = simpleArray.getJSONObject(i);
                 simple.initialize(simpleObject);
 
-                if (!TextUtils.isEmpty(variationName)) {
-                    String variationValue = "";
-                    Iterator it = simple.getAttributes().entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        if (pair.getKey().toString().equals(RestConstants.JSON_VARIATION_VALUE_TAG)) {
-                            variationValue = pair.getValue().toString();
-                        }
-                    }
-                    if (!TextUtils.isEmpty(variationValue)) {
-                        simple.getAttributes().put(variationName, variationValue);
-                    }
-                }
+//                if (!TextUtils.isEmpty(variationName)) {
+//                    String variationValue = "";
+//                    Iterator it = simple.getAttributes().entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry pair = (Map.Entry) it.next();
+//                        if (pair.getKey().toString().equals(RestConstants.JSON_VARIATION_VALUE_TAG)) {
+//                            variationValue = pair.getValue().toString();
+//                        }
+//                    }
+//                    if (!TextUtils.isEmpty(variationValue)) {
+//                        simple.getAttributes().put(variationName, variationValue);
+//                    }
+//                }
 
                 simples.add(simple);
             }

@@ -17,7 +17,7 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.Banner;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.NewProductPartial;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -52,7 +52,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private boolean isTabletInLandscape;
 
-    private ArrayList<Product> mDataSet;
+    private ArrayList<NewProductPartial> mDataSet;
     
     private Context mContext;
     
@@ -116,7 +116,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param context - the application context
      * @param data - the array lisl
      */
-    public CatalogGridAdapter(Context context, ArrayList<Product> data) {
+    public CatalogGridAdapter(Context context, ArrayList<NewProductPartial> data) {
         mContext = context;
         mDataSet = data;
         isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
@@ -202,7 +202,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get real position
         position = getRealPosition(position);
         // Get item
-        Product item = mDataSet.get(position);
+        NewProductPartial item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
@@ -246,7 +246,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setFavourite(ProductViewHolder holder, Product item, int position) {
+    private void setFavourite(ProductViewHolder holder, NewProductPartial item, int position) {
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
@@ -259,7 +259,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setProductPrice(ProductViewHolder holder, Product item) {
+    private void setProductPrice(ProductViewHolder holder, NewProductPartial item) {
         // Case discount
         if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
@@ -281,14 +281,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setSpecificViewForListLayout(ProductViewHolder holder, Product item) {
+    private void setSpecificViewForListLayout(ProductViewHolder holder, NewProductPartial item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
             // Show rating
-            if (item.getRating() > 0) {
-                holder.rating.setRating((float) item.getRating());
+            if (item.getAvgRating() > 0) {
+                holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
-                int count = item.getReviews();
+                int count = item.getTotalReviews();
                 String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
                 holder.reviews.setText(string);
             }
@@ -349,7 +349,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param position - the respective product position
      * @return Product or null
      */
-    public Product getItem(int position) {
+    public NewProductPartial getItem(int position) {
         return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
     }
     

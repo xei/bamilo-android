@@ -33,7 +33,7 @@ public class GetProductReviewsHelper extends SuperBaseHelper {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCT_REVIEWS_EVENT;
+        return EventType.GET_PRODUCT_REVIEWS;
     }
 
     @Override

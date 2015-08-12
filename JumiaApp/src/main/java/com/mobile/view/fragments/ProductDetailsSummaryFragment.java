@@ -15,7 +15,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -44,7 +44,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
-    private CompleteProduct mCompleteProduct;
+    private NewProductComplete mCompleteProduct;
     private View mainView;
     private String mCompleteProductSku;
 
@@ -95,8 +95,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         if(arguments != null) {
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct) parcelableProduct;
+            if(parcelableProduct instanceof NewProductComplete){
+                mCompleteProduct = (NewProductComplete) parcelableProduct;
             }
         }
     }
@@ -367,8 +367,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
@@ -407,7 +407,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 

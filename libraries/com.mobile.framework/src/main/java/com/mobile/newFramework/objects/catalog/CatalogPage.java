@@ -7,7 +7,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.NewProductPartial;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -39,7 +39,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private int mMaxPages = 1;
 
-    private ArrayList<Product> mProducts;
+    private ArrayList<NewProductPartial> mProducts;
 
     private ArrayList<CatalogFilter> mFilters;
 
@@ -84,7 +84,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
         for (int i = 0; i < productObjectArray.length(); ++i) {
             JSONObject productObject = productObjectArray.getJSONObject(i);
-            Product product = new Product();
+            NewProductPartial product = new NewProductPartial();
             product.initialize(productObject);
             mProducts.add(product);
         }
@@ -224,7 +224,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * Get products
      * @return a list of products
      */
-    public ArrayList<Product> getProducts() {
+    public ArrayList<NewProductPartial> getProducts() {
         return mProducts;
     }
 
@@ -345,7 +345,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mMaxPages = in.readInt();
         if (in.readByte() == 0x01) {
             mProducts = new ArrayList<>();
-            in.readList(mProducts, Product.class.getClassLoader());
+            in.readList(mProducts, NewProductPartial.class.getClassLoader());
         } else {
             mProducts = null;
         }

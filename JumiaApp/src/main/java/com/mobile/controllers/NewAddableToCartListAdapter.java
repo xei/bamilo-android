@@ -166,7 +166,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
         if (mOnClickParentListener != null) {
             for (View view : views) {
                 view.setTag(R.id.target_position, position);
-                view.setTag(R.id.target_url, getItem(position).getUrl());
+                // view.setTag(R.id.target_url, getItem(position).getUrl());
                 view.setTag(R.id.target_sku, getItem(position).getSku());
                 view.setOnClickListener(mOnClickParentListener);
             }

@@ -9,9 +9,9 @@ import android.text.TextUtils;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
-import com.mobile.newFramework.objects.product.ProductSimple;
+import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.NewProductSimple;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -119,7 +119,7 @@ public class LastViewedTableHelper extends BaseTable {
 	 * 
 	 * @param completeProduct
 	 */
-	public static void insertLastViewedProduct(CompleteProduct completeProduct) throws IllegalStateException, SQLiteException {
+	public static void insertLastViewedProduct(NewProductComplete completeProduct) throws IllegalStateException, SQLiteException {
 		if (completeProduct != null) {
 			String sku = completeProduct.getSku();
 			if (!verifyIfExist(sku)) {
@@ -138,16 +138,16 @@ public class LastViewedTableHelper extends BaseTable {
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPrice());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_CONVERTED, completeProduct.getSpecialPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
-				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
+				values.put(LastViewedTableHelper._PRODUCT_URL, ""); // completeProduct.getUrl()
 				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
 				values.put(LastViewedTableHelper._PRODUCT_IS_NEW, completeProduct.isNew());
 				values.put(LastViewedTableHelper._PRODUCT_SIZE_GUIDE, completeProduct.getSizeGuideUrl());
 
 				String simplesJSON = "";
-				ArrayList<ProductSimple> simples = completeProduct.getSimples();
+				ArrayList<NewProductSimple> simples = completeProduct.getSimples();
 				if (simples != null && !simples.isEmpty()) {
 					JSONArray simplesJSONArray = new JSONArray();
-					for (ProductSimple productSimple : simples) {
+					for (NewProductSimple productSimple : simples) {
 						simplesJSONArray.put(productSimple.toJSON());
 					}
 					simplesJSON = simplesJSONArray.toString();
@@ -165,17 +165,17 @@ public class LastViewedTableHelper extends BaseTable {
 				}
 				values.put(LastViewedTableHelper._PRODUCT_VARIATIONS_JSON, variationsJSON);
 
-				String knownVariationsString = "";
-				ArrayList<String> knownVariations = completeProduct.getKnownVariations();
-				if (knownVariations != null && !knownVariations.isEmpty()) {
-					StringBuilder knownVariationsStringBuilder = new StringBuilder();
-					for (String knownVariation : knownVariations) {
-						knownVariationsStringBuilder.append(knownVariation);
-						knownVariationsStringBuilder.append(DELIMITER);
-					}
-					knownVariationsString = knownVariationsStringBuilder.toString();
-				}
-				values.put(LastViewedTableHelper._PRODUCT_KNOWN_VARIATIONS_LIST, knownVariationsString);
+//				String knownVariationsString = "";
+//				ArrayList<String> knownVariations = completeProduct.getKnownVariations();
+//				if (knownVariations != null && !knownVariations.isEmpty()) {
+//					StringBuilder knownVariationsStringBuilder = new StringBuilder();
+//					for (String knownVariation : knownVariations) {
+//						knownVariationsStringBuilder.append(knownVariation);
+//						knownVariationsStringBuilder.append(DELIMITER);
+//					}
+//					knownVariationsString = knownVariationsStringBuilder.toString();
+//				}
+//				values.put(LastViewedTableHelper._PRODUCT_KNOWN_VARIATIONS_LIST, knownVariationsString);
 
 				values.put(LastViewedTableHelper._PRODUCT_IS_COMPLETE, true);
 
@@ -286,38 +286,38 @@ public class LastViewedTableHelper extends BaseTable {
 	 * @return
 	 */
 	public static ArrayList<LastViewedAddableToCart> getLastViewedAddableToCartList() {
-		ArrayList<LastViewedAddableToCart> listLastViewed = new ArrayList<LastViewedAddableToCart>();
+		ArrayList<LastViewedAddableToCart> listLastViewed = new ArrayList<>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = new StringBuilder("select * from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
+		String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + _ID + " DESC";
 		Print.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
 				int index = 1;
-				LastViewedAddableToCart lastViewed = new LastViewedAddableToCart();
-				lastViewed.setSku(cursor.getString(index++));
-				lastViewed.setName(cursor.getString(index++));
-				lastViewed.setPrice(cursor.getString(index++));
-				lastViewed.setPriceAsDouble(cursor.getDouble(index++));
-				lastViewed.setPriceConverted(cursor.getDouble(index++));
-				lastViewed.setUrl(cursor.getString(index++));
-				lastViewed.getImageList().add(cursor.getString(index++));
-				lastViewed.setBrand(cursor.getString(index++));
-				lastViewed.setSpecialPrice(cursor.getString(index++));
-				lastViewed.setSpecialPriceDouble(cursor.getDouble(index++));
-				lastViewed.setSpecialPriceConverted(cursor.getDouble(index++));
-				lastViewed.setMaxSavingPercentage(cursor.getDouble(index++));
-				lastViewed.setNew(cursor.getInt(index++) == 1);
+				LastViewedAddableToCart lastViewed = new LastViewedAddableToCart(cursor, index);
+//				lastViewed.setSku(cursor.getString(index++));
+//				lastViewed.setName(cursor.getString(index++));
+//				lastViewed.setPrice(cursor.getString(index++));
+//				lastViewed.setPriceAsDouble(cursor.getDouble(index++));
+//				lastViewed.setPriceConverted(cursor.getDouble(index++));
+//				lastViewed.setUrl(cursor.getString(index++));
+//				lastViewed.getImageList().add(cursor.getString(index++));
+//				lastViewed.setBrand(cursor.getString(index++));
+//				lastViewed.setSpecialPrice(cursor.getString(index++));
+//				lastViewed.setSpecialPriceDouble(cursor.getDouble(index++));
+//				lastViewed.setSpecialPriceConverted(cursor.getDouble(index++));
+//				lastViewed.setMaxSavingPercentage(cursor.getDouble(index++));
+//				lastViewed.setNew(cursor.getInt(index++) == 1);
 				
 				// convert simples from JSON to ArrayList
 				String simplesJSON = cursor.getString(index++);
 				if (!TextUtils.isEmpty(simplesJSON)) {
 					try {
-						ArrayList<ProductSimple> simples = new ArrayList<ProductSimple>();
+						ArrayList<NewProductSimple> simples = new ArrayList<>();
 						JSONArray simpleArray;
 						simpleArray = new JSONArray(simplesJSON);
 						for (int i = 0; i < simpleArray.length(); ++i) {
-							ProductSimple simple = new ProductSimple();
+							NewProductSimple simple = new NewProductSimple();
 							JSONObject simpleObject = simpleArray.getJSONObject(i);
 							simple.initialize(simpleObject);
 
@@ -426,22 +426,22 @@ public class LastViewedTableHelper extends BaseTable {
 			values.put(LastViewedTableHelper._PRODUCT_BRAND, product.getBrand());
 			values.put(LastViewedTableHelper._PRODUCT_NAME, product.getName());
 			values.put(LastViewedTableHelper._PRODUCT_PRICE, product.getPrice());
-			values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, product.getPriceDouble());
+			values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, product.getPrice());
 			values.put(LastViewedTableHelper._PRODUCT_PRICE_CONVERTED, product.getPriceConverted());
 			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, product.getSpecialPrice());
-			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, product.getSpecialPriceDouble());
+			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, product.getSpecialPrice());
 			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_CONVERTED, product.getSpecialPriceConverted());
 			values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, product.getMaxSavingPercentage());
-			values.put(LastViewedTableHelper._PRODUCT_URL, product.getUrl());
+			values.put(LastViewedTableHelper._PRODUCT_URL, ""); // product.getUrl()
 			values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, product.getImageList().size() == 0 ? "" : product.getImageList().get(0));
 			values.put(LastViewedTableHelper._PRODUCT_IS_NEW, product.isNew());
 			values.put(LastViewedTableHelper._PRODUCT_SIZE_GUIDE, product.getSizeGuideUrl());
 
 			String simplesJSON = "";
-			ArrayList<ProductSimple> simples = product.getSimples();
+			ArrayList<NewProductSimple> simples = product.getSimples();
 			if (!CollectionUtils.isEmpty(simples)) {
 				JSONArray simplesJSONArray = new JSONArray();
-				for (ProductSimple productSimple : simples) {
+				for (NewProductSimple productSimple : simples) {
 					simplesJSONArray.put(productSimple.toJSON());
 				}
 				simplesJSON = simplesJSONArray.toString();
@@ -481,7 +481,7 @@ public class LastViewedTableHelper extends BaseTable {
 
 	/**
 	 * Remove lastViewed from database
-	 * 
+	 *
 	 * @param sku
 	 */
 	public static void removeLastViewed(String sku) {

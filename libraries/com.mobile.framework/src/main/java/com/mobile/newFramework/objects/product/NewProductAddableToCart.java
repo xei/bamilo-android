@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.product;
 import android.os.Parcel;
 
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,18 +14,27 @@ import java.util.ArrayList;
 /**
  * Created by spereira on 8/4/15.
  */
-public class NewProductAddableToCart extends NewProductBase {
+public class NewProductAddableToCart extends NewProductPartial {
 
-    private ArrayList<ProductSimple> mSimples;
+    private String mSizeGuideUrl;
+    private String mVariationName;
+    private ArrayList<NewProductSimple> mSimples;
 
+    /**
+     * Empty constructor
+     */
     public NewProductAddableToCart() {
-        //...
+        super();
     }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Base product
         super.initialize(jsonObject);
+        // Size guide
+        mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
+        // Get variation name
+        mVariationName = jsonObject.optString(RestConstants.JSON_VARIATION_NAME_TAG);
         // Simples
         JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
         int size = simpleArray.length();
@@ -32,20 +42,44 @@ public class NewProductAddableToCart extends NewProductBase {
             mSimples = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 JSONObject simpleObject = simpleArray.getJSONObject(i);
-                ProductSimple simple = new ProductSimple();
-                if (simple.initialize(simpleObject)) {
-                    mSimples.add(simple);
-                }
+                NewProductSimple simple = new NewProductSimple();
+                simple.initialize(simpleObject);
+                mSimples.add(simple);
             }
         }
         return true;
     }
 
-    public ArrayList<ProductSimple> getSimples() {
+    @Override
+    public JSONObject toJSON() {
+        return super.toJSON();
+    }
+    
+    public ArrayList<NewProductSimple> getSimples() {
         return mSimples;
     }
 
-        /*
+    public boolean hasOwnSimpleVariation() {
+        return CollectionUtils.isNotEmpty(mSimples) && mSimples.size() == 1;
+    }
+
+    public boolean hasSimpleVariations() {
+        return CollectionUtils.isNotEmpty(mSimples);
+    }
+
+    public boolean hasMultiSimpleVariations() {
+        return !hasOwnSimpleVariation();
+    }
+
+    public String getSizeGuideUrl() {
+        return mSizeGuideUrl;
+    }
+
+    public String getVariationName() {
+        return mVariationName;
+    }
+
+     /*
 	 * ############ PARCELABLE ############
 	 */
 
