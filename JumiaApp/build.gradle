@@ -220,7 +220,6 @@ dependencies {
     /** Android wear releases **/
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
