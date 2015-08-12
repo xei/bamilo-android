@@ -32,7 +32,6 @@ import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
-import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
@@ -301,9 +300,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case SHOPPING_CART:
                 fragment = ShoppingCartFragment.getInstance(bundle);
-                break;
-            case CHECKOUT_BASKET:
-                fragment = CheckoutWebFragment.getInstance();
                 break;
             case REGISTER:
                 fragment = SessionRegisterFragment.getInstance(bundle);

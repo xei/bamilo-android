@@ -127,15 +127,16 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         TeaserGroupType type = TeaserGroupType.byString(groupType);
         // Validate group type
         try {
-            if( type != TeaserGroupType.UNKNOWN) {
+            if (type != TeaserGroupType.UNKNOWN) {
                 teaserGroup = new BaseTeaserGroupType(type, json);
+            } else {
+                Print.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS");
             }
         } catch (JSONException e) {
-            //Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
+            Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
         // Discard groups with items
         if (teaserGroup != null && !teaserGroup.hasData()) {
-            //Log.w(TAG, "WARNING: DISCARDED GROUP EMPTY: " + groupType);
             teaserGroup = null;
         }
         // Return the group or null
