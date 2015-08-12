@@ -3,7 +3,6 @@
  */
 package com.mobile.helpers.products;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -11,7 +10,6 @@ import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -29,16 +27,17 @@ public class GetProductHelper extends SuperBaseHelper {
     
     public static final String PRODUCT_URL = "productUrl";
 
+    public static final String SKU_TAG = "sku";
 
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCT_EVENT;
     }
 
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
-    }
+//    @Override
+//    protected String getRequestUrl(Bundle args) {
+//        return RestUrlUtils.completeUri(Uri.parse(args.getString(PRODUCT_URL))).toString();
+//    }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
