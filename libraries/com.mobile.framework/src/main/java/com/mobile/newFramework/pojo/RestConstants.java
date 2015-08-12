@@ -99,6 +99,7 @@ public class RestConstants {
     // CompleteProduct Tags
     public static final String JSON_SKU_TAG = "sku";
     public static final String JSON_PROD_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
     public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";

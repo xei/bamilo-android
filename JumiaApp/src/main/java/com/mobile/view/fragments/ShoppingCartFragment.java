@@ -357,7 +357,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         if (items != null && items.size() > 0) {
-                            checkMinOrderAmount();
+                            TrackerDelegator.trackCheckout(items);
+                            getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, null, FragmentController.ADD_TO_BACK_STACK);
                         } else {
                             String title = getString(R.string.shoppingcart_alert_header);
                             String message = getString(R.string.shoppingcart_alert_message_no_items);
@@ -436,13 +437,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
                 removeVoucher = true;
-                // verify if "Call to Order" was used
-                if (isCallInProgress) {
-                    isCallInProgress = false;
-                    askToRemoveProductsAfterOrder(addVoucherShoppingCart);
-                } else {
-                    displayShoppingCart(addVoucherShoppingCart);
-                }
+                displayShoppingCart(addVoucherShoppingCart);
                 return true;
             case REMOVE_VOUCHER:
                 ShoppingCart removeVoucherShoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -450,14 +445,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
                 removeVoucher = false;
-                // verify if "Call to Order" was used
-                if (isCallInProgress) {
-                    isCallInProgress = false;
-                    askToRemoveProductsAfterOrder(removeVoucherShoppingCart);
-                } else {
-                    displayShoppingCart(removeVoucherShoppingCart);
-                }
-
+                displayShoppingCart(removeVoucherShoppingCart);
                 return true;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
@@ -980,12 +968,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private void checkMinOrderAmount() {
-        TrackerDelegator.trackCheckout(items);
-        Bundle mBundle = new Bundle();
-        getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
