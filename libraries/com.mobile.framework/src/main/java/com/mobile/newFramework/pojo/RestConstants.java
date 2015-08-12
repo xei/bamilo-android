@@ -7,8 +7,6 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
-    //alexandrapires: action_name not needed in v 1.8
-//    public static final String JSON_ACTION_NAME_TAG = "action_name";
     public static final String JSON_ID_TAG = "id";
     public final static String JSON_SUCCESS_TAG = "success";
     public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
@@ -101,9 +99,6 @@ public class RestConstants {
     // CompleteProduct Tags
     public static final String JSON_SKU_TAG = "sku";
     public static final String JSON_PROD_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_ID_CATALOG_CONFIG_TAG = "id_catalog_config";
-    public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
-    public static final String JSON_ACTIVATED_AT_TAG = "activated_at";
     public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
@@ -281,7 +276,6 @@ public class RestConstants {
     // PurchaseItem Tags
     public static final String JSON_PURCHASE_NAME_TAG = "name";
     public static final String JSON_CATEGORY_TAG = "category";
-    public static final String JSON_PAID_PRICE_TAG = "paidprice";
     public static final String JSON_PAID_PRICE_CONVERTED_TAG = "paidprice_converted";
 
     // Section Tags
