@@ -27,7 +27,7 @@ public class FormData implements IJSONSerializable, Parcelable {
 //    private final String JSON_URL_TAG = "url";
         
 //    private String id;
-    private String action;  //used in FormIndex
+//    private String action;
     private String url;
 
     //alexandrapires: added fields mobapi 1.8
@@ -47,12 +47,12 @@ public class FormData implements IJSONSerializable, Parcelable {
     /**
      * @return the action
      */
-
+/*
     public String getAction() {
         return action;
-    }
+    }*/
 
-    //alexandrapires: mobapi 1.8
+
     /**
      * @return the type
      */
@@ -110,7 +110,9 @@ public class FormData implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
         try {
       //      jsonObject.put(RestConstants.JSON_ID_TAG, id);
-            jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+     //       jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+            jsonObject.put(RestConstants.JSON_TYPE_TAG,type);
+            jsonObject.put(RestConstants.JSON_MD5_TAG, url);
             jsonObject.put(RestConstants.JSON_URL_TAG, url);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -133,7 +135,9 @@ public class FormData implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
  //       dest.writeString(id);
-        dest.writeString(action);
+  //      dest.writeString(action);
+        dest.writeString(type);
+        dest.writeString(md5);
         dest.writeString(url);
         
     }
@@ -144,7 +148,9 @@ public class FormData implements IJSONSerializable, Parcelable {
      */
     private FormData(Parcel in) {
  //       id = in.readString();
-        action = in.readString();
+  //      action = in.readString();
+        type = in.readString();
+        md5 = in.readString();
         url = in.readString();
     }
     
