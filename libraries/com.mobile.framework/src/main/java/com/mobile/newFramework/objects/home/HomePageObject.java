@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +33,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      * Empty constructor
      */
     public HomePageObject() {
-        //...
+        super();
     }
 
     /*
