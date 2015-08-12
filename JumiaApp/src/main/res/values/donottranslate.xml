@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-        <string name="call_to_order_number">014604400</string> 
-        <string name="format_discount_percentage">-%1$s%%</string>
-    
-</resources>
