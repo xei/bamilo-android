@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -273,7 +274,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             //alexandrapires: mobapi 1.8 changes
             //added api call
             String apicall = jsonObject.optString(RestConstants.JSON_API_CALL_TAG);
-            if(apicall != null && !apicall.equals(""))
+            if(!TextUtils.isEmpty(apicall))
                 dataCalls.put(RestConstants.JSON_API_CALL_TAG, apicall);
 
 
