@@ -75,20 +75,21 @@ public class Address implements IJSONSerializable, Parcelable {
         Print.d(TAG, "INITIALIZE");
 
         //alexandrapires:  mobapi 1.8 change
-        id = Integer.parseInt(dataObject.optString(RestConstants.JSON_ID_TAG)); //id instead of id_customer_address":
-        firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
-        lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
-        address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
-        address2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
-        city = dataObject.optString(RestConstants.JSON_CITY_TAG);   //city instead of fk_customer_address_city
-        postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
-        phone = dataObject.optString(RestConstants.JSON_PHONE_TAG);
-        isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
-        isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
-        region = dataObject.optString(RestConstants.JSON_REGION);   //region instead of id_customer_address_region
-        additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
+        try {
+            id = dataObject.getInt(RestConstants.JSON_ID_TAG); //id instead of id_customer_address":
+            firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
+            lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
+            address1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
+            address2 = dataObject.getString(RestConstants.JSON_ADDRESS2_TAG);
+            city = dataObject.getString(RestConstants.JSON_CITY_TAG);   //city instead of fk_customer_address_city
+            postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
+            phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
+            isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
+            isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
+            region = dataObject.optString(RestConstants.JSON_REGION);   //region instead of id_customer_address_region
+            additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
 
-        //alexandrapires: not in mobapi 1.8
+            //alexandrapires: not in mobapi 1.8
     /*
         /*   id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
         if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2))
@@ -108,6 +109,10 @@ public class Address implements IJSONSerializable, Parcelable {
         updatedBy = dataObject.optInt(RestConstants.JSON_UPDATED_BY_TAG);
 
         */
+        }catch(Exception e){
+            Print.e("PARSING ERROR","Error in parsing data: "+e.getMessage());
+            return false;
+        }
 
         return true;
     }
