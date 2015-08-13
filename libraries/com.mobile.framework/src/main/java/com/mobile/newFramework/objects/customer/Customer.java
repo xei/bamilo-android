@@ -335,8 +335,8 @@ public class Customer implements IJSONSerializable, Parcelable {
 
             //alexandrapires: mobapi 1.8 changes
             if (jsonObject.has(RestConstants.JSON_CUSTOMER_ENTITY)) {
-       //         id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
                 JSONObject jsonObjCustomerEnt = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY);
+                id = jsonObjCustomerEnt.getString(RestConstants.JSON_ID_TAG);
                 firstName = jsonObjCustomerEnt.getString(RestConstants.JSON_FIRST_NAME_TAG);
                 lastName = jsonObjCustomerEnt.getString(RestConstants.JSON_LAST_NAME_TAG);
                 email = jsonObjCustomerEnt.getString(RestConstants.JSON_EMAIL_TAG);
