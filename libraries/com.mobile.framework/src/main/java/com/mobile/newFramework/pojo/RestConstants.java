@@ -23,6 +23,7 @@ public class RestConstants {
 
     // CustomerAccountService Tags
     public static final String JSON_USER_TAG = "user";
+    public static final String JSON_USER_AGENT_TAG = "user_agent";
 
     // Customer Tags
     public static final String JSON_ID_CUSTOMER_TAG = "id_customer";
