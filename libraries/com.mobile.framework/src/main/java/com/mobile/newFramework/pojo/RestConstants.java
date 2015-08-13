@@ -32,6 +32,11 @@ public class RestConstants {
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
     public static final String JSON_CREATED_AT_TAG = "created_at";
+    //alexandrapires: added mobapi 1.8
+    public static final String JSON_CUSTOMER_ENTITY = "customer_entity";
+    public static final String JSON_ORDERS_COUNT = "orders_count";
+    public static final String JSON_FIRST_ORDER_DATE = "first_order_date";
+    public static final String JSON_MULTISTEP_ENTITY = "multistep_entity";
 
     // FormsService Tags
     public static final String JSON_NAME_TAG = "name";
@@ -256,6 +261,8 @@ public class RestConstants {
     public static final String JSON_POSTCODE_TAG = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
+    //alexandrapires: added mobapi 1.8
+    public static final String JSON_MIDDLE_NAME_TAG = "middle_name";
 
     // Errors Tags
     public static final String JSON_VALIDATE_TAG = "validate";
@@ -349,6 +356,8 @@ public class RestConstants {
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
     public static final String JSON_API_CALL_TAG = "api_call";
     public static final String JSON_ID_ADDRESS_REGION_TAG = "id_customer_address_region";
+    //alexandrapires: required mobapi 1.8 create address
+    public static final String JSON_REGION = "region";
 
 
     /**

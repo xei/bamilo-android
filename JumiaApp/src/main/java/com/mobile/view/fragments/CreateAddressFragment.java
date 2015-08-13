@@ -290,15 +290,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mBillingFormContainer.addView(billingFormGenerator.getContainer());
         mBillingFormContainer.refreshDrawableState();
         // Define if CITY is a List or Text
-        isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
+        //alexandrapires: mobapi 1.8 change
+  //      isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
+        isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_TAG).getEditControl() instanceof EditText);
         // Hide unused fields form
         hideSomeFields(shippingFormGenerator, false);
         hideSomeFields(billingFormGenerator, true);
+
+
         // Validate Regions
         if (regions == null) {
-            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+            //alexandrapires: mobapi 1.8 change
+        //    FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION);
             String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            triggerGetRegions(url);
+            if(url != null && !url.equals(""))
+                triggerGetRegions(url); //exception here
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
@@ -350,7 +357,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // When CITY_ID is EditText use CITY
         if (isCityIdAnEditText) {
-            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+            //alexandrapires: mobapi 1.8 change
+        //    item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
             if (item != null) {
                 item.getControl().setVisibility(View.GONE);
             }
@@ -384,7 +393,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, String tag) {
         // Get region item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
+        //alexandrapires: mobapi 1.8
+   //     DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION);
         // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
@@ -396,8 +407,21 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         int defaultPosition = 0;
+
+        /*  //alexandrapires: mobapi 1.8 changes
         if (mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue() != null && Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue()) > 0) {
             int defaultId = Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue());
+            for (int i = 0; i < regions.size(); i++) {
+                if (regions.get(i).getId() == defaultId) {
+                    defaultPosition = i;
+                    break;
+                }
+            }
+        }*/
+
+        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION).getValue();
+        if ( regionValue != null && Integer.parseInt(regionValue) > 0){
+            int defaultId = Integer.parseInt(regionValue);
             for (int i = 0; i < regions.size(); i++) {
                 if (regions.get(i).getId() == defaultId) {
                     defaultPosition = i;
@@ -467,7 +491,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, String tag) {
         // Get city item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+        //alexandrapires: mobapi 1.8 change
+  //      DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
         // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
@@ -637,7 +663,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Save content values
         ContentValues mContentValues = dynamicForm.save();
         // Get the region
-        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+        //alexandrapires: mobapi 1.8 change
+     //   ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION).getControl();
         // Get spinner
         IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         // Get selected region
@@ -659,7 +687,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         String mCityName = "";
 
         // Get from spinner
-        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        //alexandrapires: mobapi 1.8 change
+    //    View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
+        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG).getControl();
         View mCityView = ((ViewGroup) mControl).getChildAt(0);
         if (mCityView instanceof IcsSpinner) {
             IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
@@ -688,10 +718,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 mCityName = city;
                 Log.d(TAG, "SELECTED CITY: " + mCityName);
             }*/
+        }//alexandrapires added: mobapi 1.8 from saving createAddress mCityView is null
+        else if (mCityView == null)
+        {   //put the city == region
+            mCityName =  mSelectedRegion.getName();
+            mCityId =  String.valueOf(mSelectedRegion.getId());
         }
         // Unexpected
         else {
-            Print.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
+            //alexandrapires: mobapi 1.8 change
+          //  Print.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
+            Print.e(TAG, RestConstants.JSON_CITY_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
         }
 
         // Put values
@@ -701,9 +738,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 mContentValues.put(key, isDefaultBilling);
             } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
                 mContentValues.put(key, isDefaultShipping);
-            } else if (key.contains(RestConstants.JSON_REGION_ID_TAG)) {
+         //   } else if (key.contains(RestConstants.JSON_REGION_ID_TAG)) {
+                //alexandrapires: mobapi 1.8 change
+            } else if (key.contains(RestConstants.JSON_REGION)) {
                 mContentValues.put(key, mRegionId);
-            } else if (key.contains(RestConstants.JSON_CITY_ID_TAG)) {
+         //   } else if (key.contains(RestConstants.JSON_CITY_ID_TAG)) {
+            } else if (key.contains(RestConstants.JSON_CITY_TAG)) {
                 mContentValues.put(key, mCityId);
             } else if (!isCityIdAnEditText && key.contains(RestConstants.JSON_CITY_TAG)) {
                 mContentValues.put(key, mCityName);
@@ -734,7 +774,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            //alexandrapires: mobapi 1.8 change
+       //     FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_PICKUP_CITY);
 //            // Validate API call
 //            if (field.getDataCalls() == null) {
 //                Log.w(TAG, "GET CITY: API CALL IS NULL");

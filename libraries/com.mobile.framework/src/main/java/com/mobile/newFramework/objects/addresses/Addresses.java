@@ -8,12 +8,12 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Class used to save the customer addresses
@@ -75,14 +75,27 @@ public class Addresses implements IJSONSerializable, Parcelable {
         }
 		//addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
 		// Get other addresses
-		JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);
+	/*	JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);
 		if(jsonOther != null && jsonOther.length() > 0) {
 	        Iterator<?> jsonIterator = jsonOther.keys();
 	        while (jsonIterator.hasNext()) {
 	            String key = (String) jsonIterator.next();
 	            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
 	        }
+		}*/
+		//alexandrapires: mobapi 1.8 change: other its a jsonarray
+		JSONArray jsonOthersArray  = jsonObject.optJSONArray(RestConstants.JSON_OTHER_TAG);
+		if (jsonOthersArray != null && jsonOthersArray.length() > 0) {
+			JSONObject jsonOtherAddress;
+			for (int i = 0; i < jsonOthersArray.length(); i++) {
+				jsonOtherAddress = jsonOthersArray.optJSONObject(i);
+				addresses.put(jsonOtherAddress.optString("id"), new Address(jsonOtherAddress));	//uses address id as key
+			}
+
 		}
+
+
+
         return true;
 	}
 	

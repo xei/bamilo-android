@@ -26,25 +26,53 @@ public class FormData implements IJSONSerializable, Parcelable {
 //     */
 //    private final String JSON_URL_TAG = "url";
         
-    private String id;
-    private String action;
+//    private String id;
+//    private String action;
     private String url;
-      
+
+    //alexandrapires: added fields mobapi 1.8
+    private String type;
+    private String md5;
+
     public FormData() {
     }
     
     /**
      * @return the id
      */
-    public String getId() {
+/*    public String getId() {
         return id;
-    }
+    }*/
 
     /**
      * @return the action
      */
+/*
     public String getAction() {
         return action;
+    }*/
+
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return md5
+     */
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 
     /**
@@ -61,9 +89,13 @@ public class FormData implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         
         try {
-            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
-            action = jsonObject.getString(RestConstants.JSON_ACTION_TAG);
+            //alexandrapires: not used in mobapi 1.8 : added type and md5
+       //     id = jsonObject.getString(RestConstants.JSON_ID_TAG);
+         //   action = jsonObject.getString(RestConstants.JSON_ACTION_TAG);
+            type = jsonObject.getString(RestConstants.JSON_TYPE_TAG);
+            md5 = jsonObject.getString(RestConstants.JSON_MD5_TAG);
             url = jsonObject.getString(RestConstants.JSON_URL_TAG);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,8 +109,10 @@ public class FormData implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
-            jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+      //      jsonObject.put(RestConstants.JSON_ID_TAG, id);
+     //       jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+            jsonObject.put(RestConstants.JSON_TYPE_TAG,type);
+            jsonObject.put(RestConstants.JSON_MD5_TAG, url);
             jsonObject.put(RestConstants.JSON_URL_TAG, url);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -100,8 +134,10 @@ public class FormData implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(action);
+ //       dest.writeString(id);
+  //      dest.writeString(action);
+        dest.writeString(type);
+        dest.writeString(md5);
         dest.writeString(url);
         
     }
@@ -111,8 +147,10 @@ public class FormData implements IJSONSerializable, Parcelable {
      * @param in
      */
     private FormData(Parcel in) {
-        id = in.readString();
-        action = in.readString();
+ //       id = in.readString();
+  //      action = in.readString();
+        type = in.readString();
+        md5 = in.readString();
         url = in.readString();
     }
     
