@@ -33,6 +33,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -304,7 +305,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         //    FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
             FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION);
             String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            if(url != null && !url.equals(""))
+            if(TextUtils.isNotEmpty(url))
                 triggerGetRegions(url); //exception here
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
@@ -776,7 +777,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (object instanceof AddressRegion) {
             //alexandrapires: mobapi 1.8 change
        //     FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_PICKUP_CITY);
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_TAG);
 //            // Validate API call
 //            if (field.getDataCalls() == null) {
 //                Log.w(TAG, "GET CITY: API CALL IS NULL");
