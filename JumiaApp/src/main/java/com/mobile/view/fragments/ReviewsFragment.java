@@ -699,8 +699,7 @@ public class ReviewsFragment extends BaseFragment {
 
         if(!isProductRating){
             String reviewsString = getResources().getString(R.string.reviews);
-            //alexandrapires: mobapi 1.8 change: productRatingPage can come null (reviews/ratings/comments)
-            if(productRatingPage!= null && productRatingPage.getCommentsCount() == 1)
+            if(productRatingPage.getCommentsCount() == 1)
                 reviewsString = getResources().getString(R.string.review);
 
             sellerRatingCount.setText(""+productRatingPage.getCommentsCount()+" "+reviewsString);
@@ -708,9 +707,7 @@ public class ReviewsFragment extends BaseFragment {
             sellerRatingBar.setRating(productRatingPage.getAverage());
 
         } else {
-            //alexandrapires: mobapi 1.8 correction: productRatingPage can come null (reviews/ratings/comments)
-            if(productRatingPage != null)
-                insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
+            insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
         }
 
 

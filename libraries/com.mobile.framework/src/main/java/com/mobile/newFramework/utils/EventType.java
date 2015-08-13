@@ -115,10 +115,8 @@ public enum EventType {
     GET_EDIT_ADDRESS_FORM_EVENT("addressedit", AigRestContract.MAX_CACHE_TIME),
 
     GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
-    //alexandrapires: request change in mobapi 1.8
-//    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", AigRestContract.NO_CACHE),
 
-    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist", AigRestContract.NO_CACHE),
+    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", AigRestContract.NO_CACHE),
 
     SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", AigRestContract.NO_CACHE),
 
@@ -126,10 +124,7 @@ public enum EventType {
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
-    //alexandrapires: request change in mobapi 1.8
- //   CREATE_ADDRESS_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
-
-    CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
+    CREATE_ADDRESS_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", AigRestContract.NO_CACHE),
 

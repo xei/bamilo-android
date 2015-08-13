@@ -131,7 +131,7 @@ public class Form implements IJSONSerializable, Parcelable {
             // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
-                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG) && !fieldsArray.getJSONObject(i).has(RestConstants.JSON_ID_TAG)){
+                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG)){
                         FormField field = new FormField(this);
                         if (field.initialize(fieldsArray.getJSONObject(i))) {
                             fields.add(field);
