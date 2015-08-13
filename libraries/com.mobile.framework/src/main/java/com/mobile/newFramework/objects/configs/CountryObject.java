@@ -23,6 +23,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     private String iso;
     private boolean forceHttps;
     private boolean isLive;
+    private String userAgentToAccessDevServers;
 
     /**
      * Empty Constructor
@@ -74,6 +75,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         dest.writeString(flag);
         dest.writeString(iso);
         dest.writeBooleanArray(new boolean[]{forceHttps, isLive});
+        dest.writeString(userAgentToAccessDevServers);
     }
 
     /**
@@ -85,6 +87,11 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         flag = in.readString();
         iso = in.readString();
         in.readBooleanArray(new boolean[] {forceHttps, isLive});
+        userAgentToAccessDevServers = in.readString();
+    }
+
+    public String getUserAgentToAccessDevServers() {
+        return userAgentToAccessDevServers;
     }
 
     /**
@@ -196,12 +203,6 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         url = jsonObject.optString(RestConstants.JSON_URL_TAG);
         if(url != null ){
-            // TODO: Validate this
-            //url = url.replace("http://www", "www");
-            //url = url.replace("http://alice-staging", "alice-staging");
-            //url = url.replace("https://www", "www");
-            //url = url.replace("https://alice-staging", "alice-staging");
-
             // This is necessary otherwise Uri.Builder will encode the authority
             url = url.replace("/mobapi/", "");
         }
@@ -209,6 +210,8 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         iso = jsonObject.optString(RestConstants.JSON_COUNTRY_ISO);
         forceHttps = jsonObject.optBoolean(RestConstants.JSON_FORCE_HTTPS, false);
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
+        // Used only for access dev servers
+        userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
         return true;
     }
 
