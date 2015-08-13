@@ -3,7 +3,6 @@
 
     <!-- APP -->
     <string name="app_name">بامیلو</string>
-    <bool name="rest_host_auth_use_it">true</bool>
     <item name="is_daraz_specific" type="bool">true</item>
 
     <!-- COUNTRIES -->

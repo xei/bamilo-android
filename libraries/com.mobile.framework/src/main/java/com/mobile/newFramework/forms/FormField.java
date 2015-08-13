@@ -221,12 +221,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // if the field is one of the supported types
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG); //comes empty in mobapi 1.8, necessary for tracking
+            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
             key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
             name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
             label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
             value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
-        //    scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG); //not in mobapi 1.8
+            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
             Print.d("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
@@ -269,14 +269,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_TAG);
                 dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
             }
-
-            //alexandrapires: mobapi 1.8 changes
-            //added api call
-            String apicall = jsonObject.optString(RestConstants.JSON_API_CALL_TAG);
-            if(apicall != null && !apicall.equals(""))
-                dataCalls.put(RestConstants.JSON_API_CALL_TAG, apicall);
-
-
             /**
              * Get data from dataset as json object
              */
@@ -345,14 +337,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(dataOptionsArray != null){
                 extrasValues.clear();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
-                    //alexandrapires: mobapi 1.8: gender cames as option
-                    if(key.equals("gender"))
-                    {
-                        JSONObject genderOption =dataOptionsArray.getJSONObject(i);
-                        dataSet.put(genderOption.optString("label"), genderOption.optString("value"));
-                    }
-
-                    else if(scenario != null){
+                    if(scenario != null){
                         PickUpStationObject pStation = new PickUpStationObject();
                         pStation.initialize(dataOptionsArray.getJSONObject(i));
                         extrasValues.put(pStation.getIdPickupstation(), pStation);

@@ -30,7 +30,6 @@ import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -289,7 +288,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         } else {
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
+            super.showFragmentErrorRetry();
             return;
         }
         Print.d(TAG, "Loading Url: " + paymentUrl);
@@ -418,16 +417,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.webkit.WebViewClient#onReceivedHttpAuthRequest(android.webkit .WebView,
-         * android.webkit.HttpAuthHandler, java.lang.String, java.lang.String)
-         */
         @Override
-        public void onReceivedHttpAuthRequest(WebView view, @NonNull HttpAuthHandler handler, String host, String realm) {
-            Print.i(TAG, "code1payment : onReceivedHttpAuthRequest");
-            handler.proceed(AigRestContract.AUTHENTICATION_USER, AigRestContract.AUTHENTICATION_PASS);
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+            super.onReceivedHttpAuthRequest(view, handler, host, realm);
+            Print.i(TAG, "ON RECEIVED HTTP AUTH REQUEST");
         }
 
         /*
