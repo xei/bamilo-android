@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste
@@ -35,6 +34,10 @@ public class Customer implements IJSONSerializable, Parcelable {
     private boolean guest;
     private String mBirthday;
     private ArrayList<String> addresses;
+
+    //alexandrapires: added mobapi 1.8
+    private int ordersCount;
+    private String firstOrderDate;
 
     /**
      * Customer empty constructor
@@ -320,16 +323,42 @@ public class Customer implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
 
+            //alexandrapires: not used with mobapi 1.8
             // Case: METADATA:DATA:USER
-            if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
+        /*    if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             }
             // Case: METADATA:USER
             if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
                 jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
+            }*/
+
+            //alexandrapires: mobapi 1.8 changes
+            if (jsonObject.has(RestConstants.JSON_CUSTOMER_ENTITY)) {
+       //         id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
+                JSONObject jsonObjCustomerEnt = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY);
+                firstName = jsonObjCustomerEnt.getString(RestConstants.JSON_FIRST_NAME_TAG);
+                lastName = jsonObjCustomerEnt.getString(RestConstants.JSON_LAST_NAME_TAG);
+                email = jsonObjCustomerEnt.getString(RestConstants.JSON_EMAIL_TAG);
+                mBirthday = jsonObjCustomerEnt.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
+                ordersCount = jsonObjCustomerEnt.optInt(RestConstants.JSON_ORDERS_COUNT, 0);
+                firstOrderDate = jsonObjCustomerEnt.optString(RestConstants.JSON_FIRST_ORDER_DATE, "");
+
+                String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
+                if (genderString == null) {
+                    gender = CustomerGender.UNKNOWN;
+                } else if (genderString.equals("male")) {
+                    gender = CustomerGender.Male;
+                } else if (genderString.equals("female")) {
+                    gender = CustomerGender.Female;
+                } else {
+                    gender = CustomerGender.Gender;
+                }
+
             }
 
-            id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
+            //alexandrapires: mobapi 1.8 changes
+       /*     id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
             firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
@@ -356,7 +385,7 @@ public class Customer implements IJSONSerializable, Parcelable {
                     String key = (String) iterator.next();
                     addresses.add(key);
                 }
-            }
+            }*/
 
         } catch (JSONException e) {
             Print.e(TAG, "Error parsing the jsonobject to customer", e);
