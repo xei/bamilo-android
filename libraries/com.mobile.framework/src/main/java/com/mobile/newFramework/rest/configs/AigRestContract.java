@@ -30,9 +30,6 @@ public class AigRestContract {
     public static Boolean USE_ONLY_HTTPS = false;
 
     // Authentication
-    public static Boolean USE_AUTHENTICATION = null;
-    public static String AUTHENTICATION_USER = null;
-    public static String AUTHENTICATION_PASS = null;
     public static String AUTHENTICATION_USER_AGENT;
 
     // AUTH CONSTANTS
@@ -55,7 +52,6 @@ public class AigRestContract {
         setRestHost(sharedPrefs);
         setRestScheme(context, sharedPrefs);
         setRestBasePath(context, R.string.global_server_api_version);
-        setShopAuthentication(context);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
@@ -67,7 +63,6 @@ public class AigRestContract {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(context, R.string.global_server_host);
         setRestBasePath(context, R.string.global_server_restbase_path);
-        setShopAuthentication(context);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
@@ -79,7 +74,6 @@ public class AigRestContract {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(requestHost);
         setRestBasePath(context, R.string.global_server_api_version);
-        setShopAuthentication(context);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
@@ -120,15 +114,6 @@ public class AigRestContract {
     /*
      * ######### CREDENTIALS #########
 	 */
-
-    /**
-     * Set the authentication
-     */
-    private static void setShopAuthentication(Context context) {
-        AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
-        AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
-        USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
-    }
 
     /**
      * Set the user agent authentication to access dev servers
