@@ -84,12 +84,8 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		//alexandrapires: mobapi 1.8 changed fields name in request
-	//	id = jsonObject.getInt(RestConstants.JSON_ID_ADDRESS_REGION_TAG);
-	//name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-		id = jsonObject.getInt(RestConstants.JSON_VALUE_TAG);		//value
-		name = jsonObject.getString(RestConstants.JSON_LABEL_TAG );	// label
-
+		id = jsonObject.getInt(RestConstants.JSON_ID_ADDRESS_REGION_TAG);
+		name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
 		return true;
 	}
 

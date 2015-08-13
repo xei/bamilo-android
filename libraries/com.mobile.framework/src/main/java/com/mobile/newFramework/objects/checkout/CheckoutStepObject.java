@@ -29,10 +29,6 @@ public class CheckoutStepObject implements IJSONSerializable{
             JSONObject dataJson = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
             JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
             nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-            //alexandrapires: mobapi 1.8 change
-        }else if(jsonObject.has(RestConstants.JSON_MULTISTEP_ENTITY)){
-            JSONObject multiStepJson = jsonObject.optJSONObject(RestConstants.JSON_MULTISTEP_ENTITY);
-            nextStep =  multiStepJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
         }
     }
 
