@@ -34,7 +34,6 @@ import com.mobile.newFramework.objects.product.SuperValidProducts;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
-import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.lang.reflect.Method;
@@ -306,7 +305,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<Voucher>> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     String addVoucher = "addVoucher";
 

@@ -93,6 +93,7 @@ public class ShopPreferences {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
         editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getUserAgentToAccessDevServers());
         editor.apply();
 
         // Clean other

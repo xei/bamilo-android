@@ -23,6 +23,9 @@ public class RestConstants {
     public static final String JSON_VERSION_TAG = "version";
     public static final String JSON_CUSTOMER_ENTITY_TAG = "customer_entity";
 
+    // CustomerAccountService Tags
+    public static final String JSON_USER_AGENT_TAG = "user_agent";
+
     // Customer Tags
     public static final String JSON_FIRST_NAME_TAG = "first_name";
     public static final String JSON_LAST_NAME_TAG = "last_name";
@@ -97,6 +100,7 @@ public class RestConstants {
     // CompleteProduct Tags
     public static final String JSON_SKU_TAG = "sku";
     public static final String JSON_PROD_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
     public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
@@ -180,39 +184,40 @@ public class RestConstants {
 
     // ShoppingCart Tags
     public static final String JSON_CART_TAG = "cart";
-    public static final String JSON_CART_VALUE_TAG = "cartValue";
-    public static final String JSON_CART_VALUE_CONVERTED_TAG = "cartValue_converted";
-    public static final String JSON_CART_COUNT_TAG = "cartCount";
-    public static final String JSON_CART_ITEMS_TAG = "cartItems";
-    public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
-    public static final String JSON_CART_SHIPPING_VALUE_TAG = "shipping_value";
-    public static final String JSON_CART_COUPON_VALUE_TAG = "couponMoneyValue";
-    public static final String JSON_CART_COUPON_CODE_TAG = "couponCode";
-    public static final String JSON_CART_CLEAN_VALUE_TAG = "cartCleanValue";
-    public static final String JSON_CART_SUM_COSTS_TAG = "sum_costs";
+    public static final String JSON_CART_VALUE_TAG = "value";
+    public static final String JSON_CART_COUNT_TAG = "total_products";
+    public static final String JSON_CART_PRODUCTS_TAG = "products";
+    public static final String JSON_CART_VALUE_CONVERTED_TAG = "value_converted";
+    public static final String JSON_CART_SHIPPING_VALUE_TAG = "amount";
+    public static final String JSON_CART_COUPON_CODE_TAG = "code";
+    public static final String JSON_CART_SUM_COSTS_TAG = "sum_costs_configuration";
     public static final String JSON_CART_EXTRA_COSTS_TAG = "extra_costs";
     public static final String JSON_CART_SUM_COSTS_VALUE_TAG = "sum_costs_value";
     public static final String JSON_CART_PRICE_RULES_TAG = "price_rules";
     public static final String JSON_CART_SUB_TOTAL = "sub_total";
     public static final String JSON_CART_SUB_TOTAL_CONVERTED = "sub_total_converted";
-    public static final String JSON_CART_VAT_LABEL_ENABLE = "vat_label_enable";
+    public static final String JSON_CART_VAT_LABEL_ENABLE = "label_configuration";
+    public static final String JSON_CART_TOTAL = "total";
+    public static final String JSON_CART_TOTAL_CONVERTED = "total_converted";
+    public static final String JSON_CART_ENTITY = "cart_entity";
+    public static final String JSON_CART_COUPON = "coupon";
+    public static final String JSON_CART_DELIVERY = "delivery";
+    public static final String JSON_CART_VAT = "vat";
 
     // ShoppingCartItem Tags
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
     public static final String JSON_PRODUCT_URL_TAG = "url";
-    public static final String JSON_CONFIG_SKU_TAG = "configSku";
     public static final String JSON_QUANTITY_TAG = "quantity";
     public static final String JSON_REAL_QUANTITY_TAG = "real_quantity";
-    public static final String JSON_CONFIG_ID = "configId";
     public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_STOCK_TAG = "stock";
-    public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "specialPrice";
-    public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "specialPrice_converted";
+    public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "special_price";
+    public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_ITEM_PRICE_TAG = "unit_price";
     public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_converted";
     public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
     public static final String JSON_MAX_QUANTITY = "max_quantity";
     public static final String JSON_VARIATION_TAG = "variation";
+    public static final String JSON_SIMPLE_SKU_TAG = "simple_sku";
 
     // TeaserSpecification Tags
     public static final String JSON_TEASER_IMAGE_URL_TAG = JSON_IMAGE_URL_TAG;

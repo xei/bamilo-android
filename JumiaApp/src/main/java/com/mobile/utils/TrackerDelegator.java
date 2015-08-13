@@ -39,9 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1102,31 +1100,22 @@ public class TrackerDelegator {
     }
 
     /**
-     * validate if theres any product added from a banner when finished a success order
+     * validate if there's any product added from a banner when finished a success order
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
-        final HashMap<String,TeaserGroupType> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
+        final HashMap<String,String> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
         if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for (PurchaseItem item : items) {
-                        Iterator it = skus.entrySet().iterator();
-                        try{
-                            while (it.hasNext()) {
-                                Map.Entry pair = (Map.Entry)it.next();
-
-                                if (pair.getKey().equals(item.sku)) {
-                                    Print.e(TAG, "BANNER KEY:" + pair.getKey() + " VALUE:" + pair.getValue());
-                                    trackBannerType(item, (TeaserGroupType) pair.getValue());
-                                    it.remove();
-                                }
+                            if (skus.containsKey(item.sku)) {
+                                Print.e(TAG, "BANNER KEY:" +item.sku + " VALUE:" + skus.get(item.sku));
+                                // fires the GA event when the user finish a order, originating in one of the home teasers
+                                AnalyticsGoogle.get().trackBannerFlowPurchase(skus.get(item.sku),
+                                        TrackingEvent.MAIN_BANNER_CLICK.getAction(),
+                                        item.sku, (long) item.getPriceForTracking());
                             }
-                        }catch(ConcurrentModificationException e){
-                            JumiaApplication.INSTANCE.clearBannerFlowSkus();
-                            return;
-                        }
-
                     }
                     JumiaApplication.INSTANCE.clearBannerFlowSkus();
                 }
@@ -1135,25 +1124,18 @@ public class TrackerDelegator {
     }
 
     /**
-     * fires the GA event when the user finish a order, originating in one of the home teasers
-     */
-    private static void trackBannerType(PurchaseItem item,TeaserGroupType groupType){
-        AnalyticsGoogle.get().trackBannerFlowPurchase(getTrackEventFromTeaserGroupType(groupType), item.sku, (long) item.getPriceForTracking(), groupType.getTrackingPosition());
-    }
-
-    /**
      * fires a GA event every time the user taps on one of the home teasers
      */
     public static void trackBannerClicked(TeaserGroupType groupType, String targetUrl, int position){
-        AnalyticsGoogle.get().trackEventBannerClick(getTrackEventFromTeaserGroupType(groupType), targetUrl, position);
+        AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetUrl, position);
     }
 
     /**
      * this function matchs the home page teaser type with a tracking event
      */
-    public static TrackingEvent getTrackEventFromTeaserGroupType(TeaserGroupType groupType){
+    public static int getCategoryFromTeaserGroupType(TeaserGroupType groupType){
         // Default value
-        TrackingEvent event = TrackingEvent.MAIN_BANNER_CLICK;
+        TrackingEvent event;
         switch (groupType){
             case MAIN_TEASERS:
                 event = TrackingEvent.MAIN_BANNER_CLICK;
@@ -1176,13 +1158,16 @@ public class TrackerDelegator {
             case FEATURED_STORES:
                 event =  TrackingEvent.FEATURE_BANNER_CLICK;
                 break;
-            case UNKNOWN:
-                event =  TrackingEvent.MAIN_BANNER_CLICK;
+            case TOP_SELLERS:
+                event =  TrackingEvent.TOP_SELLER_BANNER_CLICK;
+                break;
+            default:
+                event =  TrackingEvent.UNKNOWN_BANNER_CLICK;
                 Print.w(TAG, "UNKNOWN TEASER GROUP");
                 break;
 
         }
-         return event;
+         return event.getCategory();
     }
     /**
      * DeepLink Reattribution, Adjust

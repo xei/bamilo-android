@@ -322,6 +322,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, JumiaApplication.INSTANCE.countriesAvailable.get(position).getUserAgentToAccessDevServers());
             editor.apply();
 
             // Clean memory

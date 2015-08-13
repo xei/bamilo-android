@@ -1,7 +1,6 @@
 package com.mobile.test.suites;
 
 import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.test.AigChangePasswordFormTest;
 import com.mobile.test.AigForgotPasswordTest;
@@ -100,8 +99,6 @@ public class AigMobApiNigeriaTestSuite {
     public static void setUp() {
         Print.initializeTestingMode();
         //AigRestContract.initializeTestingMode();
-        AigRestContract.AUTHENTICATION_USER = "rocket";
-        AigRestContract.AUTHENTICATION_PASS = "z7euN7qfRD769BP";
         AigHttpClient.initializeTestingMode();
         Print.i(TAG, "SETUP");
     }

@@ -2,7 +2,6 @@ package com.mobile.newFramework.rest;
 
 import android.content.Context;
 
-import com.mobile.newFramework.rest.configs.AigAuthenticator;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
@@ -151,8 +150,6 @@ public class AigHttpClient extends OkClient {
     private static OkHttpClient newOkHttpClient(Context context) {
         // HTTP CLIENT
         OkHttpClient okHttpClient = new OkHttpClient();
-        // AUTHENTICATION
-        okHttpClient.setAuthenticator(new AigAuthenticator());
         // COOKIES
         setCookies(okHttpClient, context);
         // CACHE
