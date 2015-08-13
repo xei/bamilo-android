@@ -610,7 +610,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Show
                 showFragmentContentContainer();
                 Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-                super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
+                super.showUnexpectedErrorWarning();
             }
         }
     }
@@ -712,7 +712,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-                    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
+                    super.showFragmentErrorRetry();
                 }
                 break;
             case GET_CITIES_EVENT:

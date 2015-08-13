@@ -812,7 +812,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 // Show
                 showFragmentContentContainer();
                 Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-       //         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
+                super.showUnexpectedErrorWarning(); //unexpected error
             }
         }
     }
@@ -1009,7 +1009,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         } else {
             Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
-         //   super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
+            super.showFragmentErrorRetry();
         }
     }
 

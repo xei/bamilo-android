@@ -38,6 +38,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-    private HashMap<String, TeaserGroupType> bannerSkus = new HashMap<>();
+    private HashMap<String, String> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -494,13 +495,14 @@ public class JumiaApplication extends A4SApplication {
         if(bannerSkus == null){
             bannerSkus = new HashMap<>();
         }
+        String category = getString(TrackerDelegator.getCategoryFromTeaserGroupType(groupType)) +"_"+groupType.getTrackingPosition();
 
         if(!TextUtils.isEmpty(sku)){
             if(bannerSkus.size() == 0){
-                bannerSkus.put(sku, groupType);
+                bannerSkus.put(sku, category);
             } else {
                 if(!bannerSkus.containsKey(sku)){
-                    bannerSkus.put(sku, groupType);
+                    bannerSkus.put(sku, category);
                 }
             }
         }
@@ -511,7 +513,7 @@ public class JumiaApplication extends A4SApplication {
      *
      * @return list of skus
      */
-    public HashMap<String,TeaserGroupType> getBannerFlowSkus() {
+    public HashMap<String,String> getBannerFlowSkus() {
         if(bannerSkus == null){
             bannerSkus = new HashMap<>();
         }
