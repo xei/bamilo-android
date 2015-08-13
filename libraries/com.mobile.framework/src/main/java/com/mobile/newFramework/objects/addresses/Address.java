@@ -84,8 +84,8 @@ public class Address implements IJSONSerializable, Parcelable {
             city = dataObject.getString(RestConstants.JSON_CITY_TAG);   //city instead of fk_customer_address_city
             postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
             phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
-            isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
-            isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
+            isDefaultBilling = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
+            isDefaultShipping = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
             region = dataObject.optString(RestConstants.JSON_REGION);   //region instead of id_customer_address_region
             additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
 
