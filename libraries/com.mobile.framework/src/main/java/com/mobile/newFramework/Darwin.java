@@ -84,7 +84,9 @@ public class Darwin {
 	public static final String KEY_SELECTED_REVIEW_REQUIRED_LOGIN = "selected_review_required_login";
 
 	public static final String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
-	
+
+	public static final String KEY_COUNTRY_USER_AGENT_AUTH_KEY = "user_agent_authentication";
+
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton

@@ -4,7 +4,6 @@
 
     <!-- APP -->
     <string name="app_name">Jumia</string>
-    <bool name="rest_host_auth_use_it">true</bool>
 
     <!-- COUNTRIES -->
 	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>

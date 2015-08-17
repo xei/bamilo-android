@@ -68,6 +68,8 @@
     <string name="gbrandbanner">Brand_Teaser</string>
     <string name="gshopweekbanner">Shops_Week</string>
     <string name="gfeaturebanner">Feature_Stores</string>
+    <string name="gtopsellerbanner">Top_Sellers</string>
+    <string name="gunknown">Unknown</string>
 
     <!-- Action -->
     <string name="gpdv">pdv</string>

@@ -1409,8 +1409,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void setCallPhone() {
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
-        if (mPhone2Call.equalsIgnoreCase(""))
-            mPhone2Call = getString(R.string.call_to_order_number);
     }
 
     /**
