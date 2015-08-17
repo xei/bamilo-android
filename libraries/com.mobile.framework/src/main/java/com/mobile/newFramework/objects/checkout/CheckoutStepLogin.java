@@ -17,12 +17,12 @@ public class CheckoutStepLogin extends CheckoutStepObject {
     private Customer customer;
 
     public CheckoutStepLogin() {
-        // ...
+        super();
     }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Next step
+        // Next checkout step
         super.initialize(jsonObject);
         // Customer
         customer = new Customer();
