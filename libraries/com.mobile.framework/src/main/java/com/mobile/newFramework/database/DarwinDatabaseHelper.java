@@ -43,7 +43,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
             new CategoriesTableHelper(),
             new SectionsTablesHelper(),
             new LastViewedTableHelper(),
-            new RelatedItemsTableHelper(),
             new SearchRecentQueriesTableHelper(),
             new CountriesConfigsTableHelper(),
             new BrandsTableHelper()
