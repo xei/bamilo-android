@@ -21,6 +21,7 @@ import de.akquinet.android.androlog.Log;
 /**
  * Class used to show the featured box.
  * @author sergiopereira
+ *
  */
 public class FeaturedBoxHelper {
     

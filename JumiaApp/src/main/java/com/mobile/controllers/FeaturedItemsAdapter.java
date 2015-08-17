@@ -146,10 +146,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             // default settings from FeaturedProduct
             int navigationSourceId = R.string.gteaserprod_prefix;
             FragmentType search = FragmentType.PRODUCT_DETAILS;
-
             // change behaviour depending on type of FeaturedItem
             if (featuredItem instanceof FeaturedItemProduct) {
-                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, featuredItem.getId());
+                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, ((FeaturedItemProduct) featuredItem).getSku());
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedItemBrand) {
