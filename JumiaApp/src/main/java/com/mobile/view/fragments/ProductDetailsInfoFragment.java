@@ -15,7 +15,7 @@ import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
@@ -205,8 +205,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         if(arguments != null){
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof NewProductComplete){
-                NewProductComplete completeProduct = (NewProductComplete) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                ProductComplete completeProduct = (ProductComplete) parcelableProduct;
 
                 if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
 //                    hasSpecification = false;

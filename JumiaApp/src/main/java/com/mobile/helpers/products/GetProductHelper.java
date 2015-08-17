@@ -6,7 +6,7 @@ package com.mobile.helpers.products;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -40,7 +40,7 @@ public class GetProductHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        NewProductComplete product = (NewProductComplete) baseResponse.getMetadata().getData();
+        ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
     }
 

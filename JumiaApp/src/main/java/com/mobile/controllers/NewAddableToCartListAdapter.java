@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.NewProductAddableToCart;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * @author Andre Lopes
  * @modified sergiopereira
  */
-public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableToCart> {
+public class NewAddableToCartListAdapter extends ArrayAdapter<ProductMultiple> {
 
     public final static String TAG = NewAddableToCartListAdapter.class.getSimpleName();
 
@@ -59,7 +59,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
      *
      * @author sergiopereira
      */
-    public NewAddableToCartListAdapter(Context context, ArrayList<NewProductAddableToCart> items, OnClickListener parentListener) {
+    public NewAddableToCartListAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
         super(context, R.layout.addabletocart_item, items);
         mInflater = LayoutInflater.from(context);
         mOnClickParentListener = parentListener;
@@ -81,7 +81,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
         // Get the class associated to the view
         Item prodItem = getItemView(itemView);
         // Get addableToCart
-        NewProductAddableToCart addableToCart = getItem(position);
+        ProductMultiple addableToCart = getItem(position);
         // Set Image
         setImage(prodItem, addableToCart);
         // Set brand, name and price 
@@ -178,7 +178,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
      *
      * @author sergiopereira
      */
-    private void setVariationContent(Item prodItem, NewProductAddableToCart addableToCart) {
+    private void setVariationContent(Item prodItem, ProductMultiple addableToCart) {
         // Set simple button
         if (CollectionUtils.isNotEmpty(addableToCart.getSimples())) {
             prodItem.varianceButton.setText("...");
@@ -193,7 +193,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
      *
      * @author sergiopereira
      */
-    private void setImage(Item prodItem, NewProductAddableToCart addableToCart) {
+    private void setImage(Item prodItem, ProductMultiple addableToCart) {
         // Set is new image
         prodItem.isNew.setSelected(addableToCart.isNew());
         // Set image
@@ -205,7 +205,7 @@ public class NewAddableToCartListAdapter extends ArrayAdapter<NewProductAddableT
      *
      * @author sergiopereira
      */
-    private void setTextContent(Item prodItem, NewProductAddableToCart addableToCart) {
+    private void setTextContent(Item prodItem, ProductMultiple addableToCart) {
         // Set brand
         prodItem.brand.setText(addableToCart.getBrand());
         // Set name

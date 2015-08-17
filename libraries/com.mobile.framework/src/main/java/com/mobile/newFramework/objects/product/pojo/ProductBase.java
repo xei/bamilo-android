@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects.product;
+package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,13 +11,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Defines a simple (variation) of a give product.
- * @author GuilhermeSilva
+ * Defines a base of a give product.
  *
+ * @author sergiopereira
  */
-public class NewProductBase implements Parcelable, IJSONSerializable {
+public class ProductBase implements Parcelable, IJSONSerializable {
 
-    protected static final String TAG = NewProductBase.class.getSimpleName();
+    protected static final String TAG = ProductBase.class.getSimpleName();
 
     protected String mSku;
     protected double mPrice;
@@ -26,17 +26,16 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
     protected double mSpecialPriceConverted;
     protected int mMaxSavingPercentage;
 
-
     /**
      * Empty constructor
      */
-    public NewProductBase() {
+    public ProductBase() {
         super();
     }
 
     /* (non-Javadoc)
-         * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+     */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
@@ -55,7 +54,6 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
      */
     @Override
     public JSONObject toJSON() {
-
         return null;
     }
 
@@ -65,8 +63,8 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
     }
 
 
-       /*
-	 * ############ GETTERS ############
+    /*
+     * ############ GETTERS ############
 	 */
 
     public String getSku() {
@@ -77,16 +75,8 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
         return mPrice;
     }
 
-    public double getPriceConverted() {
-        return mPriceConverted;
-    }
-
     public double getSpecialPrice() {
         return mSpecialPrice;
-    }
-
-    public double getSpecialPriceConverted() {
-        return mSpecialPriceConverted;
     }
 
     public int getMaxSavingPercentage() {
@@ -105,27 +95,37 @@ public class NewProductBase implements Parcelable, IJSONSerializable {
 	 * ############ PARCELABLE ############
 	 */
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mSku);
+        dest.writeDouble(mPrice);
+        dest.writeDouble(mPriceConverted);
+        dest.writeDouble(mSpecialPrice);
+        dest.writeDouble(mSpecialPriceConverted);
+        dest.writeInt(mMaxSavingPercentage);
+    }
 
-	private NewProductBase(Parcel in){
-        // TODO
-	}
+    protected ProductBase(Parcel in) {
+        mSku = in.readString();
+        mPrice = in.readDouble();
+        mPriceConverted = in.readDouble();
+        mSpecialPrice = in.readDouble();
+        mSpecialPriceConverted = in.readDouble();
+        mMaxSavingPercentage = in.readInt();
+    }
 
-    public static final Creator<NewProductBase> CREATOR = new Creator<NewProductBase>() {
-        public NewProductBase createFromParcel(Parcel in) {
-            return new NewProductBase(in);
+    public static final Creator<ProductBase> CREATOR = new Creator<ProductBase>() {
+        public ProductBase createFromParcel(Parcel in) {
+            return new ProductBase(in);
         }
 
-        public NewProductBase[] newArray(int size) {
-            return new NewProductBase[size];
+        public ProductBase[] newArray(int size) {
+            return new ProductBase[size];
         }
     };
 }

@@ -42,7 +42,6 @@ public class RestConstants {
     public static final String JSON_PRODUCTS_COUNT_TAG = "products_count";
     public static final String JSON_HEX_VALUE_TAG = "hex_value";
     public static final String JSON_INTERVAL_TAG = "interval";
-    public static final String JSON_FILTERS_TAG = "filters";
 
     public static final String JSON_IS_SELECTED_TAG = "is_selected";
     public static final String JSON_IS_SECTION_BRAND_TAG = "is_section_brand";
@@ -85,7 +84,6 @@ public class RestConstants {
     public static final String JSON_MATCH_TAG = "match";
 
     // NavigationList Tags
-    public static final String JSON_ATTRIBUTES_TAG = "attributes";
     public static final String JSON_IMAGE_TAG = "image";
     public static final String JSON_IMAGE_URL_TAG = "image_url";
     public static final String JSON_IMAGE_PORTRAIT_TAG = "image_portrait";
@@ -99,27 +97,19 @@ public class RestConstants {
 
     // CompleteProduct Tags
     public static final String JSON_SKU_TAG = "sku";
-    public static final String JSON_PROD_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
-    public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
     public static final String JSON_BRAND_TAG = "brand";
     public static final String JSON_CATEGORIES_TAG = "categories";
-    public static final String JSON_PROD_ATTRIBUTES_TAG = JSON_ATTRIBUTES_TAG;
     public static final String JSON_SIMPLES_TAG = "simples";
     public static final String JSON_IMAGE_LIST_TAG = "image_list";
-    public static final String JSON_PROD_URL_TAG = JSON_URL_TAG;
     public static final String JSON_DESCRIPTION_TAG = "description";
     public static final String JSON_SHORT_DESC_TAG = "short_description";
     public static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
-    public static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
     public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
     public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_IS_NEW_TAG = "is_new";
-    public static final String JSON_IS_WISHLIST = "is_wishlist";
-    public static final String JSON_PROD_UNIQUES_TAG = "uniques";
-    public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
     public static final String JSON_SIZE_GUIDE_URL_TAG = "size_guide";
     public static final String JSON_RELATED_PRODUCTS = "related_products";
     public static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
@@ -148,7 +138,6 @@ public class RestConstants {
     public static final String JSON_SHARE_URL_TAG = "share_url";
 
     // Seller tags
-    public static final String JSON_HAS_SELLER_TAG = "has_seller";
     public static final String JSON_SELLER_TAG = "seller";
     public static final String JSON_MIN_DELIVERY_TAG = "min_delivery_time";
     public static final String JSON_MAX_DELIVERY_TAG = "max_delivery_time";
@@ -161,17 +150,9 @@ public class RestConstants {
     public static final String JSON_RESULTS_TAG = "results";
     public static final String JSON_PRODUCT_COUNT_TAG = "product_count";
     public static final String JSON_TOTAL_PRODUCTS_TAG = "total_products";
-    public static final String JSON_CATALOG_NAME_TAG = "category_name";
-    public static final String JSON_CATALOG_IDS_TAG = "category_ids";
 
     // Product Tags
     public static final String JSON_IMAGES_TAG = "images";
-
-    // Image Tags
-    public static final String JSON_PATH_TAG = "path";
-    public static final String JSON_FORMAT_TAG = "format";
-    public static final String JSON_WIDTH_TAG = "width";
-    public static final String JSON_HEIGHT_TAG = "height";
 
     // Category Tags
     public static final String JSON_CATEGORY_ID_TAG = "id_catalog_category";
@@ -187,7 +168,6 @@ public class RestConstants {
     public static final String JSON_CART_VALUE_TAG = "value";
     public static final String JSON_CART_COUNT_TAG = "total_products";
     public static final String JSON_CART_PRODUCTS_TAG = "products";
-    public static final String JSON_CART_VALUE_CONVERTED_TAG = "value_converted";
     public static final String JSON_CART_SHIPPING_VALUE_TAG = "amount";
     public static final String JSON_CART_COUPON_CODE_TAG = "code";
     public static final String JSON_CART_SUM_COSTS_TAG = "sum_costs_configuration";
@@ -208,7 +188,6 @@ public class RestConstants {
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
     public static final String JSON_PRODUCT_URL_TAG = "url";
     public static final String JSON_QUANTITY_TAG = "quantity";
-    public static final String JSON_REAL_QUANTITY_TAG = "real_quantity";
     public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "special_price";
     public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
@@ -219,9 +198,7 @@ public class RestConstants {
     public static final String JSON_VARIATION_TAG = "variation";
     public static final String JSON_SIMPLE_SKU_TAG = "simple_sku";
 
-    // TeaserSpecification Tags
-    public static final String JSON_TEASER_IMAGE_URL_TAG = JSON_IMAGE_URL_TAG;
-    public static final String JSON_TEASER_IMAGES_TAG = "image_list";
+    public static final String VARIATION_VALUE = "variation_value";
 
     // Teaser Campaign Tags
     public static final String JSON_CAMPAIGN_TAG = "campaign";
@@ -241,14 +218,12 @@ public class RestConstants {
 
     // TeaserBrandElement Tags
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
-    public static final String JSON_IMAGE_DEVICE_TYPE_TAG = "device_type";
 
     // Address Tags
     public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
     public static final String JSON_ADDRESS_ID_TAG_2 = "customer_address_id";
     public static final String JSON_PHONE_TAG = "phone";
     public static final String JSON_ADDITIONAL_PHONE_TAG = "additional_phone";
-    public static final String JSON_TABLET_TAG = "tablet";
     public static final String JSON_ADDRESS1_TAG = "address1";
     public static final String JSON_ADDRESS2_TAG = "address2";
     public static final String JSON_CITY_TAG = "city";
@@ -429,10 +404,7 @@ public class RestConstants {
     public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_converted";
     public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";
     public static final String JSON_BUNDLE_PRODUCTS = "bundle_products";
-
-    public static final String JSON_MAX_PRICE_CONVERTED_TAG = "max_price_converted";
     public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
-    public static final String JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG = "max_special_price_converted";
 
     /**
      * OFFERS
@@ -447,8 +419,8 @@ public class RestConstants {
      */
 
     public static final String JSON_VALID_TAG = "valid";
-    public static final String JSON_VARIATION_NAME_TAG = "variation_name";
-    public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
+    public static final String VARIATION_NAME = "variation_name";
+    public static final String VARIATION_DEFAULT_POSITION = "variation_default_position";
 
     /**
      * PDV BUCKET INFO

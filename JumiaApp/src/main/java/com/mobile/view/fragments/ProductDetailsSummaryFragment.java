@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -44,7 +45,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
-    private NewProductComplete mCompleteProduct;
+    private ProductComplete mCompleteProduct;
     private View mainView;
     private String mCompleteProductSku;
 
@@ -95,8 +96,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         if(arguments != null) {
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof NewProductComplete){
-                mCompleteProduct = (NewProductComplete) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                mCompleteProduct = (ProductComplete) parcelableProduct;
             }
         }
     }
@@ -147,8 +148,10 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
             getViews();
             displayProductInformation();
         } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
+            ContentValues values = new ContentValues();
+            values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -368,7 +371,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_DETAIL:
-            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;

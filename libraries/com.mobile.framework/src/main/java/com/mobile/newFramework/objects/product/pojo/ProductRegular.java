@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects.product;
+package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
 
@@ -9,16 +9,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
  *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
+ * Defines a base + partial of a give product.
  *
  * @author sergiopereira
- * @version 2.0
- * @date 2015/08/04
  */
-public class NewProductPartial extends NewProductBase {
+public class ProductRegular extends ProductBase {
 
     protected String mName;
     protected String mBrand;
@@ -33,7 +29,7 @@ public class NewProductPartial extends NewProductBase {
     /**
      * Empty constructor
      */
-    public NewProductPartial(){
+    public ProductRegular() {
         super();
     }
 
@@ -73,7 +69,7 @@ public class NewProductPartial extends NewProductBase {
     }
 
     /*
-	 * ############ GETTERS ############
+     * ############ GETTERS ############
 	 */
 
     public String getName() {
@@ -122,13 +118,31 @@ public class NewProductPartial extends NewProductBase {
 	 * ############ PARCELABLE ############
 	 */
 
-    protected NewProductPartial(Parcel in) {
-        // TODO
+    protected ProductRegular(Parcel in) {
+        super(in);
+        mName = in.readString();
+        mBrand = in.readString();
+        mImageUrl = in.readString();
+        mCategories = in.readString();
+        isNew = in.readByte() != 0x00;
+        isWishList = in.readByte() != 0x00;
+        mAvgRating = in.readDouble();
+        mTotalReviews = in.readInt();
+        mTotalRatings = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        // TODO
+        super.writeToParcel(dest, flags);
+        dest.writeString(mName);
+        dest.writeString(mBrand);
+        dest.writeString(mImageUrl);
+        dest.writeString(mCategories);
+        dest.writeByte((byte) (isNew ? 0x01 : 0x00));
+        dest.writeByte((byte) (isWishList ? 0x01 : 0x00));
+        dest.writeDouble(mAvgRating);
+        dest.writeInt(mTotalReviews);
+        dest.writeInt(mTotalRatings);
     }
 
     @Override
@@ -137,15 +151,15 @@ public class NewProductPartial extends NewProductBase {
     }
 
     @SuppressWarnings("unused")
-    public static final Creator<NewProductPartial> CREATOR = new Creator<NewProductPartial>() {
+    public static final Creator<ProductRegular> CREATOR = new Creator<ProductRegular>() {
         @Override
-        public NewProductPartial createFromParcel(Parcel in) {
-            return new NewProductPartial(in);
+        public ProductRegular createFromParcel(Parcel in) {
+            return new ProductRegular(in);
         }
 
         @Override
-        public NewProductPartial[] newArray(int size) {
-            return new NewProductPartial[size];
+        public ProductRegular[] newArray(int size) {
+            return new ProductRegular[size];
         }
     };
 

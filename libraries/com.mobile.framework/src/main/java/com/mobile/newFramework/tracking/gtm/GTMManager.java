@@ -19,7 +19,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.tracking.ContainerHolderSingleton;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
@@ -477,7 +477,7 @@ public class GTMManager {
     }
     
     
-    public void gtmTrackRateProduct(NewProductComplete product,String currencyName) {
+    public void gtmTrackRateProduct(ProductComplete product,String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
         Map<String, Object> message;
         String category = null;
@@ -498,7 +498,7 @@ public class GTMManager {
 
     }
     
-    public void gtmTrackViewRating(NewProductComplete product, String currencyName) {
+    public void gtmTrackViewRating(ProductComplete product, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
 
         Map<String, Object> message;

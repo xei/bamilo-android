@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects.product;
+package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,13 +19,13 @@ import java.util.HashMap;
  * @author Paulo Carvalho
  * 
  */
-public class ProductDetailsSpecification implements IJSONSerializable, Parcelable {
+public class ProductSpecification implements IJSONSerializable, Parcelable {
 
     private String mTitle;
     private HashMap<String,String> mSpecs;
 
 
-    public ProductDetailsSpecification() {
+    public ProductSpecification() {
         this.mTitle = "";
         this.mSpecs = new HashMap<>();
     }
@@ -49,13 +49,6 @@ public class ProductDetailsSpecification implements IJSONSerializable, Parcelabl
      */
     public void setTitle(String title) {
         this.mTitle = title;
-    }
-
-    /**
-     * set specifications
-     */
-    public void setSpecifications(HashMap<String,String> specs) {
-        this.mSpecs = specs;
     }
 
     /* (non-Javadoc)
@@ -123,9 +116,9 @@ public class ProductDetailsSpecification implements IJSONSerializable, Parcelabl
 	 * Parcel constructor
 	 * @param in
 	 */
-    private ProductDetailsSpecification(Parcel in) {
+    private ProductSpecification(Parcel in) {
         mTitle = in.readString();
-        mSpecs = new HashMap<String, String>();
+        mSpecs = new HashMap<>();
         in.readMap(mSpecs, String.class.getClassLoader());
 
     }
@@ -133,13 +126,13 @@ public class ProductDetailsSpecification implements IJSONSerializable, Parcelabl
 	/**
 	 * Create parcelable
 	 */
-    public static final Creator<ProductDetailsSpecification> CREATOR = new Creator<ProductDetailsSpecification>() {
-        public ProductDetailsSpecification createFromParcel(Parcel in) {
-            return new ProductDetailsSpecification(in);
+    public static final Creator<ProductSpecification> CREATOR = new Creator<ProductSpecification>() {
+        public ProductSpecification createFromParcel(Parcel in) {
+            return new ProductSpecification(in);
         }
 
-        public ProductDetailsSpecification[] newArray(int size) {
-            return new ProductDetailsSpecification[size];
+        public ProductSpecification[] newArray(int size) {
+            return new ProductSpecification[size];
         }
     };
 

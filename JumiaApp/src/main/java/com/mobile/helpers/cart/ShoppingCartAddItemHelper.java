@@ -36,18 +36,10 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     public static final String PRODUCT_SKU_TAG = "sku";
     
     public static final String PRODUCT_QT_TAG = "quantity";
-    
-    public static final String PRODUCT_RATING_TAG = "rating";
-    
-    public static final String ADD_ITEM = "add_item";
-    
-    public static final String PRODUCT_POS_TAG = "item_pos";
-    
-    public static final String REMOVE_FAVOURITE_TAG = "rmv_fv";
-    
-    public static final String REMOVE_RECENTLYVIEWED_TAG = "rmv_rv";
 
-    public static final String PRODUCT_PRICE_TAG = "price";
+    public static final String PRODUCT_POS_TAG = "item_pos";
+
+    public static final String REMOVE_RECENTLY_VIEWED_TAG = "rmv_rv";
     
     private String mCurrentSku;
     
@@ -71,7 +63,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         // Get specific data
         mCurrentPos = args.getInt(PRODUCT_POS_TAG, -1);
         mCurrentSku = args.getString(PRODUCT_SKU_TAG);
-        isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLYVIEWED_TAG, false);
+        isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLY_VIEWED_TAG, false);
         return super.createRequest(args);
     }
 
@@ -84,6 +76,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
 
+
         //TODO move to observable
         ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
@@ -91,6 +84,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
 
+        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         /*
          * LastViewed

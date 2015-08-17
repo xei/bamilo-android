@@ -1,12 +1,14 @@
-package com.mobile.newFramework.objects.product;
+package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.Seller;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,30 +22,29 @@ import java.util.Iterator;
  *
  * @author sergiopereira
  */
-public class NewProductComplete extends NewProductAddableToCart {
+public class ProductComplete extends ProductMultiple {
 
-    private static final String TAG = NewProductComplete.class.getSimpleName();
+    private static final String TAG = ProductComplete.class.getSimpleName();
 
     private String mDescription;
     private String mShortDescription;
     private ArrayList<String> mImageList;
     private ArrayList<Variation> mVariations;
-    private ProductBundle mProductBundle;
+    private BundleList mProductBundle;
     private boolean hasSeller;
     private boolean hasBundle;
     private Seller mSeller;
-    private double mMinPriceOfferDouble;
-    private String mMinPriceOffer;
+    private double mMinPriceOffer;
     private double mMinPriceOfferConverted;
     private int mTotalOffers;
-    private ArrayList<NewProductPartial> mRelatedProducts;
-    private ArrayList<ProductDetailsSpecification> mProductSpecs;
+    private ArrayList<ProductRegular> mRelatedProducts;
+    private ArrayList<ProductSpecification> mProductSpecs;
     private String mShareUrl;
 
     /**
      * Complete product empty constructor.
      */
-    public NewProductComplete() {
+    public ProductComplete() {
         super();
     }
 
@@ -86,13 +87,8 @@ public class NewProductComplete extends NewProductAddableToCart {
             //Offers
             JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
             if (offers != null) {
-                String offerPriceJSON = offers.optString(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-                if (!CurrencyFormatter.isNumber(offerPriceJSON)) {
-                    offerPriceJSON = "" + mPrice;
-                }
-                mMinPriceOfferDouble = Double.parseDouble(offerPriceJSON);
-                mMinPriceOffer = offerPriceJSON;
-                mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
+                mMinPriceOffer = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
+                mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
                 mTotalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG);
             }
             // Related products
@@ -100,7 +96,7 @@ public class NewProductComplete extends NewProductAddableToCart {
             if (relatedProductsJsonArray != null && relatedProductsJsonArray.length() > 0) {
                 mRelatedProducts = new ArrayList<>();
                 for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
-                    NewProductPartial relatedProduct = new NewProductPartial();
+                    ProductRegular relatedProduct = new ProductRegular();
                     if (relatedProduct.initialize(relatedProductsJsonArray.optJSONObject(i))) {
                         mRelatedProducts.add(relatedProduct);
                     }
@@ -117,7 +113,7 @@ public class NewProductComplete extends NewProductAddableToCart {
             if (specificationsArray != null && specificationsArray.length() > 0) {
                 mProductSpecs = new ArrayList<>();
                 for (int i = 0; i < specificationsArray.length(); i++) {
-                    ProductDetailsSpecification prodSpecs = new ProductDetailsSpecification();
+                    ProductSpecification prodSpecs = new ProductSpecification();
                     prodSpecs.initialize(specificationsArray.getJSONObject(i));
                     mProductSpecs.add(prodSpecs);
                 }
@@ -173,11 +169,11 @@ public class NewProductComplete extends NewProductAddableToCart {
         return mVariations;
     }
 
-    public ProductBundle getProductBundle() {
+    public BundleList getProductBundle() {
         return mProductBundle;
     }
 
-    public void setProductBundle(ProductBundle mProductBundle) {
+    public void setProductBundle(BundleList mProductBundle) {
         this.mProductBundle = mProductBundle;
     }
 
@@ -193,7 +189,7 @@ public class NewProductComplete extends NewProductAddableToCart {
         return mSeller;
     }
 
-    public String getMinPriceOffer() {
+    public double getMinPriceOffer() {
         return mMinPriceOffer;
     }
 
@@ -201,11 +197,11 @@ public class NewProductComplete extends NewProductAddableToCart {
         return mTotalOffers;
     }
 
-    public ArrayList<ProductDetailsSpecification> getProductSpecifications() {
+    public ArrayList<ProductSpecification> getProductSpecifications() {
         return mProductSpecs;
     }
 
-    public ArrayList<NewProductPartial> getRelatedProducts() {
+    public ArrayList<ProductRegular> getRelatedProducts() {
         return mRelatedProducts;
     }
 
@@ -242,15 +238,14 @@ public class NewProductComplete extends NewProductAddableToCart {
         dest.writeByte((byte) (hasBundle ? 1 : 0));
         dest.writeParcelable(mSeller, flags);
         dest.writeParcelable(mProductBundle, flags);
-        dest.writeDouble(mMinPriceOfferDouble);
-        dest.writeString(mMinPriceOffer);
+        dest.writeDouble(mMinPriceOffer);
         dest.writeDouble(mMinPriceOfferConverted);
         dest.writeInt(mTotalOffers);
         dest.writeList(mProductSpecs);
         dest.writeString(mShortDescription);
     }
 
-    private NewProductComplete(Parcel in) {
+    private ProductComplete(Parcel in) {
         super(in);
         mImageList = new ArrayList<>();
         in.readList(mImageList, null);
@@ -260,23 +255,22 @@ public class NewProductComplete extends NewProductAddableToCart {
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
         mSeller = in.readParcelable(Seller.class.getClassLoader());
-        mProductBundle = in.readParcelable(ProductBundle.class.getClassLoader());
-        mMinPriceOfferDouble = in.readDouble();
-        mMinPriceOffer = in.readString();
+        mProductBundle = in.readParcelable(BundleList.class.getClassLoader());
+        mMinPriceOffer = in.readDouble();
         mMinPriceOfferConverted = in.readDouble();
         mTotalOffers = in.readInt();
         mProductSpecs = new ArrayList<>();
-        in.readList(mProductSpecs, ProductDetailsSpecification.class.getClassLoader());
+        in.readList(mProductSpecs, ProductSpecification.class.getClassLoader());
         mShortDescription = in.readString();
     }
 
-    public static final Parcelable.Creator<NewProductComplete> CREATOR = new Parcelable.Creator<NewProductComplete>() {
-        public NewProductComplete createFromParcel(Parcel in) {
-            return new NewProductComplete(in);
+    public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {
+        public ProductComplete createFromParcel(Parcel in) {
+            return new ProductComplete(in);
         }
 
-        public NewProductComplete[] newArray(int size) {
-            return new NewProductComplete[size];
+        public ProductComplete[] newArray(int size) {
+            return new ProductComplete[size];
         }
     };
 

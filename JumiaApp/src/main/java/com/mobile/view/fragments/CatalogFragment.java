@@ -28,7 +28,7 @@ import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -550,7 +550,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
-        NewProductPartial product = ((CatalogGridAdapter) adapter).getItem(position);
+        ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
         if (product != null) {
             // Show product
@@ -568,7 +568,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     @Override
     public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
-        NewProductPartial product = ((CatalogGridAdapter) adapter).getItem(position);
+        ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
         try {
             // Get item
             if (product.isWishList()) {
@@ -864,38 +864,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
         // Create catalog request parameters
-//        ContentValues catalogValues = new ContentValues();
-//        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
         } else {
             triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
-        }
-    }
-
-    /**
-     * Validate if is to save some request items as related items.<br> Indicate to save related items in case:<br> - NO FILTER && POPULARITY &&
-     * FIRST_PAGE_NUMBER
-     *
-     * @param page - the current page number
-     * @return true or false
-     */
-    private boolean isToSaveRelatedItems(int page) {
-        try {
-            // Is to save related items in case popularity sort, first page and not filter applied
-            return mCurrentFilterValues.size() == 0 &&
-                    mSelectedSort.ordinal() == CatalogSort.POPULARITY.ordinal() &&
-                    page == GetCatalogPageHelper.FIRST_PAGE_NUMBER;
-        } catch (NullPointerException e) {
-            return false;
         }
     }
 

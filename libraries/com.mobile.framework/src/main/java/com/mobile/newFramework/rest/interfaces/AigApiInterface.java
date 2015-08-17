@@ -26,11 +26,11 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.objects.orders.SuperOrder;
-import com.mobile.newFramework.objects.product.NewProductComplete;
-import com.mobile.newFramework.objects.product.ProductBundle;
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
-import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.product.ValidProductList;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
@@ -180,7 +180,7 @@ public interface AigApiInterface {
     String getCatalogFiltered = "getCatalogFiltered";
 
     @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<NewProductComplete>> callback);
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String searchSku = "searchSku";
 
@@ -225,23 +225,23 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<NewProductComplete>> callback);
+    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String getProductDetail = "getProductDetail";
 
     @GET("/")
-    void getProductBundle(Callback<BaseResponse<ProductBundle>> callback);
+    void getProductBundle(Callback<BaseResponse<BundleList>> callback);
 
     String getProductBundle = "getProductBundle";
 
     @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
 
     String getProductOffers = "getProductOffers";
 
     @FormUrlEncoded
     @POST("/")
-    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperValidProducts>> callback);
+    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
 
     String validateProducts = "validateProducts";
 

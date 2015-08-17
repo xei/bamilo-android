@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsListAdapter.ViewHolder> {
     
-    private ArrayList<NewProductPartial> mDataset;
+    private ArrayList<ProductRegular> mDataset;
     private OnClickListener mParentClickListener;
 
     /**
@@ -59,7 +59,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
      * Provide a suitable constructor (depends on the kind of data)
      * @author sergiopereira
      */
-    public RelatedItemsListAdapter(ArrayList<NewProductPartial> relatedItemsList, OnClickListener parentClickListener) {
+    public RelatedItemsListAdapter(ArrayList<ProductRegular> relatedItemsList, OnClickListener parentClickListener) {
         mDataset = relatedItemsList;
         mParentClickListener = parentClickListener;
     }
@@ -82,7 +82,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Replace the contents of a view (invoked by the layout manager)
         // Get item
-        NewProductPartial item = mDataset.get(position);
+        ProductRegular item = mDataset.get(position);
         // Set brand
         holder.mBrand.setText(item.getBrand());
         // Set title

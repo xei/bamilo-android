@@ -3,7 +3,7 @@ package com.mobile.helpers.products;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -41,7 +41,7 @@ public class ValidateProductHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        SuperValidProducts validProducts = (SuperValidProducts) baseResponse.getMetadata().getData();
+        ValidProductList validProducts = (ValidProductList) baseResponse.getMetadata().getData();
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, validProducts);
     }
 

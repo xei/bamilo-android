@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -38,7 +38,7 @@ public class AigSearchSkuTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        NewProductComplete completeProduct = (NewProductComplete) response.getMetadata().getData();
+        ProductComplete completeProduct = (ProductComplete) response.getMetadata().getData();
         assertNotNull("Product is null",completeProduct);
         assertNotNull("Product Name is null",completeProduct.getName());
 

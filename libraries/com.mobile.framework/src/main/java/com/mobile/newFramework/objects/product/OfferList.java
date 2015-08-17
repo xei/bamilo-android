@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -20,21 +21,21 @@ import java.util.ArrayList;
  * @author Paulo Carvalho
  *
  */
-public class ProductOffers implements IJSONSerializable, Parcelable {
+public class OfferList implements IJSONSerializable, Parcelable {
 
-    protected static final String TAG = ProductOffers.class.getSimpleName();
+    protected static final String TAG = OfferList.class.getSimpleName();
 
 
     private double minPriceOffer;
     private double minPriceOfferConverted;
     private int totalOffers;
-    private ArrayList<Offer> offers;
+    private ArrayList<ProductOffer> offers;
 
     /**
      * Complete product empty constructor.
      */
-    public ProductOffers() {
-        // ...
+    public OfferList() {
+        super();
     }
 
     /*
@@ -57,7 +58,7 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
                 offers = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
                     JSONObject offerObject = offersArray.getJSONObject(i);
-                    Offer offer = new Offer(offerObject);
+                    ProductOffer offer = new ProductOffer(offerObject);
                     offers.add(offer);
                 }
             }
@@ -82,11 +83,11 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
         return RequiredJson.OBJECT_DATA;
     }
 
-    public ArrayList<Offer> getOffers() {
+    public ArrayList<ProductOffer> getOffers() {
         return offers;
     }
 
-    public void setOffers(ArrayList<Offer> offers) {
+    public void setOffers(ArrayList<ProductOffer> offers) {
         this.offers = offers;
     }
 
@@ -129,21 +130,21 @@ public class ProductOffers implements IJSONSerializable, Parcelable {
         dest.writeInt(totalOffers);
     }
 
-    private ProductOffers(Parcel in) {
+    private OfferList(Parcel in) {
         offers = new ArrayList<>();
-        in.readList(offers, Offer.class.getClassLoader());
+        in.readList(offers, ProductOffer.class.getClassLoader());
         minPriceOffer = in.readDouble();
         minPriceOfferConverted = in.readDouble();
         totalOffers = in.readInt();
     }
 
-    public static final Parcelable.Creator<ProductOffers> CREATOR = new Parcelable.Creator<ProductOffers>() {
-        public ProductOffers createFromParcel(Parcel in) {
-            return new ProductOffers(in);
+    public static final Parcelable.Creator<OfferList> CREATOR = new Parcelable.Creator<OfferList>() {
+        public OfferList createFromParcel(Parcel in) {
+            return new OfferList(in);
         }
 
-        public ProductOffers[] newArray(int size) {
-            return new ProductOffers[size];
+        public OfferList[] newArray(int size) {
+            return new OfferList[size];
         }
     };
 }

@@ -13,7 +13,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.product.NewProductAddableToCart;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -164,7 +164,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
      *
      * @author sergiopereira
      */
-    protected void showContent(ArrayList<NewProductAddableToCart> wishList) {
+    protected void showContent(ArrayList<ProductMultiple> wishList) {
         // Validate favourites
         if (CollectionUtils.isNotEmpty(wishList)) {
             Print.i(TAG, "ON SHOW CONTENT");
@@ -367,7 +367,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback 
             return;
         }
         // Get the catalog
-        ArrayList<NewProductAddableToCart> wishList = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        ArrayList<ProductMultiple> wishList = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Show content
         showContent(wishList);
     }

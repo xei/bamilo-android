@@ -37,10 +37,10 @@ import com.mobile.helpers.products.GetProductReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.NewProductComplete;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -66,7 +66,7 @@ public class ReviewsFragment extends BaseFragment {
     
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
-    private NewProductComplete selectedProduct;
+    private ProductComplete selectedProduct;
 
     private LayoutInflater inflater;
     
@@ -181,8 +181,8 @@ public class ReviewsFragment extends BaseFragment {
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
 
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof NewProductComplete){
-                selectedProduct = (NewProductComplete)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                selectedProduct = (ProductComplete)parcelableProduct;
             }
         }
         // Load saved state
@@ -247,9 +247,12 @@ public class ReviewsFragment extends BaseFragment {
                 mProductSku = sku != null ? sku : "";
             }
             if (!TextUtils.isEmpty(mProductSku)) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.SKU_TAG, mProductSku);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+
             } else {
                 showFragmentErrorRetry();
             }
@@ -587,7 +590,7 @@ public class ReviewsFragment extends BaseFragment {
             showFragmentContentContainer();
             break;
         case GET_PRODUCT_DETAIL:
-          if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+          if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
               Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
               getActivity().onBackPressed();
               return;

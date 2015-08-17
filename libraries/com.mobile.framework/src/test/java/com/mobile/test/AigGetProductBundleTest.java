@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.product.ProductBundle;
+import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -41,7 +41,7 @@ public class AigGetProductBundleTest extends AigTestCase {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
 
-        ProductBundle productBundle = (ProductBundle) response.getMetadata().getData();
+        BundleList productBundle = (BundleList) response.getMetadata().getData();
         assertNotNull("Product Bundle is null", productBundle);
         assertNotNull("Product Bundle ID is null", productBundle.getBundleId());
         //assertNotNull("Product Budle Name is null", productBundle.getBundleName());

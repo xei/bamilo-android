@@ -17,7 +17,7 @@ import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -305,7 +305,7 @@ public class TrackerDelegator {
      */
     public static void trackItemReview(Bundle params, boolean isRating) {
 
-        NewProductComplete product = params.getParcelable(PRODUCT_KEY);
+        ProductComplete product = params.getParcelable(PRODUCT_KEY);
         HashMap<String, Long> ratingValues = (HashMap<String, Long>) params.getSerializable(RATINGS_KEY);
         String user_id = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
@@ -339,7 +339,7 @@ public class TrackerDelegator {
     /**
      *
      */
-    public static void trackViewReview(NewProductComplete product) {
+    public static void trackViewReview(ProductComplete product) {
         //GTM
         GTMManager.get().gtmTrackViewRating(product, EUR_CURRENCY);
     }
@@ -779,7 +779,7 @@ public class TrackerDelegator {
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(NewProductComplete completeProduct) {
+    public static void trackAddToFavorites(ProductComplete completeProduct) {
         String productSku = completeProduct.getSku();
         String productBrand = completeProduct.getBrand();
         double productPrice = completeProduct.getPriceForTracking();
@@ -820,7 +820,7 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(NewProductComplete completeProduct) {
+    public static void trackRemoveFromFavorites(ProductComplete completeProduct) {
         String productSku = completeProduct.getSku();
         double price = completeProduct.getPriceForTracking();
         double averageRatingTotal = completeProduct.getAvgRating();

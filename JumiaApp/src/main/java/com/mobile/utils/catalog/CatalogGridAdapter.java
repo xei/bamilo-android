@@ -17,7 +17,7 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.Banner;
-import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -52,7 +52,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private boolean isTabletInLandscape;
 
-    private ArrayList<NewProductPartial> mDataSet;
+    private ArrayList<ProductRegular> mDataSet;
     
     private Context mContext;
     
@@ -116,7 +116,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param context - the application context
      * @param data - the array lisl
      */
-    public CatalogGridAdapter(Context context, ArrayList<NewProductPartial> data) {
+    public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
         mContext = context;
         mDataSet = data;
         isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
@@ -202,7 +202,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get real position
         position = getRealPosition(position);
         // Get item
-        NewProductPartial item = mDataSet.get(position);
+        ProductRegular item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
@@ -246,7 +246,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setFavourite(ProductViewHolder holder, NewProductPartial item, int position) {
+    private void setFavourite(ProductViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
@@ -259,7 +259,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setProductPrice(ProductViewHolder holder, NewProductPartial item) {
+    private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
         // Case discount
         if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
@@ -281,7 +281,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setSpecificViewForListLayout(ProductViewHolder holder, NewProductPartial item) {
+    private void setSpecificViewForListLayout(ProductViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
             // Show rating
@@ -349,7 +349,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param position - the respective product position
      * @return Product or null
      */
-    public NewProductPartial getItem(int position) {
+    public ProductRegular getItem(int position) {
         return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
     }
     

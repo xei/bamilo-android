@@ -4,11 +4,10 @@
 package com.mobile.helpers.products;
 
 import android.net.Uri;
-import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.ProductBundle;
+import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -36,7 +35,7 @@ public class GetProductBundleHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
+    protected String getRequestUrl(android.os.Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
     }
 
@@ -51,9 +50,9 @@ public class GetProductBundleHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+    public void createSuccessBundleParams(BaseResponse baseResponse, android.os.Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        ProductBundle productBundle = (ProductBundle) baseResponse.getMetadata().getData();
+        BundleList productBundle = (BundleList) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productBundle);
     }
 

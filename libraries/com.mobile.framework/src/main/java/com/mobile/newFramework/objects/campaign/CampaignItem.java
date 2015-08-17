@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class CampaignItem extends NewProductPartial implements IJSONSerializable {
+public class CampaignItem extends ProductRegular implements IJSONSerializable {
 
     private double mSavePrice;
 

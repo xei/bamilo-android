@@ -33,7 +33,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.NewProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -75,7 +75,7 @@ public class ReviewWriteFragment extends BaseFragment {
     
     private static final String RATINGS = "ratings";
 
-    private NewProductComplete completeProduct;
+    private ProductComplete completeProduct;
 
     private LinearLayout ratingContainer;
 
@@ -210,8 +210,8 @@ public class ReviewWriteFragment extends BaseFragment {
         if (arguments != null) {
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof NewProductComplete){
-                completeProduct = (NewProductComplete)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                completeProduct = (ProductComplete)parcelableProduct;
             }
 
         }
@@ -236,8 +236,10 @@ public class ReviewWriteFragment extends BaseFragment {
             }
             
             if (completeProduct == null) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 /* Commented due to unnecessary data being fetched
@@ -324,8 +326,10 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setRatingLayout(Form form) {
         if (completeProduct == null) {
             if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -441,8 +445,10 @@ public class ReviewWriteFragment extends BaseFragment {
         
         if (completeProduct == null) {
             if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -632,7 +638,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
         case GET_PRODUCT_DETAIL:
             Print.d(TAG, "GOT GET_PRODUCT_EVENT");
-            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;

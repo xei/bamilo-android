@@ -11,12 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -24,22 +22,20 @@ import java.util.ArrayList;
 /**
  * This Class is used to create an adapter for the list of items addableToCart.
  * It is called by LastViewedFragment and FavouritesFragment
- * 
+ *
  * @author Andre Lopes
  * @modified sergiopereira
- * 
+ *
  */
-public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
-    
-    public final static String TAG = AddableToCartListAdapter.class.getSimpleName();
-    
-    private static int RECYCLED_VIEW_KEY = R.id.recycled_view;
+public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
+
+    public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
     private LayoutInflater mInflater;
 
     private OnClickListener mOnClickParentListener;
 
-    private Class<? extends AddableToCart> itemsClass;
+    private Class<? extends ProductMultiple> itemsClass;
 
     /**
      * A representation of each item on the list
@@ -59,15 +55,15 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         private View container;
         private View stockError;
     }
-    
+
     /**
-     * Constructor 
+     * Constructor
      * @param context
      * @param items
      * @param parentListener
      * @author sergiopereira
      */
-    public AddableToCartListAdapter(Context context, ArrayList<AddableToCart> items, OnClickListener parentListener) {
+    public RecentlyViewedAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
         super(context, R.layout.addabletocart_item, items);
         mInflater = LayoutInflater.from(context);
         mOnClickParentListener = parentListener;
@@ -93,27 +89,21 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // Get the class associated to the view
         Item prodItem = getItemView(itemView);
         // Get addableToCart
-        AddableToCart addableToCart = getItem(position);
+        ProductMultiple addableToCart = getItem(position);
         // Set Image
         setImage(prodItem, addableToCart);
-        // Set brand, name and price 
+        // Set brand, name and price
         setTextContent(prodItem, addableToCart);
         // Set variation
         setVariationContent(prodItem, addableToCart);
         // Set warnings
         setWarnings(prodItem, addableToCart);
         // Set clickable views
-        if (itemsClass == LastViewedAddableToCart.class) {
-            setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
-        } else {
-            setClickableViews(position, prodItem.container, prodItem.deleteButton, prodItem.addToCartButton, prodItem.varianceButton);
-        }
-        // Set incomplete item 
-        setIncompleItem(prodItem.addToCartButton, addableToCart.isComplete());
+        setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
         // Return view
         return itemView;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.widget.ArrayAdapter#notifyDataSetChanged()
@@ -123,7 +113,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         super.notifyDataSetChanged();
         Print.i(TAG, "ON DATA SET CHANGED");
     }
-    
+
     /**
      * Get the recycled view
      * @return ItemView
@@ -131,7 +121,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      */
     private Item getItemView(View itemView){
         Item item;
-        if (itemView.getTag(RECYCLED_VIEW_KEY) == null) {
+        if (itemView.getTag(R.id.recycled_view) == null) {
             // Create tag
             item = new Item();
             item.container = itemView.findViewById(R.id.addabletocart_item_container);
@@ -147,39 +137,24 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             item.stockError = itemView.findViewById(R.id.error_stock);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);
             item.deleteButton = itemView.findViewById(R.id.button_delete);
-            itemView.setTag(RECYCLED_VIEW_KEY, item);
+            itemView.setTag(R.id.recycled_view, item);
         } else {
-            item = (Item) itemView.getTag(RECYCLED_VIEW_KEY);
+            item = (Item) itemView.getTag(R.id.recycled_view);
         }
         return item;
     }
-    
-    /**
-     * Disable the add to cart button for incomplete products
-     * @param view
-     * @param isComplete
-     * @author sergiopereira
-     */
-    private void setIncompleItem(View view, boolean isComplete) {
-        if(!isComplete) {
-            view.setOnClickListener(null);
-            view.setEnabled(false);
-            view.setBackgroundResource(R.drawable.btn_grey);
-            UIUtils.setAlpha(view, 0.5f);
-        }
-    }
-    
+
     /**
      * Set warnings, stock and variation
      * @param prodItem
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setWarnings(Item prodItem, AddableToCart addableToCart) {
-        // Set variation error visibility 
-        prodItem.variantChooseError.setVisibility(addableToCart.showChooseVariationWarning() ? View.VISIBLE : View.GONE);
-        // Set stock error visibility 
-        prodItem.stockError.setVisibility(addableToCart.showStockVariationWarning() ? View.VISIBLE : View.GONE);
+    private void setWarnings(Item prodItem, ProductMultiple addableToCart) {
+//        // Set variation error visibility
+//        prodItem.variantChooseError.setVisibility(addableToCart.showChooseVariationWarning() ? View.VISIBLE : View.GONE);
+//        // Set stock error visibility
+//        prodItem.stockError.setVisibility(addableToCart.showStockVariationWarning() ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -193,39 +168,37 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             if(mOnClickParentListener != null) view.setOnClickListener(mOnClickParentListener);
         }
     }
-    
+
     /**
      * Set the variation container
      * @author sergiopereira
      */
-    private void setVariationContent(Item prodItem, AddableToCart addableToCart){
+    private void setVariationContent(Item prodItem, ProductMultiple product){
         // Set simple button
-        if(addableToCart.hasSimples()) {
+        if(product.hasMultiSimpleVariations()) {
             // Set simple value
-            String simpleValue = "..."; 
-            if(addableToCart.getSelectedSimple() != AddableToCart.NO_SIMPLE_SELECTED ) simpleValue = addableToCart.getSelectedSimpleValue();
-            else addableToCart.setSelectedSimple(AddableToCart.NO_SIMPLE_SELECTED);
-            // Set visibilty
-            prodItem.varianceButton.setText(simpleValue);
+            String simpleVariationValue = "...";
+            if(product.hasSelectedSimpleVariation()) {
+                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
+            }
+            prodItem.varianceButton.setText(simpleVariationValue);
             prodItem.varianceButton.setVisibility(View.VISIBLE);
         } else {
-            // addableToCart.setSelectedSimple(0);
             prodItem.varianceButton.setVisibility(View.GONE);
         }
     }
-    
+
     /**
      * Set the image view
      * @param prodItem
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setImage(Item prodItem, AddableToCart addableToCart){
+    private void setImage(Item prodItem, ProductMultiple addableToCart){
         // Set is new image
         prodItem.isNew.setSelected(addableToCart.isNew());
         // Set image
-        String imageURL = (addableToCart.getImageList().size() > 0) ? addableToCart.getImageList().get(0) : "";
-        RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_small);
     }
 
     /**
@@ -234,7 +207,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setTextContent(Item prodItem, AddableToCart addableToCart) {
+    private void setTextContent(Item prodItem, ProductMultiple addableToCart) {
         if (addableToCart != null) {
             // Set brand
             String brand = addableToCart.getBrand();
@@ -246,7 +219,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             prodItem.name.setText(addableToCart.getName());
             // Validate special price
             if (addableToCart.hasDiscount()) {
-                // Set discount 
+                // Set discount
                 prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
                 // TODO placeholder
                 int discountPercentage = addableToCart.getMaxSavingPercentage();
@@ -268,7 +241,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
             }
-            if (itemsClass == LastViewedAddableToCart.class) {
+            if (itemsClass == ProductMultiple.class) {
                 // Set visibility
                 prodItem.deleteButton.setVisibility(View.INVISIBLE);
             }

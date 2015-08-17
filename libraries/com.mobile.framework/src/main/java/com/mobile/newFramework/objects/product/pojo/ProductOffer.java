@@ -1,4 +1,4 @@
-package com.mobile.newFramework.objects.product;
+package com.mobile.newFramework.objects.product.pojo;
 
 
 import android.os.Parcel;
@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
@@ -18,10 +19,12 @@ import org.json.JSONObject;
  *
  * @author Paulo Carvalho
  *
+ * // TODO USE THE PRODUCT BASE
+ *
  */
-public class Offer implements IJSONSerializable, Parcelable{
+public class ProductOffer implements IJSONSerializable, Parcelable{
 
-    protected static final String TAG = Offer.class.getSimpleName();
+    protected static final String TAG = ProductOffer.class.getSimpleName();
 
     private String sku;
     private String simpleSku;
@@ -39,7 +42,7 @@ public class Offer implements IJSONSerializable, Parcelable{
      * Complete product empty constructor.
      */
     @SuppressWarnings("unused")
-    public Offer() {
+    public ProductOffer() {
         sku ="";
         simpleSku = "";
         priceOffer = "";
@@ -56,7 +59,7 @@ public class Offer implements IJSONSerializable, Parcelable{
     /**
      * Complete product empty constructor.
      */
-    public Offer(JSONObject offer) {
+    public ProductOffer(JSONObject offer) {
 
         sku ="";
         simpleSku = "";
@@ -162,49 +165,13 @@ public class Offer implements IJSONSerializable, Parcelable{
         return simpleSku;
     }
 
-//    public void setSimpleSku(String simpleSku) {
-//        this.simpleSku = simpleSku;
-//    }
-
-    public String getPriceOffer() {
-        return priceOffer;
-    }
-
-//    public void setPriceOffer(String priceOffer) {
-//        this.priceOffer = priceOffer;
-//    }
-
-//    public double getPriceOfferDouble() {
-//        return priceOfferDouble;
-//    }
-
-//    public void setPriceOfferDouble(double priceOfferDouble) {
-//        this.priceOfferDouble = priceOfferDouble;
-//    }
-
-//    public double getPriceOfferConverted() {
-//        return priceOfferConverted;
-//    }
-//
-//    public void setPriceOfferConverted(double priceOfferConverted) {
-//        this.priceOfferConverted = priceOfferConverted;
-//    }
-
     public int getMaxDeliveryTime() {
         return maxDeliveryTime;
     }
 
-//    public void setMaxDeliveryTime(int maxDeliveryTime) {
-//        this.maxDeliveryTime = maxDeliveryTime;
-//    }
-
     public int getMinDeliveryTime() {
         return minDeliveryTime;
     }
-
-//    public void setMinDeliveryTime(int minDeliveryTime) {
-//        this.minDeliveryTime = minDeliveryTime;
-//    }
 
     public Seller getSeller() {
         return seller;
@@ -227,7 +194,7 @@ public class Offer implements IJSONSerializable, Parcelable{
      */
 
 
-    protected Offer(Parcel in) {
+    protected ProductOffer(Parcel in) {
         sku = in.readString();
         simpleSku = in.readString();
         priceOffer = in.readString();
@@ -262,15 +229,15 @@ public class Offer implements IJSONSerializable, Parcelable{
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Offer> CREATOR = new Parcelable.Creator<Offer>() {
+    public static final Parcelable.Creator<ProductOffer> CREATOR = new Parcelable.Creator<ProductOffer>() {
         @Override
-        public Offer createFromParcel(Parcel in) {
-            return new Offer(in);
+        public ProductOffer createFromParcel(Parcel in) {
+            return new ProductOffer(in);
         }
 
         @Override
-        public Offer[] newArray(int size) {
-            return new Offer[size];
+        public ProductOffer[] newArray(int size) {
+            return new ProductOffer[size];
         }
     };
 

@@ -22,8 +22,8 @@ import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.Offer;
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.OfferList;
+import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -57,7 +57,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     private String mCompleteProductName;
     
-    private ProductOffers productOffers;
+    private OfferList productOffers;
     
     private static final String PRODUCT_OFFERS = "product_offers";
     
@@ -245,9 +245,9 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
      * Order offers by price
      * @param productOffersArray The product offers
      */
-    private void orderOffersByLowerPrice(ProductOffers productOffersArray){
+    private void orderOffersByLowerPrice(OfferList productOffersArray){
         if(productOffersArray != null){
-            ArrayList<Offer> offers = productOffersArray.getOffers();
+            ArrayList<ProductOffer> offers = productOffersArray.getOffers();
             if(CollectionUtils.isNotEmpty(offers)){
                 Collections.sort(offers, new CustomComparator());
                 productOffers.setOffers(offers); 
@@ -258,9 +258,9 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     /**
      * Sort
      */
-    public class CustomComparator implements Comparator<Offer> {
+    public class CustomComparator implements Comparator<ProductOffer> {
         @Override
-        public int compare(Offer o1, Offer o2) {
+        public int compare(ProductOffer o1, ProductOffer o2) {
             return ((Double)o1.getFinalPrice()).compareTo(o2.getFinalPrice());
         }
     }
@@ -423,7 +423,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Print.d(TAG, "ON ITEM CLICK");
-        Offer offer = productOffers.getOffers().get(position);
+        ProductOffer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
             String targetUrl = offer.getSeller().getUrl();
@@ -443,7 +443,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     }
 
     @Override
-    public void onAddOfferToCart(Offer offer) {
+    public void onAddOfferToCart(ProductOffer offer) {
         // Add one unity to cart 
         triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
     }

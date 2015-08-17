@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -15,8 +16,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.NewProductComplete;
-import com.mobile.newFramework.objects.product.ProductDetailsSpecification;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductSpecification;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -45,10 +46,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     private static final String TAG = ProductDetailsSpecificationsFragment.class.getSimpleName();
 
     private LinearLayout mProductSpecsContainer;
-    private NewProductComplete mCompleteProduct;
+    private ProductComplete mCompleteProduct;
     private View mainView;
     private String mCompleteProductSku;
-    private ArrayList<ProductDetailsSpecification> mProductSpecifications;
+    private ArrayList<ProductSpecification> mProductSpecifications;
     private LayoutInflater inflater;
     private static final String SPECIFICATION = "specification";
 
@@ -100,8 +101,8 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductSku = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof NewProductComplete){
-                mCompleteProduct = (NewProductComplete) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                mCompleteProduct = (ProductComplete) parcelableProduct;
             }
         }
     }
@@ -153,8 +154,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             getViews();
             displaySpecification();
         } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
+            ContentValues values = new ContentValues();
+            values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -233,7 +236,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             if(mProductSpecsContainer != null){
                 mProductSpecsContainer.removeAllViews();
             }
-            for (ProductDetailsSpecification productSpecification : mProductSpecifications) {
+            for (ProductSpecification productSpecification : mProductSpecifications) {
                 addSpecTable(productSpecification);
             }
         }
@@ -243,7 +246,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * Add specification table to the specification list
      * @param productSpecification
      */
-    private void addSpecTable(ProductDetailsSpecification productSpecification){
+    private void addSpecTable(ProductSpecification productSpecification){
 
         final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
         final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
@@ -313,7 +316,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_DETAIL:
-            if (((NewProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;

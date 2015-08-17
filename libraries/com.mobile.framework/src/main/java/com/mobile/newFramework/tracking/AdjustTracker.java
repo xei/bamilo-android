@@ -31,9 +31,9 @@ import com.mobile.newFramework.objects.cart.ShoppingCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
-import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.NewProductComplete;
-import com.mobile.newFramework.objects.product.NewProductPartial;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.utils.Constants;
@@ -347,7 +347,7 @@ public class AdjustTracker {
                     eventPDVScreen.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }   
-            NewProductComplete prod = bundle.getParcelable(PRODUCT);
+            ProductComplete prod = bundle.getParcelable(PRODUCT);
 //            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
             eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, prod.getSku());
@@ -395,7 +395,7 @@ public class AdjustTracker {
                     eventCatalogSorted.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }
-            ArrayList<NewProductPartial> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
+            ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
             sbSkus = new StringBuilder();
             if (skus.size() > 0) {
@@ -403,7 +403,7 @@ public class AdjustTracker {
                 final int skusLimit = 3;
                 int skusCount = 0;
                 
-                for (NewProductPartial sku : skus) {
+                for (ProductRegular sku : skus) {
                     sbSkus.append(sku.getSku()).append(",");
                     skusCount++;
                     if (skusLimit <= skusCount) {
@@ -797,17 +797,17 @@ public class AdjustTracker {
                 AdjustEvent eventViewWishlist = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist));
                 eventViewWishlist = getFBBaseParameters(eventViewWishlist, bundle);
 
-                ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
+                ArrayList<ProductMultiple> favourites = bundle.getParcelableArrayList(FAVORITES);
 
                 Double WishlistTotal = 0.0;
 
                 if (null != favourites) {
 
-                    for (AddableToCart fav : favourites) {
+                    for (ProductMultiple fav : favourites) {
                         WishlistTotal += fav.getPriceForTracking();
                     }
 
-                    for (AddableToCart fav : favourites) {
+                    for (ProductMultiple fav : favourites) {
 
                         eventViewWishlist.addCallbackParameter(AdjustKeys.BRAND, fav.getBrand());
                         eventViewWishlist.addPartnerParameter(AdjustKeys.BRAND, fav.getBrand());
@@ -826,10 +826,12 @@ public class AdjustTracker {
                         eventViewWishlist.addPartnerParameter(AdjustKeys.QUANTITY, "1");
                         eventViewWishlist.addCallbackParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
                         eventViewWishlist.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-                        if (fav.hasSimples() && AddableToCart.NO_SIMPLE_SELECTED != fav.getSelectedSimple()) {
-                            eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
-                            eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
+
+                        if (fav.hasSelectedSimpleVariation()) {
+                            eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleVariation().getVariationValue());
+                            eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleVariation().getVariationValue());
                         }
+
                         eventViewWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
                         eventViewWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
                         Adjust.trackEvent(eventViewWishlist);

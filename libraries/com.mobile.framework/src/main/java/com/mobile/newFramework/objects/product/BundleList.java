@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
@@ -22,9 +23,9 @@ import java.util.ArrayList;
  * @author Paulo Carvalho
  *
  */
-public class ProductBundle implements IJSONSerializable, Parcelable {
+public class BundleList implements IJSONSerializable, Parcelable {
 
-    protected static final String TAG = ProductBundle.class.getSimpleName();
+    protected static final String TAG = BundleList.class.getSimpleName();
 
     private String bundleName;
     private String bundleId;
@@ -32,13 +33,13 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
     private double bundlePriceDouble;
     private double bundlePriceConverted;
     private int bundleLeaderPos;
-    private ArrayList<ProductBundleProduct> bundleProducts;
+    private ArrayList<ProductBundle> bundleProducts;
 
     /**
      * Complete product bundle empty constructor.
      */
     @SuppressWarnings("unused")
-    public ProductBundle() {
+    public BundleList() {
         bundleName = "";
         bundleId = "";
         bundlePrice = "";
@@ -58,36 +59,26 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-
             bundleId = jsonObject.getString(RestConstants.JSON_BUNDLE_ID);
             bundleName = jsonObject.getString(RestConstants.JSON_BUNDLE_NAME);
-
             String priceJSON = jsonObject.getString(RestConstants.JSON_BUNDLE_PRICE);
-
             if (!CurrencyFormatter.isNumber(priceJSON)) {
                 throw new JSONException("Price is not a number!");
             }
             bundlePriceDouble = Double.parseDouble(priceJSON);
             bundlePrice = priceJSON;
-
             bundlePriceConverted = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
             bundleLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
             JSONArray bundleProductsArray = jsonObject.optJSONArray(RestConstants.JSON_BUNDLE_PRODUCTS);
-
             if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
                 for (int i = 0; i < bundleProductsArray.length(); i++) {
-
                     JSONObject productJson = bundleProductsArray.getJSONObject(i);
-
-                    ProductBundleProduct bundleProduct = new ProductBundleProduct(productJson);
-
+                    ProductBundle bundleProduct = new ProductBundle(productJson);
                     bundleProducts.add(bundleProduct);
                 }
             }
 
         } catch (JSONException e) {
-
-//            Log.e(TAG, "Error initializing the complete product", e);
             return false;
         }
         return true;
@@ -108,68 +99,19 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
         return RequiredJson.OBJECT_DATA;
     }
 
-//    public String getBundleName() {
-//        return bundleName;
-//    }
-//
-//    public void setBundleName(String bundleName) {
-//        this.bundleName = bundleName;
-//    }
-
     public String getBundleId() {
         return bundleId;
     }
 
-//    public void setBundleId(String bundleId) {
-//        this.bundleId = bundleId;
-//    }
-//
-//    public String getBundlePrice() {
-//        return bundlePrice;
-//    }
-//
-//    public void setBundlePrice(String bundlePrice) {
-//        this.bundlePrice = bundlePrice;
-//    }
-//
-//    public double getBundlePriceDouble() {
-//        return bundlePriceDouble;
-//    }
-//
-//    public void setBundlePriceDouble(double bundlePriceDouble) {
-//        this.bundlePriceDouble = bundlePriceDouble;
-//    }
-//
-//    public double getBundlePriceConverted() {
-//        return bundlePriceConverted;
-//    }
-//
-//    public void setBundlePriceConverted(double bundlePriceConverted) {
-//        this.bundlePriceConverted = bundlePriceConverted;
-//    }
-//
-//    public int getBundleLeaderPos() {
-//        return bundleLeaderPos;
-//    }
-//
-//    public void setBundleLeaderPos(int bundleLeaderPos) {
-//        this.bundleLeaderPos = bundleLeaderPos;
-//    }
-
-    public ArrayList<ProductBundleProduct> getBundleProducts() {
+    public ArrayList<ProductBundle> getBundleProducts() {
         return bundleProducts;
     }
-
-//    public void setBundleProducts(ArrayList<ProductBundleProduct> bundleProducts) {
-//        this.bundleProducts = bundleProducts;
-//    }
-
 
     /*
      * ############ PARCELABLE ############
      */
 
-    protected ProductBundle(Parcel in) {
+    protected BundleList(Parcel in) {
         bundleName = in.readString();
         bundleId = in.readString();
         bundlePrice = in.readString();
@@ -178,7 +120,7 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
         bundleLeaderPos = in.readInt();
         if (in.readByte() == 0x01) {
             bundleProducts = new ArrayList<>();
-            in.readList(bundleProducts, ProductBundleProduct.class.getClassLoader());
+            in.readList(bundleProducts, ProductBundle.class.getClassLoader());
         } else {
             bundleProducts = null;
         }
@@ -206,15 +148,15 @@ public class ProductBundle implements IJSONSerializable, Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ProductBundle> CREATOR = new Parcelable.Creator<ProductBundle>() {
+    public static final Parcelable.Creator<BundleList> CREATOR = new Parcelable.Creator<BundleList>() {
         @Override
-        public ProductBundle createFromParcel(Parcel in) {
-            return new ProductBundle(in);
+        public BundleList createFromParcel(Parcel in) {
+            return new BundleList(in);
         }
 
         @Override
-        public ProductBundle[] newArray(int size) {
-            return new ProductBundle[size];
+        public BundleList[] newArray(int size) {
+            return new BundleList[size];
         }
     };
 
