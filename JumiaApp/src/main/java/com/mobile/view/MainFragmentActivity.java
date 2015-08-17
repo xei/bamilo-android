@@ -58,7 +58,6 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
-import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
@@ -364,8 +363,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case FAVORITE_LIST:
                 removeEntries = true;
-                //fragment = FavouritesFragment.getInstance();
-                fragment = WishListFragment.getInstance();
+                //fragment = WishListFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
