@@ -17,41 +17,13 @@ import org.json.JSONObject;
  *
  */
 public class FormData implements IJSONSerializable, Parcelable {
-//    /**
-//     * Defines the json action tag.
-//     */
-//    private final String JSON_ACTION_TAG = "action";
-//    /**
-//     * Defines the json url tag.
-//     */
-//    private final String JSON_URL_TAG = "url";
-        
-//    private String id;
-//    private String action;
-    private String url;
 
-    //alexandrapires: added fields mobapi 1.8
+    private String url;
     private String type;
     private String md5;
 
     public FormData() {
     }
-    
-    /**
-     * @return the id
-     */
-/*    public String getId() {
-        return id;
-    }*/
-
-    /**
-     * @return the action
-     */
-/*
-    public String getAction() {
-        return action;
-    }*/
-
 
     /**
      * @return the type
@@ -89,10 +61,7 @@ public class FormData implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         
         try {
-            //alexandrapires: not used in mobapi 1.8 : added type and md5
-       //     id = jsonObject.getString(RestConstants.JSON_ID_TAG);
-         //   action = jsonObject.getString(RestConstants.JSON_ACTION_TAG);
-            type = jsonObject.getString(RestConstants.JSON_TYPE_TAG);
+            type = jsonObject.getString(RestConstants.TYPE);
             md5 = jsonObject.getString(RestConstants.JSON_MD5_TAG);
             url = jsonObject.getString(RestConstants.JSON_URL_TAG);
 
@@ -109,13 +78,10 @@ public class FormData implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-      //      jsonObject.put(RestConstants.JSON_ID_TAG, id);
-     //       jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
-            jsonObject.put(RestConstants.JSON_TYPE_TAG,type);
+            jsonObject.put(RestConstants.TYPE,type);
             jsonObject.put(RestConstants.JSON_MD5_TAG, url);
             jsonObject.put(RestConstants.JSON_URL_TAG, url);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return jsonObject;
@@ -128,14 +94,11 @@ public class FormData implements IJSONSerializable, Parcelable {
 
     @Override
     public int describeContents() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
- //       dest.writeString(id);
-  //      dest.writeString(action);
         dest.writeString(type);
         dest.writeString(md5);
         dest.writeString(url);
@@ -144,11 +107,8 @@ public class FormData implements IJSONSerializable, Parcelable {
 
     /**
      * Parcel constructor
-     * @param in
      */
     private FormData(Parcel in) {
- //       id = in.readString();
-  //      action = in.readString();
         type = in.readString();
         md5 = in.readString();
         url = in.readString();

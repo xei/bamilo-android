@@ -57,7 +57,7 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable, Clone
     @Override
     public boolean initialize(JSONObject jsonOption) throws JSONException {
         // Get id
-        mId = jsonOption.optString(RestConstants.JSON_ID_TAG, "");
+        mId = jsonOption.optString(RestConstants.ID, "");
         // Get label
         mLabel = jsonOption.optString(RestConstants.LABEL, "");
         // Get value
@@ -88,7 +88,7 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable, Clone
 
         try {
             // Get id
-            jsonOptions.put(RestConstants.JSON_ID_TAG, mId);
+            jsonOptions.put(RestConstants.ID, mId);
             // Get label
             jsonOptions.put(RestConstants.LABEL, mLabel);
             // Get value

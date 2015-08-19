@@ -171,7 +171,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             //Log.i(TAG, "FORM FIELD: " + jsonObject.toString());
             // get the form field
-            String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
+            String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
                 case "string":
                 case "text":
@@ -222,7 +222,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // if the field is one of the supported types
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG); //comes empty in mobapi 1.8, necessary for tracking
+            id = jsonObject.optString(RestConstants.ID);
             key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
             name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
             label = jsonObject.optString(RestConstants.LABEL);
@@ -321,8 +321,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(!jsonObject.isNull("options")) {
                 dataOptionsArray = jsonObject.optJSONArray("options");
                 dataOptionsObject = jsonObject.optJSONObject("options");
-                //if(dataOptionsArray != null) Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
-                //if(dataOptionsObject != null) Log.i(TAG,"code1options json "+dataOptionsObject.toString());
             }
 
             /**
@@ -422,42 +420,42 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             switch (inputType) {
             case checkBox:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
+                jsonObject.put(RestConstants.TYPE, "boolean");
                 break;
             case date:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "date");
+                jsonObject.put(RestConstants.TYPE, "date");
                 break;
             case email:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "email");
+                jsonObject.put(RestConstants.TYPE, "email");
                 break;
             case number:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "integer");
+                jsonObject.put(RestConstants.TYPE, "integer");
                 break;
             case password:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "password");
+                jsonObject.put(RestConstants.TYPE, "password");
                 break;
             case radioGroup:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "radio");
+                jsonObject.put(RestConstants.TYPE, "radio");
                 break;
             case list:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "list");
+                jsonObject.put(RestConstants.TYPE, "list");
                 break;
             case text:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.TYPE, "string");
                 break;
             case checkBoxList:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
+                jsonObject.put(RestConstants.TYPE, "boolean");
                 break;
             case rating:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "rating");
+                jsonObject.put(RestConstants.TYPE, "rating");
                 break;
             default:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.TYPE, "string");
                 break;
             }
 
             // fields
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.JSON_KEY_TAG, key);
             jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, name);
             jsonObject.put(RestConstants.LABEL, label);
@@ -660,8 +658,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /**
      * Listener used when the data set is received.
-     *
-     * @param listener
      */
     public void setOnDataSetReceived(OnDataSetReceived listener) {
         dataSetListener = listener;

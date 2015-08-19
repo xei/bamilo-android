@@ -50,11 +50,6 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get arguments
-        Bundle arguments = getArguments();
-        if(arguments != null) {
-            mCurrentAddress = arguments.getParcelable(EditAddressFragment.SELECTED_ADDRESS);
-        }
     }
 
     @Override

@@ -69,7 +69,7 @@ public class PaymentMethodForm implements Parcelable {
             return;
         } 
 
-        String type = mJSONObject.optString(RestConstants.JSON_TYPE_TAG);
+        String type = mJSONObject.optString(RestConstants.TYPE);
         if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL)) {
             setPaymentType(METHOD_AUTO_SUBMIT_EXTERNAL);
         } else if (type.equalsIgnoreCase(PAYMENT_METHOD_SUBMIT_EXTERNAL)) {
@@ -96,7 +96,7 @@ public class PaymentMethodForm implements Parcelable {
             }
 
             setAction(formJson.optString(RestConstants.JSON_ACTION_TAG));
-            setId(formJson.optString(RestConstants.JSON_ID_TAG));
+            setId(formJson.optString(RestConstants.ID));
             setName(formJson.optString(RestConstants.JSON_NAME_TAG));
 
             ContentValues mContentValues = new ContentValues();

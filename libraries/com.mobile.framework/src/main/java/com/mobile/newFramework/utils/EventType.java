@@ -57,7 +57,7 @@ public enum EventType {
 
     GET_REGISTRATION_FORM_FALLBACK_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
+    GET_CHANGE_PASSWORD_FORM_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
 
     CHANGE_PASSWORD_EVENT("https:/customer/changepass/", AigRestContract.NO_CACHE),
 
@@ -101,7 +101,7 @@ public enum EventType {
 
     GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
 
-    SET_SIGNUP_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
+    SET_SIGNUP_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
 
     GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", AigRestContract.MAX_CACHE_TIME),
 
@@ -113,9 +113,15 @@ public enum EventType {
 
     GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist", AigRestContract.NO_CACHE),
 
-    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", AigRestContract.NO_CACHE),
+    SET_DEFAULT_ADDRESS("https:/customer/makedefaultaddress/", AigRestContract.NO_CACHE),
 
-    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultbilling/", AigRestContract.NO_CACHE),
+    SET_DEFAULT_SHIPPING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
+
+    SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
+
+//    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultbilling/", AigRestContract.NO_CACHE),
+//
+//    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultshipping/", AigRestContract.NO_CACHE),
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
@@ -123,7 +129,7 @@ public enum EventType {
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", AigRestContract.NO_CACHE),
 
-    EDIT_ADDRESS_EVENT("https:/customer/address/edit/", AigRestContract.NO_CACHE),
+    EDIT_ADDRESS_EVENT("https:/customer/addressedit", AigRestContract.NO_CACHE),
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 

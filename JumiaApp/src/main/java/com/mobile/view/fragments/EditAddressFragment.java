@@ -1,30 +1,26 @@
 package com.mobile.view.fragments;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.address.EditAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.address.UpdateAddressHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
-import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.orders.OrderSummary;
@@ -46,7 +42,6 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -65,7 +60,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     public static final String SELECTED_ADDRESS = "selected_address";
 
-    public static final String SELECTED_ADDRESS_ID = "id";  //new mobapi 1.8
+    public static final int INVALID_ADDRESS_ID = -1;
 
     protected ViewGroup mEditFormContainer;
 
@@ -75,7 +70,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     protected ArrayList<AddressRegion> mRegions;
 
-    protected Address mCurrentAddress;
+    protected int mAddressId;
 
     protected OrderSummary orderSummary;
 
@@ -92,29 +87,18 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /*
      * (non-Javadoc)
      *
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        setRetainInstance(true);
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
-
-        TrackerDelegator.trackCheckoutStep(params);
+        // Get arguments
+        Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;
+        if (arguments != null) {
+            mAddressId = arguments.getInt(EditAddressFragment.SELECTED_ADDRESS, INVALID_ADDRESS_ID);
+        }
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
     }
 
     /*
@@ -125,18 +109,16 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
-        // Create address form
+        // Container
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
         // Cancel button
         view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener(this);
-
-        //Validate current address, if null goto back
-        if(mCurrentAddress == null)
+        //Validate current address
+        if (mAddressId == INVALID_ADDRESS_ID) {
             showFragmentErrorRetry();
-
+        }
     }
 
     /*
@@ -168,35 +150,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.d(TAG, "ON SAVE SATE");
-        try {
-            // Save values on current address
-            if(mEditFormGenerator != null && mCurrentAddress != null) {
-                // Get data from form
-                ContentValues mContentValues = createContentValues(mEditFormGenerator);
-                // Save it
-                for (Map.Entry<String, Object> entry : mContentValues.valueSet()) {
-                    try {
-                        if(entry.getKey().contains(RestConstants.JSON_FIRST_NAME_TAG)) mCurrentAddress.setFirstName((String) entry.getValue());
-                        else if(entry.getKey().contains(RestConstants.JSON_LAST_NAME_TAG)) mCurrentAddress.setLastName((String) entry.getValue());
-                        else if(entry.getKey().contains(RestConstants.JSON_ADDRESS1_TAG)) mCurrentAddress.setAddress((String) entry.getValue());
-                        else if(entry.getKey().contains(RestConstants.JSON_ADDRESS2_TAG)) mCurrentAddress.setAddress2((String) entry.getValue());
-                        else if(entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) mCurrentAddress.setPhone((String) entry.getValue());
-                        // TODO alexandrapires: mobapi 1.8 change
-                  //      else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
-                   //     else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
-                  //      else if(entry.getKey().contains(RestConstants.JSON_REGION)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
-                        else if(entry.getKey().contains(RestConstants.REGION)) mCurrentAddress.setRegion((String) entry.getValue());
-                        else if (entry.getKey().contains(RestConstants.CITY)) mCurrentAddress.setCity((String) entry.getValue());
-                    } catch (NumberFormatException e) {
-                        Print.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
-                    }
-                }
-            }
-        } catch (ClassCastException e) {
-            Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "SOME VIEW IS NULL", e);
-        }
+        outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
     }
 
     /*
@@ -260,79 +214,23 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             triggerGetRegions(url);
         } else {
             Print.d(TAG, "REGIONS ISN'T NULL");
-            setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
+            setRegions(mEditFormGenerator, mRegions);
         }
         // Define if CITY is a List or Text
         isCityIdAnEditText = (mEditFormGenerator.getItemByKey(RestConstants.CITY).getEditControl() instanceof EditText);
-        // Hide check boxes
-        // TODO hideSomeFields(mEditFormGenerator);
         // Show selected address content
-        showSelectedAddress(mEditFormGenerator, mCurrentAddress);
-
-
         mEditFormContainer.refreshDrawableState();
-    }
-
-    /**
-     * Show selected address
-     */
-    private void showSelectedAddress(DynamicForm dynamicForm, Address selectedAddress){
-        // First name
-        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_FIRST_NAME_TAG).getEditControl()).setText(selectedAddress.getFirstName());
-        // Last name
-        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_LAST_NAME_TAG).getEditControl()).setText(selectedAddress.getLastName());
-        // Address 1
-        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS1_TAG).getEditControl()).setText(selectedAddress.getAddress());
-        // Address 2
-        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS2_TAG).getEditControl()).setText(selectedAddress.getAddress2());
-        // Phone
-        ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_PHONE_TAG).getEditControl()).setText(selectedAddress.getPhone());
-        // Additional phone
-        DynamicFormItem additionalPhone = dynamicForm.getItemByKey(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
-        if(additionalPhone != null) {
-            ((EditText) additionalPhone.getEditControl()).setText(selectedAddress.getAdditionalPhone());
-        }
-        // Set selected city
-        View mControl = dynamicForm.getItemByKey(RestConstants.CITY).getControl();
-        View mCityView = ((ViewGroup) mControl).getChildAt(0);
-        if (mCityView instanceof RelativeLayout) {
-            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
-            if (mCityView instanceof EditText) {
-                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.CITY).getEditControl();
-                mCityEdit.setText(selectedAddress.getCity());
-            }
-        }
-    }
-
-    /**
-     * Hide the default check boxes
-     */
-    private void hideSomeFields(DynamicForm dynamicForm){
-        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
-        item.getEditControl().setVisibility(View.GONE);
-        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
-        item.getEditControl().setVisibility(View.GONE);
-        // TODO mobapi 1.8 change: now is always ON_CITY_TAG
-        // When CITY_ID is EditText use CITY
- /*       if (isCityIdAnEditText) {
-            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
-            if (item != null) item.getControl().setVisibility(View.GONE);
-        } else {*/
-            // Use CITY_ID
-            item = dynamicForm.getItemByKey(RestConstants.CITY);
-            item.getControl().setVisibility(View.GONE);
-     //   }
     }
 
     /**
      * Method used to set the regions on the respective form
      */
-    private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, Address selectedAddress){
+    private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions){
         Print.d(TAG, "SET REGIONS REGIONS: ");
         // Get region item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
+        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = (ViewGroup) formItem.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -341,48 +239,28 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getRegionPosition(regions, selectedAddress));
+        spinner.setSelection(getDefaultPosition(formItem, regions.size()));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
     }
 
     /**
-     * Get the position of the address region
-     * @return int the position
-     */
-    private int getRegionPosition(ArrayList<AddressRegion> regions, Address selecedAddress){
-        for (int i = 0; i < regions.size(); i++) {
-            // TODO alexandrapires: changed mobapi 1.8
-         //   if(regions.get(i).getId() == selecedAddress.getFkCustomerAddressRegion()) return i;
-            if(String.valueOf(regions.get(i).getValue()) == selecedAddress.getRegion()) return i;
-        }
-        return 0;
-    }
-
-    /**
-     * Validate the current region selection and update the cities
-     */
-    private void setCitiesOnSelectedRegion(ArrayList<AddressCity> cities, Address selectedAddress){
-        setCities(mEditFormGenerator, cities, selectedAddress);
-    }
-
-    /**
      * Method used to set the cities on the respective form
      */
-    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, Address selectedAddress){
+    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities){
         // Get city item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
+        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.CITY);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = (ViewGroup) formItem.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getCityPosition(cities, selectedAddress));
+        spinner.setSelection(getDefaultPosition(formItem, cities.size()));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
     }
@@ -391,13 +269,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Get the position of the address city
      * @return int the position
      */
-    private int getCityPosition(ArrayList<AddressCity> cities, Address selecedAddress){
-        for (int i = 0; i < cities.size(); i++) {
-            // TODO alexandrapires: changed in mobapi 1.8 //see this behaviour when form loads properly
-        //    if(cities.get(i).getId() == selecedAddress.getFkCustomerAddressCity()) return i;
-           // if(cities.get(i).getId() == selecedAddress.getCity()) return i;
+    private int getDefaultPosition(DynamicFormItem formItem, int size){
+        try {
+            // TODO : Remove the -1
+            int position = Integer.valueOf(formItem.getEntry().getValue()) - 1;
+            return position > -1 && position < size ? position : 0;
+        } catch (NullPointerException | NumberFormatException e) {
+            return 0;
         }
-        return 0;
     }
 
     /**
@@ -414,9 +293,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
-            // Next button
+        // Next button
         else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
-            // Unknown view
+        // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
@@ -437,28 +316,12 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void onClickEditAddressButton() {
         Print.i(TAG, "ON CLICK: EDIT");
-
-        if (!mEditFormGenerator.validate()) {
+        if (mEditFormGenerator.validate()) {
+            triggerEditAddress(createContentValues(mEditFormGenerator));
+        } else {
             Print.i(TAG, "INVALID FORM");
-            return;
         }
-
-        /**
-         *
-         *
-         // Validate mandatory spinner
-         ViewGroup mRegionGroup = (ViewGroup) mEditFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-         // Validate if region group is filled
-         if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
-         Log.w(TAG, "REGION SPINNER NOT FILL YET");
-         return;
-         };
-         *
-         */
-
-        triggerEditAddress(createContentValues(mEditFormGenerator));
     }
-
 
     /**
      * Process the click on the cancel button
@@ -476,90 +339,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     protected ContentValues createContentValues(DynamicForm dynamicForm) {
-//        // Save content values
-//        ContentValues mContentValues = dynamicForm.save();
-//        // Update default values (unknown keys)
-//        for (Map.Entry<String, Object> value : mContentValues.valueSet()) {
-//            String key = value.getKey();
-//            if (key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) {
-//                mContentValues.put(key, isDefaultBilling);
-//            } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
-//                mContentValues.put(key, isDefaultShipping);
-//            }
-//        }
-        // return the new content values
+        // Save content values
         return dynamicForm.save();
     }
-
-//    /**
-//     * Method used to create the content values
-//     * @return new content values
-//     */
-//    private ContentValues createContentValues(DynamicForm dynamicForm){
-//        // Save content values
-//        ContentValues mContentValues = dynamicForm.save();
-//        // Get the region
-//        // TODO alexandrapires: mobapi 1.8 change
-//    //    ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-//        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.REGION).getControl();
-//        IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
-//        AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem();
-//        Print.d(TAG, "SELECTED REGION: " + mSelectedRegion.getLabel() + " " + mSelectedRegion.getValue());
-//
-//        // Save city
-//        String mCityId = "";
-//        String mCityName = "";
-//        // Get from spinner
-//        // TODO alexandrapires: mobapi 1.8
-//  //   View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-//        View mControl = dynamicForm.getItemByKey(RestConstants.CITY).getControl();
-//        View mCityView = ((ViewGroup) mControl).getChildAt(0);
-//        if (mCityView instanceof IcsSpinner) {
-//            IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
-//            // Get selected city
-//            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem();
-//            Print.d(TAG, "SELECTED CITY: " + mSelectedCity.getLabel() + " " + mSelectedCity.getValue());
-//            mCityId = "" + mSelectedCity.getValue();
-//            mCityName = mSelectedCity.getLabel();
-//        }
-//        // Get from edit text
-//        else if (mCityView instanceof RelativeLayout) {
-//            /*-mCityView = ((RelativeLayout) mCityView).getChildAt(0);
-//            if (mCityView instanceof EditText) {
-//                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-//                mCityName = mCityEdit.getText().toString();
-//                Log.d(TAG, "SELECTED CITY: " + mCityName);
-//            }*/
-//        }
-//        // Unexpected
-//        else {
-//        //    Print.w(TAG, "WARNING: THE " + RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW");
-//            //mobapi 1.8 change
-//            Print.w(TAG, "WARNING: THE " + RestConstants.CITY + " IS AN UNEXPECTED VIEW");
-//        }
-//
-//        // Get some values
-//        int mAddressId = mCurrentAddress.getId();
-//        int mRegionId = mSelectedRegion.getValue();
-//        String isDefaultBilling = (mCurrentAddress.isDefaultBilling()) ? "1" : "0";
-//        String isDefaultShipping = (mCurrentAddress.isDefaultShipping()) ? "1" : "0";
-//        // Put values
-//
-//        for (Map.Entry<String, Object> entry : mContentValues.valueSet()) {
-//            if(entry.getKey().contains(RestConstants.JSON_ADDRESS_ID_TAG)) mContentValues.put(entry.getKey(), mAddressId);
-//            else if(entry.getKey().contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) mContentValues.put(entry.getKey(), isDefaultBilling);
-//            else if(entry.getKey().contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(entry.getKey(), isDefaultShipping);
-//          //  TODO alexandrapires: mobapi 1.8
-//         //   else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(entry.getKey(), mRegionId);
-//         //   else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(entry.getKey(), mCityId);
-//            else if(entry.getKey().contains(RestConstants.REGION)) mContentValues.put(entry.getKey(), mRegionId);
-//            else if(!isCityIdAnEditText && entry.getKey().contains(RestConstants.CITY)) mContentValues.put(entry.getKey(), mCityName);
-//        }
-//
-//        Print.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());
-//        // return the new content values
-//        return mContentValues;
-//    }
 
     /**
      * ########### ON ITEM SELECTED LISTENER ###########
@@ -580,7 +362,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.d(TAG, "ON ITEM SELECTED");
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
+            // Get city field
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
+            // Case list
             if (InputType.list == field.getInputType()) {
                 // Get API call
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
@@ -589,15 +373,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Get cities
                 triggerGetCities(url, regionId);
             }
-            // TODO
-            else if (InputType.text == field.getInputType()) {
-                // Show
+            // Case text or other
+            else {
                 showFragmentContentContainer();
-            } else {
-                // Show
-                showFragmentContentContainer();
-                Print.e(TAG, RestConstants.API_CALL + " with an expected inputType");
-                super.showUnexpectedErrorWarning();
             }
         }
     }
@@ -612,7 +390,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new UpdateAddressHelper(), bundle, this);
+        triggerContentEvent(new EditAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -622,13 +400,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-
-        // change mobapi 1.8: pass address id as argument
-        ContentValues cv = new ContentValues();
-        cv.put(EditAddressFragment.SELECTED_ADDRESS_ID, mCurrentAddress.getId());
+        ContentValues values = new ContentValues();
+        values.put(GetFormEditAddressHelper.SELECTED_ADDRESS_ID, mAddressId);
         Bundle arg = new Bundle();
-        arg.putParcelable(Constants.BUNDLE_DATA_KEY, cv);
-
+        arg.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEvent(new GetFormEditAddressHelper(), arg, this);
     }
 
@@ -691,7 +466,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 if (CollectionUtils.isNotEmpty(mRegions)) {
-                    setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
+                    setRegions(mEditFormGenerator, mRegions);
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.showFragmentErrorRetry();
@@ -700,7 +475,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-                setCitiesOnSelectedRegion(cities, mCurrentAddress);
+                setCities(mEditFormGenerator, cities);
                 // Show
                 showFragmentContentContainer();
                 break;

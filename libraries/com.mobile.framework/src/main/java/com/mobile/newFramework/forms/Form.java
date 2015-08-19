@@ -98,10 +98,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-
-//            jsonObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG).getJSONObject(0);
-
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            id = jsonObject.optString(RestConstants.ID);
             name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
             method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
@@ -131,7 +128,7 @@ public class Form implements IJSONSerializable, Parcelable {
             // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
-                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG) && !fieldsArray.getJSONObject(i).has(RestConstants.JSON_ID_TAG)){
+                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG) && !fieldsArray.getJSONObject(i).has(RestConstants.ID)){
                         FormField field = new FormField(this);
                         if (field.initialize(fieldsArray.getJSONObject(i))) {
                             fields.add(field);
@@ -189,7 +186,7 @@ public class Form implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.JSON_FORM_TAG, name);
             jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
             jsonObject.put(RestConstants.JSON_ACTION_TAG, action);

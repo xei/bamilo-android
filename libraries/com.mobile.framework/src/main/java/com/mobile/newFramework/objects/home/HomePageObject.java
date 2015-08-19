@@ -33,7 +33,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      * Empty constructor
      */
     public HomePageObject() {
-        //...
+        super();
     }
 
     /*
@@ -81,7 +81,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
                 // Get teaser group
                 JSONObject json = data.getJSONObject(i);
                 // Get group type
-                String type = json.getString(RestConstants.JSON_TYPE_TAG);
+                String type = json.getString(RestConstants.TYPE);
                 // Parse and create group
                 BaseTeaserGroupType group = createTeaserGroupType(type, json);
                 // Save into an hash map

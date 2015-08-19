@@ -67,7 +67,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+        id = jsonObject.optString(RestConstants.ID);
 
         url = jsonObject.optString(RestConstants.JSON_URL_TAG);
 

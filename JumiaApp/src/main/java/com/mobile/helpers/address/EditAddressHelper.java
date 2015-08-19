@@ -11,9 +11,9 @@ import com.mobile.newFramework.utils.EventType;
  * Helper used to create an address 
  * @author sergiopereira
  */
-public class UpdateAddressHelper extends SuperBaseHelper {
+public class EditAddressHelper extends SuperBaseHelper {
     
-    protected static String TAG = UpdateAddressHelper.class.getSimpleName();
+    protected static String TAG = EditAddressHelper.class.getSimpleName();
 
     @Override
     public EventType getEventType() {

@@ -1036,9 +1036,7 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
         this.control.setLayoutParams(params);
         //#RTL
         if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -1092,7 +1090,8 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-        if (this.entry.getValue().equals("1")) {
+        // Set default value
+        if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
@@ -1850,6 +1849,11 @@ public class DynamicFormItem {
         }
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
             textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
+        }
+
+        // Set default value
+        if (!TextUtils.isEmpty(this.entry.getValue())) {
+            textDataControl.setText(this.entry.getValue());
         }
 
         //#RTL

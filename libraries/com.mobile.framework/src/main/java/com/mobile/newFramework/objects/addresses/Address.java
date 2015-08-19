@@ -40,8 +40,6 @@ public class Address implements IJSONSerializable, Parcelable {
     private String postcode;
     private String phone;
     private String additionalPhone;
-    private boolean isDefaultBilling;
-    private boolean isDefaultShipping;
     private String region;
 
     public void setRegion(String region) {
@@ -62,10 +60,8 @@ public class Address implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject dataObject) {
         Print.d(TAG, "INITIALIZE");
-
-        //alexandrapires:  mobapi 1.8 change
         try {
-            id = dataObject.getInt(RestConstants.JSON_ID_TAG); //id instead of id_customer_address":
+            id = dataObject.getInt(RestConstants.ID);
             firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             address1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
@@ -73,8 +69,6 @@ public class Address implements IJSONSerializable, Parcelable {
             city = dataObject.getString(RestConstants.CITY);
             postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
             phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
-            isDefaultBilling = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
-            isDefaultShipping = dataObject.optBoolean(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
             region = dataObject.optString(RestConstants.REGION);
             additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
         }catch(Exception e){
@@ -128,13 +122,6 @@ public class Address implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the address 2
-     */
-    public String getAddress2() {
-        return address2;
-    }
-
-    /**
      * @return the city
      */
     public String getCity() {
@@ -155,29 +142,11 @@ public class Address implements IJSONSerializable, Parcelable {
         return phone;
     }
 
-    public String getAdditionalPhone() {
-        return additionalPhone;
-    }
-
     /**
      * @return the region
      */
     public String getRegion() {
         return region;
-    }
-
-    /**
-     * @return the isDefaultBilling
-     */
-    public boolean isDefaultBilling() {
-        return isDefaultBilling;
-    }
-
-    /**
-     * @return the isDefaultShipping
-     */
-    public boolean isDefaultShipping() {
-        return isDefaultShipping;
     }
 
     /**
@@ -188,31 +157,10 @@ public class Address implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
      * @param address the address to set
      */
     public void setAddress(String address) {
         this.address1 = address;
-    }
-
-    /**
-     * @param address the address 2 to set
-     */
-    public void setAddress2(String address) {
-        this.address2 = address;
     }
 
     /**

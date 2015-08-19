@@ -33,11 +33,6 @@ public class Customer implements IJSONSerializable, Parcelable {
     private String createdAt;
     private boolean guest;
     private String mBirthday;
-    private ArrayList<String> addresses;
-
-    //alexandrapires: added mobapi 1.8
-    private int ordersCount;
-    private String firstOrderDate;
 
     /**
      * Customer empty constructor
@@ -51,7 +46,6 @@ public class Customer implements IJSONSerializable, Parcelable {
         gender = CustomerGender.Gender;
         password = "";
         setCreatedAt("");
-        this.addresses = null;
         guest = false;
         mBirthday = "";
     }
@@ -82,7 +76,6 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.password = password;
         this.prefix = customerPrefix;
         this.createdAt = createdAt;
-        this.addresses = addresses;
         this.guest = false;
         this.mBirthday = birthday;
     }
@@ -252,57 +245,6 @@ public class Customer implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the addresses
-     */
-//	public ArrayList<String> getAddresses() {
-//		return addresses;
-//	}
-
-    /**
-     * @param addresses the addresses to set
-     */
-    public void setAddresses(ArrayList<String> addresses) {
-        this.addresses = addresses;
-    }
-
-//    /**
-//     * Method that validate if user has addresses
-//     *
-//     * @return true/false
-//     */
-//    public boolean hasAddresses() {
-//        return this.addresses != null && this.addresses.size() > 0;
-//    }
-
-//    /**
-//     * Get newsletter subscriptions
-//     * @return a list of {@link CustomerNewsletterSubscription}
-//     * @author sergiopereira
-//     */
-//    public ArrayList<CustomerNewsletterSubscription> getNewsletterSubscriptions(){
-//        return mNewsletterSubscriptions;
-//    }
-//
-//    /**
-//     * Save newsletter subscriptions
-//     * @param subscriptions list of {@link CustomerNewsletterSubscription}
-//     * @author sergiopereira
-//     */
-//    public void setNewsletterSubscriptions(ArrayList<CustomerNewsletterSubscription> subscriptions){
-//        this.mNewsletterSubscriptions = subscriptions;
-//    }
-//
-//    /**
-//     * Validate if exist newsletter subscription
-//     * @return boolean
-//     * @author sergiopereira
-//     */
-//    public boolean hasNewsletterSubscriptions(){
-//        return mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0;
-//    }
-
-
-    /**
      * @return the guest
      */
     public boolean isGuest() {
@@ -323,26 +265,13 @@ public class Customer implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
 
-            //alexandrapires: not used with mobapi 1.8
-            // Case: METADATA:DATA:USER
-        /*    if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-            }
-            // Case: METADATA:USER
-            if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
-            }*/
-
-            //alexandrapires: mobapi 1.8 changes
             if (jsonObject.has(RestConstants.JSON_CUSTOMER_ENTITY)) {
                 JSONObject jsonObjCustomerEnt = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY);
-                id = jsonObjCustomerEnt.getString(RestConstants.JSON_ID_TAG);
+                id = jsonObjCustomerEnt.getString(RestConstants.ID);
                 firstName = jsonObjCustomerEnt.getString(RestConstants.JSON_FIRST_NAME_TAG);
                 lastName = jsonObjCustomerEnt.getString(RestConstants.JSON_LAST_NAME_TAG);
                 email = jsonObjCustomerEnt.getString(RestConstants.JSON_EMAIL_TAG);
                 mBirthday = jsonObjCustomerEnt.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
-                ordersCount = jsonObjCustomerEnt.optInt(RestConstants.JSON_ORDERS_COUNT, 0);
-                firstOrderDate = jsonObjCustomerEnt.optString(RestConstants.JSON_FIRST_ORDER_DATE, "");
 
                 String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
                 if (genderString == null) {
@@ -356,36 +285,6 @@ public class Customer implements IJSONSerializable, Parcelable {
                 }
 
             }
-
-            //alexandrapires: mobapi 1.8 changes
-       /*     id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
-            firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
-            lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
-            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
-            createdAt = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
-            mBirthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
-
-            String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
-            if (genderString == null) {
-                gender = CustomerGender.UNKNOWN;
-            } else if (genderString.equals("male")) {
-                gender = CustomerGender.Male;
-            } else if (genderString.equals("female")) {
-                gender = CustomerGender.Female;
-            } else {
-                gender = CustomerGender.Gender;
-            }
-
-            // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
-            JSONObject addressesJson = jsonObject.optJSONObject(RestConstants.JSON_CUSTOMER_ADDRESS_COLLECTION_TAG);
-            if (addressesJson != null && addressesJson.length() > 0) {
-                addresses = new ArrayList<>();
-                Iterator<?> iterator = addressesJson.keys();
-                while (iterator.hasNext()) {
-                    String key = (String) iterator.next();
-                    addresses.add(key);
-                }
-            }*/
 
         } catch (JSONException e) {
             Print.e(TAG, "Error parsing the jsonobject to customer", e);

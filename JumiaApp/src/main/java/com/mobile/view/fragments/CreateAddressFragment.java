@@ -625,9 +625,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
-            // Validate city
+            // Get city field
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
-            // Case text
+            // Case list
             if (InputType.list == field.getInputType()) {
                 // Get url
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
@@ -643,14 +643,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                     triggerGetCities(url, regionId, selectedRegionOnBilling);
                 }
             }
-            // TODO Case text
-            else if (InputType.text == field.getInputType()) {
+            // Case text or other
+            else {
                 showFragmentContentContainer();
-            } else {
-                // Show
-                showFragmentContentContainer();
-                Print.e(TAG, RestConstants.API_CALL + " with an expected inputType");
-                super.showUnexpectedErrorWarning();
             }
         }
     }
