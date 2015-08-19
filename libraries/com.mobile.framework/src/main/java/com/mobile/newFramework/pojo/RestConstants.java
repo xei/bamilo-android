@@ -68,9 +68,9 @@ public class RestConstants {
     public static final String JSON_TYPE_TAG = "type";
     public static final String JSON_KEY_TAG = "key";
     public static final String JSON_FIELD_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_LABEL_TAG = "label";
+    public static final String LABEL = "label";
     public static final String JSON_DATA_SET_TAG = "dataset";
-    public static final String JSON_VALUE_TAG = "value";
+    public static final String VALUE = "value";
     public static final String JSON_DATA_SET_SOURCE_TAG = "dataset_source";
     public static final String JSON_SCENARIO_TAG = "scenario";
     public static final String JSON_TERMS_TAG = "terms";
@@ -258,7 +258,7 @@ public class RestConstants {
     public static final String JSON_TABLET_TAG = "tablet";
     public static final String JSON_ADDRESS1_TAG = "address1";
     public static final String JSON_ADDRESS2_TAG = "address2";
-    public static final String JSON_CITY_TAG = "city";
+    public static final String CITY = "city";
     public static final String JSON_POSTCODE_TAG = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
@@ -355,10 +355,10 @@ public class RestConstants {
     public static final String JSON_UPDATED_BY_TAG = "updated_by";
     public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
-    public static final String JSON_API_CALL_TAG = "api_call";
+    public static final String API_CALL = "api_call";
     public static final String JSON_ID_ADDRESS_REGION_TAG = "id_customer_address_region";
     //alexandrapires: required mobapi 1.8 create address
-    public static final String JSON_REGION = "region";
+    public static final String REGION = "region";
 
 
     /**

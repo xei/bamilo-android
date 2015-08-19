@@ -59,7 +59,7 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable, Clone
         // Get id
         mId = jsonOption.optString(RestConstants.JSON_ID_TAG, "");
         // Get label
-        mLabel = jsonOption.optString(RestConstants.JSON_LABEL_TAG, "");
+        mLabel = jsonOption.optString(RestConstants.LABEL, "");
         // Get value
         mValue = jsonOption.optString(RestConstants.JSON_VAL_TAG, "");
         // Get products count
@@ -90,7 +90,7 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable, Clone
             // Get id
             jsonOptions.put(RestConstants.JSON_ID_TAG, mId);
             // Get label
-            jsonOptions.put(RestConstants.JSON_LABEL_TAG, mLabel);
+            jsonOptions.put(RestConstants.LABEL, mLabel);
             // Get value
             jsonOptions.put(RestConstants.JSON_VAL_TAG, mValue);
             // Get products count

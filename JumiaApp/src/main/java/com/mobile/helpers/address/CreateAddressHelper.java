@@ -22,9 +22,7 @@ import com.mobile.utils.CheckoutStepManager;
  */
 public class CreateAddressHelper extends SuperBaseHelper {
     
-    private static String TAG = CreateAddressHelper.class.getSimpleName();
-    
-    public static final String FORM_CONTENT_VALUES = "form_content_values";
+    public static String TAG = CreateAddressHelper.class.getSimpleName();
     
     public static final String IS_FROM_SIGNUP = "fromSignup";
     
@@ -41,11 +39,6 @@ public class CreateAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
-        return super.getRequestUrl(args);
-    }
-
-    @Override
     protected RequestBundle createRequest(Bundle args) {
         // Validate origin
         if(args.getBoolean(IS_FROM_SIGNUP) && !args.getBoolean(IS_BILLING)){
@@ -56,7 +49,6 @@ public class CreateAddressHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new CreateAddress(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.createAddress);
     }
 
@@ -66,68 +58,4 @@ public class CreateAddressHelper extends SuperBaseHelper {
         CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getMetadata().getData();
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(checkoutStep.getNextStep()));
     }
-    
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle generateRequestBundle(Bundle args) {
-//        Log.d(TAG, "REQUEST");
-//        // Validate origin
-//        if(null != args && args.getBoolean(IS_FROM_SIGNUP, false) && !args.getBoolean(IS_BILLING, false)){
-//            mEventType = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
-//        }
-//        // Create bundle
-//        contentValues = args.getParcelable(FORM_CONTENT_VALUES);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.BUNDLE_URL_KEY, mEventType.action);
-//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-//        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(mEventType.name()));
-//        return bundle;
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
-//     */
-//    @Override
-//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-//        Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-//        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
-//        return bundle;
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle parseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "PARSE ERROR BUNDLE");
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-//        return bundle;
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle parseResponseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "PARSE RESPONSE BUNDLE");
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-//        return bundle;
-//    }
-//
-//    @Override
-//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-//        return parseResponseErrorBundle(bundle);
-//    }
 }

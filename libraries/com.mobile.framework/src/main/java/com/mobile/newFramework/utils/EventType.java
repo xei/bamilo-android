@@ -61,8 +61,6 @@ public enum EventType {
 
     CHANGE_PASSWORD_EVENT("https:/customer/changepass/", AigRestContract.NO_CACHE),
 
-    //GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME), // TODO - implement
-
     GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
@@ -71,9 +69,6 @@ public enum EventType {
 
     REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
 
-    GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", AigRestContract.MAX_CACHE_TIME),
-
-    //GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME),
     GET_TERMS_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", AigRestContract.MAX_CACHE_TIME),
@@ -115,8 +110,6 @@ public enum EventType {
     GET_EDIT_ADDRESS_FORM_EVENT("addressedit", AigRestContract.MAX_CACHE_TIME),
 
     GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
-    //alexandrapires: request change in mobapi 1.8
-//    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", AigRestContract.NO_CACHE),
 
     GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist", AigRestContract.NO_CACHE),
 
@@ -126,9 +119,6 @@ public enum EventType {
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
-    //alexandrapires: request change in mobapi 1.8
- //   CREATE_ADDRESS_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
-
     CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", AigRestContract.NO_CACHE),
@@ -137,11 +127,9 @@ public enum EventType {
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
-//    SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
+    GET_REGIONS_EVENT,
 
-    GET_REGIONS_EVENT("https:/customer/address/regions/", AigRestContract.NO_CACHE),
-
-    GET_CITIES_EVENT("https:/customer/address/cities/", AigRestContract.NO_CACHE),
+    GET_CITIES_EVENT,
 
     GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 

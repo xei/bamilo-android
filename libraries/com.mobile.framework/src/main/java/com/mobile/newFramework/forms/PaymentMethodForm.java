@@ -105,10 +105,10 @@ public class PaymentMethodForm implements Parcelable {
                 JSONObject element = mJSONArray.getJSONObject(i);
                 String key = element.getString(RestConstants.JSON_KEY_TAG);
                 if (!key.equalsIgnoreCase("redirect")) {
-                    mContentValues.put(key, element.getString(RestConstants.JSON_VALUE_TAG));
+                    mContentValues.put(key, element.getString(RestConstants.VALUE));
                 } else if (key.equalsIgnoreCase("redirect") || key.equalsIgnoreCase("return_url")){
-                    setRedirect(element.getString(RestConstants.JSON_VALUE_TAG));
-                    mContentValues.put(key, element.getString(RestConstants.JSON_VALUE_TAG));
+                    setRedirect(element.getString(RestConstants.VALUE));
+                    mContentValues.put(key, element.getString(RestConstants.VALUE));
                 }
             }
             Print.i(TAG, "code1content : " + mContentValues.toString());

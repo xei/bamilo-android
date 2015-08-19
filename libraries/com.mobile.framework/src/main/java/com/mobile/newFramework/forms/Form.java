@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +61,8 @@ public class Form implements IJSONSerializable, Parcelable {
         this.subForms = new HashMap<>();
         this.mFieldKeyMap = new HashMap<>();
         this.fieldMapping = null;
-        this.sortForm(null);
+
+        //this.sortForm(null);
     }
 
     /**
@@ -217,25 +217,25 @@ public class Form implements IJSONSerializable, Parcelable {
         return eventType;
     }
 
-    public void sortForm(EventType eventType) {
-        this.eventType = eventType;
-        sortFormFields();
-    }
-
-    private void sortFormFields() {
-        if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
-            fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
-        } else if (FormsMapping.genericMapping.containsKey(id)) {
-            fieldMapping = FormsMapping.genericMapping.get(id);
-        }
-
-        if (null != fieldMapping) {
-            // Remove unsorted fields.
-            FormsMapping.removeUnsortedFields(this, fieldMapping);
-            Print.d("initialize: Sorting fields");
-            Collections.sort(fields, new FormsMapping.byFieldOrder());
-        }
-    }
+//    public void sortForm(EventType eventType) {
+//        this.eventType = eventType;
+//        sortFormFields();
+//    }
+//
+//    private void sortFormFields() {
+//        if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
+//            fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
+//        } else if (FormsMapping.genericMapping.containsKey(id)) {
+//            fieldMapping = FormsMapping.genericMapping.get(id);
+//        }
+//
+//        if (null != fieldMapping) {
+//            // Remove unsorted fields.
+//            FormsMapping.removeUnsortedFields(this, fieldMapping);
+//            Print.d("initialize: Sorting fields");
+//            Collections.sort(fields, new FormsMapping.byFieldOrder());
+//        }
+//    }
     
     @Override
     public int describeContents() {

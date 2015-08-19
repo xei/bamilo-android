@@ -1,12 +1,8 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.addresses.AddressCities;
-import com.mobile.newFramework.objects.addresses.AddressCity;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -47,10 +43,10 @@ public class AigGetCitiesTest extends AigTestCase {
         AddressCities addressCities = (AddressCities) response.getMetadata().getData();
 
         assertNotNull("List of Cities is null", addressCities);
-        for (AddressCity city : addressCities){
+        for (FormListItem city : addressCities){
             assertNotNull("City is null", city);
-            assertNotNull("City ID is null", city.getId());
-            assertNotNull("City Value is null", city.getValue());
+            assertNotNull("City ID is null", city.getValue());
+            assertNotNull("City Value is null", city.getLabel());
         }
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");

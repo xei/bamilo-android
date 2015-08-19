@@ -61,8 +61,8 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
                 type = RestConstants.JSON_METADATA_TAG;
             }
 
-            value = jsonObject.optString(RestConstants.JSON_VALUE_TAG);
-            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
+            value = jsonObject.optString(RestConstants.VALUE);
+            label = jsonObject.optString(RestConstants.LABEL);
 
             /**
              * TODO: Verify if on SubForm can be required for more then one Form

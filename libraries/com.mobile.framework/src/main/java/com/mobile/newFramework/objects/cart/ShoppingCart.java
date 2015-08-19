@@ -114,10 +114,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				for (int i = 0; i < priceRules.length(); i++) {
 					JSONObject pRulesElement = priceRules.optJSONObject(i);
 					if (pRulesElement != null) {
-						Print.d("code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
-								+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
-						mPriceRules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG),
-								pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+						Print.d("code1rules : " + pRulesElement.getString(RestConstants.LABEL) + " value : "
+								+ pRulesElement.getString(RestConstants.VALUE));
+						mPriceRules.put(pRulesElement.getString(RestConstants.LABEL),
+								pRulesElement.getString(RestConstants.VALUE));
 					}
 				}
 			}

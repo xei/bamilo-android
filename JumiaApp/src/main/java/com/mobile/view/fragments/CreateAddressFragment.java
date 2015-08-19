@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.mobile.components.absspinner.IcsAdapterView;
@@ -33,7 +32,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -85,8 +83,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected static final int ISNT_DEFAULT_SHIPPING_ADDRESS = 0;
 
     private static final int ISNT_DEFAULT_BILLING_ADDRESS = 0;
-
-    private static final long ERROR_DELAY = 5000;
 
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
@@ -274,9 +270,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Load the dynamic form
-     *
-     * @param form
-     * @author sergiopereira
      */
     protected void loadCreateAddressForm(Form form) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
@@ -291,27 +284,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mBillingFormContainer.addView(billingFormGenerator.getContainer());
         mBillingFormContainer.refreshDrawableState();
         // Define if CITY is a List or Text
-        //alexandrapires: mobapi 1.8 change
-  //      isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
-        isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_TAG).getEditControl() instanceof EditText);
+        isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.CITY).getEditControl() instanceof EditText);
         // Hide unused fields form
         hideSomeFields(shippingFormGenerator, false);
         hideSomeFields(billingFormGenerator, true);
-
-
         // Validate Regions
         if (regions == null) {
-            //alexandrapires: mobapi 1.8 change
-        //    FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
-            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION);
-            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            if(TextUtils.isNotEmpty(url))
-                triggerGetRegions(url); //exception here
+            FormField field = form.getFieldKeyMap().get(RestConstants.REGION);
+            String url = field.getDataCalls().get(RestConstants.API_CALL);
+            triggerGetRegions(url);
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         }
-
         // Load the saved shipping values
         loadSavedValues(mShippingSavedValues, shippingFormGenerator);
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
@@ -319,10 +304,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Load the saved values to the respective form
-     *
-     * @param savedValues
-     * @param dynamicForm
-     * @author sergiopereira
      */
     private void loadSavedValues(ContentValues savedValues, DynamicForm dynamicForm) {
         // Validate values
@@ -343,9 +324,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Hide the default check boxes
-     *
-     * @param dynamicForm
-     * @author sergiopereira
      */
     private void hideSomeFields(DynamicForm dynamicForm, boolean isBilling) {
         DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
@@ -356,19 +334,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
-        // When CITY_ID is EditText use CITY
-        if (isCityIdAnEditText) {
-            //alexandrapires: mobapi 1.8 change
-        //    item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
-            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
-            if (item != null) {
-                item.getControl().setVisibility(View.GONE);
-            }
-        } else {
-            // Use CITY_ID
-            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
-            item.getControl().setVisibility(View.GONE);
-        }
+
         // Hide the gender field only for billing address
         if (isBilling) {
             try {
@@ -386,17 +352,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Method used to set the regions on the respective form
-     *
-     * @param dynamicForm
-     * @param regions
-     * @param tag
-     * @author sergiopereira
      */
     protected void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions, String tag) {
         // Get region item
-        //alexandrapires: mobapi 1.8
-   //     DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG);
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_REGION);
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
@@ -408,23 +367,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         int defaultPosition = 0;
-
-        /*  //alexandrapires: mobapi 1.8 changes
-        if (mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue() != null && Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue()) > 0) {
-            int defaultId = Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue());
-            for (int i = 0; i < regions.size(); i++) {
-                if (regions.get(i).getId() == defaultId) {
-                    defaultPosition = i;
-                    break;
-                }
-            }
-        }*/
-
-        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION).getValue();
+        // Get default position
+        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.REGION).getValue();
         if ( regionValue != null && Integer.parseInt(regionValue) > 0){
             int defaultId = Integer.parseInt(regionValue);
             for (int i = 0; i < regions.size(); i++) {
-                if (regions.get(i).getId() == defaultId) {
+                if (regions.get(i).getValue() == defaultId) {
                     defaultPosition = i;
                     break;
                 }
@@ -439,10 +387,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Load and set the saved region position
-     *
-     * @param spinner
-     * @param tag
-     * @author sergiopereira
      */
     private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag, int defaultPosition) {
         // Get saved value
@@ -468,10 +412,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Validate the current region selection and update the cities
-     *
-     * @param requestedRegionAndFields
-     * @param cities
-     * @author sergiopereira
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, ArrayList<AddressCity> cities) {
         if (requestedRegionAndFields.equals(selectedRegionOnShipping)) {
@@ -484,17 +424,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Method used to set the cities on the respective form
-     *
-     * @param dynamicForm
-     * @param cities
-     * @param tag
-     * @author sergiopereira
      */
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, String tag) {
         // Get city item
-        //alexandrapires: mobapi 1.8 change
-  //      DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
         // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
@@ -513,10 +446,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Load and set the saved city position one time
-     *
-     * @param spinner
-     * @param tag
-     * @author sergiopereira
      */
     private void setSavedSelectedCityPos(IcsSpinner spinner, ArrayList<AddressCity> array, String tag) {
         // Get saved value
@@ -663,94 +592,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected ContentValues createContentValues(DynamicForm dynamicForm, int isDefaultShipping, int isDefaultBilling) {
         // Save content values
         ContentValues mContentValues = dynamicForm.save();
-        // Get the region
-        //alexandrapires: mobapi 1.8 change
-     //   ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-        ViewGroup mRegionGroup = (ViewGroup) dynamicForm.getItemByKey(RestConstants.JSON_REGION).getControl();
-        // Get spinner
-        IcsSpinner mRegionSpinner = (IcsSpinner) mRegionGroup.getChildAt(0);
-        // Get selected region
-        AddressRegion mSelectedRegion = (AddressRegion) mRegionSpinner.getSelectedItem();
-        Print.d(TAG, "SELECTED REGION: " + mSelectedRegion.getName() + " " + mSelectedRegion.getId());
-
-        // Used to save state
-        int mSelectedPosition = mRegionSpinner.getSelectedItemPosition();
-        if (isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) {
-            mContentValues.put(SHIPPING_REGION_POS, mSelectedPosition);
-        } else if (isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) {
-            mContentValues.put(BILLING_REGION_POS, mSelectedPosition);
-        }
-
-        // Save region id
-        int mRegionId = mSelectedRegion.getId();
-        // Save city
-        String mCityId = "";
-        String mCityName = "";
-
-        // Get from spinner
-        //alexandrapires: mobapi 1.8 change
-    //    View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
-        View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG).getControl();
-        View mCityView = ((ViewGroup) mControl).getChildAt(0);
-        if (mCityView instanceof IcsSpinner) {
-            IcsSpinner mCitySpinner = (IcsSpinner) mCityView;
-            // Get selected city
-            AddressCity mSelectedCity = (AddressCity) mCitySpinner.getSelectedItem();
-            Print.d(TAG, "SELECTED CITY: " + mSelectedCity.getValue() + " " + mSelectedCity.getId());
-            mCityId = "" + mSelectedCity.getId();
-            mCityName = mSelectedCity.getValue();
-
-            // Used to save state
-            int mCitySelectedPosition = mCitySpinner.getSelectedItemPosition();
-            if (isDefaultShipping == IS_DEFAULT_SHIPPING_ADDRESS) {
-                mContentValues.put(SHIPPING_CITY_POS, mCitySelectedPosition);
-            } else if (isDefaultBilling == IS_DEFAULT_BILLING_ADDRESS) {
-                mContentValues.put(BILLING_CITY_POS, mCitySelectedPosition);
-            }
-        }
-        // Get from edit text
-        else if (mCityView instanceof RelativeLayout) {
-            /*-mCityView = ((RelativeLayout) mCityView).getChildAt(0);
-            if (mCityView instanceof EditText) {
-                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
-                String city = mCityEdit.getText().toString();
-                // use this to load this into EditText after rotations. This value will be submitted to API
-                mCityId = city;
-                mCityName = city;
-                Log.d(TAG, "SELECTED CITY: " + mCityName);
-            }*/
-        }//alexandrapires added: mobapi 1.8 from saving createAddress mCityView is null
-        else if (mCityView == null)
-        {   //put the city == region
-            mCityName =  mSelectedRegion.getName();
-            mCityId =  String.valueOf(mSelectedRegion.getId());
-        }
-        // Unexpected
-        else {
-            //alexandrapires: mobapi 1.8 change
-          //  Print.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
-            Print.e(TAG, RestConstants.JSON_CITY_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
-        }
-
-        // Put values
+        // Update default values (unknown keys)
         for (Map.Entry<String, Object> value : mContentValues.valueSet()) {
             String key = value.getKey();
             if (key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) {
                 mContentValues.put(key, isDefaultBilling);
             } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
                 mContentValues.put(key, isDefaultShipping);
-         //   } else if (key.contains(RestConstants.JSON_REGION_ID_TAG)) {
-                //alexandrapires: mobapi 1.8 change
-            } else if (key.contains(RestConstants.JSON_REGION)) {
-                mContentValues.put(key, mRegionId);
-         //   } else if (key.contains(RestConstants.JSON_CITY_ID_TAG)) {
-            } else if (key.contains(RestConstants.JSON_CITY_TAG)) {
-                mContentValues.put(key, mCityId);
-            } else if (!isCityIdAnEditText && key.contains(RestConstants.JSON_CITY_TAG)) {
-                mContentValues.put(key, mCityName);
             }
         }
-
         // return the new content values
         return mContentValues;
     }
@@ -775,45 +625,32 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
-            //alexandrapires: mobapi 1.8 change
-       //     FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_TAG);
-//            // Validate API call
-//            if (field.getDataCalls() == null) {
-//                Log.w(TAG, "GET CITY: API CALL IS NULL");
-//                return;
-//            }
+            // Validate city
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
+            // Case text
             if (InputType.list == field.getInputType()) {
-                // Get API call
-                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-                Print.d(TAG, "API CALL: " + url);
-                if (url != null) {
-                    // Request the cities for this region id
-                    int regionId = ((AddressRegion) object).getId();
-                    // Save the selected region on the respective variable
-                    String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
-                    if (tag.equals(SHIPPING_FORM_TAG)) {
-                        selectedRegionOnShipping = SHIPPING_FORM_TAG + "_" + regionId;
-                        triggerGetCities(url, regionId, selectedRegionOnShipping);
-                    } else if (tag.equals(BILLING_FORM_TAG)) {
-                        selectedRegionOnBilling = BILLING_FORM_TAG + "_" + regionId;
-                        triggerGetCities(url, regionId, selectedRegionOnBilling);
-                    }
-                } else {
-                    // Show
-                    showFragmentContentContainer();
-                    Print.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on " + RestConstants.JSON_CITY_ID_TAG);
+                // Get url
+                String url = field.getDataCalls().get(RestConstants.API_CALL);
+                // Request the cities for this region id
+                int regionId = ((AddressRegion) object).getValue();
+                // Save the selected region on the respective variable
+                String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
+                if (tag.equals(SHIPPING_FORM_TAG)) {
+                    selectedRegionOnShipping = SHIPPING_FORM_TAG + "_" + regionId;
+                    triggerGetCities(url, regionId, selectedRegionOnShipping);
+                } else if (tag.equals(BILLING_FORM_TAG)) {
+                    selectedRegionOnBilling = BILLING_FORM_TAG + "_" + regionId;
+                    triggerGetCities(url, regionId, selectedRegionOnBilling);
                 }
-            } else if (InputType.text == field.getInputType()) {
-                // Show
+            }
+            // TODO Case text
+            else if (InputType.text == field.getInputType()) {
                 showFragmentContentContainer();
-                // City
-                // loadCityEditText(field.getInputType());
             } else {
                 // Show
                 showFragmentContentContainer();
-                Print.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
-                super.showUnexpectedErrorWarning(); //unexpected error
+                Print.e(TAG, RestConstants.API_CALL + " with an expected inputType");
+                super.showUnexpectedErrorWarning();
             }
         }
     }
@@ -902,24 +739,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get regions
      * @author sergiopereira
      */
-    protected void triggerGetRegions(String apiCall) {
-        Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        triggerContentEventNoLoading(new GetRegionsHelper(), bundle, this);
+    protected void triggerGetRegions(String url) {
+        Print.i(TAG, "TRIGGER: GET REGIONS: " + url);
+        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
     }
 
     /**
      * Trigger to get cities
      * @author sergiopereira
      */
-    protected void triggerGetCities(String apiCall, int region, String selectedTag) {
-        Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
-        bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
-        bundle.putString(GetCitiesHelper.CUSTOM_TAG, selectedTag);
-        triggerContentEvent(new GetCitiesHelper(), bundle, this);
+    protected void triggerGetCities(String url, int region, String tag) {
+        Print.i(TAG, "TRIGGER: GET REGIONS: " + url + " " + tag);
+        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
     }
 
     /**
@@ -953,15 +784,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Print.i(TAG, "ON SUCCESS EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
             case INIT_FORMS:
@@ -1034,7 +863,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        if (isOnStoppingProcess) {
+
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
@@ -1044,10 +876,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
-
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:
@@ -1107,11 +935,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void showErrorDialog(String errorMessage ,String dialogTitle) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         // FIXME to be fixed on a next release, where all form validations are made on our side and delt with the the error messages centrally
-//        List<String> errorMessages = null;
-//        if (errors != null) {
-//            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-//        }
-//        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
         showFragmentContentContainer();
         dialog = DialogGenericFragment.newInstance(true, false,
                 dialogTitle,
@@ -1128,14 +951,5 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                     }
                 });
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-//        } else {
-//            if (mMsgRequired != null) {
-//                mMsgRequired.setVisibility(View.VISIBLE);
-//                changeMessageState(mMsgRequired, true, ERROR_DELAY);
-//
-//            } else {
-//                Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
-//            }
-//        }
     }
 }
