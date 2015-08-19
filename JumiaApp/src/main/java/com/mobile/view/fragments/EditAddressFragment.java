@@ -65,6 +65,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     public static final String SELECTED_ADDRESS = "selected_address";
 
+    public static final String SELECTED_ADDRESS_ID = "id";  //new mobapi 1.8
+
     protected ViewGroup mEditFormContainer;
 
     protected DynamicForm mEditFormGenerator;
@@ -636,7 +638,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-        triggerContentEvent(new GetFormEditAddressHelper(), null, this);
+
+        // change mobapi 1.8: pass address id as argument
+        ContentValues cv = new ContentValues();
+        cv.put(EditAddressFragment.SELECTED_ADDRESS_ID, mCurrentAddress.getId());
+        Bundle arg = new Bundle();
+        arg.putParcelable(Constants.BUNDLE_DATA_KEY, cv);
+
+        triggerContentEvent(new GetFormEditAddressHelper(), arg, this);
     }
 
     /**
