@@ -1,5 +1,6 @@
 package com.mobile.helpers.address;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,8 +14,11 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+
+import java.util.Map;
 
 /**
  * Helper used to get the form to edit an address 
@@ -24,9 +28,28 @@ public class GetFormEditAddressHelper extends SuperBaseHelper {
     
     private static String TAG = GetFormEditAddressHelper.class.getSimpleName();
 
+    private ContentValues mContentValues;
+
     @Override
     public EventType getEventType() {
         return EventType.GET_EDIT_ADDRESS_FORM_EVENT;
+    }
+
+    @Override
+
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
+    }
+
+    @Override
+    protected RequestBundle createRequest(Bundle args) {
+        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
+        return super.createRequest(args);
+    }
+
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        return SuperBaseHelper.convertContentValuesToMap(mContentValues);
     }
 
     @Override
