@@ -10,7 +10,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_small"
-        android:listSelector="@drawable/selector_listitem_highlight"
+        android:listSelector="@drawable/selector_list_item_highlight"
         android:numColumns="@integer/favourite_num_columns"
         android:paddingBottom="@dimen/button_container_height" />
 

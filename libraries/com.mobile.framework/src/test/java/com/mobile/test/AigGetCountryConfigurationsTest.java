@@ -1,9 +1,6 @@
 package com.mobile.test;
 
 
-
-
-import com.ad4screen.sdk.common.a;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;

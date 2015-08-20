@@ -1,12 +1,7 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.product.ProductRatingPage;
-import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -21,7 +16,7 @@ public class AigGetReviewsTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCT_REVIEWS_EVENT;
+        return EventType.GET_PRODUCT_REVIEWS;
     }
 
     @Override

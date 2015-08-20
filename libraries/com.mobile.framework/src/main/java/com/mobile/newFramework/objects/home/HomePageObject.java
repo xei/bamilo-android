@@ -33,7 +33,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      * Empty constructor
      */
     public HomePageObject() {
-        //...
+        super();
     }
 
     /*

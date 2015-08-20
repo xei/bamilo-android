@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,17 +18,17 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
-import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -64,7 +63,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener, OnHeaderClickListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
@@ -455,11 +454,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Method responsible for validating if the catalog page has banner, and if it so, show it
      */
-    private void showHeaderBanner(){
+    private void showHeaderBanner() {
         // Show header
-        if(mGridView != null && mCatalogPage.getmCatalogBanner() != null){
-            ((CatalogGridAdapter) mGridView.getAdapter()).setOnHeaderClickListener(this);
-            mGridView.setHeaderView(mCatalogPage);
+        if (mGridView != null && mCatalogPage.getCatalogBanner() != null) {
+            mGridView.setHeaderView(mCatalogPage.getCatalogBanner());
         }
     }
 
@@ -550,14 +548,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
      */
     @Override
-    public void onViewHolderClick(Adapter<?> adapter, int position) {
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
-        Product product = ((CatalogGridAdapter) adapter).getItem(position);
+        ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSku());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
@@ -565,6 +563,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             ToastFactory.ERROR_OCCURRED.show(getBaseActivity());
+        }
+    }
+
+    @Override
+    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+        ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
+        try {
+            // Get item
+            if (product.isWishList()) {
+                triggerRemoveFromWishList(product.getSku());
+            } else {
+                // Add to wish list
+                triggerAddToWishList(product.getSku());
+            }
+            // Update value
+            view.setSelected(!product.isWishList());
+            product.setIsWishList(!product.isWishList());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "NPE ON ADD ITEM TO WISHLIST", e);
         }
     }
 
@@ -635,15 +652,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
-        // Contains the new search query (Brand filter)
-//        if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
-//            // Used to indicate that has filter q=<BRAND>
-//            mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-//        }
-//        // Clean brand filter
-//        else {
-//            mBrandQuery = null;
-//        }
         // Save the current filter values
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
@@ -816,6 +824,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * ############## TRIGGERS ##############
      */
 
+    private void triggerAddToWishList(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        //triggerContentEventProgress(new AddToWishListHelper(), bundle, this);
+    }
+
+    private void triggerRemoveFromWishList(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        //triggerContentEventProgress(new RemoveFromWishListHelper(), bundle, this);
+    }
+
     /**
      * Trigger the initialized catalog.<br> Used for filter and sort.
      */
@@ -840,38 +864,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
         // Create catalog request parameters
-//        ContentValues catalogValues = new ContentValues();
-//        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
         if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
         } else {
             triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
-        }
-    }
-
-    /**
-     * Validate if is to save some request items as related items.<br> Indicate to save related items in case:<br> - NO FILTER && POPULARITY &&
-     * FIRST_PAGE_NUMBER
-     *
-     * @param page - the current page number
-     * @return true or false
-     */
-    private boolean isToSaveRelatedItems(int page) {
-        try {
-            // Is to save related items in case popularity sort, first page and not filter applied
-            return mCurrentFilterValues.size() == 0 &&
-                    mSelectedSort.ordinal() == CatalogSort.POPULARITY.ordinal() &&
-                    page == GetCatalogPageHelper.FIRST_PAGE_NUMBER;
-        } catch (NullPointerException e) {
-            return false;
         }
     }
 
@@ -989,15 +992,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 onClickCatalog(url, title, bundle);
                 break;
             case CAMPAIGN:
-                //http://integration-www.jumia.ug/mobapi/v1.7/campaign/get/?campaign_slug=samsung_madness
                 onClickCampaign(url, title, bundle);
                 break;
             case PRODUCT:
-                // http://integration-www.jumia.ug/mobapi/v1.7/blue-long-sleeves-shirt-straight-cut-24932.html
                 onClickProduct(url, bundle);
                 break;
             case SHOP:
-                // http://integration-www.jumia.ug/mobapi/1.7/main/getstatic/?key=buy-2-get-1-free
                 onClickInnerShop(url, title, bundle);
                 break;
             default:

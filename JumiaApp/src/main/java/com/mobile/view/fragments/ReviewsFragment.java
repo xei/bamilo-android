@@ -4,6 +4,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -33,14 +34,13 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetProductReviewsHelper;
-import com.mobile.helpers.products.GetSellerReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -66,7 +66,7 @@ public class ReviewsFragment extends BaseFragment {
     
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
-    private CompleteProduct selectedProduct;
+    private ProductComplete selectedProduct;
 
     private LayoutInflater inflater;
     
@@ -78,7 +78,7 @@ public class ReviewsFragment extends BaseFragment {
 
     private Fragment mSellerWriteReviewFragment;
 
-    private String mProductUrl;
+    private String mProductSku;
 
     private boolean firstRequest = false;   
     
@@ -115,7 +115,7 @@ public class ReviewsFragment extends BaseFragment {
     private int pageNumber = 1;
     
     private int totalPages;
-    
+
     private static final int REVIEWS_PER_PAGE = 18;
     
     private ArrayList<ProductReviewComment> reviews;
@@ -130,8 +130,6 @@ public class ReviewsFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ReviewsFragment getInstance(Bundle bundle) {
         ReviewsFragment fragment = new ReviewsFragment();
@@ -179,27 +177,25 @@ public class ReviewsFragment extends BaseFragment {
             if(arguments.containsKey(ConstantsIntentExtra.REVIEW_TYPE)) {
                 isProductRating = arguments.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
             }
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mProductUrl = TextUtils.isEmpty(contentUrl) ? "" : contentUrl;
+            mProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
 
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                selectedProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                selectedProduct = (ProductComplete)parcelableProduct;
             }
         }
         // Load saved state
         if(savedInstanceState != null) {
+            // TODO
             Print.i(TAG, "ON LOAD SAVED STATE");
-            mProductUrl = savedInstanceState.getString("url");
+            mProductSku = savedInstanceState.getString("url");
             pageNumber = savedInstanceState.getInt("page", 1);
             totalPages = savedInstanceState.getInt("current_page", -1);
             mProductRatingPage = savedInstanceState.getParcelable("rate");
             reviews = savedInstanceState.getParcelableArrayList("reviews");
-//            isProductRating =  savedInstanceState.getBoolean("review_type");
             isProductRating =  savedInstanceState.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
             mSellerId =  savedInstanceState.getString(ProductDetailsFragment.SELLER_ID);
-            //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
         }
     }
 
@@ -246,14 +242,17 @@ public class ReviewsFragment extends BaseFragment {
 
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
-            if(mProductUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mProductUrl = contentUrl != null ? contentUrl : "";
+            if(mProductSku == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)){
+                String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
+                mProductSku = sku != null ? sku : "";
             }
-            if (!TextUtils.isEmpty(mProductUrl)) {
+            if (!TextUtils.isEmpty(mProductSku)) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+
             } else {
                 showFragmentErrorRetry();
             }
@@ -316,12 +315,12 @@ public class ReviewsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE: ");
-        outState.putString("url", mProductUrl);
+        // TODO
+        outState.putString("url", mProductSku);
         outState.putInt("page", pageNumber);
         outState.putInt("current_page", totalPages);
         outState.putParcelable("rate", mProductRatingPage);
         outState.putParcelableArrayList("reviews", reviews);
-//        outState.putBoolean("review_type", isProductRating);
         outState.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, isProductRating);
         outState.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
     }
@@ -369,12 +368,12 @@ public class ReviewsFragment extends BaseFragment {
         // Validate current rating page 
         if (mProductRatingPage != null){
             if(pageNumber == 1){
-                triggerReviews(selectedProduct.getUrl(), pageNumber);
+                triggerReviews(selectedProduct.getSku() , pageNumber);
             } else {
                 displayReviews(mProductRatingPage, false);
             }
         } else {
-            triggerReviews(selectedProduct.getUrl(), pageNumber);
+            triggerReviews(selectedProduct.getSku(), pageNumber);
         }
     }
 
@@ -384,7 +383,7 @@ public class ReviewsFragment extends BaseFragment {
     private void startWriteReviewFragment() {
         if(isProductRating){
             Bundle args = new Bundle();
-            args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
+            args.putString(ConstantsIntentExtra.PRODUCT_SKU, mProductSku);
             args.putBoolean(CAME_FROM_POPULARITY, true);
             args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
             mWriteReviewFragment = ReviewWriteNestedFragment.getInstance(args);
@@ -400,16 +399,15 @@ public class ReviewsFragment extends BaseFragment {
      * instanciate and replace fragment in order to show write seller review
      */
     private void startSellerWriteReviewFragment() {
-
         Bundle args = new Bundle();
-        args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
+        args.putString(ConstantsIntentExtra.PRODUCT_SKU, mProductSku);
         args.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
         args.putString(SELLER_NAME, mProductRatingPage.getSellerName());
         args.putInt(SELLER_COMMENT_COUNT, mProductRatingPage.getCommentsCount());
         args.putInt(SELLER_AVERAGE, mProductRatingPage.getAverage());
         //create seller review nested fragment
 
-        mSellerWriteReviewFragment = WriteSellerReviewNestedFragment.getInstance(args);;
+        mSellerWriteReviewFragment = WriteSellerReviewNestedFragment.getInstance(args);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_writereview, mSellerWriteReviewFragment);
@@ -439,8 +437,8 @@ public class ReviewsFragment extends BaseFragment {
     
 
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = selectedProduct.getPrice();
-        String specialPrice = selectedProduct.getSpecialPrice();
+        String unitPrice = String.valueOf(selectedProduct.getPrice());
+        String specialPrice = String.valueOf(selectedProduct.getSpecialPrice());
         /*--if (specialPrice == null) specialPrice = selectedProduct.getMaxSpecialPrice();*/
         displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
     }
@@ -510,7 +508,7 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void writeReview() {
         Bundle args = new Bundle();
-        args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
+        args.putString(ConstantsIntentExtra.PRODUCT_SKU, mProductSku);
         if(isProductRating){
             args.putParcelable(ConstantsIntentExtra.PRODUCT, selectedProduct);
             getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
@@ -558,10 +556,10 @@ public class ReviewsFragment extends BaseFragment {
      * framework.
      */
     private void getMoreReviews() {
-        if (selectedProduct.getUrl() != null) {
+        if (selectedProduct.getSku() != null) {
             Print.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
             pageNumber++;
-            triggerReviews(selectedProduct.getUrl(), pageNumber);
+            triggerReviews(selectedProduct.getSku(), pageNumber);
         }
 
     }
@@ -576,7 +574,7 @@ public class ReviewsFragment extends BaseFragment {
         }
         
         switch (eventType) {
-        case GET_PRODUCT_REVIEWS_EVENT:
+        case GET_PRODUCT_REVIEWS:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
             // Validate the current rating page
@@ -591,8 +589,8 @@ public class ReviewsFragment extends BaseFragment {
             displayReviews(productRatingPage, true);
             showFragmentContentContainer();
             break;
-        case GET_PRODUCT_EVENT:
-          if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+          if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
               Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
               getActivity().onBackPressed();
               return;
@@ -617,7 +615,6 @@ public class ReviewsFragment extends BaseFragment {
     protected void onErrorEvent(Bundle bundle){
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -631,7 +628,7 @@ public class ReviewsFragment extends BaseFragment {
         showFragmentContentContainer();
         
         switch (eventType) {
-        case GET_PRODUCT_REVIEWS_EVENT:
+        case GET_PRODUCT_REVIEWS:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
             // Valdiate current rating page
@@ -639,7 +636,7 @@ public class ReviewsFragment extends BaseFragment {
             // Append the new page to the current
             displayReviews(productRatingPage, true);
             break;
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
@@ -662,17 +659,17 @@ public class ReviewsFragment extends BaseFragment {
                 Print.d("POINT", "DO NOTHING");
             } else if(productRatingPage == null ){
                 reviews = new ArrayList<>();
-                triggerReviews(selectedProduct.getUrl(), 1);
-            } else if(reviews == null ){
+                triggerReviews(selectedProduct.getSku(), 1);
+            } else { // reviews == null
                 reviews = new ArrayList<>();
-                triggerReviews(selectedProduct.getUrl(), pageNumber);
+                triggerReviews(selectedProduct.getSku(), pageNumber);
             }
         } else {
             if(productRatingPage != null){
                 if(reviews != null && pageNumber == 1){
                     reviews.clear();
                     reviews =  productRatingPage.getReviewComments();
-                } else if(reviews != null && pageNumber != 1){
+                } else if(reviews != null){
                     if(reviews.size() != productRatingPage.getCommentsCount()){
                         reviews.addAll(productRatingPage.getReviewComments());
                     }
@@ -713,8 +710,6 @@ public class ReviewsFragment extends BaseFragment {
 
         // set the number of grid columns depending on the screen size
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
-//        numColumns = 2;
-
         // means there's write fragment attached so the reviews list must be only one column
         if(reviews != null && reviews.size() > 0 && getBaseActivity() != null &&
                 DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) &&
@@ -722,7 +717,6 @@ public class ReviewsFragment extends BaseFragment {
             numColumns = 1;
         }
 
-//        reviews.remove(reviews.size()-1);
         int numberReviews = reviews.size();
         // If there are reviews, list them
         // Otherwise, hide reviews list and show empty view
@@ -946,13 +940,15 @@ public class ReviewsFragment extends BaseFragment {
      * TRIGGERS
      * @author sergiopereira
      */
-    private void triggerReviews(String url, int pageNumber) {
+    private void triggerReviews(String sku, int pageNumber) {
+        ContentValues values = new ContentValues();
+        values.put(GetProductReviewsHelper.SKU, sku);
+        values.put(GetProductReviewsHelper.PAGE, pageNumber);
+        values.put(GetProductReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
+        values.put(GetProductReviewsHelper.REST_PARAM_SELLER_RATING, !isProductRating);
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductReviewsHelper.PRODUCT_URL, url);
-        bundle.putString(GetProductReviewsHelper.PAGE, ""+pageNumber);
-        bundle.putString(GetSellerReviewsHelper.PER_PAGE, ""+REVIEWS_PER_PAGE);
-        bundle.putBoolean(GetProductReviewsHelper.RATING_TYPE, isProductRating);
-        // Show laoding layout for first time
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        // Show loading layout for first time
         if(pageNumber == 1){
             triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
         } else {
@@ -1052,7 +1048,7 @@ public class ReviewsFragment extends BaseFragment {
         // TRACKER
         Bundle params = new Bundle();
         params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
-        params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
+        params.putFloat(TrackerDelegator.RATING_KEY, (float) selectedProduct.getAvgRating());
         
         TrackerDelegator.trackViewReview(selectedProduct);
         

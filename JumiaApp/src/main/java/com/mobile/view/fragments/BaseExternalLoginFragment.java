@@ -75,6 +75,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         }
         onFacebookSuccessLogin();
     }
+
     @Override
     public void onCancel() {
         Log.e("facebookCallback","onCancel");

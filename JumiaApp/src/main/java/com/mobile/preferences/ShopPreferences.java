@@ -8,7 +8,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.utils.Constants;
@@ -100,7 +99,6 @@ public class ShopPreferences {
         // Clean other
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
         LastViewedTableHelper.deleteAllLastViewed();
-        FavouriteTableHelper.deleteAllFavourite();
         BrandsTableHelper.clearBrands();
         
     }

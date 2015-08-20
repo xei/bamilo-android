@@ -143,17 +143,16 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         @Override
         public void onClick(View v) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, featuredItem.getUrl());
-
             // default settings from FeaturedProduct
             int navigationSourceId = R.string.gteaserprod_prefix;
             FragmentType search = FragmentType.PRODUCT_DETAILS;
-
             // change behaviour depending on type of FeaturedItem
             if (featuredItem instanceof FeaturedItemProduct) {
+                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, ((FeaturedItemProduct) featuredItem).getSku());
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedItemBrand) {
+                bundle.putString(ConstantsIntentExtra.CONTENT_URL, featuredItem.getUrl());
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.CATALOG;
                 // add title for Brands
@@ -164,7 +163,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             ((BaseActivity) mContext).onSwitchFragment(search, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-    };
+    }
 
     /**
      * set View on index <code>index</code> based on ids of layouts

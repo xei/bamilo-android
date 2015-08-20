@@ -11,12 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.ProductBundleProduct;
-import com.mobile.newFramework.objects.product.ProductBundleSimple;
+import com.mobile.newFramework.objects.product.pojo.ProductBundle;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -28,13 +29,11 @@ import java.util.ArrayList;
  * @author paulocarvalho
  *
  */
-public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsListAdapter.ViewHolder> {
+public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsListAdapter.ViewHolder> implements OnItemSelectedListener {
     
-    private ArrayList<ProductBundleProduct> mDataset;
+    private ArrayList<ProductBundle> mDataset;
     private OnItemSelected itemSelected;
-    private OnSimplePressed simplePressed;
     private OnItemChecked itemChecked;
-    private OnItemSelectedListener simplesSelected;
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
@@ -54,8 +53,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         private RelativeLayout mSizeSpinnerContainer;
         
         /**
-         * Constructor 
-         * @param view
+         * Constructor
          */
         public ViewHolder(View view) {
             super(view);
@@ -72,28 +70,21 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     }
     
     public interface OnItemSelected {
-        public void SelectedItem();
+        void SelectedItem();
     }
     
     public interface OnItemChecked {
-        public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos);
-    }
-    
-    public interface OnSimplePressed {
-        public void PressedSimple(ProductBundleProduct selectedProduct);
+        void checkItem(ProductBundle selectedProduct, boolean isChecked, int pos);
     }
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
      * @author paulocarvalho
      */
-    public BundleItemsListAdapter(ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,
-                                  OnItemChecked checkedClickListener, OnSimplePressed simpleClickListener, OnItemSelectedListener simplesSelectedListener) {
+    public BundleItemsListAdapter(ArrayList<ProductBundle> bundleItemsList, OnItemSelected selectedClickListener, OnItemChecked checkedClickListener) {
         mDataset = bundleItemsList;
         itemSelected = selectedClickListener;
         itemChecked = checkedClickListener;
-        simplePressed = simpleClickListener;
-        simplesSelected = simplesSelectedListener;
     }
 
     /*
@@ -114,36 +105,29 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // Replace the contents of a view (invoked by the layout manager)
         // Get item
-        final ProductBundleProduct item = mDataset.get(position);
+        final ProductBundle item = mDataset.get(position);
         // Set brand
         holder.mBrand.setText(item.getBrand());
         // Set title
         holder.mTitle.setText(item.getName());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
         if(item.hasDiscount() ){
-            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxSpecialPrice()));
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
         } else {
-            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getBundleProductMaxPrice()));
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
         }
-        
-        // Set listener and tags
-//        holder.mContainer.setTag(item.getProductUrl());
-        
-//        holder.mCheck.setChecked(true);
-        
+
         holder.mContainer.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                
                 itemSelected.SelectedItem();
             }
         });
         
         if(item.isChecked()){
-            
             holder.mCheck.setChecked(true);
             if(position == 0){
                 holder.mCheck.setEnabled(false);
@@ -154,8 +138,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
             holder.mCheck.setChecked(false);
             
         }
-        
-        
+
         holder.mCheck.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -170,20 +153,9 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
                 }
             }
         });
-        
-        
+
         // Set size
         setSizeContainer(holder, item, position);
-        
-//        holder.mSizeSpinner.setOnClickListener(new OnClickListener() {
-//            
-//            @Override
-//            public void onClick(View v) {
-//                
-//                simplePressed.PressedSimple(item);                
-//            }
-//        });
-        
     }
 
     /*
@@ -192,58 +164,47 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
      */
     @Override
     public int getItemCount() {
-        // Return the size of your dataset (invoked by the layout manager)
+        // Return the size of your data set (invoked by the layout manager)
         return mDataset == null ? 0 : mDataset.size();
     }
-    
-    private void setSizeContainer(ViewHolder view, ProductBundleProduct item, int position){
+
+    private ProductBundle getItem(int position) {
+        return mDataset.get(position);
+    }
+
+    private void setSizeContainer(ViewHolder view, ProductBundle item, int position){
         // all products have at least one simple
-        if(item.getBundleSimples().size() > 1) {
+        if(item.hasMultiSimpleVariations()) {
             view.mSizeSpinnerContainer.setVisibility(View.VISIBLE);
-            // Show container
-//            view.mSizeContainer.setVisibility(View.VISIBLE);
             // Get sizes
-            ArrayList<ProductBundleSimple> sizes = item.getBundleSimples();
+            ArrayList<ProductSimple> sizes = item.getSimples();
             // Create an ArrayAdapter using the sizes values
-            ArrayAdapter<ProductBundleSimple> adapter = new ArrayAdapter<>(JumiaApplication.INSTANCE.getApplicationContext(), R.layout.campaign_spinner_item, sizes);
+            ArrayAdapter<ProductSimple> adapter = new ArrayAdapter<>(JumiaApplication.INSTANCE.getApplicationContext(), R.layout.campaign_spinner_item, sizes);
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
             // Apply the adapter to the spinner
             view.mSizeSpinner.setAdapter(adapter);
             // Save position in spinner
-            view.mSizeSpinner.setTag(position);
+            view.mSizeSpinner.setTag(R.id.target_position, position);
             // Check pre selection
-            
-            view.mSizeSpinner.setSelection(item.getSimpleSelectedPos());
+            view.mSizeSpinner.setSelection(item.getSelectedSimplePosition());
             // Force reload content to redraw the default selection value
             adapter.notifyDataSetChanged();
-            // Apply the select listener
-            view.mSizeSpinner.setTag(item.getSku());
-            view.mSizeSpinner.setOnItemSelectedListener(simplesSelected);
+            view.mSizeSpinner.setOnItemSelectedListener(this);
         } else {
             view.mSizeSpinnerContainer.setVisibility(View.GONE);
-//            // Hide the size container
-//            // Set itself as selected size
-//            CampaignItemSize size = null;
-//            try {
-//                size = item.getSizes().get(0);
-//            } catch (IndexOutOfBoundsException e) {
-//                Log.w(TAG, "WARNING: IOBE ON SET SIZE SELECTION: 0");
-//            } catch (NullPointerException e) {
-//                Log.w(TAG, "WARNING: NPE ON SET SELECTED SIZE: 0");
-//            }
-//            item.setSelectedSizePosition(0);
-//            item.setSelectedSize(size);
         }
     }
-    
-    public ArrayList<ProductBundleProduct> getBundleArray() {
-        return mDataset;
+
+    @Override
+    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+        // Save selected simple position
+        getItem((int) parent.getTag(R.id.target_position)).setSelectedSimplePosition(position);
     }
-    
-    public void updateBundle(ArrayList<ProductBundleProduct> productBundles) {
-        mDataset = productBundles;
-        notifyDataSetChanged();
+
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+        // ...
     }
-    
+
 }
