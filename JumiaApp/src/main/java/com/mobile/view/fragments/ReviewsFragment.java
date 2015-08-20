@@ -33,7 +33,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.products.GetProductReviewsHelper;
+import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -538,7 +538,7 @@ public class ReviewsFragment extends BaseFragment {
 
                 Print.i(TAG, "onScrollBottomReached: isLoadingMore = " + isLoadingMore);
                 if (!isLoadingMore && pageNumber < totalPages) {
-                    
+
                     isLoadingMore = true;
                     mLoadingLayout = getView().findViewById(R.id.catalog_loading_more);
                     mLoadingLayout.setVisibility(View.VISIBLE);
@@ -942,7 +942,8 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void triggerReviews(String sku, int pageNumber) {
         ContentValues values = new ContentValues();
-        values.put(GetProductReviewsHelper.SKU, sku);
+        //mobapi 1.8 change
+   /*     values.put(GetProductReviewsHelper.SKU, sku);
         values.put(GetProductReviewsHelper.PAGE, pageNumber);
         values.put(GetProductReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
         values.put(GetProductReviewsHelper.REST_PARAM_SELLER_RATING, !isProductRating);
@@ -953,6 +954,24 @@ public class ReviewsFragment extends BaseFragment {
             triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
         } else {
             triggerContentEventNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
+        }*/
+
+        values.put(GetReviewsHelper.SKU, sku);
+        values.put(GetReviewsHelper.PAGE, pageNumber);
+        values.put(GetReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
+
+        if(isProductRating)
+            values.put(GetReviewsHelper.REST_PARAM_RATING, isProductRating);
+        else    //seller
+            values.put(GetReviewsHelper.REST_PARAM_SELLER_RATING, true);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        // Show loading layout for first time
+        if(pageNumber == 1){
+            triggerContentEvent(new GetReviewsHelper(), bundle, mCallBack);
+        } else {
+            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, mCallBack);
         }
     }
     
