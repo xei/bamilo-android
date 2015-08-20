@@ -33,7 +33,7 @@
         android:layout_marginLeft="@dimen/margin_large"
         android:layout_marginStart="@dimen/margin_large"
         android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight"
+        android:background="@drawable/selector_list_item_highlight"
         android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:gravity="center"

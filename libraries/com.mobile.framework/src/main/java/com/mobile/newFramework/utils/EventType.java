@@ -41,7 +41,7 @@ public enum EventType {
 
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_EVENT("http:/catalog/detail/", AigRestContract.NO_CACHE),
+
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
 
@@ -77,7 +77,7 @@ public enum EventType {
 
     GET_FORM_SELLER_REVIEW_EVENT("http:/forms/sellerreview/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_REVIEWS_EVENT,
+
 
     REVIEW_RATING_PRODUCT_EVENT,
 
@@ -119,10 +119,6 @@ public enum EventType {
 
     SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
 
-//    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultbilling/", AigRestContract.NO_CACHE),
-//
-//    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultshipping/", AigRestContract.NO_CACHE),
-
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
 
     CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
@@ -155,7 +151,7 @@ public enum EventType {
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
 
-    SEARCH_PRODUCT("http:/catalog/detail", AigRestContract.NO_CACHE),
+
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
 
@@ -181,13 +177,21 @@ public enum EventType {
 
     ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
 
-    GET_PRODUCT_OFFERS(GET_PRODUCT_EVENT.action, AigRestContract.NO_CACHE),
+
 
     GET_SELLER_REVIEWS,
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
 
-    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME);
+    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+
+    GET_PRODUCT_DETAIL("http:/catalog/detail/", AigRestContract.NO_CACHE),
+
+    GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
+
+    GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action, AigRestContract.NO_CACHE);
+
+
 
     public final String action;
     public final Integer cacheTime;

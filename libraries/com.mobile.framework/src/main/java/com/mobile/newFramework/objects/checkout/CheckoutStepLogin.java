@@ -7,37 +7,42 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by rsoares on 6/1/15.
+ * CheckoutStepLogin
+ *
+ * @author rsoares
+ * @modified sergiopereira
  */
 public class CheckoutStepLogin extends CheckoutStepObject {
+
     private Customer customer;
 
-    public CheckoutStepLogin(){
-
+    public CheckoutStepLogin() {
+        super();
     }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        customer = new Customer(jsonObject);
-        setCheckoutNextStep(jsonObject);
+        // Next checkout step
+        super.initialize(jsonObject);
+        // Customer
+        customer = new Customer();
+        customer.initialize(jsonObject);
         return true;
-    }
-
-    @Override
-    public JSONObject toJSON() {
-        return null;
-    }
-
-    @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
     }
 
     public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    @Override
+    public JSONObject toJSON() {
+        return super.toJSON();
     }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return super.getRequiredJson();
+    }
+
+
 }

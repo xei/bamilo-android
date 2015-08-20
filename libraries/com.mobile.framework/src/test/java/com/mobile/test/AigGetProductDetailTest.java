@@ -1,11 +1,7 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -18,7 +14,7 @@ public class AigGetProductDetailTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCT_EVENT;
+        return EventType.GET_PRODUCT_DETAIL;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class AigGetProductDetailTest extends AigTestCase {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
 
-        CompleteProduct completeProduct = (CompleteProduct) response.getMetadata().getData();
+        ProductComplete completeProduct = (ProductComplete) response.getMetadata().getData();
         assertNotNull("Product is null", completeProduct);
         assertNotNull("Product Simple is null", completeProduct.getSimples());
         assertNotNull("Product has seller is null", completeProduct.hasSeller());

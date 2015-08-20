@@ -91,7 +91,20 @@ public class CurrencyFormatter {
     	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, ".");
     	currencyUnitPattern = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
     }
-    
+
+    public static String formatCurrency(double value) {
+        if (!initialized) {
+            throw new RuntimeException("currency converter not initialized");
+        }
+        try {
+            return String.format(currencyUnitPattern, formatter.format(value));
+        } catch (NumberFormatException e) {
+            //In case of bad formatting, return the parsed value with no currency sign
+            Print.e(TAG, "bad formatting for value = " + value, e);
+            return value + "";
+        }
+    }
+
     /**
      * Formats a string containing a numeric value into the proper formatted
      * currency of the country in question.

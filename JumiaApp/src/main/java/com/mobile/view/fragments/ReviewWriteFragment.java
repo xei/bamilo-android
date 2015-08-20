@@ -33,7 +33,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -75,7 +75,7 @@ public class ReviewWriteFragment extends BaseFragment {
     
     private static final String RATINGS = "ratings";
 
-    private CompleteProduct completeProduct;
+    private ProductComplete completeProduct;
 
     private LinearLayout ratingContainer;
 
@@ -83,7 +83,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
     private boolean isExecutingSendReview = false;
 
-    private String mCompleteProductUrl = "";
+    private String mCompleteProductSku = "";
     
     private View mainContainer;
 
@@ -208,11 +208,10 @@ public class ReviewWriteFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                completeProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                completeProduct = (ProductComplete)parcelableProduct;
             }
 
         }
@@ -231,14 +230,16 @@ public class ReviewWriteFragment extends BaseFragment {
         }
         setRatingReviewFlag();
             // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
+            if (mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
+                String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
+                mCompleteProductSku = sku != null ? sku : "";
             }
             
             if (completeProduct == null) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 /* Commented due to unnecessary data being fetched
@@ -324,9 +325,11 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     private void setRatingLayout(Form form) {
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -441,9 +444,11 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setGenericLayout(){
         
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -508,9 +513,9 @@ public class ReviewWriteFragment extends BaseFragment {
      * @param productPriceSpecial
      */
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = completeProduct.getPrice();
+        String unitPrice = String.valueOf(completeProduct.getPrice());
         /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-        String specialPrice = completeProduct.getSpecialPrice();
+        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
         /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
 
         displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
@@ -631,9 +636,9 @@ public class ReviewWriteFragment extends BaseFragment {
             showFragmentContentContainer();
             return true;
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             Print.d(TAG, "GOT GET_PRODUCT_EVENT");
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
@@ -705,7 +710,7 @@ public class ReviewWriteFragment extends BaseFragment {
             return false;
             
             
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
@@ -798,23 +803,19 @@ public class ReviewWriteFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     executeSendReview(reviewForm.action, dynamicRatingForm);

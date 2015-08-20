@@ -134,6 +134,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public String variation;
         public String productUrl;
         public int maxQuantity;
+        public String productSku;
     }
 
     /**
@@ -729,6 +730,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
+                values.productSku = item.getConfigSKU();
                 values.productUrl = item.getProductUrl();
                 values.maxQuantity = item.getMaxQuantity();
 
@@ -926,12 +928,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
 
         // Save the position to process the click on item
-        view.setTag(R.id.target_url, item.productUrl);
+        view.setTag(R.id.target_sku, item.productSku);
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    goToProductDetails((String) v.getTag(R.id.target_url));
+                    goToProductDetails((String) v.getTag(R.id.target_sku));
                 } catch (NullPointerException e) {
                     Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
@@ -959,15 +961,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Function to redirect to the selected product details.
      */
-    private void goToProductDetails(String productUrl) {
-        // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
-        if (TextUtils.isEmpty(productUrl))
-            return;
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    private void goToProductDetails(String sku) {
+        if (!TextUtils.isEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**

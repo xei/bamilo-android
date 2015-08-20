@@ -1,10 +1,11 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.mobile.newFramework.objects.catalog.CatalogPage;
+import com.mobile.newFramework.objects.catalog.Banner;
 
 /**
  * Created by spereira on 2/27/15.
@@ -66,9 +67,9 @@ public class CatalogGridView extends RecyclerView {
         ((CatalogGridAdapter) getAdapter()).hideFooterView();
     }
 
-    public void setHeaderView(CatalogPage mCatalogPage) {
+    public void setHeaderView(@Nullable Banner banner) {
         mGridLayoutManager.showHeaderView();
-        ((CatalogGridAdapter) getAdapter()).setHeader(mCatalogPage);
+        ((CatalogGridAdapter) getAdapter()).setHeader(banner);
     }
 
 }
