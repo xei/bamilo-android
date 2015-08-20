@@ -6,7 +6,6 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 
 import org.json.JSONException;
@@ -16,6 +15,8 @@ import org.json.JSONObject;
  * Class that represents the response from the get products rating
  *
  * @author nutzer2
+ * @modified sergiopereira
+ *
  */
 public class SetBillingAddress extends CheckoutStepObject implements Parcelable {
 
@@ -25,7 +26,7 @@ public class SetBillingAddress extends CheckoutStepObject implements Parcelable 
      * Empty constructor
      */
     public SetBillingAddress() {
-        // ...
+        super();
     }
 
     /*
@@ -37,24 +38,19 @@ public class SetBillingAddress extends CheckoutStepObject implements Parcelable 
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        // Next checkout step
         super.initialize(jsonObject);
+        // Order
         orderSummary = new OrderSummary(jsonObject);
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        return null;
+    public OrderSummary getOrderSummary() {
+        return orderSummary;
     }
 
-    @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
+    public void setOrderSummary(OrderSummary orderSummary) {
+        this.orderSummary = orderSummary;
     }
 
 
@@ -82,14 +78,5 @@ public class SetBillingAddress extends CheckoutStepObject implements Parcelable 
             return new SetBillingAddress[size];
         }
     };
-
-
-    public OrderSummary getOrderSummary() {
-        return orderSummary;
-    }
-
-    public void setOrderSummary(OrderSummary orderSummary) {
-        this.orderSummary = orderSummary;
-    }
 
 }

@@ -45,7 +45,7 @@ public class Customer implements IJSONSerializable, Parcelable {
             // Entity
             jsonObject = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
             // Data
-            id = jsonObject.getString(RestConstants.JSON_ID_TAG);
+            id = jsonObject.getString(RestConstants.ID);
             firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
@@ -157,7 +157,7 @@ public class Customer implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
             jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
             jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);

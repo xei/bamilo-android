@@ -119,7 +119,7 @@ public enum EventType {
 
     SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
 
-    GET_BILLING_FORM_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
+    GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
 
     CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
 

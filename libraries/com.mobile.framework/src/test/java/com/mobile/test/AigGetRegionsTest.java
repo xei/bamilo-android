@@ -1,6 +1,5 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.pojo.BaseResponse;
