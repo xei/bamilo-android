@@ -202,6 +202,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case "boolean":
                 case "checkbox":
+                case "multi_checkbox":
                     inputType = InputType.checkBox;
                     break;
                 case "":
@@ -337,7 +338,14 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(dataOptionsArray != null){
                 extrasValues.clear();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
-                    if(scenario != null){
+                    //alexandrapires: mobapi 1.8: gender cames as option
+                    if(key.equals("gender"))
+                    {
+                        JSONObject genderOption =dataOptionsArray.getJSONObject(i);
+                        dataSet.put( genderOption.optString("value"), genderOption.optString("label"));
+                    }
+
+                    else if(scenario != null){
                         PickUpStationObject pStation = new PickUpStationObject();
                         pStation.initialize(dataOptionsArray.getJSONObject(i));
                         extrasValues.put(pStation.getIdPickupstation(), pStation);
@@ -735,6 +743,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeMap(extrasValues);
         dest.writeString(linkText);
         dest.writeMap(dataSetRating);
+        dest.writeList(newsletterOptions);
     }
 
     /**
@@ -755,6 +764,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
         linkText = in.readString();
         dataSetRating = (LinkedHashMap<String, String>) in.readHashMap(null);
+        newsletterOptions = new ArrayList<>();
+        in.readList(newsletterOptions, NewsletterOption.class.getClassLoader());
+
+
     }
 
     /**
@@ -779,6 +792,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public Map<String, String> getDateSetRating() {
         return dataSetRating;
+    }
+
+    @Override
+    public ArrayList<NewsletterOption> getNewsletterOptions() {
+        return newsletterOptions;
     }
 
 }

@@ -103,7 +103,7 @@ public enum EventType {
 
     GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
 
-    SET_SIGNUP_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
+    SET_SIGNUP_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
 
     GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", AigRestContract.MAX_CACHE_TIME),
 

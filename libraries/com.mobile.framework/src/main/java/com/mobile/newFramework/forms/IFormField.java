@@ -47,4 +47,6 @@ public interface IFormField {
 
     Map<String, String> getDateSetRating();
 
+    ArrayList<NewsletterOption> getNewsletterOptions();
+
 }

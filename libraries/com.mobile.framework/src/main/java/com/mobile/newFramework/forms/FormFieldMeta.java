@@ -138,7 +138,10 @@ public class FormFieldMeta implements IFormField {
     public Map<String, String> getDateSetRating() {
         return metaFormField.getDateSetRating();
     }
-	
-	
+
+	@Override
+	public ArrayList<NewsletterOption> getNewsletterOptions() {
+		return metaFormField.getNewsletterOptions();
+	}
 
 }

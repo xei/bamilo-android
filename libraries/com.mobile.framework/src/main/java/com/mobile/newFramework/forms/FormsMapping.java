@@ -11,20 +11,20 @@ import java.util.Map;
 
 /**
  * This Singleton Class defines the mapping for the order which the fields are displayed on the UI
- * 
+ *
  * @author Nuno Castro
  * @version 1.00
- * 
+ *
  * 2012/08/14
- * 
+ *
  * COPYRIGHT (C) Rocket Internet All Rights Reserved.
  */
 public class FormsMapping {
 
     protected final static String TAG = FormsMapping.class.getSimpleName();
-	
+
     /**
-     * The mapping for the login form. This mapping is based on the key form field returned by the API 
+     * The mapping for the login form. This mapping is based on the key form field returned by the API
      */
     private static final Map<String, Integer> loginForm;
     static {
@@ -35,7 +35,7 @@ public class FormsMapping {
     }
 
     /**
-     * The mapping for the registration form. This mapping is based on the key form field returned by the API 
+     * The mapping for the registration form. This mapping is based on the key form field returned by the API
      */
     private static final Map<String, Integer> registrationForm;
     static {
@@ -53,12 +53,12 @@ public class FormsMapping {
         currMapping.put("password", 2);
         currMapping.put("password2", 3);
         currMapping.put("newsletter_categories_subscribed", 10); //8
-        
+
         registrationForm = Collections.unmodifiableMap(currMapping);
-    }    
+    }
 
     /**
-     * The mapping for the create address form. This mapping is based on the key form field returned by the API 
+     * The mapping for the create address form. This mapping is based on the key form field returned by the API
      */
     private static final Map<String, Integer> addressForm;
     static {
@@ -83,7 +83,7 @@ public class FormsMapping {
     }
 
     /**
-     * This map contains the information of which map order to use on which form. This assignment is done based on the id 
+     * This map contains the information of which map order to use on which form. This assignment is done based on the id
      * of the form returned by the API
      */
     public static final Map<String, Map<String, Integer>> genericMapping;
@@ -97,56 +97,56 @@ public class FormsMapping {
         currMapping.put(EventType.GET_REGISTRATION_FORM_EVENT.toString(), registrationForm);
         // currMapping.put(EventType.GET_CREATE_ADDRESS_FORM_EVENT.toString(), addressForm);
         genericMapping = Collections.unmodifiableMap(currMapping);
-    }    
-    
+    }
+
     protected FormsMapping() { }
-    
+
     /**
-     * This class defines a comparator for the FormFields, so that we can sort them with a specific order after receiving 
-     * them form the API  
+     * This class defines a comparator for the FormFields, so that we can sort them with a specific order after receiving
+     * them form the API
      * @author Nuno Castro
      */
     public static class byFieldOrder implements java.util.Comparator<FormField> {
         public int compare(FormField field1, FormField field2) {
             Map<String, Integer> sortMap = field1.getParent().fieldMapping;
             int diff = 0;
-            
+
             if ( sortMap.containsKey(field1.getKey()) && sortMap.containsKey(field2.getKey()) ) {
-                diff = sortMap.get(field1.getKey()) - sortMap.get(field2.getKey()); 
+                diff = sortMap.get(field1.getKey()) - sortMap.get(field2.getKey());
             }
-         
+
             return diff;
         }
-       }
-    
+    }
+
     /**
-    * Removes all instances of form fields that are not present on the formMap and aren't required.
-    * @param form with the form fields.
-    * @param fieldMap registry.
-    */
+     * Removes all instances of form fields that are not present on the formMap and aren't required.
+     * @param form with the form fields.
+     * @param fieldMap registry.
+     */
     public static void removeUnsortedFields(Form form, Map<String, Integer> fieldMap){
         ArrayList<FormField> fieldsToRemove = new ArrayList<>();
-        
+
         for(FormField field : form.fields){
-      
-        	// The meta field is kept - higher level implementation decides what to do with it
-        	if ( field.getInputType() == InputType.meta )
-        		continue;
-        	
+
+            // The meta field is kept - higher level implementation decides what to do with it
+            if ( field.getInputType() == InputType.meta )
+                continue;
+
             //Only non required field can be validated.
-        	// Change this to || if the server side required=false mechanism works
+            // Change this to || if the server side required=false mechanism works
             if (!field.getValidation().required && !fieldMap.containsKey(field.getKey())) {
-            	fieldsToRemove.add(field);
+                fieldsToRemove.add(field);
             }
-            
-         
+
+
         }
-        
+
         // Log.d(TAG,"removeUnsortedFields: going to remove fields.");
         for(IFormField field : fieldsToRemove) {
             Print.d("removeUnsortedFields: removing field: " + field.getKey());
             form.fields.remove(field);
         }
     }
-    
+
 }
