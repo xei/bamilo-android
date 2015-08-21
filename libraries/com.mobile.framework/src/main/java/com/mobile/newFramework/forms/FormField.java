@@ -53,8 +53,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private HashMap<String, String> dataCalls;
     private HashMap<String, Form>  paymentFields;
     private LinkedHashMap<Object,Object> extrasValues;
-    public ArrayList<NewsletterOption> newsletterOptions;
-    public HashMap<String,PaymentInfo> paymentInfoList;
+    private ArrayList<NewsletterOption> newsletterOptions;
+    private HashMap<String,PaymentInfo> paymentInfoList;
     private IFormField mChildFormField;
     private IFormField mParentFormField;
 
@@ -79,33 +79,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.linkText = "";
-        this.dataSetRating = new LinkedHashMap<>();
-        this.paymentInfoList = new HashMap<>();
-    }
-
-    /**
-     * Form param constructor.
-     *
-     * @param parent     . Form that encapsulates the field.
-     * @param name       . Name of the field
-     * @param id         . Id of the form field.
-     * @param obligatory . Specifies if the field is required.
-     * @param inputType  . The input type for edit text
-     */
-    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType) {
-        this.id = id;
-        this.name = name;
-        this.inputType = inputType;
-        this.value = "";
-        this.validation = new FieldValidation();
-        this.validation.isRequired = obligatory;
-        this.dataSet = new LinkedHashMap<>();
-        this.dataCalls = new HashMap<>();
-        this.dataSetSource = "";
-        this.parent = parent;
-        this.dataSetListener = null;
-        this.extrasValues = new LinkedHashMap<>();
-        this.scenario = null;
         this.dataSetRating = new LinkedHashMap<>();
         this.paymentInfoList = new HashMap<>();
     }
@@ -206,16 +179,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataCalls.put(RestConstants.API_CALL, apiCall);
             }
 
-            /**
-             * Get data from dataset as json object
-             */
-            JSONObject dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
-            if(dataSetObject != null && dataSetObject.length() > 0){
-                Iterator<?> it = dataSetObject.keys();
-                while (it.hasNext()) {
-                    dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
-                }
-            }
+
+            // TODO: Validate if this is necessary v.2.7
+//            /**
+//             * Get data from dataset as json object
+//             */
+//            JSONObject dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
+//            if(dataSetObject != null && dataSetObject.length() > 0){
+//                Iterator<?> it = dataSetObject.keys();
+//                while (it.hasNext()) {
+//                    dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
+//                }
+//            }
 
             // Case options TODO Unify options response
             /**
@@ -228,47 +203,30 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataOptionsObject = jsonObject.optJSONObject("options");
             }
 
-            /**
-             * Method to save the newsletter options
-             */
-            if(key.equals("newsletter_categories_subscribed") && dataOptionsArray != null) {
-                newsletterOptions = new ArrayList<>();
-                for (int i = 0; i < dataOptionsArray.length(); i++) {
-                    newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name));
-                }
-                dataOptionsArray = null;
-                dataOptionsObject = null;
-            }
 
+            // TODO Improve this method
             // Case shipping options from array
             if(dataOptionsArray != null){
                 extrasValues.clear();
-                mOptions = new ArrayList<>();
+                newsletterOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
 
-                    // TODO
-                    if(key.equals("gender")) {
-                        JSONObject genderOption =dataOptionsArray.getJSONObject(i);
-                        dataSet.put(genderOption.optString("label"), genderOption.optString("value"));
+                    // Case the newsletter
+                    if(key.equals("newsletter_categories_subscribed")) {
+                        newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name));
                     }
-                    else if(scenario != null){
+                    // Case pickup station
+                    else if(key.equals("pickup_station") && scenario != null){
                         PickUpStationObject pStation = new PickUpStationObject();
                         pStation.initialize(dataOptionsArray.getJSONObject(i));
                         extrasValues.put(pStation.getIdPickupstation(), pStation);
                         dataSet.put(pStation.getName(), pStation.getName());
-                    } else {
-
+                    }
+                    // Case default
+                    else {
                         JSONObject option = dataOptionsArray.getJSONObject(i);
                         dataSet.put(option.optString("label"), option.optString("value"));
-
-                        //dataSet.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));
-
-//                        FormFieldOption fieldOption = new FormFieldOption(parent);
-//                        fieldOption.initialize(option);
-//                        mOptions.add(fieldOption);
-
                     }
-                    //Log.d(TAG, "FORM FIELD: CURRENT KEY " + dataOptionsArray.getString(i));
                 }
             }
             // Case shipping options from object
@@ -279,6 +237,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     dataSet.put(curKey, curKey);
                 }
             }
+
+            /**
+             * ########### RELATED FIELD ###########
+             */
 
             // Case related data (sub form)
             JSONObject relatedDataObject = jsonObject.optJSONObject(RestConstants.RELATED_DATA);
@@ -412,101 +374,36 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getParent()
-     */
     @Override
     public Form getParent() {
         return parent;
     }
 
-    public void setParent(Form parent) {
-        this.parent = parent;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getId()
-     */
     @Override
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getKey()
-     */
     @Override
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getName()
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getName()
-     */
-    @Override
-    public String getScenario() {
-        return scenario;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getInputType()
-     */
     @Override
     public InputType getInputType() {
         return inputType;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getLabel()
-     */
     @Override
     public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getDataSet()
-     */
     @Override
     public LinkedHashMap<String, String> getDataSet() {
         return dataSet;
@@ -545,11 +442,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return dataCalls;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getValidation()
-     */
     @Override
     public FieldValidation getValidation() {
         return validation;
@@ -559,26 +451,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.validation = validation;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.forms.IFormField#getValue()
-     */
     @Override
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public Map<String, IFormField> getSubFormFields() {
         return null;
-    }
-
-    public void setSubFormFields(Map<String, IFormField> subFormFields) {
-        // noop
     }
 
     @Override
@@ -586,10 +465,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return this.linkText;
     }
 
-
     @Override
     public Map<String, String> getDateSetRating() {
         return dataSetRating;
+    }
+
+    public ArrayList<NewsletterOption> getNewsletterOptions() {
+        return newsletterOptions;
+    }
+
+    public HashMap<String, PaymentInfo> getPaymentInfoList() {
+        return paymentInfoList;
     }
 
     /**

@@ -380,7 +380,6 @@ public class FormFactory {
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
         LinearLayout parent;
-        Print.i(TAG, "code1form id : " + form.id + " name: " + form.name);
         if(context == null){
             return null;
         }
@@ -410,7 +409,7 @@ public class FormFactory {
 
 //      for (IFormField frmEntry : transformedFields) {
 
-        for (IFormField frmEntry : form.fields) {
+        for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             DynamicFormItem ctrl = new DynamicFormItem(userForm, context, frmEntry);
 

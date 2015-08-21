@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -28,19 +27,11 @@ public class Form implements IJSONSerializable, Parcelable {
 
 	public final static String TAG = Form.class.getSimpleName();
 
-    public String id;
-    public String name;
-    public String method;
-    public String action;
-    public String submit;
-
-    public ArrayList<FormField> fields;
-    public Map<String, Form> subForms;
-    public Map<String, Integer> fieldMapping;
-    
-    public Map<String, FormField> mFieldKeyMap;
-
-    private EventType eventType;
+    private String method;
+    private String action;
+    private ArrayList<FormField> fields;
+    private Map<String, Form> subForms;
+    private Map<String, FormField> mFieldKeyMap;
 
     @Override
     public RequiredJson getRequiredJson() {
@@ -51,41 +42,27 @@ public class Form implements IJSONSerializable, Parcelable {
      * Form empty constructor.
      */
     public Form() {
-        this.id = "";
-        this.name = "";
         this.method = "";
         this.action = "";
-        this.submit = "";
-
         this.fields = new ArrayList<>();
         this.subForms = new HashMap<>();
         this.mFieldKeyMap = new HashMap<>();
-        this.fieldMapping = null;
-
-        //this.sortForm(null);
     }
 
-    /**
-     * Form param constructor.
-     * 
-     * @param id of the form.
-     * @param name of the form.
-     * @param method of the form.
-     * @param action url of the form.
-     * @param submit url of the form.
-     * @param fields of the form
-     */
-    public Form(String id, String name, String method, String action, String submit, ArrayList<FormField> fields) {
-        this.id = id;
-        this.name = name;
-        this.method = method;
-        this.action = action;
-        this.submit = submit;
+    public Map<String, Form> getSubForms() {
+        return subForms;
+    }
 
-        this.fields = fields;
-        this.subForms = new HashMap<>();
-        this.mFieldKeyMap = new HashMap<>();
-        this.fieldMapping = null;
+    public ArrayList<FormField> getFields() {
+        return fields;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public Map<String, FormField> getFieldKeyMap(){
+        return mFieldKeyMap;
     }
 
     /*
@@ -98,14 +75,8 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.optString(RestConstants.ID);
-            name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
             method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
-            submit = jsonObject.optString(RestConstants.JSON_SUBMIT_TAG);
-
-            fields.clear();
-            subForms.clear();
 
             /*
             if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
@@ -121,11 +92,12 @@ public class Form implements IJSONSerializable, Parcelable {
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
             }
 
-            // Case OPTIONS
-            else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
-                fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-                Print.d("code1subForms: fieldsArray :  " + fieldsArray.length() + " name : " + name);
-            }
+            // TODO Validate if this is necessary v2.7
+//            // Case OPTIONS
+//            else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
+//                fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
+//                Print.d("code1subForms: fieldsArray :  " + fieldsArray.length());
+//            }
 
             // Validate array
             if(fieldsArray != null){
@@ -139,7 +111,7 @@ public class Form implements IJSONSerializable, Parcelable {
                     } else {
                         Form subForm = new Form();
                         subForm.initialize(fieldsArray.getJSONObject(i));
-                        Print.d("code1subForms : subForm :  " + subForm.name + " " + subForm.toString());
+                        Print.d("code1subForms : subForm :  " + subForm.toString());
                         subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.JSON_SCENARIO_TAG), subForm);
                     }
                 }
@@ -188,11 +160,8 @@ public class Form implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.ID, id);
-            jsonObject.put(RestConstants.JSON_FORM_TAG, name);
             jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
             jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
-            jsonObject.put(RestConstants.JSON_SUBMIT_TAG, submit);
 
             JSONArray fieldArray = new JSONArray();
             for (FormField field : fields) {
@@ -205,15 +174,6 @@ public class Form implements IJSONSerializable, Parcelable {
             Print.d("trying to create json objects failed" + e);
         }
         return jsonObject;
-    }
-
-    
-    public Map<String, FormField> getFieldKeyMap(){
-        return mFieldKeyMap;
-    }
-
-    public EventType getEventType() {
-        return eventType;
     }
 
 //    public void sortForm(EventType eventType) {
@@ -243,29 +203,19 @@ public class Form implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
         dest.writeString(method);
         dest.writeString(action);
-        dest.writeString(submit);
         dest.writeList(fields);
-        dest.writeMap(fieldMapping);
-        dest.writeSerializable(eventType);
     }
     
     /**
      * Parcel constructor
      */
     private Form(Parcel in) {
-        id = in.readString();
-        name = in.readString();
         method = in.readString();
         action = in.readString();
-        submit = in.readString();
         fields = new ArrayList<>();
         in.readArrayList(FormField.class.getClassLoader());
-        in.readMap(fieldMapping, null);
-        eventType = (EventType) in.readSerializable();
     }
 
     /**

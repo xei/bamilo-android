@@ -268,14 +268,11 @@ public class DynamicFormItem {
                     buildText(params, controlWidth);
                     break;
                 case relatedNumber:
-
-                    LinearLayout n = new LinearLayout(this.context);
-                    n.setOrientation(LinearLayout.VERTICAL);
-                    this.control = n;
-
+                    LinearLayout container = new LinearLayout(this.context);
+                    container.setOrientation(LinearLayout.VERTICAL);
+                    this.control = container;
                     buildText(params, controlWidth);
-                    createRadioGroup2(n, entry.getRelatedField());
-
+                    buildRelatedRadioGroup(container, entry.getRelatedField());
                     break;
                 case hide:
                     buildHide(params, controlWidth);
@@ -294,7 +291,7 @@ public class DynamicFormItem {
     /**
      * Create an horizontal radio group
      */
-    private void createRadioGroup2(ViewGroup container, final IFormField entry) {
+    private void buildRelatedRadioGroup(ViewGroup container, final IFormField entry) {
         // Create radio group
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
         // Set check listener
@@ -304,7 +301,6 @@ public class DynamicFormItem {
                 IFormField parent = entry.getParentField();
                 FieldValidation validation = entry.getOptions().get(checkedId).getValidation();
                 if(parent != null && validation != null) {
-                    // TODO : Option with is required
                     validation.isRequired = parent.getValidation().isRequired;
                     parent.setValidation(validation);
                     Print.i(TAG, "RELATED FIELD APPLY VALIDATION: " + validation.regex);
@@ -317,9 +313,6 @@ public class DynamicFormItem {
         container.addView(radioGroup);
 
     }
-
-
-
 
     /**
      * Stores the value inputed by the user on the control and acts accordingly
@@ -1112,7 +1105,7 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
+        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().getFields().get(0).getPaymentMethodsField() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
         } else {
@@ -1258,8 +1251,9 @@ public class DynamicFormItem {
 
     private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
-
+        // Create text
         ViewGroup dataContainer = createTextDataContainer(controlWidth);
+
         int dataControlId = dataContainer.getId();
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
@@ -1565,11 +1559,11 @@ public class DynamicFormItem {
                     foundDefaultSelect = true;
                 }
             }
-            if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
-                HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
+            if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
                     Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
-                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).fields.size() > 0 || paymentMethodsField.get(key).subForms.size() > 0)) {
+                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubForms().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
                 }

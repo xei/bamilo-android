@@ -380,7 +380,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
         // Create content values from form
         ContentValues contentValues = new ContentValues();
-        for (FormField field : hiddenForm.fields) {
+        for (FormField field : hiddenForm.getFields()) {
             if (field.getKey().contains(BILLING_ID_TAG)) contentValues.put(field.getName(), billingAddressId);
             else if (field.getKey().contains(SHIPPING_ID_TAG)) contentValues.put(field.getName(), shippingAddressId);
             else if (field.getKey().contains(IS_SAME_TAG)) contentValues.put(field.getName(), isDifferent);
