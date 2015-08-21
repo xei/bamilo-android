@@ -120,11 +120,13 @@ public class Form implements IJSONSerializable, Parcelable {
             if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)){
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
             }
+
             // Case OPTIONS
             else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
                 Print.d("code1subForms: fieldsArray :  " + fieldsArray.length() + " name : " + name);
             }
+
             // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {

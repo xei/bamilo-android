@@ -279,7 +279,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         ContentValues model = new ContentValues();
         for (DynamicFormItem control : this) {
             // Case metadata
-            if (control != null && control.getType() == InputType.metadate) {
+            if (control != null && control.getType() == InputType.metadata) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName(), control.getValue());
             }

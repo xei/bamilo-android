@@ -23,12 +23,6 @@ public interface IFormField {
 
     Map<String, String> getDataSet();
 
-    ArrayList<RelatedFieldOption> getRelatedFieldOptions();
-
-    int getPreSelectedRelatedOptionPosition();
-
-    String getRelatedFieldKey();
-
     void setOnDataSetReceived(OnDataSetReceived listener);
 
     FieldValidation getValidation();
@@ -46,5 +40,14 @@ public interface IFormField {
     String getScenario();
 
     Map<String, String> getDateSetRating();
+
+    IFormField getRelatedField();
+
+    IFormField getParentField();
+
+    void setParentField(IFormField formField);
+
+    ArrayList<IFormField> getOptions();
+
 
 }
