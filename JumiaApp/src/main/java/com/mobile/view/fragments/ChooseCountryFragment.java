@@ -21,7 +21,6 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
-import com.mobile.newFramework.database.FavouriteTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -323,6 +322,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
             editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, JumiaApplication.INSTANCE.countriesAvailable.get(position).getUserAgentToAccessDevServers());
             editor.apply();
 
             // Clean memory
@@ -330,7 +330,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Is changing country
             if (isChangeCountry) {
                 LastViewedTableHelper.deleteAllLastViewed();
-                FavouriteTableHelper.deleteAllFavourite();
                 BrandsTableHelper.clearBrands();
                 TrackerDelegator.trackShopChanged();
             }

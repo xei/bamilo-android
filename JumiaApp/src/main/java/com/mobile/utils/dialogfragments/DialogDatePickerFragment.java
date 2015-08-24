@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.utils.output.Print;
@@ -35,7 +36,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private Activity mActivity;
     private OnDatePickerDialogListener mListener;
     //private Dialog mDialog;
-    //private static DatePicker mDatePicker;
+    private static DatePicker mDatePicker;  //mobapi 1.8 change
     private int mDay;
     private int mMonth;
     private int mYear;
@@ -45,7 +46,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
-        public void onDatePickerDialogSelect(int year, int month, int day);
+        void onDatePickerDialogSelect(int year, int month, int day);
 
     }
 
@@ -127,26 +128,26 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         TextView titleView = (TextView) view.findViewById(R.id.datepicker_title);
         titleView.setText(this.mTitle);
 
-//        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
-//        if (this.mYear != 0){
-//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-//            Calendar mCal =Calendar.getInstance();
-//
-//            int currentYear = mCal.get(Calendar.YEAR) - 1;
-//            int currentMonth = mCal.get(Calendar.MONTH);
-//            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
-//
-//            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
-//        } else {
-//            Calendar cal=Calendar.getInstance();
-//
-//            this.mYear = cal.get(Calendar.YEAR) - 1;
-//            this.mMonth = cal.get(Calendar.MONTH);
-//            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
-//
-//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-//            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
-//        }
+        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);    //mobapi 1.8 change: date fields with picker
+        if (this.mYear != 0){
+            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            Calendar mCal =Calendar.getInstance();
+
+            int currentYear = mCal.get(Calendar.YEAR) - 1;
+            int currentMonth = mCal.get(Calendar.MONTH);
+            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+        } else {
+            Calendar cal=Calendar.getInstance();
+
+            this.mYear = cal.get(Calendar.YEAR) - 1;
+            this.mMonth = cal.get(Calendar.MONTH);
+            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
+        }
 
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
@@ -173,9 +174,9 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
             this.dismiss();
         } else if (id == R.id.button2) {
             isSetOnce = true;
-//            mDay = mDatePicker.getDayOfMonth();
-//            mMonth = mDatePicker.getMonth();
-//            mYear = mDatePicker.getYear();
+            mDay = mDatePicker.getDayOfMonth(); //mobapi 1.8 change uncomment
+            mMonth = mDatePicker.getMonth();
+            mYear = mDatePicker.getYear();
             if (mListener != null) {
                 mListener.onDatePickerDialogSelect(mYear, mMonth, mDay);
             }

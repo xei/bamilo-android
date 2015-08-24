@@ -53,15 +53,15 @@ public class MetaFormExtractor {
 		    Print.i(TAG, "code1checked  field.getKey() : " + field.getKey());
 			if ( field.getKey().equals( newMetaField.getKey()))
 				transformedFields.add( newMetaField );
-			else if ( subFieldKeys.contains( field.getKey()))
+			else if ( subFieldKeys != null && subFieldKeys.contains( field.getKey()))
 				newSubFields.put( field.getKey(), field );
 			else
 				transformedFields.add( field );
 		}
 		
-		if ( !newSubFields.isEmpty()) {
+		if (subFieldKeys != null &&  !newSubFields.isEmpty()) {
 			newMetaField.setSubFormFields(newSubFields );
-		} else {
+		} else if (!newMetaField.getKey().equals("birthday")) {	//changed mobapi 1.8: birthday can't be removed
 			transformedFields.remove( newMetaField );
 		}
 			
@@ -84,7 +84,11 @@ public class MetaFormExtractor {
 		for( IFormField field: formFields ) {
 			Print.d(TAG, "dumpIFormField: key = " + field.getKey());
 			if ( field instanceof FormFieldMeta ){
-				Print.d(TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta) field).subFieldKeyString());
+				try {
+					Print.d(TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta) field).subFieldKeyString());
+				}catch(NullPointerException e){
+					Print.d(TAG, "dumpIFormField: isMetaField = true and subKeys = null " + field.getKey());
+				}
 			}
 		}
 		
@@ -95,9 +99,9 @@ public class MetaFormExtractor {
 		metaFieldInputType = new HashMap<>();
 		
 		Set<String> metaFieldBirthday = new HashSet<>();
-		metaFieldBirthday.add( "day" );
+/*		metaFieldBirthday.add( "day" );			//mobapi 1.8: birthday structure changes
 		metaFieldBirthday.add( "month" );
-		metaFieldBirthday.add( "year" );
+		metaFieldBirthday.add( "year" );*/
 		metaFieldMapping.put( "birthday", metaFieldBirthday );
 		metaFieldInputType.put( "birthday", InputType.metadate );
 	}

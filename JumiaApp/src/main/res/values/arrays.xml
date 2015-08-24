@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-
     <string-array name="myaccount_array">
         <item>@string/myaccount_userdata</item>
         <item>@string/my_addresses</item>
@@ -49,6 +47,12 @@
         <item quantity="zero">@string/plurals_article</item>
         <item quantity="one">@string/plurals_article</item>
         <item quantity="other">@string/plurals_articles</item>
+    </plurals>
+
+    <!-- REVIEW -->
+    <plurals name="reviews_array">
+        <item quantity="one">@string/review_plural</item>
+        <item quantity="other">@string/reviews_plural</item>
     </plurals>
 
 </resources>

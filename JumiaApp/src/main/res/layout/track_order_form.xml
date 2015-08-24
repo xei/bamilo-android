@@ -23,7 +23,8 @@
         android:drawableEnd="@drawable/ic_star_formular"
         android:drawableRight="@drawable/ic_star_formular"
         android:hint="@string/track_order_hint"
-        android:inputType="textAutoComplete" />
+        android:inputType="textAutoComplete"
+        android:textDirection="locale" />
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/btn_track_order"

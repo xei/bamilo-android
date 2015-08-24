@@ -16,11 +16,7 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetChangePasswordFormHelper extends SuperBaseHelper{
 
-    public static final String PASSWORD_ID = "password";
-
-    public static final String PASSWORD2_ID = "password2";
-
-    private static String TAG = GetCustomerHelper.class.getSimpleName();
+    public static String TAG = GetCustomerHelper.class.getSimpleName();
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
@@ -29,7 +25,7 @@ public class GetChangePasswordFormHelper extends SuperBaseHelper{
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT;
+        return EventType.GET_CHANGE_PASSWORD_FORM_EVENT;
     }
 
     @Override

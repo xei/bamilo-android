@@ -454,7 +454,8 @@ public class DynamicFormItem {
                 Date d = new Date(cal.getTimeInMillis());
                 String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
                 ((Button) this.dataControl).setText(dateFormated);
-                this.mandatoryControl.setVisibility(View.GONE);
+                if( this.mandatoryControl != null)  //mobapi 1.8 change: see buildDate
+                    this.mandatoryControl.setVisibility(View.GONE);
                 break;
             case email:
             case text:
@@ -1029,9 +1030,7 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
         this.control.setLayoutParams(params);
         //#RTL
         if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -1085,7 +1084,8 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-        if (this.entry.getValue().equals("1")) {
+        // Set default value
+        if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
@@ -1168,7 +1168,9 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
+
+        //mobapi 1.8 change: entry.getValidation().isRequired() throws exception because date is a metafield without subfields, birthday is not mandatory
+  /*      params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1199,7 +1201,38 @@ public class DynamicFormItem {
         if (this.entry.getKey().equals("birthday"))
             dialogTitle = context.getString(R.string.register_dialog_birthday);
         else
-            dialogTitle = this.entry.getLabel();
+            dialogTitle = this.entry.getLabel();*/
+
+        //changed mobapi 1.8:
+        dataContainer.addView(this.dataControl);
+        String entryLabel=this.entry.getLabel(), dialogTitle= entryLabel, entryKey = this.entry.getKey();
+
+        if (entryKey.equals("birthday")) {
+            Print.i("ENTERED BIRTHDAY", " HERE ");
+            String text = context.getString(R.string.register_birthday);
+            ((Button) this.dataControl).setHint(text);
+            ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+            this.dataControl.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
+            dialogTitle = context.getString(R.string.register_dialog_birthday);
+
+        }else if(null != entryLabel && entryLabel.length() > 0){    //other date fields
+
+            ((Button) this.dataControl).setText(entryLabel);
+            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+            //add mandatory control
+            params.rightMargin = MANDATORYSIGNALMARGIN;
+            this.mandatoryControl = new TextView(this.context);
+            this.mandatoryControl.setLayoutParams(params);
+            this.mandatoryControl.setText("*");
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+            this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+            this.mandatoryControl.setVisibility(View.VISIBLE);
+            dataContainer.addView(this.mandatoryControl);
+        }
+
+
+
 
         OnDatePickerDialogListener pickerListener = new OnDatePickerDialogListener() {
 
@@ -1211,7 +1244,8 @@ public class DynamicFormItem {
                 String date = DateFormat.getDateInstance(DateFormat.LONG).format(d);
                 ((Button) DynamicFormItem.this.dataControl).setText(date);
                 Print.i(TAG, "code1date : date : " + date);
-                DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+                if(mandatoryControl != null)    //change
+                    DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         };
 
@@ -1843,6 +1877,11 @@ public class DynamicFormItem {
         }
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
             textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
+        }
+
+        // Set default value
+        if (!TextUtils.isEmpty(this.entry.getValue())) {
+            textDataControl.setText(this.entry.getValue());
         }
 
         //#RTL

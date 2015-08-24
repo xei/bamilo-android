@@ -48,7 +48,7 @@ done
 #########################
 ##### DEF CONSTANTS #####
 #########################
-STOREPASS="jumiablackberry"
+STOREPASS="jumia2015"
 STUDIO_MOBILE_PACKAGE="JumiaApp"
 STORE_CRT_FOLDER=~/.rim/
 
@@ -67,7 +67,7 @@ STUDIO_OUT_BAR="$STUDIO_MOBILE_PACKAGE/build/outputs/bar"
 ########################
 echo -n "1 - Validate Blackberry environment: "
 # GRADLE FLAVOUR
-[ ! -d $STUDIO_BB_FLAVOUR ] && { echo "Blackberry flavor not found: $STUDIO_BB_FLAVOUR"; exit 1; }
+[ ! -d $STUDIO_BB_FLAVOUR ] && { echo "Blackberry flavour not found: $STUDIO_BB_FLAVOUR"; exit 1; }
 # CERTIFICATE
 [ ! -d $STUDIO_BB_FLAVOUR_CERT_FOLDER ] && { echo "Directory not found: $STUDIO_BB_FLAVOUR"; exit 1; }
 # CONFIGURATION
@@ -79,9 +79,9 @@ echo "SUCCESS"
 ############################
 ##### FIND RELEASE APK #####
 ############################
-APK_FILE="$(ls $STUDIO_OUT_APK/*$BUILD_TYPE.apk)";
+APK_FILE="$(ls $STUDIO_OUT_APK/*$BUILD_TYPE.apk | grep -i $FLAVOR_NAME_FOLDER)";
 echo -n "2 - Find '$APK_FILE': "
-if [ -f $APK_FILE ]
+if [ ! -z $APK_FILE ] && [ -f $APK_FILE ];
 then
     echo "SUCCESS";
     BAR_FILE="$STUDIO_OUT_BAR/$(ls $APK_FILE | xargs -n 1 basename | sed -e s/.apk/.bar/g)";

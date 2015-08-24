@@ -1,14 +1,12 @@
 package com.mobile.test;
 
 
-
-
-import com.ad4screen.sdk.common.a;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class AigGetCountryConfigurationsTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/main/getconfigurations";
+        return AigMobApiNigeriaTestSuite.HOST+"/main/getconfigurations";
     }
 
     @Override

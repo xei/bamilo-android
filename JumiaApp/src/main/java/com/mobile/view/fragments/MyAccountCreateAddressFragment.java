@@ -105,7 +105,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     protected void onCreateAddressSuccessEvent(Bundle bundle) {
         super.onCreateAddressSuccessEvent(bundle);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
-                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
+                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString()+"":""); //replaced getID because doesn't come from api
 
         if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
             oneAddressCreated = true;

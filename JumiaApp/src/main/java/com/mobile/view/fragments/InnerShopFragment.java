@@ -18,11 +18,13 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -30,6 +32,7 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -62,7 +65,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private static final String TARGET_TYPE_CAMPAIGN = "campaign";
 
-    private static final int WEB_VIEW_LOAD_DELAY = 300;
+    private static final int WEB_VIEW_LOAD_DELAY = 400;
 
     private String mTitle;
 
@@ -133,7 +136,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Get web view
         mWebView = (WebView) view.findViewById(R.id.shop_web_view);
         // Set the client
-        mWebView.setWebViewClient(InnerShopWebClient);
+        mWebView.setWebViewClient(mInnerShopWebClient);
         // Enable java script
         mWebView.getSettings().setJavaScriptEnabled(true);
         // Validate the data (load/request/continue)
@@ -344,7 +347,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
      * link is catalog::http://... - Case campaign: the link is campaign::http://...
      */
-    private WebViewClient InnerShopWebClient = new WebViewClient() {
+    private WebViewClient mInnerShopWebClient = new WebViewClient() {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -415,10 +418,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void gotoProduct(String url) {
         Print.i(TAG, "PDV: " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        // Validate sku TODO: SHOULD RECEIVE SKU
+        String sku = RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG);
+        if (TextUtils.isNotEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+        }
     }
 
     /**
@@ -432,6 +441,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

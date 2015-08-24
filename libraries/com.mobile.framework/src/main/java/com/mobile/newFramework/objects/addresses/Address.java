@@ -40,18 +40,11 @@ public class Address implements IJSONSerializable, Parcelable {
     private String postcode;
     private String phone;
     private String additionalPhone;
-    private int fkCustomer;
-    private int fkCountry;
-    private int fkCustomerAddressRegion;
-    private int fkCustomerAddressCity;
-    private boolean isDefaultBilling;
-    private boolean isDefaultShipping;
-    private boolean hidden;
-    private String createdAt;
-    private String updatedAt;
-    private int createdBy;
-    private int updatedBy;
     private String region;
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
     /**
      * Constructor
@@ -67,30 +60,22 @@ public class Address implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject dataObject) {
         Print.d(TAG, "INITIALIZE");
-        id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG);
-        if (dataObject.has(RestConstants.JSON_ADDRESS_ID_TAG_2))
-            id = dataObject.optInt(RestConstants.JSON_ADDRESS_ID_TAG_2);
+        try {
+            id = dataObject.getInt(RestConstants.ID);
+            firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
+            lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
+            address1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
+            address2 = dataObject.getString(RestConstants.JSON_ADDRESS2_TAG);
+            city = dataObject.getString(RestConstants.CITY);
+            postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
+            phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
+            region = dataObject.optString(RestConstants.REGION);
+            additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
+        }catch(Exception e){
+            Print.e("PARSING ERROR","Error in parsing data: "+e.getMessage());
+            return false;
+        }
 
-        firstName = dataObject.optString(RestConstants.JSON_FIRST_NAME_TAG);
-        lastName = dataObject.optString(RestConstants.JSON_LAST_NAME_TAG);
-        address1 = dataObject.optString(RestConstants.JSON_ADDRESS1_TAG);
-        address2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
-        city = dataObject.optString(RestConstants.JSON_CITY_TAG);
-        postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
-        phone = dataObject.optString(RestConstants.JSON_PHONE_TAG);
-        additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
-        fkCustomer = dataObject.optInt(RestConstants.JSON_CUSTOMER_ID_TAG);
-        fkCountry = dataObject.optInt(RestConstants.JSON_COUNTRY_ID_TAG);
-        fkCustomerAddressRegion = dataObject.optInt(RestConstants.JSON_REGION_ID_TAG);
-        fkCustomerAddressCity = dataObject.optInt(RestConstants.JSON_CITY_ID_TAG);
-        isDefaultBilling = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_BILLING_TAG));
-        isDefaultShipping = "1".equals(dataObject.optString(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG));
-        hidden = dataObject.optBoolean(RestConstants.JSON_HIDDEN_TAG);
-        createdAt = dataObject.optString(RestConstants.JSON_CREATED_AT_TAG);
-        updatedAt = dataObject.optString(RestConstants.JSON_UPDATED_AT_TAG);
-        createdBy = dataObject.optInt(RestConstants.JSON_CREATED_BY_TAG);
-        updatedBy = dataObject.optInt(RestConstants.JSON_UPDATED_BY_TAG);
-        region = dataObject.optString(RestConstants.JSON_REGION_NAME_TAG);
         return true;
     }
 
@@ -137,13 +122,6 @@ public class Address implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the address 2
-     */
-    public String getAddress2() {
-        return address2;
-    }
-
-    /**
      * @return the city
      */
     public String getCity() {
@@ -164,43 +142,11 @@ public class Address implements IJSONSerializable, Parcelable {
         return phone;
     }
 
-    public String getAdditionalPhone() {
-        return additionalPhone;
-    }
-
-    /**
-     * @return the fkCustomerAddressRegion
-     */
-    public int getFkCustomerAddressRegion() {
-        return fkCustomerAddressRegion;
-    }
-
-    /**
-     * @return the fkCustomerAddressCity
-     */
-    public int getFkCustomerAddressCity() {
-        return fkCustomerAddressCity;
-    }
-
     /**
      * @return the region
      */
     public String getRegion() {
         return region;
-    }
-
-    /**
-     * @return the isDefaultBilling
-     */
-    public boolean isDefaultBilling() {
-        return isDefaultBilling;
-    }
-
-    /**
-     * @return the isDefaultShipping
-     */
-    public boolean isDefaultShipping() {
-        return isDefaultShipping;
     }
 
     /**
@@ -211,31 +157,10 @@ public class Address implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
      * @param address the address to set
      */
     public void setAddress(String address) {
         this.address1 = address;
-    }
-
-    /**
-     * @param address the address 2 to set
-     */
-    public void setAddress2(String address) {
-        this.address2 = address;
     }
 
     /**
@@ -250,20 +175,6 @@ public class Address implements IJSONSerializable, Parcelable {
      */
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    /**
-     * @param fkCustomerAddressRegion the fkCustomerAddressRegion to set
-     */
-    public void setFkCustomerAddressRegion(int fkCustomerAddressRegion) {
-        this.fkCustomerAddressRegion = fkCustomerAddressRegion;
-    }
-
-    /**
-     * @param fkCustomerAddressCity the fkCustomerAddressCity to set
-     */
-    public void setFkCustomerAddressCity(int fkCustomerAddressCity) {
-        this.fkCustomerAddressCity = fkCustomerAddressCity;
     }
 
     /**
@@ -294,15 +205,6 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(postcode);
         dest.writeString(phone);
         dest.writeString(additionalPhone);
-        dest.writeInt(fkCustomer);
-        dest.writeInt(fkCountry);
-        dest.writeInt(fkCustomerAddressRegion);
-        dest.writeInt(fkCustomerAddressCity);
-        dest.writeBooleanArray(new boolean[]{isDefaultBilling, isDefaultShipping, hidden});
-        dest.writeString(createdAt);
-        dest.writeString(updatedAt);
-        dest.writeInt(createdBy);
-        dest.writeInt(updatedBy);
         dest.writeString(region);
     }
 
@@ -320,15 +222,6 @@ public class Address implements IJSONSerializable, Parcelable {
         postcode = in.readString();
         phone = in.readString();
         additionalPhone = in.readString();
-        fkCustomer = in.readInt();
-        fkCountry = in.readInt();
-        fkCustomerAddressRegion = in.readInt();
-        fkCustomerAddressCity = in.readInt();
-        in.readBooleanArray(new boolean[]{isDefaultBilling, isDefaultShipping, hidden});
-        createdAt = in.readString();
-        updatedAt = in.readString();
-        createdBy = in.readInt();
-        updatedBy = in.readInt();
         region = in.readString();
     }
 

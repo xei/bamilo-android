@@ -28,7 +28,7 @@ import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.helpers.session.GetSignUpFormHelper;
-import com.mobile.helpers.session.SetSignupHelper;
+import com.mobile.helpers.session.SetSignUpHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
@@ -152,12 +152,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON CREATE");
         // Retain the fragment
         setRetainInstance(true);
-
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
-
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
     }
 
     /*
@@ -626,7 +621,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEvent(new SetSignupHelper(), bundle, this);
+        triggerContentEvent(new SetSignUpHelper(), bundle, this);
     }
 
     /**
@@ -706,7 +701,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         // Get next step
         if (mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
             Print.w(TAG, "NEXT STEP IS NULL");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
+            super.showFragmentErrorRetry();
         } else {
             Print.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Clean stack for new native checkout on the back stack (auto login)

@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.SuperSetBillingAddress;
+import com.mobile.newFramework.objects.checkout.SetBillingAddress;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -49,7 +49,7 @@ public class SetBillingAddressHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
 
         //TODO move to observable
-        SuperSetBillingAddress billing = (SuperSetBillingAddress) baseResponse.getMetadata().getData();
+        SetBillingAddress billing = (SetBillingAddress) baseResponse.getMetadata().getData();
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, billing.getOrderSummary());
         Print.i(TAG, "ORDER SUMMARY: " + billing.getOrderSummary().toString());
         // Get and set next step

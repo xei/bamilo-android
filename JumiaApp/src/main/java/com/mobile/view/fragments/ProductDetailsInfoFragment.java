@@ -15,7 +15,7 @@ import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
@@ -40,10 +40,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private RtlViewPager mProductInfoPager;
 
-    private ProductInfoPagerAdapter mProductInfoPagerAdapter;
-
-    private SlidingTabLayout mProductInfoTabStrip;
-
     public static int mPositionToStart = 0;
 
     private int mTabsCount = 2;
@@ -52,8 +48,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static ProductDetailsInfoFragment getInstance(Bundle bundle) {
         ProductDetailsInfoFragment fragment = new ProductDetailsInfoFragment();
@@ -113,7 +107,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         // Get view pager
         mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
-        mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
+        SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
         int layout = R.layout.tab_simple_half_item;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
@@ -122,7 +116,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
-        mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
+        ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
         if (mProductInfoPagerAdapter != null && mProductInfoPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);
@@ -211,8 +205,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         if(arguments != null){
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                CompleteProduct completeProduct = (CompleteProduct) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                ProductComplete completeProduct = (ProductComplete) parcelableProduct;
 
                 if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
 //                    hasSpecification = false;
