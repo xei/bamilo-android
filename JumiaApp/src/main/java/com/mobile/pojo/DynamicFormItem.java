@@ -262,17 +262,22 @@ public class DynamicFormItem {
                     buildDate(params, controlWidth);
                     break;
                 case number:
+
+                    // TODO: VALIDATE IF THIS IS NECESSARY
+//                    boolean datePart = isDatePart();
+//                    controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : context.getResources().getDimensionPixelSize(R.dimen.form_date_width);
+//                    params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//                    if (datePart) {
+//                        params.setMargins(0, 0, (int) (10 * scale), 0);
+//                    }
+
                 case email:
                 case text:
                 case password:
                     buildText(params, controlWidth);
                     break;
                 case relatedNumber:
-                    LinearLayout container = new LinearLayout(this.context);
-                    container.setOrientation(LinearLayout.VERTICAL);
-                    this.control = container;
-                    buildText(params, controlWidth);
-                    buildRelatedRadioGroup(container, entry.getRelatedField());
+                    buildRelatedNumber(params, controlWidth);
                     break;
                 case hide:
                     buildHide(params, controlWidth);
@@ -285,6 +290,20 @@ public class DynamicFormItem {
                     break;
             }
         }
+    }
+
+    /**
+     * Create a related number composed by a text and radio group.
+     */
+    private void buildRelatedNumber(RelativeLayout.LayoutParams params, int controlWidth) {
+        // Create container
+        LinearLayout container = new LinearLayout(this.context);
+        container.setOrientation(LinearLayout.VERTICAL);
+        this.control = container;
+        // Create text field
+        buildText(params, controlWidth);
+        // Create radio group
+        buildRelatedRadioGroup(container, entry.getRelatedField());
     }
 
 
@@ -373,6 +392,19 @@ public class DynamicFormItem {
             case number:
                 String text = null == value ? "" : (String) value;
                 ((EditText) this.dataControl).setText(text);
+
+                // TODO: VALIDATE IF THIS IS NECESSARY
+//                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
+//                try {
+//                    //#RTL
+//                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+//                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
                 this.errorControl.setVisibility(View.GONE);
                 this.dataControl.setContentDescription(this.entry.getId());
                 if (text.length() == 0) {

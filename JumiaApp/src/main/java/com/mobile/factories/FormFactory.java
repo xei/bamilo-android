@@ -404,6 +404,7 @@ public class FormFactory {
         groupLayout.setOrientation(LinearLayout.HORIZONTAL);
         groupLayout.setLayoutParams(params);
 
+        // TODO: VALIDATE IF THIS IS NECESSARY : MetaFormExtractor
 //        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
 //        MetaFormExtractor.dumpIFormField(transformedFields);
 
