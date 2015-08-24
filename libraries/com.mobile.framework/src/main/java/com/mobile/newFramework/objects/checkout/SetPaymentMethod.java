@@ -15,13 +15,15 @@ import org.json.JSONObject;
  * Class that represents the response from the get products rating
  *
  * @author nutzer2
+ * @modified sergiopereira
+ *
  */
 public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
 
     private OrderSummary orderSummary;
 
     public SetPaymentMethod() {
-        // ...
+        super();
     }
 
     /*
@@ -33,10 +35,15 @@ public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get and set next step
+        // Next checkout step
         super.initialize(jsonObject);
+        // Order
         orderSummary = new OrderSummary(jsonObject);
         return true;
+    }
+
+    public OrderSummary getOrderSummary() {
+        return orderSummary;
     }
 
     @Override
@@ -64,8 +71,6 @@ public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
     };
 
 
-    public OrderSummary getOrderSummary() {
-        return orderSummary;
-    }
+
 
 }

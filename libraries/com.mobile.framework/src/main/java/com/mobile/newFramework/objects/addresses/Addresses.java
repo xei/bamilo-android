@@ -8,12 +8,12 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Class used to save the customer addresses
@@ -43,7 +43,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Constructor
-	 * @param jsonObject
 	 * @throws JSONException 
 	 */
 	public Addresses(JSONObject jsonObject) throws JSONException{
@@ -59,7 +58,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		Print.d("INITIALIZE");
 
 		// Get shipping address and save it
-		JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.JSON_SHIPPING_TAG);
+		JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING);
 		if(jsonShip != null) {
             shippingAddress = new Address(jsonShip);
         } else {
@@ -67,21 +66,20 @@ public class Addresses implements IJSONSerializable, Parcelable {
         }
 		//addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
 		// Get billing address and save it
-		JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.JSON_BILLING_TAG);
+		JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.BILLING);
 		if(jsonBil != null) {
             billingAddress = new Address(jsonBil);
         } else {
             throw new JSONException("");
         }
-		//addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
 		// Get other addresses
-		JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);
-		if(jsonOther != null && jsonOther.length() > 0) {
-	        Iterator<?> jsonIterator = jsonOther.keys();
-	        while (jsonIterator.hasNext()) {
-	            String key = (String) jsonIterator.next();
-	            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
-	        }
+		JSONArray jsonOthersArray  = jsonObject.optJSONArray(RestConstants.JSON_OTHER_TAG);
+		if (jsonOthersArray != null && jsonOthersArray.length() > 0) {
+			JSONObject jsonOtherAddress;
+			for (int i = 0; i < jsonOthersArray.length(); i++) {
+				jsonOtherAddress = jsonOthersArray.optJSONObject(i);
+				addresses.put(jsonOtherAddress.optString("id"), new Address(jsonOtherAddress));	//uses address id as key
+			}
 		}
         return true;
 	}
@@ -145,14 +143,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	}
 	
 	/**
-	 * Validate has other address
-	 * @return true/false
-	 */
-	public boolean hasOtherAddresses(){
-		return addresses != null && addresses.size() > 0;
-	}
-	
-	/**
 	 * Validate if the shipping and billing addresses are the same
 	 * @return true/false
 	 */
@@ -163,7 +153,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	
 	/**
 	 * Method used to switch the defaults address for the current
-	 * @param position
 	 */
 	public void switchShippingAddress(int position){
 		try {
@@ -183,7 +172,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 			}
 			// Remove from others
 			addresses.remove( "" + selectedAddress.getId());
-			array = null;
 		} catch (IndexOutOfBoundsException e) {
 			Print.d("Exception on switch shipping address" + e);
 		}
@@ -217,7 +205,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	private Addresses(Parcel in) {
 		shippingAddress = in.readParcelable(Address.class.getClassLoader());

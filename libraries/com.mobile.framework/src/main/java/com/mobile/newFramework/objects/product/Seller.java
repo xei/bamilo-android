@@ -23,10 +23,6 @@ public class Seller implements IJSONSerializable, Parcelable {
 
     private String mSellerId;
 
-    private int mMinDeliveryTime;
-
-    private int mMaxDeliveryTime;
-
     private int mRatingCount;
 
     private int mRatingValue;
@@ -39,8 +35,6 @@ public class Seller implements IJSONSerializable, Parcelable {
 //        Log.i(TAG, "EMPTY constructor");
         mName = "";
         mUrl = "";
-        mMinDeliveryTime = 1;
-        mMaxDeliveryTime = 1;
         mRatingCount = 0;
         mRatingValue = 0;
         setSellerId("");
@@ -95,7 +89,7 @@ public class Seller implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
-        mSellerId = jsonObject.optString(RestConstants.JSON_ID_TAG);
+        mSellerId = jsonObject.optString(RestConstants.ID);
         JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
         if(reviewObject != null){
             mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
@@ -141,8 +135,6 @@ public class Seller implements IJSONSerializable, Parcelable {
         dest.writeString(mName);
         dest.writeString(mUrl);
         dest.writeString(mSellerId);
-        dest.writeInt(mMinDeliveryTime);
-        dest.writeInt(mMaxDeliveryTime);
         dest.writeInt(mRatingCount);
         dest.writeInt(mRatingValue);
     }
@@ -154,8 +146,6 @@ public class Seller implements IJSONSerializable, Parcelable {
         mName = in.readString();
         mUrl = in.readString();
         mSellerId = in.readString();
-        mMinDeliveryTime = in.readInt();
-        mMaxDeliveryTime = in.readInt();
         mRatingCount = in.readInt();
         mRatingValue = in.readInt();
 

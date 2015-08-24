@@ -61,9 +61,9 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
         boolean result = false;
         try {
             // Get label
-            mLabel = jsonObject.getString(RestConstants.JSON_LABEL_TAG);
+            mLabel = jsonObject.getString(RestConstants.LABEL);
             // Get value
-            mValue = jsonObject.getString(RestConstants.JSON_VALUE_TAG);
+            mValue = jsonObject.getString(RestConstants.VALUE);
             // Get default
             isDefault = jsonObject.optBoolean(RestConstants.JSON_CHECKED_TAG);
             // Get rules

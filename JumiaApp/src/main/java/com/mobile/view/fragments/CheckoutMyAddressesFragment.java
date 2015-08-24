@@ -84,13 +84,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        setRetainInstance(true);
-        // Get arguments
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ADDRESSES);
         // Tracking checkout step
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
     }
     
     /*
@@ -373,7 +368,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Validate selected address
         if(selectedAddress != null){
             Bundle bundle = new Bundle();
-            bundle.putParcelable(EditAddressFragment.SELECTED_ADDRESS, selectedAddress);
+            bundle.putInt(EditAddressFragment.SELECTED_ADDRESS, selectedAddress.getId());
             getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");

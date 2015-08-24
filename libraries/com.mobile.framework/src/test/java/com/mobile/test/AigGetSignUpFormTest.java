@@ -30,7 +30,6 @@ public class AigGetSignUpFormTest extends AigTestCase {
     @Override
     public Map<String, String> getData() {
         HashMap<String, String> data = null;
-
         return data;
     }
 
