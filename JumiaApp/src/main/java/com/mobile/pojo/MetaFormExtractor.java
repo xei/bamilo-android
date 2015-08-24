@@ -87,7 +87,7 @@ public class MetaFormExtractor {
 				try {
 					Print.d(TAG, "dumpIFormField: isMetaField = true subKeys = " + ((FormFieldMeta) field).subFieldKeyString());
 				}catch(NullPointerException e){
-					Print.d(TAG, "dumpIFormField: isMetaField = true and subKeys = null " + ((FormFieldMeta) field).getKey());
+					Print.d(TAG, "dumpIFormField: isMetaField = true and subKeys = null " + field.getKey());
 				}
 			}
 		}
