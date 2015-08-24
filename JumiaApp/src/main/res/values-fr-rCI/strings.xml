@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Fall back -->
-    <string name="call_to_order_number">20006161</string>
     <string name="fallback_best">Première boutique de vente en ligne en Côte d\'Ivoire</string>
-
 </resources>

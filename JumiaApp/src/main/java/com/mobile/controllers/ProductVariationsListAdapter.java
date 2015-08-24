@@ -107,10 +107,10 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
         int position = (Integer) view.getTag();
         // Set the selected position and update
         setSelectedPosition(position);
-        // Get the variation URL
-        String url = mDataSet.get(position).getLink();
+        // Get the variation Sku
+        String sku = mDataSet.get(position).getSKU();
         // Send to listener
-        if(mOnViewHolderSelected != null) mOnViewHolderSelected.onViewSelected(view, position, url);
+        if(mOnViewHolderSelected != null) mOnViewHolderSelected.onViewSelected(view, position, sku);
     }
 
     /*

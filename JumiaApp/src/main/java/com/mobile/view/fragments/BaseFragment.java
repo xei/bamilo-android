@@ -41,8 +41,6 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
@@ -524,24 +522,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             mainActivity = (BaseActivity) getActivity();
         }
         return mainActivity;
-    }
-
-    /**
-     * Method used to redirect the native checkout to the old checkout method
-     */
-    public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
-        Print.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        // Tracking
-        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
-        // Warning user
-        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
-        // Remove native checkout
-        getBaseActivity().removeAllNativeCheckoutFromBackStack();
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1109,10 +1089,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Process the product click
      * @author sergiopereira
      */
-    protected void onClickProduct(String targetUrl, Bundle bundle) {
+    protected void onClickProduct(String sku, Bundle bundle) {
         Print.i(TAG, "ON CLICK PRODUCT");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+        if (sku != null) {
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);

@@ -32,16 +32,12 @@ public class AddressRegions extends ArrayList<AddressRegion> implements IJSONSer
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        try {
-            // For each item
-            JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                // Save the region
-                add(new AddressRegion(json));
-            }
-        } catch (JSONException e) {
-            return false;
+        // For each item
+        JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject json = jsonArray.getJSONObject(i);
+            // Save the region
+            add(new AddressRegion(json));
         }
         return true;
     }

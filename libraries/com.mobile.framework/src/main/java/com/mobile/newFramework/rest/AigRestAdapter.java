@@ -85,7 +85,7 @@ public class AigRestAdapter {
                 request.addHeader(HeaderConstants.CACHE_CONTROL, value);
             }
             // AGENT
-            request.addHeader(HeaderConstants.USER_AGENT, agent);
+            request.addHeader(HeaderConstants.USER_AGENT, agent + " " + AigRestContract.AUTHENTICATION_USER_AGENT);
             //Print.d("##########################################################");
         }
     }

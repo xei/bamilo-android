@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
+import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -43,7 +43,7 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        SuperSetPaymentMethod responseData = (SuperSetPaymentMethod) baseResponse.getMetadata().getData();
+        SetPaymentMethod responseData = (SetPaymentMethod) baseResponse.getMetadata().getData();
         // Get order summary from response
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, responseData.getOrderSummary());
         Print.i(TAG, "ORDER SUMMARY: " + responseData.getOrderSummary().toString());

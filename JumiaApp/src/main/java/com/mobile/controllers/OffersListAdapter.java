@@ -11,7 +11,7 @@ import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.Offer;
+import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
@@ -28,7 +28,7 @@ public class OffersListAdapter extends BaseAdapter {
     public final static String TAG = OffersListAdapter.class.getSimpleName();
 
     public interface IOffersAdapterService {
-        public void onAddOfferToCart(Offer offer);
+        void onAddOfferToCart(ProductOffer offer);
     }
 
     private LayoutInflater inflater;
@@ -37,7 +37,7 @@ public class OffersListAdapter extends BaseAdapter {
 
     private IOffersAdapterService offerSelected;
 
-    ArrayList<Offer> offers = new ArrayList<>();
+    ArrayList<ProductOffer> offers = new ArrayList<>();
     
     /**
      * A representation of each item on the list
@@ -58,7 +58,7 @@ public class OffersListAdapter extends BaseAdapter {
      * @param offers
      * @param listener
      */
-    public OffersListAdapter(Context context, ArrayList<Offer> offers, IOffersAdapterService listener) {
+    public OffersListAdapter(Context context, ArrayList<ProductOffer> offers, IOffersAdapterService listener) {
         this.context = context.getApplicationContext();
         this.offers = offers;
         this.inflater = LayoutInflater.from(context);
@@ -163,7 +163,7 @@ public class OffersListAdapter extends BaseAdapter {
      * @param offers
      *            The array list containing the orders
      */
-    public void updateOffers(ArrayList<Offer> offers) {
+    public void updateOffers(ArrayList<ProductOffer> offers) {
         this.offers = offers;
         this.notifyDataSetChanged();
     }
@@ -174,7 +174,7 @@ public class OffersListAdapter extends BaseAdapter {
     }
 
 
-    public ArrayList<Offer> getOffersList() {
+    public ArrayList<ProductOffer> getOffersList() {
         return offers;
     }
   

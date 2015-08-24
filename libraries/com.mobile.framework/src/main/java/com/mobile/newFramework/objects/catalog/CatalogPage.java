@@ -7,7 +7,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class CatalogPage implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = CatalogPage.class.getSimpleName();
+    protected static final String TAG = CatalogPage.class.getSimpleName();
 
     public static final int MAX_ITEMS_PER_PAGE = 24;
 
@@ -39,13 +39,13 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private int mMaxPages = 1;
 
-    private ArrayList<Product> mProducts;
+    private ArrayList<ProductRegular> mProducts;
 
     private ArrayList<CatalogFilter> mFilters;
 
     private Banner mCatalogBanner;
-    private String mSearchTerm;
 
+    private String mSearchTerm;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -72,7 +72,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-//        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
         mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         mName = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
@@ -85,7 +84,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
         for (int i = 0; i < productObjectArray.length(); ++i) {
             JSONObject productObject = productObjectArray.getJSONObject(i);
-            Product product = new Product();
+            ProductRegular product = new ProductRegular();
             product.initialize(productObject);
             mProducts.add(product);
         }
@@ -184,9 +183,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return number or pages
      */
     private int calcMaxPages() {
-        int i = (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
-//        Log.i(TAG, "MAX PAGES: " + i);
-        return i;
+        return (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
@@ -227,7 +224,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * Get products
      * @return a list of products
      */
-    public ArrayList<Product> getProducts() {
+    public ArrayList<ProductRegular> getProducts() {
         return mProducts;
     }
 
@@ -284,7 +281,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mName;
     }
 
-    public Banner getmCatalogBanner() {
+    public Banner getCatalogBanner() {
         return mCatalogBanner;
     }
 
@@ -302,13 +299,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      */
     public String getCategoryId(){
         return mId;
-    }
-
-    /**
-     * Set search term
-     */
-    public void setSearchTerm(String searchTerm){
-        mSearchTerm = searchTerm;
     }
 
     /*
@@ -355,7 +345,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mMaxPages = in.readInt();
         if (in.readByte() == 0x01) {
             mProducts = new ArrayList<>();
-            in.readList(mProducts, Product.class.getClassLoader());
+            in.readList(mProducts, ProductRegular.class.getClassLoader());
         } else {
             mProducts = null;
         }

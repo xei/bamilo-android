@@ -28,7 +28,7 @@ public class ConstantsIntentExtra {
 
     // ########### Products ###########
     public static final String CONTENT_URL = mPackage + "ContentUrl";
-    public static final String PRODUCT_URL = mPackage + "ProductUrl";
+    public static final String PRODUCT_SKU = mPackage + "ProductSku";
     public static final String IS_ZOOM_AVAILABLE = mPackage + "ZoomAvailable";
     public static final String SHOW_HORIZONTAL_LIST_VIEW = mPackage + "ShowHorizontalListView";
     public static final String SHOW_RELATED_ITEMS = mPackage + "ShowRelatedItems";

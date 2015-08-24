@@ -56,11 +56,6 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get arguments
-        Bundle arguments = getArguments();
-        if(arguments != null) {
-            mCurrentAddress = arguments.getParcelable(EditAddressFragment.SELECTED_ADDRESS);
-        }
     }
 
     @Override
@@ -81,6 +76,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             triggerEditAddressForm();
         }
     }
+
     @Override
     protected void loadEditAddressForm(Form form) {
         super.loadEditAddressForm(form);
@@ -102,17 +98,17 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
         super.onGetEditAddressFormErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetRegionsErrorEvent(Bundle bundle){
         super.onGetRegionsErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_REGIONS_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
         super.onGetCitiesErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onEditAddressErrorEvent(Bundle bundle){
@@ -122,10 +118,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors);
-            showFragmentContentContainer();
         } else {
-            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
+            super.showUnexpectedErrorWarning();
         }
+        showFragmentContentContainer();
     }
 }

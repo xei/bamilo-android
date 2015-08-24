@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
     android:layoutDirection="locale"
-    android:background="@drawable/selector_listitem_highlight"
+    android:background="@drawable/selector_list_item_highlight"
     android:paddingTop="6dp">
 
     <com.mobile.components.customfontviews.TextView
