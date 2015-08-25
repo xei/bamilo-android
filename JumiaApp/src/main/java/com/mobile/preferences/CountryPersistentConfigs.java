@@ -44,8 +44,11 @@ public class CountryPersistentConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_SEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, countryConfigs.getDecimalsSep());
         // Languages
-        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, countryConfigs.getLangCode());
-        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, countryConfigs.getLangName());
+        CountryConfigs.Language language = countryConfigs.getDefaultLanguage();
+        if(language != null) {
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.mLangCode);
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.mLangName);
+        }
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
         // GTM

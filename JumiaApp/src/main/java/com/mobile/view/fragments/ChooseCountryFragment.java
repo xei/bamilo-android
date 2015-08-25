@@ -16,24 +16,30 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
+import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
+import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
@@ -305,24 +311,26 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         if(position > -1 && position < countriesAvailable.size() &&     // Position validation
                 countriesAvailable.get(position) != null) {             //Null pointer validation
 
+            CountryObject country = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+
             // Set new country
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, country.getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
             /**
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
-            Print.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
-            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
-            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
+            Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, country.getCountryName());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, country.getCountryUrl());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, country.getCountryFlag());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, country.getCountryIso().toLowerCase());
+            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, country.isCountryForceHttps());
+            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, country.isCountryIsLive());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, JumiaApplication.INSTANCE.countriesAvailable.get(position).getUserAgentToAccessDevServers());
+            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, country.getUserAgentToAccessDevServers());
             editor.apply();
 
             // Clean memory
@@ -333,15 +341,22 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 BrandsTableHelper.clearBrands();
                 TrackerDelegator.trackShopChanged();
             }
-            // Clear Ad4Push prefs
-            Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
-            // Show splash screen
-            ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
-            // Finish MainFragmentActivity
-            getBaseActivity().finish();
+
+//            Darwin.initialize(context, country.getCountryUrl(), null);
+//            triggerGetCountryConfigs();
+            loadCountry();
             return true;
         }
         return false;
+    }
+
+    private void loadCountry() {
+        // Clear Ad4Push prefs
+        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
+        // Show splash screen
+        ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
+        // Finish MainFragmentActivity
+        getBaseActivity().finish();
     }
 
     /*
@@ -354,6 +369,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     private void triggerGetJumiaCountries() {
         triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
+    }
+
+    private void triggerGetCountryConfigs() {
+        triggerContentEventNoLoading(new GetCountryConfigsHelper(), null, this);
     }
 
     /*
@@ -399,17 +418,32 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate event type
         switch (eventType) {
-        case GET_GLOBAL_CONFIGURATIONS:
-            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
-            // Get countries
-            JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            // Show countries
-            showAvailableCountries();
-            showFragmentContentContainer();
-            break;
-        default:
-            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
-            break;
+            case GET_GLOBAL_CONFIGURATIONS:
+                Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+                // Get countries
+                JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                // Show countries
+                showAvailableCountries();
+                showFragmentContentContainer();
+                break;
+            case GET_COUNTRY_CONFIGURATIONS:
+//                loadCountry();
+                CountryConfigs countryConfigs = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+//                final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
+
+                if(countryConfigs.getLanguages().size() > 1 ){
+                    ArrayList<String> messages = new ArrayList<>();
+                    for(int i = 0 ; i < countryConfigs.getLanguages().size();i++){
+                        messages.add(countryConfigs.getLanguages().get(i).mLangName);
+                    }
+                    DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),messages);
+                    DialogListFragment.newInstance(this,null, "choose_language", getString(R.string.choose_language), languagesListAdapter,DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(), null);
+                }
+
+                break;
+            default:
+                Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+                break;
         }
     }
 
@@ -433,14 +467,17 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         
         // Validate event type
         switch (eventType) {
-        case GET_GLOBAL_CONFIGURATIONS:
-            Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
-            // Show retry view
-            showFragmentErrorRetry();
-            break;
-        default:
-            Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
-            break;
+            case GET_GLOBAL_CONFIGURATIONS:
+                Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
+                // Show retry view
+                showFragmentErrorRetry();
+                break;
+            case GET_COUNTRY_CONFIGURATIONS:
+//                loadCountry();
+                break;
+            default:
+                Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
+                break;
         }
     }
     
