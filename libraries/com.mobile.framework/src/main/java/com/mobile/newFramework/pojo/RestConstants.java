@@ -71,6 +71,7 @@ public class RestConstants {
     public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
     public static final String JSON_DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
+    public static final String CHECKED = "checked";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";

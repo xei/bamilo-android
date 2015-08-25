@@ -85,6 +85,8 @@ import java.util.regex.Pattern;
 public class DynamicFormItem {
     private final static String TAG = DynamicFormItem.class.getSimpleName();
 
+    public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
+
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;
@@ -313,6 +315,7 @@ public class DynamicFormItem {
     private void buildRelatedRadioGroup(ViewGroup container, final IFormField entry) {
         // Create radio group
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
+        radioGroup.setTag(RELATED_RADIO_GROUP_TAG);
         // Set check listener
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -330,7 +333,6 @@ public class DynamicFormItem {
         radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0);
         // Add group to container
         container.addView(radioGroup);
-
     }
 
     /**

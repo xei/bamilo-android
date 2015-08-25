@@ -57,6 +57,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private HashMap<String,PaymentInfo> paymentInfoList;
     private IFormField mChildFormField;
     private IFormField mParentFormField;
+    private boolean isChecked;
 
     /**
      * FormField param constructor
@@ -148,8 +149,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             name = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
             label = jsonObject.optString(RestConstants.LABEL);
             value = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
-            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG); // TODO ????
+            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
+            isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
 
             Print.d("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
 
@@ -412,6 +414,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public ArrayList<IFormField> getOptions() {
         return mOptions;
+    }
+
+    @Override
+    public boolean isDefaultSelection() {
+        return isChecked;
     }
 
     @Override

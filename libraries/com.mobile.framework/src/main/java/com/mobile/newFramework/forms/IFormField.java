@@ -45,5 +45,6 @@ public interface IFormField {
 
     ArrayList<IFormField> getOptions();
 
+    boolean isDefaultSelection();
 
 }
