@@ -5,13 +5,9 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to handle country configs.
@@ -46,7 +42,7 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
     private boolean isRatingLoginRequired;
     private boolean isReviewLoginRequired;
     private boolean isFacebookAvailable;
-
+    private Languages languages;
     /**
      * Empty constructor
      */
@@ -66,6 +62,7 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         isRatingLoginRequired = false;
         isReviewLoginRequired = false;
         isFacebookAvailable = false;
+        languages = new Languages();
     }
 
     /**
@@ -137,6 +134,8 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
             isReviewEnable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
             isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
         }
+
+        languages.initialize(jsonObject);
         return true;
     }
 
@@ -321,4 +320,8 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
             return new CountryConfigs[size];
         }
     };
+
+    public Languages getLanguages() {
+        return languages;
+    }
 }

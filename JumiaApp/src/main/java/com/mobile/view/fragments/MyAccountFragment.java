@@ -26,8 +26,10 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -47,10 +49,16 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public final static int POSITION_EMAIL = 2;
     
     public final static int POSITION_SHARE_APP = 0;
+
+    public final static int POSITION_COUNTRY = 0;
+
+    public final static int POSITION_LANGUAGE = 1;
     
     private ListView optionsList;
     
     private ListView appSharingList;
+
+    private ListView chooseLanguageList;
 
     private MyAccountPushPreferences mPreferencesFragment;
 
@@ -208,8 +216,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     }
 
     private void showChooseLanguage(View view) {
-        ListView listView = (ListView)view.findViewById(R.id.language_list);
-//        listView.setAdapter(new CountrySettingsAdapter(getActivity(), CountryPersistentConfigs.getCountryFromPreferences(getActivity())));
+        chooseLanguageList = (ListView)view.findViewById(R.id.language_list);
+        chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), CountryPersistentConfigs.getCountryInformation(getActivity())));
+        chooseLanguageList.setOnItemClickListener(this);
     }
 
     /*
@@ -222,9 +231,17 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             handleOnOptionsListItemClick(position);
         } else if(parent == this.appSharingList){
             handleOnAppSharingListItemClick(position);
+        } else if(parent == this.chooseLanguageList){
+            handleOnChooseLanguageItemClick(position);
         }
     }
-    
+
+    private void handleOnChooseLanguageItemClick(int position) {
+        if(position == POSITION_LANGUAGE){
+            DialogListFragment.newInstance(this,null,"asd","lolol",new ArrayList<String>(),DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(),null);
+        }
+    }
+
     /**
      *  Handles the item click of childs of options list.
      */

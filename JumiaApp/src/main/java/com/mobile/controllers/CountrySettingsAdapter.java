@@ -11,13 +11,14 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+import com.mobile.view.fragments.MyAccountFragment;
 
 /**
  * Created by rsoares on 8/25/15.
  */
 public class CountrySettingsAdapter extends BaseAdapter{
 
-    public class CountryLanguageInformation{
+    public static class CountryLanguageInformation{
         public String countryName;
         public String countryFlag;
         public Languages languages;
@@ -51,7 +52,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView == null){
-            view = mInflater.inflate((position == 0) ? R.layout.country_settings_list_item : R.layout.my_account_list_item, parent, false);
+            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout.my_account_list_item, parent, false);
         } else {
             view = convertView;
         }
@@ -64,9 +65,17 @@ public class CountrySettingsAdapter extends BaseAdapter{
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
+            view.setEnabled(false);
+            view.setOnClickListener(null);
         } else {
             country.setText(R.string.language);
-            country.setText(countryObject.languages.getSelectedLanguage().getLangName());
+            info.setText(countryObject.languages.getSelectedLanguage().getLangName());
+            if(countryObject.languages.size() <= 1){
+                country.setTextColor(view.getResources().getColor(R.color.black_700));
+                info.setTextColor(view.getResources().getColor(R.color.black_700));
+                view.setEnabled(false);
+                view.setOnClickListener(null);
+            }
         }
         return view;
     }

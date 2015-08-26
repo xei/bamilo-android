@@ -6,9 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.objects.configs.Language;
+import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -46,11 +50,14 @@ public class CountryPersistentConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
 //        // Languages
-//        CountryConfigs.Language language = countryConfigs.getDefaultLanguage();
-//        if(language != null) {
-//            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.mLangCode);
-//            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.mLangName);
-//        }
+        Language language = countryConfigs.getLanguages().getSelectedLanguage();
+        if(language != null) {
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.getLangCode());
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.getLangName());
+        }
+
+        String json = new Gson().toJson(countryConfigs.getLanguages());
+        mEditor.putString("languages_darwin",json);
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
         // GTM
@@ -76,15 +83,15 @@ public class CountryPersistentConfigs {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         CountryConfigs countryConfigs = new CountryConfigs();
 //        countryConfigs.setCountryName(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, ""));
-        countryConfigs.setCurrencyIso(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, ""));
-        countryConfigs.setCurrencySymbol(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ""));
+        countryConfigs.setCurrencyIso(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null));
+        countryConfigs.setCurrencySymbol(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null));
         countryConfigs.setNoDecimals(sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, -1));
-        countryConfigs.setThousandsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, ""));
-        countryConfigs.setDecimalsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, ""));
-        countryConfigs.setGaId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, ""));
-        countryConfigs.setGTMId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, ""));
-        countryConfigs.setPhoneNumber(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, ""));
-        countryConfigs.setCsEmail(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, ""));
+        countryConfigs.setThousandsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, null));
+        countryConfigs.setDecimalsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, null));
+        countryConfigs.setGaId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null));
+        countryConfigs.setGTMId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, null));
+        countryConfigs.setPhoneNumber(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null));
+        countryConfigs.setCsEmail(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null));
         countryConfigs.setIsFacebookAvailable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false));
         countryConfigs.setIsRatingEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, false));
         countryConfigs.setIsRatingLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, false));
@@ -129,13 +136,24 @@ public class CountryPersistentConfigs {
     public static CountryObject getCountryFromPreferences(Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         CountryObject countryObject = new CountryObject();
-        countryObject.setCountryName(settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, ""));
-        countryObject.setCountryUrl(settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, ""));
-        countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, ""));
-        countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, ""));
+        countryObject.setCountryName(settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null));
+        countryObject.setCountryUrl(settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
+        countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null));
+        countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null));
         countryObject.setCountryForceHttps(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false));
         countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE,false));
 //        countryObject.set(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ID,""));
         return countryObject;
     }
+
+    public static CountrySettingsAdapter.CountryLanguageInformation getCountryInformation(Context context){
+        CountrySettingsAdapter.CountryLanguageInformation countryLanguageInformation = new CountrySettingsAdapter.CountryLanguageInformation();
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        countryLanguageInformation.countryName = settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+        countryLanguageInformation.countryFlag = settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null);
+        String json = settings.getString("languages_darwin", null);
+        countryLanguageInformation.languages = new Gson().fromJson(json, Languages.class);
+        return countryLanguageInformation;
+    }
+
 }
