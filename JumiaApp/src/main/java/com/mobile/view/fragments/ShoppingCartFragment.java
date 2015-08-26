@@ -562,7 +562,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         // Case remove
                         if (id == R.id.button1) {
                             isRemovingAllItems = true;
-                            List<ShoppingCartItem> items = new ArrayList<>(shoppingCart.getCartItems().values());
+                            List<ShoppingCartItem> items = new ArrayList<>(shoppingCart.getCartItems());
                             for (ShoppingCartItem item : items) {
                                 mBeginRequestMillis = System.currentTimeMillis();
                                 triggerRemoveItem(item);
@@ -641,7 +641,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             return;
         }
 
-        items = new ArrayList<>(cart.getCartItems().values());
+        items = cart.getCartItems();
         if (items.size() == 0) {
             showNoItems();
         } else if(getView() == null) {
@@ -665,19 +665,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
 
             // Set voucher
-            String couponDiscount = cart.getCouponDiscount();
-            String couponCope = cart.getCouponCode();
-            if (!TextUtils.isEmpty(couponDiscount)) {
-                double couponDiscountValue = Double.parseDouble(couponDiscount);
+            if (cart.hasCouponDiscount()) {
+                double couponDiscountValue = cart.getCouponDiscount();
                 if (couponDiscountValue >= 0) {
-                    // Fix NAFAMZ-7848
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
-
-                    if (!TextUtils.isEmpty(couponCope)) {
-                        // Change Coupon
-                        changeVoucher(couponCope);
-                    }
+                    // Change Coupon
+                    changeVoucher(cart.getCouponCode());
                 } else {
                     voucherContainer.setVisibility(View.GONE);
                     // Clean Voucher
@@ -689,12 +683,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 removeVoucher();
             }
 
-            // Only convert value if it is a number
-            if (CurrencyFormatter.isNumber(cart.getSubTotal())) {
-                priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-            } else {
-                priceTotal.setText(cart.getSubTotal());
-            }
+            // Price
+            priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
 
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
@@ -715,6 +705,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             BigDecimal unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
+
+            // TODO Validate this method
             for (int i = 0; i < items.size(); i++) {
                 ShoppingCartItem item = items.get(i);
                 CartItemValues values = new CartItemValues();
@@ -797,13 +789,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
         // Set value
-        cartValue = cart.getCartValue();
-        if (!TextUtils.isEmpty(cartValue) && !cartValue.equals("null")) {
-            totalValue.setText(CurrencyFormatter.formatCurrency(cartValue));
-            totalMain.setVisibility(View.VISIBLE);
-        } else {
-            Print.w(TAG, "CART VALUES IS EMPTY");
-        }
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        totalMain.setVisibility(View.VISIBLE);
     }
 
     /**

@@ -62,7 +62,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 	public JSONObject toJSON() {
 		JSONObject jsonObject = new JSONObject();
 		try {
-			jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
+			jsonObject.put(RestConstants.SKU, sku);
 			jsonObject.put(RestConstants.JSON_LINK_TAG, link);
 			jsonObject.put(RestConstants.JSON_IMAGE_TAG, image);
 		} catch (JSONException e) {

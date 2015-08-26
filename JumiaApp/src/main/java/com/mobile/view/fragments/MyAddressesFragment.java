@@ -47,11 +47,11 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     private static final String ISNT_SAME_ADDRESS = "0";
 
-    protected static final String BILLING_ID_TAG = "billingAddressId";
+    protected static final String BILLING_ID_TAG = "billing";
 
-    protected static final String SHIPPING_ID_TAG = "shippingAddressId";
+    protected static final String SHIPPING_ID_TAG = "shipping";
 
-    protected static final String IS_SAME_TAG = "shippingAddressDifferent";
+    protected static final String IS_SAME_TAG = "equal";
 
     protected GenericRadioGroup mTopRadioGroup;
 

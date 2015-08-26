@@ -41,7 +41,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class TrackerDelegator {
@@ -264,7 +263,7 @@ public class TrackerDelegator {
      *
      */
     public static void trackItemShared(Intent intent, String category) {
-        String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
+        String sku = intent.getExtras().getString(RestConstants.SKU);
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
@@ -415,7 +414,7 @@ public class TrackerDelegator {
     /**
      * For Native Checkout
      */
-    public static void trackPurchaseNativeCheckout(final Bundle params, final Map<String, ShoppingCartItem> mItems) {
+    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<ShoppingCartItem> mItems) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -478,7 +477,7 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
     }
 
-    private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
+    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<ShoppingCartItem> mItems) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);

@@ -195,7 +195,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        url = jsonObject.optString(RestConstants.JSON_URL_TAG);
+        url = jsonObject.optString(RestConstants.URL);
         if (url != null) {
             // This is necessary otherwise Uri.Builder will encode the authority
             url = url.replace("/mobapi/", "");

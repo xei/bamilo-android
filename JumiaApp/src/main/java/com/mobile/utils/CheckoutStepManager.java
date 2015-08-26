@@ -121,9 +121,9 @@ public class CheckoutStepManager {
     public static void showCheckoutTotal(View viewStub, OrderSummary orderSummary, ShoppingCart cart){
         String value = null;
         if(orderSummary != null){
-            value = orderSummary.getTotal();
+            value = "" + orderSummary.getTotal();
         } else if(cart != null){
-            value = cart.getCartValue();
+            value = "" + cart.getTotal();
         }
 
         if(!TextUtils.isEmpty(value) && viewStub != null){

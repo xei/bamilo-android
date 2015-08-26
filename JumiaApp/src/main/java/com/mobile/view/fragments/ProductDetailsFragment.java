@@ -1187,7 +1187,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             String extraSubject = getString(R.string.share_subject, getString(R.string.app_name_placeholder));
             String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mCompleteProduct.getShareUrl();
             Intent shareIntent = getBaseActivity().createShareIntent(extraSubject, extraMsg);
-            shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
+            shareIntent.putExtra(RestConstants.SKU, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
             TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories());

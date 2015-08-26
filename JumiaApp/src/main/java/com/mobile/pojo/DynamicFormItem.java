@@ -1867,7 +1867,7 @@ public class DynamicFormItem {
             case relatedNumber:
             case number:
                 int inputTypeNumber = android.text.InputType.TYPE_CLASS_NUMBER;
-                if (this.entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) {
+                if (this.entry.getKey().contains(RestConstants.PHONE)) {
                     inputTypeNumber = android.text.InputType.TYPE_CLASS_PHONE;
                 }
                 textDataControl.setInputType(inputTypeNumber);

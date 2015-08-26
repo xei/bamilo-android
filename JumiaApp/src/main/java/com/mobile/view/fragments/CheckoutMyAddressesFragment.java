@@ -174,7 +174,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Show form.
-     * @param bundle
      */
     protected void onGetBillingFormEventSuccessEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
@@ -235,7 +234,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Trigger to set the billing form
-     * @param contentValues
      */
     private void triggerSetBilling(ContentValues contentValues) {
         Print.d(TAG, "TRIGGER SET BILLING");

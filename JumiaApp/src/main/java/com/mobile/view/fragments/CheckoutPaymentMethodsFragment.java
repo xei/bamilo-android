@@ -403,8 +403,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     private void updateVoucher(OrderSummary orderSummary) {
         if (orderSummary != null) {
-            if (orderSummary.hasCouponCode()) {
-                mVoucher = orderSummary.getDiscountCouponCode();
+            if (orderSummary.hasCouponDiscount()) {
+                mVoucher = orderSummary.getCouponCode();
                 if (!TextUtils.isEmpty(mVoucher)) {
                     removeVoucher = true;
                     prepareCouponView();
@@ -444,7 +444,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
             CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary, JumiaApplication.INSTANCE.getCart());
-            if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
+            if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
                 generateNoPayment();

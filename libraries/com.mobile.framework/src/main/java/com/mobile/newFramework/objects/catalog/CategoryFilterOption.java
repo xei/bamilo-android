@@ -32,7 +32,7 @@ public class CategoryFilterOption extends CatalogFilterOption implements IJSONSe
 		setId(jsonObject.optString(RestConstants.ID));
 		setValue(jsonObject.optString(RestConstants.JSON_NAME_TAG));
 		setLabel(jsonObject.optString(RestConstants.JSON_NAME_TAG));
-		mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
+		mUrl = jsonObject.optString(RestConstants.URL);
     	mNumber = jsonObject.optInt(RestConstants.JSON_NUMBER_TAG);
 	}
     

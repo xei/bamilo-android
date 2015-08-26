@@ -453,13 +453,11 @@ public class AdjustTracker {
             }   
   
             ShoppingCart cart = bundle.getParcelable(CART);
-            ShoppingCartItem item;
             JSONObject json;
             
             int productCount = 0;
             String countString = "";
-            for (String key : cart.getCartItems().keySet()) {
-                item = cart.getCartItems().get(key);
+            for (ShoppingCartItem item : cart.getCartItems()) {
                 AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
                 json = new JSONObject();
                 try {
