@@ -24,7 +24,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     private boolean forceHttps;
     private boolean isLive;
     private String userAgentToAccessDevServers;
-
+    private Languages languages;
     /**
      * Empty Constructor
      */

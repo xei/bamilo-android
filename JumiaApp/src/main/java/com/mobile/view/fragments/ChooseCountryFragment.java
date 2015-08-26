@@ -316,6 +316,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Set new country
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
+            CountryPersistentConfigs.writePreferences(editor, country);
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, country.getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
             /**
@@ -323,16 +324,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
             Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, country.getCountryName());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, country.getCountryUrl());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, country.getCountryFlag());
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, country.getCountryIso().toLowerCase());
-            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, country.isCountryForceHttps());
-            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, country.isCountryIsLive());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, country.getUserAgentToAccessDevServers());
             editor.apply();
-
             // Clean memory
             JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
             // Is changing country
@@ -431,14 +424,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 CountryConfigs countryConfigs = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 //                final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
 
-                if(countryConfigs.getLanguages().size() > 1 ){
-                    ArrayList<String> messages = new ArrayList<>();
-                    for(int i = 0 ; i < countryConfigs.getLanguages().size();i++){
-                        messages.add(countryConfigs.getLanguages().get(i).mLangName);
-                    }
-                    DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),messages);
-                    DialogListFragment.newInstance(this,null, "choose_language", getString(R.string.choose_language), languagesListAdapter,DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(), null);
-                }
+//                if(countryConfigs.getLanguages().size() > 1 ){
+//                    ArrayList<String> messages = new ArrayList<>();
+//                    for(int i = 0 ; i < countryConfigs.getLanguages().size();i++){
+//                        messages.add(countryConfigs.getLanguages().get(i).mLangName);
+//                    }
+//                    DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),messages);
+//                    DialogListFragment.newInstance(this,null, "choose_language", getString(R.string.choose_language), languagesListAdapter,DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(), null);
+//                }
 
                 break;
             default:

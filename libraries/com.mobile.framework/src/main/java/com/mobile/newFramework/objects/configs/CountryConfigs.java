@@ -21,13 +21,6 @@ import java.util.List;
  */
 public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSerializable, Parcelable {
 
-    public class Language {
-        public String mLangCode;
-        public String mLangName;
-        public boolean isDefault;
-        public boolean isSelected;
-    }
-
     private static final String TAG = CountryConfigs.class.getSimpleName();
 
     public static final String CURRENCY_LEFT_POSITION = "1";
@@ -53,7 +46,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
     private boolean isRatingLoginRequired;
     private boolean isReviewLoginRequired;
     private boolean isFacebookAvailable;
-    private List<Language> languages;
 
     /**
      * Empty constructor
@@ -65,7 +57,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         mNoDecimals = 0;
         mThousandsSep = null;
         mDecimalsSep = null;
-        languages = new ArrayList<>();
         mGaId = null;
         mGTMId = null;
         mPhoneNumber = null;
@@ -97,7 +88,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
                 "\nno_decimals: " + mNoDecimals +
                 "\nthousands_sep: " + mThousandsSep +
                 "\ndecimals_sep: " + mDecimalsSep +
-                "\nlanguages: " + languages.size() +
                 "\ngtm_android: " + mGTMId +
                 "\nga_android_id: " + mGaId +
                 "\nphone_number: " + mPhoneNumber +
@@ -125,16 +115,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         mNoDecimals = jsonObject.getInt(RestConstants.JSON_COUNTRY_NO_DECIMALS);
         mThousandsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_THOUSANDS_SEP);
         mDecimalsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_DECIMALS_SEP);
-        // Get languages
-        JSONArray languages = jsonObject.getJSONArray(RestConstants.JSON_COUNTRY_LANGUAGES);
-        for (int i = 0; i < languages.length(); i++) {
-            Language language = new Language();
-            language.mLangCode = languages.getJSONObject(i).getString(RestConstants.JSON_CODE_TAG);
-            language.mLangName = languages.getJSONObject(i).getString(RestConstants.JSON_NAME_TAG);
-            language.isDefault = languages.getJSONObject(i).getBoolean(RestConstants.JSON_COUNTRY_LANG_DEFAULT);
-            this.languages.add(language);
-
-        }
         // Get GA id
         mGaId = jsonObject.getString(RestConstants.JSON_COUNTRY_GA_ID);
         // Get GTM id
@@ -195,33 +175,60 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         return mDecimalsSep;
     }
 
-    public List<Language> getLanguages(){
-        return languages;
+    public void setCurrencyIso(String mCurrencyIso) {
+        this.mCurrencyIso = mCurrencyIso;
     }
 
-    public Language getDefaultLanguage(){
-        for(Language language : languages){
-            if(language.isDefault){
-                return language;
-            }
-        }
-        return null;
+    public void setCurrencySymbol(String mCurrencySymbol) {
+        this.mCurrencySymbol = mCurrencySymbol;
     }
 
-    public Language getSelectedLanguage(){
-        Language languageSelected = null;
-        Language languageDefault = null;
-        for(Language language : languages){
-            if(language.isSelected){
-                languageSelected = language;
-                break;
-            }
-            if(language.isDefault){
-                languageDefault = language;
-            }
-        }
+    public void setNoDecimals(int mNoDecimals) {
+        this.mNoDecimals = mNoDecimals;
+    }
 
-        return languageSelected != null ? languageSelected : languageDefault;
+    public void setThousandsSep(String mThousandsSep) {
+        this.mThousandsSep = mThousandsSep;
+    }
+
+    public void setDecimalsSep(String mDecimalsSep) {
+        this.mDecimalsSep = mDecimalsSep;
+    }
+
+    public void setGaId(String mGaId) {
+        this.mGaId = mGaId;
+    }
+
+    public void setGTMId(String mGTMId) {
+        this.mGTMId = mGTMId;
+    }
+
+    public void setPhoneNumber(String mPhoneNumber) {
+        this.mPhoneNumber = mPhoneNumber;
+    }
+
+    public void setCsEmail(String mCsEmail) {
+        this.mCsEmail = mCsEmail;
+    }
+
+    public void setIsRatingEnable(boolean isRatingEnable) {
+        this.isRatingEnable = isRatingEnable;
+    }
+
+    public void setIsReviewEnable(boolean isReviewEnable) {
+        this.isReviewEnable = isReviewEnable;
+    }
+
+    public void setIsRatingLoginRequired(boolean isRatingLoginRequired) {
+        this.isRatingLoginRequired = isRatingLoginRequired;
+    }
+
+    public void setIsFacebookAvailable(boolean isFacebookAvailable) {
+        this.isFacebookAvailable = isFacebookAvailable;
+    }
+
+    public void setIsReviewLoginRequired(boolean isReviewLoginRequired) {
+        this.isReviewLoginRequired = isReviewLoginRequired;
     }
 
     public String getGaId() {
@@ -276,12 +283,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         isRatingLoginRequired = in.readByte() != 0x00;
         isReviewLoginRequired = in.readByte() != 0x00;
         isFacebookAvailable = in.readByte() != 0x00;
-        if (in.readByte() == 0x01) {
-            languages = new ArrayList<Language>();
-            in.readList(languages, Language.class.getClassLoader());
-        } else {
-            languages = null;
-        }
     }
 
     @Override
@@ -306,12 +307,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         dest.writeByte((byte) (isRatingLoginRequired ? 0x01 : 0x00));
         dest.writeByte((byte) (isReviewLoginRequired ? 0x01 : 0x00));
         dest.writeByte((byte) (isFacebookAvailable ? 0x01 : 0x00));
-        if (languages == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(languages);
-        }
     }
 
     @SuppressWarnings("unused")

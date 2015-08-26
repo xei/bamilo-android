@@ -14,13 +14,16 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.AppSharingAdapter;
+import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -104,6 +107,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         showMyAccount(view);
         showPreferences();
         showAppSharing(view);
+        showChooseLanguage(view);
     }
 
     /*
@@ -202,7 +206,12 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         appSharingList.setAdapter(new AppSharingAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array)));
         appSharingList.setOnItemClickListener(this);
     }
-    
+
+    private void showChooseLanguage(View view) {
+        ListView listView = (ListView)view.findViewById(R.id.language_list);
+//        listView.setAdapter(new CountrySettingsAdapter(getActivity(), CountryPersistentConfigs.getCountryFromPreferences(getActivity())));
+    }
+
     /*
      * (non-Javadoc)
      * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
