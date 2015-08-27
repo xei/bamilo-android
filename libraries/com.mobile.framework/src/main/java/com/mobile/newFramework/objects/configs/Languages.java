@@ -71,6 +71,13 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         }
     }
 
+    public void setSelected(String code){
+        for(int i = 0; i<this.size();i++){
+            Language language = this.get(i);
+            language.setIsSelected(language.getLangCode().equals(code));
+        }
+    }
+
     public ArrayList<String> getLanguageNames(){
         ArrayList<String> messages = new ArrayList<>();
         for(Language language : this){

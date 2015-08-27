@@ -238,7 +238,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private void handleOnChooseLanguageItemClick(int position) {
         if(position == POSITION_LANGUAGE){
-            new ChooseLanguageController().chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
+            ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
                     getBaseActivity().restartAppFlow();
