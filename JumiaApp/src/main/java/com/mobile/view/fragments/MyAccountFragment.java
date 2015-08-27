@@ -60,7 +60,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private MyAccountPushPreferences mPreferencesFragment;
 
-    CountrySettingsAdapter.CountryLanguageInformation countryInformation;
     /**
      * Get instance
      * 
@@ -216,7 +215,8 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private void showChooseLanguage(View view) {
         chooseLanguageList = (ListView)view.findViewById(R.id.language_list);
-        countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
+        CountrySettingsAdapter.CountryLanguageInformation countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
+        chooseLanguageList.setTag(R.string.choose_language, countryInformation);
         chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), countryInformation));
         chooseLanguageList.setOnItemClickListener(this);
     }
@@ -232,12 +232,13 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         } else if(parent == this.appSharingList){
             handleOnAppSharingListItemClick(position);
         } else if(parent == this.chooseLanguageList){
-            handleOnChooseLanguageItemClick(position);
+            handleOnChooseLanguageItemClick(parent, position);
         }
     }
 
-    private void handleOnChooseLanguageItemClick(int position) {
+    private void handleOnChooseLanguageItemClick(AdapterView<?> parent, int position) {
         if(position == POSITION_LANGUAGE){
+            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.choose_language);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
