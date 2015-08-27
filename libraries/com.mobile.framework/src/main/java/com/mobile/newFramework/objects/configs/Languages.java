@@ -63,4 +63,29 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
 
         return languageSelected != null ? languageSelected : languageDefault;
     }
+
+    public void setSelected(int position){
+        for(int i = 0; i<this.size();i++){
+            Language language = this.get(i);
+            language.setIsSelected(position == i);
+        }
+    }
+
+    public ArrayList<String> getLanguageNames(){
+        ArrayList<String> messages = new ArrayList<>();
+        for(Language language : this){
+            messages.add(language.getLangName());
+        }
+        return messages;
+    }
+
+    public int getSelectedPosition(){
+        for(int i = 0; i<this.size();i++){
+            Language language = this.get(i);
+            if(language.isSelected()){
+                return i;
+            }
+        }
+        return -1;
+    }
 }

@@ -18,7 +18,6 @@ import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.output.Print;
@@ -26,12 +25,10 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
-
-import java.util.ArrayList;
 import java.util.EnumSet;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -62,6 +59,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private MyAccountPushPreferences mPreferencesFragment;
 
+    CountrySettingsAdapter.CountryLanguageInformation countryInformation;
     /**
      * Get instance
      * 
@@ -217,7 +215,8 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private void showChooseLanguage(View view) {
         chooseLanguageList = (ListView)view.findViewById(R.id.language_list);
-        chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), CountryPersistentConfigs.getCountryInformation(getActivity())));
+        countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
+        chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), countryInformation));
         chooseLanguageList.setOnItemClickListener(this);
     }
 
@@ -238,7 +237,20 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private void handleOnChooseLanguageItemClick(int position) {
         if(position == POSITION_LANGUAGE){
-            DialogListFragment.newInstance(this,null,"asd","lolol",new ArrayList<String>(),DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(),null);
+            DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),countryInformation.languages);
+            DialogListFragment.newInstance(this, new DialogListFragment.OnDialogListListener() {
+                @Override
+                public void onDialogListItemSelect(int position, String value) {
+                    countryInformation.languages.setSelected(position);
+                    CountryPersistentConfigs.saveLanguages(getActivity(), countryInformation.languages);
+                    getBaseActivity().restartAppFlow();
+                }
+
+                @Override
+                public void onDismiss() {
+
+                }
+            }, "choose_language", getString(R.string.choose_language), languagesListAdapter, countryInformation.languages.getSelectedPosition()).show(getChildFragmentManager(), null);
         }
     }
 

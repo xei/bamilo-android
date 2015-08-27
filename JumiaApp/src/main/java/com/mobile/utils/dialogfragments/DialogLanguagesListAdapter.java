@@ -6,21 +6,16 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.view.R;
-
-import java.util.ArrayList;
 
 /**
  * Created by rsoares on 8/25/15.
  */
 public class DialogLanguagesListAdapter extends DialogListAdapter{
 
-    public DialogLanguagesListAdapter(Context mActivity, ArrayList<String> mItems) {
-        super(mActivity, mItems);
-    }
-
-    public DialogLanguagesListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable) {
-        super(mActivity, mItems, mItemsAvailable);
+    public DialogLanguagesListAdapter(Context mActivity, Languages languages) {
+        super(mActivity, languages.getLanguageNames());
     }
 
     @Override

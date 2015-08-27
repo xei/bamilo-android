@@ -154,6 +154,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
         //dialogListFragment.mId = id;
         dialogListFragment.mTitle = title;
+        dialogListFragment.mAdapter = dialogListAdapter;
         dialogListFragment.mItems = dialogListAdapter.getItems();
         dialogListFragment.mInitialPosition = initialPosition;
         return dialogListFragment;

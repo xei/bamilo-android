@@ -49,15 +49,7 @@ public class CountryPersistentConfigs {
         mEditor.putInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, countryConfigs.getNoDecimals());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
-//        // Languages
-        Language language = countryConfigs.getLanguages().getSelectedLanguage();
-        if(language != null) {
-            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.getLangCode());
-            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.getLangName());
-        }
-
-        String json = new Gson().toJson(countryConfigs.getLanguages());
-        mEditor.putString("languages_darwin",json);
+        saveLanguages(mEditor, countryConfigs.getLanguages());
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
         // GTM
@@ -141,7 +133,7 @@ public class CountryPersistentConfigs {
         countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null));
         countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null));
         countryObject.setCountryForceHttps(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false));
-        countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE,false));
+        countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, false));
 //        countryObject.set(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ID,""));
         return countryObject;
     }
@@ -154,6 +146,25 @@ public class CountryPersistentConfigs {
         String json = settings.getString("languages_darwin", null);
         countryLanguageInformation.languages = new Gson().fromJson(json, Languages.class);
         return countryLanguageInformation;
+    }
+
+    private static void saveLanguages(SharedPreferences.Editor mEditor, Languages languages){
+        // Languages
+        Language language = languages.getSelectedLanguage();
+        if(language != null) {
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.getLangCode());
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.getLangName());
+        }
+
+        String json = new Gson().toJson(languages);
+        mEditor.putString("languages_darwin",json);
+    }
+
+    public static void saveLanguages(Context context, Languages languages){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sharedPrefs.edit();
+        saveLanguages(mEditor,languages);
+        mEditor.apply();
     }
 
 }

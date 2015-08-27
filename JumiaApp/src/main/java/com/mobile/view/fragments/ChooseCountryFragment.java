@@ -13,7 +13,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
@@ -25,7 +24,6 @@ import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -34,12 +32,9 @@ import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
-import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
@@ -317,7 +312,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             CountryPersistentConfigs.writePreferences(editor, country);
-            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, country.getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
             /**
              * Save the Selected Country Configs
@@ -337,20 +331,13 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
 //            Darwin.initialize(context, country.getCountryUrl(), null);
 //            triggerGetCountryConfigs();
-            loadCountry();
+            getBaseActivity().restartAppFlow();
             return true;
         }
         return false;
     }
 
-    private void loadCountry() {
-        // Clear Ad4Push prefs
-        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
-        // Show splash screen
-        ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
-        // Finish MainFragmentActivity
-        getBaseActivity().finish();
-    }
+
 
     /*
      * ############# TRIGGERS ############# 
