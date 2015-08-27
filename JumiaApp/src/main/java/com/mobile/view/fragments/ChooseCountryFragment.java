@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
@@ -24,6 +25,8 @@ import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.objects.configs.Language;
+import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -251,15 +254,28 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         // Listener
         countryList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                countryList.setItemChecked(position, true);
+                handleOnItemClick((ListView) parent, position);
+            }
+        });
+    }
+
+    private void handleOnItemClick(final ListView countryList, final int position) {
+
+        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+
+        ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), new Runnable() {
+            @Override
+            public void run() {
                 if (selected == SHOP_NOT_SELECTED) {
                     setCountry(position);
                 } else if (position != selected) {
                     isChangeCountry = true;
                     setCountry(position);
                 }
+                countryList.setItemChecked(position, true);
             }
         });
+
     }
 
 //    @Deprecated

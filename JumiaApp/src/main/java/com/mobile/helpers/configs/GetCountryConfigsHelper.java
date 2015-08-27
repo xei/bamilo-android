@@ -44,7 +44,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
 
         //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY,countryConfigs);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY,countryConfigs);
         CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);
     }
 

@@ -14,6 +14,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.AppSharingAdapter;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -237,20 +238,12 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     private void handleOnChooseLanguageItemClick(int position) {
         if(position == POSITION_LANGUAGE){
-            DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),countryInformation.languages);
-            DialogListFragment.newInstance(this, new DialogListFragment.OnDialogListListener() {
+            new ChooseLanguageController().chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
-                public void onDialogListItemSelect(int position, String value) {
-                    countryInformation.languages.setSelected(position);
-                    CountryPersistentConfigs.saveLanguages(getActivity(), countryInformation.languages);
+                public void run() {
                     getBaseActivity().restartAppFlow();
                 }
-
-                @Override
-                public void onDismiss() {
-
-                }
-            }, "choose_language", getString(R.string.choose_language), languagesListAdapter, countryInformation.languages.getSelectedPosition()).show(getChildFragmentManager(), null);
+            });
         }
     }
 

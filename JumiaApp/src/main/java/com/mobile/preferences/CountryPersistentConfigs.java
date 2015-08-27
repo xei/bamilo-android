@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.mobile.controllers.CountrySettingsAdapter;
@@ -14,6 +13,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 
@@ -49,7 +49,7 @@ public class CountryPersistentConfigs {
         mEditor.putInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, countryConfigs.getNoDecimals());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
-        saveLanguages(mEditor, countryConfigs.getLanguages());
+//        saveLanguages(mEditor, countryConfigs.getLanguages());
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
         // GTM
@@ -143,8 +143,7 @@ public class CountryPersistentConfigs {
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         countryLanguageInformation.countryName = settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         countryLanguageInformation.countryFlag = settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null);
-        String json = settings.getString("languages_darwin", null);
-        countryLanguageInformation.languages = new Gson().fromJson(json, Languages.class);
+        countryLanguageInformation.languages = getLanguages(settings);
         return countryLanguageInformation;
     }
 
@@ -157,7 +156,7 @@ public class CountryPersistentConfigs {
         }
 
         String json = new Gson().toJson(languages);
-        mEditor.putString("languages_darwin",json);
+        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES,json);
     }
 
     public static void saveLanguages(Context context, Languages languages){
@@ -165,6 +164,11 @@ public class CountryPersistentConfigs {
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
         saveLanguages(mEditor,languages);
         mEditor.apply();
+    }
+
+    public static Languages getLanguages(SharedPreferences settings){
+        String json = settings.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null);
+        return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, Languages.class);
     }
 
 }

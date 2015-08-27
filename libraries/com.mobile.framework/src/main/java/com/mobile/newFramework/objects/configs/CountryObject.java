@@ -35,6 +35,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         this.setCountryIso("");
         this.setCountryForceHttps(false);
         this.setCountryIsLive(false);
+        languages = new Languages();
     }
 
     @Override
@@ -206,6 +207,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
         // Used only for access dev servers
         userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
+        languages.initialize(jsonObject);
         return true;
     }
 
@@ -217,6 +219,10 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public RequiredJson getRequiredJson() {
         return null;
+    }
+
+    public Languages getLanguages() {
+        return languages;
     }
 }
 
