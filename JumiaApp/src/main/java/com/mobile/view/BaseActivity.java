@@ -477,7 +477,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -1927,7 +1927,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void recoverUserDataFromBackground() {
         Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) { // && !JumiaApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials

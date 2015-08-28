@@ -20,7 +20,7 @@ public class WishList extends ArrayList<ProductMultiple> implements IJSONSeriali
      * Empty constructor
      */
     public WishList() {
-        // ...
+        super();
     }
 
     @Override
@@ -50,31 +50,4 @@ public class WishList extends ArrayList<ProductMultiple> implements IJSONSeriali
         return RequiredJson.METADATA;
     }
 
-    /*
-     * ############ PARCELABLE ############
-     */
-
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        // TODO
-//    }
-//
-//    private WishList(Parcel in){
-//        // TODO
-//    }
-//
-//    public static final Creator<WishList> CREATOR = new Creator<WishList>() {
-//        public WishList createFromParcel(Parcel in) {
-//            return new WishList(in);
-//        }
-//
-//        public WishList[] newArray(int size) {
-//            return new WishList[size];
-//        }
-//    };
 }

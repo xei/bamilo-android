@@ -15,7 +15,7 @@ import android.widget.ListView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CountryAdapter;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -353,7 +353,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void triggerGetJumiaCountries() {
-        triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
+        triggerContentEvent(new GetAvailableCountriesHelper(), null, this);
     }
 
     /*
