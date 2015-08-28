@@ -157,8 +157,8 @@
     <dimen name="teaser_product_bundle_item_width_sw320dp">190dp</dimen>
 
     <!-- BASE -->
-    <integer name="match_parent">-1</integer>
-    <integer name="wrap_content">-2</integer>
+    <item name="match_parent" type="dimen">-1</item>
+    <item name="wrap_content" type="dimen">-2</item>
 
     <!-- LOADING -->
     <dimen name="loading_width">210dp</dimen>
@@ -189,7 +189,7 @@
     <dimen name="product_detail_item_title_height">36.67dp</dimen>
 
     <!-- INNER CONTAINER -->
-    <dimen name="inner_container_width">@integer/match_parent</dimen>
+    <dimen name="inner_container_width">@dimen/match_parent</dimen>
 
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">22dp</dimen>
@@ -205,7 +205,7 @@
 
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
-    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
 
     <!-- CAMPAIGN PAGE -->
@@ -226,7 +226,7 @@
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>
     <dimen name="no_results_bottom_margin">33.33dp</dimen>
-    <dimen name="no_results_search_tips_width">@integer/match_parent</dimen>
+    <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 
     <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
@@ -265,7 +265,7 @@
     <!-- CATALOG -->
     <integer name="catalog_list_num_columns">1</integer>
     <integer name="catalog_grid_num_columns">2</integer>
-    <integer name="activate_go_top_buttom_line">6</integer>.
+    <integer name="activate_go_top_buttom_line">6</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
     <dimen name="catalog_list_item_height">111dp</dimen>
     <dimen name="catalog_grid_item_height">200dp</dimen>
@@ -297,7 +297,7 @@
     <!--  TRACK ORDER REDESIGN -->
     <dimen name="track_order_margin_small">10dp</dimen>
     <dimen name="track_order_content_height">106.66dp</dimen>
-    <dimen name="track_order_error_content_height">@integer/wrap_content</dimen>
+    <dimen name="track_order_error_content_height">@dimen/wrap_content</dimen>
 
     <dimen name="recently_viewed_button_container_height">@dimen/button_double_container_height
     </dimen>
@@ -464,5 +464,5 @@
 
     <!-- KICKOUT -->
 
-    <dimen name="kickout_box_width">@integer/wrap_content</dimen>
+    <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
 </resources>
