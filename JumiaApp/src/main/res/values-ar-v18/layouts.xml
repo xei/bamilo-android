@@ -95,4 +95,5 @@
 
     <!-- CAMPAIGNS -->
     <item name="campaign_fragment_list_item_info"                       type="layout">@layout/_def_campaign_fragment_list_item_info</item>
+    <item name="campaign_fragment_list_item_middle"                       type="layout">@layout/_def_campaign_fragment_list_item_middle</item>
 </resources>
