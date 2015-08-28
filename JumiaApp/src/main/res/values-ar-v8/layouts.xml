@@ -86,4 +86,7 @@
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
+
+    <!-- RECENTLY VIEWED -->
+    <item name="addabletocart_item"                       type="layout">@layout/_v8_addabletocart_item</item>
 </resources>
