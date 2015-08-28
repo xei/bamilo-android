@@ -2,23 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
-    android:background="@drawable/selector_listitem_highlight"
-    android:paddingTop="6dp">
+    android:background="@drawable/selector_list_item_highlight" >
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/category_name"
+        android:id="@+id/text"
+        style="@style/text_normal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_veryhuge"
-        android:ellipsize="end"
-        android:fontFamily="roboto_regular"
+        android:layout_marginRight="@dimen/margin_90px"
         android:gravity="center_vertical|right"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="Category"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_m" />
+        android:text="Inner category"
+        android:textSize="@dimen/text_form" />
 
     <View
         android:id="@+id/divider"
