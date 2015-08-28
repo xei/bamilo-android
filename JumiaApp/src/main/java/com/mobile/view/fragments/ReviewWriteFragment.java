@@ -484,27 +484,21 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     private void loadReviewAndRatingFormValues() {
         
-        ContentValues savedRatingReviewValues = new ContentValues();
+        ContentValues savedRatingReviewValues = formValues == null ? JumiaApplication.getRatingReviewValues() : formValues;
         
-        if(formValues == null){
-            savedRatingReviewValues = JumiaApplication.getRatingReviewValues();
-        } else {
-            savedRatingReviewValues = formValues;
-        }
-        
-            // Validate values
-            if(savedRatingReviewValues != null && dynamicRatingForm != null) {
-                // Get dynamic form and update
-                Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
-                while (iter.hasNext()) {
-                    DynamicFormItem item = iter.next();
-                    try {
-                        item.loadState(savedRatingReviewValues);
-                    } catch (NullPointerException e) {
-                        Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
-                    }
+        // Validate values
+        if(savedRatingReviewValues != null && dynamicRatingForm != null) {
+            // Get dynamic form and update
+            Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+                try {
+                    item.loadState(savedRatingReviewValues);
+                } catch (NullPointerException e) {
+                    Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                 }
             }
+        }
     }
 
     /**

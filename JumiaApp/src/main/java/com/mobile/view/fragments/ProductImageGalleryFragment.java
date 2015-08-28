@@ -3,6 +3,7 @@
  */
 package com.mobile.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -95,6 +96,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * Constuctor as nested
      * @param 
      */
+    @SuppressLint("ValidFragment")
     public ProductImageGalleryFragment(Boolean isNested) {
         super(IS_NESTED_FRAGMENT, R.layout.product_gallery_fragment);
     }

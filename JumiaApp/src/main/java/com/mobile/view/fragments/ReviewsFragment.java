@@ -918,7 +918,7 @@ public class ReviewsFragment extends BaseFragment {
             }
             
             LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,ReviewsFragment.RATING_TYPE_BY_LINE);
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,ReviewsFragment.RATING_TYPE_BY_LINE);
             
             typeLine.setOrientation(LinearLayout.HORIZONTAL);
             
