@@ -83,4 +83,13 @@
     <color name="kickout_background">#111111</color>
     <color name="white_95_op">#f2ffffff</color>
 
+    <!-- new colors -->
+    <color name="orange1">#f68b1e</color>
+    <color name="green1">#a3cf62</color>
+    <color name="blue1">#416998</color>
+    <color name="Black900">#202020</color>
+    <color name="Black800">#808080</color>
+    <color name="Black300">#f0f0f0</color>
+    <color name="Black">#000000</color>
+
 </resources>
