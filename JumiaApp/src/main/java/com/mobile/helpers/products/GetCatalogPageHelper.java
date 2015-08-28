@@ -56,7 +56,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         // Get page number
         mCurrentPage = catalogArguments.getAsInteger(PAGE);
         //
-        return convertContentValuesToMap(catalogArguments);
+        return super.getRequestData(args);
     }
 
     @Override

@@ -859,11 +859,7 @@ public class DynamicFormItem {
                     valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                 }
 
-                if (!valid) {
-                    result = !this.entry.getValidation().isRequired();
-                } else {
-                    result = valid;
-                }
+                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
                 break;
 
             case metadate:
@@ -871,10 +867,7 @@ public class DynamicFormItem {
 
                 valid = dialogDate.isSetOnce();
 
-                if (!valid)
-                    result = !this.entry.getValidation().isRequired();
-                else
-                    result = valid;
+                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
                 break;
             case email:
             case text:
@@ -913,7 +906,7 @@ public class DynamicFormItem {
         Iterator it = this.entry.getDateSetRating().entrySet().iterator();
         int count = 1;
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
+            it.next();
 
             float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
 

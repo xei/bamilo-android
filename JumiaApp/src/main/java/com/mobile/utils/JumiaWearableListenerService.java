@@ -100,7 +100,6 @@ public class JumiaWearableListenerService extends WearableListenerService {
                 }
                 String deepLinkUrl = countryISO + "/s/" + searchTerm;
                 Print.e(TAG, "deepLinkUrl:" + deepLinkUrl);
-                Uri data = Uri.parse(deepLinkUrl);
                 Bundle gcmBundle = new Bundle();
                 gcmBundle.putString(DeepLinkManager.DEEP_LINK_PAGE_INDICATION, deepLinkUrl);
                 Print.e(TAG, "gcmBundle:" + gcmBundle);
