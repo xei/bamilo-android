@@ -304,8 +304,8 @@ public class LocationHelper implements LocationListener {
         
         double lat = location.getLatitude();
         double lng = location.getLongitude();
-//        String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
-        String geoCountry = "CM";
+        String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
+//        String geoCountry = "CM";
         if(isCountryAvailable(geoCountry)) {
         	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
