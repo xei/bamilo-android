@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
@@ -39,7 +40,7 @@ public class ChooseLanguageController {
     }
 
     public static boolean chooseLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
-        if(languages.size() > 1) {
+        if(!CollectionUtils.isEmpty(languages) && languages.size() > 1) {
             loadLanguageDialog(fragment,languages,runnable);
             return true;
         }
