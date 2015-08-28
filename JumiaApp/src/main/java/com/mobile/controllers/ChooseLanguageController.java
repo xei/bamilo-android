@@ -18,24 +18,29 @@ import com.mobile.view.R;
  * Created by rsoares on 8/27/15.
  */
 public class ChooseLanguageController {
+
+    public static void loadLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
+        DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(fragment.getActivity(), languages);
+        DialogListFragment.newInstance(fragment, new DialogListFragment.OnDialogListListener() {
+            @Override
+            public void onDialogListItemSelect(int position, String value) {
+                languages.setSelected(position);
+                CountryPersistentConfigs.saveLanguages(fragment.getActivity(), languages);
+                if(runnable != null) {
+                    runnable.run();
+                }
+            }
+
+            @Override
+            public void onDismiss() {
+
+            }
+        }, null, fragment.getString(R.string.choose_language), languagesListAdapter, languages.getSelectedPosition()).show(fragment.getChildFragmentManager(), null);
+    }
+
     public static boolean chooseLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
         if(languages.size() > 1) {
-            DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(fragment.getActivity(), languages);
-            DialogListFragment.newInstance(fragment, new DialogListFragment.OnDialogListListener() {
-                @Override
-                public void onDialogListItemSelect(int position, String value) {
-                    languages.setSelected(position);
-                    CountryPersistentConfigs.saveLanguages(fragment.getActivity(), languages);
-                    if(runnable != null) {
-                        runnable.run();
-                    }
-                }
-
-                @Override
-                public void onDismiss() {
-
-                }
-            }, "choose_language", fragment.getString(R.string.choose_language), languagesListAdapter, languages.getSelectedPosition()).show(fragment.getChildFragmentManager(), null);
+            loadLanguageDialog(fragment,languages,runnable);
             return true;
         }
         return false;

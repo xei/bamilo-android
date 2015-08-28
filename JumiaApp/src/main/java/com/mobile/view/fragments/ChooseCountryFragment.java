@@ -260,10 +260,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void handleOnItemClick(final ListView countryList, final int position) {
-
-        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
-
-        ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (selected == SHOP_NOT_SELECTED) {
@@ -274,7 +271,15 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 }
                 countryList.setItemChecked(position, true);
             }
-        });
+        };
+
+
+        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+
+        //If the dialog didn't load means that has no more than one country
+        if(!ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), runnable)){
+            runnable.run();
+        }
 
     }
 
