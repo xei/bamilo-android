@@ -459,7 +459,5 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
             getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
         }
     }
-
-
-
+    
 }
