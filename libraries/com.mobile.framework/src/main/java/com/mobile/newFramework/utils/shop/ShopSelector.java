@@ -1,13 +1,16 @@
 package com.mobile.newFramework.utils.shop;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.objects.configs.Version;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -15,6 +18,7 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Locale;
@@ -145,13 +149,24 @@ public final class ShopSelector {
 		// Get language and country code
 		String[] languageCountry = language.split("_");
 		// Create new locale
-		Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
+		final Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
 		// Set as default
 		Locale.setDefault(locale);
 		// Create and update configuration
 		Configuration config = new Configuration();
 		config.locale = locale;
-		Resources res = context.getResources();
+		final Resources res = context.getResources();
+		DeviceInfoHelper.executeCodeBasedOnJellyBeanMr1Version(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+			@Override
+			public void highVersionCallback() {
+				res.getConfiguration().setLayoutDirection(locale);
+				Print.i(TAG, "setLocale " + res.getConfiguration() + " Layout Direction " + res.getConfiguration().getLayoutDirection());
+			}
+
+			@Override
+			public void lowerVersionCallback() {}
+		});
 		res.updateConfiguration(config, res.getDisplayMetrics());
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}
