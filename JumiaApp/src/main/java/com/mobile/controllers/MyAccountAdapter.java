@@ -67,7 +67,7 @@ public class MyAccountAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
-        View view = null;
+        View view;
         if (convertView != null)
             view = convertView;
         else
