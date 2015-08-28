@@ -283,36 +283,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
     }
 
-//    @Deprecated
-//    private void showWarningDialog(final int position) {
-//
-//        dismissDialogFragment();
-//
-//        dialog = DialogGenericFragment.newInstance(true, false,
-//                getString(R.string.nav_country),
-//                getString(R.string.nav_country_warning),
-//                getString(R.string.cancel_label),
-//                getString(R.string.yes_label),
-//                new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                         Dismiss dialog
-//                        dismissDialogFragment();
-//                         Validate click
-//                        int id = v.getId();
-//                        if (id == R.id.button1) {
-//                            getBaseActivity().onBackPressed();
-//                        } else if (id == R.id.button2) {
-//                            if(!setCountry(position)){
-//                                getBaseActivity().onBackPressed();
-//                            }
-//
-//                        }
-//                    }
-//                });
-//        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-//    }
-
     /**
      * Save the selected country
      * @param position
@@ -350,8 +320,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 TrackerDelegator.trackShopChanged();
             }
 
-//            Darwin.initialize(context, country.getCountryUrl(), null);
-//            triggerGetCountryConfigs();
             getBaseActivity().restartAppFlow();
             return true;
         }
@@ -370,10 +338,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     private void triggerGetJumiaCountries() {
         triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
-    }
-
-    private void triggerGetCountryConfigs() {
-        triggerContentEventNoLoading(new GetCountryConfigsHelper(), null, this);
     }
 
     /*
@@ -427,21 +391,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 showAvailableCountries();
                 showFragmentContentContainer();
                 break;
-            case GET_COUNTRY_CONFIGURATIONS:
-//                loadCountry();
-                CountryConfigs countryConfigs = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//                final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
-
-//                if(countryConfigs.getLanguages().size() > 1 ){
-//                    ArrayList<String> messages = new ArrayList<>();
-//                    for(int i = 0 ; i < countryConfigs.getLanguages().size();i++){
-//                        messages.add(countryConfigs.getLanguages().get(i).mLangName);
-//                    }
-//                    DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(this.getActivity(),messages);
-//                    DialogListFragment.newInstance(this,null, "choose_language", getString(R.string.choose_language), languagesListAdapter,DialogListFragment.NO_INITIAL_POSITION).show(getChildFragmentManager(), null);
-//                }
-
-                break;
             default:
                 Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
                 break;
@@ -472,9 +421,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Show retry view
                 showFragmentErrorRetry();
-                break;
-            case GET_COUNTRY_CONFIGURATIONS:
-//                loadCountry();
                 break;
             default:
                 Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
