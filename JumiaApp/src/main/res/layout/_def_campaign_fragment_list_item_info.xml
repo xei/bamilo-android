@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/campaign_info_background"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_large" >
+    android:padding="@dimen/margin_large"
+    android:layoutDirection="locale">
 
     <!-- INFO -->
 
