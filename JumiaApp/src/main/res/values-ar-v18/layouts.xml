@@ -63,7 +63,6 @@
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
-    <item name="myorders_fragment_main"                 type="layout">@layout/_def_myorders_fragment_main</item>
 
     <!-- NAVIGATION DRAWER -->
     <item name="navigation_fragment_main"               type="layout">@layout/_def_navigation_fragment_main</item>
@@ -94,6 +93,7 @@
     <item name="addabletocart_item_info"                       type="layout">@layout/_def_addabletocart_item_info</item>
 
     <!-- CAMPAIGNS -->
+    <item name="campaign_fragment_main"                       type="layout">@layout/_v18_campaign_fragment_main</item>
     <item name="campaign_fragment_list_item_info"                       type="layout">@layout/_def_campaign_fragment_list_item_info</item>
     <item name="campaign_fragment_list_item_middle"                       type="layout">@layout/_def_campaign_fragment_list_item_middle</item>
     <item name="campaign_fragment_list_item_timer"                       type="layout">@layout/_def_campaign_fragment_list_item_timer</item>
@@ -107,8 +107,8 @@
 <item name="reviews_fragment_rating_samlltype_item"                       type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
 <item name="product_offers_main"                       type="layout">@layout/_def_product_offers_main</item>
 <item name="campaign_spinner_item"                       type="layout">@layout/_def_campaign_spinner_item</item>
-<item name="form_checkbox"                       type="layout">@layout/_def_form_checkbox</item>
-<item name="login_remember_checkbox"                       type="layout">@layout/_def_login_remember_checkbox</item>
+<item name="form_checkbox"                       type="layout">@layout/_v18_form_checkbox</item>
+<item name="login_remember_checkbox"                       type="layout">@layout/_v18_login_remember_checkbox</item>
 <item name="form_spinner_dropdown_item"                       type="layout">@layout/_def_form_spinner_dropdown_item</item>
 <item name="dialog_filter_bottom_buttons"                       type="layout">@layout/_def_dialog_filter_bottom_buttons</item>
 <item name="order_history_item"                       type="layout">@layout/_def_order_history_item</item>
