@@ -61,6 +61,7 @@
     <item name="catalog_fragment_no_result"             type="layout">@layout/_def_catalog_fragment_no_result</item>
     <item name="catalog_item_grid_rounded"              type="layout">@layout/_def_catalog_item_grid_rounded</item>
     <item name="catalog_item_list_rounded"              type="layout">@layout/_def_catalog_item_list_rounded</item>
+    <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
     <!-- INNER SHOP -->
     <item name="shop_fragment_main"                     type="layout">@layout/_def_shop_fragment_main</item>
