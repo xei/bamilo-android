@@ -80,6 +80,7 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
     <item name="myorders_fragment_main"                 type="layout">@layout/_def_myorders_fragment_main</item>
+    <item name="order_history_main"                     type="layout">@layout/_def_order_history_main</item>
 
     <!-- HOME -->
     <item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>
