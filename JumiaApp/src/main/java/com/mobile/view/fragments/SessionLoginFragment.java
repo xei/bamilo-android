@@ -518,7 +518,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific) ||
                     getResources().getBoolean(R.bool.is_shop_specific) ||
-                    ShopSelector.isRtl() ){
+                    ShopSelector.isRtlShop() ){
                 getBaseActivity().hideActionBarTitle();
                 getBaseActivity().setTitle(R.string.login_label);
             } else {

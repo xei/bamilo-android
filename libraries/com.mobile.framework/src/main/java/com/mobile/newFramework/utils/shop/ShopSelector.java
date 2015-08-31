@@ -51,6 +51,8 @@ public final class ShopSelector {
 
 	private static boolean isRtlShop;
 
+	private static boolean isLayoutRtl;
+
 	/**
 	 * Hidden default constructor for utility class.
 	 */
@@ -77,6 +79,8 @@ public final class ShopSelector {
 		CurrencyFormatter.initialize(context, currencyCode);
 		// Rtl flag
 		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
+
 		// Trackers
 		AdjustTracker.startup(context);
 		AdjustTracker.initializeAdjust(context);
@@ -96,6 +100,7 @@ public final class ShopSelector {
 		AigHttpClient.getInstance(context);
 		// Rtl flag
 		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
 	}
 
 	/**
@@ -108,6 +113,7 @@ public final class ShopSelector {
 		AigHttpClient.getInstance(context);
 		// Rtl flag
 		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
 	}
 
 	/**
@@ -129,6 +135,7 @@ public final class ShopSelector {
 		CurrencyFormatter.initialize(context, currencyCode);
 		// Rtl flag
 		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
 	}
 	
 	/**
@@ -172,6 +179,10 @@ public final class ShopSelector {
 	}
 
 	public static boolean isRtl() {
+		return isLayoutRtl;
+	}
+
+	public static boolean isRtlShop(){
 		return isRtlShop;
 	}
 	

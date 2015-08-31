@@ -454,7 +454,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtl()) {
+        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtlShop()) {
             // Show the application name in the action bar
             setActionBarTitle(R.string.app_name);
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
