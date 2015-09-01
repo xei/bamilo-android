@@ -5,4 +5,5 @@
     <item type="drawable" name="img_emptycart">@drawable/img_emptycart_rtl</item>
     <item type="drawable" name="img_stepinactive">@drawable/img_stepinactive_rtl</item>
     <item type="drawable" name="img_stepactive">@drawable/img_stepactive_rtl</item>
+    <item type="drawable" name="arrow_side">@drawable/arrow_side_rtl</item>
 </resources>
