@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- ########################## DEF PORTRAIT ########################## -->
@@ -81,7 +82,8 @@
 
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
-
+    <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
+    
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
 
@@ -157,5 +159,3 @@
 <item name="simple_email_notification_option"                       type="layout">@layout/_def_simple_email_notification_option</item>
 
 </resources>
-
-
