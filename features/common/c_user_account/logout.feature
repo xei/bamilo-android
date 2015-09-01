@@ -1,4 +1,4 @@
-@logout @Calabash_Tests @f_pre_1.9
+@logout @Calabash_Tests @f_pre_1.9  @f_2.7
 Feature: Logout feature
 	
 Background:
@@ -15,6 +15,7 @@ Background:
 * I enter a valid username
 * I wait for 1 seconds
 * I enter the password
+* I swipe down moving with 2 steps
 * I wait for 2 seconds
 * I press Login Button
 * I wait to see the home
