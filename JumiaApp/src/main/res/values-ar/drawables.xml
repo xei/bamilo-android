@@ -6,4 +6,5 @@
     <item type="drawable" name="img_stepinactive">@drawable/img_stepinactive_rtl</item>
     <item type="drawable" name="img_stepactive">@drawable/img_stepactive_rtl</item>
     <item type="drawable" name="arrow_side">@drawable/arrow_side_rtl</item>
+    <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
 </resources>
