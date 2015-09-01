@@ -44,7 +44,7 @@ public class SuperGetBillingForm implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
             // Get json object
-            JSONObject jsonForm = jsonObject.getJSONObject(RestConstants.JSON_BILLING_FORM_TAG);
+            JSONObject jsonForm = jsonObject.getJSONObject(RestConstants.JSON_ADDRESSES_TAG);
             JSONObject jsonList = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_TAG).getJSONObject(RestConstants.JSON_ADDRESS_LIST_TAG);
             // Create form
             form = new Form();
