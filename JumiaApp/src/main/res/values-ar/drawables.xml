@@ -2,4 +2,5 @@
 <resources>
     <item type="drawable" name="img_instructions_right_tap">@drawable/img_instructions_right_tap_rtl</item>
     <item type="drawable" name="img_instructions_tap">@drawable/img_instructions_tap_rtl</item>
+    <item type="drawable" name="img_emptycart">@drawable/img_emptycart_rtl</item>
 </resources>
