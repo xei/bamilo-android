@@ -539,3 +539,8 @@ Then /^I press my order history$/ do
   #touch("* {text CONTAINS '"+@my_order_history+"'}")
   #touch("* marked:'"+@orders_container_title+"'")
 end
+
+Then /^I press Facebook Login Button$/ do
+  wait_for_elements_exist(["* marked:'"+@facebook_text_view.to_s+"'"],:timeout => 30)
+  tap_when_element_exists("* marked:'"+@facebook_text_view.to_s+"'")
+end

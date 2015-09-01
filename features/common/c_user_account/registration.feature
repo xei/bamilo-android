@@ -3,7 +3,7 @@ Feature: Registration feature
 
 Background: 
 * I call the variables
-    
+
 @register_e
 Scenario: I try to register with empty fields
 * I select the country
