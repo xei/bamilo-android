@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/my_account_list_item"/>
+    <include
+        layout="@layout/my_account_list_item"/>
 
     <ImageView
         android:id="@+id/flag"
