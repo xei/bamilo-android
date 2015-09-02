@@ -224,5 +224,9 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     public Languages getLanguages() {
         return languages;
     }
+
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
+    }
 }
 
