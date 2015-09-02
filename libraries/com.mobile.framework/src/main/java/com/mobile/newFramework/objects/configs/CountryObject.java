@@ -207,11 +207,11 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
         // Used only for access dev servers
         userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
-//        try {
-//            languages.initialize(jsonObject);
-//        }catch (JSONException ex){
-//            Print.e(ex.getMessage());
-//        }
+        try {
+            languages = new Languages(jsonObject);
+        }catch (JSONException ex){
+            Print.e(ex.getMessage());
+        }
 
         return true;
     }
