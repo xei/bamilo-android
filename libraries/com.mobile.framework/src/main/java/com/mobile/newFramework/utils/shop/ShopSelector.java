@@ -152,7 +152,7 @@ public final class ShopSelector {
 	 * Sets the locale for the app by using the language code.
 	 */
 	private static void setLocale(Context context, String language) {
-		//Print.i(TAG, "ON SET LOCALE: language " + language);
+		Print.i(TAG, "ON SET LOCALE: language " + language);
 		// Get language and country code
 		String[] languageCountry = language.split("_");
 		// Create new locale
