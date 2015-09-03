@@ -122,7 +122,7 @@ public class CountryPersistentConfigs {
         return sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE);
     }
 
-    public static void writePreferences(SharedPreferences.Editor editor, CountryObject countryObject, boolean saveLanguages){
+    public static void writePreferences(SharedPreferences.Editor editor, CountryObject countryObject){
 
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, countryObject.getCountryName());
@@ -132,9 +132,27 @@ public class CountryPersistentConfigs {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
         editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, countryObject.getUserAgentToAccessDevServers());
-        if(saveLanguages){
-            saveLanguages(editor,countryObject.getLanguages());
-        }
+    }
+
+    public static void eraseCountryPreferences(Context context){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = settings.edit();
+        eraseCountryPreferences(mEditor);
+        mEditor.apply();
+    }
+
+    public static void eraseCountryPreferences(SharedPreferences.Editor editor){
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_ID);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_NAME);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_URL);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_FLAG);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_ISO);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE);
+        editor.remove(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME);
     }
 
     public static CountryObject getCountryFromPreferences(Context context){

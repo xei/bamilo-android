@@ -64,9 +64,4 @@ public class ChooseLanguageController {
         return languages;
     }
 
-    public static boolean toSaveLanguages(Context context, CountryObject countryObject){
-        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return (!countryObject.getCountryIso().toLowerCase().equals(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, "")));
-    }
-
 }
