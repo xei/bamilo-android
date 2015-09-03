@@ -129,7 +129,7 @@ public class CountryPersistentConfigs {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
         editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, countryObject.getUserAgentToAccessDevServers());
-        saveLanguages(editor, countryObject.getLanguages());
+//        saveLanguages(editor, countryObject.getLanguages());
     }
 
     public static CountryObject getCountryFromPreferences(Context context){
