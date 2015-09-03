@@ -260,27 +260,27 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void handleOnItemClick(final ListView countryList, final int position) {
+        countryList.setItemChecked(position, true);
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                isChangeCountry = true;
+                setCountry(position);
+            }
+        };
+
+        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+
+        //If the dialog didn't load means that has no more than one country
+        if(!ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), runnable)){
                 if (selected == SHOP_NOT_SELECTED) {
                     setCountry(position);
                 } else if (position != selected) {
                     isChangeCountry = true;
                     setCountry(position);
                 }
-                countryList.setItemChecked(position, true);
-            }
-        };
-
-
-        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
-
-        //If the dialog didn't load means that has no more than one country
-        if(!ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), runnable)){
-            runnable.run();
         }
-
     }
 
     /**
@@ -302,7 +302,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Set new country
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            CountryPersistentConfigs.writePreferences(editor, country);
+            CountryPersistentConfigs.writePreferences(editor, country, ChooseLanguageController.toSaveLanguages(context, country));
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
             /**
              * Save the Selected Country Configs

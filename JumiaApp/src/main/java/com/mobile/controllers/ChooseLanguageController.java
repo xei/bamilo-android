@@ -22,13 +22,16 @@ public class ChooseLanguageController {
 
     public static void loadLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
         DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(fragment.getActivity(), languages);
+        final int defaultPosition = languages.getSelectedPosition();
         DialogListFragment.newInstance(fragment, new DialogListFragment.OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int position, String value) {
-                languages.setSelected(position);
-                CountryPersistentConfigs.saveLanguages(fragment.getActivity(), languages);
-                if(runnable != null) {
-                    runnable.run();
+                if(defaultPosition != position) {
+                    languages.setSelected(position);
+                    CountryPersistentConfigs.saveLanguages(fragment.getActivity(), languages);
+                    if (runnable != null) {
+                        runnable.run();
+                    }
                 }
             }
 
@@ -36,7 +39,7 @@ public class ChooseLanguageController {
             public void onDismiss() {
 
             }
-        }, null, fragment.getString(R.string.choose_language), languagesListAdapter, languages.getSelectedPosition()).show(fragment.getChildFragmentManager(), null);
+        }, null, fragment.getString(R.string.choose_language), languagesListAdapter, defaultPosition).show(fragment.getChildFragmentManager(), null);
     }
 
     public static boolean chooseLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
@@ -59,6 +62,11 @@ public class ChooseLanguageController {
             languages = countryObject.getLanguages();
         }
         return languages;
+    }
+
+    public static boolean toSaveLanguages(Context context, CountryObject countryObject){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return (!countryObject.getCountryIso().toLowerCase().equals(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, "")));
     }
 
 }
