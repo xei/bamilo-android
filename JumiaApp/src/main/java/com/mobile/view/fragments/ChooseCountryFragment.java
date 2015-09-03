@@ -273,19 +273,21 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             }
         };
 
-
-
         //If the dialog didn't load means that has no more than one country
         if(!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)){
                 if (selected == SHOP_NOT_SELECTED) {
-                    CountryPersistentConfigs.eraseCountryPreferences(context);
-                    setCountry(position);
+                    setCountry(countryObject, position);
                 } else if (position != selected) {
-                    CountryPersistentConfigs.eraseCountryPreferences(context);
                     isChangeCountry = true;
-                    setCountry(position);
+                    setCountry(countryObject,position);
                 }
         }
+    }
+
+    protected boolean setCountry(CountryObject countryObject, int position){
+        CountryPersistentConfigs.eraseCountryPreferences(context);
+        CountryPersistentConfigs.saveLanguages(context,countryObject.getLanguages());
+        return setCountry(position);
     }
 
     /**
