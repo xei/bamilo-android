@@ -1,0 +1,49 @@
+package com.mobile.newFramework.objects.catalog.filters;
+
+import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+/**
+ * Created by rsoares on 9/3/15.
+ */
+public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSerializable {
+
+    public CatalogFilters(){}
+
+    public CatalogFilters(JSONObject jsonObject) throws JSONException {
+        this();
+        initialize(jsonObject);
+    }
+
+    @Override
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
+
+        for(int i = 0; i< filtersArray.length();i++){
+            add(getCatalogType(filtersArray.getJSONObject(i)));
+        }
+        return true;
+    }
+
+    private CatalogFilter getCatalogType(JSONObject jsonObject) throws JSONException {
+        String id = jsonObject.getString(RestConstants.ID);
+        return !id.equals(CatalogFilter.RATING) ? new CatalogFilter(jsonObject): new CatalogRatingFilter(jsonObject);
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
+}

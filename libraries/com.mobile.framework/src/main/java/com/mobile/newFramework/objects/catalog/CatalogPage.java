@@ -7,6 +7,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -46,6 +47,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private Banner mCatalogBanner;
 
     private String mSearchTerm;
+
+    private com.mobile.newFramework.objects.catalog.filters.CatalogFilters filters;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -115,6 +118,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 mFilters.add(catalogFilter);
             }
         }*/
+
+        filters = new CatalogFilters(metadataObject);
 
         //Get Banner
         if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
