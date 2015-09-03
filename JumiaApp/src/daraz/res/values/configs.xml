@@ -3,6 +3,7 @@
 
     <!-- APP -->
     <item name="is_daraz_specific" type="bool">true</item>
+    <bool name="rtl_enabled">true</bool>
 
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
