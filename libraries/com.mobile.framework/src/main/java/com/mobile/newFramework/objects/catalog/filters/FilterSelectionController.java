@@ -5,19 +5,25 @@ import android.util.SparseArray;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by rsoares on 9/4/15.
  */
 public class FilterSelectionController {
 
-    private CatalogFilters catalogFilters;
+    private ArrayList<CatalogFilter> catalogFilters;
     private Object[] initialValues;
 
-    public FilterSelectionController(CatalogFilters catalogFilters){
+    public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters){
         this.catalogFilters = catalogFilters;
         initialValues = new Object[catalogFilters.size()];
     }
 
+    /**
+     * Go to initial state of filters.
+     *
+     */
     public void goToInitialValues(){
         for(int i = 0; i < initialValues.length; i++){
 
@@ -38,6 +44,11 @@ public class FilterSelectionController {
         }
     }
 
+    /**
+     * Add catalog filter to initial filter values
+     *
+     * @param position
+     */
     public void addToInitialValues(final int position){
 
         if(initialValues[position] == null) {
@@ -75,4 +86,29 @@ public class FilterSelectionController {
 
         }
     }
+
+    /**
+     * Init all filter values which are not initialized yet.
+     *
+     */
+    public void initAllInitialFilterValues(){
+
+        for(int i = 0; i < initialValues.length; i++){
+            // If the position is null, means that initial values of the filter is not initialized yet
+            if(initialValues[i] == null){
+                addToInitialValues(i);
+            }
+        }
+    }
+
+    /**
+     * Clean all saved values from filters
+     *
+     */
+    public void cleanAllFilters(){
+        for (CatalogFilter filter : catalogFilters) {
+            filter.cleanFilter();
+        }
+    }
+
 }

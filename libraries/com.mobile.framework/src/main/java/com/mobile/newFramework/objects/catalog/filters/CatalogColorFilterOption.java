@@ -17,11 +17,19 @@ public class CatalogColorFilterOption extends CatalogCheckFilterOption {
         initialize(jsonObject);
     }
 
-    protected String hexValue;
+    private String hexValue;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         hexValue = jsonObject.getString(RestConstants.JSON_HEX_VALUE_TAG);
         return super.initialize(jsonObject);
+    }
+
+    public String getHexValue() {
+        return hexValue;
+    }
+
+    public void setHexValue(String hexValue) {
+        this.hexValue = hexValue;
     }
 }

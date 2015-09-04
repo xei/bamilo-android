@@ -33,6 +33,12 @@ public class CatalogPriceFilter extends CatalogFilter{
         optionType = CatalogPriceFilterOption.class;
     }
 
+    @Override
+    public void cleanFilter() {
+        option.setRangeMin(option.getRangeMin());
+        option.setRangeMax(option.getRangeMax());
+    }
+
     public CatalogPriceFilterOption getOption() {
         return option;
     }

@@ -5,4 +5,6 @@ package com.mobile.newFramework.objects.catalog.filters;
  */
 public interface MultiFilterOptionService extends FilterOptionService {
     public void setSelected(boolean selected);
+    public String getLabel();
+    public boolean isSelected();
 }

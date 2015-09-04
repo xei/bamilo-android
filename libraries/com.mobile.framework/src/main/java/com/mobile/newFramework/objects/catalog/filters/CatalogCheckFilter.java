@@ -47,6 +47,13 @@ public class CatalogCheckFilter extends CatalogFilter{
         optionType = (!id.equals(COLOR)) ? CatalogCheckFilterOption.class : CatalogColorFilterOption.class;
     }
 
+    @Override
+    public void cleanFilter() {
+        for (int i = 0; i < selectedFilterOptions.size(); i++)
+            selectedFilterOptions.valueAt(i).setSelected(false);
+        this.selectedFilterOptions.clear();
+    }
+
     public ArrayList<MultiFilterOptionService> getFilterOptions() {
         return filterOptions;
     }

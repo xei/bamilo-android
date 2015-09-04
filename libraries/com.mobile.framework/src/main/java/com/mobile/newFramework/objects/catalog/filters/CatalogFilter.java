@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -10,7 +13,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public abstract class CatalogFilter implements IJSONSerializable {
+public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
@@ -84,5 +87,17 @@ public abstract class CatalogFilter implements IJSONSerializable {
 
     public Class getOptionType() {
         return optionType;
+    }
+
+    public abstract void cleanFilter();
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

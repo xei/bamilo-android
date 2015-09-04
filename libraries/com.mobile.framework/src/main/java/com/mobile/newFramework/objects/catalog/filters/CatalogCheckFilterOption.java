@@ -49,4 +49,14 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    @Override
+    public String getLabel() {
+        return label;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
 }

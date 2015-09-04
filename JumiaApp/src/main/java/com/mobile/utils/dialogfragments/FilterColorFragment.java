@@ -14,6 +14,9 @@ import android.widget.ListView;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -29,6 +32,8 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
     private static final String TAG = FilterColorFragment.class.getSimpleName();
 
     private FilterColorOptionArrayAdapter mOptionArray;
+
+    private CatalogCheckFilter mFilter;
 
     /**
      * 
@@ -53,6 +58,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mFilter = (CatalogCheckFilter)mCatalogFilter;
     }
     
     /*
@@ -73,15 +79,15 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
         
         // Get multi selection option
-        allowMultiSelection = mCatalogFilter.isMulti();
+        allowMultiSelection = mFilter.isMulti();
         Print.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
-        if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
+        if(mFilter.getSelectedFilterOptions().size()>0) loadSelectedItems();
         else Print.i(TAG, "PRE SELECTION IS EMPTY");
         
         // Title
-        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mCatalogFilter.getName());
+        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mFilter.getName());
         // Back button
         view.findViewById(mBackButtonId).setOnClickListener(this);
         // Clear button
@@ -93,7 +99,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         // Filter list
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
         // Get filter options
-        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mCatalogFilter.getFilterOptions());
+        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mFilter.getFilterOptions());
         // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }
@@ -128,7 +134,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         } else if(id == mDoneButtonId) {
             Print.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
             // Save the current selection
-            mCatalogFilter.setSelectedOption(mCurrentSelectedOptions);
+            mFilter.setSelectedFilterOptions(mCurrentSelectedOptions);
             // Goto back
             mParent.allowBackPressed();
         }
@@ -156,11 +162,11 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        CatalogFilterOption option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
         if( option == null) {
             Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
             Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -185,7 +191,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
         }
     }
 
@@ -195,13 +201,13 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      * @author sergiopereira
      */
     private void loadSelectedItems(){
-        Print.d(TAG, "PRE SELECTION SIZE: " + mCatalogFilter.getSelectedOption().size());
+        Print.d(TAG, "PRE SELECTION SIZE: " + mFilter.getSelectedFilterOptions().size());
         // Copy all selected items
-        for (int i = 0; i < mCatalogFilter.getSelectedOption().size(); i++) {
+        for (int i = 0; i < mFilter.getSelectedFilterOptions().size(); i++) {
             // Get position
-            int position = mCatalogFilter.getSelectedOption().keyAt(i);
+            int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            CatalogFilterOption option = mCatalogFilter.getSelectedOption().get(position);
+            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
@@ -214,11 +220,11 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      * @author sergiopereira
      *
      */
-     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> {
+     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> {
             
         private static int layout = R.layout.dialog_list_sub_item_2;
 
-        public FilterColorOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
+        public FilterColorOptionArrayAdapter(Context context, List<MultiFilterOptionService> objects) {
             super(context, layout, objects);
         }
 
@@ -229,16 +235,19 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            CatalogFilterOption option = getItem(position);
-            // Validate current view
-            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
-            // Set color box
-            convertView.findViewById(R.id.dialog_item_color_box).setBackgroundColor(Color.parseColor(option.getHex()));
-            convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
-            // Set title
-            ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
-            // Set check box
-            ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
+            MultiFilterOptionService option = getItem(position);
+            if(option instanceof CatalogColorFilterOption){
+                // Validate current view
+                if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
+                // Set color box
+                convertView.findViewById(R.id.dialog_item_color_box).setBackgroundColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
+                convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
+                // Set title
+                ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
+                // Set check box
+                ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
+            }
+
             // Return the filter view
             return convertView;
         }
