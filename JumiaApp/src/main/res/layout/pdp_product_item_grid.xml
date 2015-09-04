@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/line_separator"
+    >
+
+    <include
+        android:id="@+id/image_loadable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        layout="@layout/image_loadable" />
+
+    <!-- this will have later
+
+    <ImageView
+        android:id="@+id/image_is_favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="false"
+        android:padding="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/catalog_item_vertical_padding"
+        android:src="@drawable/btn_addfavourites" />
+        -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_below="@id/image_loadable"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIKE"
+            />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txTitle"
+            style="@style/Header"
+            android:text="DESCRIPTION"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_price"
+            style="@style/Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RS 00"
+            />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
