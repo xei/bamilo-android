@@ -288,6 +288,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private LinearLayout relatedProductsLayout; //related products
 
+    private LinearLayout comboProductsLayout; //comboSection
+
+
     //buttons
 
     private ImageButton imBtShare;
@@ -627,6 +630,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         otherVariationsLayout = (LinearLayout)view.findViewById(R.id.OtherVariationsSection);   //other variations
 
+        comboProductsLayout  = (LinearLayout)view.findViewById(R.id.CombosSection);   //comboSection
+        comboProductsLayout.setVisibility(View.GONE);   //default
+
         mPDVContainer = (LinearLayout) view.findViewById(R.id.pdp_info);
 
         //buttons
@@ -827,14 +833,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             //added: load headers:
             TextView txhTitle = (TextView) (sellerView.findViewById(R.id.HeaderSection)).findViewById(R.id.txTitle);
             txhTitle.setText(getResources().getString(R.string.seller_info));
+
+            mSellerName = (TextView) sellerView.findViewById(R.id.txSellerName);
             mSellerName.setText(mCompleteProduct.getSeller().getName());
             String rating = getString(R.string.string_ratings).toLowerCase();
             if (mCompleteProduct.getSeller().getRatingCount() == 1)
                 rating = getString(R.string.string_rating).toLowerCase();
+
+            mSellerRatingValue = (TextView) sellerView.findViewById(R.id.seller_rating_bar_rating_count);
             mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
+
+            mSellerRating = (RatingBar) sellerView.findViewById(R.id.seller_rating_bar);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
             //
-            int visibility = View.GONE;
+        //    int visibility = View.GONE;
             // TODO placeholder
             if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
                     mCompleteProduct.getSimples().get(0).getMinDeliveryTime() > 0 &&
@@ -842,12 +854,23 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //
                 String min = "" + mCompleteProduct.getSimples().get(0).getMinDeliveryTime();
                 String max = "" + mCompleteProduct.getSimples().get(0).getMaxDeliveryTime();
-                mSellerDeliveryTime.setText(min + " - " + max + " " + getString(R.string.product_delivery_days));
-                visibility = View.VISIBLE;
+
+                //get delivery time section and change content
+                LinearLayout delliverySection = (LinearLayout) sellerView.findViewById(R.id.deliverSection);
+                TextView txDeliverTime = (TextView) delliverySection.findViewById(R.id.txDeliver);
+                txDeliverTime.setText(getResources().getString(R.string.delivery_time1)+":");
+
+                mSellerDeliveryTime = (TextView) delliverySection.findViewById(R.id.txDeliverTimeContent);
+                mSellerDeliveryTime.setText(min + " - " + max + " " + getResources().getString(R.string.product_delivery_days));
+
+                delliverySection.setVisibility(View.VISIBLE);
+
+            //    visibility = View.VISIBLE;
             }
-            mSellerDeliveryContainer.setVisibility(visibility);
+       //     mSellerDeliveryContainer.setVisibility(visibility);
         } else {
-            sellerView.setVisibility(View.GONE);
+            if(sellerView != null)
+                sellerView.setVisibility(View.GONE);
         }
     }
 
@@ -2059,14 +2082,29 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         });*/
 
         //apires: 1 combo/bundle, later will be a list of combos
+        buildComboSection(bundle);
+
+    }
+
+
+    //added apires: build combo section if has bundles
+    private void buildComboSection(BundleList p)
+    {
+        if(p == null)
+        {
+            if (comboProductsLayout != null) {
+                comboProductsLayout.setVisibility(View.GONE);
+                return;
+            }
+        }
 
         //load header
-        LinearLayout headerCombo = (LinearLayout)mPDVContainer.findViewById(R.id.ComboHeaderSection);
+        LinearLayout headerCombo = (LinearLayout)comboProductsLayout.findViewById(R.id.ComboHeaderSection);
         TextView comboHeaderTitle = (TextView) headerCombo.findViewById(R.id.txTitle);
         comboHeaderTitle.setText("COMBOS");
 
 
-        ArrayList<ProductBundle> bundleProducts = bundle.getBundleProducts();
+        ArrayList<ProductBundle> bundleProducts = p.getBundleProducts();
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count =0;
 
@@ -2093,7 +2131,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //opens bundle page here
             }
         });
-
+        comboProductsLayout.setVisibility(View.VISIBLE);
 
 
     }
