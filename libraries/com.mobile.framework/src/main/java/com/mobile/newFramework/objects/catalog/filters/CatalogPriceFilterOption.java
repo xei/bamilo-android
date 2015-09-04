@@ -10,7 +10,13 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public class CatalogPriceFilterOption implements IJSONSerializable, FilterOptionService {
+public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionService{
+
+    private int min;
+    private int max;
+    private int interval;
+    private int rangeMin;
+    private int rangeMax;
 
     public CatalogPriceFilterOption(){}
 
@@ -19,9 +25,14 @@ public class CatalogPriceFilterOption implements IJSONSerializable, FilterOption
         initialize(jsonObject);
     }
 
-    protected int min;
-    protected int max;
-    protected int interval;
+    public CatalogPriceFilterOption(CatalogPriceFilterOption priceFilterOption){
+        this.min = priceFilterOption.min;
+        this.max = priceFilterOption.max;
+        this.interval = priceFilterOption.interval;
+        this.rangeMin = priceFilterOption.rangeMin;
+        this.rangeMax = priceFilterOption.rangeMax;
+    }
+
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         min = jsonObject.getInt(RestConstants.JSON_MIN_TAG);
@@ -38,5 +49,51 @@ public class CatalogPriceFilterOption implements IJSONSerializable, FilterOption
     @Override
     public RequiredJson getRequiredJson() {
         return null;
+    }
+
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public int getRangeMin() {
+        return rangeMin;
+    }
+
+    public void setRangeMin(int rangeMin) {
+        this.rangeMin = rangeMin;
+    }
+
+    public int getRangeMax() {
+        return rangeMax;
+    }
+
+    public void setRangeMax(int rangeMax) {
+        this.rangeMax = rangeMax;
+    }
+
+    @Override
+    public SingleFilterOptionService clone() {
+        return new CatalogPriceFilterOption(this);
     }
 }

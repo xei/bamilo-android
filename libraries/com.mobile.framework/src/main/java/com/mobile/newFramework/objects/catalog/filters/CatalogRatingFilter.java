@@ -8,7 +8,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public class CatalogRatingFilter extends CatalogFilter{
+public class CatalogRatingFilter extends CatalogCheckFilter{
 
     public CatalogRatingFilter(){}
 
@@ -26,5 +26,10 @@ public class CatalogRatingFilter extends CatalogFilter{
         min = starsSize.getInt(RestConstants.JSON_MIN_TAG);
         max = starsSize.getInt(RestConstants.JSON_MAX_TAG);
         return super.initialize(jsonObject);
+    }
+
+    @Override
+    protected void setOptionType(String id) {
+        optionType = CatalogRatingFilterOption.class;
     }
 }

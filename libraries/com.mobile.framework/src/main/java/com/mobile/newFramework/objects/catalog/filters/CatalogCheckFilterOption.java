@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public class CatalogCheckFilterOption implements IJSONSerializable, FilterOptionService {
+public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterOptionService {
 
     public CatalogCheckFilterOption(){}
 
@@ -23,6 +23,8 @@ public class CatalogCheckFilterOption implements IJSONSerializable, FilterOption
     protected String label;
     protected String val;
     protected int productsCount;
+
+    protected boolean selected;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
@@ -41,5 +43,10 @@ public class CatalogCheckFilterOption implements IJSONSerializable, FilterOption
     @Override
     public RequiredJson getRequiredJson() {
         return null;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
