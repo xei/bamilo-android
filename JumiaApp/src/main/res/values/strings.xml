@@ -383,4 +383,9 @@
     <!-- NEW 2.7 -->
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
+    <string name="see_other_variations">See other variations</string>
+    <string name="be_first_rate">be the first to rate</string>
+    <string name="seller_info">SELLER INFORMATION</string>
+    <string name="read_more">Read More</string>
+    <string name="more_specifications">More Specifications</string>
 </resources>
