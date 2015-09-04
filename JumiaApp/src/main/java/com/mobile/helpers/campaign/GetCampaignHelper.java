@@ -33,7 +33,10 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = super.getRequestData(args);
+        if(data == null){
+            data = new HashMap<>();
+        }
         data.put(CAMPAIGN_TAG, args.getString(CAMPAIGN_TAG));
         return data;
     }
