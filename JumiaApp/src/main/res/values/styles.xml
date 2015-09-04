@@ -483,6 +483,23 @@
         <item name="android:layoutDirection">ltr</item>
     </style>
 
+    <style name="discount_percentage2">
+        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width
+        </item>
+        <item name="android:layout_height">
+            @dimen/product_list_item_discount_percentage_image_height
+        </item>
+        <item name="android:background">@drawable/badge_discount</item>
+        <item name="android:textColor">@color/orange1</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:text">-99%</item>
+        <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+        <item name="android:layoutDirection">ltr</item>
+    </style>
+
     <!-- TEXT STYLES -->
 
     <style name="text_regular">
