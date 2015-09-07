@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.google.gson.Gson;
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -49,6 +52,11 @@ public class CountryPersistentConfigs {
         mEditor.putInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, countryConfigs.getNoDecimals());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
+
+        //Save languages only if there isn't any yet saved
+        if(TextUtils.isEmpty(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null))){
+            saveLanguages(mEditor,countryConfigs.getLanguages());
+        }
 //        saveLanguages(mEditor, countryConfigs.getLanguages());
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
@@ -115,6 +123,7 @@ public class CountryPersistentConfigs {
     }
 
     public static void writePreferences(SharedPreferences.Editor editor, CountryObject countryObject){
+
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, countryObject.getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, countryObject.getCountryUrl());
@@ -123,7 +132,27 @@ public class CountryPersistentConfigs {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
         editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, countryObject.getUserAgentToAccessDevServers());
-        saveLanguages(editor,countryObject.getLanguages());
+    }
+
+    public static void eraseCountryPreferences(Context context){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = settings.edit();
+        eraseCountryPreferences(mEditor);
+        mEditor.apply();
+    }
+
+    public static void eraseCountryPreferences(SharedPreferences.Editor editor){
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_ID);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_NAME);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_URL);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_FLAG);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_ISO);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE);
+        editor.remove(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE);
+        editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME);
     }
 
     public static CountryObject getCountryFromPreferences(Context context){
@@ -150,14 +179,16 @@ public class CountryPersistentConfigs {
 
     private static void saveLanguages(SharedPreferences.Editor mEditor, Languages languages){
         // Languages
-        Language language = languages.getSelectedLanguage();
-        if(language != null) {
-            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.getLangCode());
-            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.getLangName());
-        }
+        if(CollectionUtils.isNotEmpty(languages)) {
+            Language language = languages.getSelectedLanguage();
+            if (language != null) {
+                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, language.getLangCode());
+                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, language.getLangName());
+            }
 
-        String json = new Gson().toJson(languages);
-        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES,json);
+            String json = new Gson().toJson(languages);
+            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, json);
+        }
     }
 
     public static void saveLanguages(Context context, Languages languages){

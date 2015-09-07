@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
 	public static final String _COUNTRY_ISO = "country_iso";
 	public static final String _COUNTRY_FORCE_HTTPS = "country_force_https";
 	public static final String _COUNTRY_IS_LIVE = "country_is_live";
+	public static final String _COUNTRY_LANGUAGES = "country_languages";
 	
 	/*
 	 * (non-Javadoc)
@@ -63,7 +67,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
                 _COUNTRY_FLAG +     " TEXT," +
                 _COUNTRY_ISO +      " TEXT," + 
                 _COUNTRY_FORCE_HTTPS +      " INTEGER," +
-                _COUNTRY_IS_LIVE +      " INTEGER" +
+                _COUNTRY_IS_LIVE +      " INTEGER," +
+				_COUNTRY_LANGUAGES + " TEXT" +
                  ")";
     }
     
@@ -74,7 +79,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
     /**
      * Insert a Country into Country Configurations Table
      */
-    public static void insertCountry(SQLiteDatabase db, String name, String url, String flag, String iso, boolean force_https, boolean is_live){
+    public static void insertCountry(SQLiteDatabase db, String name, String url, String flag, String iso, boolean force_https, boolean is_live, String languages){
         	ContentValues values = new ContentValues();
             values.put(CountriesConfigsTableHelper._COUNTRY_NAME, name);
             values.put(CountriesConfigsTableHelper._COUNTRY_URL, url);
@@ -82,7 +87,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
             values.put(CountriesConfigsTableHelper._COUNTRY_ISO, iso);
             values.put(CountriesConfigsTableHelper._COUNTRY_FORCE_HTTPS, force_https ? 1 : 0);
             values.put(CountriesConfigsTableHelper._COUNTRY_IS_LIVE, is_live ? 1 : 0);
-            db.insert(CountriesConfigsTableHelper.TABLE_NAME, null, values);
+			values.put(CountriesConfigsTableHelper._COUNTRY_LANGUAGES, languages);
+			db.insert(CountriesConfigsTableHelper.TABLE_NAME, null, values);
     }
     
     /**
@@ -96,8 +102,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
 			
 			for (CountryObject mCountryObject : countries) {
 				insertCountry(db, mCountryObject.getCountryName(), mCountryObject.getCountryUrl(),
-                            mCountryObject.getCountryFlag(), mCountryObject.getCountryIso(), mCountryObject.isCountryForceHttps(),
-                            mCountryObject.isCountryIsLive());
+						mCountryObject.getCountryFlag(), mCountryObject.getCountryIso(), mCountryObject.isCountryForceHttps(),
+						mCountryObject.isCountryIsLive(), new Gson().toJson(mCountryObject.getLanguages()));
 			}
 			
 			db.setTransactionSuccessful();
@@ -125,6 +131,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
     			mCountry.setCountryIso(cursor.getString(4));
     			mCountry.setCountryForceHttps(cursor.getInt(5) == 1);
     			mCountry.setCountryIsLive(cursor.getInt(6) == 1);
+				String languages = cursor.getString(7);
+				mCountry.setLanguages(TextUtils.isEmpty(languages) ? null : new Gson().fromJson(languages, Languages.class));
     			countries.add(mCountry);
     		}
 		}

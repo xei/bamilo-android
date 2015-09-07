@@ -260,27 +260,34 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void handleOnItemClick(final ListView countryList, final int position) {
+        countryList.setItemChecked(position, true);
+
+        final CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+        final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (selected == SHOP_NOT_SELECTED) {
-                    setCountry(position);
-                } else if (position != selected) {
-                    isChangeCountry = true;
-                    setCountry(position);
-                }
-                countryList.setItemChecked(position, true);
+                isChangeCountry = true;
+                setCountry(position);
             }
         };
 
-
-        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
-
         //If the dialog didn't load means that has no more than one country
-        if(!ChooseLanguageController.chooseLanguageDialog(this, ChooseLanguageController.getCurrentLanguages(this.getActivity(),countryObject), runnable)){
-            runnable.run();
+        if(!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)){
+                if (selected == SHOP_NOT_SELECTED) {
+                    setCountry(countryObject, position);
+                } else if (position != selected) {
+                    isChangeCountry = true;
+                    setCountry(countryObject,position);
+                }
         }
+    }
 
+    protected boolean setCountry(CountryObject countryObject, int position){
+        CountryPersistentConfigs.eraseCountryPreferences(context);
+        CountryPersistentConfigs.saveLanguages(context,countryObject.getLanguages());
+        return setCountry(position);
     }
 
     /**

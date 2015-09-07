@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,6 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         this.setCountryIso("");
         this.setCountryForceHttps(false);
         this.setCountryIsLive(false);
-        languages = new Languages();
     }
 
     @Override
@@ -207,7 +207,12 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
         // Used only for access dev servers
         userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
-        languages.initialize(jsonObject);
+        try {
+            languages = new Languages(jsonObject);
+        }catch (JSONException ex){
+            Print.e(ex.getMessage());
+        }
+
         return true;
     }
 
@@ -223,6 +228,10 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 
     public Languages getLanguages() {
         return languages;
+    }
+
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
     }
 }
 

@@ -179,7 +179,7 @@ android {
             versionName "1.5"
             versionCode getAppVersionCode(10)
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en","ur"
         }
 
         darazPreInstall {
@@ -187,7 +187,7 @@ android {
             versionName "1.5"
             versionCode 10
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en","ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
             }

@@ -43,6 +43,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private boolean isRatingLoginRequired;
     private boolean isReviewLoginRequired;
     private boolean isFacebookAvailable;
+    private Languages languages;
 
     /**
      * Empty constructor
@@ -134,6 +135,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
             isReviewEnable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
             isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
         }
+        languages = new Languages(jsonObject);
         return true;
     }
 
@@ -319,4 +321,11 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         }
     };
 
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
+    }
+
+    public Languages getLanguages() {
+        return languages;
+    }
 }

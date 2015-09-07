@@ -15,6 +15,13 @@ import java.util.ArrayList;
  */
 public class Languages extends ArrayList<Language> implements IJSONSerializable{
 
+    public Languages(){}
+
+    public Languages(JSONObject jsonObject) throws JSONException {
+        this();
+        initialize(jsonObject);
+    }
+
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get languages
@@ -39,6 +46,7 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
     public RequiredJson getRequiredJson() {
         return null;
     }
+
     public Language getDefaultLanguage(){
         for(Language language : this){
             if(language.isDefault()){
