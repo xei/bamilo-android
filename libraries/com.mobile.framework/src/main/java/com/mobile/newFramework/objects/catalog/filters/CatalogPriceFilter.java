@@ -40,8 +40,8 @@ public class CatalogPriceFilter extends CatalogFilter{
 
     @Override
     public void cleanFilter() {
-        option.setRangeMin(option.getRangeMin());
-        option.setRangeMax(option.getRangeMax());
+        option.setRangeMin(option.getMin());
+        option.setRangeMax(option.getMax());
     }
 
     public CatalogPriceFilterOption getOption() {
