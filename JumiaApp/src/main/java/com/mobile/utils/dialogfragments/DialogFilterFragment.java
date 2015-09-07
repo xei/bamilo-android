@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,18 +15,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.OnDialogFilterListener;
-import com.mobile.newFramework.objects.catalog.CategoryFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -249,7 +242,7 @@ public class DialogFilterFragment extends DialogFragment {
         private DialogFilterFragment mParent;
         
         private ListView mFilterListView;
-        
+
         private ContentValues mContentValues;
 
         /**
@@ -407,7 +400,7 @@ public class DialogFilterFragment extends DialogFragment {
 //                query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
 //            contentValues.put(BRAND, query);
 //        }
-        
+
         /**
          * Add to the content values selected filter
          * @param filter
@@ -424,7 +417,7 @@ public class DialogFilterFragment extends DialogFragment {
 //                filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
 //            contentValues.put(filterId, filterValue);
 //        }
-        
+
         /**
          * Add to the content values selected price filter
          * @param filter
@@ -445,7 +438,7 @@ public class DialogFilterFragment extends DialogFragment {
 //                contentValues.put("special_price", "1");
 //            }
 //        }
-        
+
         /**
          * Process the click on clean button
          * @author sergiopereira

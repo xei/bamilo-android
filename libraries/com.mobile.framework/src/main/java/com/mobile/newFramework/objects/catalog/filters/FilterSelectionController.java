@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.util.SparseArray;
 
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 public class FilterSelectionController {
 
     private ArrayList<CatalogFilter> catalogFilters;
-    private Object[] initialValues;
+    private FilterOptionService[] initialValues;
 
     public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters){
         this.catalogFilters = catalogFilters;
-        initialValues = new Object[catalogFilters.size()];
+        initialValues = new FilterOptionService[catalogFilters.size()];
     }
 
     /**
@@ -34,7 +33,7 @@ public class FilterSelectionController {
             //Normal filter
             if (catalogFilter instanceof CatalogCheckFilter) {
                 if(initialValues[i] instanceof SparseArray){
-                    ((CatalogCheckFilter) catalogFilter).switchSelectedOptions((SparseArray)initialValues[i]);
+                    ((CatalogCheckFilter) catalogFilter).switchSelectedOptions((SelectedFilterOptions)initialValues[i]);
                 }
             //Price Filter
             } else if(catalogFilter instanceof CatalogPriceFilter){
@@ -58,29 +57,8 @@ public class FilterSelectionController {
             CatalogFilter catalogFilter = catalogFilters.get(position);
 
             if(catalogFilter instanceof CatalogCheckFilter){
-                final SparseArray<MultiFilterOptionService> filterOptions = ((CatalogCheckFilter) catalogFilter).getSelectedFilterOptions();
-
-                DeviceInfoHelper.executeCodeBasedOnIceCreamSandwichVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                    @Override
-                    public void highVersionCallback() {
-                        initialValues[position] = CollectionUtils.isNotEmpty(filterOptions) ? filterOptions.clone() : new SparseArray<>();
-                    }
-
-                    @Override
-                    public void lowerVersionCallback() {
-                        SparseArray<FilterOptionService> catalogFilterOptionsClone = new SparseArray<>();
-                        if (CollectionUtils.isNotEmpty(filterOptions)) {
-                            for (int i = 0; i < filterOptions.size(); i++) {
-                                int key = filterOptions.keyAt(i);
-                                FilterOptionService catalogFilterOption = filterOptions.get(key);
-                                if (catalogFilterOption != null) {
-                                    catalogFilterOptionsClone.put(key, catalogFilterOption);
-                                }
-                            }
-                        }
-                        initialValues[position] = catalogFilterOptionsClone;
-                    }
-                });
+                final SelectedFilterOptions filterOptions = ((CatalogCheckFilter) catalogFilter).getSelectedFilterOptions();
+                initialValues[position] = CollectionUtils.isNotEmpty(filterOptions) ? new SelectedFilterOptions(filterOptions): new SelectedFilterOptions();
             } else if (catalogFilter instanceof CatalogPriceFilter){
                 CatalogPriceFilterOption priceFilterOption = ((CatalogPriceFilter) catalogFilter).getOption();
                 initialValues[position] = priceFilterOption.clone();

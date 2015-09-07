@@ -1,7 +1,5 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
-import android.util.SparseArray;
-
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -19,11 +17,11 @@ public class CatalogCheckFilter extends CatalogFilter{
 
     private ArrayList<MultiFilterOptionService> filterOptions;
 
-    private SparseArray<MultiFilterOptionService> selectedFilterOptions;
+    private SelectedFilterOptions selectedFilterOptions;
 
     public CatalogCheckFilter(){
         filterOptions = new ArrayList<>();
-        selectedFilterOptions = new SparseArray<>();
+        selectedFilterOptions = new SelectedFilterOptions();
     }
 
     public CatalogCheckFilter(JSONObject jsonObject) throws JSONException {
@@ -96,15 +94,15 @@ public class CatalogCheckFilter extends CatalogFilter{
         return null;
     }
 
-    public SparseArray<MultiFilterOptionService> getSelectedFilterOptions() {
+    public SelectedFilterOptions getSelectedFilterOptions() {
         return selectedFilterOptions;
     }
 
-    public void setSelectedFilterOptions(SparseArray<MultiFilterOptionService> selectedFilterOptions) {
+    public void setSelectedFilterOptions(SelectedFilterOptions selectedFilterOptions) {
         this.selectedFilterOptions = selectedFilterOptions;
     }
 
-    public void switchSelectedOptions(SparseArray<MultiFilterOptionService> selectedFilterOptions){
+    public void switchSelectedOptions(SelectedFilterOptions selectedFilterOptions){
         for(MultiFilterOptionService filterOption : filterOptions){
             filterOption.setSelected(false);
         }

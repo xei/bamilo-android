@@ -3,8 +3,10 @@ package com.mobile.utils.dialogfragments;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.SelectedFilterOptions;
 import com.mobile.view.R;
 
 /**
@@ -32,7 +34,7 @@ public class FilterFragment extends Fragment {
 
     protected CatalogFilter mCatalogFilter;
 
-    protected SparseArray<MultiFilterOptionService> mCurrentSelectedOptions = new SparseArray<>();
+    protected SelectedFilterOptions mCurrentSelectedOptions = new SelectedFilterOptions();
 
     protected boolean allowMultiSelection;
 
