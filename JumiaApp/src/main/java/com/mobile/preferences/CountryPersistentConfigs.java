@@ -54,7 +54,7 @@ public class CountryPersistentConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
 
         //Save languages only if there isn't any yet saved
-        if(TextUtils.isEmpty(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null))){
+        if(!hasLanguages(sharedPrefs)){
             saveLanguages(mEditor,countryConfigs.getLanguages());
         }
 //        saveLanguages(mEditor, countryConfigs.getLanguages());
@@ -203,4 +203,12 @@ public class CountryPersistentConfigs {
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, Languages.class);
     }
 
+    public static boolean hasLanguages(SharedPreferences sharedPrefs){
+        return TextUtils.isNotEmpty(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null));
+    }
+
+    public static boolean hasLanguages(Context context){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return hasLanguages(sharedPrefs);
+    }
 }

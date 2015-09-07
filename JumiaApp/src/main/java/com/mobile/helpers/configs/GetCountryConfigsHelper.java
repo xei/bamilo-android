@@ -6,6 +6,7 @@ package com.mobile.helpers.configs;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -44,7 +45,11 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
 
         //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY,countryConfigs);
+
+        if(!CountryPersistentConfigs.hasLanguages(JumiaApplication.INSTANCE.getApplicationContext())){
+            ChooseLanguageController.setLanguageBasedOnDevice(countryConfigs.getLanguages(), countryConfigs.getCurrencyIso());
+        }
+
         CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);
     }
 
