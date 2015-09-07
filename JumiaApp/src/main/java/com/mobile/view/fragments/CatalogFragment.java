@@ -600,7 +600,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter button
         else if (id == R.id.catalog_bar_button_filter) {
-            onClickFilterButton();
+            onClickFilterButton2();
         }
         // Case columns button
         else if (id == R.id.catalog_bar_button_columns) {
@@ -640,6 +640,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
             newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
+        }
+    }
+
+    private void onClickFilterButton2(){
+        Print.i(TAG, "ON CLICK FILTER BUTTON");
+        try {
+            // Show dialog
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
+            getBaseActivity().onSwitchFragment(FragmentType.FILTERS,bundle,FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }

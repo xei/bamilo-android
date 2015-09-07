@@ -33,6 +33,7 @@ import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
+import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
@@ -392,6 +393,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case WRITE_REVIEW_SELLER:
                 fragment = WriteSellerReviewFragment.getInstance(bundle);
+                break;
+            case FILTERS:
+                fragment = FilterMainFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
