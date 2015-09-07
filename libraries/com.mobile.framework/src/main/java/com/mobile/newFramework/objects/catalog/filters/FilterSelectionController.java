@@ -1,9 +1,11 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
 import android.util.SparseArray;
 
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.ArrayList;
 
@@ -109,6 +111,22 @@ public class FilterSelectionController {
         for (CatalogFilter filter : catalogFilters) {
             filter.cleanFilter();
         }
+    }
+
+    /**
+     * Create content values to filter catalog
+     * @return ContentValues
+     * @author sergiopereira
+     */
+    public ContentValues getValues(){
+        ContentValues contentValues = new ContentValues();
+        for (CatalogFilter filter : catalogFilters) {
+            String value = filter.getValues();
+            if(TextUtils.isNotEmpty(value)){
+                contentValues.put(filter.getId(), value);
+            }
+        }
+        return contentValues;
     }
 
 }

@@ -47,6 +47,8 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     protected abstract void setOptionType(String id);
 
+    protected abstract String getValues();
+
     @Override
     public JSONObject toJSON() {
         return null;

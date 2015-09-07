@@ -366,46 +366,13 @@ public class DialogFilterFragment extends DialogFragment {
          * Create a content values and send it to parent
          * @author sergiopereira
          */
-        private void processOnClickDone(){
+        private void processOnClickDone() {
             Print.d(TAG, "CLICKED ON: DONE");
-            // Create query
-            mContentValues = createContentValues();
             // Validate and send to catalog fragment
-            mParent.onSubmitFilterValues(mContentValues);
+            mParent.onSubmitFilterValues(mParent.filterSelectionController.getValues());
             mParent.toCancelFilters = false;
             // Dismiss dialog
             mParent.dismiss();
-        }
-
-        /**
-         * Create content values to filter catalog
-         * @return ContentValues
-         * @author sergiopereira
-         */
-        private ContentValues createContentValues(){
-            // Create query
-            ContentValues contentValues = new ContentValues();
-            // Save all values
-//            for (CatalogFilter filter : mFilters) {
-//                // Get filter id and values
-//                String filterId = filter.getId();
-//                // Case category filter
-//                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID)) {
-//                    addCategoryFilter(filter, contentValues);
-//                // Case brand filter
-//                } else if(filter.hasOptionSelected() && filterId.equals(BRAND_ID)) {
-//                    addBrandFilter(filter, contentValues);
-//                // Case generic filter
-//                } else if(filter.hasOptionSelected()){
-//                    addGenericFilter(filter, contentValues);
-//                // Case price filter, get range value
-//                } else if(filter.hasRangeValues() || filter.isRangeWithDiscount()){
-//                    addPriceFilter(filter, contentValues);
-//                }
-//
-////                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
-//            }
-            return contentValues;
         }
         
         /**

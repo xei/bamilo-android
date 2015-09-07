@@ -34,6 +34,11 @@ public class CatalogPriceFilter extends CatalogFilter{
     }
 
     @Override
+    protected String getValues() {
+        return (option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax()) ? option.getRangeMin() + filterSeparator + option.getRangeMax() : null;
+    }
+
+    @Override
     public void cleanFilter() {
         option.setRangeMin(option.getRangeMin());
         option.setRangeMax(option.getRangeMax());

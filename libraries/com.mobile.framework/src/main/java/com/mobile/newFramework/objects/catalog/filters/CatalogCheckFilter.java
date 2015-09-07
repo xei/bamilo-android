@@ -4,6 +4,7 @@ import android.util.SparseArray;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,24 @@ public class CatalogCheckFilter extends CatalogFilter{
     @Override
     protected void setOptionType(String id) {
         optionType = (!id.equals(COLOR)) ? CatalogCheckFilterOption.class : CatalogColorFilterOption.class;
+    }
+
+    @Override
+    protected String getValues() {
+        return multi ? processMulti() : processSingle();
+    }
+
+    private String processSingle() {
+        return CollectionUtils.isNotEmpty(selectedFilterOptions) ? selectedFilterOptions.valueAt(0).getVal() : "";
+    }
+
+    private String processMulti(){
+        String value = processSingle();
+        for (int i = 1; i < selectedFilterOptions.size(); i++) {
+            value += filterSeparator + selectedFilterOptions.valueAt(i).getVal();
+        }
+        return value;
+
     }
 
     @Override

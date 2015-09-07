@@ -7,4 +7,5 @@ public interface MultiFilterOptionService extends FilterOptionService {
     public void setSelected(boolean selected);
     public String getLabel();
     public boolean isSelected();
+    public String getVal();
 }

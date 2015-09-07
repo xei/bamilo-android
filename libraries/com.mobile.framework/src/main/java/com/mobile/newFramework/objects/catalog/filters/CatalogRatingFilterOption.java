@@ -56,4 +56,9 @@ public class CatalogRatingFilterOption implements IJSONSerializable, MultiFilter
     public boolean isSelected() {
         return selected;
     }
+
+    @Override
+    public String getVal() {
+        return val;
+    }
 }
