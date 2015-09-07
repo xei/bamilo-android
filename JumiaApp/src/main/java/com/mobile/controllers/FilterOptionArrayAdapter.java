@@ -1,14 +1,19 @@
 package com.mobile.controllers;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -18,17 +23,22 @@ import java.util.List;
  * @author sergiopereira
  *
  */
- public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> {
+ public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> implements AdapterView.OnItemClickListener{
         
     private static int layout = R.layout.dialog_list_sub_item_2;
 
+    private CatalogCheckFilter catalogFilter;
+
+    private SparseArray<MultiFilterOptionService> mCurrentSelectedOptions;
     /**
      * Constructor
      * @param context
-     * @param objects
+     * @param catalogCheckFilter
      */
-    public FilterOptionArrayAdapter(Context context, List<MultiFilterOptionService> objects) {
-        super(context, layout, objects);
+    public FilterOptionArrayAdapter(Context context, CatalogCheckFilter catalogCheckFilter) {
+        super(context, layout, catalogCheckFilter.getFilterOptions());
+        this.catalogFilter = catalogCheckFilter;
+        this.mCurrentSelectedOptions = catalogCheckFilter.getSelectedFilterOptions();
     }
 
     /*
@@ -49,5 +59,86 @@ import java.util.List;
         ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
         // Return the filter view
         return convertView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if(catalogFilter.isMulti()) processMultiSelection(parent, position);
+        else processSingleSelection(parent, position);
+
+        ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
+    }
+
+    /**
+     * Method used to save multiple options
+     * @author sergiopereira
+     */
+    private void processMultiSelection(AdapterView<?> parent, int position){
+        // Validate if checked or not
+        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
+        if( option == null) {
+//            Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
+            // Add item
+            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+        } else {
+            // Uncheck
+//            Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
+            cleanSelectedItem(option, position);
+        }
+    }
+
+    /**
+     * Method used to save only one option
+     * @author sergiopereira
+     */
+    private void processSingleSelection(AdapterView<?> parent, int position){
+        // Option is the last
+        if(mCurrentSelectedOptions.get(position) != null) {
+//            Print.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
+            // Clean old selection
+            cleanOldSelections();
+        } else {
+//            Print.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
+            // Clean old selection
+            cleanOldSelections();
+            // Add item
+            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+        }
+    }
+
+    /**
+     * Clean all old selections
+     * @author sergiopereira
+     */
+    void cleanOldSelections(){
+        // Disable old selection
+        for(int i = 0; i < mCurrentSelectedOptions.size(); i++) {
+            mCurrentSelectedOptions.valueAt(i).setSelected(false);
+        }
+        // Clean array
+        mCurrentSelectedOptions.clear();
+    }
+
+    /**
+     * Save the selected item
+     * @author sergiopereira
+     */
+    protected void addSelectedItem(MultiFilterOptionService option, int position){
+        // Add selected
+        mCurrentSelectedOptions.put(position, option);
+        // Set selected
+        option.setSelected(true);
+    }
+
+    /**
+     * Clean selected item
+     * @author sergiopereira
+     */
+    protected void cleanSelectedItem(MultiFilterOptionService option, int position){
+        // Disable old selection
+        option.setSelected(false);
+        // Remove item
+        mCurrentSelectedOptions.remove(position);
     }
 }

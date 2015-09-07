@@ -89,7 +89,7 @@ public class FilterSizeFragment extends FilterFragment implements OnClickListene
         view.findViewById(mDoneButtonId).setOnClickListener(this);
         // Filter list
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter.getFilterOptions());
+        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter);
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }
 

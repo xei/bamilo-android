@@ -195,7 +195,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
             addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
         }
     }
-    
+
     /**
      * Load the pre selected options
      * @author sergiopereira

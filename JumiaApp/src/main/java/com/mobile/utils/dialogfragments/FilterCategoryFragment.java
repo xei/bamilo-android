@@ -90,7 +90,7 @@ public class FilterCategoryFragment extends FilterFragment implements OnClickLis
         view.findViewById(mDoneButtonId).setOnClickListener(this);
         // Filter list
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter.getFilterOptions());
+        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter);
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }    
     
