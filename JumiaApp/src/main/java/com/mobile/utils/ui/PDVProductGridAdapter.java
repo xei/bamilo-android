@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,7 @@ public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAd
         public TextView price;
         public View progress;
         public ImageView favourite;
-
+        public TextView discount;
 
         /**
          * Constructor
@@ -83,6 +84,7 @@ public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAd
             progress = view.findViewById(R.id.image_loading_progress);
             brand = (TextView) view.findViewById(R.id.item_brand);
             price = (TextView) view.findViewById(R.id.item_price);
+            discount = (TextView) view.findViewById(R.id.item_discount);
      //       favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
 
         }
@@ -252,21 +254,18 @@ public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAd
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
         // Case discount
-        holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
+     //   holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
 
- /*       if(item.hasDiscount()) {
+        if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
-            holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setText("");
-            holder.percentage.setVisibility(View.GONE);
-        }*/
+        }
     }
     
 
