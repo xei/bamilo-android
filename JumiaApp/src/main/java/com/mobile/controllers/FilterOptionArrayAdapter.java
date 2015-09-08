@@ -111,7 +111,7 @@ import java.util.List;
      * Clean all old selections
      * @author sergiopereira
      */
-    void cleanOldSelections(){
+    public void cleanOldSelections(){
         // Disable old selection
         for(int i = 0; i < mCurrentSelectedOptions.size(); i++) {
             mCurrentSelectedOptions.valueAt(i).setSelected(false);

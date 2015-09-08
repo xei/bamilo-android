@@ -17,7 +17,7 @@
         android:background="@drawable/selector_clickableitem_highlight"
         android:fontFamily="roboto_regular"
         android:gravity="center"
-        android:text="@string/cancel_label"
+        android:text="@string/clear_all_uppercase_label"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_xl" />
 

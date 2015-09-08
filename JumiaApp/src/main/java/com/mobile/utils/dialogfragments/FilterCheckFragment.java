@@ -97,4 +97,9 @@ public class FilterCheckFragment extends FilterFragment {
         }
     }
 
+    @Override
+    public void cleanValues() {
+        mOptionArray.cleanOldSelections();
+        mOptionArray.notifyDataSetChanged();
+    }
 }

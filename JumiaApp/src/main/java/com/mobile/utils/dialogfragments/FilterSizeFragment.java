@@ -96,5 +96,9 @@ public class FilterSizeFragment extends FilterFragment{
             option.setSelected(true);
         }
     }
-    
+
+    @Override
+    public void cleanValues() {
+
+    }
 }

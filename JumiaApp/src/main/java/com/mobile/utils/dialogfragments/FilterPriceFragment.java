@@ -226,4 +226,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         return (mInterval != 0) ? max * mInterval : max;   
     }
 
+    @Override
+    public void cleanValues() {
+        processOnClickClean();
+    }
 }

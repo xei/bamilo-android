@@ -15,7 +15,7 @@ import com.mobile.view.R;
  * @version 1.0
  * @date 2015/04/27
  */
-public class FilterFragment extends Fragment {
+public abstract class FilterFragment extends Fragment {
 
     protected static int mListId = R.id.dialog_filter_list;
 
@@ -25,4 +25,5 @@ public class FilterFragment extends Fragment {
 
     protected boolean allowMultiSelection;
 
+    public abstract void cleanValues();
 }

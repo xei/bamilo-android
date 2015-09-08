@@ -14,17 +14,20 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.FilterCheckFragment;
 import com.mobile.utils.dialogfragments.FilterColorFragment;
+import com.mobile.utils.dialogfragments.FilterFragment;
 import com.mobile.utils.dialogfragments.FilterPriceFragment;
 import com.mobile.view.R;
 
@@ -35,7 +38,7 @@ import java.util.List;
 /**
  * Created by rsoares on 9/7/15.
  */
-public class FilterFragment extends BaseFragment {
+public class FilterMainFragment extends BaseFragment implements View.OnClickListener{
 
     private FilterSelectionController filterSelectionController;
 
@@ -45,9 +48,15 @@ public class FilterFragment extends BaseFragment {
 
     private int currentFilterPosition;
 
+    private OnDialogFilterListener mParentFrament;
+
+    private FilterFragment currentFragment;
+
+    private boolean toCancelFilters;
+
     public final static String FILTER_TAG = "catalog_filters";
 
-    public FilterFragment() {
+    public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Filters,
                 R.layout.filters_main,
@@ -55,8 +64,8 @@ public class FilterFragment extends BaseFragment {
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
-    public static FilterFragment getInstance(Bundle bundle) {
-        FilterFragment filterFragment = new FilterFragment();
+    public static FilterMainFragment getInstance(Bundle bundle) {
+        FilterMainFragment filterFragment = new FilterMainFragment();
         filterFragment.setArguments(bundle);
         return filterFragment;
     }
@@ -68,6 +77,7 @@ public class FilterFragment extends BaseFragment {
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
         filterSelectionController = new FilterSelectionController(mFilters);
         currentFilterPosition = -1;
+        toCancelFilters = true;
     }
 
     @Override
@@ -82,6 +92,17 @@ public class FilterFragment extends BaseFragment {
                 onFiltersKeyItemClick(position);
             }
         });
+
+        view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
+        view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(toCancelFilters){
+            filterSelectionController.goToInitialValues();
+        }
     }
 
     private void onFiltersKeyItemClick(int position) {
@@ -91,7 +112,7 @@ public class FilterFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putParcelable(FILTER_TAG, catalogFilter);
 
-            Fragment currentFragment = null;
+            currentFragment = null;
 
             if (catalogFilter instanceof CatalogRatingFilter) {
 
@@ -128,6 +149,50 @@ public class FilterFragment extends BaseFragment {
             fragmentTransaction.addToBackStack(null);
         // Commit
         fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    @Override
+    public void onClick(View view) {
+        // Get view id
+        int id = view.getId();
+
+        if (id == R.id.dialog_filter_button_cancel){
+            processOnClickClean();
+        }
+        // Save
+        else if (id == R.id.dialog_filter_button_done){
+            processOnClickDone();
+        }
+    }
+
+    /**
+     * Process the click on clean button
+     * @author sergiopereira
+     */
+    private void processOnClickClean(){
+        Print.d(TAG, "CLICKED ON: CLEAR");
+
+        filterSelectionController.initAllInitialFilterValues();
+
+        // Clean all saved values
+        filterSelectionController.cleanAllFilters();
+        // Update adapter
+        ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
+    }
+
+    /**
+     * Process the click on save button.
+     * Create a content values and send it to parent
+     * @author sergiopereira
+     */
+    private void processOnClickDone() {
+        Print.d(TAG, "CLICKED ON: DONE");
+        toCancelFilters = false;
+        // Validate and send to catalog fragment
+//        mParent.onSubmitFilterValues(mParent.filterSelectionController.getValues());
+
+        getBaseActivity().onBackPressed();
+
     }
 
     public static class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {

@@ -95,5 +95,9 @@ public class FilterCategoryFragment extends FilterFragment {
             option.setSelected(true);
         }
     }
-        
+
+    @Override
+    public void cleanValues() {
+
+    }
 }
