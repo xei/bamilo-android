@@ -92,7 +92,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_mid"
-        android:background="@drawable/selector_listitem_highlight"
+        android:background="@drawable/selector_list_item_highlight"
         android:gravity="right|center_vertical"
         android:maxLines="2"
         android:minHeight="@dimen/product_detail_item_title_height"

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_listitem_highlight"
+    android:background="@drawable/selector_list_item_highlight"
     android:paddingBottom="@dimen/margin_mid"
     android:paddingLeft="@dimen/dialog_list_margin_horizontal"
     android:paddingRight="@dimen/dialog_list_margin_horizontal"
