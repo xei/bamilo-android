@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:paddingLeft="28dp"
      >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -30,11 +31,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:id="@+id/pdp_infoLeft"
             >
 
             <!-- TITLE -->
-
+            <!--
             <include layout="@layout/pdp_product_title" android:id="@+id/TitleSection" />
+            -->
 
             <!-- IMAGE CONTAINER -->
 
@@ -42,7 +45,7 @@
 
             <!-- PRODUCT IMAGES LIST -->
 
-            <include layout="@layout/pdv_product_images" />
+            <include layout="@layout/pdv_product_images" android:id="@+id/productImages"  />
 
 
         </LinearLayout>
@@ -95,6 +98,10 @@
                 <include layout="@layout/pdp_rating" android:id="@+id/RatingSection"   />
                 />
 
+                <!--SIZE: OPTIONAL -->
+
+                <include layout="@layout/single_line_list"  android:id="@+id/SizeSection" />
+
                 <!-- SPECIFICATIONS: OPTIONAL -->
 
                 <include layout="@layout/pdp_details"  android:id="@+id/SpecificationsSection"   />
@@ -112,19 +119,10 @@
                 <!-- COMBOS -->
                 <!-- test with just one combo -->
 
-                <!-- COMBO HEADER -->
-                <include layout="@layout/header" android:id="@+id/ComboHeaderSection" />
 
+                <!-- COMBOS: OPTIONAL -->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/Black300"
-                    >
-
-                    <include layout="@layout/pdp_combo_item"  android:id="@+id/ComboSection"
-                        />
-                </LinearLayout>
+                <include layout="@layout/pdp_combos"  android:id="@+id/CombosSection"   />
 
                 <!-- YOU MAY ALSO LIKE -->
 
