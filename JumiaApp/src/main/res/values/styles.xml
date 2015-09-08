@@ -293,7 +293,7 @@
         <item name="android:inputType">text</item>
     </style>
 
-    <style name="form_checkbox_style" parent="form_style">
+    <style name="form_checkbox_style" parent="form_style" >
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
         <item name="android:layout_marginStart">@dimen/form_check_padding</item>
@@ -327,6 +327,16 @@
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/star_ratingbar_big</item>
         <item name="android:indeterminateDrawable">@drawable/star_ratingbar_big</item>
+        <item name="android:minHeight">17dp</item>
+        <item name="android:maxHeight">17dp</item>
+        <item name="android:thumb">@null</item>
+    </style>
+
+    <!-- changeFashion: new ratings style -->
+    <style name="starRatingBarFashionBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/star_ratingbar_fashion_big</item>
+        <item name="android:indeterminateDrawable">@drawable/star_ratingbar_fashion_big</item>
         <item name="android:minHeight">17dp</item>
         <item name="android:maxHeight">17dp</item>
         <item name="android:thumb">@null</item>
@@ -832,6 +842,11 @@
 
     <style name="Caption">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CaptionBold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Body3">
