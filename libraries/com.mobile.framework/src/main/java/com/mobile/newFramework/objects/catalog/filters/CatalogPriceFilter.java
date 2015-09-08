@@ -8,7 +8,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/4/15.
  */
-public class CatalogPriceFilter extends CatalogFilter{
+public class CatalogPriceFilter extends CatalogFilter {
 
     private CatalogPriceFilterOption option;
 
@@ -35,7 +35,12 @@ public class CatalogPriceFilter extends CatalogFilter{
 
     @Override
     protected String getValues() {
-        return (option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax()) ? option.getRangeMin() + filterSeparator + option.getRangeMax() : null;
+        return hasAppliedFilters() ? option.getRangeMin() + filterSeparator + option.getRangeMax() : null;
+    }
+
+    @Override
+    public boolean hasAppliedFilters() {
+        return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
     }
 
     @Override

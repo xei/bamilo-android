@@ -1,21 +1,31 @@
 package com.mobile.view.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.dialogfragments.FilterCheckFragment;
+import com.mobile.utils.dialogfragments.FilterColorFragment;
+import com.mobile.utils.dialogfragments.FilterPriceFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -25,7 +35,7 @@ import java.util.List;
 /**
  * Created by rsoares on 9/7/15.
  */
-public class FilterFragment extends BaseFragment{
+public class FilterFragment extends BaseFragment {
 
     private FilterSelectionController filterSelectionController;
 
@@ -33,7 +43,7 @@ public class FilterFragment extends BaseFragment{
 
     private ListView filtersKey;
 
-    private ListView filterValues;
+    private int currentFilterPosition;
 
     public final static String FILTER_TAG = "catalog_filters";
 
@@ -57,13 +67,13 @@ public class FilterFragment extends BaseFragment{
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
         filterSelectionController = new FilterSelectionController(mFilters);
+        currentFilterPosition = -1;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
-        filterValues = (ListView)view.findViewById(R.id.filter_values);
 
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,18 +82,52 @@ public class FilterFragment extends BaseFragment{
                 onFiltersKeyItemClick(position);
             }
         });
-//        filter_values.setAdapter(adapter);
     }
 
     private void onFiltersKeyItemClick(int position) {
-        final CatalogFilter catalogFilter = mFilters.get(position);
-        filterValues.setVisibility(View.VISIBLE);
 
-        if (catalogFilter instanceof CatalogCheckFilter) {
-            FilterOptionArrayAdapter filterOptionArrayAdapter = new FilterOptionArrayAdapter(this.getActivity(), ((CatalogCheckFilter) catalogFilter));
-            filterValues.setAdapter(filterOptionArrayAdapter);
-            filterValues.setOnItemClickListener(filterOptionArrayAdapter);
+        if(currentFilterPosition != position) {
+            final CatalogFilter catalogFilter = mFilters.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(FILTER_TAG, catalogFilter);
+
+            Fragment currentFragment = null;
+
+            if (catalogFilter instanceof CatalogRatingFilter) {
+
+            } else if (catalogFilter instanceof CatalogCheckFilter) {
+
+                if (catalogFilter.getOptionType() == CatalogColorFilterOption.class) {
+                    currentFragment = FilterColorFragment.newInstance(bundle);
+                } else {
+                    currentFragment = FilterCheckFragment.newInstance(bundle);
+                }
+
+            } else if (catalogFilter instanceof CatalogPriceFilter) {
+                currentFragment = FilterPriceFragment.newInstance(bundle);
+            }
+
+            if (currentFragment != null) {
+                currentFilterPosition = position;
+                filterSelectionController.addToInitialValues(position);
+                ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
+                fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true, true);
+            }
         }
+    }
+
+    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated, boolean addToBackStack) {
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        // Animations
+        if (animated)
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        // Replace
+        fragmentTransaction.replace(container, fragment);
+        // Back stack
+        if (addToBackStack)
+            fragmentTransaction.addToBackStack(null);
+        // Commit
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     public static class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
@@ -109,34 +153,27 @@ public class FilterFragment extends BaseFragment{
             CatalogFilter filter = getItem(position);
             // Validate current view
             if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
+
+            TextView filterTitleTextView = ((TextView) convertView.findViewById(R.id.dialog_item_title));
+
+            String filterName = null;
+            if(filter.hasAppliedFilters()) {
+                filterTitleTextView.setTypeface(null, Typeface.BOLD);
+                if(filter instanceof CatalogPriceFilter){
+                    filterName = filter.getName();
+                } else {
+                    int count = ((CatalogCheckFilter)filter).getSelectedFilterOptions().size();
+                    filterName = !ShopSelector.isRtl() ? convertView.getResources().getString(R.string.filter_placeholder, filter.getName(), count) : convertView.getResources().getString(R.string.filter_placeholder, count, filter.getName());
+                }
+            } else {
+                filterTitleTextView.setTypeface(null, Typeface.NORMAL);
+                filterName = filter.getName();
+            }
             // Set title
-            ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(filter.getName());
-            // Set sub title
-//            if (!filter.hasOptionSelected() && !filter.hasRangeValues() && !filter.isRangeWithDiscount())
-//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.all_label);
-//            else if(filter.hasRangeValues() && !filter.isRangeWithDiscount())
-//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
-//            else if(filter.hasRangeValues() && filter.isRangeWithDiscount())
-//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() + " " + getContext().getString(R.string.string_with_discount_only));
-//            else if(!filter.hasRangeValues() && filter.isRangeWithDiscount())
-//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.string_with_discount_only);
-//            else if (filter.hasOptionSelected())
-//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
-//            ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText("O que me apetecer");
-            // Return the filter view
+            filterTitleTextView.setText(filterName);
+
             return convertView;
         }
-
-        /**
-         * Create a string
-         * @param array
-         * @return String
-         */
-//        private String getOptionsToString(SparseArray<CatalogFilterOption> array){
-//            String string = "";
-//            for (int i = 0; i < array.size(); i++) string += ((i == 0) ? "" : ", ") + array.valueAt(i).getLabel();
-//            return string;
-//        }
     }
 
 }

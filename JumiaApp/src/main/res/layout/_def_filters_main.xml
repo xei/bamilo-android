@@ -8,10 +8,9 @@
     android:layout_height="match_parent"
     android:layout_weight="1"/>
 
-    <ListView
-        android:id="@+id/filter_values"
+    <FrameLayout
+        android:id="@+id/dialog_filter_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:visibility="gone"/>
+        android:layout_weight="0.4" />
 </LinearLayout>

@@ -1,11 +1,7 @@
 package com.mobile.utils.dialogfragments;
 
 import android.support.v4.app.Fragment;
-import android.util.SparseArray;
-
-import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
 import com.mobile.newFramework.objects.catalog.filters.SelectedFilterOptions;
 import com.mobile.view.R;
 
@@ -20,17 +16,8 @@ import com.mobile.view.R;
  * @date 2015/04/27
  */
 public class FilterFragment extends Fragment {
-    protected static int mBackButtonId = R.id.dialog_filter_header_title;
-
-    protected static int mClearButtonId = R.id.dialog_filter_header_clear;
-
-    protected static int mCancelButtonId = R.id.dialog_filter_button_cancel;
-
-    protected static int mDoneButtonId = R.id.dialog_filter_button_done;
 
     protected static int mListId = R.id.dialog_filter_list;
-
-    protected DialogFilterFragment mParent;
 
     protected CatalogFilter mCatalogFilter;
 
@@ -38,38 +25,4 @@ public class FilterFragment extends Fragment {
 
     protected boolean allowMultiSelection;
 
-    /**
-     * Clean all old selections
-     * @author sergiopereira
-     */
-    void cleanOldSelections(){
-        // Disable old selection
-        for(int i = 0; i < mCurrentSelectedOptions.size(); i++) {
-            mCurrentSelectedOptions.valueAt(i).setSelected(false);
-        }
-        // Clean array
-        mCurrentSelectedOptions.clear();
-    }
-
-    /**
-     * Save the selected item
-     * @author sergiopereira
-     */
-    protected void addSelectedItem(MultiFilterOptionService option, int position){
-        // Add selected
-        mCurrentSelectedOptions.put(position, option);
-        // Set selected
-        option.setSelected(true);
-    }
-
-    /**
-     * Clean selected item
-     * @author sergiopereira
-     */
-    protected void cleanSelectedItem(MultiFilterOptionService option, int position){
-        // Disable old selection
-        option.setSelected(false);
-        // Remove item
-        mCurrentSelectedOptions.remove(position);
-    }
 }

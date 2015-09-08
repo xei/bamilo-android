@@ -141,27 +141,27 @@ public class DialogFilterFragment extends DialogFragment {
             break;
         case FILTER_CATEGORY_TYPE:
             Print.i(TAG, "ON SWITCH FILTER: FILTER_CATEGORY");
-            FilterCategoryFragment fragmentCategory = FilterCategoryFragment.newInstance(this, bundle);
+            FilterCategoryFragment fragmentCategory = FilterCategoryFragment.newInstance(bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentCategory, true, true);
             break;
         case FILTER_BRAND_TYPE:
             Print.i(TAG, "ON SWITCH FILTER: FILTER_BRAND");
-            FilterBrandFragment fragmentBrand = FilterBrandFragment.newInstance(this, bundle);
+            FilterCheckFragment fragmentBrand = FilterCheckFragment.newInstance(bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentBrand, true, true);
             break;
         case FILTER_SIZE_TYPE:
             Print.i(TAG, "ON SWITCH FILTER: FILTER_SIZE");
-            FilterSizeFragment fragmentSize = FilterSizeFragment.newInstance(this, bundle);
+            FilterSizeFragment fragmentSize = FilterSizeFragment.newInstance(bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentSize, true, true);
             break;
         case FILTER_PRICE_TYPE:
             Print.i(TAG, "ON SWITCH FILTER: FILTER_PRICE");
-            FilterPriceFragment fragmentPrice = FilterPriceFragment.newInstance(this, bundle);
+            FilterPriceFragment fragmentPrice = FilterPriceFragment.newInstance(bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentPrice, true, true);
             break;
         case FILTER_COLOR_TYPE:
             Print.i(TAG, "ON SWITCH FILTER: FILTER_COLOR");
-            FilterColorFragment fragmentColor = FilterColorFragment.newInstance(this, bundle);
+            FilterColorFragment fragmentColor = FilterColorFragment.newInstance(bundle);
             fragmentChildManagerTransition(R.id.dialog_filter_container, fragmentColor, true, true);
             break;
         default:

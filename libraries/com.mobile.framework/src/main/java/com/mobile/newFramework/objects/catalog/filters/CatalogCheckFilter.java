@@ -51,6 +51,11 @@ public class CatalogCheckFilter extends CatalogFilter{
         return multi ? processMulti() : processSingle();
     }
 
+    @Override
+    public boolean hasAppliedFilters() {
+        return CollectionUtils.isNotEmpty(selectedFilterOptions);
+    }
+
     private String processSingle() {
         return CollectionUtils.isNotEmpty(selectedFilterOptions) ? selectedFilterOptions.valueAt(0).getVal() : "";
     }

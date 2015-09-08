@@ -6,67 +6,38 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
-import java.util.List;
-
 /**
  * 
  * @author sergiopereira
  *
  */
-public class FilterColorFragment extends FilterFragment implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class FilterColorFragment extends FilterCheckFragment {
     
     private static final String TAG = FilterColorFragment.class.getSimpleName();
 
     private FilterColorOptionArrayAdapter mOptionArray;
 
-    private CatalogCheckFilter mFilter;
-
     /**
-     * 
-     * @param parent
+     *
      * @param bundle
      * @return
      */
-    public static FilterColorFragment newInstance(DialogFilterFragment parent, Bundle bundle) {
+    public static FilterColorFragment newInstance(Bundle bundle) {
         Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterColorFragment frag = new FilterColorFragment();
-        frag.mParent = parent;
         frag.setArguments(bundle);
         return frag;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
-        mFilter = (CatalogCheckFilter)mCatalogFilter;
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_color, container, false);
     }
 
     /*
@@ -75,7 +46,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+//        super.onViewCreated(view, savedInstanceState);
         
         // Get multi selection option
         allowMultiSelection = mFilter.isMulti();
@@ -84,134 +55,12 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         // Get pre selected option
         if(mFilter.getSelectedFilterOptions().size()>0) loadSelectedItems();
         else Print.i(TAG, "PRE SELECTION IS EMPTY");
-        
-        // Title
-        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mFilter.getName());
-        // Back button
-        view.findViewById(mBackButtonId).setOnClickListener(this);
-        // Clear button
-        view.findViewById(mClearButtonId).setOnClickListener(this);
-        // Cancel button
-        view.findViewById(mCancelButtonId).setOnClickListener(this);
-        // Save button
-        view.findViewById(mDoneButtonId).setOnClickListener(this);
-        // Filter list
-        ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
+
         // Get filter options
-        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mFilter.getFilterOptions());
+        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mFilter);
         // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        Print.d(TAG, "ON CLICK: FILTER BACK");
-        int id = view.getId();
-        
-        // Clean current selection
-        if(id == mBackButtonId || id == mCancelButtonId) {
-            Print.d(TAG, "FILTER BACK: " + mCurrentSelectedOptions.size());
-            // Clean the current selection
-            cleanOldSelections();
-            // Go to back
-            mParent.allowBackPressed();
-            
-        } else if(id == mClearButtonId) {
-            Print.d(TAG, "FILTER CLEAN: " + mCurrentSelectedOptions.size());
-            // Clean the current selection
-            if(mCurrentSelectedOptions.size() > 0){
-                //
-                cleanOldSelections();
-                // 
-                mOptionArray.notifyDataSetChanged();
-            }
-            
-        } else if(id == mDoneButtonId) {
-            Print.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
-            // Save the current selection
-            mFilter.setSelectedFilterOptions(mCurrentSelectedOptions);
-            // Goto back
-            mParent.allowBackPressed();
-        }
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-     */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Print.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
-        // Validate if is multi
-        if(allowMultiSelection) processMultiSelection(parent, position);
-        else processSingleSelection(parent, position);
-        // Update adapter
-        ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
-    }
-    
-    /**
-     * Method used to save multiple options
-     * @param parent
-     * @param position
-     * @author sergiopereira
-     */
-    private void processMultiSelection(AdapterView<?> parent, int position){
-        // Validate if checked or not
-        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
-        if( option == null) {
-            Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
-            // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
-        } else {
-            // Uncheck
-            Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
-            cleanSelectedItem(option, position);
-        }
-    }
-    
-    /**
-     * Method used to save only one option
-     * @param parent
-     * @param position
-     * @author sergiopereira
-     */
-    private void processSingleSelection(AdapterView<?> parent, int position){
-        // Option is the last
-        if(mCurrentSelectedOptions.get(position) != null) {
-            Print.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
-            // Clean old selection
-            cleanOldSelections();
-        } else {
-            Print.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
-            // Clean old selection
-            cleanOldSelections();
-            // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
-        }
-    }
-
-    
-    /**
-     * Load the pre selected options
-     * @author sergiopereira
-     */
-    private void loadSelectedItems(){
-        Print.d(TAG, "PRE SELECTION SIZE: " + mFilter.getSelectedFilterOptions().size());
-        // Copy all selected items
-        for (int i = 0; i < mFilter.getSelectedFilterOptions().size(); i++) {
-            // Get position
-            int position = mFilter.getSelectedFilterOptions().keyAt(i);
-            // Get option
-            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
-            // Save item
-            mCurrentSelectedOptions.put(position, option);
-            // Set option as selected
-            option.setSelected(true);
-        }
+        ((ListView) view.findViewById(mListId)).setOnItemClickListener(mOptionArray);
     }
     
     /**
@@ -219,12 +68,12 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      * @author sergiopereira
      *
      */
-     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> {
+     public static class FilterColorOptionArrayAdapter extends FilterOptionArrayAdapter {
             
         private static int layout = R.layout.dialog_list_sub_item_2;
 
-        public FilterColorOptionArrayAdapter(Context context, List<MultiFilterOptionService> objects) {
-            super(context, layout, objects);
+        public FilterColorOptionArrayAdapter(Context context, CatalogCheckFilter catalogCheckFilter) {
+            super(context, catalogCheckFilter);
         }
 
         /*

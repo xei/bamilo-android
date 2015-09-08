@@ -12,24 +12,24 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 /**
- * Class used to show the category filter
+ * 
  * @author sergiopereira
  *
  */
-public class FilterCategoryFragment extends FilterFragment {
+public class FilterCheckFragment extends FilterFragment {
 
-    private static final String TAG = FilterCategoryFragment.class.getSimpleName();
-    private FilterOptionArrayAdapter mOptionArray;
-    private CatalogCheckFilter mFilter;
+    private static final String TAG = FilterCheckFragment.class.getSimpleName();
+
+    protected FilterOptionArrayAdapter mOptionArray;
+
+    protected CatalogCheckFilter mFilter;
 
     /**
-     *
-     * @param bundle
-     * @return
+     * Create new instance
      */
-    public static FilterCategoryFragment newInstance(Bundle bundle) {
+    public static FilterCheckFragment newInstance(Bundle bundle) {
         Print.d(TAG, "NEW INSTANCE: BRAND");
-        FilterCategoryFragment frag = new FilterCategoryFragment();
+        FilterCheckFragment frag = new FilterCheckFragment();
         frag.setArguments(bundle);
         return frag;
     }
@@ -42,6 +42,7 @@ public class FilterCategoryFragment extends FilterFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
+        // Get selected filter
         mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
         mFilter = (CatalogCheckFilter)mCatalogFilter;
     }
@@ -52,7 +53,7 @@ public class FilterCategoryFragment extends FilterFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_category, container, false);
+        return inflater.inflate(R.layout.dialog_filter_fragment_brand, container, false);
     }
 
     /*
@@ -62,26 +63,26 @@ public class FilterCategoryFragment extends FilterFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // Get multi selection option
         allowMultiSelection = mFilter.isMulti();
         Print.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
-        if(mFilter.getSelectedFilterOptions().size() > 0) loadSelectedItems();
+        if(mFilter.getSelectedFilterOptions().size()>0) loadSelectedItems();
         else Print.i(TAG, "PRE SELECTION IS EMPTY");
 
-        // Filter list
-//        ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
+        // Create adapter
         mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter);
+        // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
+        ((ListView) view.findViewById(mListId)).setOnItemClickListener(mOptionArray);
     }
-    
+
     /**
      * Load the pre selected options
      * @author sergiopereira
      */
-    private void loadSelectedItems(){
+    protected void loadSelectedItems(){
         Print.d(TAG, "PRE SELECTION SIZE: " + mFilter.getSelectedFilterOptions().size());
         // Copy all selected items
         for (int i = 0; i < mFilter.getSelectedFilterOptions().size(); i++) {
@@ -95,5 +96,5 @@ public class FilterCategoryFragment extends FilterFragment {
             option.setSelected(true);
         }
     }
-        
+
 }

@@ -25,7 +25,7 @@ import java.util.List;
  */
  public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> implements AdapterView.OnItemClickListener{
         
-    private static int layout = R.layout.dialog_list_sub_item_2;
+    protected static int layout = R.layout.dialog_list_sub_item_2;
 
     private CatalogCheckFilter catalogFilter;
 
@@ -74,7 +74,7 @@ import java.util.List;
      * Method used to save multiple options
      * @author sergiopereira
      */
-    private void processMultiSelection(AdapterView<?> parent, int position){
+    protected void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
         MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
         if( option == null) {
@@ -92,7 +92,7 @@ import java.util.List;
      * Method used to save only one option
      * @author sergiopereira
      */
-    private void processSingleSelection(AdapterView<?> parent, int position){
+    protected void processSingleSelection(AdapterView<?> parent, int position){
         // Option is the last
         if(mCurrentSelectedOptions.get(position) != null) {
 //            Print.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);

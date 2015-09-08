@@ -49,7 +49,7 @@ public class CatalogRatingFilterOption implements IJSONSerializable, MultiFilter
 
     @Override
     public String getLabel() {
-        return null;
+        return average+"";
     }
 
     @Override
