@@ -38,6 +38,7 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:id="@+id/info"
         >
 
         <com.mobile.components.customfontviews.TextView
@@ -52,18 +53,31 @@
             android:id="@+id/txTitle"
             style="@style/Header"
             android:text="DESCRIPTION"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_price"
-            style="@style/Caption"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RS 00"
-            />
+            android:orientation="horizontal">
 
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_discount"
+                style="@style/Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               />
+
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_price"
+                style="@style/CaptionBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                />
+
+        </LinearLayout>
 
 
     </LinearLayout>
