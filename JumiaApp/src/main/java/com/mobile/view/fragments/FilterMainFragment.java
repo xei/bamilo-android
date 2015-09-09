@@ -189,8 +189,11 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     private void processOnClickDone() {
         Print.d(TAG, "CLICKED ON: DONE");
         toCancelFilters = false;
+
         // Validate and send to catalog fragment
-//        mParent.onSubmitFilterValues(mParent.filterSelectionController.getValues());
+        if(mParentFrament != null) {
+            mParentFrament.onSubmitFilterValues(filterSelectionController.getValues());
+        }
 
         getBaseActivity().onBackPressed();
 

@@ -40,29 +40,11 @@ public class FilterColorFragment extends FilterCheckFragment {
         return frag;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-        
-        // Get multi selection option
-        allowMultiSelection = mFilter.isMulti();
-        Print.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
-        
-        // Get pre selected option
-        if(mFilter.getSelectedFilterOptions().size()>0) loadSelectedItems();
-        else Print.i(TAG, "PRE SELECTION IS EMPTY");
-
-        // Get filter options
-        mOptionArray = new FilterColorOptionArrayAdapter(getActivity(), mFilter);
-        // Set adapter
-        ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
-        ((ListView) view.findViewById(mListId)).setOnItemClickListener(mOptionArray);
+    protected FilterOptionArrayAdapter createAdapter() {
+        return new FilterColorOptionArrayAdapter(getActivity(), mFilter);
     }
-    
+
     /**
      * 
      * @author sergiopereira

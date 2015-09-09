@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
@@ -72,10 +73,14 @@ public class FilterCheckFragment extends FilterFragment {
         else Print.i(TAG, "PRE SELECTION IS EMPTY");
 
         // Create adapter
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter);
+        mOptionArray = createAdapter();
         // Set adapter
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(mOptionArray);
+    }
+
+    protected FilterOptionArrayAdapter createAdapter(){
+        return new FilterOptionArrayAdapter(getActivity(), mFilter);
     }
 
     /**
@@ -99,7 +104,9 @@ public class FilterCheckFragment extends FilterFragment {
 
     @Override
     public void cleanValues() {
-        mOptionArray.cleanOldSelections();
-        mOptionArray.notifyDataSetChanged();
+        if(mOptionArray != null) {
+            mOptionArray.cleanOldSelections();
+            mOptionArray.notifyDataSetChanged();
+        }
     }
 }
