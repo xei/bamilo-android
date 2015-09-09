@@ -63,7 +63,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
@@ -490,7 +490,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             @Override
             public void onClick(View v) {
                 Print.d(TAG, "ON CLICK: FILTER BUTTON");
-                onClickFilterButton();
+                onClickFilterButton2();
             }
         });
     }
@@ -629,29 +629,35 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWizardStub.setVisibility(View.GONE);
     }
 
-    /**
-     * Process the click on filter button
-     */
-    private void onClickFilterButton() {
-        Print.i(TAG, "ON CLICK FILTER BUTTON");
-        try {
-            // Show dialog
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
-            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
-        }
-    }
+//    /**
+//     * Process the click on filter button
+//     */
+//    private void onClickFilterButton() {
+//        Print.i(TAG, "ON CLICK FILTER BUTTON");
+//        try {
+//            // Show dialog
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
+//            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+//            newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
+//        } catch (NullPointerException e) {
+//            Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
+//        }
+//    }
 
     private void onClickFilterButton2(){
         Print.i(TAG, "ON CLICK FILTER BUTTON");
         try {
             // Show dialog
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
-            getBaseActivity().onSwitchFragment(FragmentType.FILTERS,bundle,FragmentController.ADD_TO_BACK_STACK);
+            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
+            bundle.putSerializable(FilterMainFragment.FILTER_LISTENER, new OnDialogFilterListener() {
+                @Override
+                public void onSubmitFilterValues(ContentValues filterValues) {
+                    CatalogFragment.this.onSubmitFilterValues (filterValues);
+                }
+            });
+            getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
@@ -662,7 +668,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @param filterValues - the new content values from dialog
      */
-    public void onSubmitFilterValues(ContentValues filterValues) {
+    private void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         //Remove old filters from final request values
         for(String key : mCurrentFilterValues.keySet()){

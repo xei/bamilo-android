@@ -48,13 +48,15 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private int currentFilterPosition;
 
-    private OnDialogFilterListener mParentFrament;
+    private OnDialogFilterListener filterListener;
 
     private FilterFragment currentFragment;
 
     private boolean toCancelFilters;
 
     public final static String FILTER_TAG = "catalog_filters";
+
+    public final static String FILTER_LISTENER = "catalog_filter_listener";
 
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -75,6 +77,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+        filterListener = (OnDialogFilterListener)bundle.getSerializable(FILTER_LISTENER);
         filterSelectionController = new FilterSelectionController(mFilters);
         currentFilterPosition = -1;
         toCancelFilters = true;
@@ -191,8 +194,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         toCancelFilters = false;
 
         // Validate and send to catalog fragment
-        if(mParentFrament != null) {
-            mParentFrament.onSubmitFilterValues(filterSelectionController.getValues());
+        if(filterListener != null) {
+            filterListener.onSubmitFilterValues(filterSelectionController.getValues());
         }
 
         getBaseActivity().onBackPressed();
