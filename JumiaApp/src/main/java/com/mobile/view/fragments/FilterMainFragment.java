@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -202,9 +203,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     }
 
-    public static class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
+    private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
-        private static int layout = R.layout.dialog_list_sub_item_1;
+        private static final int layout = R.layout.dialog_list_sub_item_1;
 
         /**
          * Constructor
@@ -243,6 +244,12 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             }
             // Set title
             filterTitleTextView.setText(filterName);
+
+            if(position == FilterMainFragment.this.currentFilterPosition) {
+                convertView.setBackgroundColor(Color.WHITE);
+            } else {
+                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.grey_dividerlight));
+            }
 
             return convertView;
         }

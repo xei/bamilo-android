@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/red"
+    android:background="@drawable/selector_clickableitem_highlight"
     android:orientation="horizontal"
     android:paddingEnd="@dimen/dimen_48px"
     android:paddingLeft="@dimen/dimen_48px"
@@ -23,10 +23,11 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:fontFamily="roboto_regular"
-        android:gravity="left|start|center_vertical"
+        android:gravity="left|start"
         android:text="Title"
         android:textColor="@color/grey_dark"
         android:textDirection="locale"

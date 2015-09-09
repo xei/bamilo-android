@@ -18,7 +18,7 @@
             android:footerDividersEnabled="true"
             android:dividerHeight="0.75dp"/>
 
-        <View android:layout_width="0.3dp"
+        <View android:layout_width="0.75dp"
             android:layout_height="match_parent"
             android:background="@color/grey_dividerlight"/>
 

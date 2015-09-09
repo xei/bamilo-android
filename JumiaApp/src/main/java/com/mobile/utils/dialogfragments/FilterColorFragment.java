@@ -26,8 +26,6 @@ public class FilterColorFragment extends FilterCheckFragment {
     
     private static final String TAG = FilterColorFragment.class.getSimpleName();
 
-    private FilterColorOptionArrayAdapter mOptionArray;
-
     /**
      *
      * @param bundle

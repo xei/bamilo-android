@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/blue"
+    android:background="@color/grey_dividerlight"
     android:paddingLeft="@dimen/dimen_48px"
     android:paddingStart="@dimen/margin_large"
     android:gravity="center">
@@ -15,7 +15,6 @@
         android:fontFamily="roboto_regular"
         android:gravity="left|start|center_vertical"
         android:textColor="@color/grey_dark"
-        android:textDirection="locale"
         android:textSize="@dimen/text_xl" />
 
 </LinearLayout>
