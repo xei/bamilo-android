@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="42dp"
-    android:background="@drawable/selector_clickableitem_highlight"
+    android:layout_height="48dp"
+    android:background="@color/red"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_mid"
-    android:paddingEnd="@dimen/margin_large"
-    android:paddingLeft="@dimen/margin_large"
-    android:paddingRight="@dimen/margin_large"
-    android:paddingStart="@dimen/margin_large"
-    android:paddingTop="@dimen/margin_mid">
+    android:paddingEnd="@dimen/dimen_48px"
+    android:paddingLeft="@dimen/dimen_48px"
+    android:paddingRight="@dimen/dimen_48px"
+    android:paddingStart="@dimen/dimen_48px"
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/dialog_item_color_box"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/dimen_66px"
+        android:layout_height="@dimen/dimen_66px"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/margin_large"
-        android:layout_marginRight="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/dimen_48px"
+        android:layout_marginRight="@dimen/dimen_48px"
         android:src="@drawable/shape_border_flag"
         android:visibility="gone"
         android:contentDescription="@string/dialog_to_product"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:fontFamily="roboto_regular"
-        android:gravity="left|start"
+        android:gravity="left|start|center_vertical"
         android:text="Title"
         android:textColor="@color/grey_dark"
         android:textDirection="locale"
@@ -37,7 +35,7 @@
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="22dp"
         android:button="@drawable/btn_check_orange"
         android:clickable="false"
         android:focusable="false" />
