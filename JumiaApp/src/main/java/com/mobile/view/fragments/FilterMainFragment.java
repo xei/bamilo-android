@@ -178,6 +178,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         filterSelectionController.cleanAllFilters();
         // Update adapter
         ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
+        currentFragment.cleanValues();
     }
 
     /**
