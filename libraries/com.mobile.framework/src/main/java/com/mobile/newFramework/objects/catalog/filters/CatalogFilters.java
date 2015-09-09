@@ -27,7 +27,11 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
         JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
 
         for(int i = 0; i< filtersArray.length();i++){
-            add(getCatalogType(filtersArray.getJSONObject(i)));
+            try {
+                add(getCatalogType(filtersArray.getJSONObject(i)));
+            }catch (JSONException ex){
+                ex.printStackTrace();
+            }
         }
         return true;
     }
