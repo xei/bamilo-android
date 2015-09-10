@@ -9,6 +9,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price"
         style="@style/List1"
+        android:textColor="@color/black"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
@@ -19,6 +20,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_normal"
         style="@style/List2"
+        android:textColor="@color/black_800"
         android:layout_centerVertical="true"
         android:text="Rs.399"
         android:layout_marginLeft="10dp"
@@ -28,6 +30,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_discount_percentage"
         style="@style/discount_percentage"
+        android:textColor="@color/orange1"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dp"
