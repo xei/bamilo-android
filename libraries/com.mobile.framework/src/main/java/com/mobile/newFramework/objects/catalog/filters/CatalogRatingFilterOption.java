@@ -21,7 +21,7 @@ public class CatalogRatingFilterOption implements IJSONSerializable, MultiFilter
 
     protected int totalProducts;
     protected String val;
-    protected int average;
+    private int average;
     protected boolean selected;
 
     @Override
@@ -60,5 +60,9 @@ public class CatalogRatingFilterOption implements IJSONSerializable, MultiFilter
     @Override
     public String getVal() {
         return val;
+    }
+
+    public int getAverage() {
+        return average;
     }
 }

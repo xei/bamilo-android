@@ -91,6 +91,8 @@
     <color name="black_800">#808080</color>
     <color name="black_400">#e2e2e2</color>
     <color name="black_300">#f0f0f0</color>
-    <color name="black">#000000</color>
-
+    <color name="Black">#000000</color>
+    <color name="Black900">#202020</color>
+    <color name="Black800">#808080</color>
+    <color name="Black300">#f0f0f0</color>
 </resources>

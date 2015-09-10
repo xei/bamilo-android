@@ -7,17 +7,21 @@
     android:paddingLeft="16dp"
     android:paddingStart="16dp"
     android:paddingRight="16dp"
-    android:paddingEnd="16dp"
-    android:gravity="center_vertical">
+    android:paddingEnd="16dp">
 
-    <View
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
+    <RatingBar
+        android:id="@+id/dialog_item_rating"
+        style="@style/starRatingBarBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:isIndicator="true"
         />
 
     <com.mobile.components.customfontviews.CheckBox

@@ -17,8 +17,8 @@ public class CatalogRatingFilter extends CatalogCheckFilter{
         initialize(jsonObject);
     }
 
-    protected int min;
-    protected int max;
+    private int min;
+    private int max;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
@@ -31,5 +31,13 @@ public class CatalogRatingFilter extends CatalogCheckFilter{
     @Override
     protected void setOptionType(String id) {
         optionType = CatalogRatingFilterOption.class;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public int getMax() {
+        return max;
     }
 }

@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
 import com.mobile.newFramework.utils.output.Print;
@@ -47,13 +48,17 @@ public class FilterRatingFragment extends FilterCheckFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             MultiFilterOptionService option = getItem(position);
-//            if(option instanceof CatalogRatingFilterOption){
+            if(option instanceof CatalogRatingFilterOption){
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_rating, null);
-
+                RatingBar ratingBar = ((RatingBar) convertView.findViewById(R.id.dialog_item_rating));
+                ratingBar.setNumStars(((CatalogRatingFilter)mFilter).getMax());
+                ratingBar.setRating(((CatalogRatingFilterOption) option).getAverage());
+//                ratingBar.setEnabled(false);
+                ratingBar.setSelected(false);
                 // Set check box
                 ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
-//            }
+            }
 
             return convertView;
         }
