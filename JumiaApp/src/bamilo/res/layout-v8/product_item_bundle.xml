@@ -6,7 +6,7 @@
     android:id="@+id/item_container"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_listitem_highlight"
+    android:background="@drawable/selector_list_item_highlight"
     android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
     android:paddingRight="@dimen/margin_mid" >
