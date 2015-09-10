@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Black300"
+        android:background="@color/black_300"
         >
 
         <include layout="@layout/pdp_combo_item"  android:id="@+id/ComboSection"

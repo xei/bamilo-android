@@ -27,7 +27,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_discount_percentage"
-        style="@style/discount_percentage2"
+        style="@style/discount_percentage"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dp"
