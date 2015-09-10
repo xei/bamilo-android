@@ -84,5 +84,6 @@
     <color name="white_95_op">#f2ffffff</color>
 
     <color name="black_400">#e2e2e2</color>
+    <color name="black_300">#f0f0f0</color>
 
 </resources>

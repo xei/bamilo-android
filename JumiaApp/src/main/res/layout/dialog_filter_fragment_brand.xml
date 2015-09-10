@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:divider="@color/grey_dividerlight"
-        android:dividerHeight="0.75dp"
+        android:divider="@color/black_400"
+        android:dividerHeight="1dp"
         android:footerDividersEnabled="true"
         android:listSelector="@android:color/transparent"
         android:visibility="visible" />
