@@ -77,6 +77,7 @@ public class RestConstants {
     public static final String JSON_DELIVERY_TIME = "delivery_time";
     public static final String JSON_RELATED_FIELD_TAG = "related_field";
     public static final String JSON_CHECKED_TAG = "checked";
+    public static final String JSON_FORMAT_TAG = "format";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";

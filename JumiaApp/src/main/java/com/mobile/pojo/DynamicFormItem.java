@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RatingBar;
+import android.text.format.DateFormat;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -46,13 +47,11 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
-import com.mobile.utils.dialogfragments.DialogDatePickerFragment;
-import com.mobile.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
+import com.mobile.utils.datepicker.DatePickerDialog;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +87,7 @@ public class DynamicFormItem {
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;
+    private static String DATE_FORMAT = "dd-MM-yyyy";
 
     private Context context;
     private DynamicForm parent;
@@ -102,7 +102,10 @@ public class DynamicFormItem {
     //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
     //private TextWatcher textWatcher;
-    private DialogDatePickerFragment dialogDate;
+    private DatePickerDialog dialogDate;
+    private int selectedYear;
+    private int selectedMonthOfYear;
+    private int selectedDayOfMoth;
     private int errorColor;
     //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
@@ -340,7 +343,22 @@ public class DynamicFormItem {
                 break;
             case metadate:
             case date:
-                dialogDate.setDate((String) value);
+                String date = (String) value;
+                int dayMonth;
+                int monthYear;
+                int year;
+
+                if (date != null && date.length() > 0 && date.split("-").length > 1) {
+                    dayMonth = Integer.parseInt(date.split("-")[2]);
+                    monthYear = Integer.parseInt(date.split("-")[1]);
+                    year = Integer.parseInt(date.split("-")[0]);
+                } else {
+                    Calendar c = Calendar.getInstance();
+                    year = c.get(Calendar.YEAR);
+                    monthYear = c.get(Calendar.MONTH);
+                    dayMonth = c.get(Calendar.DAY_OF_MONTH);
+                }
+                dialogDate.setDate(dayMonth, monthYear - 1, year);
                 break;
             case email:
             case text:
@@ -448,14 +466,8 @@ public class DynamicFormItem {
             case metadate:
             case date:
                 String date = inStat.getString(getKey());
-                this.dialogDate.setDate(date);
-                GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(),
-                        this.dialogDate.getMonth(), this.dialogDate.getDay());
-                Date d = new Date(cal.getTimeInMillis());
-                String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) this.dataControl).setText(dateFormated);
-                if( this.mandatoryControl != null)  //mobapi 1.8 change: see buildDate
-                    this.mandatoryControl.setVisibility(View.GONE);
+                ((Button) this.dataControl).setText(date);
+                setDialogDate(date);
                 break;
             case email:
             case text:
@@ -532,15 +544,10 @@ public class DynamicFormItem {
 
             case metadate:
             case date:
-                String date = inStat.getAsString(getName());
-                this.dialogDate.setDate(date);
-                GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(),
-                        this.dialogDate.getMonth(), this.dialogDate.getDay());
-                Date d = new Date(cal.getTimeInMillis());
-                String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) this.dataControl).setText(dateFormated);
-                this.mandatoryControl.setVisibility(View.GONE);
-                break;
+                String date = inStat.getAsString(getKey());
+                ((Button) this.dataControl).setText(date);
+                setDialogDate(date);
+            break;
             case email:
             case text:
             case password:
@@ -637,7 +644,9 @@ public class DynamicFormItem {
                 break;
             case metadate:
             case date:
-                result = dialogDate.getDate();
+                GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
+                Date d = new Date(cal.getTimeInMillis());
+                result = DateFormat.format(DATE_FORMAT, d).toString();
                 break;
             case hide:
             case email:
@@ -679,7 +688,9 @@ public class DynamicFormItem {
                 break;
             case metadate:
             case date:
-                outState.putString(getKey(), dialogDate.getDate());
+                if (this.dataControl instanceof Button) {
+                    outState.putString(getKey(), ((Button) this.dataControl).getText().toString());
+                }
                 break;
             case hide:
             case email:
@@ -757,7 +768,12 @@ public class DynamicFormItem {
                     break;
                 case metadate:
                 case date:
-                    result = dialogDate.isSetOnce();
+                    result = true;
+                    if (this.entry.getValidation().isRequired()) {
+                        if (com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
+                            result = false;
+                        }
+                    }
                     break;
                 case email:
                 case text:
@@ -864,11 +880,12 @@ public class DynamicFormItem {
 
             case metadate:
             case date:
-
-                valid = dialogDate.isSetOnce();
-
-                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
-                break;
+                if (this.entry.getValidation().isRequired()) {
+                    if (com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
+                        result = false;
+                    }
+                }
+            break;
             case email:
             case text:
             case password:
@@ -994,7 +1011,7 @@ public class DynamicFormItem {
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
             this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1061,7 +1078,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setId(parent.getNextId());
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1174,7 +1191,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1204,8 +1221,11 @@ public class DynamicFormItem {
             dialogTitle = this.entry.getLabel();*/
 
         //changed mobapi 1.8:
+        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(this.entry.getFormat())){
+            DATE_FORMAT = this.entry.getFormat();
+        }
         dataContainer.addView(this.dataControl);
-        String entryLabel=this.entry.getLabel(), dialogTitle= entryLabel, entryKey = this.entry.getKey();
+        String entryLabel = this.entry.getLabel(), dialogTitle = entryLabel, entryKey = this.entry.getKey();
 
         if (entryKey.equals("birthday")) {
             Print.i("ENTERED BIRTHDAY", " HERE ");
@@ -1225,38 +1245,61 @@ public class DynamicFormItem {
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
             this.mandatoryControl.setVisibility(View.VISIBLE);
             dataContainer.addView(this.mandatoryControl);
         }
 
-
-
-
-        OnDatePickerDialogListener pickerListener = new OnDatePickerDialogListener() {
+        final DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
-            public void onDatePickerDialogSelect(int year, int month, int day) {
-                Print.i(TAG, "code1date : year : " + year);
-                GregorianCalendar cal = new GregorianCalendar(year, month, day);
-                Date d = new Date(cal.getTimeInMillis());
-                String date = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) DynamicFormItem.this.dataControl).setText(date);
-                Print.i(TAG, "code1date : date : " + date);
-                if(mandatoryControl != null)    //change
-                    DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+            public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+                selectedYear = year;
+                selectedMonthOfYear = monthOfYear;
+                selectedDayOfMoth = dayOfMonth;
+                Calendar currentCalendar = Calendar.getInstance();
+                GregorianCalendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                Print.i(TAG, "selected Date : year: " + year +" month: "+ monthOfYear +" day: "+ dayOfMonth);
+
+                int controlValue =  cal.compareTo(currentCalendar);
+                Print.i(TAG, "controlValue:" +controlValue);
+                if(controlValue == 0 || controlValue == 1){
+                    Toast.makeText(context, context.getString(R.string.birthday_error),Toast.LENGTH_SHORT).show();
+                } else {
+                    Date d = new Date(cal.getTimeInMillis());
+                    String date = DateFormat.format(DATE_FORMAT, d).toString();
+                    ((Button) DynamicFormItem.this.dataControl).setText(date);
+                    Print.i(TAG, "code1date : date : " + date);
+                    if(mandatoryControl != null)    //change
+                        DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+
+                    dialogDate.dismiss();
+                }
+
             }
+
         };
 
-        this.dialogDate = DialogDatePickerFragment.newInstance((BaseActivity) context,
-                pickerListener, String.valueOf(dataControl.getId()), dialogTitle, 0, 0, 0);
+        Calendar c = Calendar.getInstance();
+        this.dialogDate = DatePickerDialog.newInstance(pickerListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        this.dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+
         this.dataControl.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (!dialogDate.isVisible())
+                if (!dialogDate.isVisible()) {
+                    Calendar c = Calendar.getInstance();
+                    if(com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) DynamicFormItem.this.dataControl).getText().toString())){
+                        dialogDate.setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                        dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+                    } else {
+                        dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+                        setDialogDate(((Button) DynamicFormItem.this.dataControl).getText().toString());
+                    }
                     dialogDate.show(((BaseActivity) context).getSupportFragmentManager(), null);
+                }
             }
         });
 
@@ -1412,7 +1455,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1536,7 +1579,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1638,7 +1681,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
@@ -1777,7 +1820,7 @@ public class DynamicFormItem {
     @SuppressLint("SimpleDateFormat")
     public void addSubFormFieldValues(ContentValues model) {
         if (this.entry.getInputType() == InputType.metadate) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             String dateString = this.getValue();
             Date date;
             try {
@@ -1794,10 +1837,10 @@ public class DynamicFormItem {
             int month = cal.get(Calendar.MONTH) + 1;
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-            Map<String, IFormField> subFields = this.entry.getSubFormFields();
-            model.put(subFields.get("year").getName(), String.valueOf(year));
-            model.put(subFields.get("month").getName(), String.valueOf(month));
-            model.put(subFields.get("day").getName(), String.valueOf(day));
+//            model.put(this.entry.getId(), String.valueOf(day)+"-"+ String.valueOf(month)+"-"+String.valueOf(year));
+            model.put(this.entry.getId(), dateString);
+            Print.d(TAG, "setDate: " + this.entry.getId() + "->" + String.valueOf(day) + "-" + String.valueOf(month) + "-" + String.valueOf(year));
+
         }
     }
 
@@ -1966,7 +2009,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
@@ -2049,4 +2092,25 @@ public class DynamicFormItem {
         return hasRules;
     }
 
+    private void setDialogDate(String date){
+
+        if(dialogDate != null){
+            int dayMonth;
+            int monthYear;
+            int year;
+
+            if (date != null && date.length() > 0 && date.split("-").length > 1) {
+                dayMonth = Integer.parseInt(date.split("-")[2]);
+                monthYear = Integer.parseInt(date.split("-")[1]);
+                year = Integer.parseInt(date.split("-")[0]);
+            } else {
+                Calendar c = Calendar.getInstance();
+                year = c.get(Calendar.YEAR);
+                monthYear = c.get(Calendar.MONTH);
+                dayMonth = c.get(Calendar.DAY_OF_MONTH);
+            }
+            dialogDate.setDate(dayMonth, monthYear - 1, year);
+        }
+
+    }
 }

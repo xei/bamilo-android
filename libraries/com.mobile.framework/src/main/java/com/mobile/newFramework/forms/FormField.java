@@ -65,6 +65,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String linkText;
 
     /**
+     * String for birthday format.
+     */
+    private String format;
+    /**
      * variable used to save the rating options
      */
     private LinkedHashMap<String, String> dataSetRating;
@@ -106,6 +110,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     public HashMap<String,PaymentInfo> paymentInfoList;
 
+
     /**
      * FormField param constructor
      *
@@ -130,6 +135,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.linkText = "";
         this.dataSetRating = new LinkedHashMap<>();
         this.paymentInfoList = new HashMap<>();
+        this.format = "dd-MM-yyyy";
     }
 
     /**
@@ -158,6 +164,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.scenario = null;
         this.dataSetRating = new LinkedHashMap<>();
         this.paymentInfoList = new HashMap<>();
+        this.format = "dd-MM-yyyy";
     }
 
     /*
@@ -229,6 +236,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             value = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG); // TODO ????
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
+            format = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
             Print.d("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
 
@@ -711,6 +719,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeMap(extrasValues);
         dest.writeString(linkText);
         dest.writeMap(dataSetRating);
+        dest.writeString(format);
     }
 
     /**
@@ -731,6 +740,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
         linkText = in.readString();
         dataSetRating = (LinkedHashMap<String, String>) in.readHashMap(null);
+        format = in.readString();
     }
 
     /**
@@ -751,10 +761,15 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return this.linkText;
     }
 
-
     @Override
     public Map<String, String> getDateSetRating() {
         return dataSetRating;
     }
+
+    @Override
+    public String getFormat() {
+        return this.format;
+    }
+
 
 }

@@ -44,4 +44,7 @@
     <!-- TODO: REMOVE THIS ID FOR REGEX (TEMPORARY SOLUTION) -->
     <item type="id" name="regex"/>
 
+    <!-- DATE PICKER -->
+    <item name="blue_dialog" type="color" />
+
 </resources>
