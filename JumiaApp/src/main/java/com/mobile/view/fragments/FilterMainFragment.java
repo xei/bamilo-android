@@ -30,6 +30,7 @@ import com.mobile.utils.dialogfragments.FilterCheckFragment;
 import com.mobile.utils.dialogfragments.FilterColorFragment;
 import com.mobile.utils.dialogfragments.FilterFragment;
 import com.mobile.utils.dialogfragments.FilterPriceFragment;
+import com.mobile.utils.dialogfragments.FilterRatingFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             currentFragment = null;
 
             if (catalogFilter instanceof CatalogRatingFilter) {
-
+                currentFragment = FilterRatingFragment.newInstance(bundle);
             } else if (catalogFilter instanceof CatalogCheckFilter) {
 
                 if (catalogFilter.getOptionType() == CatalogColorFilterOption.class) {
