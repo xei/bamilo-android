@@ -384,4 +384,6 @@
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
     <string formatted="false" name="filter_placeholder">%s (%d)</string>
+    <string name="clear_all_lowercase_label">Clear All</string>
+    <string name="apply_label">Apply</string>
 </resources>

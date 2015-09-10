@@ -14,25 +14,27 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/selector_clickableitem_highlight"
+        android:background="@color/black"
         android:fontFamily="roboto_regular"
         android:gravity="center"
-        android:text="@string/clear_all_uppercase_label"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_xl" />
+        android:text="@string/clear_all_lowercase_label"
+        android:textColor="@color/white"
+        android:textSize="@dimen/list_1_2" />
 
-    <View style="@style/divider_vertical" />
+    <View android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/black_400"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_done"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/selector_clickableitem_highlight"
+        android:background="@color/black"
         android:fontFamily="roboto_regular"
         android:gravity="center"
-        android:text="@string/done_label"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_xl" />
+        android:text="@string/apply_label"
+        android:textColor="@color/white"
+        android:textSize="@dimen/list_1_2"/>
 
 </LinearLayout>
