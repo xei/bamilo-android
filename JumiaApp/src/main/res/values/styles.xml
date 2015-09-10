@@ -782,25 +782,28 @@
 
     <!-- NEW STYLES PDV REDESIGN -->
     <!--added new text styles redesign -->
-    <style name="Header">
-        <item name="android:textColor">@color/Black</item>
+    <style name="Header"> 
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="Display1">
+        <item name="android:fontFamily">light</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
     <style name="Info">
-        <item name="android:textColor">@color/Black800</item>
+        <item name="android:fontFamily">regular</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="List1">
-        <item name="android:textColor">@color/Black</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="List2">
-        <item name="android:textColor">@color/Black</item>
+        <item name="android:fontFamily">regular</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -810,14 +813,33 @@
     </style>
 
     <style name="Button">
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Caption">
+        <item name="android:fontFamily">regular</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="CaptionBold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Body1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Body2">
+        <item name="android:fontFamily">medium</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
     <style name="Body3">
+        <item name="android:fontFamily">regular</item>
         <item name="android:textSize">13sp</item>
     </style>
 
