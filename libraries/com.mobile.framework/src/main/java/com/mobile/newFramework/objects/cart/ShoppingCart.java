@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -262,6 +263,26 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		return mSubTotal;
 	}
 
+
+	/**
+	 * @return A string with all attribute set Ids separated by ;
+	 */
+	public String getAttributeSetIdList() {
+		String attributeList = "";
+		ShoppingCartItem item;
+		if(mCartItems != null && mCartItems.size() > 0){
+
+			for (String key : mCartItems.keySet()) {
+				item = mCartItems.get(key);
+				if (TextUtils.isEmpty(attributeList)) {
+					attributeList = item.getAttributeSetId();
+				} else {
+					attributeList = attributeList +";"+ item.getAttributeSetId();
+				}
+			}
+		}
+		return attributeList;
+	}
 	/*
 	 * ########### PARCELABLE ###########
 	 */

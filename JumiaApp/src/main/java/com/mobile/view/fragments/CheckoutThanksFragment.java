@@ -233,7 +233,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 params.putString(TrackerDelegator.TAX_KEY, orderTax);
                 params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentMethod);
             }
-            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
+            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.getCart().getAttributeSetIdList());
         }
 
         triggerClearCart();

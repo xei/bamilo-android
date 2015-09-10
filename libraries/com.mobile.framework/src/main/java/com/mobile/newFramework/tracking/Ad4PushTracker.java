@@ -487,18 +487,19 @@ public class Ad4PushTracker {
      * @param cartQt
      * @param cartValue
      */
-    public void trackCheckoutStarted(int cartQt, double cartValue) {
+    public void trackCheckoutStarted(int cartQt, double cartValue, String attributeIds) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
             prefs.putString(ORDER_STATUS, CHECKOUT_STARTED);
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartQt);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK CHECKOUT STARTED: " + prefs.toString());
         }
     }
 
-    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon) {
+    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon, String attributeIds) {
 
         // String currency = CurrencyFormatter.getCurrencyCode();
         String currency = CurrencyFormatter.EURO_CODE;
@@ -533,6 +534,7 @@ public class Ad4PushTracker {
             prefs.putString(PURCHASE_COUPON_STATUS, coupon);
             prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
             prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             // Clean other values
             //XXX
 //            prefs.putInt(FAVORITES_TO_CART_SKU, 0);
@@ -719,11 +721,12 @@ public class Ad4PushTracker {
      * @param cartValue
      * @author sergiopereira
      */
-    public void trackCart(double cartValue, int cartCount) {
+    public void trackCart(double cartValue, int cartCount, String attributeIds) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartCount);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK CART VALUE: " + prefs.toString());
         }
