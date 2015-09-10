@@ -25,7 +25,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/Caption"
-        color="@color/Black800"
+        color="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_below="@id/image_loadable"
         android:layout_marginEnd="5dp"
@@ -40,7 +40,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/TextBody_1"
-        color="@color/Black"
+        color="@color/black"
         android:gravity="left|start"
         android:layout_below="@id/item_brand"
         android:layout_marginLeft="5dp"
@@ -64,7 +64,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/Body3"
-        color="@color/Black800"
+        color="@color/black_800"
         android:layout_below="@id/item_name"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"

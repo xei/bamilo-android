@@ -14,7 +14,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/txSellerName"
         style="@style/TextBody_1"
-        color="@color/Black800"
+        color="@color/black_800"
         android:text="KEEBEE 2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_rating_bar_rating_count"
             style="@style/Caption"
-            color="@color/Black800"
+            color="@color/black_800"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginStart="@dimen/margin_mid"
@@ -70,7 +70,7 @@
         >
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
-            color="@color/Black"
+            color="@color/black"
             android:layout_centerVertical="true"
             android:text="Delivery time:"
             android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
-            color="@color/Black"
+            color="@color/black"
             android:layout_centerVertical="true"
             android:text="3 - 8 days"
             android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
-            color="@color/Black"
+            color="@color/black"
             android:layout_centerVertical="true"
             android:text="Warranty:"
             android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
-            color="@color/Black"
+            color="@color/black"
             android:layout_centerVertical="true"
             android:text="3 - 8 days"
             android:layout_width="wrap_content"
