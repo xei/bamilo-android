@@ -17,7 +17,6 @@
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/dimen_48px"
         android:layout_marginRight="@dimen/dimen_48px"
-        android:src="@drawable/shape_border_flag"
         android:visibility="gone"
         android:contentDescription="@string/dialog_to_product"/>
 

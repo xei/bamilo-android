@@ -2,6 +2,11 @@ package com.mobile.utils.dialogfragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +73,13 @@ public class FilterColorFragment extends FilterCheckFragment {
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
                 // Set color box
-                convertView.findViewById(R.id.dialog_item_color_box).setBackgroundColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
+
+                GradientDrawable gradient = new GradientDrawable();
+                gradient.setShape(GradientDrawable.OVAL);
+                gradient.setColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
+                gradient.setStroke(1,convertView.getResources().getColor(R.color.black_400));
+
+                convertView.findViewById(R.id.dialog_item_color_box).setBackground(gradient);
                 convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
@@ -79,6 +90,8 @@ public class FilterColorFragment extends FilterCheckFragment {
             // Return the filter view
             return convertView;
         }
+
+
     }
     
     
