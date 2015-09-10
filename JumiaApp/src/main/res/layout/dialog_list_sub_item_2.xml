@@ -25,12 +25,12 @@
         android:id="@+id/dialog_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/grey_dark"
+        android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/dialog_item_color_box"
         android:layout_toEndOf="@+id/dialog_item_color_box"
         android:fontFamily="roboto_regular"
-        android:textSize="16sp"
+        android:textSize="@dimen/list_1_2"
         />
 
     <com.mobile.components.customfontviews.CheckBox

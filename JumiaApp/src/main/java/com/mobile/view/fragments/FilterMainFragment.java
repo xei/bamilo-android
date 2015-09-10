@@ -228,22 +228,20 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
 
             TextView filterTitleTextView = ((TextView) convertView.findViewById(R.id.dialog_item_title));
+            TextView filtersNumberTextView = ((TextView) convertView.findViewById(R.id.dialog_item_count));
 
-            String filterName = null;
             if(filter.hasAppliedFilters()) {
                 filterTitleTextView.setTypeface(null, Typeface.BOLD);
-                if(filter instanceof CatalogPriceFilter){
-                    filterName = filter.getName();
-                } else {
-                    int count = ((CatalogCheckFilter)filter).getSelectedFilterOptions().size();
-                    filterName = !ShopSelector.isRtl() ? convertView.getResources().getString(R.string.filter_placeholder, filter.getName(), count) : convertView.getResources().getString(R.string.filter_placeholder, count, filter.getName());
+                if(!(filter instanceof CatalogPriceFilter)){
+                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.filter_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
+                    filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {
+                filtersNumberTextView.setVisibility(View.GONE);
                 filterTitleTextView.setTypeface(null, Typeface.NORMAL);
-                filterName = filter.getName();
             }
             // Set title
-            filterTitleTextView.setText(filterName);
+            filterTitleTextView.setText(filter.getName());
 
             if(position == FilterMainFragment.this.currentFilterPosition) {
                 convertView.setBackgroundColor(Color.WHITE);
