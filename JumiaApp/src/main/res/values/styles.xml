@@ -293,7 +293,7 @@
         <item name="android:inputType">text</item>
     </style>
 
-    <style name="form_checkbox_style" parent="form_style">
+    <style name="form_checkbox_style" parent="form_style" >
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
         <item name="android:layout_marginStart">@dimen/form_check_padding</item>
@@ -327,6 +327,16 @@
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/star_ratingbar_big</item>
         <item name="android:indeterminateDrawable">@drawable/star_ratingbar_big</item>
+        <item name="android:minHeight">17dp</item>
+        <item name="android:maxHeight">17dp</item>
+        <item name="android:thumb">@null</item>
+    </style>
+
+    <!-- changeFashion: new ratings style -->
+    <style name="starRatingBarFashionBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/star_ratingbar_fashion_big</item>
+        <item name="android:indeterminateDrawable">@drawable/star_ratingbar_fashion_big</item>
         <item name="android:minHeight">17dp</item>
         <item name="android:maxHeight">17dp</item>
         <item name="android:thumb">@null</item>
@@ -479,6 +489,23 @@
         <item name="android:singleLine">true</item>
         <item name="android:text">-99%</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+        <item name="android:layoutDirection">ltr</item>
+    </style>
+
+    <style name="discount_percentage2">
+        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width
+        </item>
+        <item name="android:layout_height">
+            @dimen/product_list_item_discount_percentage_image_height
+        </item>
+        <item name="android:background">@drawable/badge_discount</item>
+        <item name="android:textColor">@color/orange1</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:text">-99%</item>
         <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
         <item name="android:layoutDirection">ltr</item>
     </style>
@@ -778,6 +805,52 @@
 
     <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
         <item name="android:background">@android:color/white</item>
+    </style>
+
+    <!-- NEW STYLES PDV REDESIGN -->
+    <!--added new text styles redesign -->
+    <style name="Header">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Info">
+        <item name="android:textColor">@color/Black800</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="List1">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="List2">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Badge">
+        <item name="android:textColor">@color/orange1</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Caption">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CaptionBold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Body3">
+        <item name="android:textSize">13sp</item>
     </style>
 
 </resources>

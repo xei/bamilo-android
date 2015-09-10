@@ -47,7 +47,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private ArrayList<String> imagesList;
 
     private InfiniteCirclePageIndicator mViewPagerIndicator;
-    
+
     /**
      * Constructor using a nested flag
      * 
@@ -142,7 +142,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
-        mViewPagerIndicator = (InfiniteCirclePageIndicator) getView().findViewById(R.id.view_pager_indicator);
+  //      mViewPagerIndicator = (InfiniteCirclePageIndicator) getView().findViewById(R.id.view_pager_indicator);
         // Set view pager
         createGallery();
         // Set close button
@@ -262,12 +262,12 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     private void setIndicatorForViewPager(int size) {
         // Validate the current size
-        if(size > 1) {
+  /*      if(size > 1) {
             mViewPagerIndicator.setVisibility(View.VISIBLE);
         } else {
             mViewPagerIndicator.setVisibility(View.INVISIBLE);
         }
-        mViewPagerIndicator.setViewPager(mViewPager);
+        mViewPagerIndicator.setViewPager(mViewPager);*/
     }
 
     /**
