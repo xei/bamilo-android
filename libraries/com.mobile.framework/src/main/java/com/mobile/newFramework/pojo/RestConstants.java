@@ -223,6 +223,7 @@ public class RestConstants {
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
 
     // Address Tags
+    public static final String JSON_ADDRESSES_TAG = "addresses";
     public static final String JSON_PHONE_TAG = "phone";
     public static final String JSON_ADDITIONAL_PHONE_TAG = "additional_phone";
     public static final String JSON_ADDRESS1_TAG = "address1";
