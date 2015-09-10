@@ -23,7 +23,6 @@
                 android:gravity="start|left"
                 android:textColor="@color/grey_dark"
                 android:textSize="@dimen/text_xl"
-                android:text="sada"
                 android:layout_marginBottom="30dp"/>
 
             <!-- RANGE BAR -->

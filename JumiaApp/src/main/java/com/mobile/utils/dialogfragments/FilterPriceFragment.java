@@ -12,6 +12,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 /**
@@ -40,6 +41,9 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private int mInterval;
 
     private CatalogPriceFilter mFilter;
+
+    private String currencySymbol;
+
     /**
      *
      * @param bundle
@@ -107,8 +111,11 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
+
+        currencySymbol = CurrencyFormatter.getCurrencySymbol();
+
         // Set current range
-        mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue);
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
         // Set discount box
 //        mDiscountBox.setChecked(mFilter.isRangeWithDiscount());
         
@@ -123,7 +130,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
         mCurrMinValue = getMinRealValue(minValue);
         mCurrMaxValue = getMaxRealValue(maxValue);
-        mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue );
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
 
         processOnClickDone();
     }
@@ -156,7 +163,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Reset text
-        mRangeValues.setText(mCurrMinValue + " - " + mCurrMaxValue);
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
         // Reset discount box
         mDiscountBox.setChecked(false);
         // Clean saved values
@@ -229,5 +236,9 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     @Override
     public void cleanValues() {
         processOnClickClean();
+    }
+
+    protected void setIntervalText(int minValue, int maxValue){
+        mRangeValues.setText( currencySymbol + " " + minValue + " - " + maxValue );
     }
 }
