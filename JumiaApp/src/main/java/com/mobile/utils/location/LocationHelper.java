@@ -14,6 +14,7 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
@@ -273,7 +274,7 @@ public class LocationHelper implements LocationListener {
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (supportedCountry.equalsIgnoreCase(countryCode.toLowerCase())){
                     Print.d(TAG, "MATCH: SHOP ID " + i);
-                    countryObject.getLanguages().setSelected(Locale.getDefault().getLanguage()+"_"+countryCode);
+                    ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
                     return SELECTED;
                 }

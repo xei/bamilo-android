@@ -15,6 +15,8 @@ import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
 
+import java.util.Locale;
+
 /**
  * Created by rsoares on 8/27/15.
  */
@@ -62,6 +64,12 @@ public class ChooseLanguageController {
             languages = countryObject.getLanguages();
         }
         return languages;
+    }
+
+    public static void setLanguageBasedOnDevice(Languages languages, String countryCode){
+        if(!languages.setSelected(Locale.getDefault().getLanguage()+"_"+countryCode)){
+            languages.setDefaultAsSelected();
+        }
     }
 
 }

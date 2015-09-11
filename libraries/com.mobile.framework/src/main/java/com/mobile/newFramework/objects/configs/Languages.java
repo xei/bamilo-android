@@ -79,11 +79,18 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         }
     }
 
-    public void setSelected(String code){
+    public boolean setSelected(String code){
+        boolean found = false;
         for(int i = 0; i<this.size();i++){
             Language language = this.get(i);
-            language.setIsSelected(language.getLangCode().equals(code));
+            if(!found && language.getLangCode().equals(code)){
+                language.setIsSelected(true);
+                found = true;
+            } else {
+                language.setIsSelected(false);
+            }
         }
+        return found;
     }
 
     public ArrayList<String> getLanguageNames(){
@@ -102,5 +109,22 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
             }
         }
         return -1;
+    }
+
+    public int getDefaultPosition(){
+        for(int i = 0; i<this.size();i++){
+            Language language = this.get(i);
+            if(language.isDefault()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void setDefaultAsSelected(){
+        for(int i = 0; i<this.size();i++){
+            Language language = this.get(i);
+            language.setIsSelected(language.isDefault());
+        }
     }
 }
