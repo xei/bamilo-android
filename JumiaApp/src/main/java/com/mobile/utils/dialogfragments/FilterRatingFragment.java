@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
@@ -55,6 +56,8 @@ public class FilterRatingFragment extends FilterCheckFragment {
                 ratingBar.setNumStars(((CatalogRatingFilter) mFilter).getMax());
                 ratingBar.setRating(((CatalogRatingFilterOption) option).getAverage());
                 // Set check box
+
+                setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
 
                 setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
             }

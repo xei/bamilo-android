@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
@@ -56,7 +57,8 @@ import java.util.List;
         // Set title
         ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
 
-        ((TextView) convertView.findViewById(R.id.dialog_item_count)).setText(convertView.getResources().getString(R.string.filter_placeholder, 4));
+        setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
+
         // Set check box
         setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
         // Return the filter view
@@ -154,6 +156,15 @@ import java.util.List;
             } else {
                 checkBox.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    protected void setProductsCount(TextView textView, MultiFilterOptionService option){
+        if(option instanceof CatalogFilterOption) {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(textView.getResources().getString(R.string.filter_placeholder, ((CatalogFilterOption) option).getTotalProducts()));
+        } else {
+            textView.setVisibility(View.GONE);
         }
     }
 }

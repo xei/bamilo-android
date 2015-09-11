@@ -24,6 +24,19 @@
         android:isIndicator="true"
         />
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/dialog_products_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/dialog_item_rating"
+        android:layout_toEndOf="@id/dialog_item_rating"
+        android:fontFamily="roboto_regular"
+        android:textSize="16sp"
+        android:visibility="gone"
+        />
+
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"

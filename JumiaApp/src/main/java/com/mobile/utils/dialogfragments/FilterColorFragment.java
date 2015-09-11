@@ -83,6 +83,9 @@ public class FilterColorFragment extends FilterCheckFragment {
                 convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
+
+                setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
+
                 // Set check box
                 setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
             }
