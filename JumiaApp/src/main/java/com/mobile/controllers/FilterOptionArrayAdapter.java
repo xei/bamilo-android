@@ -27,7 +27,7 @@ import java.util.List;
         
     protected static int layout = R.layout.dialog_list_sub_item_2;
 
-    private CatalogCheckFilter catalogFilter;
+    protected CatalogCheckFilter catalogFilter;
 
     private SparseArray<MultiFilterOptionService> mCurrentSelectedOptions;
     /**
@@ -56,7 +56,7 @@ import java.util.List;
         // Set title
         ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
         // Set check box
-        ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
+        setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
         // Return the filter view
         return convertView;
     }
@@ -140,5 +140,18 @@ import java.util.List;
         option.setSelected(false);
         // Remove item
         mCurrentSelectedOptions.remove(position);
+    }
+
+    protected void setCheckboxBehavior(CheckBox checkBox, MultiFilterOptionService option){
+        checkBox.setVisibility(View.VISIBLE);
+        if(catalogFilter.isMulti()){
+            checkBox.setChecked(option.isSelected());
+        } else {
+            if(option.isSelected()){
+                checkBox.setChecked(true);
+            } else {
+                checkBox.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }

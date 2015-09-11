@@ -84,7 +84,7 @@ public class FilterColorFragment extends FilterCheckFragment {
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
                 // Set check box
-                ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
+                setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
             }
 
             // Return the filter view

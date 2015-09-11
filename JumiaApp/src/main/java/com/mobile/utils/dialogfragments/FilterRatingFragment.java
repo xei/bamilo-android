@@ -52,12 +52,11 @@ public class FilterRatingFragment extends FilterCheckFragment {
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_rating, null);
                 RatingBar ratingBar = ((RatingBar) convertView.findViewById(R.id.dialog_item_rating));
-                ratingBar.setNumStars(((CatalogRatingFilter)mFilter).getMax());
+                ratingBar.setNumStars(((CatalogRatingFilter) mFilter).getMax());
                 ratingBar.setRating(((CatalogRatingFilterOption) option).getAverage());
-//                ratingBar.setEnabled(false);
-                ratingBar.setSelected(false);
                 // Set check box
-                ((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)).setChecked(option.isSelected());
+
+                setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
             }
 
             return convertView;
