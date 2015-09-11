@@ -9,6 +9,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_product_title"
         style="@style/List1"
+        android:textColor="@color/black"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"

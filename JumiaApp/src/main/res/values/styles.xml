@@ -481,7 +481,7 @@
         <item name="android:layout_height">
             @dimen/product_list_item_discount_percentage_image_height
         </item>
-        <item name="android:background">@drawable/discount_badge</item>
+        <item name="android:background">@drawable/badge_discount</item>
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLines">1</item>

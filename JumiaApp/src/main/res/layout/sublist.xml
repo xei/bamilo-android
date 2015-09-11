@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         style="@style/Caption"
+        android:textColor="@color/black"
         android:text="Item sublist"
         android:id="@+id/tx_slist_title"
         android:layout_marginTop="19dp"
