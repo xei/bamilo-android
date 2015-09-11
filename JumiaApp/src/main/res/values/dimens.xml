@@ -467,5 +467,4 @@
 
     <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
 
-    <dimen name="list_1_2">16sp</dimen>
 </resources>

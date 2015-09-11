@@ -55,6 +55,8 @@ import java.util.List;
         if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
         // Set title
         ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
+
+        ((TextView) convertView.findViewById(R.id.dialog_item_count)).setText(convertView.getResources().getString(R.string.filter_placeholder, 4));
         // Set check box
         setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
         // Return the filter view
