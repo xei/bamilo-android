@@ -1,4 +1,4 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.utils.catalog.filters;
 
 import android.content.Context;
 import android.os.Bundle;

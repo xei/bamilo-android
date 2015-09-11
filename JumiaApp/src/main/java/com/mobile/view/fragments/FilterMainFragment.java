@@ -23,14 +23,13 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.dialogfragments.FilterCheckFragment;
-import com.mobile.utils.dialogfragments.FilterColorFragment;
-import com.mobile.utils.dialogfragments.FilterFragment;
-import com.mobile.utils.dialogfragments.FilterPriceFragment;
-import com.mobile.utils.dialogfragments.FilterRatingFragment;
+import com.mobile.utils.catalog.filters.FilterCheckFragment;
+import com.mobile.utils.catalog.filters.FilterColorFragment;
+import com.mobile.utils.catalog.filters.FilterFragment;
+import com.mobile.utils.catalog.filters.FilterPriceFragment;
+import com.mobile.utils.catalog.filters.FilterRatingFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -183,7 +182,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         filterSelectionController.cleanAllFilters();
         // Update adapter
         ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
-        currentFragment.cleanValues();
+        if(currentFragment != null) {
+            currentFragment.cleanValues();
+        }
     }
 
     /**

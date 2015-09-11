@@ -1,4 +1,4 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.utils.catalog.filters;
 
 import android.support.v4.app.Fragment;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;

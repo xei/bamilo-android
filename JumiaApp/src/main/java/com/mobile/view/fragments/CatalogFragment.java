@@ -46,7 +46,6 @@ import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.UICatalogHelper;
-import com.mobile.utils.dialogfragments.DialogFilterFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;

@@ -1,4 +1,4 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.utils.catalog.filters;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
+import com.mobile.view.fragments.FilterMainFragment;
 
 /**
  * 
@@ -64,7 +65,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mCatalogFilter = bundle.getParcelable(FilterMainFragment.FILTER_TAG);
         mFilter = (CatalogPriceFilter)mCatalogFilter;
     }
     
