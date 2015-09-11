@@ -2006,7 +2006,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
-            mAddToCartButton.setEnabled(true);
+        //    mAddToCartButton.setEnabled(true);
             break;
         case GET_PRODUCT_DETAIL:
             if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
