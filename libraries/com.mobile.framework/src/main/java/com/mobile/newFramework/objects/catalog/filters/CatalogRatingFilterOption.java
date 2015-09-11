@@ -19,14 +19,12 @@ public class CatalogRatingFilterOption implements IJSONSerializable, MultiFilter
         initialize(jsonObject);
     }
 
-    protected int totalProducts;
     protected String val;
     protected int average;
     protected boolean selected;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        totalProducts = jsonObject.getInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
         average = jsonObject.getInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
         return true;
