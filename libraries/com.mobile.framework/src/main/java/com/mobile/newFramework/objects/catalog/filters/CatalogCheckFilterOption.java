@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterOptionService {
+public class CatalogCheckFilterOption extends CatalogFilterOption implements MultiFilterOptionService {
 
     public CatalogCheckFilterOption(){}
 
@@ -22,7 +22,7 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
     protected String id;
     protected String label;
     protected String val;
-    private int totalProducts;
+
     protected boolean selected;
 
     @Override
@@ -30,8 +30,7 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
         id = jsonObject.optString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
         val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
-        totalProducts = jsonObject.getInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
-        return true;
+        return super.initialize(jsonObject);
     }
 
     @Override
@@ -62,9 +61,5 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
     @Override
     public String getVal() {
         return val;
-    }
-
-    public int getTotalProducts() {
-        return totalProducts;
     }
 }
