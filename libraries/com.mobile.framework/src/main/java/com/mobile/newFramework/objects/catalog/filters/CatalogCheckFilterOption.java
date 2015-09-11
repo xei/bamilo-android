@@ -22,8 +22,7 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
     protected String id;
     protected String label;
     protected String val;
-    protected int productsCount;
-
+    private int totalProducts;
     protected boolean selected;
 
     @Override
@@ -31,7 +30,7 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
         id = jsonObject.optString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
         val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
-        productsCount = jsonObject.getInt(RestConstants.JSON_PRODUCTS_COUNT_TAG);
+        totalProducts = jsonObject.getInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         return true;
     }
 
@@ -63,5 +62,9 @@ public class CatalogCheckFilterOption implements IJSONSerializable, MultiFilterO
     @Override
     public String getVal() {
         return val;
+    }
+
+    public int getTotalProducts() {
+        return totalProducts;
     }
 }
