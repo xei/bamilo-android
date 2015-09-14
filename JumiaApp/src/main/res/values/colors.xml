@@ -94,4 +94,14 @@
     <color name="done_text_color_disabled">#CCCCCC</color>
     <color name="darker_blue">#f68b1e</color><!-- #5C73AC -->
     <color name="circle_background">#cdd5ec</color>
+    <!-- new colors -->
+    <color name="orange1">#f68b1e</color>
+    <color name="green1">#a3cf62</color>
+    <color name="blue1">#416998</color>
+    <color name="black_900">#202020</color>
+    <color name="black_800">#808080</color>
+    <color name="black_700">#c5c5c5</color>
+    <color name="black_200">#f5f5f5</color>
+    <color name="black_300">#f0f0f0</color>
+    <color name="black_400">#e2e2e2</color>
 </resources>
