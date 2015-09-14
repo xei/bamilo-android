@@ -717,7 +717,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.POPULARITY);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(ratingForm.action, dynamicRatingForm);
+                    executeSendReview(ratingForm.getAction(), dynamicRatingForm);
                 }
             } else {
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
@@ -727,7 +727,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.POPULARITY);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(reviewForm.action, dynamicRatingForm);
+                    executeSendReview(reviewForm.getAction(), dynamicRatingForm);
 
                 }
             }
