@@ -53,6 +53,8 @@
     <item name="catalog_item_grid_rounded" 		        type="layout">@layout/_v8_catalog_item_grid_rounded</item>
     <item name="catalog_item_list_rounded" 		        type="layout">@layout/_v8_catalog_item_list_rounded</item>
     <item name="filters_main"                           type="layout">@layout/_v8_filters_main</item>
+    <item name="filter_bottom_buttons"                  type="layout">@layout/_v8_filter_bottom_buttons</item>
+    <item name="list_sub_item_1"                        type="layout">@layout/_v8_list_sub_item_1</item>
 
     <!-- PDV -->
     <item name="product_details_fragment_seller_info"   type="layout">@layout/_v8_product_details_fragment_seller_info</item>

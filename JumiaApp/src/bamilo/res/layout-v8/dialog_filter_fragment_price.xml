@@ -65,6 +65,6 @@
 
     <!-- BUTTONS -->
 
-    <include layout="@layout/_def_filter_bottom_buttons" />
+    <include layout="@layout/filter_bottom_buttons" />
 
 </LinearLayout>
