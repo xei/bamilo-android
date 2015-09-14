@@ -274,7 +274,6 @@ public class RestConstants {
     public static final String JSON_ORDER_ID_TAG = "order_id";
     public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
     public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
-    public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
     public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
     public static final String PAYMENT_METHOD = "payment_method";
     public static final String PAYMENT = "payment";

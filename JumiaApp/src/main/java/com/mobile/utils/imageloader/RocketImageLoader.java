@@ -448,7 +448,7 @@ public class RocketImageLoader {
     }
     
     public interface RocketImageLoaderLoadImagesListener{
-        public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls);
+        void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls);
     }
     
     public class ImageHolder{
