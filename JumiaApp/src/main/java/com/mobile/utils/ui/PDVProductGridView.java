@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 
 /**
  * Created by alexandra pires 31/08/2015.
+ * Gridview for related products in product details
  */
 public class PDVProductGridView extends RecyclerView {
 
