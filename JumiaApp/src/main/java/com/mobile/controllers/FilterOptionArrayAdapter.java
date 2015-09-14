@@ -14,10 +14,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
-
-import java.util.List;
 
 /**
  * Class used to fill the list view with filter options
@@ -26,7 +23,7 @@ import java.util.List;
  */
  public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> implements AdapterView.OnItemClickListener{
         
-    protected static int layout = R.layout._def_dialog_list_sub_item_2;
+    protected static int layout = R.layout.list_sub_item_2;
 
     protected CatalogCheckFilter catalogFilter;
 
