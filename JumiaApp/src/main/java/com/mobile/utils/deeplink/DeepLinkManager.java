@@ -243,8 +243,12 @@ public class DeepLinkManager {
     private static Bundle addOriginGroupType(Uri data, Bundle bundle){
         if(bundle != null && data != null){
             bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
+            return bundle;
+        } else {
+            Bundle emptyBundle = new Bundle();
+            return emptyBundle;
         }
-        return bundle;
+
     }
 
     /**
