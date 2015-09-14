@@ -92,10 +92,9 @@
     <color name="calendar_selected_date_text">#FFD1D2D4</color>
     <color name="done_text_color_normal">#333333</color>
     <color name="done_text_color_disabled">#CCCCCC</color>
-    <color name="darker_blue">#f68b1e</color><!-- #5C73AC -->
+    <color name="darker_orange">#f68b1e</color>
     <color name="circle_background">#cdd5ec</color>
     <!-- new colors -->
-    <color name="orange1">#f68b1e</color>
     <color name="green1">#a3cf62</color>
     <color name="blue1">#416998</color>
     <color name="black_900">#202020</color>

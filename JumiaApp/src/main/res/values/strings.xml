@@ -386,11 +386,6 @@
     <string name="birthday_label">birthday</string>
     <string name="birthday_error">Please choose a valid Birthday.</string>
     <!-- TO REMOVE -->
-    <string name="sans_serif">sans-serif</string>
-    <string name="day_of_week_label_typeface">sans-serif</string>
     <string name="item_is_selected"><xliff:g example="2013" id="item">%1$s</xliff:g> selected</string>
-    <string name="year_picker_description">Year list</string>
-    <string name="select_day">Select month and day</string>
-    <string name="select_year">Select year</string>
-    <string name="day_picker_description">Month grid of days</string>
+
 </resources>

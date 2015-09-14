@@ -36,7 +36,8 @@ public class TextViewWithCircularIndicator extends TextView {
     private static final int SELECTED_CIRCLE_ALPHA = 60;
     private final int mRadius;
     private final int mCircleColor;
-    private final String mItemIsSelectedText;
+    //<string name="item_is_selected"><xliff:g example="2013" id="item">%1$s</xliff:g> selected</string>
+    //private final String mItemIsSelectedText;
     Paint mCirclePaint = new Paint();
     private boolean mDrawCircle;
 
@@ -46,7 +47,7 @@ public class TextViewWithCircularIndicator extends TextView {
 //        mCircleColor = res.getColor(com.mobile.framework.R.color.blue);
         mCircleColor = res.getColor(R.color.orange_f68b1e);
         mRadius = res.getDimensionPixelOffset(R.dimen.month_select_circle_radius);
-        mItemIsSelectedText = context.getResources().getString(R.string.item_is_selected);
+//        mItemIsSelectedText = context.getResources().getString(R.string.item_is_selected);
 
         init();
     }
@@ -78,10 +79,10 @@ public class TextViewWithCircularIndicator extends TextView {
     @Override
     public CharSequence getContentDescription() {
         CharSequence itemText = getText();
-        if (mDrawCircle) {
-            return String.format(mItemIsSelectedText, itemText);
-        } else {
+//        if (mDrawCircle) {
+//            return String.format(mItemIsSelectedText, itemText);
+//        } else {
             return itemText;
-        }
+//        }
     }
 }

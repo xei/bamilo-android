@@ -813,7 +813,7 @@
     </style>
 
     <style name="Badge">
-        <item name="android:textColor">@color/orange1</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
         <item name="android:textSize">8sp</item>
     </style>
 

@@ -106,10 +106,10 @@ public class DatePickerDialog extends DialogFragment implements
     private boolean mDelayAnimation = true;
 
     // Accessibility strings.
-    private String mDayPickerDescription;
-    private String mSelectDay;
-    private String mYearPickerDescription;
-    private String mSelectYear;
+    private String mDayPickerDescription = "Month grid of days";
+    private String mSelectDay = "Select month and day";
+    private String mYearPickerDescription = "Year list";
+    private String mSelectYear = "Select year";
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -253,12 +253,6 @@ public class DatePickerDialog extends DialogFragment implements
         final Activity activity = getActivity();
         mDayPickerView = new DayPickerView(activity, this);
         mYearPickerView = new YearPickerView(activity, this);
-
-        Resources res = getResources();
-        mDayPickerDescription = res.getString(R.string.day_picker_description);
-        mSelectDay = res.getString(R.string.select_day);
-        mYearPickerDescription = res.getString(R.string.year_picker_description);
-        mSelectYear = res.getString(R.string.select_year);
 
         mAnimator = (AccessibleDateAnimator) view.findViewById(R.id.animator);
         mAnimator.addView(mDayPickerView);

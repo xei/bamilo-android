@@ -180,7 +180,7 @@ public class SimpleMonthView extends View {
     protected int mTodayNumberColor;
     protected int mMonthTitleColor;
     protected int mMonthTitleBGColor;
-
+    private final static String FONT = "sans-serif";
     public SimpleMonthView(Context context) {
         super(context);
 
@@ -189,8 +189,8 @@ public class SimpleMonthView extends View {
         mDayLabelCalendar = Calendar.getInstance();
         mCalendar = Calendar.getInstance();
 
-        mDayOfWeekTypeface = res.getString(R.string.day_of_week_label_typeface);
-        mMonthTitleTypeface = res.getString(R.string.sans_serif);
+        mDayOfWeekTypeface = FONT;
+        mMonthTitleTypeface = FONT;
 
         mDayTextColor = res.getColor(R.color.date_picker_text_normal);
         mTodayNumberColor = res.getColor(R.color.orange_f68b1e);
@@ -657,9 +657,10 @@ public class SimpleMonthView extends View {
             recycle.set(item.year, item.month, item.day);
             CharSequence date = DateFormat.format("dd MMMM yyyy", recycle.getTimeInMillis());
 
-            if (item.day == mSelectedDay) {
-                return getContext().getString(R.string.item_is_selected, date);
-            }
+//            <string name="item_is_selected"><xliff:g example="2013" id="item">%1$s</xliff:g> selected</string>
+//            if (item.day == mSelectedDay) {
+//                return getContext().getString(R.string.item_is_selected, date);
+//            }
 
             return date;
         }
