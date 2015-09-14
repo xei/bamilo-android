@@ -144,8 +144,9 @@ public interface AigApiInterface {
 
     String getCreateAddressForm = "getCreateAddressForm";
 
-    @GET("/")
-    void getEditAddressForm(Callback<BaseResponse<Form>> callback);
+    @FormUrlEncoded
+    @POST("/")
+    void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
 
     String getEditAddressForm = "getEditAddressForm";
 

@@ -63,7 +63,7 @@ public class ProductSpecification implements IJSONSerializable, Parcelable {
             if(bodyArray != null && bodyArray.length() > 0){
                 for (int i = 0; i < bodyArray.length() ; i++) {
                     JSONObject specItemObject = bodyArray.getJSONObject(i);
-                    mSpecs.put(specItemObject.getString(RestConstants.JSON_KEY_TAG), specItemObject.getString(RestConstants.JSON_VALUE_TAG));
+                    mSpecs.put(specItemObject.getString(RestConstants.JSON_KEY_TAG), specItemObject.getString(RestConstants.VALUE));
                 }
             }
 

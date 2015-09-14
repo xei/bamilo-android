@@ -7,7 +7,7 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
-    public static final String JSON_ID_TAG = "id";
+    public static final String ID = "id";
     public final static String JSON_SUCCESS_TAG = "success";
     public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
     public final static String JSON_MESSAGES_TAG = "messages";
@@ -32,7 +32,11 @@ public class RestConstants {
     public static final String JSON_EMAIL_TAG = "email";
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
-    public static final String JSON_CREATED_AT_TAG = "created_at";
+    //alexandrapires: added mobapi 1.8
+    public static final String JSON_CUSTOMER_ENTITY = "customer_entity";
+    public static final String JSON_ORDERS_COUNT = "orders_count";
+    public static final String JSON_FIRST_ORDER_DATE = "first_order_date";
+    public static final String JSON_MULTISTEP_ENTITY = "multistep_entity";
 
     // FormsService Tags
     public static final String JSON_NAME_TAG = "name";
@@ -59,12 +63,12 @@ public class RestConstants {
     public static final String JSON_FIELDS_TAG = "fields";
 
     // FormField Tags
-    public static final String JSON_TYPE_TAG = "type";
+    public static final String TYPE = "type";
     public static final String JSON_KEY_TAG = "key";
     public static final String JSON_FIELD_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_LABEL_TAG = "label";
+    public static final String LABEL = "label";
     public static final String JSON_DATA_SET_TAG = "dataset";
-    public static final String JSON_VALUE_TAG = "value";
+    public static final String VALUE = "value";
     public static final String JSON_DATA_SET_SOURCE_TAG = "dataset_source";
     public static final String JSON_SCENARIO_TAG = "scenario";
     public static final String JSON_TERMS_TAG = "terms";
@@ -76,7 +80,6 @@ public class RestConstants {
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
-    public static final String JSON_REQUIRED_VALUE_TAG = "requiredValue";
     public static final String JSON_MIN_TAG = "min";
     public static final String JSON_MAX_TAG = "max";
     public static final String JSON_REGEX_TAG = "regex";
@@ -220,13 +223,12 @@ public class RestConstants {
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
 
     // Address Tags
-    public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
-    public static final String JSON_ADDRESS_ID_TAG_2 = "customer_address_id";
+    public static final String JSON_ADDRESSES_TAG = "addresses";
     public static final String JSON_PHONE_TAG = "phone";
     public static final String JSON_ADDITIONAL_PHONE_TAG = "additional_phone";
     public static final String JSON_ADDRESS1_TAG = "address1";
     public static final String JSON_ADDRESS2_TAG = "address2";
-    public static final String JSON_CITY_TAG = "city";
+    public static final String CITY = "city";
     public static final String JSON_POSTCODE_TAG = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
@@ -234,9 +236,6 @@ public class RestConstants {
     // Errors Tags
     public static final String JSON_VALIDATE_TAG = "validate";
     public static final String JSON_ERROR_TAG = "error";
-
-    // ProductImage Tags
-    public static final String JSON_UPDATED_AT_TAG = "updated_at";
 
     // ProductRatingPage Tags
     public static final String JSON_STARS_TAG = "stars";
@@ -309,19 +308,11 @@ public class RestConstants {
     /**
      * Address
      */
-    public static final String JSON_SHIPPING_TAG = "shipping";
-    public static final String JSON_BILLING_TAG = "billing";
+    public static final String SHIPPING = "shipping";
+    public static final String BILLING = "billing";
     public static final String JSON_OTHER_TAG = "other";
-    public static final String JSON_CUSTOMER_ID_TAG = "fk_customer";
-    public static final String JSON_COUNTRY_ID_TAG = "fk_country";
-    public static final String JSON_REGION_ID_TAG = "fk_customer_address_region";
-    public static final String JSON_CITY_ID_TAG = "fk_customer_address_city";
-    public static final String JSON_HIDDEN_TAG = "hidden";
-    public static final String JSON_CREATED_BY_TAG = "created_by";
-    public static final String JSON_UPDATED_BY_TAG = "updated_by";
-    public static final String JSON_REGION_NAME_TAG = "customer_address_region";
-    public static final String JSON_API_CALL_TAG = "api_call";
-    public static final String JSON_ID_ADDRESS_REGION_TAG = "id_customer_address_region";
+    public static final String API_CALL = "api_call";
+    public static final String REGION = "region";
 
 
     /**

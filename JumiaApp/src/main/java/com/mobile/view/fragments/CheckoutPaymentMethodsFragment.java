@@ -127,10 +127,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get the ship content values
             mSavedState = savedInstanceState.getParcelable(SAVED_STATE);
         }
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_PAYMENT);
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
     
     /*

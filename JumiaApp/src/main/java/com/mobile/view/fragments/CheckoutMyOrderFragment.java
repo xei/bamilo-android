@@ -147,10 +147,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         }
         // Track
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ORDER);
     }
 
     /*

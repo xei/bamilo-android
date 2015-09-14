@@ -67,8 +67,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
                 KeyboardState.ADJUST_CONTENT);
-
-        this.setRetainInstance(true);
     }
 
     /*

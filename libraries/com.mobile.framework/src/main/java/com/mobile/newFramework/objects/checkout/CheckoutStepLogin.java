@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects.checkout;
 
-import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.customer.Customer;
 
 import org.json.JSONException;
@@ -33,16 +32,5 @@ public class CheckoutStepLogin extends CheckoutStepObject {
     public Customer getCustomer() {
         return customer;
     }
-
-    @Override
-    public JSONObject toJSON() {
-        return super.toJSON();
-    }
-
-    @Override
-    public RequiredJson getRequiredJson() {
-        return super.getRequiredJson();
-    }
-
 
 }

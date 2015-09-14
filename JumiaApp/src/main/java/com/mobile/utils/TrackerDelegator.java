@@ -387,19 +387,7 @@ public class TrackerDelegator {
         }).start();
     }
 
-    /**
-     * Track Checkout Step
-     */
-    public static void trackCheckoutStep(Bundle params) {
-        try {
-            String email = params.getString(EMAIL_KEY);
-            TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
-            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? email : userId, 0l);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
-        }
-    }
+
 
     /**
      * Track Payment Method
@@ -1261,4 +1249,16 @@ public class TrackerDelegator {
 
     }
 
+    /**
+     * Track Checkout Step
+     */
+    public static void trackCheckoutStep(TrackingEvent step) {
+        try {
+            String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            AnalyticsGoogle.get().trackEvent(step, TextUtils.isEmpty(userId) ? email : userId, 0l);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
+        }
+    }
 }

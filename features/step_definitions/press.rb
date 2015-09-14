@@ -140,10 +140,13 @@ Then /^I press male$/ do
 end
 
 Then /^I press birthday$/ do
-  wait_for_elements_exist(["android.widget.EditText marked:'day'"],:timeout => 20)
-  enter_text("android.widget.EditText marked:'day'", '1')
-  enter_text("android.widget.EditText marked:'month'", '1')
-  enter_text("android.widget.EditText marked:'year'", '1987')
+  wait_for_elements_exist(["button marked:'birthday'"],:timeout => 20)
+  touch("* marked:'birthday'")
+  wait_for_elements_exist(["datePicker"],:timeout => 20)
+  query("datePicker",:method_name =>'updateDate',:arguments =>[1987,00,01])
+  #wait_for_elements_exist(["button marked:'button2'"],:timeout => 20)
+  step "I wait for 5 seconds"
+  touch("* marked:'OK'")
 end
 
 Then /^I check Terms and Conditions$/ do
@@ -538,4 +541,9 @@ Then /^I press my order history$/ do
   touch(nil, :offset => {:x => 850, :y => 250})
   #touch("* {text CONTAINS '"+@my_order_history+"'}")
   #touch("* marked:'"+@orders_container_title+"'")
+end
+
+Then /^I press Facebook Login Button$/ do
+  wait_for_elements_exist(["* marked:'"+@facebook_text_view.to_s+"'"],:timeout => 30)
+  tap_when_element_exists("* marked:'"+@facebook_text_view.to_s+"'")
 end

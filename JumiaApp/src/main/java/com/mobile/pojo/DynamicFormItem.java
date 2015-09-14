@@ -859,11 +859,7 @@ public class DynamicFormItem {
                     valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                 }
 
-                if (!valid) {
-                    result = !this.entry.getValidation().isRequired();
-                } else {
-                    result = valid;
-                }
+                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
                 break;
 
             case metadate:
@@ -871,10 +867,7 @@ public class DynamicFormItem {
 
                 valid = dialogDate.isSetOnce();
 
-                if (!valid)
-                    result = !this.entry.getValidation().isRequired();
-                else
-                    result = valid;
+                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
                 break;
             case email:
             case text:
@@ -913,7 +906,7 @@ public class DynamicFormItem {
         Iterator it = this.entry.getDateSetRating().entrySet().iterator();
         int count = 1;
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
+            it.next();
 
             float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
 
@@ -1037,9 +1030,7 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
         this.control.setLayoutParams(params);
         //#RTL
         if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -1093,7 +1084,8 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-        if (this.entry.getValue().equals("1")) {
+        // Set default value
+        if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
@@ -1885,6 +1877,11 @@ public class DynamicFormItem {
         }
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
             textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
+        }
+
+        // Set default value
+        if (!TextUtils.isEmpty(this.entry.getValue())) {
+            textDataControl.setText(this.entry.getValue());
         }
 
         //#RTL

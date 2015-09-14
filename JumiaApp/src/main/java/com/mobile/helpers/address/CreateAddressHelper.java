@@ -22,9 +22,7 @@ import com.mobile.utils.CheckoutStepManager;
  */
 public class CreateAddressHelper extends SuperBaseHelper {
     
-    private static String TAG = CreateAddressHelper.class.getSimpleName();
-    
-    public static final String FORM_CONTENT_VALUES = "form_content_values";
+    public static String TAG = CreateAddressHelper.class.getSimpleName();
     
     public static final String IS_FROM_SIGNUP = "fromSignup";
     
@@ -38,11 +36,6 @@ public class CreateAddressHelper extends SuperBaseHelper {
     @Override
     protected EventTask setEventTask() {
         return EventTask.SMALL_TASK;
-    }
-
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return super.getRequestUrl(args);
     }
 
     @Override
@@ -65,5 +58,4 @@ public class CreateAddressHelper extends SuperBaseHelper {
         CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getMetadata().getData();
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(checkoutStep.getNextStep()));
     }
-
 }

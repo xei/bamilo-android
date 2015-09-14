@@ -96,12 +96,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
-        
-        TrackerDelegator.trackCheckoutStep(params);
+
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
     /*

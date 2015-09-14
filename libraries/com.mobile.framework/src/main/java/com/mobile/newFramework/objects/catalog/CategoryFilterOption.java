@@ -29,7 +29,7 @@ public class CategoryFilterOption extends CatalogFilterOption implements IJSONSe
 	public CategoryFilterOption(JSONObject jsonObject) throws JSONException {
 		super(jsonObject);
 	   	// Get category data
-		setId(jsonObject.optString(RestConstants.JSON_ID_TAG));
+		setId(jsonObject.optString(RestConstants.ID));
 		setValue(jsonObject.optString(RestConstants.JSON_NAME_TAG));
 		setLabel(jsonObject.optString(RestConstants.JSON_NAME_TAG));
 		mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);

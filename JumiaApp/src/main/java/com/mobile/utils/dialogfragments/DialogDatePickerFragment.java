@@ -46,7 +46,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
-        public void onDatePickerDialogSelect(int year, int month, int day);
+        void onDatePickerDialogSelect(int year, int month, int day);
 
     }
 

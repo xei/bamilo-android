@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -146,7 +147,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.inputType = inputType;
         this.value = "";
         this.validation = new FieldValidation();
-        this.validation.required = obligatory;
+        this.validation.isRequired = obligatory;
         this.dataSet = new LinkedHashMap<>();
         this.dataCalls = new HashMap<>();
         //this.dataOptions = new HashMap<>();
@@ -170,7 +171,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             //Log.i(TAG, "FORM FIELD: " + jsonObject.toString());
             // get the form field
-            String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
+            String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
                 case "string":
                 case "text":
@@ -222,12 +223,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // if the field is one of the supported types
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            id = jsonObject.optString(RestConstants.ID);
             key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
             name = jsonObject.getString(RestConstants.JSON_FIELD_NAME_TAG);
-            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-            value = !jsonObject.isNull(RestConstants.JSON_VALUE_TAG) ? jsonObject.optString(RestConstants.JSON_VALUE_TAG) : "";
-            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
+            label = jsonObject.optString(RestConstants.LABEL);
+            value = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
+            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG); // TODO ????
             linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
             Print.d("FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
@@ -241,14 +242,14 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
             }
 
-            /**
-             * Validate and hide the city key for create/edit address form.<br>
-             * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
-             * @author sergiopereira
-             */
-            if(key != null && key.equals(RestConstants.JSON_CITY_TAG) && inputType == InputType.list) {
-                inputType = InputType.hide;
-            }
+//            /**
+//             * Validate and hide the city key for create/edit address form.<br>
+//             * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
+//             * @author sergiopereira
+//             */
+//            if(key != null && key.equals(RestConstants.JSON_CITY_TAG) && inputType == InputType.list) {
+//                inputType = InputType.hide;
+//            }
 
             // Case "data_set" //should be more generic
             JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
@@ -261,7 +262,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             dataSet.clear();
-            dataCalls.clear();
+
             JSONArray dataSetArray = null;
             JSONObject dataSetObject = null;
 
@@ -270,19 +271,23 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_TAG);
                 dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
             }
+
+            /**
+             * Save api call (region and cities)
+             */
+            dataCalls.clear();
+            String apiCall = jsonObject.optString(RestConstants.API_CALL);
+            if (!TextUtils.isEmpty(apiCall)) {
+                dataCalls.put(RestConstants.API_CALL, apiCall);
+            }
+
             /**
              * Get data from dataset as json object
              */
             if(dataSetObject != null && dataSetObject.length() > 0){
                 Iterator<?> it = dataSetObject.keys();
                 while (it.hasNext()) {
-                    String curKey = (String) it.next();
-                    // Validate keys
-                    if(curKey.equals(RestConstants.JSON_API_CALL_TAG)){
-                        dataCalls.put(curKey, (String) dataSetObject.get(RestConstants.JSON_API_CALL_TAG));
-                    } else{
-                        dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
-                    }
+                    dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
                 }
             /**
              * Get data from dataset as json array
@@ -317,8 +322,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(!jsonObject.isNull("options")) {
                 dataOptionsArray = jsonObject.optJSONArray("options");
                 dataOptionsObject = jsonObject.optJSONObject("options");
-                //if(dataOptionsArray != null) Log.i(TAG, "code1options : array : "+dataOptionsArray.toString());
-                //if(dataOptionsObject != null) Log.i(TAG,"code1options json "+dataOptionsObject.toString());
             }
 
             /**
@@ -379,8 +382,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 while (it.hasNext()) {
 
                     String curKey = (String) it.next();
-                    String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_LABEL_TAG);
-                    String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.JSON_VALUE_TAG);
+                    String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.LABEL);
+                    String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.VALUE);
                     //Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                     dataSet.put(value, label);
 
@@ -407,34 +410,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return result;
     }
 
-//    IResponseCallback responseCallback = new IResponseCallback() {
-//
-//        @Override
-//        public void onRequestError(Bundle bundle) {
-//            handleErrorEvent(bundle);
-//        }
-//
-//        @Override
-//        public void onRequestComplete(Bundle bundle) {
-//            handleSuccessEvent(bundle);
-//
-//        }
-//    };
-
-//    AigResponseCallback responseCallback = new AigResponseCallback() {
-//
-//
-//        @Override
-//        public void onRequestComplete(BaseResponse baseResponse) {
-////            handleSuccessEvent(bundle);
-//        }
-//
-//        @Override
-//        public void onRequestError(BaseResponse baseResponse) {
-////            handleErrorEvent(bundle);
-//        }
-//    };
-
     /*
      * (non-Javadoc)
      *
@@ -446,46 +421,46 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             switch (inputType) {
             case checkBox:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
+                jsonObject.put(RestConstants.TYPE, "boolean");
                 break;
             case date:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "date");
+                jsonObject.put(RestConstants.TYPE, "date");
                 break;
             case email:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "email");
+                jsonObject.put(RestConstants.TYPE, "email");
                 break;
             case number:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "integer");
+                jsonObject.put(RestConstants.TYPE, "integer");
                 break;
             case password:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "password");
+                jsonObject.put(RestConstants.TYPE, "password");
                 break;
             case radioGroup:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "radio");
+                jsonObject.put(RestConstants.TYPE, "radio");
                 break;
             case list:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "list");
+                jsonObject.put(RestConstants.TYPE, "list");
                 break;
             case text:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.TYPE, "string");
                 break;
             case checkBoxList:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
+                jsonObject.put(RestConstants.TYPE, "boolean");
                 break;
             case rating:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "rating");
+                jsonObject.put(RestConstants.TYPE, "rating");
                 break;
             default:
-                jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
+                jsonObject.put(RestConstants.TYPE, "string");
                 break;
             }
 
             // fields
-            jsonObject.put(RestConstants.JSON_ID_TAG, id);
+            jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.JSON_KEY_TAG, key);
             jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_LABEL_TAG, label);
-            jsonObject.put(RestConstants.JSON_VALUE_TAG, value);
+            jsonObject.put(RestConstants.LABEL, label);
+            jsonObject.put(RestConstants.VALUE, value);
             jsonObject.put(RestConstants.JSON_TERMS_TAG, linkText);
             // validation
             jsonObject.put(RestConstants.JSON_RULES_TAG, validation.toJSON());
@@ -579,10 +554,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public String getScenario() {
         return scenario;
-    }
-
-    public void setScenario(String scenario) {
-        this.name = scenario;
     }
 
     /*
@@ -688,8 +659,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /**
      * Listener used when the data set is received.
-     *
-     * @param listener
      */
     public void setOnDataSetReceived(OnDataSetReceived listener) {
         dataSetListener = listener;

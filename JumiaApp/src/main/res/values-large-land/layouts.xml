@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ########################## DEF LANDSCAPE ########################## -->
     
@@ -17,4 +17,12 @@
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"           type="layout">@layout/_def_track_order_fragment</item>
+
+
+    <!-- TABLET SETTINGS -->
+    <bool
+        name="isTablet"
+        tools:ignore="ExtraText">true</bool>
+
+    <string name="orientation">unspecified</string>
 </resources>
