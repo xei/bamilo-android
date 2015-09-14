@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical|right"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_detail_discount_percentage"
+        style="@style/discount_percentage"
+        android:textColor="@color/orange1"
+        android:layout_marginRight="10dp"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_price_normal"
+        style="@style/List2"
+        android:textColor="@color/black_800"
+        android:layout_centerVertical="true"
+        android:text="Rs.399"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_price"
+        style="@style/List1"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:text="Rs.399"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+</LinearLayout>
