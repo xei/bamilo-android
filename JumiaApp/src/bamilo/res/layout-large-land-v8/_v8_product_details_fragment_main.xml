@@ -330,7 +330,7 @@
                     android:id="@+id/product_detail_product_rating_container"
                     android:layout_width="wrap_content"
                     android:clickable="true"
-                    android:background="@drawable/selector_listitem_highlight"
+                    android:background="@drawable/selector_list_item_highlight"
                     android:layout_height="60dp">
 
                     <RatingBar
@@ -380,7 +380,7 @@
                         android:layout_height="60dp"
                         android:layout_margin="0dp"
                         android:clickable="true"
-                        android:background="@drawable/selector_listitem_highlight"
+                        android:background="@drawable/selector_list_item_highlight"
                         android:paddingRight="@dimen/rounded_margin_mid"
                         android:layout_below="@id/review_details_line"
                         android:text="@string/product_details_title" />

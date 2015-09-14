@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
+        android:background="@drawable/selector_list_item_highlight" >
 
         <ImageView
             android:id="@+id/img_1"
@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
+        android:background="@drawable/selector_list_item_highlight" >
 
         <ImageView
             android:id="@+id/img_2"
@@ -98,7 +98,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
+        android:background="@drawable/selector_list_item_highlight" >
 
         <ImageView
             android:id="@+id/img_3"

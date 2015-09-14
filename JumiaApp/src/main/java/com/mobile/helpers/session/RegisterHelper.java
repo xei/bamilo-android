@@ -10,12 +10,14 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -50,7 +52,7 @@ public class RegisterHelper extends SuperBaseHelper {
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        return SuperBaseHelper.convertContentValuesToMap(mContentValues);
+        return CollectionUtils.convertContentValuesToMap(mContentValues);
     }
 
     @Override

@@ -3,9 +3,9 @@ package com.mobile.newFramework.utils.shop;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.text.TextUtils;
 
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.text.DecimalFormat;
@@ -91,7 +91,20 @@ public class CurrencyFormatter {
     	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, ".");
     	currencyUnitPattern = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
     }
-    
+
+    public static String formatCurrency(double value) {
+        if (!initialized) {
+            throw new RuntimeException("currency converter not initialized");
+        }
+        try {
+            return String.format(currencyUnitPattern, formatter.format(value));
+        } catch (NumberFormatException e) {
+            //In case of bad formatting, return the parsed value with no currency sign
+            Print.e(TAG, "bad formatting for value = " + value, e);
+            return value + "";
+        }
+    }
+
     /**
      * Formats a string containing a numeric value into the proper formatted
      * currency of the country in question.
@@ -101,19 +114,20 @@ public class CurrencyFormatter {
         if (!initialized) {
             throw new RuntimeException("currency converter not initialized");
         }
-        try {
-            NumberFormat format = NumberFormat.getInstance(apiLocale);
-            Number number = format.parse(value);
-            Double valueDouble = number.doubleValue();
-        	return String.format(currencyUnitPattern, formatter.format(valueDouble));
-        } catch (NumberFormatException e) {
-            //In case of bad formatting, return the parsed value with no currency sign
-        	Print.e(TAG, "bad formatting for value = " + value, e);
-            return value + "";
-        } catch (ParseException e) {
-        	Print.d(TAG, "parse exception: cannot parse value = " + value, e);
-            return value + "";
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                NumberFormat format = NumberFormat.getInstance(apiLocale);
+                Number number = format.parse(value);
+                Double valueDouble = number.doubleValue();
+                return String.format(currencyUnitPattern, formatter.format(valueDouble));
+            } catch (NumberFormatException e) {
+                //In case of bad formatting, return the parsed value with no currency sign
+                Print.e(TAG, "bad formatting for value = " + value, e);
+            } catch (ParseException e) {
+                Print.d(TAG, "parse exception: cannot parse value = " + value, e);
+            }
         }
+        return value;
     }
     
     /**

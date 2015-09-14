@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -44,9 +45,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
-    private CompleteProduct mCompleteProduct;
+    private ProductComplete mCompleteProduct;
     private View mainView;
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
 
     /**
      * Get instance
@@ -93,11 +94,10 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                mCompleteProduct = (ProductComplete) parcelableProduct;
             }
         }
     }
@@ -112,7 +112,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
         }
         // Load views
         mainView = view;
@@ -147,9 +147,11 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         if (mCompleteProduct != null && mainView != null) {
             getViews();
             displayProductInformation();
-        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+        } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
+            ContentValues values = new ContentValues();
+            values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -171,7 +173,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null)
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
     }
     
@@ -232,9 +234,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      * displays information related to the product price
      */
     private void displayPriceInformation() {
-        String unitPrice = mCompleteProduct.getPrice();
+        String unitPrice = String.valueOf(mCompleteProduct.getPrice());
         /*--if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();*/
-        String specialPrice = mCompleteProduct.getSpecialPrice();
+        String specialPrice = String.valueOf(mCompleteProduct.getSpecialPrice());
         /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
 
         displayPriceInfo(unitPrice, specialPrice);
@@ -368,8 +370,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
@@ -408,7 +410,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 

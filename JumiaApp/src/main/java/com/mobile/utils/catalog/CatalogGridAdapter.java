@@ -1,8 +1,8 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Paint;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,18 +15,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
-import com.mobile.newFramework.database.FavouriteTableHelper;
-import com.mobile.newFramework.objects.catalog.CatalogPage;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.catalog.Banner;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -54,7 +50,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private boolean isShowingGridLayout;
 
-    private ArrayList<Product> mDataSet;
+    private boolean isTabletInLandscape;
+
+    private ArrayList<ProductRegular> mDataSet;
     
     private Context mContext;
     
@@ -62,15 +60,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private OnViewHolderClickListener mOnViewHolderClicked;
 
-    private String mBannerImage = "";
+    private String mBannerImage;
 
-    private String mUrl = "";
+    private String mUrl;
 
-    private String mTargetType = "";
+    private String mTargetType;
 
-    private String mTitle = "";
+    private String mTitle;
 
-    private OnHeaderClickListener mOnHeaderClicked;
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
@@ -119,10 +116,11 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param context - the application context
      * @param data - the array lisl
      */
-    public CatalogGridAdapter(Context context, ArrayList<Product> data) {
+    public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
         mContext = context;
         mDataSet = data;
         isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
+        isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
     }
 
     /*
@@ -204,15 +202,15 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get real position
         position = getRealPosition(position);
         // Get item
-        Product item = mDataSet.get(position);
+        ProductRegular item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
         holder.brand.setText(item.getBrand());
         // Set is new image
-        holder.recent.setSelected(item.getAttributes().isNew());
+        holder.recent.setSelected(item.isNew());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getFirstImageURL(), holder.image, holder.progress, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
         setFavourite(holder, item, position);
         // Set rating and reviews
@@ -247,21 +245,13 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * Set the favourite view.
      * @param holder - the view holder
      * @param item - the product
-     * @param position - the current position
      */
-    private void setFavourite(ProductViewHolder holder, Product item, int position) {
-        // TODO: REMOVE THIS PLEASE :)
-        boolean isFavourite = false;
-        try {
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
-        } catch (InterruptedException | SQLiteException | IllegalMonitorStateException e) {
-            e.printStackTrace();
-        }
+    private void setFavourite(ProductViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
-        holder.favourite.setSelected(isFavourite);
+        holder.favourite.setSelected(item.isWishList());
         holder.favourite.setOnClickListener(this);
-        item.getAttributes().setFavourite(isFavourite);
+
     }
     
     /**
@@ -269,18 +259,18 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setProductPrice(ProductViewHolder holder, Product item) {
+    private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
         // Case discount
-        if(item.hasDiscountPercentage()) {
+        if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.percentage.setText("-" + item.getMaxSavingPercentage().intValue() + "%");
+            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
+            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setText("");
             holder.percentage.setVisibility(View.GONE);
         }
@@ -291,14 +281,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setSpecificViewForListLayout(ProductViewHolder holder, Product item) {
+    private void setSpecificViewForListLayout(ProductViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
             // Show rating
-            if (item.getRating() != null && item.getRating() > 0) {
-                holder.rating.setRating(item.getRating().floatValue());
+            if (item.getAvgRating() > 0) {
+                holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
-                int count = item.getReviews();
+                int count = item.getTotalReviews();
                 String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
                 holder.reviews.setText(string);
             }
@@ -335,31 +325,31 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         notifyDataSetChanged();
     }
     
-    /**
-     * Append the new data to the current data.
-     * @param newDataSet - the new data
-     */
-    public void updateData(ArrayList<Product> newDataSet){
-        CollectionUtils.addAll(mDataSet, newDataSet);
-        notifyDataSetChanged();
-    }
-    
-    /**
-     * Replace the current data and update the adapter.
-     * @param newDataSet - the new data
-     */
-    public void replaceData(ArrayList<Product> newDataSet){
-        mDataSet = newDataSet;
-
-        notifyDataSetChanged();
-    }
+//    /**
+//     * Append the new data to the current data.
+//     * @param newDataSet - the new data
+//     */
+//    public void updateData(ArrayList<Product> newDataSet){
+//        CollectionUtils.addAll(mDataSet, newDataSet);
+//        notifyDataSetChanged();
+//    }
+//
+//    /**
+//     * Replace the current data and update the adapter.
+//     * @param newDataSet - the new data
+//     */
+//    public void replaceData(ArrayList<Product> newDataSet){
+//        mDataSet = newDataSet;
+//
+//        notifyDataSetChanged();
+//    }
 
     /**
      * Get the product from the current data.
      * @param position - the respective product position
      * @return Product or null
      */
-    public Product getItem(int position) {
+    public ProductRegular getItem(int position) {
         return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
     }
     
@@ -371,98 +361,52 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         this.mOnViewHolderClicked = listener;
     }
 
-    /**
-     * Set the listener the header.
-     * @param listener - the listener
-     */
-    public void setOnHeaderClickListener(OnHeaderClickListener listener) {
-        this.mOnHeaderClicked = listener;
-    }
-
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
     public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Case favourite
-        if(id == R.id.image_is_favourite){
-            onClickFavouriteButton(view);
-        }
-        // Header Click
-        else if(id == R.id.catalog_header_image_frame){
-            if(mOnHeaderClicked != null){
-                mOnHeaderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
-            }
-        }
         // Case other sent to listener
-        else if(mOnViewHolderClicked != null){
-            try{
-                mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
-            } catch (ClassCastException e){
-                e.printStackTrace();
+        if (mOnViewHolderClicked != null) {
+            // Get view id
+            int id = view.getId();
+            // position
+            int position = (Integer) view.getTag(R.id.position);
+            // Case favourite
+            if (id == R.id.image_is_favourite) {
+                mOnViewHolderClicked.onWishListClick(view, this, position);
             }
-
-        }
-
-    }
-    
-    /**
-     * Process the click on the favourite button
-     * @param view - the view holder
-     */
-    private void onClickFavouriteButton(View view) {
-        // Get id
-        int position = (Integer) view.getTag(R.id.position);
-        // Get item
-        Product product = mDataSet.get(position);
-        // Remove from favorite
-        if(product.getAttributes().isFavourite()) {
-            // Remove from table and notify user
-            FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
-            product.getAttributes().setFavourite(false);
-            view.setSelected(false);
-            TrackerDelegator.trackRemoveFromFavorites(product.getSKU(), product.getPriceForTracking(),product.getRating());
-            ToastFactory.REMOVED_FAVOURITE.show(mContext);
-        }
-        // Remove to favorite 
-        else {
-          FavouriteTableHelper.insertPartialFavouriteProduct(product);
-          product.getAttributes().setFavourite(true);
-          view.setSelected(true);
-          TrackerDelegator.trackAddToFavorites(product.getSKU(),product.getBrand(),product.getPriceForTracking(), product.getRating(),product.getMaxSavingPercentage(), true, null);
-          ToastFactory.ADDED_FAVOURITE.show(mContext);            
+            // Case header
+            else if (id == R.id.catalog_header_image_frame) {
+                mOnViewHolderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
+            }
+            // Case item
+            else {
+                mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
         }
     }
 
     /**
      * store info related to catalog header, and show it
-     * @param catalogPage
      */
-    public void setHeader(CatalogPage catalogPage){
-        if(mContext != null){
-            if(!DeviceInfoHelper.isTabletInLandscape(mContext)){
-                mBannerImage = catalogPage.getmCatalogBanner().getPhoneImage();
-            } else {
-                mBannerImage = catalogPage.getmCatalogBanner().getTabletImage();
-            }
-            mUrl = catalogPage.getmCatalogBanner().getUrl();
-            mTitle = catalogPage.getmCatalogBanner().getTitle();
-            mTargetType = catalogPage.getmCatalogBanner().getTargetType();
-            showHeaderView();
-        } else {
+    public void setHeader(@Nullable Banner banner){
+        if(banner == null) {
             hideHeaderView();
+        } else {
+            mBannerImage = !isTabletInLandscape ? banner.getPhoneImage() : banner.getTabletImage();
+            mUrl = banner.getUrl();
+            mTitle = banner.getTitle();
+            mTargetType = banner.getTargetType();
+            showHeaderView();
         }
-
     }
 
     /**
      * set header image and and listener
-     * @param holder
      */
-    private void setHeaderImage(ProductViewHolder holder){
+    private void setHeaderImage(ProductViewHolder holder) {
         if(!TextUtils.isEmpty(mBannerImage)){
             // set listener
             holder.itemView.setOnClickListener(this);

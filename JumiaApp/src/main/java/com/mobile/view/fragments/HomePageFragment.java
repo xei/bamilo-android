@@ -16,6 +16,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -25,13 +26,13 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.CheckVersion;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -39,6 +40,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -170,10 +172,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
-        // Disabled for Samsung and Blackberry (check_version_enabled)
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(getActivity());
-        }
     }
 
     /**
@@ -418,7 +416,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                gotoProductDetail(targetUrl, originGroupType);
+                gotoProductDetail((String) view.getTag(R.id.target_sku), originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -446,13 +444,18 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto product detail
      */
-    private void gotoProductDetail(String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    private void gotoProductDetail(String sku, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
+        // TODO: SHOULD RECEIVE SKU
+        if(!TextUtils.isEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+        }
     }
 
     /**

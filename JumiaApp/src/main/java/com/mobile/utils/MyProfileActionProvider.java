@@ -132,11 +132,11 @@ public class MyProfileActionProvider extends ActionProvider {
     /**
      * update totalFavourites<br>
      * call after each click on MyProfile Button on ActionBar
-     * 
+     *
      * @param totalFavourites
      */
     public void setTotalFavourites(int totalFavourites) {
-        this.mTotalFavourites = totalFavourites; 
+        this.mTotalFavourites = totalFavourites;
     }
 
     /**

@@ -109,7 +109,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             JSONObject jsonShip = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_MET_TAG);
 //            Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
             mShippingMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
-            mShippingMethodLabel = jsonShip.optString(RestConstants.JSON_LABEL_TAG);
+            mShippingMethodLabel = jsonShip.optString(RestConstants.LABEL);
             if (TextUtils.isEmpty(mShippingMethodLabel)) {
                 mShippingMethodLabel = mShippingMethod;
             }
@@ -121,7 +121,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 //                Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
                 // String payId = jsonPay.optString("id");
                 mPaymentMethod = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
-                mPaymentMethodLabel = jsonPay.optString(RestConstants.JSON_LABEL_TAG);
+                mPaymentMethodLabel = jsonPay.optString(RestConstants.LABEL);
                 if (TextUtils.isEmpty(mPaymentMethodLabel)) {
                     mPaymentMethodLabel = mPaymentMethod;
                 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -97,12 +96,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
-        
-        TrackerDelegator.trackCheckoutStep(params);
+
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
     /*
@@ -362,7 +357,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         loadForm(form);
 
         //Total price
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
     }
 
     public void onSuccessSetShippingMethods(Bundle bundle){
@@ -375,13 +370,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onErrorGetShippingMethods(){
         Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        super.showFragmentErrorRetry();
+
     }
 
     public void onErrorSetShippingMethods(){
         Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
-
+        super.showUnexpectedErrorWarning();
     }
 
     /**

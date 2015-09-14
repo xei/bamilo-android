@@ -4,7 +4,6 @@
 
     <!-- APP -->
     <string name="app_name">Jumia Dev</string>
-    <bool name="rest_host_auth_use_it">true</bool>
     <bool name="is_to_show_dev_env">true</bool>
 
     <!-- COUNTRIES -->

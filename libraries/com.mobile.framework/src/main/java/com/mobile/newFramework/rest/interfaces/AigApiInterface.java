@@ -11,14 +11,14 @@ import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
+import com.mobile.newFramework.objects.checkout.SetBillingAddress;
+import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
+import com.mobile.newFramework.objects.checkout.SetShippingMethod;
 import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
 import com.mobile.newFramework.objects.checkout.SuperGetBillingForm;
 import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
 import com.mobile.newFramework.objects.checkout.SuperNativeCheckoutAvailability;
-import com.mobile.newFramework.objects.checkout.SuperSetBillingAddress;
-import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
-import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
@@ -26,15 +26,14 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.objects.orders.SuperOrder;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.ProductBundle;
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
-import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.product.ValidProductList;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
-import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.lang.reflect.Method;
@@ -145,8 +144,9 @@ public interface AigApiInterface {
 
     String getCreateAddressForm = "getCreateAddressForm";
 
-    @GET("/")
-    void getEditAddressForm(Callback<BaseResponse<Form>> callback);
+    @FormUrlEncoded
+    @POST("/")
+    void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
 
     String getEditAddressForm = "getEditAddressForm";
 
@@ -181,7 +181,7 @@ public interface AigApiInterface {
     String getCatalogFiltered = "getCatalogFiltered";
 
     @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String searchSku = "searchSku";
 
@@ -226,28 +226,23 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void searchProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
-
-    String searchProductDetail = "searchProductDetail";
-
-    @GET("/")
-    void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
+    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String getProductDetail = "getProductDetail";
 
     @GET("/")
-    void getProductBundle(Callback<BaseResponse<ProductBundle>> callback);
+    void getProductBundle(Callback<BaseResponse<BundleList>> callback);
 
     String getProductBundle = "getProductBundle";
 
     @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
 
     String getProductOffers = "getProductOffers";
 
     @FormUrlEncoded
     @POST("/")
-    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperValidProducts>> callback);
+    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
 
     String validateProducts = "validateProducts";
 
@@ -311,12 +306,12 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<Voucher>> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
 
     String addVoucher = "addVoucher";
 
     @GET("/")
-    void removeVoucher( Callback<BaseResponse<ShoppingCart>> callback);
+    void removeVoucher(Callback<BaseResponse<ShoppingCart>> callback);
 
     String removeVoucher = "removeVoucher";
 
@@ -413,7 +408,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetBillingAddress>> callback);
+    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
 
     String setBillingAddress = "setBillingAddress";
 
@@ -476,13 +471,13 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetShippingMethod>> callback);
+    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetShippingMethod>> callback);
 
     String setShippingMethod = "setShippingMethod";
 
     @FormUrlEncoded
     @POST("/")
-    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetPaymentMethod>> callback);
+    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetPaymentMethod>> callback);
 
     String setPaymentMethod = "setPaymentMethod";
 

@@ -1,15 +1,12 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class AigGetHomePageTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/main/home/";
+        return AigMobApiNigeriaTestSuite.HOST+"/main/home/";
     }
 
     @Override
@@ -45,7 +42,6 @@ public class AigGetHomePageTest extends AigTestCase {
 
         HomePageObject home = (HomePageObject) response.getMetadata().getData();
         assertNotNull("Home is null", home);
-        assertNotNull("Home Name is null", home.getName());
         assertNotNull("Home Has Teasers is null", home.hasTeasers());
         if (home.hasTeasers()) {
             for (BaseTeaserGroupType teaser_group : home.getTeasers()) {

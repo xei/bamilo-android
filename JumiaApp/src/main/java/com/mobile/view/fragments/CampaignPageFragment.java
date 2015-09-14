@@ -38,7 +38,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.campaign.Campaign;
@@ -488,7 +488,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchProductHelper.SKU_TAG, prod);
+        bundle.putString(GetProductHelper.SKU_TAG, prod);
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -508,6 +508,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, mTeaserCampaign.getTargetUrl());
         bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
         triggerContentEvent(new GetCampaignHelper(), bundle, this);
     }
@@ -713,7 +714,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                         updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemainingTime, mImageContainer);
                     }
                     this.sendEmptyMessageDelayed(0, 1000);
-                };
+                }
             };
         }
         
@@ -818,15 +819,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             //Log.d(TAG, "SET DATA");
             // Set stock off
             setStockOff(view, item);
-            
             // Set name
             view.mName.setText(item.getName());
             setClickableView(view.mName, position);
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, view.progress, R.drawable.no_image_large);
-            // RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, null, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
             // Set size
             setSizeContainer(view, item, position);
             // Set price and special price
@@ -835,7 +834,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             setSaveContainer(view, item);
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
-            // Set stock percentage
+            // Set stock percentage TODO placeholder
             view.mStockPercentage.setText(item.getStockPercentage() + "%");
             view.mStockPercentage.setSelected(true);
             // Set buy button
@@ -844,10 +843,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
-
             // start handler processing
             if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
-
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
@@ -857,14 +854,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * TODO: Try use a SimpleDateFormat
          * 
          * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
-         * 
-         * @param timer
-         * @param timerContainer
-         * @param buttonBuy
-         * @param offerEnded
-         * @param name
-         * @param image
-         * @param remainingTime
          */
         private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime, View imageContainer) {
             Print.d(TAG, "updateTimer");
@@ -998,16 +987,16 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            if(item.getSpecialPriceDouble() != 0) {
+            if(item.hasDiscount()) {
                 view.mPrice.setVisibility(View.VISIBLE);
                 // Set discount
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPriceDouble()));
-                view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPriceDouble()));
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
+                view.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
                 view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 // Set discount
                 view.mPrice.setVisibility(View.GONE);
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getPriceDouble()));
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             }
         }
         
@@ -1018,7 +1007,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * @author sergiopereira
          */
         private void setSaveContainer(ItemView view, CampaignItem item){
-            if(item.getSpecialPriceDouble()>0){
+            if(item.hasDiscount()){
                 String label = getString(R.string.campaign_save);
                 String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
                 String mainText = label + " " + value;

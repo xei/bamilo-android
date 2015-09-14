@@ -51,18 +51,18 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            id = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            id = jsonObject.optString(RestConstants.ID);
             name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
             key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
             scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-            if(jsonObject.has(RestConstants.JSON_TYPE_TAG)){
-                type = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
+            if(jsonObject.has(RestConstants.TYPE)){
+                type = jsonObject.optString(RestConstants.TYPE);
             } else {
                 type = RestConstants.JSON_METADATA_TAG;
             }
 
-            value = jsonObject.optString(RestConstants.JSON_VALUE_TAG);
-            label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
+            value = jsonObject.optString(RestConstants.VALUE);
+            label = jsonObject.optString(RestConstants.LABEL);
 
             /**
              * TODO: Verify if on SubForm can be required for more then one Form

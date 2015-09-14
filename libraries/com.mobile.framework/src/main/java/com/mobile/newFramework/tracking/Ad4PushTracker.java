@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.newFramework.tracking;
 
@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
@@ -25,6 +24,7 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DateTimeUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -146,7 +146,7 @@ public class Ad4PushTracker {
 
     /**
      * Get singleton instance of Ad4PushTracker.
-     * 
+     *
      * @return Ad4PushTracker
      * @author sergiopereira
      */
@@ -156,7 +156,7 @@ public class Ad4PushTracker {
 
     /**
      * Startup the Ad4PushTracker.
-     * 
+     *
      * @param context
      * @author sergiopereira
      */
@@ -167,7 +167,7 @@ public class Ad4PushTracker {
 
     /**
      * Empty constructor.
-     * 
+     *
      * @author sergiopereira
      */
     private Ad4PushTracker() {
@@ -176,7 +176,7 @@ public class Ad4PushTracker {
 
     /**
      * Constructor.
-     * 
+     *
      * @param context The aplication context
      * @author sergiopereira
      */
@@ -200,7 +200,7 @@ public class Ad4PushTracker {
 
     /**
      * Initialize Ad4S.
-     * 
+     *
      * @author sergiopereira
      */
     private void init() {
@@ -214,7 +214,7 @@ public class Ad4PushTracker {
             // stopingSDK(mContext,!isActive);
             setGCMEnabled(isActive);
             setInAppDisplayLocked(!isActive);
-            
+
         }
     }
 
@@ -223,7 +223,7 @@ public class Ad4PushTracker {
      */
 
     /**
-     * 
+     *
      * @param activity
      */
     public void startActivity(Activity activity) {
@@ -234,7 +234,7 @@ public class Ad4PushTracker {
     }
 
     /**
-     * 
+     *
      * @param activity
      */
     public void stopActivity(Activity activity) {
@@ -246,7 +246,7 @@ public class Ad4PushTracker {
 
     /**
      * Mark this activity to receive in app messages from Ad4Push service.
-     * 
+     *
      * @param activity
      * @author sergiopereira
      */
@@ -261,7 +261,7 @@ public class Ad4PushTracker {
 
     /**
      * Lock or unlock the push notifications.
-     * 
+     *
      * @param bool
      * @author sergiopereira
      */
@@ -274,7 +274,7 @@ public class Ad4PushTracker {
 
     /**
      * Lock or unlock the in-app messages.
-     * 
+     *
      * @param bool
      * @author sergiopereira
      */
@@ -294,7 +294,7 @@ public class Ad4PushTracker {
 
     /**
      * Stop all services from ad4push SDK
-     * 
+     *
      * @param context
      * @param isToStop
      */
@@ -307,7 +307,7 @@ public class Ad4PushTracker {
 
     /**
      * Enables or disables GCM Push notifications for this device.
-     * 
+     *
      * @param enabled
      *            - True to enable push and try to register to GCM. False to
      *            unregister from GCM
@@ -321,7 +321,7 @@ public class Ad4PushTracker {
 
     /**
      * Clear the shared prefs.
-     * 
+     *
      * @param context
      * @author sergiopereira
      */
@@ -336,7 +336,7 @@ public class Ad4PushTracker {
 
     /**
      * Track a empty user id if not has credentials for auto login.
-     * 
+     *
      * @param userNeverLoggedIn
      * @author sergiopereira
      */
@@ -351,7 +351,7 @@ public class Ad4PushTracker {
 
     /**
      * Method used to set some info about device.
-     * 
+     *
      * @see {@link Constants} used for device info.
      * @author sergiopereira
      */
@@ -369,7 +369,7 @@ public class Ad4PushTracker {
 
     /**
      * First open
-     * 
+     *
      * @param info
      */
     public void trackAppFirstOpen(Bundle info) {
@@ -399,7 +399,7 @@ public class Ad4PushTracker {
 
     /**
      * Track login.
-     * 
+     *
      * @param customerId
      * @param firstName
      * @param lastName
@@ -416,7 +416,7 @@ public class Ad4PushTracker {
             prefs.putString(LAST_NAME, lastName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(USER_GENDER, gender);
-            
+
             mA4S.updateDeviceInfo(prefs);
             // Track event
             mA4S.trackEvent(EVENT_LOGIN, "loginUserID=" + customerId);
@@ -426,7 +426,7 @@ public class Ad4PushTracker {
 
     /**
      * Get the current status in application.
-     * 
+     *
      * @return String
      */
     private String statusInApp() {
@@ -455,7 +455,7 @@ public class Ad4PushTracker {
 
     /**
      * Track register and guest signup.
-     * 
+     *
      * @param customerId
      * @param customerGender
      * @param firstName
@@ -483,7 +483,7 @@ public class Ad4PushTracker {
 
     /**
      * Track checkout started.
-     * 
+     *
      * @param cartQt
      * @param cartValue
      */
@@ -546,7 +546,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to favorites.
-     * 
+     *
      * @param productSKU
      */
     public void trackAddToFavorites(String productSKU) {
@@ -568,7 +568,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the remove item from favorites.
-     * 
+     *
      * @param productSKU
      */
     public void trackRemoveFromWishlist(String productSKU) {
@@ -590,7 +590,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart from favorites.
-     * 
+     *
      * @param sku
      * @param price
      * @param name
@@ -613,7 +613,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart.
-     * 
+     *
      * @param sku
      * @param price
      * @param name
@@ -681,7 +681,7 @@ public class Ad4PushTracker {
 
     /**
      * Track catalog filters.
-     * 
+     *
      * @param filters
      * @author sergiopereira
      */
@@ -715,7 +715,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the new cart.
-     * 
+     *
      * @param cartValue
      * @author sergiopereira
      */
@@ -865,7 +865,7 @@ public class Ad4PushTracker {
     public void storeGaIdOnAccengage() {
         // Case not enabled
         if (!isEnabled) return;
-        // 
+        //
         final Runnable r = new Runnable() {
             public void run() {
                 try {

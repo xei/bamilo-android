@@ -1,14 +1,10 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +23,7 @@ public class AigGetShippingMethodsFormTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/";
+        return AigMobApiNigeriaTestSuite.HOST+"/multistep/shippingmethod/";
     }
 
     @Override

@@ -166,7 +166,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
     private void getCampaignKey(){
         if(!TextUtils.isEmpty(url)){
             Uri myUri = Uri.parse(url);
-            campaignId = myUri.getQueryParameter("campaign_slug");
+            campaignId = myUri.getQueryParameter("slug");
         }
     }
 }

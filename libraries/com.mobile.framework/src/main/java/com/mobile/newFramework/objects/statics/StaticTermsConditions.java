@@ -18,7 +18,7 @@ public class StaticTermsConditions implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         html = jsonObject.getString(RestConstants.JSON_HTML_TAG);
-        type = jsonObject.getString(RestConstants.JSON_TYPE_TAG);
+        type = jsonObject.getString(RestConstants.TYPE);
         return true;
     }
 
@@ -36,15 +36,8 @@ public class StaticTermsConditions implements IJSONSerializable{
         return html;
     }
 
-//    public void setHtml(String html) {
-//        this.html = html;
-//    }
-
     public String getType() {
         return type;
     }
 
-//    public void setType(String type) {
-//        this.type = type;
-//    }
 }

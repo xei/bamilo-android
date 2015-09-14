@@ -1,6 +1,8 @@
 package com.mobile.newFramework.rest;
 
+import android.content.ContentValues;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.configs.AigRestContract;
@@ -69,4 +71,49 @@ public class RestUrlUtils {
         return uri;
     }
 
+    /**
+     * Method used to get a parameter value from url.
+     * @param url - The valid url
+     * @param parameter - The valid key
+     * @return String
+     */
+    public static String getQueryValue(@NonNull String url, @NonNull String parameter) {
+        return Uri.parse(url).getQueryParameter(parameter);
+    }
+
+    /**
+     * Get all parameters from url query and insert them all on ContentValues.
+     * Syntax example: ?category=womens-dresses&sort=price&dir=asc
+     * @param uri
+     */
+    public static ContentValues getQueryParameters(Uri uri) {
+        if (uri.isOpaque()) {
+            throw new UnsupportedOperationException("This isn't a hierarchical URI.");
+        }
+
+        ContentValues queryValues = new ContentValues();
+
+        String query = uri.getEncodedQuery();
+        if (query == null) {
+            return queryValues;
+        }
+
+        int start = 0;
+        do {
+            int next = query.indexOf('&', start);
+            int end = (next == -1) ? query.length() : next;
+
+            int separator = query.indexOf('=', start);
+            if (separator > end || separator == -1) {
+                separator = end;
+            }
+
+            String name = Uri.decode(query.substring(start, separator));
+            queryValues.put(name, uri.getQueryParameter(name));
+
+            // Move start to end of name.
+            start = end + 1;
+        } while (start < query.length());
+        return queryValues;
+    }
 }

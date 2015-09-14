@@ -1,11 +1,7 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.cart.ShoppingCart;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -28,7 +24,7 @@ public class AigGetShoppingCartTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"order/cartdata/";
+        return AigMobApiNigeriaTestSuite.HOST+"/order/cartdata/";
     }
 
     @Override
