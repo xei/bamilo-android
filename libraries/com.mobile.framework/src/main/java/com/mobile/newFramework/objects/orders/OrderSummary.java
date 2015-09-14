@@ -115,8 +115,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             }
         }
         // Get payment method
-        if (jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG)) {
-            JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+        if (jsonOrder != null && !jsonOrder.isNull(RestConstants.PAYMENT_METHOD)) {
+            JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.PAYMENT_METHOD);
             if (jsonPay != null) {
 //                Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
                 // String payId = jsonPay.optString("id");
@@ -126,7 +126,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
                     mPaymentMethodLabel = mPaymentMethod;
                 }
             } else {
-                mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+                mPaymentMethod = jsonOrder.optString(RestConstants.PAYMENT_METHOD);
 //                Log.d(TAG, "PAY METHOD: " + mPaymentMethod);
             }
         }

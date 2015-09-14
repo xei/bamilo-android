@@ -469,7 +469,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param form The login form
      */
     private boolean loadForm(Form form) {
-        Print.i(TAG, "LOAD FORM: " + form.name);
+        Print.i(TAG, "LOAD FORM");
         loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
@@ -515,7 +515,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param form The sign up form
      */
     private boolean loadSignUpForm(Form form) {
-        Print.i(TAG, "LOAD SIGN UP FORM: " + form.name);
+        Print.i(TAG, "LOAD SIGN UP FORM");
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
