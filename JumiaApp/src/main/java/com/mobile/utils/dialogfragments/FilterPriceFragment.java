@@ -19,7 +19,7 @@ import com.mobile.view.R;
  * @author sergiopereira
  *
  */
-class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Integer>, OnClickListener {
+public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Integer>, OnClickListener {
 
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 

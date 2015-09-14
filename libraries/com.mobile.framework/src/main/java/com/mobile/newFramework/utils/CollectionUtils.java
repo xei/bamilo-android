@@ -317,5 +317,12 @@ public class CollectionUtils {
         return Collections.synchronizedList(list);
     }
 
+    public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
+        Map<String, String> data = new HashMap<>();
+        for (Map.Entry entrySet: contentValues.valueSet()) {
+            data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
+        }
+        return data;
+    }
 
 }

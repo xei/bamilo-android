@@ -416,7 +416,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                gotoProductDetail(targetUrl, originGroupType);
+                gotoProductDetail((String) view.getTag(R.id.target_sku), originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -444,12 +444,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto product detail
      */
-    private void gotoProductDetail(String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + url);
+    private void gotoProductDetail(String sku, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
         // TODO: SHOULD RECEIVE SKU
-        if(TextUtils.isEmpty(url)) {
+        if(!TextUtils.isEmpty(sku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG));
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);

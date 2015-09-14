@@ -508,6 +508,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, mTeaserCampaign.getTargetUrl());
         bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
         triggerContentEvent(new GetCampaignHelper(), bundle, this);
     }
