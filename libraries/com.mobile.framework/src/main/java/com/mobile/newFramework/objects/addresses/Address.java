@@ -65,8 +65,8 @@ public class Address implements IJSONSerializable, Parcelable {
             firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             address1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
-            address2 = dataObject.getString(RestConstants.JSON_ADDRESS2_TAG);
-            city = dataObject.getString(RestConstants.CITY);
+            address2 = dataObject.optString(RestConstants.JSON_ADDRESS2_TAG);
+            city = dataObject.optString(RestConstants.CITY);
             postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
             phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
             region = dataObject.optString(RestConstants.REGION);
