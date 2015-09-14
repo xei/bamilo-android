@@ -472,7 +472,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         // Get Customer
         baseActivity.hideKeyboard();
         // NullPointerException on orientation change
-        if (baseActivity != null && !cameFromRegister) {
+        if (!cameFromRegister) {
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
 
@@ -489,7 +489,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
         cameFromRegister = false;
         // Validate the next step
-        if (nextFragmentType != null && baseActivity != null) {
+        if (nextFragmentType != null) {
             Print.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             Bundle oldArgs = getArguments();

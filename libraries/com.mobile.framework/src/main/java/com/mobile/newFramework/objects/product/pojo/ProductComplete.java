@@ -41,6 +41,9 @@ public class ProductComplete extends ProductMultiple {
     private ArrayList<ProductSpecification> mProductSpecs;
     private String mShareUrl;
 
+    //added
+    private String mName;
+
     /**
      * Complete product empty constructor.
      */
@@ -132,6 +135,10 @@ public class ProductComplete extends ProductMultiple {
                     mVariations.add(variation);
                 }
             }
+
+            //added
+            mName = jsonObject.optString("name");
+
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
             return false;
