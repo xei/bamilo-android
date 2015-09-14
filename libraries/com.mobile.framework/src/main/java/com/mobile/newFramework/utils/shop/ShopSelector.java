@@ -51,6 +51,8 @@ public final class ShopSelector {
 
 	private static boolean isRtlShop;
 
+	private static String countryCode;
+
 	private static boolean isLayoutRtl;
 
 	/**
@@ -154,6 +156,7 @@ public final class ShopSelector {
 	private static void setLocale(Context context, String language) {
 		Print.i(TAG, "ON SET LOCALE: language " + language);
 		// Get language and country code
+		countryCode = language;
 		String[] languageCountry = language.split("_");
 		// Create new locale
 		final Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
@@ -196,6 +199,10 @@ public final class ShopSelector {
 	
 	public static String getCountryName() {
 		return sCountryName;
+	}
+
+	public static String getCountryCode(){
+		return countryCode;
 	}
 
 }
