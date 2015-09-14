@@ -1559,9 +1559,7 @@ public class DynamicFormItem {
             }
         });
 
-        // TODO
         radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
-        //radioGroup.setItems(new ArrayList<>(this.entry.getOptions()), defaultSelect);
 
         ((ViewGroup) this.control).addView(dataContainer);
     }
