@@ -18,8 +18,8 @@
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:visibility="visible"
-        android:text="asda"
+        android:singleLine="true"
+        android:visibility="gone"
         />
 
     <com.mobile.components.customfontviews.TextView
@@ -30,6 +30,5 @@
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginLeft="2dp"
-        android:text="12"/>
+        android:layout_marginLeft="2dp" />
 </LinearLayout>
