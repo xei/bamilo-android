@@ -6,7 +6,7 @@
     android:background="@color/grey_dividerlight"
     android:paddingLeft="@dimen/dimen_48px"
     android:paddingStart="@dimen/margin_large"
-    android:gravity="center_vertical"
+    android:gravity="center_vertical|right"
     android:orientation="horizontal"
     >
 
@@ -18,7 +18,8 @@
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:text="asda"
         />
 
     <com.mobile.components.customfontviews.TextView
@@ -30,5 +31,5 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:layout_marginLeft="2dp"
-        android:background="@color/red"/>
+        android:text="12"/>
 </LinearLayout>
