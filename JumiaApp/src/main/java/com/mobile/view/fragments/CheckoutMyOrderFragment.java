@@ -426,18 +426,15 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         int id = view.getId();
         // Shipping Address Edit
         if (id == R.id.checkout_my_order_shipping_address_btn_edit) onClickEditAddressesButton();
-            // Billing Address Edit
-        else if (id == R.id.checkout_my_order_billing_address_btn_edit)
-            onClickEditAddressesButton();
-            // Shipping method
-        else if (id == R.id.checkout_my_order_shipping_method_btn_edit)
-            onClickEditShippingMethodButton();
-            // Payment options
-        else if (id == R.id.checkout_my_order_payment_options_btn_edit)
-            onClickEditPaymentOptionsButton();
-            // Next step button
+        // Billing Address Edit
+        else if (id == R.id.checkout_my_order_billing_address_btn_edit) onClickEditAddressesButton();
+        // Shipping method
+        else if (id == R.id.checkout_my_order_shipping_method_btn_edit) onClickEditShippingMethodButton();
+        // Payment options
+        else if (id == R.id.checkout_my_order_payment_options_btn_edit) onClickEditPaymentOptionsButton();
+        // Next step button
         else if (id == R.id.checkout_my_order_button_enter) onClickNextStepButton();
-            // Unknown view
+        // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 

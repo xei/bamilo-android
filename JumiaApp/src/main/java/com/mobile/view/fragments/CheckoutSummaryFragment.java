@@ -438,13 +438,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         int id = view.getId();
         // Prod Edit
         if (id == R.id.checkout_summary_products_btn_edit) onClickEditProdButton();
-            // Ship Address Edit
+        // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_address_btn_edit) onClickEditAddessButton();
-            // Ship Address Edit
+        // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
-            // Remove
+        // Remove
         else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
-            // Unknown view
+        // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
