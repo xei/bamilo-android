@@ -27,10 +27,10 @@
         android:paddingRight="20dp"
         />
 
-    <Button
+    <com.mobile.components.customfontviews.Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="BUY NOW"
+        android:text="@string/buy_now_button"
         android:id="@+id/btBuy"
         android:background="@color/orange1"
         android:textColor="#ffffff"

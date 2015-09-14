@@ -15,11 +15,11 @@
         android:id="@+id/txSellerName"
         style="@style/TextBody_1"
         color="@color/black_800"
-        android:text="KEEBEE 2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         />
 
     <!-- RATING -->
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"  android:orientation="horizontal"
         android:paddingBottom="16dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         >
 
         <RatingBar
@@ -67,6 +68,7 @@
         android:visibility="gone"
         android:id="@+id/deliverSection"
         android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         >
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
@@ -98,6 +100,7 @@
         android:layout_height="wrap_content"  android:orientation="horizontal"
         android:paddingBottom="16dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:gravity="center_vertical"
         android:visibility="gone"
         >

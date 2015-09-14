@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/white"
     android:paddingLeft="28dp"
+    android:paddingStart="28dp"
      >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -83,20 +84,17 @@
 
                 <include layout="@layout/pdp_price_tag"   />
 
+
                 <!-- SEPARATOR -->
 
-                <TextView
-                    android:id="@+id/sep1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/line_separator"
-
-                    />
+                <View android:layout_width="match_parent"  android:layout_height="wrap_content"  android:background="@drawable/divider" />
 
                 <!-- RATING -->
 
                 <include layout="@layout/pdp_rating" android:id="@+id/RatingSection"   />
                 />
+
+                <View android:layout_width="match_parent"  android:layout_height="wrap_content"  android:background="@drawable/divider" />
 
                 <!--SIZE: OPTIONAL -->
 
@@ -134,29 +132,6 @@
                 </LinearLayout>
 
 
-                <!-- BUNDLE PRODUCTS -->
-            <!--
-                <include
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/product_detail_stars_container"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginRight="@dimen/rounded_margin_small"
-                    android:layout_marginTop="@dimen/rounded_margin_small"
-                    layout="@layout/product_details_fragment_bundle" />
-
-
-
-                <include
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/rounded_margin_small"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="@dimen/rounded_margin_small"
-                    layout="@layout/product_details_fragment_related" />
-            </LinearLayout>
-            -->
         </com.mobile.utils.ScrollViewWithHorizontal>
 
         <!-- BUTTONS -->
