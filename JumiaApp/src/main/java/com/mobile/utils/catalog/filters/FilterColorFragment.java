@@ -50,7 +50,7 @@ public class FilterColorFragment extends FilterCheckFragment {
      */
      public static class FilterColorOptionArrayAdapter extends FilterOptionArrayAdapter {
             
-        private static int layout = R.layout.dialog_list_sub_item_2;
+        private static int layout = R.layout._def_dialog_list_sub_item_2;
 
         public FilterColorOptionArrayAdapter(Context context, CatalogCheckFilter catalogCheckFilter) {
             super(context, catalogCheckFilter);

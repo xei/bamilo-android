@@ -54,7 +54,7 @@ public class FilterCheckFragment extends FilterFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_brand, container, false);
+        return inflater.inflate(R.layout._def_check_filter_fragment, container, false);
     }
 
     /*

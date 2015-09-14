@@ -26,7 +26,7 @@ import java.util.List;
  */
  public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> implements AdapterView.OnItemClickListener{
         
-    protected static int layout = R.layout.dialog_list_sub_item_2;
+    protected static int layout = R.layout._def_dialog_list_sub_item_2;
 
     protected CatalogCheckFilter catalogFilter;
 

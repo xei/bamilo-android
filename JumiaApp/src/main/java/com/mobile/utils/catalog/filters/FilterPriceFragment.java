@@ -75,7 +75,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_price, container, false);
+        return inflater.inflate(R.layout._def_filter_fragment_price, container, false);
     }
 
     /*

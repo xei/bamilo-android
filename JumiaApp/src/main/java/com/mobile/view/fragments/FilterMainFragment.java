@@ -207,7 +207,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
-        private static final int layout = R.layout.dialog_list_sub_item_1;
+        private static final int layout = R.layout._def_list_sub_item_1;
 
         /**
          * Constructor

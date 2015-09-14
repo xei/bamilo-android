@@ -45,11 +45,15 @@
         android:background="@color/black_900"
         android:gravity="center">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_filter_apply"/>
+
         <com.mobile.components.customfontviews.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
-            android:drawableLeft="@drawable/ic_filter_apply"
             android:gravity="center"
             android:text="@string/apply_label"
             android:textColor="@color/white"

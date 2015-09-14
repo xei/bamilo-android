@@ -14,7 +14,6 @@
         android:id="@+id/dialog_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TITLE"
         android:fontFamily="roboto_regular"
         android:gravity="left|start|center_vertical"
         android:textColor="@color/black"

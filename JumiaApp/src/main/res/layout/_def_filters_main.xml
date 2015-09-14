@@ -37,5 +37,5 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        layout="@layout/dialog_filter_bottom_buttons"/>
+        layout="@layout/_def_filter_bottom_buttons"/>
 </RelativeLayout>
