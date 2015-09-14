@@ -391,6 +391,8 @@
     <string name="delivery_time1">Delivery time</string>
     <string name="see_other_colors">See other colors</string>
     <string name="combo">COMBOS</string>
+    <string name="may_like">YOU MAY ALSO LIKE</string>
     <string name="buy_the_look">BUY THE LOOK</string>
     <string name="pdv_size">Size</string>
+    <string name="buy_now_button">BUY NOW</string>
 </resources>
