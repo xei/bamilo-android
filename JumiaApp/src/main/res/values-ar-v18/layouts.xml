@@ -85,7 +85,7 @@
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
     <item name="dialog_language_list_item"              type="layout">@layout/_def_dialog_language_list_item</item>
-</resources>    
+
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
 
@@ -106,7 +106,6 @@
 
 <item name="reviews_fragment_rating_bigtype_item"                       type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
 <item name="navigation_generic_component"                       type="layout">@layout/_def_navigation_generic_component</item>
-<item name="my_account_list_item"                       type="layout">@layout/_def_my_account_list_item</item>
 <item name="dialog_filter_header"                       type="layout">@layout/_def_dialog_filter_header</item>
 <item name="track_order_form"                       type="layout">@layout/_def_track_order_form</item>
 <item name="reviews_fragment_rating_samlltype_item"                       type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
