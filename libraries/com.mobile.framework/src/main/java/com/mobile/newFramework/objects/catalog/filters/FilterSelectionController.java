@@ -9,16 +9,25 @@ import com.mobile.newFramework.utils.TextUtils;
 import java.util.ArrayList;
 
 /**
- * Created by rsoares on 9/4/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/09/04
+ *
  */
 public class FilterSelectionController {
 
     private ArrayList<CatalogFilter> catalogFilters;
-    private FilterOptionService[] initialValues;
+    private FilterOptionInterface[] initialValues;
 
     public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters){
         this.catalogFilters = catalogFilters;
-        initialValues = new FilterOptionService[catalogFilters.size()];
+        initialValues = new FilterOptionInterface[catalogFilters.size()];
     }
 
     /**

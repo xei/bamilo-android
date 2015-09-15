@@ -11,11 +11,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by rsoares on 9/4/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/09/04
+ *
  */
 public class CatalogCheckFilter extends CatalogFilter{
 
-    private ArrayList<MultiFilterOptionService> filterOptions;
+    private ArrayList<MultiFilterOptionInterface> filterOptions;
 
     private SelectedFilterOptions selectedFilterOptions;
 
@@ -76,17 +85,17 @@ public class CatalogCheckFilter extends CatalogFilter{
         this.selectedFilterOptions.clear();
     }
 
-    public ArrayList<MultiFilterOptionService> getFilterOptions() {
+    public ArrayList<MultiFilterOptionInterface> getFilterOptions() {
         return filterOptions;
     }
 
-    public void setFilterOptions(ArrayList<MultiFilterOptionService> filterOptions) {
+    public void setFilterOptions(ArrayList<MultiFilterOptionInterface> filterOptions) {
         this.filterOptions = filterOptions;
     }
 
-    protected MultiFilterOptionService getFilterOptionType(JSONObject jsonObject) throws JSONException {
+    protected MultiFilterOptionInterface getFilterOptionType(JSONObject jsonObject) throws JSONException {
         try {
-            MultiFilterOptionService object = (MultiFilterOptionService) optionType.newInstance();
+            MultiFilterOptionInterface object = (MultiFilterOptionInterface) optionType.newInstance();
             if(object instanceof IJSONSerializable){
                 ((IJSONSerializable) object).initialize(jsonObject);
             }
@@ -108,7 +117,7 @@ public class CatalogCheckFilter extends CatalogFilter{
     }
 
     public void switchSelectedOptions(SelectedFilterOptions selectedFilterOptions){
-        for(MultiFilterOptionService filterOption : filterOptions){
+        for(MultiFilterOptionInterface filterOption : filterOptions){
             filterOption.setSelected(false);
         }
 

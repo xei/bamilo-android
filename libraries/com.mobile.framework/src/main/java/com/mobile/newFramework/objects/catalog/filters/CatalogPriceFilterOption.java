@@ -8,9 +8,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by rsoares on 9/3/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/09/03
+ *
  */
-public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionService{
+public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionInterface {
 
     private int min;
     private int max;
@@ -83,7 +92,7 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     }
 
     @Override
-    public SingleFilterOptionService clone() {
+    public SingleFilterOptionInterface clone() {
         return new CatalogPriceFilterOption(this);
     }
 }
