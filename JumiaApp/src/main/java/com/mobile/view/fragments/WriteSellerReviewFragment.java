@@ -629,7 +629,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
         isExecutingSendReview = false;
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
-            executeSendReview(mSellerReviewForm.action, mDynamicSellerReviewForm);
+            executeSendReview(mSellerReviewForm.getAction(), mDynamicSellerReviewForm);
         }
     }
     

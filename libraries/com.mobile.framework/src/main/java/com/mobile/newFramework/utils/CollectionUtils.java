@@ -122,7 +122,6 @@ public class CollectionUtils {
     public static <C> boolean addAll(Collection<C> collection, Iterator<? extends C> iterator) {
         boolean changed;
         for (changed = false; iterator.hasNext(); changed |= collection.add(iterator.next())) {
-            ;
         }
 
         return changed;
@@ -131,7 +130,6 @@ public class CollectionUtils {
     public static <C> boolean addAll(Collection<C> collection, Enumeration<? extends C> enumeration) {
         boolean changed;
         for (changed = false; enumeration.hasMoreElements(); changed |= collection.add(enumeration.nextElement())) {
-            ;
         }
 
         return changed;

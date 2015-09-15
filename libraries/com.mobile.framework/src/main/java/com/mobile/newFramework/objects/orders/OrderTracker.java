@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Class that represents an Order Tracked
@@ -105,7 +104,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 
 		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
         creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-        payment_method = jsonObject.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+        payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
 		JSONArray items = jsonObject.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
 
