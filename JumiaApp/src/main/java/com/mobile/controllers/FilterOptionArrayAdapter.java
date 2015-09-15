@@ -2,7 +2,6 @@ package com.mobile.controllers;
 
 import android.content.Context;
 import android.util.SparseArray;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,16 @@ import android.widget.BaseAdapter;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.view.R;
-
-import java.util.List;
 
 /**
  * Class used to fill the list view with filter options
  * @author sergiopereira
  *
  */
- public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> {
+ public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> implements AdapterView.OnItemClickListener{
         
     protected static int layout = R.layout.list_sub_item_2;
 
@@ -64,7 +62,6 @@ import java.util.List;
         return convertView;
     }
 
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         if(catalogFilter.isMulti()) processMultiSelection(parent, position);
@@ -79,11 +76,11 @@ import java.util.List;
      */
     protected void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
 //            Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
 //            Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -106,7 +103,7 @@ import java.util.List;
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         }
     }
 
@@ -127,7 +124,7 @@ import java.util.List;
      * Save the selected item
      * @author sergiopereira
      */
-    protected void addSelectedItem(MultiFilterOptionService option, int position){
+    protected void addSelectedItem(MultiFilterOptionInterface option, int position){
         // Add selected
         mCurrentSelectedOptions.put(position, option);
         // Set selected
@@ -138,14 +135,14 @@ import java.util.List;
      * Clean selected item
      * @author sergiopereira
      */
-    protected void cleanSelectedItem(MultiFilterOptionService option, int position){
+    protected void cleanSelectedItem(MultiFilterOptionInterface option, int position){
         // Disable old selection
         option.setSelected(false);
         // Remove item
         mCurrentSelectedOptions.remove(position);
     }
 
-    protected void setCheckboxBehavior(CheckBox checkBox, MultiFilterOptionService option){
+    protected void setCheckboxBehavior(CheckBox checkBox, MultiFilterOptionInterface option){
         checkBox.setVisibility(View.VISIBLE);
         if(catalogFilter.isMulti()){
             checkBox.setChecked(option.isSelected());
@@ -158,7 +155,7 @@ import java.util.List;
         }
     }
 
-    protected void setProductsCount(TextView textView, MultiFilterOptionService option){
+    protected void setProductsCount(TextView textView, MultiFilterOptionInterface option){
         if(option instanceof CatalogFilterOption) {
             textView.setVisibility(View.VISIBLE);
             textView.setText(textView.getResources().getString(R.string.filter_placeholder, ((CatalogFilterOption) option).getTotalProducts()));

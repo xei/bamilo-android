@@ -13,7 +13,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -63,7 +63,7 @@ public class FilterColorFragment extends FilterCheckFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            MultiFilterOptionService option = getItem(position);
+            MultiFilterOptionInterface option = getItem(position);
             if(option instanceof CatalogColorFilterOption){
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);

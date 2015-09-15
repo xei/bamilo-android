@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 import com.mobile.view.fragments.FilterMainFragment;
@@ -94,7 +94,7 @@ public class FilterCheckFragment extends FilterFragment {
             // Get position
             int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
+            MultiFilterOptionInterface option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
