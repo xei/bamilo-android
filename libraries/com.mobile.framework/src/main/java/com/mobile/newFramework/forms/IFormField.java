@@ -47,6 +47,4 @@ public interface IFormField {
 
     boolean isDefaultSelection();
 
-    ArrayList<NewsletterOption> getNewsletterOptions();
-
 }
