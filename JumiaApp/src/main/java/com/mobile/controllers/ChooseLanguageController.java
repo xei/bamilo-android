@@ -18,10 +18,26 @@ import com.mobile.view.R;
 import java.util.Locale;
 
 /**
- * Created by rsoares on 8/27/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/08/27
+ *
+ * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
 public class ChooseLanguageController {
 
+    /**
+     * Loads Language chooser dialog.
+     *
+     * @param fragment
+     * @param languages
+     * @param runnable
+     */
     public static void loadLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
         DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(fragment.getActivity(), languages);
         final int defaultPosition = languages.getSelectedPosition();
@@ -44,6 +60,14 @@ public class ChooseLanguageController {
         }, null, fragment.getString(R.string.choose_language), languagesListAdapter, defaultPosition).show(fragment.getChildFragmentManager(), null);
     }
 
+    /**
+     * Loads chooser dialog in case languages have more than one element.
+     *
+     * @param fragment
+     * @param languages
+     * @param runnable
+     * @return True if dialog is loaded correctly. False otherwise.
+     */
     public static boolean chooseLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
         if(!CollectionUtils.isEmpty(languages) && languages.size() > 1) {
             loadLanguageDialog(fragment,languages,runnable);
@@ -52,6 +76,13 @@ public class ChooseLanguageController {
         return false;
     }
 
+    /**
+     * Get languages from preferences. If user does not have any yet, default from countryObject is returned.
+     *
+     * @param context
+     * @param countryObject
+     * @return The current user preferences.
+     */
     public static Languages getCurrentLanguages(Context context, CountryObject countryObject){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
 
@@ -66,6 +97,13 @@ public class ChooseLanguageController {
         return languages;
     }
 
+    /**
+     * Set selected language based on current device's language. If there isn't any language matching,
+     * default is selected.
+     *
+     * @param languages
+     * @param countryCode
+     */
     public static void setLanguageBasedOnDevice(Languages languages, String countryCode){
         if(!languages.setSelected(Locale.getDefault().getLanguage()+"_"+countryCode)){
             languages.setDefaultAsSelected();
