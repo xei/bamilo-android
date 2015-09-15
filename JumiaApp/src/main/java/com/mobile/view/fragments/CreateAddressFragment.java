@@ -19,6 +19,7 @@ import com.mobile.factories.FormFactory;
 import com.mobile.helpers.address.CreateAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormAddAddressHelper;
+import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -26,6 +27,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
+import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -93,6 +95,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected ArrayList<AddressRegion> regions;
     protected String selectedRegionOnShipping = "";
     protected String selectedRegionOnBilling = "";
+    protected String selectedCityOnShipping = "";
+    protected String selectedCityOnBilling = "";
     protected CheckBox mIsSameCheckBox;
     protected TextView mShippingTitle;
 
@@ -423,6 +427,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
+     * Validate the current city selection and update the postal codes
+     */
+    protected void setPostalCodesOnSelectedCity(String requestedCityAndFields, ArrayList<AddressPostalCode> postalCodes) {
+        if (requestedCityAndFields.equals(selectedCityOnShipping)) {
+            setPostalCodes(shippingFormGenerator, postalCodes, SHIPPING_FORM_TAG);
+        }
+        if (requestedCityAndFields.equals(selectedCityOnBilling)) {
+            setPostalCodes(billingFormGenerator, postalCodes, BILLING_FORM_TAG);
+        }
+    }
+
+    /**
      * Method used to set the cities on the respective form
      */
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities, String tag) {
@@ -445,9 +461,57 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
+     * Method used to set the postal Codes on the respective form
+     */
+    private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes, String tag) {
+        // Get city item
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_POSTCODE_TAG);
+        // Clean group
+        ViewGroup group = (ViewGroup) v.getControl();
+        group.removeAllViews();
+        // Add a spinner
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        spinner.setLayoutParams(group.getLayoutParams());
+        // Create adapter
+        ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        setSavedSelectedPostalCodePos(spinner, postalCodes, tag);
+        spinner.setTag(tag);
+        spinner.setOnItemSelectedListener(this);
+        group.addView(spinner);
+    }
+
+    /**
      * Load and set the saved city position one time
      */
     private void setSavedSelectedCityPos(IcsSpinner spinner, ArrayList<AddressCity> array, String tag) {
+        // Get saved value
+        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
+            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
+            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
+            if (pos > 0 && pos < array.size()) {
+                spinner.setSelection(pos);
+            }
+            // Clean the saved city pos
+            mShippingSavedValues.remove(SHIPPING_CITY_POS);
+        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
+            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
+            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
+            if (pos > 0 && pos < array.size()) {
+                spinner.setSelection(pos);
+            }
+            // Clean the saved city pos
+            mBillingSavedValues.remove(BILLING_CITY_POS);
+        }
+    }
+
+    /**
+     * Load and set the postal code position one time
+     *
+     */
+    private void setSavedSelectedPostalCodePos(IcsSpinner spinner, ArrayList<AddressPostalCode> array, String tag) {
+        //FIXME
         // Get saved value
         if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
             int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
@@ -647,6 +711,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             else {
                 showFragmentContentContainer();
             }
+        } else if (object instanceof AddressCity){
+
+            // Get city field
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+            // Case list
+            if (field != null && InputType.list == field.getInputType()) {
+                // Get url
+                String url = field.getDataCalls().get(RestConstants.API_CALL);
+                // Request the postal codes for this city id
+                int cityId = ((AddressCity) object).getValue();
+                // Save the selected city on the respective variable
+                String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
+                if (tag.equals(SHIPPING_FORM_TAG)) {
+                    selectedCityOnShipping = SHIPPING_FORM_TAG + "_" + cityId;
+                    triggerGetPostalCodes(url, cityId, selectedCityOnShipping);
+                } else if (tag.equals(BILLING_FORM_TAG)) {
+                    selectedCityOnBilling = BILLING_FORM_TAG + "_" + cityId;
+                    triggerGetPostalCodes(url, cityId, selectedCityOnBilling);
+                }
+            }
         }
     }
 
@@ -744,8 +828,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerGetCities(String url, int region, String tag) {
-        Print.i(TAG, "TRIGGER: GET REGIONS: " + url + " " + tag);
+        Print.i(TAG, "TRIGGER: GET CITIES: " + url + " " + tag);
         triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
+    }
+
+    /**
+     * Trigger to get postal codes
+     *
+     */
+    protected void triggerGetPostalCodes(String url, int city, String tag) {
+        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + url + " " + tag);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(url, city, tag), this);
     }
 
     /**
@@ -800,6 +893,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             case GET_CITIES_EVENT:
                 onGetCitiesSuccessEvent(bundle);
                 break;
+            case GET_POSTAL_CODE_EVENT:
+                onGetPostalCodesSuccessEvent(bundle);
+                break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
                 onCreateAddressSuccessEvent(bundle);
@@ -844,6 +940,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
         ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
+
+        FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+        if(field == null){
+            // Show
+            showFragmentContentContainer();
+            Print.i(TAG, "DOES NOT HAVE POSTAL CODE");
+        }
+
+    }
+
+    protected void onGetPostalCodesSuccessEvent(Bundle bundle) {
+        Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
+        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + bundle.getString(GetPostalCodeHelper.CUSTOM_TAG));
+        String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
+        ArrayList<AddressPostalCode> postalCodes = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodes);
         // Show
         showFragmentContentContainer();
     }
@@ -885,6 +997,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             case GET_CITIES_EVENT:
                 onGetCitiesErrorEvent(bundle);
                 break;
+            case GET_POSTAL_CODE_EVENT:
+                onGetPostalCodesErrorEvent(bundle);
+                break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
                 onCreateAddressErrorEvent(bundle);
@@ -911,6 +1026,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCitiesErrorEvent(Bundle bundle) {
         Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
+    }
+
+    protected void onGetPostalCodesErrorEvent(Bundle bundle) {
+        Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
     protected void onCreateAddressErrorEvent(Bundle bundle) {

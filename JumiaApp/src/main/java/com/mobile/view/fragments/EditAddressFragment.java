@@ -14,6 +14,7 @@ import com.mobile.factories.FormFactory;
 import com.mobile.helpers.address.EditAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
+import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -22,6 +23,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
+import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -266,6 +268,27 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
+     * Method used to set the postalCodes on the respective form
+     */
+    private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes){
+        // Get postal code item
+        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.JSON_POSTCODE_TAG);
+        // Clean group
+        ViewGroup group = (ViewGroup) formItem.getControl();
+        group.removeAllViews();
+        // Add a spinner
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        spinner.setLayoutParams(group.getLayoutParams());
+        // Create adapter
+        ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(getDefaultPosition(formItem, postalCodes.size()));
+        spinner.setOnItemSelectedListener(this);
+        group.addView(spinner);
+    }
+
+    /**
      * Get the position of the address city
      * @return int the position
      */
@@ -377,6 +400,20 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             else {
                 showFragmentContentContainer();
             }
+        } else if (object instanceof AddressCity){
+
+            // Get city field
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+            // Case list
+            if (field != null && InputType.list == field.getInputType()) {
+                // Get url
+                String url = field.getDataCalls().get(RestConstants.API_CALL);
+                // Request the postal codes for this city id
+                int cityId = ((AddressCity) object).getValue();
+                // Get postal codes
+                triggerGetPostalCodes(url, cityId);
+
+            }
         }
     }
 
@@ -432,6 +469,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
+     * Trigger to get postal codes
+     */
+    private void triggerGetPostalCodes(String apiCall, int city){
+        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + apiCall);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+    }
+
+    /**
      * ############# RESPONSE #############
      */
     /**
@@ -476,6 +521,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 setCities(mEditFormGenerator, cities);
+                // Show
+                showFragmentContentContainer();
+                break;
+            case GET_POSTAL_CODE_EVENT:
+                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
+                ArrayList<AddressPostalCode> postalCodes = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                setPostalCodes(mEditFormGenerator, postalCodes);
                 // Show
                 showFragmentContentContainer();
                 break;
@@ -526,6 +578,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_CITIES_EVENT:
                 onGetCitiesErrorEvent(bundle);
                 break;
+            case GET_POSTAL_CODE_EVENT:
+                onGetPostalCodesErrorEvent(bundle);
+                break;
             case EDIT_ADDRESS_EVENT:
                 onEditAddressErrorEvent(bundle);
                 break;
@@ -550,6 +605,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
         Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
+    }
+
+    protected void onGetPostalCodesErrorEvent(Bundle bundle) {
+        Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
     protected void onEditAddressErrorEvent(Bundle bundle){

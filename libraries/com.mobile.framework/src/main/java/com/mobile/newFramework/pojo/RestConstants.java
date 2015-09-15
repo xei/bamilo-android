@@ -224,6 +224,7 @@ public class RestConstants {
     public static final String JSON_ADDRESS1_TAG = "address1";
     public static final String JSON_ADDRESS2_TAG = "address2";
     public static final String CITY = "city";
+    public static final String CITY_ID = "city_id";
     public static final String JSON_POSTCODE_TAG = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";

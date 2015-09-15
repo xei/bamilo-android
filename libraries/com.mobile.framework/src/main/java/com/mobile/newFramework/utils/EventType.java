@@ -133,6 +133,8 @@ public enum EventType {
 
     GET_CITIES_EVENT,
 
+    GET_POSTAL_CODE_EVENT,
+
     GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 
     SET_SHIPPING_METHOD_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
