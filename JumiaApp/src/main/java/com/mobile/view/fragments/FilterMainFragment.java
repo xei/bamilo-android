@@ -41,6 +41,8 @@ import java.util.List;
  */
 public class FilterMainFragment extends BaseFragment implements View.OnClickListener{
 
+    private static final String TAG = FilterMainFragment.class.getSimpleName();
+
     private FilterSelectionController filterSelectionController;
 
     private ArrayList<CatalogFilter> mFilters;
@@ -76,9 +78,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Print.i(TAG, "ON CREATE");
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-        filterListener = (OnDialogFilterListener)bundle.getSerializable(FILTER_LISTENER);
+        filterListener = bundle.getParcelable(FILTER_LISTENER);
         filterSelectionController = new FilterSelectionController(mFilters);
         currentFilterPosition = -1;
         toCancelFilters = true;
@@ -87,6 +90,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Print.i(TAG, "ON VIEW CREATED");
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
 
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
@@ -102,7 +106,14 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Print.i(TAG, "ON SAVE INSTANCE");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onDestroy() {
+        Print.i(TAG, "ON DESTROY");
         super.onDestroy();
         if(toCancelFilters){
             filterSelectionController.goToInitialValues();

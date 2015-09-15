@@ -3,6 +3,8 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -489,7 +491,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             @Override
             public void onClick(View v) {
                 Print.d(TAG, "ON CLICK: FILTER BUTTON");
-                onClickFilterButton2();
+                onClickFilterButton();
             }
         });
     }
@@ -599,7 +601,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter button
         else if (id == R.id.catalog_bar_button_filter) {
-            onClickFilterButton2();
+            onClickFilterButton();
         }
         // Case columns button
         else if (id == R.id.catalog_bar_button_columns) {
@@ -644,16 +646,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 //        }
 //    }
 
-    private void onClickFilterButton2(){
+    private void onClickFilterButton(){
         Print.i(TAG, "ON CLICK FILTER BUTTON");
         try {
             // Show dialog
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
-            bundle.putSerializable(FilterMainFragment.FILTER_LISTENER, new OnDialogFilterListener() {
+            bundle.putParcelable(FilterMainFragment.FILTER_LISTENER, new OnDialogFilterListener() {
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                }
+
                 @Override
                 public void onSubmitFilterValues(ContentValues filterValues) {
-                    CatalogFragment.this.onSubmitFilterValues (filterValues);
+                    CatalogFragment.this.onSubmitFilterValues(filterValues);
                 }
             });
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);

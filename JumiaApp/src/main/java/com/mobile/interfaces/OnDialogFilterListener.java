@@ -1,15 +1,16 @@
 package com.mobile.interfaces;
 
 import android.content.ContentValues;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 
 /**
- * Interface used for Dialog Fragment
+ * Interface used for communication between filters service and parent fragment.
  * @author sergiopereira
  */
-public interface OnDialogFilterListener extends Serializable{
+public interface OnDialogFilterListener extends Parcelable{
 
-    public void onSubmitFilterValues(ContentValues filterValues);
+    void onSubmitFilterValues(ContentValues filterValues);
 
 }
