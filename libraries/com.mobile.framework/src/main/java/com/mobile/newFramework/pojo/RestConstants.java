@@ -32,11 +32,6 @@ public class RestConstants {
     public static final String JSON_EMAIL_TAG = "email";
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
-    //alexandrapires: added mobapi 1.8
-    public static final String JSON_CUSTOMER_ENTITY = "customer_entity";
-    public static final String JSON_ORDERS_COUNT = "orders_count";
-    public static final String JSON_FIRST_ORDER_DATE = "first_order_date";
-    public static final String JSON_MULTISTEP_ENTITY = "multistep_entity";
 
     // FormsService Tags
     public static final String JSON_NAME_TAG = "name";
@@ -75,8 +70,8 @@ public class RestConstants {
     public static final String JSON_LINK_TEXT_TAG = "link_text";
     public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
     public static final String JSON_DELIVERY_TIME = "delivery_time";
-    public static final String JSON_RELATED_FIELD_TAG = "related_field";
-    public static final String JSON_CHECKED_TAG = "checked";
+    public static final String RELATED_DATA = "related_data";
+    public static final String CHECKED = "checked";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
@@ -288,7 +283,7 @@ public class RestConstants {
     public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
     public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
     public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
-    public static final String JSON_ORDER_PAYMENT_METHOD_TAG = "payment_method";
+    public static final String PAYMENT_METHOD = "payment_method";
     public static final String JSON_ORDER_STATUS_TAG = "status";
     public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
     public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
@@ -313,14 +308,7 @@ public class RestConstants {
     public static final String JSON_OTHER_TAG = "other";
     public static final String API_CALL = "api_call";
     public static final String REGION = "region";
-
-
-    /**
-     * Native Checkout
-     */
-    public static final String JSON_NATIVE_CHECKOUT_TAG = "native_checkout";
-
-    public static final String JSON_MULTI_STEP_ENTITY_TAG = "multistep_entity";
+    public static final String MULTI_STEP_ENTITY = "multistep_entity";
 
 
     public static final String JSON_NEXT_STEP_TAG = "next_step";
