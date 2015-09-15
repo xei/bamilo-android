@@ -28,8 +28,4 @@ public class CatalogColorFilterOption extends CatalogCheckFilterOption {
     public String getHexValue() {
         return hexValue;
     }
-
-    public void setHexValue(String hexValue) {
-        this.hexValue = hexValue;
-    }
 }

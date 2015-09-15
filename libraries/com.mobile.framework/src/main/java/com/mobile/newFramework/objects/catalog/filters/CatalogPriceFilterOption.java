@@ -58,24 +58,12 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
         return min;
     }
 
-    public void setMin(int min) {
-        this.min = min;
-    }
-
     public int getMax() {
         return max;
     }
 
-    public void setMax(int max) {
-        this.max = max;
-    }
-
     public int getInterval() {
         return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
     }
 
     public int getRangeMin() {

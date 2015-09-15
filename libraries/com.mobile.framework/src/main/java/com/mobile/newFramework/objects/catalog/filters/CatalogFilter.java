@@ -81,14 +81,6 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
         this.name = name;
     }
 
-    public String getFilterSeparator() {
-        return filterSeparator;
-    }
-
-    public void setFilterSeparator(String filterSeparator) {
-        this.filterSeparator = filterSeparator;
-    }
-
     public Class getOptionType() {
         return optionType;
     }
