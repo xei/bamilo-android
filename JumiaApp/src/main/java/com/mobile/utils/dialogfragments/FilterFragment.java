@@ -1,10 +1,10 @@
 package com.mobile.utils.dialogfragments;
 
 import android.support.v4.app.Fragment;
-import android.util.SparseArray;
 
-import com.mobile.newFramework.objects.catalog.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.newFramework.objects.catalog.filters.SelectedFilterOptions;
 import com.mobile.view.R;
 
 /**
@@ -32,7 +32,7 @@ public class FilterFragment extends Fragment {
 
     protected CatalogFilter mCatalogFilter;
 
-    protected SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<>();
+    protected SelectedFilterOptions mCurrentSelectedOptions = new SelectedFilterOptions();
 
     protected boolean allowMultiSelection;
 
@@ -53,7 +53,7 @@ public class FilterFragment extends Fragment {
      * Save the selected item
      * @author sergiopereira
      */
-    protected void addSelectedItem(CatalogFilterOption option, int position){
+    protected void addSelectedItem(MultiFilterOptionInterface option, int position){
         // Add selected
         mCurrentSelectedOptions.put(position, option);
         // Set selected
@@ -64,7 +64,7 @@ public class FilterFragment extends Fragment {
      * Clean selected item
      * @author sergiopereira
      */
-    protected void cleanSelectedItem(CatalogFilterOption option, int position){
+    protected void cleanSelectedItem(MultiFilterOptionInterface option, int position){
         // Disable old selection
         option.setSelected(false);
         // Remove item
