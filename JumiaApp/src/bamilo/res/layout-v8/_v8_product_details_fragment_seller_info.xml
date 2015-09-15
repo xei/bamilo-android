@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:background="@drawable/selector_listitem_highlight"
+            android:background="@drawable/selector_list_item_highlight"
             android:gravity="right|top"
             android:maxLines="2"
             android:text="@string/product_delivery_time"
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_toLeftOf="@+id/product_detail_seller_delivery"
-            android:background="@drawable/selector_listitem_highlight"
+            android:background="@drawable/selector_list_item_highlight"
             android:gravity="right|top"
             android:maxLines="2"
             android:visibility="visible" />

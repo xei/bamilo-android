@@ -93,14 +93,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 
+ *
  * <p>
  * This class displays the product detail screen
  * </p>
  * <p>
  * Its uses the HorizontalListView to display the variations for that product
  * </p>
- * 
+ *
  * <p>
  * Copyright (C) 2013 Smart Mobile Factory GmbH - All Rights Reserved
  * </p>
@@ -109,18 +109,18 @@ import java.util.List;
  * Unauthorized copying of this file, via any medium is strictly prohibited Proprietary and
  * confidential.
  * </p>
- * 
+ *
  * @project WhiteLabelRocket
- * 
+ *
  * @version 1.00
- * 
+ *
  * @author Michael Kroez
  * @modified Manuel Silva
- * 
+ *
  * @date 4/1/2013
- * 
+ *
  * @description This class displays the product detail screen
- * 
+ *
  */
 public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, OnDialogListListener, OnItemChecked, OnItemSelected, RocketImageLoaderLoadImagesListener {
 
@@ -387,7 +387,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void init() {
         Print.d(TAG, "INIT");
@@ -550,7 +550,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      * @return
      */
     private ArrayList<String> createSimpleVariants() {
@@ -573,7 +573,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      * @return
      */
     private @Nullable
@@ -593,7 +593,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void setPriceInfoOverallOrForSimple() {
         // Get selected simple variation
@@ -811,7 +811,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Show container
         showFragmentContentContainer();
     }
-    
+
     /**
      * Set the gallery
      * @param completeProduct
@@ -822,12 +822,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         // Case product without images
         if(CollectionUtils.isEmpty(completeProduct.getImageList())) mGalleryViewGroupFactory.setViewVisible(R.id.image_place_holder);
-        // Case product with images
+            // Case product with images
         else RocketImageLoader.getInstance().loadImages(completeProduct.getImageList(), this);
     }
-    
+
     /**
-     * 
+     *
      * @param product
      */
     private void setBundles(ProductComplete product) {
@@ -836,9 +836,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else
             hideBundle();
     }
-    
+
     /**
-     * 
+     *
      * @param variations
      * @return
      */
@@ -853,7 +853,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     /**
      * Set the variation container. (Colors)
-     * 
+     *
      * @author manuel
      * @modified sergiopereira
      */
@@ -967,7 +967,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void setCallPhone() {
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -976,7 +976,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Create a bundle for tracking
-     * 
+     *
      * @author sergiopereira
      */
     private android.os.Bundle createBundleProduct() {
@@ -996,7 +996,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Locate the simple size from deep link and save that position
-     * 
+     *
      * @param simpleSize
      * @param product
      * @author sergiopereira
@@ -1052,31 +1052,31 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         int id = view.getId();
         // Case rating
         if (id == R.id.product_detail_product_rating_container ) onClickRating();
-        // Case description
+            // Case description
         else if (id == R.id.product_detail_specifications || id == R.id.product_detail_name) onClickShowDescription();
-        // Case variation button
+            // Case variation button
         else if (id == R.id.product_detail_product_variant_button) onClickVariationButton();
-        // Case shop product
+            // Case shop product
         else if (id == R.id.product_detail_shop) onClickShopProduct();
-        // Case call to order
+            // Case call to order
         else if (id == R.id.product_detail_call_to_order) onClickCallToOrder();
-        // Case wizard
+            // Case wizard
         else if (id == R.id.tips_got_it_img) onClickWizardButton();
-        // Case favourite
+            // Case favourite
         else if (id == R.id.product_detail_image_is_favourite) onClickWishListButton();
-        // Case share
+            // Case share
         else if (id == R.id.product_detail_product_image_share) onClickShare(mCompleteProduct);
-        // Case size guide
+            // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
-        // seller link
+            // seller link
         else if (id == R.id.seller_name_container) goToSellerCatalog();
-        // seller rating
+            // seller rating
         else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
-        // product offers
+            // product offers
         else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
 
     }
-    
+
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
@@ -1094,7 +1094,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickRating() {
         JumiaApplication.cleanRatingReviewValues();
@@ -1120,14 +1120,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickVariationButton() {
         showVariantsDialog();
     }
 
     /**
-     * 
+     *
      */
     private void onClickShopProduct() {
         if (!isAddingProductToCart) {
@@ -1137,7 +1137,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickCallToOrder() {
         TrackerDelegator.trackCall(getBaseActivity());
@@ -1145,7 +1145,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickWizardButton() {
         WizardPreferences.changeState(getBaseActivity(), WizardType.PRODUCT_DETAIL);
@@ -1158,7 +1158,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickWishListButton() {
         try {
@@ -1178,7 +1178,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process the click on share.
-     * 
+     *
      * @param completeProduct
      * @author sergiopereira
      */
@@ -1200,7 +1200,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process click on size guide.
-     * 
+     *
      * @author sergiopereira
      */
     private void onClickSizeGuide(View view) {
@@ -1372,66 +1372,66 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.handleSuccessEvent(bundle);
 
         switch (eventType) {
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            executeAddToShoppingCartCompleted(false);
-            isAddingProductToCart = false;
-            mAddToCartButton.setEnabled(true);
-            break;
-        case GET_PRODUCT_DETAIL:
-            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                getBaseActivity().onBackPressed();
-                return;
-            } else {
-                mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                // Show product or update partial
-                ProductImageGalleryFragment.sSharedSelectedPosition = 0;
-                // Show product or update partial
-                displayProduct(mCompleteProduct);
-                // 
-                android.os.Bundle params = new android.os.Bundle();
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                executeAddToShoppingCartCompleted(false);
+                isAddingProductToCart = false;
+                mAddToCartButton.setEnabled(true);
+                break;
+            case GET_PRODUCT_DETAIL:
+                if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getBaseActivity().onBackPressed();
+                    return;
+                } else {
+                    mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                    // Show product or update partial
+                    ProductImageGalleryFragment.sSharedSelectedPosition = 0;
+                    // Show product or update partial
+                    displayProduct(mCompleteProduct);
+                    //
+                    android.os.Bundle params = new android.os.Bundle();
+                    params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
+                    params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                    TrackerDelegator.trackLoadTiming(params);
 
-                params = new android.os.Bundle();
-                params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
-                params.putString(AdjustTracker.TREE, categoryTree);
-                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
-                TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
-            }
-
-            // Waiting for the fragment comunication
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showFragmentContentContainer();
+                    params = new android.os.Bundle();
+                    params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
+                    params.putString(AdjustTracker.TREE, categoryTree);
+                    TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
+                    TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
                 }
-            }, 300);
 
-            // TODO: create a method
-            if (mCompleteProduct.hasBundle()) {
-                android.os.Bundle arg = new android.os.Bundle();
-                arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
-                triggerContentEventNoLoading(new GetProductBundleHelper(), arg, this);
-            }
-            break;
-        case GET_PRODUCT_BUNDLE:
-            mProductBundle = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            if (mProductBundle != null)
-                displayBundle(mProductBundle);
-            else
-                hideBundle();
-            break;
-        case ADD_PRODUCT_BUNDLE:
-            isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
-            mBundleButton.setEnabled(true);
-            mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted(true);
-            break;
-        default:
-            break;
+                // Waiting for the fragment comunication
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showFragmentContentContainer();
+                    }
+                }, 300);
+
+                // TODO: create a method
+                if (mCompleteProduct.hasBundle()) {
+                    android.os.Bundle arg = new android.os.Bundle();
+                    arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
+                    triggerContentEventNoLoading(new GetProductBundleHelper(), arg, this);
+                }
+                break;
+            case GET_PRODUCT_BUNDLE:
+                mProductBundle = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                if (mProductBundle != null)
+                    displayBundle(mProductBundle);
+                else
+                    hideBundle();
+                break;
+            case ADD_PRODUCT_BUNDLE:
+                isAddingProductToCart = false;
+                getBaseActivity().updateCartInfo();
+                mBundleButton.setEnabled(true);
+                mAddToCartButton.setEnabled(true);
+                executeAddToShoppingCartCompleted(true);
+                break;
+            default:
+                break;
         }
     }
 
@@ -1464,72 +1464,72 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
-        case ADD_PRODUCT_BUNDLE:
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            mBundleButton.setEnabled(true);
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            case ADD_PRODUCT_BUNDLE:
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                mBundleButton.setEnabled(true);
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
-                if (errorMessages != null) {
-                    int titleRes = R.string.error_add_to_cart_failed;
-                    int msgRes = -1;
+                    if (errorMessages != null) {
+                        int titleRes = R.string.error_add_to_cart_failed;
+                        int msgRes = -1;
 
-                    String message = null;
-                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
-                        msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
-                        msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                        if (validateMessages != null && validateMessages.size() > 0) {
-                            message = validateMessages.get(0);
-                        } else {
-                            msgRes = R.string.error_add_to_cart_failed;
+                        String message = null;
+                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                            msgRes = R.string.product_outof_stock;
+                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                            msgRes = R.string.error_add_to_shopping_cart_quantity;
+                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                            List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                            if (validateMessages != null && validateMessages.size() > 0) {
+                                message = validateMessages.get(0);
+                            } else {
+                                msgRes = R.string.error_add_to_cart_failed;
+                            }
                         }
-                    }
 
-                    if (msgRes != -1) {
-                        message = getString(msgRes);
-                    } else if (message == null) {
+                        if (msgRes != -1) {
+                            message = getString(msgRes);
+                        } else if (message == null) {
+                            return;
+                        }
+
+                        FragmentManager fm = getFragmentManager();
+                        dialog = DialogGenericFragment.newInstance(true, false,
+                                getString(titleRes),
+                                message,
+                                getString(R.string.ok_label), "", new OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        int id = v.getId();
+                                        if (id == R.id.button1) {
+                                            dismissDialogFragment();
+                                        }
+                                    }
+                                });
+                        dialog.show(fm, null);
                         return;
                     }
-
-                    FragmentManager fm = getFragmentManager();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(titleRes),
-                            message,
-                            getString(R.string.ok_label), "", new OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(fm, null);
+                }
+                if (!errorCode.isNetworkError()) {
+                    addToShoppingCartFailed();
                     return;
                 }
-            }
-            if (!errorCode.isNetworkError()) {
-                addToShoppingCartFailed();
-                return;
-            }
-        case GET_PRODUCT_DETAIL:
-            showContinueShopping();
-        case GET_PRODUCT_BUNDLE:
-            hideBundle();
-            break;
-        default:
-            break;
+            case GET_PRODUCT_DETAIL:
+                showContinueShopping();
+            case GET_PRODUCT_BUNDLE:
+                hideBundle();
+                break;
+            default:
+                break;
         }
     }
 
     /**
-     * 
+     *
      * Function responsible for showing the product bundle if it exists
-     * 
+     *
      * @param bundle
      */
     private void displayBundle(BundleList bundle) {
@@ -1625,9 +1625,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      * function responsible for handling on item of the bundle
-     * 
+     *
      * @param selectedProduct
      * @param isChecked
      * @param pos
@@ -1705,7 +1705,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putString(SELLER_ID, mCompleteProduct.getSeller().getSellerId());
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener#onCompleteLoadingImages(java.util.ArrayList)
@@ -1713,17 +1713,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls) {
         Print.i(TAG, "ON COMPLETE LOADING IMAGES");
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
+
         // Gets all urls with success
         ArrayList<String> urls = new ArrayList<>();
         for(ImageHolder imageHolder : successUrls) urls.add(imageHolder.url);
-        
+
         // Validate the number of cached images
         if (!successUrls.isEmpty()) {
             // Match the cached image list with the current image list order
@@ -1734,7 +1734,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             android.os.Bundle args = new android.os.Bundle();
             args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, orderCachedImageList);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-            
+
             // Validate the ProductImageGalleryFragment
             ProductImageGalleryFragment productImagesViewPagerFragment = (ProductImageGalleryFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
             // CASE CREATE
@@ -1756,7 +1756,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mGalleryViewGroupFactory.setViewVisible(R.id.image_place_holder);
         }
     }
-    
+
     /**
      * Add/Replace the container to show a new nested fragment.<br>
      * @param container
