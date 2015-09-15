@@ -30,6 +30,5 @@ public enum InputType {
     hide,
     checkBoxLink,
     rating,
-    relatedNumber,
-    checkBoxGroup
+    relatedNumber
 }
