@@ -18,6 +18,10 @@ import com.mobile.newFramework.utils.EventType;
  * @modified sergiopereira
  * 
  */
+
+/* deprecated by alexandrapires: use GetReviewsHelper instead */
+
+@Deprecated
 public class GetProductReviewsHelper extends SuperBaseHelper {
 
     protected static String TAG = GetProductReviewsHelper.class.getSimpleName();

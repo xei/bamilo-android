@@ -17,7 +17,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {

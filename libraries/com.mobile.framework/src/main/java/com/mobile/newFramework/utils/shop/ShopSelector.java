@@ -159,24 +159,13 @@ public final class ShopSelector {
 		countryCode = language;
 		String[] languageCountry = language.split("_");
 		// Create new locale
-		final Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
+		Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
 		// Set as default
 		Locale.setDefault(locale);
 		// Create and update configuration
 		Configuration config = new Configuration();
 		config.locale = locale;
-		final Resources res = context.getResources();
-		DeviceInfoHelper.executeCodeBasedOnJellyBeanMr1Version(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-			@Override
-			public void highVersionCallback() {
-				res.getConfiguration().setLayoutDirection(locale);
-				Print.i(TAG, "setLocale " + res.getConfiguration() + " Layout Direction " + res.getConfiguration().getLayoutDirection());
-			}
-
-			@Override
-			public void lowerVersionCallback() {}
-		});
+		Resources res = context.getResources();
 		res.updateConfiguration(config, res.getDisplayMetrics());
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}

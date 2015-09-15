@@ -27,7 +27,6 @@ import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.CategoryFilterOption;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
