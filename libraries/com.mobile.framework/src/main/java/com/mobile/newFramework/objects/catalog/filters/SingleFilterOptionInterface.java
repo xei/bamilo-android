@@ -14,5 +14,5 @@ package com.mobile.newFramework.objects.catalog.filters;
  *
  */
 public interface SingleFilterOptionInterface extends FilterOptionInterface {
-    public SingleFilterOptionInterface clone();
+    SingleFilterOptionInterface clone();
 }
