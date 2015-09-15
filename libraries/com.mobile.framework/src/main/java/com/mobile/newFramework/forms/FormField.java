@@ -60,11 +60,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private IFormField mParentFormField;
     private boolean isChecked;
 
-    public ArrayList<NewsletterOption> newsletterOptions;
-
-    public HashMap<String,PaymentInfo> paymentInfoList;
-
-
     /**
      * FormField param constructor
      *

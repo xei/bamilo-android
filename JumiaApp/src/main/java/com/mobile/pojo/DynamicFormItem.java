@@ -2047,6 +2047,10 @@ public class DynamicFormItem {
         return hasRules;
     }
 
+    /**
+     * Function that sets date on the date dialog picker
+     * @param date
+     */
     private void setDialogDate(String date){
 
         if(dialogDate != null){
