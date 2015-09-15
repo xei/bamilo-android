@@ -11,7 +11,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by rsoares on 8/26/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/08/26
+ *
  */
 public class Languages extends ArrayList<Language> implements IJSONSerializable{
 
@@ -47,6 +55,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return null;
     }
 
+    /**
+     * Get default Language object.
+     * @return
+     */
     public Language getDefaultLanguage(){
         for(Language language : this){
             if(language.isDefault()){
@@ -56,6 +68,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return null;
     }
 
+    /**
+     * Get selected language object or default.
+     * @return
+     */
     public Language getSelectedLanguage(){
         Language languageSelected = null;
         Language languageDefault = null;
@@ -72,6 +88,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return languageSelected != null ? languageSelected : languageDefault;
     }
 
+    /**
+     * Set language selected based on position.
+     * @param position
+     */
     public void setSelected(int position){
         for(int i = 0; i<this.size();i++){
             Language language = this.get(i);
@@ -79,6 +99,11 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         }
     }
 
+    /**
+     * Set language selected based on code.
+     * @param code
+     * @return
+     */
     public boolean setSelected(String code){
         boolean found = false;
         for(int i = 0; i<this.size();i++){
@@ -93,6 +118,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return found;
     }
 
+    /**
+     * Get all Language names.
+     * @return Array with all language names.
+     */
     public ArrayList<String> getLanguageNames(){
         ArrayList<String> messages = new ArrayList<>();
         for(Language language : this){
@@ -101,6 +130,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return messages;
     }
 
+    /**
+     * Get selected language position.
+     * @return Selected language position or -1 if not found.
+     */
     public int getSelectedPosition(){
         for(int i = 0; i<this.size();i++){
             Language language = this.get(i);
@@ -111,6 +144,10 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return -1;
     }
 
+    /**
+     * Get default language position.
+     * @return
+     */
     public int getDefaultPosition(){
         for(int i = 0; i<this.size();i++){
             Language language = this.get(i);
@@ -121,6 +158,9 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
         return -1;
     }
 
+    /**
+     * Set default language object as selected.
+     */
     public void setDefaultAsSelected(){
         for(int i = 0; i<this.size();i++){
             Language language = this.get(i);

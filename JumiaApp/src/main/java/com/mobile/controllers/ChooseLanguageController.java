@@ -27,7 +27,6 @@ import java.util.Locale;
  * @version 1.0
  * @date 2015/08/27
  *
- * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
 public class ChooseLanguageController {
 
