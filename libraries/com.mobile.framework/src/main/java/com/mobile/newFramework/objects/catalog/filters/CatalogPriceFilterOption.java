@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/3/15.
  */
-public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionService{
+public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionInterface {
 
     private int min;
     private int max;
@@ -95,7 +95,7 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     }
 
     @Override
-    public SingleFilterOptionService clone() {
+    public SingleFilterOptionInterface clone() {
         return new CatalogPriceFilterOption(this);
     }
 }

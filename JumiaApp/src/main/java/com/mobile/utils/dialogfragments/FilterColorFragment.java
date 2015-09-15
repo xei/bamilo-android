@@ -15,7 +15,7 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -161,11 +161,11 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
             Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
             Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -190,7 +190,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         }
     }
 
@@ -206,7 +206,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
             // Get position
             int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
+            MultiFilterOptionInterface option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
@@ -219,11 +219,11 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
      * @author sergiopereira
      *
      */
-     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> {
+     public static class FilterColorOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> {
             
         private static int layout = R.layout.dialog_list_sub_item_2;
 
-        public FilterColorOptionArrayAdapter(Context context, List<MultiFilterOptionService> objects) {
+        public FilterColorOptionArrayAdapter(Context context, List<MultiFilterOptionInterface> objects) {
             super(context, layout, objects);
         }
 
@@ -234,7 +234,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            MultiFilterOptionService option = getItem(position);
+            MultiFilterOptionInterface option = getItem(position);
             if(option instanceof CatalogColorFilterOption){
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);

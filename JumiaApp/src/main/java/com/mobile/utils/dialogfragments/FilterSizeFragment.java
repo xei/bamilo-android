@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -151,11 +151,11 @@ public class FilterSizeFragment extends FilterFragment implements OnClickListene
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
             Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
             Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -180,7 +180,7 @@ public class FilterSizeFragment extends FilterFragment implements OnClickListene
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         }
     }
 
@@ -195,7 +195,7 @@ public class FilterSizeFragment extends FilterFragment implements OnClickListene
             // Get position
             int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
+            MultiFilterOptionInterface option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class CatalogCheckFilter extends CatalogFilter{
 
-    private ArrayList<MultiFilterOptionService> filterOptions;
+    private ArrayList<MultiFilterOptionInterface> filterOptions;
 
     private SelectedFilterOptions selectedFilterOptions;
 
@@ -71,17 +71,17 @@ public class CatalogCheckFilter extends CatalogFilter{
         this.selectedFilterOptions.clear();
     }
 
-    public ArrayList<MultiFilterOptionService> getFilterOptions() {
+    public ArrayList<MultiFilterOptionInterface> getFilterOptions() {
         return filterOptions;
     }
 
-    public void setFilterOptions(ArrayList<MultiFilterOptionService> filterOptions) {
+    public void setFilterOptions(ArrayList<MultiFilterOptionInterface> filterOptions) {
         this.filterOptions = filterOptions;
     }
 
-    protected MultiFilterOptionService getFilterOptionType(JSONObject jsonObject) throws JSONException {
+    protected MultiFilterOptionInterface getFilterOptionType(JSONObject jsonObject) throws JSONException {
         try {
-            MultiFilterOptionService object = (MultiFilterOptionService) optionType.newInstance();
+            MultiFilterOptionInterface object = (MultiFilterOptionInterface) optionType.newInstance();
             if(object instanceof IJSONSerializable){
                 ((IJSONSerializable) object).initialize(jsonObject);
             }
@@ -103,7 +103,7 @@ public class CatalogCheckFilter extends CatalogFilter{
     }
 
     public void switchSelectedOptions(SelectedFilterOptions selectedFilterOptions){
-        for(MultiFilterOptionService filterOption : filterOptions){
+        for(MultiFilterOptionInterface filterOption : filterOptions){
             filterOption.setSelected(false);
         }
 

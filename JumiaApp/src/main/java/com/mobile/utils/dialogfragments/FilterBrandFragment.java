@@ -16,7 +16,7 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionService;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -148,7 +148,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         Print.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         
         // Get selected option
-        MultiFilterOptionService selectedOption = (MultiFilterOptionService) parent.getItemAtPosition(position);
+        MultiFilterOptionInterface selectedOption = (MultiFilterOptionInterface) parent.getItemAtPosition(position);
         // Validate if is a section item
 //        if(selectedOption.isSectionItem()) return;
         
@@ -165,11 +165,11 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        MultiFilterOptionService option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
             Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
             Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -192,7 +192,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((MultiFilterOptionService) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         }
     }
     
@@ -207,7 +207,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
             // Get position
             int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            MultiFilterOptionService option = mFilter.getSelectedFilterOptions().get(position);
+            MultiFilterOptionInterface option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
@@ -220,7 +220,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
      * Adapter
      * @author sergiopereira
      */
-     public static class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionService> implements PinnedSectionListAdapter{
+     public static class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> implements PinnedSectionListAdapter{
             
         private static int layout = R.layout.dialog_list_sub_item_2;
         
@@ -238,7 +238,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
          * @param context the application context
          * @param objects is setted on the parse of the CatalogFilter.
          */
-        public FilterOptionArrayAdapter(Context context, List<MultiFilterOptionService> objects) {
+        public FilterOptionArrayAdapter(Context context, List<MultiFilterOptionInterface> objects) {
             super(context, layout, objects);
         }
         
@@ -249,7 +249,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            MultiFilterOptionService option = getItem(position);
+            MultiFilterOptionInterface option = getItem(position);
             // Validate item type
             if(!isItemViewTypePinned(getItemViewType(position))) {
                 Print.d(TAG, "FILTER OPTION: IS ITEM");
