@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingLeft="28dp"
-    android:paddingStart="28dp"
+
      >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -23,8 +22,8 @@
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="7dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/v8_scrooll_marginLeft"
+        android:layout_marginBottom="@dimen/v8_scrooll_marginBottom"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -52,19 +51,12 @@
 
     <!-- Right Container -->
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@id/center_point"
-        android:layout_marginRight="9dp" >
-
-
         <com.mobile.utils.ScrollViewWithHorizontal
             android:id="@+id/right_scrooler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignRight="@id/center_point"
+            android:layout_alignParentLeft="true"
             android:layout_below="@id/shop_buttons"
             android:scrollbars="none" >
 
@@ -132,6 +124,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             layout="@layout/buy_bar" />
-    </RelativeLayout>
+
 
 </RelativeLayout>
