@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/white"
     >
 
     <!-- PRODUCT SELLER INFO -->
@@ -17,9 +17,9 @@
         color="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
         />
 
     <!-- RATING -->
@@ -27,9 +27,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:paddingBottom="@dimen/item_margin_top"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
         >
 
         <RatingBar
@@ -64,11 +64,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/item_margin_top"
         android:visibility="gone"
         android:id="@+id/deliverSection"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
         >
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
@@ -98,9 +98,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:paddingBottom="@dimen/item_margin_top"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
         android:gravity="center_vertical"
         android:visibility="gone"
         >

@@ -3,8 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="48dp"
     android:gravity="center_vertical"
-    android:paddingLeft="20dp"
-    android:paddingStart="20dp"
+    android:paddingLeft="@dimen/layout_padding"
+    android:paddingStart="@dimen/layout_padding"
     >
 
 
@@ -15,8 +15,8 @@
         android:textColor="@color/black"
         android:text="Item sublist"
         android:id="@+id/tx_slist_title"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="@dimen/v8_margin_sublist_text"
+        android:layout_marginBottom="@dimen/v8_margin_sublist_text"
         android:layout_centerVertical="true"
         />
 
