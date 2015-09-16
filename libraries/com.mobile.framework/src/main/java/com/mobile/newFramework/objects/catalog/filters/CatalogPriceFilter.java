@@ -1,6 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
 import android.content.ContentValues;
+import android.os.Parcel;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
@@ -100,4 +101,29 @@ public class CatalogPriceFilter extends CatalogFilter {
         this.option = option;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(this.option, flags);
+    }
+
+    protected CatalogPriceFilter(Parcel in) {
+        super(in);
+        this.option = in.readParcelable(CatalogPriceFilterOption.class.getClassLoader());
+    }
+
+    public static final Creator<CatalogPriceFilter> CREATOR = new Creator<CatalogPriceFilter>() {
+        public CatalogPriceFilter createFromParcel(Parcel source) {
+            return new CatalogPriceFilter(source);
+        }
+
+        public CatalogPriceFilter[] newArray(int size) {
+            return new CatalogPriceFilter[size];
+        }
+    };
 }

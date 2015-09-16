@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -10,7 +13,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/16/15.
  */
-public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilterOptionInterface{
+public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilterOptionInterface, Parcelable {
 
     private String id;
     private String label;
@@ -76,4 +79,36 @@ public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilte
     public void setSelected(boolean isSelected) {
         this.selected = isSelected;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.label);
+        dest.writeString(this.name);
+        dest.writeString(this.type);
+        dest.writeByte(selected ? (byte) 1 : (byte) 0);
+    }
+
+    protected PriceFilterCheckBoxOption(Parcel in) {
+        this.id = in.readString();
+        this.label = in.readString();
+        this.name = in.readString();
+        this.type = in.readString();
+        this.selected = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<PriceFilterCheckBoxOption> CREATOR = new Parcelable.Creator<PriceFilterCheckBoxOption>() {
+        public PriceFilterCheckBoxOption createFromParcel(Parcel source) {
+            return new PriceFilterCheckBoxOption(source);
+        }
+
+        public PriceFilterCheckBoxOption[] newArray(int size) {
+            return new PriceFilterCheckBoxOption[size];
+        }
+    };
 }

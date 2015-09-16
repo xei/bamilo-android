@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * @date 2015/09/03
  *
  */
-public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
+public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
 
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
@@ -112,6 +112,28 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(this.id);
+        dest.writeByte(multi ? (byte) 1 : (byte) 0);
+        dest.writeString(this.name);
+        dest.writeString(this.filterSeparator);
+        dest.writeSerializable(this.optionType);
     }
+
+    protected CatalogFilter(Parcel in) {
+        this.id = in.readString();
+        this.multi = in.readByte() != 0;
+        this.name = in.readString();
+        this.filterSeparator = in.readString();
+        this.optionType = (Class) in.readSerializable();
+    }
+
+//    public static final Parcelable.Creator<CatalogFilter> CREATOR = new Parcelable.Creator<CatalogFilter>() {
+//        public CatalogFilter createFromParcel(Parcel source) {
+//            return new CatalogFilter(source);
+//        }
+//
+//        public CatalogFilter[] newArray(int size) {
+//            return new CatalogFilter[size];
+//        }
+//    };
 }
