@@ -26,6 +26,7 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     private int interval;
     private int rangeMin;
     private int rangeMax;
+    private PriceFilterCheckBoxOption checkBoxOption;
 
     public CatalogPriceFilterOption(){}
 
@@ -34,12 +35,13 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
         initialize(jsonObject);
     }
 
-    public CatalogPriceFilterOption(CatalogPriceFilterOption priceFilterOption){
+    CatalogPriceFilterOption(CatalogPriceFilterOption priceFilterOption){
         this.min = priceFilterOption.min;
         this.max = priceFilterOption.max;
         this.interval = priceFilterOption.interval;
         this.rangeMin = priceFilterOption.rangeMin;
         this.rangeMax = priceFilterOption.rangeMax;
+        this.checkBoxOption = new PriceFilterCheckBoxOption(priceFilterOption.checkBoxOption);
     }
 
     @Override
@@ -83,10 +85,6 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
         return interval;
     }
 
-    public void setInterval(int interval) {
-        this.interval = interval;
-    }
-
     public int getRangeMin() {
         return rangeMin;
     }
@@ -106,5 +104,14 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     @Override
     public SingleFilterOptionInterface clone() {
         return new CatalogPriceFilterOption(this);
+    }
+
+
+    public PriceFilterCheckBoxOption getCheckBoxOption() {
+        return checkBoxOption;
+    }
+
+    public void setCheckBoxOption(PriceFilterCheckBoxOption checkBoxOption) {
+        this.checkBoxOption = checkBoxOption;
     }
 }

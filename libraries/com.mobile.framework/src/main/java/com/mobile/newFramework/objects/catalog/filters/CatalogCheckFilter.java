@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -56,8 +58,10 @@ public class CatalogCheckFilter extends CatalogFilter{
     }
 
     @Override
-    protected String getValues() {
-        return multi ? processMulti() : processSingle();
+    protected ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        values.put(id,multi ? processMulti() : processSingle());
+        return values;
     }
 
     private String processSingle() {

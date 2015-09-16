@@ -108,10 +108,7 @@ public class FilterSelectionController {
     public ContentValues getValues(){
         ContentValues contentValues = new ContentValues();
         for (CatalogFilter filter : catalogFilters) {
-            String value = filter.getValues();
-            if(TextUtils.isNotEmpty(value)){
-                contentValues.put(filter.getId(), value);
-            }
+            contentValues.putAll(filter.getValues());
         }
         return contentValues;
     }
