@@ -291,14 +291,6 @@ public class JumiaApplication extends A4SApplication {
         return CUSTOMER != null;
     }
 
-    /**
-     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
-     */
-    private static HashMap<String, Boolean> sWishListTemporary;
-    public static HashMap<String, Boolean> getWishListTemporaryPdvData() {
-        return sWishListTemporary == null ? sWishListTemporary = new HashMap<>() : sWishListTemporary;
-    }
-
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
     }
@@ -457,6 +449,15 @@ public class JumiaApplication extends A4SApplication {
     public void clearBannerFlowSkus() {
         bannerSkus = null;
     }
+
+    /**
+     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
+     */
+    private static HashMap<String, Boolean> sWishListTemporary;
+    public static HashMap<String, Boolean> getWishListTemporaryPdvData() {
+        return sWishListTemporary == null ? sWishListTemporary = new HashMap<>() : sWishListTemporary;
+    }
+
 
 }
 

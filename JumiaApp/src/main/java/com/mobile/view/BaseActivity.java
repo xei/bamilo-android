@@ -1322,7 +1322,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case Favorite:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        // Validate customer is logged in
+                        if (!JumiaApplication.isCustomerLoggedIn()) {
+                            // Goto Login and next WishList
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
                         break;
                     case RecentSearch:
                         // RECENT SEARCHES

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.GridView;
 
 import com.mobile.app.JumiaApplication;
@@ -12,13 +13,13 @@ import com.mobile.controllers.WishListAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
-import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -27,25 +28,33 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 
 /**
  * Catalog fragment.
  *
  * @author sergiopereira
  */
-public class WishListFragment extends BaseFragment implements IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
+public class WishListFragment extends BaseFragment implements IResponseCallback, AbsListView.OnScrollListener, DialogSimpleListFragment.OnDialogListListener {
 
     private static final String TAG = WishListFragment.class.getSimpleName();
 
     private GridView mListView;
 
+    private View mLoadingMore;
+
+    private WishList mWishList;
+
     private int mSelectedPositionToDelete = -1;
+
+    private boolean isLoadingMoreData = false;
+
+    private int mNumberOfColumns = 1;
+
+    private boolean isErrorOnLoadingMore = false;
+
 
     /**
      * Create and return a new instance.
@@ -75,7 +84,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Log.i(TAG, "ON CREATE");
         // Get data from saved instance
         if (savedInstanceState != null) {
-            Log.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
+            Log.i(TAG, "GET DATA FROM SAVED STATE");
+            mWishList = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
         }
     }
 
@@ -87,10 +97,13 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        // Loading more view
+        mLoadingMore = view.findViewById(R.id.wish_list_loading_more);
         // List view
         mListView = (GridView) view.findViewById(R.id.wish_list_grid);
-        // Add
-        view.findViewById(R.id.button_shop_all).setOnClickListener(this);
+        mListView.setOnScrollListener(this);
+        // Columns
+        mNumberOfColumns = getResources().getInteger(R.integer.favourite_num_columns);
     }
 
     /*
@@ -101,6 +114,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        // Validate the state
+        onValidateDataState();
     }
 
     /*
@@ -111,12 +126,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Validate customer is logged in
-        if (JumiaApplication.isCustomerLoggedIn()) {
-            triggerGetWishListInitialPage();
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        }
     }
 
     /*
@@ -127,6 +136,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE");
+        outState.putParcelable(ConstantsIntentExtra.DATA, mWishList);
     }
 
     /*
@@ -146,7 +156,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "ON PAUSE");
+        Log.i(TAG, "ON STOP");
     }
 
     /*
@@ -169,22 +179,76 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Log.i(TAG, "ON DESTROY");
     }
 
+    /**
+     * Method used to validate the current state.<br>
+     * - Case logged in or not<br>
+     * - Case first page<br>
+     * - Case restore saved state<br>
+     */
+    private void onValidateDataState() {
+        Print.i(TAG, "ON VALIDATE DATA STATE");
+        // Validate customer is logged in
+        if (!JumiaApplication.isCustomerLoggedIn()) {
+            // Pop entries until home
+            getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+            // Goto Login and next WishList
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        // Case first time
+        else if (mWishList == null) {
+            triggerGetPaginatedWishList();
+        }
+        // Case recover saved state
+        else {
+            showWishListContainer(mWishList);
+        }
+    }
 
     /**
      * Show content after get items
      *
      * @author sergiopereira
      */
-    protected void showContent(ArrayList<ProductMultiple> wishList) {
-        // Validate favourites
-        if (CollectionUtils.isNotEmpty(wishList)) {
-            Print.i(TAG, "ON SHOW CONTENT");
-            WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), wishList, this);
-            mListView.setAdapter(listAdapter);
-            showFragmentContentContainer();
-        } else {
-            Print.i(TAG, "ON SHOW IS EMPTY");
+    protected void showContent(WishList wishList) {
+        Print.i(TAG, "ON SHOW CONTENT");
+        // Case empty
+        if (wishList == null || !wishList.hasProducts()) {
             showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+        }
+        // Case first time
+        else if(mWishList == null || wishList.getPage() == IntConstants.FIRST_PAGE) {
+            mWishList = wishList;
+            showWishListContainer(mWishList);
+        }
+        // Case load more
+        else {
+            mWishList.update(wishList);
+            updateWishListContainer();
+        }
+    }
+
+    /**
+     * Show the wish list container as first time.
+     */
+    protected void showWishListContainer(WishList wishList) {
+        WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), wishList.getProducts(), this);
+        mListView.setAdapter(listAdapter);
+        showFragmentContentContainer();
+    }
+
+    /**
+     * Update the wish list container
+     */
+    protected void updateWishListContainer() {
+        // Update content
+        WishListAdapter adapter = (WishListAdapter) mListView.getAdapter();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        } else {
+            WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), mWishList.getProducts(), this);
+            mListView.setAdapter(listAdapter);
         }
     }
 
@@ -200,9 +264,18 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
+    /**
+     * Method used to hide/show/disable/enable the loading more.
+     */
+    private void setLoadingMore(boolean isLoading) {
+        isLoadingMoreData = isLoading;
+        mLoadingMore.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+
     /*
      * ############## LISTENERS ##############
      */
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -210,6 +283,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
+        onValidateDataState();
     }
 
     /*
@@ -227,8 +301,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         else if (id == R.id.button_delete) onClickDeleteItem(view);
         // Case add to cart
         else if (id == R.id.button_shop) onClickAddToCart(view);
-        // Case add all
-        else if (id == R.id.button_shop_all) onClickAddAllToCart();
         // Case simple
         else if (id == R.id.button_variant) onClickVariation(view);
         // Case size guide
@@ -244,6 +316,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @author sergiopereira
      */
     protected void onClickSizeGuide(View view) {
+        Print.i(TAG, "ON CLICK SIZE GUIDE");
         try {
             // Get size guide url
             String url = (String) view.getTag();
@@ -262,6 +335,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Process the click on variation button.
      */
     protected void onClickVariation(View view) {
+        Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
             ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(position);
@@ -278,6 +352,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     @Override
     public void onDialogListItemSelect(int position) {
+        Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         ((WishListAdapter) mListView.getAdapter()).notifyDataSetChanged();
     }
@@ -311,41 +386,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     }
 
     /**
-     * Process the click on add all button
-     */
-    protected void onClickAddAllToCart() {
-        Print.i(TAG, "ON CLICK ADD ALL TO CART");
-        try {
-            // Map
-            HashMap<String, String> productBySku = new HashMap<>();
-            // Validate all items
-            WishListAdapter adapter = (WishListAdapter) mListView.getAdapter();
-            int size = adapter.getCount();
-            for (int i = 0; i < size; i++) {
-                // Get item
-                ProductMultiple item = adapter.getItem(i);
-                // Validate has simple variation selected
-                ProductSimple simple = item.getSelectedSimple();
-                // Validate simple
-                if (simple != null) {
-                    productBySku.put(item.getSku(), simple.getSku());
-                } else {
-                    showUnexpectedErrorWarning();
-                    break;
-                }
-            }
-            // Sent
-            if (!productBySku.isEmpty()) {
-                triggerAddAllItems(productBySku);
-            }
-
-        } catch (NullPointerException | IllegalStateException e) {
-            Print.e(TAG, "WARNING: EXCEPTION ON ADD ALL TO CART", e);
-            getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA);
-        }
-    }
-
-    /**
      * Process the click on add button
      */
     protected void onClickAddToCart(View view) {
@@ -362,6 +402,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
+            // TODO: add item to cart after variation dialog
             onClickVariation(view);
         }
         // Case error unexpected
@@ -374,14 +415,12 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ############## TRIGGERS ##############
      */
 
-    private void triggerGetWishListInitialPage() {
-        triggerContentEvent(new GetWishListHelper(), null, this);
-    }
-
-    private void triggerAddAllItems(HashMap<String, String> values) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
-        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
+    private void triggerGetPaginatedWishList() {
+        if(mWishList == null) {
+            triggerContentEvent(new GetWishListHelper(), GetWishListHelper.createBundle(IntConstants.FIRST_PAGE), this);
+        } else {
+            triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(mWishList.getPage() + 1), this);
+        }
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -410,6 +449,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
         // Hide progress
         hideActivityProgress();
+        // Validate event
+        super.handleSuccessEvent(bundle);
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -419,12 +460,12 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 removeSelectedPosition();
                 ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
                 break;
-            case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-                // TODO
-                break;
             case GET_WISH_LIST:
             default:
-                ArrayList<ProductMultiple> wishList = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                // Hide loading more
+                setLoadingMore(false);
+                // Show content
+                WishList wishList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 showContent(wishList);
                 break;
         }
@@ -443,29 +484,55 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Case No Network
-        if (super.handleErrorEvent(bundle)) {
-            Log.i(TAG, "HANDLE BASE FRAGMENT");
-            return;
-        }
         // Hide progress
         hideActivityProgress();
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                if (!super.handleErrorEvent(bundle)) {
+                    ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                showUnexpectedErrorWarning();
-                break;
-            case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-                // TODO
+                if (!super.handleErrorEvent(bundle)) {
+                    showUnexpectedErrorWarning();
+                }
                 break;
             case GET_WISH_LIST:
             default:
-                showContinueShopping();
+                // Validate error
+                if (!super.handleErrorEvent(bundle)) {
+                    showContinueShopping();
+                }
+                isErrorOnLoadingMore = isLoadingMoreData;
+                setLoadingMore(false);
                 break;
         }
     }
 
+    /*
+     * ######## SCROLL STATE ########
+     */
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // ...
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // Force scroll to up until one row to disable error flag
+        boolean isScrollingUp = totalItemCount != 0 && firstVisibleItem + visibleItemCount <= totalItemCount - mNumberOfColumns;
+        if(isErrorOnLoadingMore && isScrollingUp) {
+            isErrorOnLoadingMore = false;
+        }
+        // Bottom reached
+        boolean isBottomReached = totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount;
+        // Case bottom reached and has more pages loading the next page
+        if (!isErrorOnLoadingMore && !isLoadingMoreData && isBottomReached && mWishList != null && mWishList.hasMorePages()) {
+            Log.i(TAG, "LOAD MORE DATA");
+            setLoadingMore(true);
+            triggerGetPaginatedWishList();
+        }
+    }
 }

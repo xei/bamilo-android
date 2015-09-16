@@ -540,6 +540,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setOffersInfo() {
         if (mCompleteProduct != null && mCompleteProduct.getTotalOffers() > 0) {
             offersContainer.setVisibility(View.VISIBLE);
+            // TODO : Use placeholders
             numOffers.setText(" (" + mCompleteProduct.getTotalOffers() + ")");
             minOffers.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getMinPriceOffer()));
             if (DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())) {
@@ -651,6 +652,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         String review = getString(R.string.reviews).toLowerCase();
         if (reviewsCount == 1)
             review = getString(R.string.review).toLowerCase();
+        // TODO : Use placeholders
         mProductRatingCount.setText("( " + String.valueOf(ratingCount) + " " + rating + " / " + String.valueOf(reviewsCount) + " " + review + ")");
         loadingRating.setVisibility(View.GONE);
     }
@@ -675,17 +677,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             String rating = getString(R.string.string_ratings).toLowerCase();
             if (mCompleteProduct.getSeller().getRatingCount() == 1)
                 rating = getString(R.string.string_rating).toLowerCase();
+            // TODO : Use placeholders
             mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
             //
             int visibility = View.GONE;
-            // TODO placeholder
             if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
                     mCompleteProduct.getSimples().get(0).getMinDeliveryTime() > 0 &&
                     mCompleteProduct.getSimples().get(0).getMaxDeliveryTime() > 0) {
                 //
                 String min = "" + mCompleteProduct.getSimples().get(0).getMinDeliveryTime();
                 String max = "" + mCompleteProduct.getSimples().get(0).getMaxDeliveryTime();
+                // TODO : Use placeholders
                 mSellerDeliveryTime.setText(min + " - " + max + " " + getString(R.string.product_delivery_days));
                 visibility = View.VISIBLE;
             }
@@ -951,6 +954,21 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
+     * Method used to update the wish list value.
+     */
+    private void updateWishListValue() {
+        try {
+            boolean value = !mCompleteProduct.isWishList();
+            JumiaApplication.getWishListTemporaryPdvData().put(mCompleteProductSku, value); // WishList cache to update Catalog
+            mImageFavourite.setSelected(value);
+            mCompleteProduct.setIsWishList(value);
+            ToastManager.show(getBaseActivity(), value ? ToastManager.SUCCESS_ADDED_FAVOURITE :ToastManager.SUCCESS_REMOVED_FAVOURITE);
+        } catch (NullPointerException e) {
+            Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
+        }
+    }
+
+    /**
      * Validate if is to show the pager wizard
      */
     private void isToShowWizard() {
@@ -1173,15 +1191,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     triggerAddToWishList(mCompleteProduct.getSku());
                 }
-                // Update value
-                mImageFavourite.setSelected(!mCompleteProduct.isWishList());
-                mCompleteProduct.setIsWishList(!mCompleteProduct.isWishList());
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
             }
         } else {
-            // Force get new catalog page
-            //mCompleteProduct = null;
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -1311,16 +1324,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
     }
 
-    /**
-     * Trigger to add item from wish list.
-     */
     private void triggerAddToWishList(String sku) {
         triggerContentEventProgress(new AddToWishListHelper(), AddToWishListHelper.createBundle(sku), this);
     }
 
-    /**
-     * Trigger to remove item from wish list.
-     */
     private void triggerRemoveFromWishList(String sku) {
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
@@ -1378,12 +1385,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                JumiaApplication.getWishListTemporaryPdvData().put(mCompleteProductSku, false);
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
-                break;
             case ADD_PRODUCT_TO_WISH_LIST:
-                JumiaApplication.getWishListTemporaryPdvData().put(mCompleteProductSku, true);
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_ADDED_FAVOURITE);
+                updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 executeAddToShoppingCartCompleted(false);

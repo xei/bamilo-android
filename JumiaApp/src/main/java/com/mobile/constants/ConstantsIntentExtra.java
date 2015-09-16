@@ -109,5 +109,7 @@ public class ConstantsIntentExtra {
     // ########### MY ORDER ##############
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
 
+    public static final String DATA = mPackage + "data";
+
 
 }

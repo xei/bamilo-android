@@ -31,6 +31,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -164,7 +165,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
 
             // Default catalog values
-            mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
+            mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
@@ -448,7 +449,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set title bar
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
         // Show header
-        if (catalogPage.getPage() == CatalogPage.FIRST_PAGE) {
+        if (catalogPage.getPage() == IntConstants.FIRST_PAGE) {
             showHeaderBanner();
         }
         // Validate if user can load more pages
@@ -863,7 +864,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void triggerGetInitialCatalogPage() {
         // Get first page
-        triggerGetCatalogPage(GetCatalogPageHelper.FIRST_PAGE_NUMBER);
+        triggerGetCatalogPage(IntConstants.FIRST_PAGE);
     }
 
     /**
@@ -871,7 +872,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void triggerGetPaginatedCatalog() {
         // Get next page
-        int page = mCatalogPage == null ? GetCatalogPageHelper.FIRST_PAGE_NUMBER : mCatalogPage.getPage() + 1;
+        int page = mCatalogPage == null ? IntConstants.FIRST_PAGE : mCatalogPage.getPage() + 1;
         // Get catalog page
         triggerGetCatalogPage(page);
     }
@@ -889,7 +890,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
         // Case initial request or load more
-        if (page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
+        if (page == IntConstants.FIRST_PAGE) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
         } else {
             triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
@@ -1005,7 +1006,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFilterNoResult();
         }
         // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == IntConstants.FEATURE_BOX_TYPE) {
             Print.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
             FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);

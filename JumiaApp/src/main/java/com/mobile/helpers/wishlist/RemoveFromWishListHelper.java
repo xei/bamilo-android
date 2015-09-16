@@ -13,7 +13,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Get Catalog Page helper
+ * Helper used to remove item from wish list
  *
  * @author sergiopereira
  *
@@ -32,7 +32,7 @@ public class RemoveFromWishListHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.addToWishList);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.removeFromWishList);
     }
 
     public static Bundle createBundle(String sku) {
