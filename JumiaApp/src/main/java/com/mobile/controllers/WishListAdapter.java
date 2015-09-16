@@ -46,11 +46,9 @@ public class WishListAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView brand;
         private View isNew;
         private Button varianceButton;
-        private View variantChooseError;
         private View addToCartButton;
         private View deleteButton;
         private View container;
-        private View stockError;
     }
 
     /**
@@ -123,8 +121,6 @@ public class WishListAdapter extends ArrayAdapter<ProductMultiple> {
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
             item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
-            item.variantChooseError = itemView.findViewById(R.id.error_variant);
-            item.stockError = itemView.findViewById(R.id.error_stock);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);
             item.deleteButton = itemView.findViewById(R.id.button_delete);
             itemView.setTag(R.id.recycled_view, item);
@@ -133,17 +129,6 @@ public class WishListAdapter extends ArrayAdapter<ProductMultiple> {
         }
         return item;
     }
-
-//    /**
-//     * Set warnings, stock and variation
-//     * @author sergiopereira
-//     */
-//    private void setWarnings(Item prodItem, NewProductAddableToCart addableToCart) {
-//        // Set variation error visibility
-//        prodItem.variantChooseError.setVisibility(addableToCart.showChooseVariationWarning() ? View.VISIBLE : View.GONE);
-//        // Set stock error visibility
-//        prodItem.stockError.setVisibility(addableToCart.showStockVariationWarning() ? View.VISIBLE : View.GONE);
-//    }
 
     /**
      * Set this as clickable
