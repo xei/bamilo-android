@@ -64,13 +64,14 @@
     <item name="product_details_fragment_offers"        type="layout">@layout/_v8_product_details_fragment_offers</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_v8_product_details_fragment_header</item>
 
+    <!-- added new 2.7 generic layouts -->
+    <item name="header" 	                            type="layout">@layout/_v8_header</item>
+    <item name="single_line_list" 	                    type="layout">@layout/_v8_single_line_list</item>
+    <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
+    <item name="pdp_details" 	                        type="layout">@layout/_v8_pdp_details</item>
     <!-- added new v2.7 PDV layouts -->
     <item name="pdp_price_tag" 	                        type="layout">@layout/_v8_pdp_price_tag</item>
     <item name="pdp_rating" 	                        type="layout">@layout/_v8_pdp_rating</item>
-    <item name="header" 	                            type="layout">@layout/_v8_header</item>
-    <item name="pdp_details" 	                        type="layout">@layout/_v8_pdp_details</item>
-    <item name="single_line_list" 	                    type="layout">@layout/_v8_single_line_list</item>
-    <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
     <item name="pdp_seller_info" 	                    type="layout">@layout/_v8_pdp_seller_info</item>
     <item name="pdp_combo_item" 	                    type="layout">@layout/_v8_pdp_combo_item</item>
     <item name="pdp_product_item_grid" 	                type="layout">@layout/_v8_pdp_product_item_grid</item>
