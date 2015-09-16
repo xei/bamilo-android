@@ -1,7 +1,10 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
+
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +25,7 @@ public class CatalogPriceFilter extends CatalogFilter {
     private CatalogPriceFilterOption option;
 
     public CatalogPriceFilter(){
-
+        option = new CatalogPriceFilterOption();
     }
 
     public CatalogPriceFilter(JSONObject jsonObject) throws JSONException {
@@ -33,8 +36,15 @@ public class CatalogPriceFilter extends CatalogFilter {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
-        option = new CatalogPriceFilterOption(jsonObject.getJSONObject(RestConstants.JSON_OPTION_TAG));
+        option.initialize(jsonObject.getJSONObject(RestConstants.JSON_OPTION_TAG));
         return true;
+    }
+
+    @Override
+    protected void parseFields(JSONArray fieldsArray) throws JSONException {
+        if(fieldsArray.length() != 0){
+            option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
+        }
     }
 
     @Override
@@ -50,12 +60,21 @@ public class CatalogPriceFilter extends CatalogFilter {
     @Override
     public boolean hasAppliedFilters() {
         return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
+    protected ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        if(option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax()){
+            values.put(id, option.getRangeMin() + filterSeparator + option.getRangeMax());
+        }
+
+        values.put(option.getCheckBoxOption().getId(), option.getCheckBoxOption().isSelected());
+        return values;
     }
 
     @Override
     public void cleanFilter() {
         option.setRangeMin(option.getMin());
         option.setRangeMax(option.getMax());
+        option.getCheckBoxOption().setSelected(false);
     }
 
     public CatalogPriceFilterOption getOption() {

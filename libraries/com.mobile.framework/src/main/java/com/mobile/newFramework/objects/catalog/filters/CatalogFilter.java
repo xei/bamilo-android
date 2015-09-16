@@ -1,5 +1,6 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,6 +8,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +51,10 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
         multi = jsonObject.getBoolean(RestConstants.JSON_MULTI);
         filterSeparator = multi ? jsonObject.getString(RestConstants.JSON_FILTER_SEPARATOR) : jsonObject.optString(RestConstants.JSON_FILTER_SEPARATOR);
 
+        if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)) {
+            parseFields(jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG));
+        }
+
         setOptionType(id);
 
         return true;
@@ -56,9 +62,12 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     protected abstract void setOptionType(String id);
 
-    protected abstract String getValues();
+    protected abstract ContentValues getValues();
 
     public abstract boolean hasAppliedFilters();
+
+    protected void parseFields(JSONArray fieldsArray) throws JSONException {
+    }
 
     @Override
     public JSONObject toJSON() {
