@@ -52,17 +52,15 @@ public class CatalogPriceFilter extends CatalogFilter {
         optionType = CatalogPriceFilterOption.class;
     }
 
-    @Override
-    protected String getValues() {
-        return hasAppliedFilters() ? option.getRangeMin() + filterSeparator + option.getRangeMax() : null;
-    }
 
     @Override
     public boolean hasAppliedFilters() {
         return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
+    }
     protected ContentValues getValues() {
         ContentValues values = new ContentValues();
-        if(option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax()){
+
+        if(hasAppliedFilters()){
             values.put(id, option.getRangeMin() + filterSeparator + option.getRangeMax());
         }
 
