@@ -60,7 +60,9 @@ public class CatalogCheckFilter extends CatalogFilter{
     @Override
     protected ContentValues getValues() {
         ContentValues values = new ContentValues();
-        values.put(id,multi ? processMulti() : processSingle());
+        if(hasAppliedFilters()) {
+            values.put(id, multi ? processMulti() : processSingle());
+        }
         return values;
     }
 

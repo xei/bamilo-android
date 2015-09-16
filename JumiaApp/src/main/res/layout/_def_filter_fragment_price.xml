@@ -45,5 +45,6 @@
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l"
                 android:paddingLeft="12dp"
-                android:paddingStart="12dp"/>
+                android:paddingStart="12dp"
+                android:visibility="gone"/>
 </LinearLayout>

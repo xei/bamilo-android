@@ -43,7 +43,11 @@ public class CatalogPriceFilter extends CatalogFilter {
     @Override
     protected void parseFields(JSONArray fieldsArray) throws JSONException {
         if(fieldsArray.length() != 0){
-            option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
+            try{
+                option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
+            }catch (JSONException ex){
+
+            }
         }
     }
 
@@ -55,24 +59,37 @@ public class CatalogPriceFilter extends CatalogFilter {
 
     @Override
     public boolean hasAppliedFilters() {
-        return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
+        return hasAppliedPriceValues() || hasAppliedCheckBoxOption();
     }
+
     protected ContentValues getValues() {
         ContentValues values = new ContentValues();
 
-        if(hasAppliedFilters()){
+        if(hasAppliedPriceValues()){
             values.put(id, option.getRangeMin() + filterSeparator + option.getRangeMax());
         }
 
-        values.put(option.getCheckBoxOption().getId(), option.getCheckBoxOption().isSelected());
+        if(hasAppliedCheckBoxOption()) {
+            values.put(option.getCheckBoxOption().getId(), true);
+        }
         return values;
+    }
+
+    private boolean hasAppliedPriceValues(){
+        return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
+    }
+
+    private boolean hasAppliedCheckBoxOption(){
+        return option.getCheckBoxOption() != null && option.getCheckBoxOption().isSelected();
     }
 
     @Override
     public void cleanFilter() {
         option.setRangeMin(option.getMin());
         option.setRangeMax(option.getMax());
-        option.getCheckBoxOption().setSelected(false);
+        if(option.getCheckBoxOption() != null) {
+            option.getCheckBoxOption().setSelected(false);
+        }
     }
 
     public CatalogPriceFilterOption getOption() {

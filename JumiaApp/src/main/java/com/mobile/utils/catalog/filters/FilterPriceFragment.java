@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.mobile.components.RangeSeekBar;
 import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
@@ -95,6 +96,17 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
         // Get check box
         mDiscountBox = (CheckBox) view.findViewById(R.id.dialog_filter_check_discount);
+        if(mFilter.getOption().getCheckBoxOption() != null){
+            mDiscountBox.setVisibility(View.VISIBLE);
+            mDiscountBox.setText(mFilter.getOption().getCheckBoxOption().getLabel());
+            mDiscountBox.setChecked(mFilter.getOption().getCheckBoxOption().isSelected());
+            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mFilter.getOption().getCheckBoxOption().setSelected(isChecked);
+                }
+            });
+        }
         // Get range text
         mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
         
