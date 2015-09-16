@@ -128,6 +128,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case "boolean":
                 case "checkbox":
+                case "multi_checkbox":
                     inputType = InputType.checkBox;
                     break;
                 case "":
@@ -227,7 +228,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     // Case default
                     else {
                         JSONObject option = dataOptionsArray.getJSONObject(i);
-                        dataSet.put(option.optString("label"), option.optString("value"));
+                        dataSet.put(option.optString("value"), option.optString("label"));
                     }
                 }
             }
