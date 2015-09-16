@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,18 +27,8 @@ import java.util.ArrayList;
  * Adapter to fill grid for related products in Product detail section
  * @author alexandrapires
  */
-public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAdapter.ProductViewHolder> implements OnClickListener {
+public class RelatedProductsGridAdapter extends RecyclerView.Adapter<RelatedProductsGridAdapter.ProductViewHolder> implements OnClickListener {
 
-
-
-    private static int GRID_LINE_ITEMS_MOBILE = 2;
-
-    private static int GRID_LINE_ITEMS_TABLET_PORTRAIT = 3;
-
-
-    private boolean isTabletInLandscape=false;
-
-    private boolean isTablet=false;
 
     private ArrayList<ProductRegular> mDataSet;
 
@@ -88,13 +79,9 @@ public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAd
      * @param context - the application context
      * @param data - list of product regular data
      */
-    public PDVProductGridAdapter(Context context, ArrayList<ProductRegular> data) {
+    public RelatedProductsGridAdapter(Context context, ArrayList<ProductRegular> data) {
         mContext = context;
         mDataSet = data;
-        isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
-        isTablet = context.getResources().getBoolean(R.bool.isTablet);
-
-
     }
 
 
@@ -103,9 +90,13 @@ public class PDVProductGridAdapter extends RecyclerView.Adapter<PDVProductGridAd
      * */
     public int getNumberOfColumns()
     {
-        //check column number
-        if(!isTablet || isTabletInLandscape) nColumns = GRID_LINE_ITEMS_MOBILE;
-        else nColumns = GRID_LINE_ITEMS_TABLET_PORTRAIT;
+
+        Resources resources = mContext.getResources();
+
+        if(!resources.getBoolean(R.bool.isTablet) || DeviceInfoHelper.isTabletInLandscape(mContext) )
+            nColumns = resources.getInteger(R.integer.grid_line_items_mobile);
+        else
+            nColumns = resources.getInteger(R.integer.grid_line_items_tablet_portrait);
 
         return nColumns;
     }
