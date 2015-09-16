@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.OnDialogFilterListener;
