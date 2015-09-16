@@ -403,6 +403,28 @@
     <dimen name="no_connection_label_small_size">16sp</dimen>
     <dimen name="no_connection_label_details_small_size">12sp</dimen>
 
+    <!-- PDP dimensions -->
+    <dimen name="v8_padding_left">30dp</dimen>
+    <dimen name="v8_scrooll_marginLeft">7dp</dimen>
+    <dimen name="v8_scrooll_marginBottom">10dp</dimen>
+
+    <!-- PDP Related products column numbers -->
+    <integer name="grid_line_items_mobile">2</integer>
+    <integer name="grid_line_items_tablet_portrait">3</integer>
+    <integer name="details_max_lines">4</integer>
+
+    <!-- PDP layout dimension components -->
+    <dimen name="layout_padding">20dp</dimen>
+    <dimen name="layout_marginLeft">10dp</dimen>
+    <dimen name="layout_item_height">48dp</dimen>
+    <dimen name="progress_bar_dim">30dp</dimen>
+    <dimen name="item_margin_top">16dp</dimen>
+    <dimen name="combo_item_height">36dp</dimen>
+    <dimen name="buy_bar_height">48dp</dimen>
+    <dimen name="buy_bar_image_item_width">48dp</dimen>
+    <dimen name="v8_margin_sublist_text">19dp</dimen>
+
+
 
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
