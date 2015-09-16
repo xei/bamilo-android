@@ -14,7 +14,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:textColor="@color/grey_middle"
-        android:textSize="14sp"/>
+        android:textSize="18sp"/>
     
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/textview_terms"

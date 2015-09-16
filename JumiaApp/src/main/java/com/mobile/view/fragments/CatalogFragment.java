@@ -673,6 +673,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
+        //Remove old filters from final request values
+        for(String key : mCurrentFilterValues.keySet()){
+            mQueryValues.remove(key);
+        }
+
         // Save the current filter values
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
