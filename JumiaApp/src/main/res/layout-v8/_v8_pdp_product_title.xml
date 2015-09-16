@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="20dp"
+    android:paddingRight="@dimen/layout_padding"
     android:id="@+id/TitleSection"
     android:gravity="center_vertical|right"
     >
@@ -11,7 +11,7 @@
         android:id="@+id/pdv_product_title"
         style="@style/List1"
         android:textColor="@color/black"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/item_margin_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -20,7 +20,7 @@
         style="@style/TextCaption"
         android:textColor="@color/black_800"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/item_margin_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/buy_bar_height"
     android:gravity="center|right"
     >
 
@@ -11,31 +11,31 @@
         android:text="@string/buy_now_button"
         android:id="@+id/btBuy"
         android:background="@color/orange1"
-        android:textColor="#ffffff"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/layout_marginLeft"
+        android:paddingRight="@dimen/layout_marginLeft"
 
         />
 
 
     <ImageButton
-        android:layout_width="64dp"
+        android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:id="@+id/imBtCall"
         android:src="@drawable/ic_call"
         android:background="@color/black_900"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding"
         />
 
     <ImageButton
-        android:layout_width="64dp"
+        android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:id="@+id/imBtShare"
         android:src="@drawable/ic_share"
         android:background="@color/black_900"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding"
 
         />
 

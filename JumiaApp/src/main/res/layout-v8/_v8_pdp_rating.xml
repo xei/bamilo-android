@@ -4,8 +4,8 @@
     android:id="@+id/ratingContainer"
     android:layout_height="48dp"
     android:gravity="center|right"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:paddingLeft="@dimen/layout_padding"
+    android:paddingRight="@dimen/layout_padding"
 
 
     >
