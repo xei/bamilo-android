@@ -35,6 +35,9 @@ public class RemoveFromWishListHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.removeFromWishList);
     }
 
+    /**
+     * Method used to create the request bundle.
+     */
     public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);

@@ -13,7 +13,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Get Catalog Page helper
+ * Helper used to add an item to wish list.
  *
  * @author sergiopereira
  *
@@ -35,6 +35,9 @@ public class AddToWishListHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.addToWishList);
     }
 
+    /**
+     * Method used to create a request bundle.
+     */
     public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
         values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);

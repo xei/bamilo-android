@@ -102,6 +102,9 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     }
 
 
+    /**
+     * Method used to create a request bundle.
+     */
     public static Bundle createBundle(String sku, String simpleSku) {
         // Item data
         ContentValues values = new ContentValues();

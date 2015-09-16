@@ -33,7 +33,7 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 
 /**
- * Catalog fragment.
+ * WishList fragment with pagination.
  *
  * @author sergiopereira
  */

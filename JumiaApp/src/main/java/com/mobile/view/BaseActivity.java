@@ -1935,7 +1935,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void recoverUserDataFromBackground() {
         Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) { // && !JumiaApplication.isCustomerLoggedIn()) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials

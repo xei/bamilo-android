@@ -17,7 +17,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Get Catalog Page helper
+ * Helper used to get the default wish list.
  *
  * @author sergiopereira
  */
