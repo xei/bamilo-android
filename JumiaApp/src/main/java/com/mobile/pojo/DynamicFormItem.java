@@ -996,7 +996,7 @@ public class DynamicFormItem {
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
-
+        mLinkTextView.setTextSize(MANDATORYSIGNALSIZE);
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
@@ -1559,9 +1559,7 @@ public class DynamicFormItem {
             }
         });
 
-        // TODO
         radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
-        //radioGroup.setItems(new ArrayList<>(this.entry.getOptions()), defaultSelect);
 
         ((ViewGroup) this.control).addView(dataContainer);
     }

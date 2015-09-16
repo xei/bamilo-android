@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author sergiopereira
  *
  */
- public class FilterOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> {
+ public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> {
         
     private static int layout = R.layout.dialog_list_sub_item_2;
 
@@ -27,7 +27,7 @@ import java.util.List;
      * @param context
      * @param objects
      */
-    public FilterOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
+    public FilterOptionArrayAdapter(Context context, List<MultiFilterOptionInterface> objects) {
         super(context, layout, objects);
     }
 
@@ -38,7 +38,9 @@ import java.util.List;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get Filter
-        CatalogFilterOption option = getItem(position);
+
+        MultiFilterOptionInterface option = getItem(position);
+
         // Validate current view
         if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
         // Set title
