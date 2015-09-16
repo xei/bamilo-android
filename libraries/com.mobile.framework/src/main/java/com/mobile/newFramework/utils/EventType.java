@@ -120,7 +120,7 @@ public enum EventType {
 
     EDIT_ADDRESS_EVENT("https:/customer/addressedit", AigRestContract.NO_CACHE),
 
-    SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", AigRestContract.NO_CACHE),
+    SET_BILLING_ADDRESS_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
 
     GET_REGIONS_EVENT,
 

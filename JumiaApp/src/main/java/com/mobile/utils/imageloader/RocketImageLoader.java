@@ -454,6 +454,12 @@ public class RocketImageLoader {
     public class ImageHolder{
         public String url;
         public Bitmap bitmap;
+
+        //added apires
+        public Bitmap getBitmap()
+        {
+            return bitmap;
+        }
     }
     
     public void loadImages(final ArrayList<String> urls, final RocketImageLoaderLoadImagesListener rocketImageLoaderLoadImagesListener){
@@ -494,4 +500,6 @@ public class RocketImageLoader {
             RocketImageLoader.getInstance().preload(str, rocketImageLoaderListener);
         }
     }
+
+
 }

@@ -12,7 +12,7 @@ import android.widget.ScrollView;
  * @author nunocastro
  *
  */
-public class ScrollViewEx extends ScrollView {
+public class ScrollViewReachable extends ScrollView {
 
     public interface OnScrollBottomReachedListener {
         void OnScrollBottomReached();
@@ -23,7 +23,7 @@ public class ScrollViewEx extends ScrollView {
     /**
      * @param context
      */
-    public ScrollViewEx(Context context) {
+    public ScrollViewReachable(Context context) {
         super(context);
         // TODO Auto-generated constructor stub
     }
@@ -32,7 +32,7 @@ public class ScrollViewEx extends ScrollView {
      * @param context
      * @param attrs
      */
-    public ScrollViewEx(Context context, AttributeSet attrs) {
+    public ScrollViewReachable(Context context, AttributeSet attrs) {
         super(context, attrs);
         // TODO Auto-generated constructor stub
     }
@@ -42,7 +42,7 @@ public class ScrollViewEx extends ScrollView {
      * @param attrs
      * @param defStyle
      */
-    public ScrollViewEx(Context context, AttributeSet attrs, int defStyle) {
+    public ScrollViewReachable(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }

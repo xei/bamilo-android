@@ -11,7 +11,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/selector_listitem_highlight" />
+        android:background="@drawable/selector_list_item_highlight" />
 
          <com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator
         android:id="@+id/view_pager_indicator"
