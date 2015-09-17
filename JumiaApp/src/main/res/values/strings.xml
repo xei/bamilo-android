@@ -383,4 +383,8 @@
     <!-- NEW 2.7 -->
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
+    <!-- NEW 2.8 -->
+    <string name="choose_language">Choose Language</string>
+    <string name="language">Language</string>
+    <string name="country">Country</string>
 </resources>
