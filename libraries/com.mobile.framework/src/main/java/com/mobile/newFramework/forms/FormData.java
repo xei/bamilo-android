@@ -63,7 +63,7 @@ public class FormData implements IJSONSerializable, Parcelable {
         try {
             type = jsonObject.getString(RestConstants.TYPE);
             md5 = jsonObject.getString(RestConstants.JSON_MD5_TAG);
-            url = jsonObject.getString(RestConstants.JSON_URL_TAG);
+            url = jsonObject.getString(RestConstants.URL);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class FormData implements IJSONSerializable, Parcelable {
         try {
             jsonObject.put(RestConstants.TYPE,type);
             jsonObject.put(RestConstants.JSON_MD5_TAG, url);
-            jsonObject.put(RestConstants.JSON_URL_TAG, url);
+            jsonObject.put(RestConstants.URL, url);
         } catch (JSONException e) {
             e.printStackTrace();
         }

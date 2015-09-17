@@ -33,8 +33,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     private static final String TAG = CheckoutEditAddressFragment.class.getSimpleName();
 
     /**
-     * 
-     * @return
+     * Constructor
      */
     public static CheckoutEditAddressFragment getInstance(Bundle bundle) {
         CheckoutEditAddressFragment fragment = new CheckoutEditAddressFragment();
@@ -80,7 +79,6 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     protected void loadEditAddressForm(Form form) {
         super.loadEditAddressForm(form);
-
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
     }

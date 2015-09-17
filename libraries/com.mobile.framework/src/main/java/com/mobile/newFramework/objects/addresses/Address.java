@@ -1,11 +1,3 @@
-/**
- * @author Guilherme Silva
- * @version 1.01
- * <p/>
- * 2012/06/18
- * <p/>
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package com.mobile.newFramework.objects.addresses;
 
 import android.os.Parcel;
@@ -14,22 +6,18 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * #################### ADDRESS ####################  
- */
-
-/**
  * Class used to save a Address
- * @author sergiopereira
  *
+ * @author sergiopereira
  */
 public class Address implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = Address.class.getSimpleName();
+    public static final String TAG = Address.class.getSimpleName();
 
     private int id;
     private String firstName;
@@ -42,15 +30,11 @@ public class Address implements IJSONSerializable, Parcelable {
     private String additionalPhone;
     private String region;
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
     /**
      * Constructor
      */
-    public Address(JSONObject jsonObject) {
-        initialize(jsonObject);
+    public Address() {
+        super();
     }
 
     /*
@@ -58,24 +42,23 @@ public class Address implements IJSONSerializable, Parcelable {
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
-    public boolean initialize(JSONObject dataObject) {
-        Print.d(TAG, "INITIALIZE");
-        try {
+    public boolean initialize(JSONObject dataObject) throws JSONException {
+        // Mandatory
+        // TODO ID
+        id = dataObject.optInt(RestConstants.CUSTOMER_ADDRESS_ID);
+        if (id == 0) {
             id = dataObject.getInt(RestConstants.ID);
-            firstName = dataObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
-            lastName = dataObject.getString(RestConstants.JSON_LAST_NAME_TAG);
-            address1 = dataObject.getString(RestConstants.JSON_ADDRESS1_TAG);
-            address2 = dataObject.getString(RestConstants.JSON_ADDRESS2_TAG);
-            city = dataObject.getString(RestConstants.CITY);
-            postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
-            phone = dataObject.getString(RestConstants.JSON_PHONE_TAG);
-            region = dataObject.optString(RestConstants.REGION);
-            additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
-        }catch(Exception e){
-            Print.e("PARSING ERROR","Error in parsing data: "+e.getMessage());
-            return false;
         }
-
+        firstName = dataObject.getString(RestConstants.FIRST_NAME);
+        lastName = dataObject.getString(RestConstants.LAST_NAME);
+        address1 = dataObject.getString(RestConstants.ADDRESS_1);
+        // Optional
+        address2 = dataObject.optString(RestConstants.ADDRESS_2);
+        postcode = dataObject.optString(RestConstants.POSTCODE);
+        phone = dataObject.getString(RestConstants.PHONE);
+        region = dataObject.optString(RestConstants.REGION);
+        city = dataObject.optString(RestConstants.CITY);
+        additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
         return true;
     }
 
@@ -93,88 +76,36 @@ public class Address implements IJSONSerializable, Parcelable {
         return null;
     }
 
-    /**
-     * @return the idCustomerAddress
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * @return the firstName
-     */
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * @return the lastName
-     */
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * @return the address
-     */
     public String getAddress() {
         return address1;
     }
 
-    /**
-     * @return the city
-     */
     public String getCity() {
         return city;
     }
 
-    /**
-     * @return the postcode
-     */
-    public String getPostcode() {
-        return postcode;
-    }
-
-    /**
-     * @return the phone
-     */
     public String getPhone() {
         return phone;
     }
 
-    /**
-     * @return the region
-     */
+    public String getPostcode() {
+        return postcode;
+    }
+
     public String getRegion() {
         return region;
-    }
-
-    /**
-     * @param idCustomerAddress the idCustomerAddress to set
-     */
-    public void setId(int idCustomerAddress) {
-        this.id = idCustomerAddress;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address1 = address;
-    }
-
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     /**
@@ -182,7 +113,7 @@ public class Address implements IJSONSerializable, Parcelable {
      */
 
 	/*
-	 * (non-Javadoc)
+     * (non-Javadoc)
 	 * @see android.os.Parcelable#describeContents()
 	 */
     @Override
@@ -207,7 +138,6 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(additionalPhone);
         dest.writeString(region);
     }
-
 
     /**
      * Parcel constructor

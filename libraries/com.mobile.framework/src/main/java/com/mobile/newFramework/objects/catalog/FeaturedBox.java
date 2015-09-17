@@ -69,7 +69,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                             productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
                         }
 
-                        JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+                        JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.PRODUCTS);
                         if (productsObject != null && productsObject.length() > 0) {
                             // get products
                             for (int j = 0; j < productsObject.length(); j++) {
