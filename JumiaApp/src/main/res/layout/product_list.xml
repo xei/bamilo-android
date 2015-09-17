@@ -56,11 +56,11 @@
 
         <!-- PRICE (VARIATIONS) -->
 
+        <include layout="@layout/pdp_small_price_tag"   />
+
         <!-- RATING (CATALOG) -->
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
