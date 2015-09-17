@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -41,9 +41,9 @@ public class AigShoppingCartAddItemTest extends AigTestCase {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
 
-        ShoppingCart shoppingCart = (ShoppingCart) response.getMetadata().getData();
-        assertNotNull("Cart is null", shoppingCart);
-        assertNotNull("Cart Count is null", shoppingCart.getCartCount());
+        PurchaseEntity purchaseEntity = (PurchaseEntity) response.getMetadata().getData();
+        assertNotNull("Cart is null", purchaseEntity);
+        assertNotNull("Cart Count is null", purchaseEntity.getCartCount());
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");
     }
