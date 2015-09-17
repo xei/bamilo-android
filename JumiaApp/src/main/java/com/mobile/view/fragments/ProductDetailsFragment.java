@@ -1750,7 +1750,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.product_detail_specifications || id == R.id.product_detail_name) onClickShowDescription();
             // Case variation button
      //   else if (id == R.id.product_detail_product_variant_button) onClickVariationButton();
-        else if (id == R.id.OtherVariationsSection) onClickVariationButton();
             // Case shop product
         else if (id == R.id.product_detail_shop) onClickShopProduct();
             // Case call to order
@@ -1773,6 +1772,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
         //added: if buy add to Chart
         else if (id == R.id.btBuy)  executeAddProductToCart();
+        //added: go to Othervariations section
+        else if(id == R.id.OtherVariationsSection) {  goToVariations();}
 
     }
 
@@ -1790,6 +1791,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProduct.getName());
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+
+    /**
+     * function that sends the user to the other variations section
+     */
+    private void goToVariations() {
+        android.os.Bundle bundle = new android.os.Bundle();
+        bundle.putParcelable("mProductComplete", mCompleteProduct);
+        getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
