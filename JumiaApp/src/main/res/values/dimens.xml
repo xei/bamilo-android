@@ -424,6 +424,11 @@
     <dimen name="buy_bar_image_item_width">48dp</dimen>
     <dimen name="v8_margin_sublist_text">19dp</dimen>
 
+    <!-- PRODUCT ITEM LIST DIMENTIONS (VARIATION AND CATALOG ITEMS) -->
+    <dimen name="item_height">114dp</dimen>
+    <dimen name="pi_layout_padding">10dp</dimen>
+    <dimen name="pi_layout_margin">20dp</dimen>
+
 
 
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
