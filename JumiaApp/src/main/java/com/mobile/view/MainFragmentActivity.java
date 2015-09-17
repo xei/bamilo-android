@@ -58,6 +58,7 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
@@ -392,6 +393,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case WRITE_REVIEW_SELLER:
                 fragment = WriteSellerReviewFragment.getInstance(bundle);
+                break;
+            case VARIATIONS:
+                fragment = VariationsFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
