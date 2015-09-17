@@ -2309,6 +2309,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         }
 
+        mbundleList = bundleList;
+        mTotalPriceCombo = 0;
+
         //load header
         LinearLayout headerCombo = (LinearLayout) mComboProductsLayout.findViewById(R.id.ComboHeaderSection);
         TextView comboHeaderTitle = (TextView) headerCombo.findViewById(R.id.txTitle);
@@ -2327,6 +2330,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             LinearLayout comboProductItem = (LinearLayout) inflater.inflate(R.layout.pdp_product_item_bundle, null);
             FillProductBundleInfo(comboProductItem, item);
+            //calc total price
+            if(item.hasDiscount())
+                mTotalPriceCombo += item.getSpecialPrice();
+            else
+                mTotalPriceCombo += item.getPrice();
+
             mTableBundles.addView(comboProductItem);
 
             if(count < bundleProducts.size() - 1)   //add plus separator
@@ -2334,6 +2343,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //separator
                 LinearLayout imSep = (LinearLayout) inflater.inflate(R.layout.pdp_plus_bundle, null);
                 mTableBundles.addView(imSep);
+
             }
 
             count++;
@@ -2344,9 +2354,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             @Override
             public void onClick(View v) {
                 //opens bundle page here
-                goToCombosPage(bundleList, mTotalPriceCombo);
+                goToCombosPage(mbundleList, mTotalPriceCombo);
             }
         });
+
+        
         mComboProductsLayout.setVisibility(View.VISIBLE);
 
 
@@ -2390,6 +2402,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         com.mobile.components.customfontviews.TextView mPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_price);
         mPrice.setText(CurrencyFormatter.formatCurrency(p.getPrice()));
+
+
 
    /*     mImage = (ImageView) view.findViewById(R.id.image_view);
         mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
