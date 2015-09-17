@@ -271,8 +271,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         prepareCouponView();
 
         if(getView().findViewById(R.id.error_text_view) == null) {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.VISIBLE);
             buttonEnterLayout.setVisibility(View.VISIBLE);
         } else {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.GONE);
             buttonEnterLayout.setVisibility(View.GONE);
         }
 
