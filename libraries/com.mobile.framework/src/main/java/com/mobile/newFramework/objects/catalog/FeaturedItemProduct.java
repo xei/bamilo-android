@@ -55,7 +55,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
             if (!super.initialize(jsonObject)) {
                 return false;
             }
-            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+            sku = jsonObject.getString(RestConstants.SKU);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
@@ -76,7 +76,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                     while (!isImageUrlDefined && index < imageArraySize) {
                         JSONObject imageObject = imageArray.getJSONObject(index);
                         if (imageObject != null) {
-                            imageUrl = imageObject.optString(RestConstants.JSON_URL_TAG);
+                            imageUrl = imageObject.optString(RestConstants.URL);
                             isImageUrlDefined = true;
                         }
                         index++;

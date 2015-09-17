@@ -51,7 +51,7 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -1222,7 +1222,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
         final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 

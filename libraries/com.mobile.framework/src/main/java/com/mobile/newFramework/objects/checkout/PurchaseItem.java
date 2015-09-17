@@ -3,7 +3,7 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PurchaseItem implements Parcelable {
 
@@ -61,7 +60,7 @@ public class PurchaseItem implements Parcelable {
       },
      */
     private void parseItem(JSONObject itemJson) throws JSONException {
-        sku = itemJson.getString(RestConstants.JSON_SKU_TAG);
+        sku = itemJson.getString(RestConstants.SKU);
         name = itemJson.getString(RestConstants.JSON_PURCHASE_NAME_TAG);
         paidPriceConverted = itemJson.optDouble(RestConstants.JSON_PAID_PRICE_CONVERTED_TAG, 0d);
         quantity = itemJson.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
@@ -75,23 +74,16 @@ public class PurchaseItem implements Parcelable {
     /**
      * For NativeCheckout
      */
-    public static List<PurchaseItem> parseItems(Map<String, ShoppingCartItem> mItems) {
+    public static List<PurchaseItem> parseItems(ArrayList<PurchaseCartItem> mItems) {
         List<PurchaseItem> items = new ArrayList<>();
-        for (String key : mItems.keySet()) {
-            ShoppingCartItem mShoppingCartItem = mItems.get(key);
+        for (PurchaseCartItem item : mItems) {
             PurchaseItem mPurchaseItem = new PurchaseItem();
-            mPurchaseItem.sku = mShoppingCartItem.getConfigSimpleSKU();
-            mPurchaseItem.name = mShoppingCartItem.getName();
-            mPurchaseItem.paidPriceConverted = mShoppingCartItem.getPriceForTracking();
-            mPurchaseItem.quantity = (int) mShoppingCartItem.getQuantity();
+            mPurchaseItem.sku = item.getConfigSimpleSKU();
+            mPurchaseItem.name = item.getName();
+            mPurchaseItem.paidPriceConverted = item.getPriceForTracking();
+            mPurchaseItem.quantity = (int) item.getQuantity();
             items.add(mPurchaseItem);
-
-//            Print.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku +
-//                    " name = " + mPurchaseItem.name +
-//                    " category = " + mPurchaseItem.category +
-//                    " quantityAsInt = " + mPurchaseItem.quantity);
         }
-
         return items;
     }
 

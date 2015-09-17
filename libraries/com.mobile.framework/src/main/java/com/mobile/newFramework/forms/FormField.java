@@ -289,7 +289,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
-                    paymentInfoList.put(label,mPaymentInfo);
+                    paymentInfoList.put(label, mPaymentInfo);
                     // Sub forms
                     Print.d("code1paymentDescription : saved : " + curKey);
                     JSONObject json = dataOptionsObject.getJSONObject(curKey);
