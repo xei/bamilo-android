@@ -302,6 +302,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private TextView mRelatedProductsHeader;
 
+    private BundleList mbundleList; //for combos page
+
+    private double mTotalPriceCombo;
+
 
 
     /**
@@ -2340,12 +2344,29 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             @Override
             public void onClick(View v) {
                 //opens bundle page here
+                goToCombosPage(bundleList, mTotalPriceCombo);
             }
         });
         mComboProductsLayout.setVisibility(View.VISIBLE);
 
 
     }
+
+
+
+    /**
+     * Go to the combos page
+     * @param bundleList - list of product bundles
+     * @param totalPrice - total combo price
+     * */
+    private void goToCombosPage(BundleList bundleList,double totalPrice)
+    {
+        android.os.Bundle bundle = new android.os.Bundle();
+        bundle.putParcelable("bundleList", bundleList);
+        bundle.putDouble("totalPrice", totalPrice);
+        getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, true);
+    }
+
 
 
     /**
