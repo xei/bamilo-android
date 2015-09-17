@@ -61,6 +61,7 @@ public enum FragmentType {
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
     INNER_SHOP,
+    VARIATIONS,
     WRITE_REVIEW_SELLER;
 
     private int id;
