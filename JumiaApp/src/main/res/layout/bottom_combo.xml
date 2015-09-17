@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/buy_bar_height"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         >
@@ -24,7 +24,7 @@
         <com.mobile.components.customfontviews.TextView
             style="@style/List2"
             android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/layout_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Total"
@@ -36,7 +36,7 @@
             android:textColor="@color/orange1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="@dimen/cp_spac"
             android:text="RS 524"
             android:id="@+id/txTotalComboPrice"
             />
@@ -51,9 +51,9 @@
         android:text="BUY COMBO"
         android:id="@+id/btBuyCombo"
         android:background="@color/orange1"
-        android:textColor="#ffffff"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/btsh_layout_padding"
+        android:paddingRight="@dimen/btsh_layout_padding"
 
         />
 </LinearLayout>

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:paddingBottom="@dimen/cp_layout_padding"
+    android:paddingLeft="@dimen/cp_layout_padding"
+    android:paddingRight="@dimen/cp_layout_padding"
     >
 
     <!-- COMBO ITEMS GRIDVIEW -->
@@ -16,7 +16,7 @@
         android:id="@+id/combo_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@color/white"
         />
 
     <!-- BOTTOM COMBO -->

@@ -10,7 +10,7 @@
     <include
         android:id="@+id/item_image_loadable"
         android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/ci_image_height"
         layout="@layout/image_loadable"
         android:layout_alignParentLeft="true"
         />
@@ -18,7 +18,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/ci_image_height"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/item_image_loadable"
         android:gravity="center_vertical"
@@ -62,8 +62,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:checked="true"
-            android:layout_marginLeft="6dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="@dimen/ci_chbox_margin"
+            android:layout_marginBottom="@dimen/ci_chbox_margin"
             android:clickable="false"
             />
 

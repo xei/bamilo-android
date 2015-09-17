@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:padding="@dimen/btsh_layout_padding"
+        >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txVariationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom Title"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/white_f9f9f9"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_combo_plus"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+    <View  android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/black_300"
+        />
+
+    <ListView
+        android:id="@+id/gridBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/btsh_layout_padding"
+
+        >
+
+    </ListView>
+
+</LinearLayout>
