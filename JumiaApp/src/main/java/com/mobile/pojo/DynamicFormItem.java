@@ -1280,23 +1280,13 @@ public class DynamicFormItem {
 
 
     private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
-
         this.control.setLayoutParams(params);
+        this.control.setPadding(0, 10, 0, 10);
+        ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
 
-        RelativeLayout.LayoutParams paramsTextView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsTextView.setMargins(0,10,0,10);
-        TextView textView = new TextView(this.context);
-        textView.setId(R.id.error_text_view);
-        textView.setText(this.entry.getValue());
-        textView.setLayoutParams(paramsTextView);
-//        textView.setTextColor(errorColor);
-        textView.setTextSize(16);
-//        HoloFontLoader.applyDefaultFont(textView);
-        textView.setGravity(Gravity.CENTER);
-
-
+        TextView textView = (TextView)View.inflate(this.context, R.layout.text_view_info, null);
+        textView.setText(entry.getValue());
         ((ViewGroup) this.control).addView(textView);
-//        this.dataControl.setContentDescription(this.entry.getKey());
     }
 
     private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
