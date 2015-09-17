@@ -144,6 +144,10 @@ public class RestConstants {
     // Variation Tags
     public static final String JSON_LINK_TAG = "link";
     public static final String JSON_VARIATION_IMAGE_TAG = JSON_IMAGE_TAG;
+    public static final String JSON_VARIATION_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_VARIATION_BRAND_TAG = JSON_BRAND_TAG;
+    public static final String JSON_VARIATION_PRICE_TAG = JSON_PRICE_TAG;
+    public static final String JSON_VARIATION_SPECIALPRICE_TAG = JSON_SPECIAL_PRICE_TAG;
 
     // ProductsPage Tags
     public static final String JSON_RESULTS_TAG = "results";
