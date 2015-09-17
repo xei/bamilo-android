@@ -424,6 +424,15 @@
     <dimen name="buy_bar_image_item_width">48dp</dimen>
     <dimen name="v8_margin_sublist_text">19dp</dimen>
 
+    <!-- Bottom Sheet dimentions -->
+    <dimen name="btsh_layout_padding">10dp</dimen>
+
+    <!-- Combos Page dimensions -->
+    <dimen name="cp_layout_padding">10dp</dimen>
+    <dimen name="cp_spac">5dp</dimen>
+    <dimen name="ci_image_height">120dp</dimen>
+    <dimen name="ci_chbox_margin">5dp</dimen>
+
 
 
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
