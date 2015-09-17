@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Class that manages the full representation of a given product.
@@ -122,7 +121,7 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Variations
-            JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
+      /*      JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
             if (variationsObject != null) {
                 mVariations = new ArrayList<>();
                 @SuppressWarnings("rawtypes")
@@ -132,6 +131,18 @@ public class ProductComplete extends ProductMultiple {
                     JSONObject variationObject = variationsObject.getJSONObject(sku);
                     Variation variation = new Variation();
                     variation.initialize(sku, variationObject);
+                    mVariations.add(variation);
+                }
+            }*/
+
+            //apires changed: variations are an array
+            //variations
+            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
+            if (variationsArray != null && variationsArray.length() > 0) {
+                mVariations = new ArrayList<>();
+                for (int i = 0; i < variationsArray.length(); i++) {
+                    Variation variation = new Variation();
+                    variation.initialize(variationsArray.getJSONObject(i));
                     mVariations.add(variation);
                 }
             }
