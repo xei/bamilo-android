@@ -226,7 +226,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 //
 //            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
 //        }
-       isSetOnce = true;
+        isSetOnce = true;
     }
 
     public void setDate(int year, int month, int day) {
