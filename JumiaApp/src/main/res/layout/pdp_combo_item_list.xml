@@ -48,7 +48,7 @@
             />
 
         <!-- PRICE -->
-        <include layout="@layout/pdp__small_price_tag" />
+        <include layout="@layout/pdp_small_price_tag" />
 
         <!-- RATING -->
         <include layout="@layout/pdp_rating_small"   android:id="@+id/rating" />
