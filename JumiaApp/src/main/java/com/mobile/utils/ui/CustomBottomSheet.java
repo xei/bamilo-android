@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.view.R;
 
 import java.util.ArrayList;
 
