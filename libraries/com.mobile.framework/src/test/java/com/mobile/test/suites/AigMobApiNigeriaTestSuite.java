@@ -20,7 +20,6 @@ import com.mobile.test.AigGetForgotPasswordFormTest;
 import com.mobile.test.AigGetFormsIndexTest;
 import com.mobile.test.AigGetHomePageTest;
 import com.mobile.test.AigGetLoginFormTest;
-import com.mobile.test.AigGetNativeCheckoutAvailabilityTest;
 import com.mobile.test.AigGetNewsletterFormTest;
 import com.mobile.test.AigGetOrdersListTest;
 import com.mobile.test.AigGetProductBundleTest;
@@ -73,7 +72,6 @@ import org.junit.runners.Suite;
         AigGetFormsIndexTest.class,
         AigGetHomePageTest.class,
        // AigGetImageResolutionsTest.class, TODO Response is not being parsed
-        AigGetNativeCheckoutAvailabilityTest.class,
         AigGetNewsletterFormTest.class,
         AigGetProductBundleTest.class,
         AigGetProductDetailTest.class,

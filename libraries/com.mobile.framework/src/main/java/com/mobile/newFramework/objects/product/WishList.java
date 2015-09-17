@@ -26,7 +26,7 @@ public class WishList extends ArrayList<ProductMultiple> implements IJSONSeriali
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Products
-        JSONArray productsArray = jsonObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+        JSONArray productsArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         int size = productsArray.length();
         if (size > 0) {
             for (int i = 0; i < size; i++) {
