@@ -16,9 +16,9 @@ import java.util.ArrayList;
  * Class used to save the newsletter subscription
  * @author sergiopereira
  */
-public class SuperOrder implements IJSONSerializable {
+public class MyOrder implements IJSONSerializable {
 
-    private static final String TAG = SuperOrder.class.getSimpleName();
+    public static final String TAG = MyOrder.class.getSimpleName();
 
     private int currentPage = 0;
     private int numPages = 0;
@@ -29,7 +29,7 @@ public class SuperOrder implements IJSONSerializable {
     /**
      * Empty constructor
      */
-    public SuperOrder() {
+    public MyOrder() {
         // ...
     }
 
@@ -84,24 +84,12 @@ public class SuperOrder implements IJSONSerializable {
         return currentPage;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
     public int getNumPages() {
         return numPages;
     }
 
-    public void setNumPages(int numPages) {
-        this.numPages = numPages;
-    }
-
     public int getTotalOrders() {
         return totalOrders;
-    }
-
-    public void setTotalOrders(int totalOrders) {
-        this.totalOrders = totalOrders;
     }
 
     public ArrayList<Order> getOrders() {

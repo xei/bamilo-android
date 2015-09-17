@@ -97,7 +97,7 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        sku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
+        sku = jsonObject.optString(RestConstants.SKU);
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		quantity = jsonObject.optString(RestConstants.JSON_QUANTITY_TAG);
 //		Log.i(TAG, "code1 name : "+name);
@@ -123,7 +123,7 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
         JSONObject jsonObject = new JSONObject();
         try {
 
-            jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
+            jsonObject.put(RestConstants.SKU, sku);
             jsonObject.put(RestConstants.JSON_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
             jsonObject.put(RestConstants.JSON_ORDER_STATUS_TAG, status);

@@ -19,7 +19,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.forms.PaymentMethodForm;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -70,7 +70,7 @@ public class JumiaApplication extends A4SApplication {
      * Cart
      */
     private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<>();
-    private ShoppingCart cart;
+    private PurchaseEntity cart;
 
     /**
      * Forms
@@ -260,14 +260,14 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the cart
      */
-    public ShoppingCart getCart() {
+    public PurchaseEntity getCart() {
         return this.cart;
     }
 
     /**
      * @param cart the cart to set
      */
-    public void setCart(ShoppingCart cart) {
+    public void setCart(PurchaseEntity cart) {
         this.cart = cart;
     }
 
