@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
@@ -255,7 +255,7 @@ public class TrackerDelegator {
                 params.getLong(QUANTITY_KEY), params.getString(CARTVALUE_KEY), EUR_CURRENCY);
     }
 
-    public static void trackCheckout(List<ShoppingCartItem> items) {
+    public static void trackCheckout(List<PurchaseCartItem> items) {
         AnalyticsGoogle.get().trackCheckout(items);
     }
 
@@ -414,7 +414,7 @@ public class TrackerDelegator {
     /**
      * For Native Checkout
      */
-    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<ShoppingCartItem> mItems) {
+    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<PurchaseCartItem> mItems) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -477,7 +477,7 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
     }
 
-    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<ShoppingCartItem> mItems) {
+    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);

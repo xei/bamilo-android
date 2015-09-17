@@ -7,7 +7,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.addresses.Addresses;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -21,7 +21,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
 
     public static final String TAG = CheckoutFormBilling.class.getSimpleName();
 
-    private OrderSummary mOrderSummary;
+    private PurchaseEntity mOrderSummary;
     private Form mForm;
     private Addresses mAddresses;
 
@@ -50,7 +50,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
         JSONObject jsonList = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_TAG).getJSONObject(RestConstants.JSON_ADDRESS_LIST_TAG);
         mAddresses = new Addresses(jsonList);
         // Order
-        mOrderSummary = new OrderSummary();
+        mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
         return true;
     }
@@ -60,7 +60,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
         return RequiredJson.METADATA;
     }
 
-    public OrderSummary getOrderSummary() {
+    public PurchaseEntity getOrderSummary() {
         return mOrderSummary;
     }
 
@@ -92,7 +92,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
     private CheckoutFormBilling(Parcel in) {
         mForm = (Form) in.readValue(Form.class.getClassLoader());
         mAddresses = (Addresses) in.readValue(Addresses.class.getClassLoader());
-        mOrderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
+        mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
     }
 
     public static final Creator<CheckoutFormBilling> CREATOR = new Creator<CheckoutFormBilling>() {

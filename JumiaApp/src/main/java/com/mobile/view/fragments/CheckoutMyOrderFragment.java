@@ -23,8 +23,8 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -88,7 +88,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     private ViewGroup mPriceRulesContainer;
 
-    private OrderSummary mOrderFinish;
+    private PurchaseEntity mOrderFinish;
 
     /**
      * Get CheckoutMyOrderFragment instance
@@ -291,7 +291,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void showProducts() {
         boolean first = true;
         // Show products
-        for (ShoppingCartItem item : mOrderFinish.getCartItems()) {
+        for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);

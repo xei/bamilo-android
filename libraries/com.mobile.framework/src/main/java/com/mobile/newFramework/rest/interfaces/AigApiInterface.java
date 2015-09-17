@@ -6,7 +6,7 @@ import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.campaign.Campaign;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.CheckoutFinish;
@@ -253,43 +253,43 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+    void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
 
     String getShoppingCart = "getShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addItemShoppingCart = "addItemShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addBundleShoppingCart = "addBundleShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String updateQuantityShoppingCart = "updateQuantityShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeAllShoppingCart = "removeAllShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeItemShoppingCart = "removeItemShoppingCart";
 
@@ -299,12 +299,12 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addVoucher = "addVoucher";
 
     @GET("/")
-    void removeVoucher(Callback<BaseResponse<ShoppingCart>> callback);
+    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeVoucher = "removeVoucher";
 

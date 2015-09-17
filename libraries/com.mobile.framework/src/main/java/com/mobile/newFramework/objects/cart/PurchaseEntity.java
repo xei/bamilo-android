@@ -18,13 +18,13 @@ import java.util.HashMap;
 
 
 /**
- * @author nutzer2
- * @modified Paulo Carvalho
- * @modified Sergio Pereira
+ * The Order entity class representation.<br/>
+ * Contains: Order, Items, Shipping, Payment and Billing.
+ * @author Sergio Pereira
  */
-public class ShoppingCart implements IJSONSerializable, Parcelable {
+public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = ShoppingCart.class.getSimpleName();
+    public static final String TAG = PurchaseEntity.class.getSimpleName();
 
     private double mTotal;
     private double mTotalConverted;
@@ -38,7 +38,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     private double mCouponDiscount;
     private String mCouponCode;
     private HashMap<String, String> mPriceRules;
-    private ArrayList<ShoppingCartItem> mCartItems;
+    private ArrayList<PurchaseCartItem> mCartItems;
     private String mShippingMethod;
     private String mPaymentMethod;
     private Address mBillingAddress;
@@ -47,7 +47,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     /**
      * Constructor
      */
-    public ShoppingCart() {
+    public PurchaseEntity() {
         super();
     }
 
@@ -87,7 +87,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
         mCartItems = new ArrayList<>();
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
-            ShoppingCartItem item = new ShoppingCartItem();
+            PurchaseCartItem item = new PurchaseCartItem();
             item.initialize(cartObject);
             mCartItems.add(item);
         }
@@ -147,7 +147,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
      * ########### GETTERS AND SETTERS ###########
 	 */
 
-    public ArrayList<ShoppingCartItem> getCartItems() {
+    public ArrayList<PurchaseCartItem> getCartItems() {
         return mCartItems;
     }
 
@@ -295,7 +295,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     /**
      * Parcel constructor
      */
-    public ShoppingCart(Parcel in) {
+    public PurchaseEntity(Parcel in) {
         mTotal = in.readDouble();
         mTotalConverted = in.readDouble();
         mSubTotal = in.readDouble();
@@ -311,7 +311,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
         in.readMap(mPriceRules, String.class.getClassLoader());
         if (in.readByte() == 0x01) {
             mCartItems = new ArrayList<>();
-            in.readList(mCartItems, ShoppingCartItem.class.getClassLoader());
+            in.readList(mCartItems, PurchaseCartItem.class.getClassLoader());
         } else {
             mCartItems = null;
         }
@@ -324,13 +324,13 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
     /**
      * Create parcelable
      */
-    public static final Creator<ShoppingCart> CREATOR = new Creator<ShoppingCart>() {
-        public ShoppingCart createFromParcel(Parcel in) {
-            return new ShoppingCart(in);
+    public static final Creator<PurchaseEntity> CREATOR = new Creator<PurchaseEntity>() {
+        public PurchaseEntity createFromParcel(Parcel in) {
+            return new PurchaseEntity(in);
         }
 
-        public ShoppingCart[] newArray(int size) {
-            return new ShoppingCart[size];
+        public PurchaseEntity[] newArray(int size) {
+            return new PurchaseEntity[size];
         }
     };
 

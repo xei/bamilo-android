@@ -3,7 +3,7 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -74,9 +74,9 @@ public class PurchaseItem implements Parcelable {
     /**
      * For NativeCheckout
      */
-    public static List<PurchaseItem> parseItems(ArrayList<ShoppingCartItem> mItems) {
+    public static List<PurchaseItem> parseItems(ArrayList<PurchaseCartItem> mItems) {
         List<PurchaseItem> items = new ArrayList<>();
-        for (ShoppingCartItem item : mItems) {
+        for (PurchaseCartItem item : mItems) {
             PurchaseItem mPurchaseItem = new PurchaseItem();
             mPurchaseItem.sku = item.getConfigSimpleSKU();
             mPurchaseItem.name = item.getName();

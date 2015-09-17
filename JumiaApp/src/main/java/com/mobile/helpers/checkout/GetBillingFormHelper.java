@@ -5,8 +5,8 @@ import android.os.Bundle;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
-import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -43,7 +43,7 @@ public class GetBillingFormHelper extends SuperBaseHelper {
         // Create addresses
         Addresses addresses = billingForm.getAddresses();
         // Get order summary
-        OrderSummary orderSummary = billingForm.getOrderSummary();
+        PurchaseEntity orderSummary = billingForm.getOrderSummary();
         // Create bundle
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);

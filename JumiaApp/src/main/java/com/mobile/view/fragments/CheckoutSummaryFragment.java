@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -23,8 +20,8 @@ import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -65,7 +62,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private ViewGroup mTotalView;
 
-    private OrderSummary mOrderSummary;
+    private PurchaseEntity mOrderSummary;
 
     private ViewGroup mShippingAddressList;
 
@@ -84,7 +81,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      *
      * @return CheckoutSummaryFragment
      */
-    public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
+    public static CheckoutSummaryFragment getInstance(int checkoutStep, PurchaseEntity orderSummary) {
         //if (mOrderSummaryFragment == null) 
         CheckoutSummaryFragment sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
@@ -278,9 +275,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void showCart() {
         // Show all items
-        ArrayList<ShoppingCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
+        ArrayList<PurchaseCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
         mProductList.removeAllViews();
-        for (ShoppingCartItem item : mShopList) {
+        for (PurchaseCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
             ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());

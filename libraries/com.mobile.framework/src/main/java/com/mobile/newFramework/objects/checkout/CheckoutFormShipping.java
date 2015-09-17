@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
  */
 public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
 
-    private OrderSummary mOrderSummary;
+    private PurchaseEntity mOrderSummary;
 
     private ShippingMethodFormBuilderHolder mForm;
 
@@ -40,12 +40,12 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         // Get shipping methods
         mForm = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
         // Order
-        mOrderSummary = new OrderSummary();
+        mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
         return true;
     }
 
-    public OrderSummary getOrderSummary() {
+    public PurchaseEntity getOrderSummary() {
         return mOrderSummary;
     }
 
@@ -76,7 +76,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
     }
 
     private CheckoutFormShipping(Parcel in) {
-        mOrderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
+        mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
     }
 
     public static final Creator<CheckoutFormShipping> CREATOR = new Creator<CheckoutFormShipping>() {

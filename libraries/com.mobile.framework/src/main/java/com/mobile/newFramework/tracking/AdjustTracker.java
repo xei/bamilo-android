@@ -26,8 +26,8 @@ import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
@@ -452,12 +452,12 @@ public class AdjustTracker {
 
             }   
   
-            ShoppingCart cart = bundle.getParcelable(CART);
+            PurchaseEntity cart = bundle.getParcelable(CART);
             JSONObject json;
             
             int productCount = 0;
             String countString = "";
-            for (ShoppingCartItem item : cart.getCartItems()) {
+            for (PurchaseCartItem item : cart.getCartItems()) {
                 AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
                 json = new JSONObject();
                 try {

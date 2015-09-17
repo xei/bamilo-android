@@ -29,7 +29,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -169,7 +169,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
         
         // Clean cart and payment
-        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
+        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         // Update cart info
         getBaseActivity().updateCartInfo();

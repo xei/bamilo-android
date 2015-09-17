@@ -10,8 +10,7 @@ import android.view.ViewStub;
 import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -115,17 +114,10 @@ public class CheckoutStepManager {
      * Method used for showing checkout total at checkout steps.
      *
      * @param viewStub ViewStub or View with TextView (checkout_total_label).
-     * @param orderSummary OrderSummary to get total
-     * @param cart Cart in case orderSummary is null
+     * @param purchaseEntity OrderSummary to get total
      */
-    public static void showCheckoutTotal(View viewStub, OrderSummary orderSummary, ShoppingCart cart){
-        String value = null;
-        if(orderSummary != null){
-            value = "" + orderSummary.getTotal();
-        } else if(cart != null){
-            value = "" + cart.getTotal();
-        }
-
+    public static void showCheckoutTotal(View viewStub, PurchaseEntity purchaseEntity){
+        String value = "" + purchaseEntity.getTotal();
         if(!TextUtils.isEmpty(value) && viewStub != null){
             if(viewStub instanceof ViewStub){
                 viewStub = ((ViewStub) viewStub).inflate();

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
  */
 public class CheckoutFormPayment implements IJSONSerializable, Parcelable {
 
-    private OrderSummary mOrderSummary;
+    private PurchaseEntity mOrderSummary;
 
     private Form mForm;
 
@@ -43,12 +43,12 @@ public class CheckoutFormPayment implements IJSONSerializable, Parcelable {
         mForm = new Form();
         mForm.initialize(formJSON);
         // Order
-        mOrderSummary = new OrderSummary();
+        mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
         return true;
     }
 
-    public OrderSummary getOrderSummary() {
+    public PurchaseEntity getOrderSummary() {
         return mOrderSummary;
     }
 
@@ -85,7 +85,7 @@ public class CheckoutFormPayment implements IJSONSerializable, Parcelable {
     }
 
     private CheckoutFormPayment(Parcel in) {
-        mOrderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
+        mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
         mForm = (Form) in.readValue(Form.class.getClassLoader());
 
     }

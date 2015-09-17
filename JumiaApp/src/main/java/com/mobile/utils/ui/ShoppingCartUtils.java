@@ -3,7 +3,7 @@ package com.mobile.utils.ui;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import java.math.BigDecimal;
@@ -23,14 +23,14 @@ public class ShoppingCartUtils {
     /**
      * Set shipping and extra costs by rule on shopping cart object
      */
-    public static void setShippingRule(ShoppingCart shoppingCart,
+    public static void setShippingRule(PurchaseEntity purchaseEntity,
                                        View shippingContainer,
                                        TextView shippingValueTextView,
                                        View extraCostsContainer,
                                        TextView extraCostsTextView) {
-        if (!shoppingCart.hasSumCosts()) {
-            double extraCosts = shoppingCart.getExtraCosts();
-            double shippingFee = shoppingCart.getShippingValue();
+        if (!purchaseEntity.hasSumCosts()) {
+            double extraCosts = purchaseEntity.getExtraCosts();
+            double shippingFee = purchaseEntity.getShippingValue();
 
             if (shippingFee != 0d) {
                 shippingContainer.setVisibility(View.VISIBLE);
@@ -46,7 +46,7 @@ public class ShoppingCartUtils {
             }
 
         } else {
-            double sumCostsValue = shoppingCart.getSumCostsValue();
+            double sumCostsValue = purchaseEntity.getSumCostsValue();
             if (sumCostsValue != 0d) {
                 shippingContainer.setVisibility(View.VISIBLE);
                 shippingValueTextView.setText(CurrencyFormatter.formatCurrency(new BigDecimal(sumCostsValue).toString()));

@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * TODO: USE Product Object
  */
-public class ShoppingCartItem implements IJSONSerializable, Parcelable {
+public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     private String imageUrl;
     private String productUrl;
@@ -46,7 +46,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     private String mCategoriesIds;
     private String mAttributeSetId;
 
-    public ShoppingCartItem() {
+    public PurchaseCartItem() {
 
     }
 
@@ -312,7 +312,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     /**
      * Parcel constructor
      */
-    private ShoppingCartItem(Parcel in) {
+    private PurchaseCartItem(Parcel in) {
         imageUrl = in.readString();
         productUrl = in.readString();
         mSKU = in.readString();
@@ -338,13 +338,13 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     /**
      * Create parcelable
      */
-    public static final Creator<ShoppingCartItem> CREATOR = new Creator<ShoppingCartItem>() {
-        public ShoppingCartItem createFromParcel(Parcel in) {
-            return new ShoppingCartItem(in);
+    public static final Creator<PurchaseCartItem> CREATOR = new Creator<PurchaseCartItem>() {
+        public PurchaseCartItem createFromParcel(Parcel in) {
+            return new PurchaseCartItem(in);
         }
 
-        public ShoppingCartItem[] newArray(int size) {
-            return new ShoppingCartItem[size];
+        public PurchaseCartItem[] newArray(int size) {
+            return new PurchaseCartItem[size];
         }
     };
 
