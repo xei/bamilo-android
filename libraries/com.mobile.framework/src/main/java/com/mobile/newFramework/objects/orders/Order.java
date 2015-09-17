@@ -124,7 +124,7 @@ public class Order implements IJSONSerializable, Parcelable {
             mOrderTotal = jsonObject.optString(RestConstants.JSON_ORDER_TOTAL_TAG);
             mPayment = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_TAG).optString(RestConstants.JSON_TITLE_TAG);
 
-            JSONArray productsArray = jsonObject.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+            JSONArray productsArray = jsonObject.optJSONArray(RestConstants.PRODUCTS);
             if (null != productsArray && productsArray.length() > 0)
                 for (int j = 0; j < productsArray.length(); j++) {
 

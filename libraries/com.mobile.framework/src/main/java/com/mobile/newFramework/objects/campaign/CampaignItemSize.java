@@ -37,7 +37,7 @@ public class CampaignItemSize implements IJSONSerializable, Parcelable {
         savePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG);
         specialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         price = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG);
-        simpleSku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
+        simpleSku = jsonObject.optString(RestConstants.SKU);
         return false;
     }
 

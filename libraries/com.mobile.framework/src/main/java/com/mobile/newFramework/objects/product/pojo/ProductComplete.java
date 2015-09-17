@@ -77,7 +77,7 @@ public class ProductComplete extends ProductMultiple {
                 mImageList = new ArrayList<>();
                 for (int i = 0; i < imageArray.length(); ++i) {
                     JSONObject imageJsonObject = imageArray.getJSONObject(i);
-                    mImageList.add(imageJsonObject.getString(RestConstants.JSON_URL_TAG));
+                    mImageList.add(imageJsonObject.getString(RestConstants.URL));
                 }
             }
             // Seller
