@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/layout_padding"
+    android:clickable="true"
+    >
+
+    <!-- IMAGE -->
+    <include
+        android:id="@+id/item_image_loadable"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        layout="@layout/image_loadable"
+        android:layout_alignParentLeft="true"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/item_image_loadable"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/layout_padding"
+
+        >
+
+        <!-- BRAND -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/Caption"
+            color="@color/black_800"
+            android:lines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <!-- TITLE -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_title"
+            style="@style/List1"
+            color="@color/black"
+            android:lines="1"
+            android:text="Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <!-- PRICE -->
+        <include layout="@layout/pdp__small_price_tag" />
+
+        <!-- RATING -->
+        <include layout="@layout/pdp_rating_small"   android:id="@+id/rating" />
+
+        <!-- CHECKBOX -->
+        <com.mobile.components.customfontviews.CheckBox
+            android:id="@+id/item_check"
+            style="@style/form_checkbox_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:checked="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="6dp"
+            android:clickable="false"
+            />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
