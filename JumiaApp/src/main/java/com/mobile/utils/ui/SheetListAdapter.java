@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.view.R;
 
 import java.util.ArrayList;
 
