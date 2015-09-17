@@ -44,4 +44,6 @@
     <!-- TODO: REMOVE THIS ID FOR REGEX (TEMPORARY SOLUTION) -->
     <item type="id" name="regex"/>
 
+    <!-- DYNAMIC FORMS -->
+    <item type="id" name="error_text_view"/>
 </resources>

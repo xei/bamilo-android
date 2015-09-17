@@ -31,6 +31,7 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -81,6 +82,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private String paymentName = "";
 
     private View checkoutTotalView;
+
+    private View buttonEnterLayout;
     
     /**
      * Get new instance of CheckoutPaymentMethodsFragment.
@@ -142,7 +145,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-
+        buttonEnterLayout = view.findViewById(R.id.checkout_button_container);
         //checkout total view
         if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
             checkoutTotalView = view.findViewById(R.id.total_view_stub);
@@ -266,6 +269,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
+
+        if(getView().findViewById(R.id.error_text_view) == null) {
+            buttonEnterLayout.setVisibility(View.VISIBLE);
+        } else {
+            buttonEnterLayout.setVisibility(View.GONE);
+        }
+
         showFragmentContentContainer();
     }
     

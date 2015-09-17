@@ -276,7 +276,7 @@ public class DynamicFormItem {
                 case email:
                 case text:
                 case password:
-                    buildText(params, controlWidth);
+                    buildEditableText(params, controlWidth);
                     break;
                 case relatedNumber:
                     buildRelatedNumber(params, controlWidth);
@@ -286,6 +286,9 @@ public class DynamicFormItem {
                     break;
                 case rating:
                     buildRatingOptionsTerms(params, controlWidth);
+                    break;
+                case errorMessage:
+                    buildText(params, controlWidth);
                     break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
@@ -303,7 +306,7 @@ public class DynamicFormItem {
         container.setOrientation(LinearLayout.VERTICAL);
         this.control = container;
         // Create text field
-        buildText(params, controlWidth);
+        buildEditableText(params, controlWidth);
         // Create radio group
         buildRelatedRadioGroup(container, entry.getRelatedField());
     }
@@ -1277,6 +1280,26 @@ public class DynamicFormItem {
 
 
     private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
+
+        this.control.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams paramsTextView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        paramsTextView.setMargins(0,10,0,10);
+        TextView textView = new TextView(this.context);
+        textView.setId(R.id.error_text_view);
+        textView.setText(this.entry.getValue());
+        textView.setLayoutParams(paramsTextView);
+//        textView.setTextColor(errorColor);
+        textView.setTextSize(16);
+//        HoloFontLoader.applyDefaultFont(textView);
+        textView.setGravity(Gravity.CENTER);
+
+
+        ((ViewGroup) this.control).addView(textView);
+//        this.dataControl.setContentDescription(this.entry.getKey());
+    }
+
+    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // Create text
         ViewGroup dataContainer = createTextDataContainer(controlWidth);
