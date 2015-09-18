@@ -903,6 +903,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             //    visibility = View.VISIBLE;
             }
+
+            sellerView.setOnClickListener(this);
+
+
+
        //     mSellerDeliveryContainer.setVisibility(visibility);
         } else {
             if(sellerView != null)
@@ -1770,7 +1775,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // seller rating
         else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
             // product offers
-        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
+     //   else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
+        else if (id == R.id.SellerSection)  goToProductOffers();
         //added: if buy add to Chart
         else if (id == R.id.btBuy)  executeAddProductToCart();
 
@@ -1789,6 +1795,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         android.os.Bundle bundle = new android.os.Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProduct.getName());
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProduct.getSku());
+        //added: offer brand
+        bundle.putString("brand", mCompleteProduct.getBrand());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
