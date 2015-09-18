@@ -81,6 +81,7 @@ import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.utils.ui.RelatedProductsGridAdapter;
 import com.mobile.utils.ui.RelatedProductsGridView;
 import com.mobile.utils.ui.WarningFactory;
@@ -791,19 +792,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo(ProductBase productBase) {
         Print.d(TAG, "SHOW PRICE INFO: " + productBase.getPrice() + " " + productBase.getSpecialPrice());
-        if (productBase.hasDiscount()) {
-            // display reduced and special price
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
-       //     mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-            mPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
-            mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            mPriceText.setVisibility(View.VISIBLE);
-        } else {
-            // display only the normal price
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
-      //      mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
-            mPriceText.setVisibility(View.GONE);
-        }
+
+        CompleteProductUtils.setPrice(productBase,mPriceText,mSpecialPriceText);
+
         // Set discount percentage value
         if (productBase.getMaxSavingPercentage() > 0) {
             String discount = String.format(getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage());
