@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/offers_page"
+    >
+
+    <!-- OTHER SELLERS/OFFERS PAGE -->
+
+    <RelativeLayout
+        android:id="@+id/offers_header"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@android:color/white" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/offer_product_name"
+            style="@style/List1"
+            color="@color/black"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin_huge"
+            android:layout_marginEnd="@dimen/margin_huge"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:layout_gravity="left|center_vertical|start"
+            android:maxLines="2"
+            android:singleLine="false" />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/offer_product_brand"
+            style="@style/Caption"
+            color="@color/black_800"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin_huge"
+            android:layout_marginEnd="@dimen/margin_huge"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:layout_gravity="left|center_vertical|start"
+            android:maxLines="2"
+            android:singleLine="false" />
+
+
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/offers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@color/transparent"
+        android:numColumns="1" />
+
+</RelativeLayout>
