@@ -89,7 +89,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.COMPLETE_JSON;
     }
 

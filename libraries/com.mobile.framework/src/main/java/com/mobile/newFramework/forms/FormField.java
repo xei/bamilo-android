@@ -373,8 +373,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override

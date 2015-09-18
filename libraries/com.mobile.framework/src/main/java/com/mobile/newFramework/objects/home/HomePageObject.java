@@ -112,7 +112,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

@@ -111,8 +111,8 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 }

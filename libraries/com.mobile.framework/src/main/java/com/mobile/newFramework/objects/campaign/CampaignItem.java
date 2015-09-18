@@ -96,8 +96,8 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 	/*

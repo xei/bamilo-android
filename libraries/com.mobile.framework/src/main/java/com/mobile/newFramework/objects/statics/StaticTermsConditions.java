@@ -28,7 +28,7 @@ public class StaticTermsConditions implements IJSONSerializable{
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.OBJECT_DATA;
     }
 

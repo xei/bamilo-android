@@ -47,8 +47,8 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override

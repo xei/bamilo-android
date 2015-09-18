@@ -34,7 +34,8 @@ public class Form implements IJSONSerializable, Parcelable {
     private Map<String, FormField> mFieldKeyMap;
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public @RequiredJson.JsonStruct
+    int getRequiredJson() {
         return RequiredJson.ARRAY_DATA_FIRST;
     }
 

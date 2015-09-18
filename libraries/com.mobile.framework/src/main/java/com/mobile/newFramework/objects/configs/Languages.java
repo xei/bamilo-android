@@ -51,8 +51,8 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable{
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     /**

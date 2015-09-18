@@ -44,8 +44,8 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override

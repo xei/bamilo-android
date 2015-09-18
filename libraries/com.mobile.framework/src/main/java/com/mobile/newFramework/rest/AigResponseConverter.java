@@ -215,7 +215,7 @@ public class AigResponseConverter implements Converter {
      */
     protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
         Print.i(TAG, "GET DATA FROM JSON");
-        RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
+        @RequiredJson.JsonStruct int requiredJson = iJsonSerializable.getRequiredJson();
         if(requiredJson == RequiredJson.METADATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
         } else if(requiredJson == RequiredJson.OBJECT_DATA){

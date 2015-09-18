@@ -177,7 +177,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return null;
     }
 
-    public RequiredJson getRequiredJson(){
+    public int getRequiredJson(){
         return RequiredJson.METADATA;
     }
     /**

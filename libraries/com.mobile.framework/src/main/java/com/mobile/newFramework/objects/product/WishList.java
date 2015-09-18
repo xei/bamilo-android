@@ -46,7 +46,7 @@ public class WishList extends ArrayList<ProductMultiple> implements IJSONSeriali
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

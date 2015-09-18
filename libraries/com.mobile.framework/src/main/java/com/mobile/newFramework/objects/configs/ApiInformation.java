@@ -30,7 +30,7 @@ public class ApiInformation implements IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

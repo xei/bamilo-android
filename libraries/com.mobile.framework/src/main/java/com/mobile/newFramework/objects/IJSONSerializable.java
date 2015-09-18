@@ -39,5 +39,10 @@ public interface IJSONSerializable {
      */
     JSONObject toJSON();
 
-    public RequiredJson getRequiredJson();
+    /**
+     * Get type of json struct which the class will parse on initialize method.
+     * @return
+     */
+    @RequiredJson.JsonStruct
+    int getRequiredJson();
 }

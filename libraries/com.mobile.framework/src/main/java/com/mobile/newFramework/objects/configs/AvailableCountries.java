@@ -41,7 +41,7 @@ public class AvailableCountries extends ArrayList<CountryObject> implements com.
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

@@ -149,8 +149,8 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     public String getSku() {
