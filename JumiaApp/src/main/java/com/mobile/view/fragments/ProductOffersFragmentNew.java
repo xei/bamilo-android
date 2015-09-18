@@ -57,6 +57,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     private String mCompleteProductName;
 
+    private String mCompleteBrand;
+
 
     private OfferList productOffers;
 
@@ -114,6 +116,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         // Get data from arguments
         mCompleteProductSku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
         mCompleteProductName = getArguments().getString(ConstantsIntentExtra.PRODUCT_NAME);
+        mCompleteBrand = getArguments().getString("brand");
         // Get from saved instance
         if(savedInstanceState != null){
             mCompleteProductSku = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_SKU);
@@ -229,6 +232,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
      */
     private void setAppContent(){
         mProductName.setText(mCompleteProductName);
+        mProductBrand.setText(mCompleteBrand);
         // set the number of grid columns depending on the screen size    
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
         mOffersList.setNumColumns(numColumns);
