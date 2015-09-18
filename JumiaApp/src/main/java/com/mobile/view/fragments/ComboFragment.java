@@ -164,6 +164,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             }
         }
 
+        executeAddProductToCart();
+
     }
 
     /**
