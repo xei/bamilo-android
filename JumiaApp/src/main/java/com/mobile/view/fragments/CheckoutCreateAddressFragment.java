@@ -14,7 +14,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -35,8 +34,6 @@ import java.util.EnumSet;
 public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
-
-    private OrderSummary orderSummary;
 
     /**
      * Fragment used to create an address
@@ -88,7 +85,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
     }
 
     @Override

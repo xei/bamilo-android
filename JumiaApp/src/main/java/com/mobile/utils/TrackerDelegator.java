@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
@@ -41,7 +41,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class TrackerDelegator {
@@ -256,7 +255,7 @@ public class TrackerDelegator {
                 params.getLong(QUANTITY_KEY), params.getString(CARTVALUE_KEY), EUR_CURRENCY);
     }
 
-    public static void trackCheckout(List<ShoppingCartItem> items) {
+    public static void trackCheckout(List<PurchaseCartItem> items) {
         AnalyticsGoogle.get().trackCheckout(items);
     }
 
@@ -264,7 +263,7 @@ public class TrackerDelegator {
      *
      */
     public static void trackItemShared(Intent intent, String category) {
-        String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
+        String sku = intent.getExtras().getString(RestConstants.SKU);
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
@@ -415,7 +414,7 @@ public class TrackerDelegator {
     /**
      * For Native Checkout
      */
-    public static void trackPurchaseNativeCheckout(final Bundle params, final Map<String, ShoppingCartItem> mItems, final String attributeIdList) {
+    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<PurchaseCartItem> mItems, final String attributeIdList) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -478,7 +477,7 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
     }
 
-    private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems, String attributeIdList) {
+    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems, String attributeIdList) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);

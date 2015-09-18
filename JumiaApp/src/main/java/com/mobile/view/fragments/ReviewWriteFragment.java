@@ -803,7 +803,7 @@ public class ReviewWriteFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(ratingForm.action, dynamicRatingForm);
+                    executeSendReview(ratingForm.getAction(), dynamicRatingForm);
                 }
             } else {
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
@@ -812,7 +812,7 @@ public class ReviewWriteFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(reviewForm.action, dynamicRatingForm);
+                    executeSendReview(reviewForm.getAction(), dynamicRatingForm);
                 }
             }
         }

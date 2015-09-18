@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
+import com.mobile.newFramework.objects.checkout.CheckoutFinish;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -63,7 +63,7 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        SuperCheckoutFinish checkoutFinish = (SuperCheckoutFinish)baseResponse.getMetadata().getData();
+        CheckoutFinish checkoutFinish = (CheckoutFinish)baseResponse.getMetadata().getData();
         bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
         bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
 

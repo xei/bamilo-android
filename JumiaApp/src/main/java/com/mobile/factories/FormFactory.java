@@ -13,10 +13,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
-import com.mobile.pojo.MetaFormExtractor;
 import com.mobile.view.R;
-
-import java.util.ArrayList;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>
@@ -383,7 +380,6 @@ public class FormFactory {
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
         LinearLayout parent;
-        Print.i(TAG, "code1form id : " + form.id + " name: " + form.name);
         if(context == null){
             return null;
         }
@@ -392,6 +388,7 @@ public class FormFactory {
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setLayoutParams(frmParams);
+
         DynamicForm userForm = new DynamicForm(parent);
         userForm.setForm( form );
 
@@ -403,18 +400,19 @@ public class FormFactory {
             groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
         }
 
-        groupLayout.setId( userForm.getNextId() );
+        groupLayout.setId(userForm.getNextId());
         groupLayout.setOrientation(LinearLayout.HORIZONTAL);
         groupLayout.setLayoutParams(params);
 
-        DynamicFormItem ctrl;
+        // TODO: VALIDATE IF THIS IS NECESSARY : MetaFormExtractor
+//        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
+//        MetaFormExtractor.dumpIFormField(transformedFields);
 
-        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
-        MetaFormExtractor.dumpIFormField(transformedFields);
+//      for (IFormField frmEntry : transformedFields) {
 
-        for (IFormField frmEntry : transformedFields) {
+        for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
-            ctrl = new DynamicFormItem(userForm, context, frmEntry);
+            DynamicFormItem ctrl = new DynamicFormItem(userForm, context, frmEntry);
 
             if (ctrl.isMeta() || ctrl.hasNoType()) {
                 // Don't waste space with meta fields nor field without type
@@ -425,6 +423,7 @@ public class FormFactory {
             } else {
                 userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
             }
+
         }
 
         return userForm;
