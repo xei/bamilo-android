@@ -16,7 +16,7 @@ public class CompleteProductUtils {
     public static void setPrice(ProductBase productBase, TextView price, TextView specialPrice){
         String priceRange = productBase.getPriceRange();
         if(TextUtils.isNotEmpty(priceRange)){
-            specialPrice.setText(CurrencyFormatter.formatCurrency(priceRange));
+            specialPrice.setText(CurrencyFormatter.formatCurrencyRange(priceRange));
             price.setText("");
         } else {
             // Case discount

@@ -201,5 +201,14 @@ public class CurrencyFormatter {
             return false;
         }
     }
+
+    public static String formatCurrencyRange(String value){
+        String[] values = value.split("-");
+        String finalValue = formatCurrency(values[0]);
+        for(int i = 1; i<values.length;i++){
+            finalValue+= "-" + formatCurrency(values[i]);
+        }
+        return finalValue;
+    }
     
 }
