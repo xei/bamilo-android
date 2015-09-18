@@ -1,10 +1,14 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.IntDef;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -37,6 +41,19 @@ public class WarningFactory {
     public static final int PROBLEM_FETCHING_DATA = 6;
     public static final int PROBLEM_FETCHING_DATA_ANIMATION = 7;
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
+
+    @IntDef({
+        CHOOSE_ONE_SIZE,
+        ADDED_ITEM_TO_CART,
+        ADDED_ITEMS_TO_CART,
+        NO_INTERNET,
+        ERROR_ADD_TO_CART,
+        PROBLEM_FETCHING_DATA,
+        PROBLEM_FETCHING_DATA_ANIMATION,
+        ERROR_ADD_PRODUCTS_TO_CART
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface WarningErrorType{}
 
     /**
      * The last warning that was built and might be re-used.
@@ -73,7 +90,7 @@ public class WarningFactory {
      *
      * @param warning The warning desired.
      */
-    public void showWarning(int warning){
+    public void showWarning(@WarningErrorType int warning){
         switch (warning){
             case CHOOSE_ONE_SIZE:
                 showWarningChooseOneSize();
