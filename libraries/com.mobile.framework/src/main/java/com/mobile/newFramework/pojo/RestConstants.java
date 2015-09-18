@@ -133,6 +133,7 @@ public class RestConstants {
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";
     public static final String JSON_SHARE_URL_TAG = "share_url";
+    public static final String JSON_SKU_TAG ="sku";
 
     // Seller tags
     public static final String JSON_SELLER_TAG = "seller";
