@@ -9,6 +9,8 @@
     android:layout_centerVertical="true"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/margin_110px"
+    android:singleLine="true"
+    android:ellipsize="end"
     android:paddingStart="@dimen/margin_110px"
     android:textColor="@color/black" />
 

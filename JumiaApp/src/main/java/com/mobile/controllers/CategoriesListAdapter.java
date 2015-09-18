@@ -10,7 +10,6 @@ import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAd
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is
- * called by Category Activity <p/><br>
+ * called by NavigationCategory Fragment <p/><br>
  * <p/>
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
  * <p/>
@@ -40,7 +39,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
     private final int CATEGORY_LIST_ITEM_LAYOUT = R.layout.single_line_list;
     private final int CATEGORY_SUBLIST_ITEM_LAYOUT = R.layout.sublist;
 
-    private Categories categories; // header titles
+    private Categories categories;
     /**
      * A representation of each item parent list
      */
@@ -118,22 +117,17 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
                 itemView.setTag(item);
             }
             if (parentCategory.hasChildren()) {
-                item.categorySignal.setVisibility(View.VISIBLE);
-                if (isExpanded) {
-                    item.categorySignal.setSelected(true);
-                } else {
-                    item.categorySignal.setSelected(false);
-                }
+                item.categorySignal.setSelected(isExpanded);
             } else {
                 item.categorySignal.setVisibility(View.GONE);
             }
-            if (item.categoryIcon.getDrawable() == null) {
-                Print.i("ADAPTER", "NO DRAWABLE");
-                RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon, null, R.drawable.no_image_small);
-
-            } else {
-                Print.i("ADAPTER", "has DRAWABLE");
-            }
+            RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon);
+//            if (item.categoryIcon.getDrawable() == null) {
+//                Print.i("ADAPTER", "NO DRAWABLE");
+//                RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon, null, R.drawable.no_image_small);
+//            } else {
+//                Print.i("ADAPTER", "has DRAWABLE");
+//            }
             item.categoryName.setText(parentCategory.getName());
 //			itemView.setTag(R.id.parent_category,parentCategory);
             return itemView;
