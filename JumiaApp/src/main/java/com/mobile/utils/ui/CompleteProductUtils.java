@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.graphics.Paint;
+import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.Variation;
@@ -31,6 +32,7 @@ public class CompleteProductUtils {
                 price.setText("");
             }
         }
+        specialPrice.setVisibility(View.VISIBLE);
     }
 
     /**

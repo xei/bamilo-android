@@ -15,6 +15,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -217,30 +218,24 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             prodItem.brand.setText(brand);
             // Set name
             prodItem.name.setText(addableToCart.getName());
+
+            CompleteProductUtils.setPrice(addableToCart,prodItem.price, prodItem.discount);
             // Validate special price
             if (addableToCart.hasDiscount()) {
                 // Set discount
-                prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
+
                 // TODO placeholder
                 int discountPercentage = addableToCart.getMaxSavingPercentage();
                 prodItem.discountPercentage.setText("-" + discountPercentage + "%");
-                prodItem.discount.setVisibility(View.VISIBLE);
                 prodItem.discountPercentage.setVisibility(View.VISIBLE);
-                // Set price
-                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
-                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
                 prodItem.price.setSelected(true);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
                 prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
             } else {
                 // Set price
-                prodItem.discount.setVisibility(View.GONE);
                 prodItem.discountPercentage.setVisibility(View.INVISIBLE);
-                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
-                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
-                prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
-            }
+                }
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility
                 prodItem.deleteButton.setVisibility(View.INVISIBLE);
