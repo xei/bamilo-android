@@ -469,7 +469,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes, String tag) {
         // Get city item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.JSON_POSTCODE_TAG);
+        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
         // Clean group
         ViewGroup group = (ViewGroup) v.getControl();
         group.removeAllViews();
@@ -718,7 +718,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else if (object instanceof AddressCity){
 
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && InputType.list == field.getInputType()) {
                 // Get url
@@ -948,7 +948,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
 
-        FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+        FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
         if(field == null){
             // Show
             showFragmentContentContainer();

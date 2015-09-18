@@ -273,7 +273,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes){
         // Get postal code item
-        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.JSON_POSTCODE_TAG);
+        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.POSTCODE);
         // Clean group
         ViewGroup group = (ViewGroup) formItem.getControl();
         group.removeAllViews();
@@ -404,7 +404,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         } else if (object instanceof AddressCity){
 
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_POSTCODE_TAG);
+            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && InputType.list == field.getInputType()) {
                 // Get url
