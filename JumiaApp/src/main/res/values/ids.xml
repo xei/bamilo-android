@@ -45,6 +45,6 @@
     <item type="id" name="regex"/>
 
     <!-- DATE PICKER -->
-    <item name="blue_dialog" type="color" />
+    <item name="orange_dialog" type="color" />
 
 </resources>

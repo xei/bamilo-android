@@ -29,13 +29,13 @@
         android:paddingEnd="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large"
         android:text="@string/birthday_label"
-        android:textColor="@color/blue_dialog" />
+        android:textColor="@color/orange_dialog" />
 
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/blue_dialog" />
+        android:background="@color/orange_dialog" />
 
     <TextView
         android:id="@+id/date_picker_header"

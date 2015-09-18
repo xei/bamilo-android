@@ -389,21 +389,7 @@ public class DynamicFormItem {
             case metadata:
             case date:
                 String date = (String) value;
-                int dayMonth;
-                int monthYear;
-                int year;
-
-                if (date != null && date.length() > 0 && date.split("-").length > 1) {
-                    dayMonth = Integer.parseInt(date.split("-")[2]);
-                    monthYear = Integer.parseInt(date.split("-")[1]);
-                    year = Integer.parseInt(date.split("-")[0]);
-                } else {
-                    Calendar c = Calendar.getInstance();
-                    year = c.get(Calendar.YEAR);
-                    monthYear = c.get(Calendar.MONTH);
-                    dayMonth = c.get(Calendar.DAY_OF_MONTH);
-                }
-                dialogDate.setDate(dayMonth, monthYear - 1, year);
+                setDialogDate(date);
                 break;
             case email:
             case text:

@@ -48,6 +48,6 @@
         android:paddingRight="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large"
         android:text="@string/size_guide_label"
-        android:textColor="@color/orange_f68b1e" />
+        android:textColor="@color/color_accent" />
 
 </LinearLayout>
