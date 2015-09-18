@@ -64,6 +64,7 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
     <item name="myorders_fragment_main"                 type="layout">@layout/_def_myorders_fragment_main</item>
+    <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
 
     <!-- NAVIGATION DRAWER -->
     <item name="navigation_fragment_main"               type="layout">@layout/_def_navigation_fragment_main</item>

@@ -88,7 +88,7 @@ public class Seller implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
+        mUrl = jsonObject.optString(RestConstants.URL);
         mSellerId = jsonObject.optString(RestConstants.ID);
         JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
         if(reviewObject != null){

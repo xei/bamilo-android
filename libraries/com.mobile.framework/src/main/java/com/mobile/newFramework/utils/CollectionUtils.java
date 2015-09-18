@@ -2,6 +2,7 @@ package com.mobile.newFramework.utils;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -168,7 +169,15 @@ public class CollectionUtils {
         return coll == null || coll.size() == 0;
     }
 
+    public static boolean isEmpty(SparseArray coll){
+        return coll == null || coll.size() == 0;
+    }
+
     public static boolean isNotEmpty(ContentValues coll) {
+        return !isEmpty(coll);
+    }
+
+    public static boolean isNotEmpty(SparseArray coll){
         return !isEmpty(coll);
     }
 

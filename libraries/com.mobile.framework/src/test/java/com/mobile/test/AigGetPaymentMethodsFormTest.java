@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
+import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -38,7 +38,7 @@ public class AigGetPaymentMethodsFormTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        SuperGetPaymentMethodsForm form = (SuperGetPaymentMethodsForm) response.getMetadata().getData();
+        CheckoutFormPayment form = (CheckoutFormPayment) response.getMetadata().getData();
         assertNotNull("Form is null", form);
 
         //assertFalse("Success is false", response.hadSuccess());

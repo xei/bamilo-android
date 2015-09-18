@@ -75,7 +75,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
+            method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
 
             /*
@@ -160,7 +160,7 @@ public class Form implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
+            jsonObject.put(RestConstants.METHOD, method);
             jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
 
             JSONArray fieldArray = new JSONArray();

@@ -996,7 +996,7 @@ public class DynamicFormItem {
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
-
+        mLinkTextView.setTextSize(MANDATORYSIGNALSIZE);
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
@@ -1858,7 +1858,7 @@ public class DynamicFormItem {
             case relatedNumber:
             case number:
                 int inputTypeNumber = android.text.InputType.TYPE_CLASS_NUMBER;
-                if (this.entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) {
+                if (this.entry.getKey().contains(RestConstants.PHONE)) {
                     inputTypeNumber = android.text.InputType.TYPE_CLASS_PHONE;
                 }
                 textDataControl.setInputType(inputTypeNumber);

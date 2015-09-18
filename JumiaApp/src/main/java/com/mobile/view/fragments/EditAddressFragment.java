@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.EditText;
@@ -25,7 +26,7 @@ import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -74,7 +75,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     protected int mAddressId;
 
-    protected OrderSummary orderSummary;
+    protected PurchaseEntity orderSummary;
 
     protected boolean isCityIdAnEditText = false;
 
@@ -500,7 +501,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 Print.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
                 // Get order summary
-                orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+                //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+                orderSummary = JumiaApplication.INSTANCE.getCart();
                 // Form
                 Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 mFormResponse = form;

@@ -128,6 +128,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case "boolean":
                 case "checkbox":
+                case "multi_checkbox":
                     inputType = InputType.checkBox;
                     break;
                 case "":
@@ -227,7 +228,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     // Case default
                     else {
                         JSONObject option = dataOptionsArray.getJSONObject(i);
-                        dataSet.put(option.optString("label"), option.optString("value"));
+                        dataSet.put(option.optString("value"), option.optString("label"));
                     }
                 }
             }
@@ -269,7 +270,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
              * ########### PAYMENT METHODS ###########
              */
 
-            if(key.equals(RestConstants.PAYMENT_METHOD)){
+            if (key.equals(RestConstants.PAYMENT_METHOD)) {
                 dataSet.clear();
                 paymentFields = new HashMap<>();
                 dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
@@ -285,7 +286,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
-                    paymentInfoList.put(label,mPaymentInfo);
+                    paymentInfoList.put(label, mPaymentInfo);
                     // Sub forms
                     Print.d("code1paymentDescription : saved : " + curKey);
                     JSONObject json = dataOptionsObject.getJSONObject(curKey);
