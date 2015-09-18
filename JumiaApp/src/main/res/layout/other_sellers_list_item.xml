@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="114dp">
+    android:layout_height="114dp"
+    android:id="@+id/offers_list_item"
+    >
 
     <!-- OTHER SELLERS ITEM -->
     <!-- LEFT SIDE -->
@@ -19,7 +21,7 @@
             android:gravity="center_vertical"
             >
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/product_price"
+                android:id="@+id/offer_price"
                 style="@style/Body3"
                 android:textColor="@color/black"
                 android:layout_alignParentLeft="true"
@@ -30,7 +32,7 @@
                 android:layout_height="wrap_content" />
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/product_price_normal"
+                android:id="@+id/offer_price_normal"
                 style="@style/Body3"
                 android:textColor="@color/black_800"
                 android:layout_centerVertical="true"
@@ -39,14 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/product_detail_discount_percentage"
-                style="@style/discount_percentage"
-                android:textColor="@color/orange1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="5dp"
-                />
 
         </LinearLayout>
 
@@ -69,7 +63,7 @@
             android:layout_width="120dp"
             android:layout_height="48dp"
             android:text="@string/buy_now_button"
-            android:id="@+id/btBuyNow"
+            android:id="@+id/offer_addcart"
             android:background="@color/orange1"
             android:textColor="@color/white"
 
