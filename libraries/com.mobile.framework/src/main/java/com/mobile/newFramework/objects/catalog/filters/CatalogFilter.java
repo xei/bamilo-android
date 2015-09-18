@@ -29,6 +29,7 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
     public static final String RATING = "rating";
+    public static final String CATEGORY = "category";
 
     public CatalogFilter(){
     }

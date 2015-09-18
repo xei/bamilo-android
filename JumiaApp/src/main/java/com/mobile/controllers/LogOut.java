@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
@@ -79,7 +79,7 @@ public class LogOut {
     private static void cleanCartData(BaseActivity baseActivity) {
         // Clear cookies, cart, credentials
         AigHttpClient.getInstance().clearCookieStore();
-        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
+        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
         JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info

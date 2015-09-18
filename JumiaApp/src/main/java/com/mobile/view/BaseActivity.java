@@ -51,9 +51,10 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -1222,7 +1223,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
         final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 
@@ -1687,6 +1688,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                 backPressedOnce = false;
             }
         }, TOAST_LENGTH_SHORT);
+    }
+
+    public void restartAppFlow() {
+        // Clear Ad4Push prefs
+        Ad4PushTracker.clearAllSavedData(this);
+        // Show splash screen
+        ActivitiesWorkFlow.splashActivityNewTask(this);
+        // Finish MainFragmentActivity
+        finish();
     }
 
     /*
