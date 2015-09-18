@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="114dp">
+
+    <!-- OTHER SELLERS ITEM -->
+    <!-- LEFT SIDE -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_alignParentLeft="true"
         >
 
-        <!--SELLER NAME -->
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/txSellerName"
-            style="@style/TextBody_1"
-            color="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            />
-
-        <!-- INCLUDE SMALL RATING -->
-
-        <!-- DELIVERY TIME SECTION -->
-
+        <!-- PRICE -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"  android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:id="@+id/deliverSection"
-            android:layout_marginLeft="@dimen/layout_padding"
-            android:layout_marginStart="@dimen/layout_padding"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             >
             <com.mobile.components.customfontviews.TextView
-                style="@style/Caption"
-                color="@color/black"
+                android:id="@+id/product_price"
+                style="@style/Body3"
+                android:textColor="@color/black"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:text="Delivery time:"
+                android:text="Rs.399"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txDeliver"
-                />
+                android:layout_height="wrap_content" />
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/Caption"
-                color="@color/black"
+                android:id="@+id/product_price_normal"
+                style="@style/Body3"
+                android:textColor="@color/black_800"
                 android:layout_centerVertical="true"
-                android:text="3 - 8 days"
-                android:layout_width="wrap_content"
+                android:text="Rs.399"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/txDeliverTimeContent"
+                android:layout_width="wrap_content" />
 
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_detail_discount_percentage"
+                style="@style/discount_percentage"
+                android:textColor="@color/orange1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 />
 
         </LinearLayout>
 
+        <!-- SELLER INFO SECTION -->
+
+        <include layout="@layout/other_sellers_info" />
 
     </LinearLayout>
+
+    <!-- RIGHT SIDE BUTTON -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        >
+
+        <com.mobile.components.customfontviews.Button
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="@string/buy_now_button"
+            android:id="@+id/btBuyNow"
+            android:background="@color/orange1"
+            android:textColor="@color/white"
+
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
