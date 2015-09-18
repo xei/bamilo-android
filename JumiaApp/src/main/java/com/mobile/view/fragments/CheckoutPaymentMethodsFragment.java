@@ -31,7 +31,7 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
@@ -74,7 +74,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private boolean noPaymentNeeded = false;
     
     private boolean removeVoucher = false;
-    private OrderSummary orderSummary;
+    private PurchaseEntity orderSummary;
 
     private ContentValues mSavedState;
     
@@ -401,10 +401,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * 
      * @param orderSummary
      */
-    private void updateVoucher(OrderSummary orderSummary) {
+    private void updateVoucher(PurchaseEntity orderSummary) {
         if (orderSummary != null) {
-            if (orderSummary.hasCouponCode()) {
-                mVoucher = orderSummary.getDiscountCouponCode();
+            if (orderSummary.hasCouponDiscount()) {
+                mVoucher = orderSummary.getCouponCode();
                 if (!TextUtils.isEmpty(mVoucher)) {
                     removeVoucher = true;
                     prepareCouponView();
@@ -443,8 +443,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get order summary
             orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary, JumiaApplication.INSTANCE.getCart());
-            if(orderSummary != null && orderSummary.getTotal()!= null && Float.parseFloat(orderSummary.getTotal()) == 0){
+            CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary);
+            if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
                 generateNoPayment();

@@ -1,7 +1,7 @@
 package com.mobile.test;
 
+import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
-import com.mobile.newFramework.objects.orders.SuperOrder;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -41,7 +41,7 @@ public class AigGetOrdersListTest extends AigTestCase {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
 
-        SuperOrder superOrder = (SuperOrder) response.getMetadata().getData();
+        MyOrder superOrder = (MyOrder) response.getMetadata().getData();
 
         assertNotNull("Orders List is null", superOrder);
         assertNotNull("Orders List Nr Pages is null", superOrder.getNumPages());

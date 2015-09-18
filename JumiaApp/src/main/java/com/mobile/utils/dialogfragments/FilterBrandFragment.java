@@ -14,8 +14,9 @@ import com.mobile.components.PinnedSectionListView;
 import com.mobile.components.PinnedSectionListView.PinnedSectionListAdapter;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.catalog.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -34,6 +35,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
 
     private FilterOptionArrayAdapter mOptionArray;
 
+    private CatalogCheckFilter mFilter;
 
     /**
      * Create new instance
@@ -56,6 +58,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         Bundle bundle = getArguments();
         // Get selected filter
         mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mFilter = (CatalogCheckFilter)mCatalogFilter;
     }
     
     /*
@@ -75,15 +78,15 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get multi selection option
-        allowMultiSelection = mCatalogFilter.isMulti();
+        allowMultiSelection = mFilter.isMulti();
         Print.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
-        if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
+        if(mFilter.getSelectedFilterOptions().size()>0) loadSelectedItems();
         else Print.i(TAG, "PRE SELECTION IS EMPTY");
         
         // Title
-        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mCatalogFilter.getName());
+        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mFilter.getName());
         // Back button
         view.findViewById(mBackButtonId).setOnClickListener(this);
         // Clear button
@@ -95,7 +98,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         // Filter list
         ((PinnedSectionListView) view.findViewById(R.id.dialog_filter_pinnedlist)).setOnItemClickListener(this);
         // Create adapter
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mCatalogFilter.getFilterOptions());
+        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mFilter.getFilterOptions());
         // Set adapter
         ((PinnedSectionListView) view.findViewById(R.id.dialog_filter_pinnedlist)).setAdapter(mOptionArray);
     }
@@ -130,7 +133,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         } else if(id == mDoneButtonId) {
             Print.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
             // Save the current selection
-            mCatalogFilter.setSelectedOption(mCurrentSelectedOptions);
+            mFilter.setSelectedFilterOptions(mCurrentSelectedOptions);
             // Goto back
             mParent.allowBackPressed();
         }
@@ -145,9 +148,9 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         Print.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         
         // Get selected option
-        CatalogFilterOption selectedOption = (CatalogFilterOption) parent.getItemAtPosition(position);
+        MultiFilterOptionInterface selectedOption = (MultiFilterOptionInterface) parent.getItemAtPosition(position);
         // Validate if is a section item
-        if(selectedOption.isSectionItem()) return;
+//        if(selectedOption.isSectionItem()) return;
         
         // Validate if is multi
         if(allowMultiSelection) processMultiSelection(parent, position);
@@ -162,11 +165,11 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
      */
     private void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        CatalogFilterOption option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
             Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
-            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
             Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
@@ -189,7 +192,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
             // Clean old selection
             cleanOldSelections();
             // Add item
-            addSelectedItem((CatalogFilterOption) parent.getItemAtPosition(position), position);
+            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         }
     }
     
@@ -198,13 +201,13 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
      * @author sergiopereira
      */
     private void loadSelectedItems(){
-        Print.d(TAG, "PRE SELECTION SIZE: " + mCatalogFilter.getSelectedOption().size());
+        Print.d(TAG, "PRE SELECTION SIZE: " + mFilter.getSelectedFilterOptions().size());
         // Copy all selected items
-        for (int i = 0; i < mCatalogFilter.getSelectedOption().size(); i++) {
+        for (int i = 0; i < mFilter.getSelectedFilterOptions().size(); i++) {
             // Get position
-            int position = mCatalogFilter.getSelectedOption().keyAt(i);
+            int position = mFilter.getSelectedFilterOptions().keyAt(i);
             // Get option
-            CatalogFilterOption option = mCatalogFilter.getSelectedOption().get(position);
+            MultiFilterOptionInterface option = mFilter.getSelectedFilterOptions().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
@@ -217,7 +220,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
      * Adapter
      * @author sergiopereira
      */
-     public static class FilterOptionArrayAdapter extends ArrayAdapter<CatalogFilterOption> implements PinnedSectionListAdapter{
+     public static class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> implements PinnedSectionListAdapter{
             
         private static int layout = R.layout.dialog_list_sub_item_2;
         
@@ -235,7 +238,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
          * @param context the application context
          * @param objects is setted on the parse of the CatalogFilter.
          */
-        public FilterOptionArrayAdapter(Context context, List<CatalogFilterOption> objects) {
+        public FilterOptionArrayAdapter(Context context, List<MultiFilterOptionInterface> objects) {
             super(context, layout, objects);
         }
         
@@ -246,7 +249,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
-            CatalogFilterOption option = getItem(position);
+            MultiFilterOptionInterface option = getItem(position);
             // Validate item type
             if(!isItemViewTypePinned(getItemViewType(position))) {
                 Print.d(TAG, "FILTER OPTION: IS ITEM");
@@ -283,7 +286,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
          */
         @Override 
         public int getItemViewType(int position) {
-            return (getItem(position).isSectionItem()) ? SECTION : ITEM;
+            return ITEM;
         }
 
         /*

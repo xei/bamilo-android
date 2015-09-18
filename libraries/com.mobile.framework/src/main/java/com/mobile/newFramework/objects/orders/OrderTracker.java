@@ -106,7 +106,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
         creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
         payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		JSONArray items = jsonObject.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
 
 		for(int i = 0 ; i<items.length();i++){
 			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
