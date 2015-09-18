@@ -56,6 +56,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -987,17 +988,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            if(item.hasDiscount()) {
-                view.mPrice.setVisibility(View.VISIBLE);
-                // Set discount
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-                view.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                // Set discount
-                view.mPrice.setVisibility(View.GONE);
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            }
+            CompleteProductUtils.setPrice(item, view.mPrice,view.mDiscount);
         }
         
         /**
