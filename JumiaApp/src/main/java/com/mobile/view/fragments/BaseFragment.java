@@ -610,7 +610,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
      */
-    protected final void showErrorFragment(int type, OnClickListener listener){
+    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener listener){
         if(mErrorView instanceof ViewStub){
             // If not inflated yet
             mErrorView.setTag(mErrorView.getId(), type);

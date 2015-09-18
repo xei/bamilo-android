@@ -663,7 +663,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
-    protected void showErrorLayout(int type, OnClickListener onClickListener){
+    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener onClickListener){
         // Show no network
         if(mErrorFallBackStub instanceof ViewStub) {
             mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();

@@ -474,7 +474,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @param  stringId The message.
      */
-    private void showFilterError(int stringId) {
+    private void showFilterError(@ErrorLayoutFactory.LayoutErrorType int stringId) {
         Print.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);

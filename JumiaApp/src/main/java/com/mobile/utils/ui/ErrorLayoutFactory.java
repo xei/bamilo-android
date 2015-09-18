@@ -1,11 +1,15 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.IntDef;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -37,6 +41,21 @@ public class ErrorLayoutFactory {
 
     public static final int CATALOG_UNEXPECTED_ERROR = 9;
 
+    @IntDef({
+            NO_NETWORK_LAYOUT,
+            UNEXPECTED_ERROR_LAYOUT,
+            CART_EMPTY_LAYOUT,
+            NO_FAVOURITES_LAYOUT,
+            NO_RECENT_SEARCHES_LAYOUT,
+            NO_RECENTLY_VIEWED_LAYOUT,
+            CONTINUE_SHOPPING_LAYOUT,
+            CATALOG_NO_RESULTS,
+            CATALOG_UNEXPECTED_ERROR
+
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LayoutErrorType{}
+
     private View mErrorLayout;
 
     private int actualError;
@@ -58,7 +77,7 @@ public class ErrorLayoutFactory {
         this.mErrorLayout = errorLayout;
     }
 
-    public void showErrorLayout(int error) {
+    public void showErrorLayout(@LayoutErrorType int error) {
         if(actualError != error) {
             //build
             switch (error) {
