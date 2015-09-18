@@ -7,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -256,10 +255,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-        // Navigation
-        if (!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null) {
-            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
-        }
     }
 
     /*

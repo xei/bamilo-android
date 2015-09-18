@@ -152,13 +152,15 @@ public class RestConstants {
 
     // Category Tags
     public static final String JSON_CATEGORY_ID_TAG = "id_catalog_category";
-    public static final String JSON_CATEGORY_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_CATEGORY_TYPE_TAG = "type";
+    public static final String JSON_CATEGORY_LABEL_TAG = LABEL;
     public static final String JSON_URL_KEY_TAG = "url_key";
     public static final String JSON_CHILDREN_TAG = "children";
     public static final String JSON_API_URL_TAG = "api_url";
     public static final String JSON_CATEGORY_URL_TAG = URL;
-    public static final String JSON_HAS_CHILDREN = "hasChildren";
-
+    public static final String JSON_HAS_CHILDREN = "has_children";
+    public static final String JSON_CATEGORY_VERTICAL = "vertical";
+    
     // ShoppingCart Tags
     public static final String CART = "cart";
     public static final String TOTAL_PRODUCTS = "total_products";

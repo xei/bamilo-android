@@ -75,6 +75,9 @@
     <item name="category_inner_childcat"                type="layout">@layout/_def_category_inner_childcat</item>
     <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
+    <item name="header"                                 type="layout">@layout/_def_header</item>
+    <item name="single_line_list"                       type="layout">@layout/_def_single_line_list</item>
+    <item name="sublist"                                type="layout">@layout/_def_sublist</item>
 
     <!-- HOME -->
     <item name="home_teaser_campaign"                   type="layout">@layout/_def_home_teaser_campaign</item>
