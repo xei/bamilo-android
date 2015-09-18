@@ -872,6 +872,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
+        mQueryValues.put("category","women-s-shoes");
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);

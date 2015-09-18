@@ -26,6 +26,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     protected double mSpecialPriceConverted;
     protected int mMaxSavingPercentage;
     protected String mVertical="";
+    private String mPriceRange;
 
     /**
      * Empty constructor
@@ -49,6 +50,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
         mVertical = jsonObject.optString(RestConstants.JSON_VERTICAL_TAG);
 
+        mPriceRange = jsonObject.optString(RestConstants.JSON_PRICE_RANGE, null);
         return true;
     }
 
@@ -119,6 +121,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         dest.writeDouble(mSpecialPrice);
         dest.writeDouble(mSpecialPriceConverted);
         dest.writeInt(mMaxSavingPercentage);
+        dest.writeString(mPriceRange);
     }
 
     protected ProductBase(Parcel in) {
@@ -128,6 +131,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mSpecialPrice = in.readDouble();
         mSpecialPriceConverted = in.readDouble();
         mMaxSavingPercentage = in.readInt();
+        mPriceRange = in.readString();
     }
 
     public static final Creator<ProductBase> CREATOR = new Creator<ProductBase>() {
@@ -139,4 +143,12 @@ public class ProductBase implements Parcelable, IJSONSerializable {
             return new ProductBase[size];
         }
     };
+
+    public String getPriceRange() {
+        return mPriceRange;
+    }
+
+    public void setmPriceRange(String mPriceRange) {
+        this.mPriceRange = mPriceRange;
+    }
 }

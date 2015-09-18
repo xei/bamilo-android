@@ -23,6 +23,7 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -260,18 +261,16 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param item - the product
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
+
+        CompleteProductUtils.setPrice(item, holder.price, holder.discount);
+
         // Case discount
         if(item.hasDiscount()) {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-            holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setText("");
             holder.percentage.setVisibility(View.GONE);
         }
     }

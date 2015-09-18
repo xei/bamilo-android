@@ -1,11 +1,37 @@
 package com.mobile.utils.ui;
 
+import android.graphics.Paint;
+
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.Variation;
+import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import java.util.ArrayList;
 
 public class CompleteProductUtils {
+
+    public static void setPrice(ProductBase productBase, TextView price, TextView specialPrice){
+        String priceRange = productBase.getPriceRange();
+        if(TextUtils.isNotEmpty(priceRange)){
+            specialPrice.setText(CurrencyFormatter.formatCurrency(priceRange));
+            price.setText("");
+        } else {
+            // Case discount
+            if (productBase.hasDiscount()) {
+                specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
+                price.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+                price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+            // Case normal
+            else {
+                specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+                price.setText("");
+            }
+        }
+    }
 
     /**
      * ################# RELATED ITEMS #################

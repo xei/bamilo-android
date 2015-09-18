@@ -434,4 +434,6 @@ public class RestConstants {
     public static final String JSON_MULTI = "multi";
     public static final String JSON_FILTER_SEPARATOR = "filter_separator";
     public static final String JSON_OPTION_TAG = "option";
+
+    public static final String JSON_PRICE_RANGE = "price_range";
 }
