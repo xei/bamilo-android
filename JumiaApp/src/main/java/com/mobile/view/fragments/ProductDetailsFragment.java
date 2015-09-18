@@ -1774,6 +1774,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //added: if buy add to Chart
         else if (id == R.id.btBuy)  executeAddProductToCart();
 
+        else if (id == R.id.SizeSection) showVariantsDialog();
+
     }
 
     @Override
