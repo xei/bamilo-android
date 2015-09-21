@@ -3,6 +3,7 @@ package com.mobile.newFramework.rest.interfaces;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.addresses.AddressCities;
+import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.campaign.Campaign;
@@ -415,6 +416,11 @@ public interface AigApiInterface {
     void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
 
     String getCities = "getCities";
+
+    @GET("/")
+    void getPostalCodes(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressPostalCodes>> callback);
+
+    String getPostalCodes = "getPostalCodes";
 
     /*
      * ## RATINGS/REVIEWS

@@ -218,6 +218,7 @@ public class RestConstants {
     public static final String ADDRESS_1 = "address1";
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
+    public static final String CITY_ID = "city_id";
     public static final String POSTCODE = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
