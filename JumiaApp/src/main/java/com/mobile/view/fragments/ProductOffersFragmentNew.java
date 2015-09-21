@@ -15,7 +15,7 @@ import android.widget.GridView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.OffersListAdapter;
+import com.mobile.controllers.OffersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductHelper;
@@ -49,7 +49,7 @@ import java.util.List;
  * @author Paulo Carvalho
  * @modified sergiopereira
  */
-public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapter.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
+public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
 
     private static final String TAG = ProductOffersFragmentNew.class.getSimpleName();
 
@@ -58,7 +58,6 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     private String mCompleteProductName;
 
     private String mCompleteBrand;
-
 
     private OfferList productOffers;
 
@@ -137,7 +136,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         Print.i(TAG, "ON VIEW CREATED");
         // Get views
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
-        mProductBrand = (TextView) view.findViewById(R.id.offer_product_count);
+        mProductBrand = (TextView) view.findViewById(R.id.offer_product_brand);
         mOffersList = (GridView) view.findViewById(R.id.offers_list);
     }
     
@@ -236,7 +235,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         // set the number of grid columns depending on the screen size    
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
         mOffersList.setNumColumns(numColumns);
-        OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(), productOffers.getOffers(), this);
+        OffersListAdapterNew offersAdapter = new OffersListAdapterNew(getActivity().getApplicationContext(),productOffers.getOffers(), this);
+    //    OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(),productOffers.getOffers(), this);
         mOffersList.setAdapter(offersAdapter);
         mOffersList.setOnItemClickListener(this);
     }
