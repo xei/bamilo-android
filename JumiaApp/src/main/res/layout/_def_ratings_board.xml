@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- TOP PART -->
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:minHeight="26dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/top"
+        >
+
+        <!-- RATINGS BOARD FOR SPECIFICATIONS -->
+
+        <!-- LEFT SIDE -->
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/averageRating"
+                style="@style/Caption"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Average Rating"
+
+                />
+
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/averageValue"
+                style="@style/Display1"
+                color="@color/black_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="46/5"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+
+                />
+
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/badgeValue"
+                style="@style/Badge"
+                color="@color/black_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="from 158 customers"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+
+                />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/item_center"
+            android:layout_width="1dp"
+            android:background="@color/black_300"
+            android:layout_toRightOf="@id/specs_item_key"
+            android:layout_height="26dp"
+            android:minHeight="26dp"
+            />
+
+
+        <!-- RIGHT SIDE -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 5 -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/five"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+
+                />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarFive"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/five"
+                android:layout_toEndOf="@+id/five"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/fiveValue"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(123)"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/progressBarFive"
+                android:layout_toEndOf="@+id/progressBarFive"
+
+
+                />
+
+
+            <!-- 4 -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/four"
+                android:layout_below="@+id/five"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+
+                />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarFour"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/four"
+                android:layout_below="@+id/progressBarFive"
+                android:layout_toEndOf="@+id/four"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/fourValue"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(123)"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/progressBarFour"
+                android:layout_toEndOf="@+id/progressBarFour"
+                android:layout_below="@+id/fiveValue"
+
+
+                />
+
+            <!-- 3 -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/three"
+                android:layout_below="@+id/four"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+
+                />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarThree"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/three"
+                android:layout_below="@+id/progressBarFour"
+                android:layout_toEndOf="@+id/three"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/threeValue"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(123)"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/progressBarThree"
+                android:layout_toEndOf="@+id/progressBarThree"
+                android:layout_below="@+id/fourValue"
+
+
+                />
+
+            <!-- 2 -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/two"
+                android:layout_below="@+id/three"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+
+                />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarTwo"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/two"
+                android:layout_below="@+id/progressBarThree"
+                android:layout_toEndOf="@+id/two"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/twoValue"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(123)"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/progressBarTwo"
+                android:layout_toEndOf="@+id/progressBarTwo"
+                android:layout_below="@+id/threeValue"
+
+
+                />
+
+
+            <!-- 1 -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/one"
+                android:layout_below="@+id/two"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentLeft="true"
+
+                />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBarOne"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/one"
+                android:layout_below="@+id/progressBarTwo"
+                android:layout_toEndOf="@+id/one"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/oneValue"
+                style="@style/Badge"
+                color="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(123)"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/progressBarOne"
+                android:layout_toEndOf="@+id/progressBarOne"
+                android:layout_below="@+id/twoValue"
+
+
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- BOTTOM PART -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        >
+
+        <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
+
+        <View
+            android:id="@+id/center_point"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignRight="@id/center_point"
+            android:layout_alignParentLeft="true"
+            >
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/info"
+                style="@style/Caption"
+                color="@color/black_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Have you used this product?"
+
+
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/info2"
+                style="@style/Caption"
+                color="@color/black_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate it now"
+
+
+                />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignLeft="@id/center_point"
+            android:layout_alignParentRight="true"
+            >
+
+            <!-- buttom write -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/btWriteReview"
+                style="@style/List2"
+                color="@color/orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Write a Review"
+                android:layout_gravity="center"
+
+
+                />
+
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
+
+
+
+
+
+

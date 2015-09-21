@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="locale"
+        android:orientation="vertical"
+        >
+
+        <!-- RATINGS SECTION -->
+
+        <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
+
+        <include layout="@layout/_def_ratings_board"  />
+
+        <!-- USERS SECTION -->
+
+        <include layout="@layout/header"  android:id="@+id/usersHeader" />
+
+        <com.mobile.components.ScrollViewReachable
+        android:id="@+id/reviews_scrollview_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false">
+
+        </com.mobile.components.ScrollViewReachable>
+
+
+
+</LinearLayout>

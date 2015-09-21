@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:minHeight="26dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    >
+
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/specs_item_key"
+        style="@style/text_normal"
+        color="@color/black_800"
+        android:layout_width="120dp"
+        android:layout_marginRight="8dp"
+        android:text="key" />
+
+    <View
+        android:id="@+id/item_center"
+        android:layout_width="1dp"
+        android:background="@color/black_400"
+        android:layout_toRightOf="@id/specs_item_key"
+        android:layout_height="wrap_content"
+        android:minHeight="26dp"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/specs_item_value"
+        style="@style/text_normal"
+        color="@color/black"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/item_center"
+        android:layout_toEndOf="@id/item_center"
+        android:singleLine="false"
+        android:layout_marginLeft="8dp"
+        android:text="vafghfghfgh  sdgdf dfgdfgdgggggggggsfsdf dfgdfg dfgd dfg dfg lue" />
+
+</LinearLayout>
