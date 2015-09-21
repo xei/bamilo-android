@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.TextView;
@@ -248,20 +249,33 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      */
     private void addSpecTable(ProductSpecification productSpecification){
 
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
+     //   final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
+        final View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_new, mProductSpecsContainer, false);
+    //    final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
+        final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.txTitle);
         final LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
 
         HashMap<String,String> specsMap = productSpecification.getSpecifications();
 
         if(specsMap != null && specsMap.size() > 0){
-            specHeader.setText(productSpecification.getTitle());
+            specHeader.setText(productSpecification.getTitle().toUpperCase());
             try {
                 Iterator it = specsMap.entrySet().iterator();
+                int count=0;
+                boolean isLast=false;
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
-                    addSpecTableRow(pair, specsList);
-//                    it.remove(); // avoids a ConcurrentModificationException
+
+                    //added: add horizontal separator in all elements except in the last
+                    count++;
+
+                    if(count ==  specsMap.size()-1)
+                    {
+                        isLast=true;
+                    }
+
+                    addSpecTableRow(pair, specsList,isLast);
+
                 }
 
                 mProductSpecsContainer.addView(theInflatedView);
@@ -276,15 +290,38 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param pair, key/value of the table
      * @param parent
      */
-    private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
+    private void addSpecTableRow(Map.Entry pair, final LinearLayout parent,boolean isLast){
+   //     final View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
+        final View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item_new, parent, false);
         final TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
         final TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
         specKey.setText(pair.getKey().toString());
         specValue.setText(pair.getValue().toString());
 
-        parent.addView(theInflatedView);
+        //added:create separator and add to parent except if is last element
+        if(!isLast) {
+            View separator = createSeparator();
+            parent.addView(theInflatedView);
+            parent.addView(separator);
+        }
+
+
+
+    }
+
+
+    /**
+     * Create a separator line
+     * */
+    private View createSeparator()
+    {
+        View view = new View(getBaseActivity().getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        view.setLayoutParams(params);
+        view.setBackgroundColor(getResources().getColor(R.color.black_400));
+        return view;
+
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
