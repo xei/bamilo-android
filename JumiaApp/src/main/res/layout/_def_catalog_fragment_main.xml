@@ -16,12 +16,8 @@
         android:layout_height="match_parent"
         android:layout_above="@id/catalog_loading_more"
         android:layout_marginTop="@dimen/catalog_tool_bar_height"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:clipToPadding="false"
-        android:paddingEnd="@dimen/margin_10px"
-        android:paddingLeft="@dimen/margin_10px"
-        android:paddingRight="@dimen/margin_10px"
-        android:paddingStart="@dimen/margin_10px"
         android:scrollbars="vertical" />
 
     <!-- FLOAT BUTTON -->

@@ -166,6 +166,12 @@
         <item name="android:background">@drawable/selector_listitem_rounded_margin_highlight</item>
     </style>
 
+    <style name="new_list_row_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/selector_list_item_highlight</item>
+    </style>
+
     <style name="list_row_rounded_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -466,20 +472,16 @@
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 
-    <style name="discount_percentage">
-        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width
-        </item>
-        <item name="android:layout_height">
-            @dimen/product_list_item_discount_percentage_image_height
-        </item>
-        <item name="android:background">@drawable/discount_badge</item>
-        <item name="android:fontFamily">roboto_bold</item>
+    <style name="discount_percentage" parent="TextBadge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/selector_discount_badge</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
+        <item name="android:padding">@dimen/margin_10px</item>
         <item name="android:text">-99%</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+        <item name="android:textColor">@color/color_accent</item>
         <item name="android:layoutDirection">ltr</item>
     </style>
 
@@ -710,6 +712,11 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="TextBody_3" parent="text_base">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">regular</item>
+    </style>
+
     <style name="TextBody_2" parent="text_base">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
@@ -723,6 +730,12 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextBadge" parent="text_base">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
     <style name="TextMenu" parent="text_base">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
@@ -731,6 +744,12 @@
     <style name="TextButton" parent="text_base">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <style name="ListDivider">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <!-- CUSTOM TEXT STYLES -->
