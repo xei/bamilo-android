@@ -215,7 +215,11 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             triggerAutoLogin();
         } else if (formResponse != null) {
             Print.d(TAG, "FORM ISN'T NULL");
-            loadForm(formResponse);
+            if (facebookLoginClicked) {
+                facebookLoginClicked = false;
+            } else {
+                loadForm(formResponse);
+            }
             cameFromRegister = false;
         } else {
             Print.d(TAG, "FORM IS NULL");
@@ -723,10 +727,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values,saveCredentials), mCallBack);
     }
 
     private void triggerLoginForm() {
@@ -748,7 +749,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         super.onClick(view);
         int id = view.getId();
         // Case FB button 
-        if(id == R.id.login_facebook_button) showFragmentLoading();
+        if(id == R.id.login_facebook_button) {
+            facebookLoginClicked = true;
+            showFragmentLoading();
+        }
         // Case sign in button
         else if (id == R.id.middle_login_button_signin) {
             // Log.d(TAG, "CLICKED ON SIGNIN");
@@ -762,7 +766,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         else if (id == R.id.middle_login_link_fgtpassword) {
             getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
-        // Case redister
+        // Case register
         else if (id == R.id.middle_login_link_register) {
             cameFromRegister = true;
             getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

@@ -131,7 +131,7 @@ public class LocationHelper implements LocationListener {
     
     
     /**
-     * Get the country code from the last known loaction using the GeoCoder api.
+     * Get the country code from the last known location using the GeoCoder api.
      * @param locationManager
      * @return true or false
      * @author sergiopereira
@@ -238,7 +238,7 @@ public class LocationHelper implements LocationListener {
         @Override
         public void run() {
             Print.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
-            // Valdiate flag
+            // Validate flag
             if(!locationReceived) {
                 // Remove the listener previously added
                 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
