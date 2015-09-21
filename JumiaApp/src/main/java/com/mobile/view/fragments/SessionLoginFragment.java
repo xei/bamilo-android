@@ -215,9 +215,11 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             triggerAutoLogin();
         } else if (formResponse != null) {
             Print.d(TAG, "FORM ISN'T NULL");
-            if (facebookLoginClicked){
+            if (facebookLoginClicked) {
                 facebookLoginClicked = false;
-            } else  loadForm(formResponse);
+            } else {
+                loadForm(formResponse);
+            }
             cameFromRegister = false;
         } else {
             Print.d(TAG, "FORM IS NULL");
