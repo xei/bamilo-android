@@ -1242,11 +1242,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
-
         sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }

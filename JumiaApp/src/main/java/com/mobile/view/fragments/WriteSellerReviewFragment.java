@@ -386,7 +386,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
         RelativeLayout mSellerRatingContainer = (RelativeLayout) getView().findViewById(R.id.seller_reviews_rating_container);
         RatingBar mSellerRatingBar = (RatingBar) getView().findViewById(R.id.seller_reviews_item_rating);
         TextView mSellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
-        TextView mProductPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+        TextView mProductPriceNormal = (TextView) getView().findViewById(R.id.product_price);
         TextView mProductPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
         TextView mReviewTitle = (TextView) getView().findViewById(R.id.write_title);
 
