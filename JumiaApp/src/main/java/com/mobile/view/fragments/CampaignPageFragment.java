@@ -81,15 +81,15 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public int BRAND = R.id.brand;
 
     public int PRICE = R.id.price;
-    
+
     public int PROD = R.id.product;
-    
+
     public int SKU = R.id.sku;
-    
+
     public int SIZE = R.id.size;
-    
+
     public int STOCK = R.id.stock;
-    
+
     public int DISCOUNT = R.id.discount;
     
     private Campaign mCampaign;
@@ -434,7 +434,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         String name = (String) view.getTag(NAME);
         String brand = (String) view.getTag(BRAND);
         double price = (Double) view.getTag(PRICE);
-        double discount = (Double) view.getTag(DISCOUNT);
+        int discount = (Integer) view.getTag(DISCOUNT);
         
         Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
@@ -661,22 +661,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         private static final int GREEN_PERCENTAGE = 64;
         
         private static final int ORANGE_PERCENTAGE = 34;
-
-        public int NAME = R.id.name;
-
-        public int BRAND = R.id.brand;
-
-        public int PRICE = R.id.price;
-        
-        public int PROD = R.id.product;
-        
-        public int SKU = R.id.sku;
-        
-        public int SIZE = R.id.size;
-        
-        public int STOCK = R.id.stock;
-        
-        public int DISCOUNT = R.id.discount;
         
         private LayoutInflater mInflater;
         
