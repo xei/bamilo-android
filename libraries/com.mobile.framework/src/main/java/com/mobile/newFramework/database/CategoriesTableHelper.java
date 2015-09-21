@@ -20,7 +20,6 @@ public class CategoriesTableHelper extends BaseTable {
     public static final String TABLE_NAME = "categories";
 
     public interface Columns {
-        String ID = "id";
         String URL_KEY = "url_key";
         String NAME = "category_name";
         String VIEW_COUNT = "category_view_counter";
@@ -54,8 +53,7 @@ public class CategoriesTableHelper extends BaseTable {
         return new StringBuilder()
                 .append("CREATE TABLE ").append(tableName)
                 .append(" (")
-                .append(Columns.ID).append(" INTEGER PRIMARY KEY, ")
-                .append(Columns.URL_KEY).append(" TEXT, ")
+                .append(Columns.URL_KEY).append(" TEXT PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")
                 .append(Columns.VIEW_COUNT).append(" INTEGER NOT NULL DEFAULT 1")
                 .append(" )")
@@ -138,12 +136,12 @@ public class CategoriesTableHelper extends BaseTable {
             if (cursor != null) cursor.close();
 
         } catch (SQLException e) {
-            Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED BRAND", e);
+            Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
         } finally {
             db.close();
         }
         //DarwinDatabaseSemaphore.getInstance().releaseLock();
-        Print.i(TAG, "TOP BRAND: " + category + " " + counter);
+        Print.i(TAG, "TOP CATEGORY: " + category + " " + counter);
         // Return name
         return category;
     }
