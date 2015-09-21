@@ -956,7 +956,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     private void trackCheckoutStarted(String customerId) {
         try {
             PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
-            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking());
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking(), cart.getAttributeSetIdList());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
