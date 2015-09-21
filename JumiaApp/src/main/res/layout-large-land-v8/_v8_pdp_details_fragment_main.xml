@@ -21,9 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/v8_scrooll_marginLeft"
         android:layout_marginBottom="@dimen/v8_scrooll_marginBottom"
-        android:layout_alignParentRight="true"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -33,6 +33,10 @@
             android:id="@+id/pdp_infoLeft"
             >
 
+            <!-- TITLE -->
+            <!-- changefashion: this is loaded dynamically
+         <include layout="@layout/pdp_product_title" android:id="@+id/TitleSection" />
+         -->
 
          <!-- IMAGE CONTAINER -->
 
@@ -120,5 +124,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             layout="@layout/buy_bar" />
+
 
 </RelativeLayout>

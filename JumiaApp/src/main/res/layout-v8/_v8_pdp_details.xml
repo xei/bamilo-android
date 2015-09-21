@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
+    android:gravity="center_vertical|right"
     >
 
     <!-- PRODUCT SPECIFICATIONS/ DESCRIPTION -->
@@ -15,15 +16,15 @@
         style="@style/Caption"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginRight="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:layout_marginEnd="@dimen/layout_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Multiline_text"
         android:layout_marginTop="@dimen/item_margin_top"
         android:layout_marginBottom="@dimen/item_margin_top"
         android:id="@+id/tx_multiline_text"
+        android:textAlignment="gravity"
         android:maxLines="@integer/details_max_lines"
+
         />
 
     <!-- SUBLIST BUTTON IS OPTIONAL-->

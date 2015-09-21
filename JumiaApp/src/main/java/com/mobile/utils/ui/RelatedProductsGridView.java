@@ -7,22 +7,23 @@ import android.util.AttributeSet;
 
 /**
  * Created by alexandra pires 31/08/2015.
+ * Gridview for related products in product details
  */
-public class PDVProductGridView extends RecyclerView {
+public class RelatedProductsGridView extends RecyclerView {
 
-    private static final String TAG = PDVProductGridView.class.getSimpleName();
+    private static final String TAG = RelatedProductsGridView.class.getSimpleName();
 
     private GridLayoutManager mGridLayoutManager;
 
-    public PDVProductGridView(Context context) {
+    public RelatedProductsGridView(Context context) {
         super(context);
     }
 
-    public PDVProductGridView(Context context, AttributeSet attrs) {
+    public RelatedProductsGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PDVProductGridView(Context context, AttributeSet attrs, int defStyle) {
+    public RelatedProductsGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

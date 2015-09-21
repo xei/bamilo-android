@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="@dimen/layout_item_height"
-    android:gravity="center_vertical"
+    android:gravity="center_vertical|right"
     android:background="@color/white"
     >
 
@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Item"
         android:id="@+id/tx_single_line_text"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
         />
 
 

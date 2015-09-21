@@ -69,7 +69,7 @@
         <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>
         -->
 
-        <item name="android:checkboxStyle">@style/Widget.Jumia.PDV.CheckBox</item>
+        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
         <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_green</item>
         <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_green</item>
 
@@ -126,15 +126,18 @@
     <!-- Check Box -->
 
     <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_btn_check_holo_green</item>
+        <!--
         <item name="android:button">@drawable/selector_btn_check_holo_orange</item>
+        -->
     </style>
 
     <!-- Check Box -->
-
+<!--
     <style name="Widget.Jumia.PDV.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_btn_check_holo_green</item>
     </style>
-
+-->
 
     <!-- List View -->
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">

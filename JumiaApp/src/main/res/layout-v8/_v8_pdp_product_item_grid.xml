@@ -35,7 +35,7 @@
         android:layout_height="72dp"
         android:layout_below="@id/image_loadable"
         android:orientation="vertical"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|right"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginRight="@dimen/layout_padding"
         android:id="@+id/info"
@@ -56,7 +56,7 @@
             android:textColor="@color/black"
             android:text="DESCRIPTION"
             android:maxLines="2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <LinearLayout
@@ -64,12 +64,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_discount"
-                style="@style/Body3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               />
 
 
             <com.mobile.components.customfontviews.TextView
@@ -78,7 +72,16 @@
                 android:textColor="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_discount"
+                style="@style/Body3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
+
                 />
 
         </LinearLayout>

@@ -6,7 +6,7 @@
         android:id="@+id/sep1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/line_separator"
+        android:background="@drawable/divider"
 
         />
 </LinearLayout>

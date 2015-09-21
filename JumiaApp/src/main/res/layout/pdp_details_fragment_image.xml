@@ -4,8 +4,8 @@
     android:paddingTop="@dimen/rounded_margin_mid"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:paddingLeft="@dimen/layout_padding"
+    android:paddingRight="@dimen/layout_padding"
     >
 
     <!-- IMAGE -->
@@ -25,12 +25,12 @@
 
         <ProgressBar
             android:id="@+id/image_loading_progress"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/progress_bar_dim"
+            android:layout_height="@dimen/progress_bar_dim"
             android:layout_gravity="center" 
             android:visibility="gone"/>
         
-        <ImageView 
+        <ImageView
             android:id="@+id/image_place_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,28 +54,8 @@
         android:layout_marginStart="@dimen/product_list_item_image_side_margin"
         android:layout_marginTop="@dimen/product_list_item_image_margin"
         android:padding="@dimen/rounded_margin_mid"
-        android:src="@drawable/btn_addfavourites"
+        android:src="@drawable/selector_favorite"
         />
-
-    <!-- SHARE -->
-
-    <!--
-    <ImageView
-        android:id="@+id/product_detail_product_image_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/product_list_item_image_side_margin"
-        android:layout_marginRight="@dimen/product_list_item_image_side_margin"
-        android:layout_marginTop="@dimen/product_list_item_image_margin"
-        android:padding="@dimen/rounded_margin_mid"
-
-        android:src="@drawable/selector_productdetails_share"
-        />
-        -->
-
-
+    
 
 </RelativeLayout>

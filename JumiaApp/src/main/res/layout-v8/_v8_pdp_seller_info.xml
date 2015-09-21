@@ -18,8 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding"
+        android:layout_gravity="right"
+        android:text="aaaaa"
         />
 
     <!-- RATING -->
@@ -28,32 +30,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
         android:paddingBottom="@dimen/item_margin_top"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:gravity="center|right"
         >
-
-        <RatingBar
-            android:id="@+id/seller_rating_bar"
-            style="@style/starRatingBarSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:isIndicator="true" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_rating_bar_rating_count"
             style="@style/Caption"
             color="@color/black_800"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
-            android:layout_toEndOf="@+id/product_detail_product_rating"
-            android:layout_toRightOf="@+id/product_detail_product_rating"
+            android:layout_marginRight="@dimen/margin_mid"
             android:text="(0)"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <RatingBar
+            android:id="@+id/seller_rating_bar"
+            style="@style/starRatingBarSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:isIndicator="true" />
+
+
 
 
     </LinearLayout>
@@ -64,21 +63,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
-        android:paddingBottom="@dimen/item_margin_top"
-        android:visibility="gone"
+        android:paddingBottom="16dp"
         android:id="@+id/deliverSection"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical|right"
+        android:visibility="gone"
+
         >
-        <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
-            color="@color/black"
-            android:layout_centerVertical="true"
-            android:text="Delivery time:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txDeliver"
-            />
+
 
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
@@ -91,6 +83,16 @@
 
             />
 
+        <com.mobile.components.customfontviews.TextView
+            style="@style/Header"
+            color="@color/black"
+            android:layout_centerVertical="true"
+            android:text="Delivery time "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txDeliver"
+            />
+
     </LinearLayout>
 
     <!-- WARRANTY: OPTIONAL -->
@@ -98,29 +100,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"  android:orientation="horizontal"
-        android:paddingBottom="@dimen/item_margin_top"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:gravity="center_vertical"
+        android:paddingBottom="16dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical|right"
         android:visibility="gone"
+
         >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/ic_warranty"
-            />
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
-            color="@color/black"
-            android:layout_centerVertical="true"
-            android:text="Warranty:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            />
 
         <com.mobile.components.customfontviews.TextView
             style="@style/Header"
@@ -129,6 +115,23 @@
             android:text="3 - 8 days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/Header"
+            color="@color/black"
+            android:layout_centerVertical="true"
+            android:text="Warranty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_warranty"
+            />
 
     </LinearLayout>
 

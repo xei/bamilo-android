@@ -11,11 +11,11 @@
     <!-- CONTENT -->
     <!-- GRID VIEW -->
 
-    <com.mobile.utils.ui.PDVProductGridView
+    <com.mobile.utils.ui.RelatedProductsGridView
         android:id="@+id/product_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:scrollbars="vertical"
 
         />

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:paddingLeft="28dp"
+    android:background="@color/white"
      >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -23,8 +22,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point"
-        android:layout_marginLeft="7dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/v8_scrooll_marginLeft"
+        android:layout_marginBottom="@dimen/v8_scrooll_marginBottom"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -34,10 +33,6 @@
             android:id="@+id/pdp_infoLeft"
             >
 
-            <!-- TITLE -->
-            <!--
-            <include layout="@layout/pdp_product_title" android:id="@+id/TitleSection" />
-            -->
 
             <!-- IMAGE CONTAINER -->
 
@@ -54,22 +49,14 @@
 
     <!-- Right Container -->
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignLeft="@id/center_point"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point"
-        android:layout_marginLeft="9dp" >
-
-
-
         <com.mobile.utils.ScrollViewWithHorizontal
             android:id="@+id/right_scrooler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/center_point"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@id/center_point"
            >
 
             <LinearLayout
@@ -83,20 +70,17 @@
 
                 <include layout="@layout/pdp_price_tag"   />
 
+
                 <!-- SEPARATOR -->
 
-                <TextView
-                    android:id="@+id/sep1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/line_separator"
-
-                    />
+                <View android:layout_width="match_parent"  android:layout_height="wrap_content"  android:background="@drawable/divider" />
 
                 <!-- RATING -->
 
                 <include layout="@layout/pdp_rating" android:id="@+id/RatingSection"   />
                 />
+
+                <View android:layout_width="match_parent"  android:layout_height="wrap_content"  android:background="@drawable/divider" />
 
                 <!--SIZE: OPTIONAL -->
 
@@ -134,29 +118,6 @@
                 </LinearLayout>
 
 
-                <!-- BUNDLE PRODUCTS -->
-            <!--
-                <include
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/product_detail_stars_container"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginRight="@dimen/rounded_margin_small"
-                    android:layout_marginTop="@dimen/rounded_margin_small"
-                    layout="@layout/product_details_fragment_bundle" />
-
-
-
-                <include
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/rounded_margin_small"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="@dimen/rounded_margin_small"
-                    layout="@layout/product_details_fragment_related" />
-            </LinearLayout>
-            -->
         </com.mobile.utils.ScrollViewWithHorizontal>
 
         <!-- BUTTONS -->
@@ -167,6 +128,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             layout="@layout/buy_bar" />
-    </RelativeLayout>
+
 
 </RelativeLayout>

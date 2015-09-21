@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/white"
 
     >
 
@@ -31,26 +31,24 @@
             android:orientation="vertical"
             >
 
-            <!-- TITLE GENERAL -->
-            <!--
-                <include layout="@layout/pdp_product_title" android:id="@+id/TitleSection"   />
-                -->
 
                 <!-- IMAGE CONTAINER -->
 
+
                 <include layout="@layout/pdp_details_fragment_image"   android:id="@+id/imageGallery" />
 
+
                 <!-- PRODUCT IMAGES LIST -->
+
 
                 <include layout="@layout/pdv_product_images" android:id="@+id/productImages" />
 
 
+
             <!-- SEPARATOR -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/line_separator"
-                />
+
+            <View android:layout_width="match_parent"  android:layout_height="wrap_content"  android:background="@drawable/divider" />
+
 
             <!-- PRICE -->
 
@@ -58,7 +56,8 @@
 
             <!-- SEPARATOR -->
 
-            <include layout="@layout/separator" />
+            <View android:layout_height="wrap_content"  android:layout_width="match_parent" android:background="@drawable/divider" />
+
 
             <!-- RATING -->
 
@@ -98,8 +97,8 @@
 
 
 
-
         </LinearLayout>
     </com.mobile.utils.ScrollViewWithHorizontal>
+
 
 </RelativeLayout>

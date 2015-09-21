@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
@@ -49,8 +47,6 @@ import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.database.BrandsTableHelper;
-import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
@@ -85,8 +81,8 @@ import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
-import com.mobile.utils.ui.PDVProductGridAdapter;
-import com.mobile.utils.ui.PDVProductGridView;
+import com.mobile.utils.ui.RelatedProductsGridAdapter;
+import com.mobile.utils.ui.RelatedProductsGridView;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -176,7 +172,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private String mNavigationSource;
 
-    private RelativeLayout loadingRating;
+    private RelativeLayout mLoadingRating;
 
     private String mPhone2Call = "";
 
@@ -255,45 +251,46 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     //added
     private TextView mDescription;
 
-    private TextView txSpecsList;
+    private TextView mTxSpecsList;
 
-    private PDVProductGridView gvRelatedProds;
+    private RelatedProductsGridView mGvRelatedProds;
 
     private LinearLayout mComboSection;
 
-    private LinearLayout tableBundles;
+    private LinearLayout mTableBundles;
 
-    private TextView comboTitle;
-
- //   private View mProductPicturesContainer;
- //    private HorizontalListView mProductPicturesListView;
+    private TextView mComboTitle;
 
     private LinearLayout mProductPicturesContainer;
 
-    private HorizontalListView mCombosContainer;
 
     private  LinearLayout mPDVContainer;
 
-    private  LinearLayout mPDVContainerLeft;    //tablet and landscape
+    private  LinearLayout mPDVContainerLeft;
+
     private  ImageView mMainImage;
 
     private  LinearLayout mRatingContainer;
 
     private  LinearLayout sellerView;
 
-    private LinearLayout descrLayout;   //description section
+    private LinearLayout mDescrLayout;   //description section
 
-    private LinearLayout specsLayout;   //specifications section
+    private LinearLayout mSpecsLayout;   //specifications section
 
-    private LinearLayout otherVariationsLayout; //other variations section
+    private LinearLayout mOtherVariationsLayout; //other variations section
 
-    private LinearLayout sizeLayout; //size section
+    private LinearLayout mSizeLayout; //size section
 
-    private LinearLayout relatedProductsLayout; //related products
+    private LinearLayout mRelatedProductsLayout; //related products
 
-    private LinearLayout comboProductsLayout; //comboSection
+    private LinearLayout mComboProductsLayout; //comboSection
 
+    private static final int TITLE_POSITION_GENERAL = 0;
 
+    private static final int TITLE_POSITION_FASHION = 2;
+
+    private static final int MAX_LINES_DESCRIPTION = 6;
 
     //buttons
 
@@ -354,6 +351,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
             mProductBundle = savedInstanceState.getParcelable(PRODUCT_BUNDLE);
         }
+
         Print.d(TAG, "CURRENT SELECTED SIMPLE: " + mSelectedSimple);
     }
 
@@ -599,7 +597,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mGalleryViewGroupFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
 
         //pictures list
-        mProductPicturesContainer =  (LinearLayout) view.findViewById(R.id.productImages);
+        mProductPicturesContainer = (LinearLayout) view.findViewById(R.id.productImages);
+
+        mMainImage = (ImageView) (view.findViewById(R.id.imageGallery)).findViewById(R.id.image_place_holder);
+
+        mTableBundles = (LinearLayout) view.findViewById(R.id.tableBundles);
 
         // Prices
         mSpecialPriceText = (TextView) view.findViewById(R.id.product_price);
@@ -613,34 +615,29 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mRatingContainer.setOnClickListener(this);
 
 
-        mMainImage = (ImageView) (view.findViewById(R.id.imageGallery)).findViewById(R.id.image_place_holder);
-
-
-        tableBundles = (LinearLayout) view.findViewById(R.id.tableBundles);
-
         //      loadCombosSection(view.findViewById(R.id.CombosSection));   //combos
-        comboTitle = (TextView)view.findViewById(R.id.ComboHeaderSection).findViewById(R.id.txTitle);
-        comboTitle.setText("COMBOS");
+        mComboTitle = (TextView)view.findViewById(R.id.ComboHeaderSection).findViewById(R.id.txTitle);
+        mComboTitle.setText(R.string.combo);
         mComboSection = (LinearLayout) view.findViewById(R.id.comboGlobal);
 
 
         //related products
-        relatedProductsLayout = (LinearLayout) view.findViewById(R.id.RelatedSection);
-        gvRelatedProds = (PDVProductGridView) view.findViewById(R.id.product_grid_view);
+        mRelatedProductsLayout = (LinearLayout) view.findViewById(R.id.RelatedSection);
+        mGvRelatedProds = (RelatedProductsGridView) view.findViewById(R.id.product_grid_view);
 
         //seller
         sellerView = (LinearLayout) view.findViewById(R.id.SellerSection);
 
-        descrLayout = (LinearLayout)view.findViewById(R.id.DescriptionSection); //description
+        mDescrLayout = (LinearLayout)view.findViewById(R.id.DescriptionSection); //description
 
-        specsLayout = (LinearLayout)view.findViewById(R.id.SpecificationsSection);  //specifications
+        mSpecsLayout = (LinearLayout)view.findViewById(R.id.SpecificationsSection);  //specifications
 
-        otherVariationsLayout = (LinearLayout)view.findViewById(R.id.OtherVariationsSection);   //other variations
+        mOtherVariationsLayout = (LinearLayout)view.findViewById(R.id.OtherVariationsSection);   //other variations
 
-        sizeLayout = (LinearLayout)view.findViewById(R.id.SizeSection);   //size section    //added
+        mSizeLayout = (LinearLayout)view.findViewById(R.id.SizeSection);   //size section    //added
 
-        comboProductsLayout  = (LinearLayout)view.findViewById(R.id.CombosSection);   //comboSection
-        comboProductsLayout.setVisibility(View.GONE);   //default
+        mComboProductsLayout = (LinearLayout)view.findViewById(R.id.CombosSection);   //comboSection
+        mComboProductsLayout.setVisibility(View.GONE);   //default
 
         mPDVContainer = (LinearLayout) view.findViewById(R.id.pdp_info);
 
@@ -652,11 +649,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ImageButton imBtCall=(ImageButton) view.findViewById(R.id.pdp_buy_bar).findViewById(R.id.imBtCall);
         imBtCall.setOnClickListener(this);
 
-        AppCompatButton btBuy = (AppCompatButton) view.findViewById(R.id.pdp_buy_bar).findViewById(R.id.btBuy);
+        Button btBuy = (Button) view.findViewById(R.id.pdp_buy_bar).findViewById(R.id.btBuy);
         btBuy.setOnClickListener(this);
     }
 
-    //added: load optional sections:
+
+
+
+
+    /**
+     * Load product specifications and description layout
+     * @param headerTitle - section's title
+     * @param view - View wich corresponds to section
+     * */
     private void loadDetailsSection(View view, String headerTitle)
     {
         //specifications
@@ -664,15 +669,23 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         txhTitle.setText(headerTitle); //specifications or description
 
         if(headerTitle.equalsIgnoreCase(getResources().getString(R.string.product_specifications)))
-            txSpecsList = (TextView) view.findViewById(R.id.tx_multiline_text);
+            mTxSpecsList = (TextView) view.findViewById(R.id.tx_multiline_text);
         else
             mDescription = (TextView) view.findViewById(R.id.tx_multiline_text);
     }
 
-    //other variations
-    //changeFashion: change title if vertical is fashion
-    private void loadSingleLineSection(View view,String title)
-    {
+
+
+
+
+    /**
+     * Load header section for Specifications, Description, See Other Colors (fashion products) / Size
+     * @param title - section's title
+     * @param view - View wich corresponds to section
+     *
+     * */
+
+    private void loadSingleLineSection(View view, String title) {
         //other variations
         TextView txOthersVar = (TextView) view.findViewById(R.id.tx_single_line_text);
         txOthersVar.setText(title); //specifications /description / see another colors / size
@@ -680,11 +693,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
 
-// ---------------------------------------------------------------------------
 
     /**
-     * Validate its to show specifications or not
+     * Validate its to show specifications or not (old version)
      */
+    /*
     private void checkProductDetailsVisibility() {
         if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
             if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) &&
@@ -696,6 +709,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mDetailsSection.setOnClickListener(this);
         }
     }
+    */
 
     private void setOffersInfo() {
         if (mCompleteProduct != null && mCompleteProduct.getTotalOffers() > 0) {
@@ -772,7 +786,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
     /**
-     *
+     * Set product price info
+     * @param - a base Product
      */
     private void setProductPriceInfo(ProductBase productBase) {
         Print.d(TAG, "SHOW PRICE INFO: " + productBase.getPrice() + " " + productBase.getSpecialPrice());
@@ -801,6 +816,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * TODO: Use Placeholders
+     * Set rating stars and info
      */
     private void setRatingInfo() {
         float ratingAverage = (float) mCompleteProduct.getAvgRating();
@@ -808,8 +824,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Integer reviewsCount = mCompleteProduct.getTotalReviews();
 
         if(ratingCount == 0 && reviewsCount == 0)
+        {
             mProductRatingCount.setText(getResources().getString(R.string.be_first_rate));    //be the first to rate if hasn't
-        else {
+        }
+        else
+        {
             //changeFashion: rating style is changed if vertical is fashion
             if(mCompleteProduct.isFashion())
                 //get the other rating bar
@@ -958,12 +977,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
+
+
+
+    /**
+     * Fills and displays a compleet product info
+     * @param product - Complete product
+     * */
     private void displayProduct(ProductComplete product) {
         Print.d(TAG, "SHOW PRODUCT");
         // Show wizard
-   /*     isToShowWizard();
+ //       isToShowWizard();
         // Call phone
-        setCallPhone();
+  /*      setCallPhone();
         // validate specifications layout
         checkProductDetailsVisibility();
         // Get simple position from deep link value
@@ -1013,9 +1039,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
         //changed apires
-   //     checkProductDetailsVisibility();
         // Get simple position from deep link value
-        if (mDeepLinkSimpleSize != null) {
+ /*       if (mDeepLinkSimpleSize != null) {
             locateSimplePosition(mDeepLinkSimpleSize, product);
         }
 
@@ -1024,7 +1049,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             BrandsTableHelper.updateBrandCounter(product.getBrand());
         } catch (IllegalStateException | SQLiteException e) {
             // ...
-        }
+        }*/
 
         mCompleteProduct = product;
         mCompleteProductSku = product.getSku();
@@ -1033,7 +1058,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Set favourite
         mImageFavourite.setSelected(mCompleteProduct.isWishList());
-        setWishListButtonLook();
+ //       setWishListButtonLook();
         // Validate gallery
  //       setProductGallery(product);
         //product images and gallery
@@ -1057,8 +1082,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //combos/bundles
         setBundles(mCompleteProduct);
         //related Products
-        ArrayList<ProductRegular> RelatedItemsArrayList = new ArrayList<>(mCompleteProduct.getRelatedProducts());
-        showRelatedItemsLayout(RelatedItemsArrayList);
+        showRelatedItemsLayout(mCompleteProduct.getRelatedProducts());
 
 
         // Tracking
@@ -1070,6 +1094,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     //changeFashion:
     //title placing changes if product is fashion
+    /**
+     * Change and put the title in the correct position within the layout if it's fashion or not
+     * */
     private void setTitle()
     {
 
@@ -1098,9 +1125,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
             if (mCompleteProduct.isFashion())
-                container.addView(layoutTitle, 2);   //adds below pictures layout
+                container.addView(layoutTitle, TITLE_POSITION_FASHION);   //adds below pictures layout
             else
-                container.addView(layoutTitle, 0);   //adds above image gallery*/
+                container.addView(layoutTitle, TITLE_POSITION_GENERAL);   //adds above image gallery*/
 
 
         }
@@ -1111,7 +1138,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
 
-    //apires: description can be optional
+    /**
+     * Get and fills the product description section if has description
+     * */
     private void setDescription()
     {
         if(mCompleteProduct == null)
@@ -1119,22 +1148,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         String description = mCompleteProduct.getDescription();
 
-        if(description.isEmpty())   //it can be optional
+        if(TextUtils.isEmpty(description))   //it can be optional
         {
-            if(descrLayout != null)
-                descrLayout.setVisibility(View.GONE);
+            if(mDescrLayout != null)
+                mDescrLayout.setVisibility(View.GONE);
             return;
         }
 
         //load headers
-        loadDetailsSection(descrLayout.findViewById(R.id.DescriptionSection), getResources().getString(R.string.description).toUpperCase());
+        loadDetailsSection(mDescrLayout.findViewById(R.id.DescriptionSection), getResources().getString(R.string.description).toUpperCase());
         //description
         mDescription.setText(description);
-        if(mDescription.getLineCount() > 6) //shows max 6 lines
-            mDescription.setMinLines(6);
+        if(mDescription.getLineCount() > MAX_LINES_DESCRIPTION) //shows max 6 lines
+            mDescription.setMinLines(MAX_LINES_DESCRIPTION);
 
         //add read more button if not exists
-        LinearLayout buttonReadMore = (LinearLayout)descrLayout.findViewWithTag("btReadMore");
+        LinearLayout buttonReadMore = (LinearLayout) mDescrLayout.findViewWithTag("btReadMore");
         if(buttonReadMore == null) {
             LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -1150,16 +1179,31 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             txSubList.setText(getResources().getString(R.string.read_more));
 
             //separators for the button:
-            LinearLayout separator1 = (LinearLayout) inflater.inflate(R.layout.separator, null);
-            LinearLayout separator2 = (LinearLayout) inflater.inflate(R.layout.separator, null);
+            View separator1 = createSeparator();
+            View separator2 = createSeparator();
 
             //add button to description layout
-            descrLayout.addView(separator1);
-            descrLayout.addView(buttonReadMore);
-            descrLayout.addView(separator2);
+            mDescrLayout.addView(separator1);
+            mDescrLayout.addView(buttonReadMore);
+            mDescrLayout.addView(separator2);
         }
 
 
+
+    }
+
+
+    /**
+     * Create a separator line
+     * */
+    private View createSeparator()
+    {
+        View view = new View(getBaseActivity().getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
+        view.setBackground(getResources().getDrawable(R.drawable.divider));
+
+        return view;
 
     }
 
@@ -1176,6 +1220,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
     //added apires: load specifications button if has specifications
+    /**
+     * Load specifications button if has specifications
+     * @param arrSpecs - lis of product specifications
+     * */
     private void setProductSpecificationsList(ArrayList <ProductSpecification> arrSpecs)
     {
 
@@ -1186,14 +1234,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //changeFashion: hide view if is fashion too
         if(mCompleteProduct.isFashion() || arrSpecs == null || arrSpecs.isEmpty())
         {
-            if(specsLayout != null)
-                specsLayout.setVisibility(View.GONE);
+            if(mSpecsLayout != null)
+                mSpecsLayout.setVisibility(View.GONE);
             return;
         }
 
         //load specifications layout if has specifications
         //load headers
-        loadDetailsSection(specsLayout, getResources().getString(R.string.product_specifications).toUpperCase());
+        loadDetailsSection(mSpecsLayout, getResources().getString(R.string.product_specifications).toUpperCase());
 
             //load content
             HashMap<String,String> mSpecs;
@@ -1213,16 +1261,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             }
 
-            txSpecsList.setText(specs);
+            mTxSpecsList.setText(specs);
             // add separator
-            LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout separator = (LinearLayout) inflater.inflate(R.layout.separator, null);
-            specsLayout.addView(separator);
+            View separator = createSeparator();
+
+           mSpecsLayout.addView(separator);
             //add button "more specifications" if has more than 4
             if(count > 4)
             {
                 //check first if button already exists:
-                LinearLayout buttonSpecs = (LinearLayout) specsLayout.findViewWithTag("btMoreSpecifications");
+                LinearLayout buttonSpecs = (LinearLayout) mSpecsLayout.findViewWithTag("btMoreSpecifications");
+                LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if(buttonSpecs == null) {
                     buttonSpecs = (LinearLayout) inflater.inflate(R.layout.sublist, null);
                     buttonSpecs.setTag("btMoreSpecifications");
@@ -1237,10 +1286,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TextView txSubList = (TextView) buttonSpecs.findViewById(R.id.tx_slist_title);
                     txSubList.setText(getResources().getString(R.string.more_specifications));
 
-                    LinearLayout separator2 = (LinearLayout) inflater.inflate(R.layout.separator, null);
+                    View separator2 =   createSeparator();
 
-                    specsLayout.addView(buttonSpecs);   //add button
-                    specsLayout.addView(separator2);    //add separator in the end
+                    mSpecsLayout.addView(buttonSpecs);   //add button
+                    mSpecsLayout.addView(separator2);    //add separator in the end
                 }
 
 
@@ -1297,6 +1346,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * 
      * @author manuel
      * @modified sergiopereira
+     * @modified alexandrapires
      */
     private void setProductVariations() {
         Print.i(TAG, "ON DISPLAY VARIATIONS");
@@ -1309,23 +1359,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Validate variations
         if (isNotValidVariation(mCompleteProduct.getVariations())) {
-            if (otherVariationsLayout != null)
-                otherVariationsLayout.setVisibility(View.GONE);
+            if (mOtherVariationsLayout != null)
+                mOtherVariationsLayout.setVisibility(View.GONE);
 
             return;
         }
 
         //add separator
-        LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout separator = (LinearLayout) inflater.inflate(R.layout.separator, null);
-        mPDVContainer.addView(separator, 1);
+        View separator = createSeparator();
+        mOtherVariationsLayout.addView(separator, 0);
         //changeFashion: change title if is fashion
         String title= getResources().getString(R.string.see_other_variations);
         if(mCompleteProduct.isFashion())
                 title= getResources().getString(R.string.see_other_colors);
 
-        loadSingleLineSection(otherVariationsLayout,title);
-        otherVariationsLayout.setOnClickListener(this);
+        loadSingleLineSection(mOtherVariationsLayout,title);
+        mOtherVariationsLayout.setOnClickListener(this);
 
         //the variations are not shown in PDV page, just the button
 
@@ -1367,6 +1416,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 
+    /**
+     * Load size component if has sizes
+     * */
     private void setProductSize() {
         Print.i(TAG, "ON DISPLAY SIZE");
 
@@ -1379,25 +1431,25 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate size
         String size = mCompleteProduct.getVariationName();
         if (size.isEmpty()) {
-            if (sizeLayout != null)
-                sizeLayout.setVisibility(View.GONE);
+            if (mSizeLayout != null)
+                mSizeLayout.setVisibility(View.GONE);
 
             return;
         }
-        //add separator
-        LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout separator = (LinearLayout) inflater.inflate(R.layout.separator, null);
-        mPDVContainer.addView(separator, 1);
+
         String title= getResources().getString(R.string.pdv_size);
 
-        loadSingleLineSection(sizeLayout,title);
-        sizeLayout.setOnClickListener(this);
+        loadSingleLineSection(mSizeLayout,title);
+        mSizeLayout.setOnClickListener(this);
 
 
     }
 
 
-    //apires: added: Load small images and gallery
+
+    /**
+     * Load gallery and small images
+     * */
     private void setProductImages()
     {
         if (mCompleteProduct == null) {
@@ -1409,6 +1461,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if(mProductPicturesContainer!= null && mProductPicturesContainer.getChildCount() == 0) {
             LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             ArrayList<String> imagesUrls = mCompleteProduct.getImageList();
+
             for (int i = 0; i < imagesUrls.size(); i++) {
                 LinearLayout layoutImage = (LinearLayout) getImageLoaded(imagesUrls.get(i), inflater);
                 mProductPicturesContainer.addView(layoutImage);
@@ -1416,8 +1469,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
 
             // Show container
-            if (imagesUrls.size() > 0)
+            if (imagesUrls.size() > 0) {
                 mProductPicturesContainer.setVisibility(View.VISIBLE);
+            }
 
             //fill image gallery
             // Match the cached image list with the current image list order
@@ -1448,6 +1502,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     }
 
+
+    /**
+     * Loads and image and inflates into it's section
+     * @param imageUrl - product image's url
+     * @param inflater -  LayoutInflater
+     * */
     private View getImageLoaded(String imageUrl,LayoutInflater inflater)
     {
         View holder = inflater.inflate(R.layout.pdv_images_item,null);
@@ -1461,8 +1521,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     }
 
-    //image click
-    private void setOnClick(final View view, final String url){
+
+
+
+    /**
+     * Allows to change the main image on clicking in the specific view (that holds the small image)
+     * @param url - product image's url to change to
+     * @param view -  View that holds the image
+     * */
+    private void setOnClick(final View view, final String url) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1481,6 +1548,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Method used to create the view
      * @modified sergiopereira
+     * @modified alexandrapires
      */
     private void showRelatedItemsLayout(ArrayList<ProductRegular> relatedItemsList) {
 
@@ -1516,33 +1584,33 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
             //changed
-            if(relatedItemsList == null || relatedItemsList.isEmpty() ){    //doesn't show the area if there is not related products
+            if(CollectionUtils.isEmpty(relatedItemsList)){    //doesn't show the area if there is not related products
                 //    mRelatedContainer.setVisibility(View.GONE);
-                if(relatedProductsLayout != null)
-                    relatedProductsLayout.setVisibility(View.GONE);
+                if(mRelatedProductsLayout != null)
+                    mRelatedProductsLayout.setVisibility(View.GONE);
                 return;
             }
 
                 //change headerText
-                TextView txHeader = (TextView) relatedProductsLayout.findViewById(R.id.txTitle);
-                txHeader.setText("YOU MAY ALSO LIKE");
+                TextView txHeader = (TextView) mRelatedProductsLayout.findViewById(R.id.txTitle);
+                txHeader.setText(R.string.may_like);
 
                 //Build grid view
-                gvRelatedProds = (PDVProductGridView) relatedProductsLayout.findViewById(R.id.product_grid_view);
-                PDVProductGridAdapter adapter = new PDVProductGridAdapter(getBaseActivity().getApplicationContext(), relatedItemsList);
+                mGvRelatedProds = (RelatedProductsGridView) mRelatedProductsLayout.findViewById(R.id.product_grid_view);
+                RelatedProductsGridAdapter adapter = new RelatedProductsGridAdapter(getBaseActivity().getApplicationContext(), relatedItemsList);
 
-                gvRelatedProds.setAdapter(adapter);
-        gvRelatedProds.setHasFixedSize(true);
+                mGvRelatedProds.setAdapter(adapter);
+                mGvRelatedProds.setHasFixedSize(true);
 
-        gvRelatedProds.setGridLayoutManager(getBaseActivity().getApplicationContext(), adapter.getNumberOfColumns());
-        gvRelatedProds.post(new Runnable() {
-            @Override
-            public void run() {
-                int totalHeight = calcGridHeight((PDVProductGridAdapter) gvRelatedProds.getAdapter(), gvRelatedProds);
-                ViewGroup.LayoutParams params = gvRelatedProds.getLayoutParams();
-                params.height = totalHeight;
-                gvRelatedProds.setLayoutParams(params);
-                gvRelatedProds.setItemAnimator(new DefaultItemAnimator());
+                mGvRelatedProds.setGridLayoutManager(getBaseActivity().getApplicationContext(), adapter.getNumberOfColumns());
+                mGvRelatedProds.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int totalHeight = calcGridHeight((RelatedProductsGridAdapter) mGvRelatedProds.getAdapter(), mGvRelatedProds);
+                        ViewGroup.LayoutParams params = mGvRelatedProds.getLayoutParams();
+                        params.height = totalHeight;
+                        mGvRelatedProds.setLayoutParams(params);
+                        mGvRelatedProds.setItemAnimator(new DefaultItemAnimator());
                     }
                 });
 
@@ -1551,7 +1619,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
 
-    private int calcGridHeight(PDVProductGridAdapter adapter, PDVProductGridView gvRelatedProds)
+
+    /**
+     * Method to calculate the related products height in runtime
+     * */
+    private int calcGridHeight(RelatedProductsGridAdapter adapter, RelatedProductsGridView gvRelatedProds)
     {
         int totalHeight =  0;
 
@@ -1561,7 +1633,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         }
 
-        gridItem.measure(0,0);
+        gridItem.measure(0, 0);
         totalHeight = gridItem.getMeasuredHeight() * (adapter.getItemCount()/adapter.getNumberOfColumns());
 
         return totalHeight;
@@ -1703,7 +1775,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.btBuy)  executeAddProductToCart();
 
     }
-    
+
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
@@ -1764,7 +1836,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * 
+     *
      */
     private void onClickCallToOrder() {
         TrackerDelegator.trackCall(getBaseActivity());
@@ -1792,10 +1864,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Get item
             if (mCompleteProduct.isWishList()) {
                 triggerRemoveFromWishList(mCompleteProduct.getSku());
-                mImageFavourite.setImageDrawable(getResources().getDrawable(R.drawable.btn_addfavourites));
+         //       mImageFavourite.setImageDrawable(getResources().getDrawable(R.drawable.btn_addfavourites));
             } else {
                 triggerAddToWishList(mCompleteProduct.getSku());
-                mImageFavourite.setImageDrawable(getResources().getDrawable(R.drawable.btn_addfavourites_selected));
+       //         mImageFavourite.setImageDrawable(getResources().getDrawable(R.drawable.btn_addfavourites_selected));
             }
             // Update value
             mImageFavourite.setSelected(!mCompleteProduct.isWishList());
@@ -2220,18 +2292,21 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
     //added apires: build combo section if has bundles
-    private void buildComboSection(BundleList p)
+    /**
+     * Build combo section if has bundles
+     * **/
+    private void buildComboSection(BundleList bundleList)
     {
-        if(p == null)
+        if(bundleList == null)
         {
-            if (comboProductsLayout != null) {
-                comboProductsLayout.setVisibility(View.GONE);
+            if (mComboProductsLayout != null) {
+                mComboProductsLayout.setVisibility(View.GONE);
                 return;
             }
         }
 
         //load header
-        LinearLayout headerCombo = (LinearLayout)comboProductsLayout.findViewById(R.id.ComboHeaderSection);
+        LinearLayout headerCombo = (LinearLayout) mComboProductsLayout.findViewById(R.id.ComboHeaderSection);
         TextView comboHeaderTitle = (TextView) headerCombo.findViewById(R.id.txTitle);
         //changeFashion: change title if is fashion
         String titleCombo = getResources().getString(R.string.combo);
@@ -2240,7 +2315,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         comboHeaderTitle.setText(titleCombo);
 
-        ArrayList<ProductBundle> bundleProducts = p.getBundleProducts();
+        ArrayList<ProductBundle> bundleProducts = bundleList.getBundleProducts();
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count =0;
 
@@ -2248,31 +2323,36 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             LinearLayout comboProductItem = (LinearLayout) inflater.inflate(R.layout.pdp_product_item_bundle, null);
             FillProductBundleInfo(comboProductItem, item);
-            tableBundles.addView(comboProductItem);
+            mTableBundles.addView(comboProductItem);
 
             if(count < bundleProducts.size() - 1)   //add plus separator
             {
                 //separator
                 LinearLayout imSep = (LinearLayout) inflater.inflate(R.layout.pdp_plus_bundle, null);
-                tableBundles.addView(imSep);
+                mTableBundles.addView(imSep);
             }
 
             count++;
 
         }
 
-        tableBundles.setOnClickListener(new OnClickListener() {
+        mTableBundles.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //opens bundle page here
             }
         });
-        comboProductsLayout.setVisibility(View.VISIBLE);
+        mComboProductsLayout.setVisibility(View.VISIBLE);
 
 
     }
 
 
+    /**
+     * Fill a product bundle info
+     * @param view - combo item view
+     * @param p - product bundle
+     * */
     private void FillProductBundleInfo(View view, ProductBundle p)
     {
         ImageView  mImage = (ImageView) view.findViewById(R.id.image_view);
@@ -2312,7 +2392,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void hideBundle() {
       //  mBundleContainer.setVisibility(View.GONE);
-        comboProductsLayout.setVisibility(View.GONE);
+        mComboProductsLayout.setVisibility(View.GONE);
     }
 
     /**
