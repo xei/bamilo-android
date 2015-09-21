@@ -1,12 +1,15 @@
 package com.mobile.helpers.address;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -19,7 +22,7 @@ import java.util.Map;
  */
 public class GetCitiesHelper extends SuperBaseHelper {
     
-    private static String TAG = GetCitiesHelper.class.getSimpleName();
+    public static String TAG = GetCitiesHelper.class.getSimpleName();
     
     public static String REGION_ID_TAG = "region_id";
     
@@ -33,16 +36,20 @@ public class GetCitiesHelper extends SuperBaseHelper {
     }
 
     @Override
+    protected String getRequestUrl(Bundle args) {
+        return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
+    }
+
+    @Override
     protected Map<String, String> getRequestData(Bundle args) {
         customTag = args.getString(CUSTOM_TAG);
         Map<String, String> data = new HashMap<>();
-        data.put("region", args.getString(REGION_ID_TAG));
+        data.put(RestConstants.REGION, args.getString(REGION_ID_TAG));
         return data;
     }
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new GetCities(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getCities);
     }
 
@@ -159,4 +166,13 @@ public class GetCitiesHelper extends SuperBaseHelper {
             this.customTag = customTag;
         }
     }
+    
+    public static Bundle createBundle(String url, int region, String tag) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
+        bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
+        bundle.putString(GetCitiesHelper.CUSTOM_TAG, tag);
+        return bundle;
+    }
+
 }

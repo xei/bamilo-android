@@ -1,14 +1,11 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +24,7 @@ public class AigGetProductOffersTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/sony-70-inch-kdl-70r550a-bravia-3d-internet-led-backlight-tv-85191.html";
+        return AigMobApiNigeriaTestSuite.HOST+"/sony-70-inch-kdl-70r550a-bravia-3d-internet-led-backlight-tv-85191.html";
     }
 
     @Override
@@ -41,7 +38,7 @@ public class AigGetProductOffersTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        ProductOffers productOffers = (ProductOffers) response.getMetadata().getData();
+        OfferList productOffers = (OfferList) response.getMetadata().getData();
         assertNotNull("Product Offers is null", productOffers);
         assertNotNull("Product Offers Total Offers is null", productOffers.getTotalOffers());
         //assertFalse("Success is false", response.hadSuccess());

@@ -2,6 +2,7 @@ package com.mobile.newFramework.utils;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,7 +122,6 @@ public class CollectionUtils {
     public static <C> boolean addAll(Collection<C> collection, Iterator<? extends C> iterator) {
         boolean changed;
         for (changed = false; iterator.hasNext(); changed |= collection.add(iterator.next())) {
-            ;
         }
 
         return changed;
@@ -130,7 +130,6 @@ public class CollectionUtils {
     public static <C> boolean addAll(Collection<C> collection, Enumeration<? extends C> enumeration) {
         boolean changed;
         for (changed = false; enumeration.hasMoreElements(); changed |= collection.add(enumeration.nextElement())) {
-            ;
         }
 
         return changed;
@@ -170,7 +169,15 @@ public class CollectionUtils {
         return coll == null || coll.size() == 0;
     }
 
+    public static boolean isEmpty(SparseArray coll){
+        return coll == null || coll.size() == 0;
+    }
+
     public static boolean isNotEmpty(ContentValues coll) {
+        return !isEmpty(coll);
+    }
+
+    public static boolean isNotEmpty(SparseArray coll){
         return !isEmpty(coll);
     }
 
@@ -317,5 +324,12 @@ public class CollectionUtils {
         return Collections.synchronizedList(list);
     }
 
+    public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
+        Map<String, String> data = new HashMap<>();
+        for (Map.Entry entrySet: contentValues.valueSet()) {
+            data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
+        }
+        return data;
+    }
 
 }

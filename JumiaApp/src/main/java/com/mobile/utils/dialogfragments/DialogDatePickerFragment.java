@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.utils.output.Print;
@@ -22,20 +23,20 @@ import java.util.GregorianCalendar;
 //import org.holoeverywhere.widget.DatePicker;
 
 /**
- * 
+ *
  * @author sergiopereira
  *
  */
 public class DialogDatePickerFragment extends DialogFragment implements OnClickListener {
-    
+
     private final static String TAG = DialogDatePickerFragment.class.getSimpleName();
-    
+
     private String mTitle;
     private String mId;
     private Activity mActivity;
     private OnDatePickerDialogListener mListener;
     //private Dialog mDialog;
-    //private static DatePicker mDatePicker;
+    private static DatePicker mDatePicker;  //mobapi 1.8 change
     private int mDay;
     private int mMonth;
     private int mYear;
@@ -45,7 +46,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
-        public void onDatePickerDialogSelect(int year, int month, int day);
+        void onDatePickerDialogSelect(int year, int month, int day);
 
     }
 
@@ -53,8 +54,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
      * Empty Constructor
      */
     public DialogDatePickerFragment() { }
-    
-    
+
+
     /**
      *
      * @param activity
@@ -79,8 +80,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialogDatePickerFragment.mYear = year;
         return dialogDatePickerFragment;
     }
-    
-    
+
+
     /**
      *
      * @param activity
@@ -104,7 +105,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialogDatePickerFragment.mYear = year;
         return dialogDatePickerFragment;
     }
-        
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
@@ -123,39 +124,39 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.dialog_datepicker_content, container);
-        
+
         TextView titleView = (TextView) view.findViewById(R.id.datepicker_title);
         titleView.setText(this.mTitle);
 
-//        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
-//        if (this.mYear != 0){
-//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-//            Calendar mCal =Calendar.getInstance();
-//
-//            int currentYear = mCal.get(Calendar.YEAR) - 1;
-//            int currentMonth = mCal.get(Calendar.MONTH);
-//            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
-//
-//            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
-//        } else {
-//            Calendar cal=Calendar.getInstance();
-//
-//            this.mYear = cal.get(Calendar.YEAR) - 1;
-//            this.mMonth = cal.get(Calendar.MONTH);
-//            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
-//
-//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-//            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
-//        }
+        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);    //mobapi 1.8 change: date fields with picker
+        if (this.mYear != 0){
+            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            Calendar mCal =Calendar.getInstance();
+
+            int currentYear = mCal.get(Calendar.YEAR) - 1;
+            int currentMonth = mCal.get(Calendar.MONTH);
+            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+        } else {
+            Calendar cal=Calendar.getInstance();
+
+            this.mYear = cal.get(Calendar.YEAR) - 1;
+            this.mMonth = cal.get(Calendar.MONTH);
+            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
+        }
 
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
-        
+
         return view;
     }
 
     /**
-     * 
+     *
      * @return
      */
     public boolean isSetOnce() {
@@ -173,9 +174,9 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
             this.dismiss();
         } else if (id == R.id.button2) {
             isSetOnce = true;
-//            mDay = mDatePicker.getDayOfMonth();
-//            mMonth = mDatePicker.getMonth();
-//            mYear = mDatePicker.getYear();
+            mDay = mDatePicker.getDayOfMonth(); //mobapi 1.8 change uncomment
+            mMonth = mDatePicker.getMonth();
+            mYear = mDatePicker.getYear();
             if (mListener != null) {
                 mListener.onDatePickerDialogSelect(mYear, mMonth, mDay);
             }
@@ -186,15 +187,15 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     public int getYear(){
         return mYear;
     }
-    
+
     public int getMonth(){
         return mMonth;
     }
-    
+
     public int getDay(){
         return mDay;
     }
-    
+
     public void setDate(String dateString) {
 
         Date date;
@@ -225,7 +226,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 //
 //            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
 //        }
-       isSetOnce = true;
+        isSetOnce = true;
     }
 
     public void setDate(int year, int month, int day) {
@@ -264,8 +265,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialog.getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
     }
-    
-    
+
+
     @Override
     public void onPause() {
         super.onPause();

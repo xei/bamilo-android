@@ -40,7 +40,7 @@
     <dimen name="product_detail_item_title_height">55dp</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
-    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
 
     <!-- CAMPAIGN PAGE -->

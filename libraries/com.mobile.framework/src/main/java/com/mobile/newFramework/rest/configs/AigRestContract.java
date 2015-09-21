@@ -8,6 +8,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,19 +31,17 @@ public class AigRestContract {
     public static Boolean USE_ONLY_HTTPS = false;
 
     // Authentication
-    public static Boolean USE_AUTHENTICATION = null;
-    public static String AUTHENTICATION_USER = null;
-    public static String AUTHENTICATION_PASS = null;
+    public static String AUTHENTICATION_USER_AGENT;
 
     // AUTH CONSTANTS
     public static boolean USE_ONLY_HTTP = false;
 
-    public static final String REST_PARAM_RATING = "rating";
-    public static final String REST_PARAM_SELLER_RATING = "seller_rating";
-
     // COOKIE MANAGER
     public static String COOKIE_SHOP_DOMAIN;
     public static String COOKIE_SHOP_URI;
+
+    //PREFERENCES
+    public static String USER_LANGUAGE;
 
     private AigRestContract() {
         // ...
@@ -54,28 +53,33 @@ public class AigRestContract {
         setRestHost(sharedPrefs);
         setRestScheme(context, sharedPrefs);
         setRestBasePath(context, R.string.global_server_api_version);
-        setShopAuthentication(context);
         setCookieShopConfigs();
+        setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
         Print.i(TAG, "Initializing RestContract");
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(context, R.string.global_server_host);
         setRestBasePath(context, R.string.global_server_restbase_path);
-        setShopAuthentication(context);
         setCookieShopConfigs();
+        setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRY_CONFIGS_AVAILABLE        KEY_SELECTED_COUNTRY_URL
     public static void init(Context context, String requestHost, String basePath) {
         Print.i(TAG, "Initializing RestContract");
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(requestHost);
         setRestBasePath(context, R.string.global_server_api_version);
-        setShopAuthentication(context);
         setCookieShopConfigs();
+        setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -83,7 +87,7 @@ public class AigRestContract {
      * ######### URI #########
 	 */
 
-    private static void setRestHost(SharedPreferences sharedPrefs){
+    private static void setRestHost(SharedPreferences sharedPrefs) {
         setRestHost(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
     }
 
@@ -116,12 +120,10 @@ public class AigRestContract {
 	 */
 
     /**
-     * Set the authentication
+     * Set the user agent authentication to access dev servers
      */
-    private static void setShopAuthentication(Context context) {
-        AUTHENTICATION_USER = context.getResources().getString(R.string.global_server_user);
-        AUTHENTICATION_PASS = context.getResources().getString(R.string.global_server_password);
-        USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
+    private static void setShopUserAgentAuthentication(SharedPreferences sharedPrefs) {
+        AUTHENTICATION_USER_AGENT = sharedPrefs.getString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, "");
     }
 
 	/*

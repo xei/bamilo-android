@@ -9,9 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
 
 import java.util.Iterator;
@@ -211,7 +215,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     /**
      * Gets the last used ID
-     * 
+     *
      * @return the last id used to create a control
      */
     public int getLastId() {
@@ -275,25 +279,46 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public ContentValues save() {
         ContentValues model = new ContentValues();
-        DynamicFormItem control;
-
-        for (DynamicFormItem dynamicFormItem : this) {
-            control = dynamicFormItem;
-            if (control != null && control.getType() == InputType.metadate) {
+        for (DynamicFormItem control : this) {
+            // Case metadata
+            if (control != null && control.getType() == InputType.metadata) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName(), control.getValue());
-            } else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
+            }
+            // Case radio group vertical
+            else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 ContentValues mValues = control.getSubFormsValues();
                 if (mValues != null) {
                     model.putAll(mValues);
                 }
                 model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());
                 model.put(control.getName(), control.getValue());
-            } else if (null != control && null != control.getValue()) {
+            }
+            // Case list from api call
+            else if (control != null && control.getType() == InputType.list ) {
+                saveListSelection(control, model);
+            }
+            // Case related number
+            else if (control != null && control.getType() == InputType.relatedNumber ) {
+                model.put(control.getName(), control.getValue()); // Get number
+                IFormField related = control.getEntry().getRelatedField(); // Get related option
+                RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
+                int idx = group.getSelectedIndex();
+                String value = group.getItemByIndex(idx);
+                model.put(related.getName(), value);
+            }
+            // Case default
+            else if (null != control && null != control.getValue()) {
                 model.put(control.getName(), control.getValue());
-            } else if (null != control && control.getType() == InputType.rating) {
+            }
+
+            // TODO VALIDATE IF THESE CASES ARE NECESSARY
+            // Case ???
+            else if (null != control && control.getType() == InputType.rating) {
                 saveRatingForm(control, model);
-            } else if (null != control) {
+            }
+            // Case ???
+            else if (null != control) {
                 model.put(control.getName(), "");
             } else {
                 Print.e(TAG, "control is null");
@@ -304,12 +329,21 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
+     * Save value from form list item. (Regions and Cities)
+     */
+    private void saveListSelection(DynamicFormItem control, ContentValues model) {
+        ViewGroup mRegionGroup = (ViewGroup) control.getControl();
+        IcsSpinner spinner = (IcsSpinner) mRegionGroup.getChildAt(0);
+        FormListItem mSelectedRegion = (FormListItem) spinner.getSelectedItem();
+        if(mSelectedRegion != null)
+            model.put(control.getName(), mSelectedRegion.getValue());
+    }
+
+    /**
      * Save rating bar stars selection
      */
     private void saveRatingForm(DynamicFormItem control,ContentValues model){
-        
         LinearLayout ratingList = ((LinearLayout)control.getEditControl());
-        
         Iterator it = control.getEntry().getDateSetRating().entrySet().iterator();
         int count = 1;
         while (it.hasNext()) {
@@ -348,7 +382,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Clears all the data on each control on the form.
      */
     public void clear() {
-
         for (DynamicFormItem dynamicFormItem : this) {
             dynamicFormItem.setValue(null);
         }

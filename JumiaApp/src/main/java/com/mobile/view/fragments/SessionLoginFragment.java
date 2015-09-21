@@ -215,7 +215,11 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             triggerAutoLogin();
         } else if (formResponse != null) {
             Print.d(TAG, "FORM ISN'T NULL");
-            loadForm(formResponse);
+            if (facebookLoginClicked) {
+                facebookLoginClicked = false;
+            } else {
+                loadForm(formResponse);
+            }
             cameFromRegister = false;
         } else {
             Print.d(TAG, "FORM IS NULL");
@@ -472,7 +476,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         // Get Customer
         baseActivity.hideKeyboard();
         // NullPointerException on orientation change
-        if (baseActivity != null && !cameFromRegister) {
+        if (!cameFromRegister) {
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
 
@@ -489,7 +493,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
         cameFromRegister = false;
         // Validate the next step
-        if (nextFragmentType != null && baseActivity != null) {
+        if (nextFragmentType != null) {
             Print.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             Bundle oldArgs = getArguments();
@@ -518,7 +522,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific) ||
                     getResources().getBoolean(R.bool.is_shop_specific) ||
-                    ShopSelector.isRtl() ){
+                    ShopSelector.isRtlShop() ){
                 getBaseActivity().hideActionBarTitle();
                 getBaseActivity().setTitle(R.string.login_label);
             } else {
@@ -723,10 +727,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values,saveCredentials), mCallBack);
     }
 
     private void triggerLoginForm() {
@@ -748,7 +749,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         super.onClick(view);
         int id = view.getId();
         // Case FB button 
-        if(id == R.id.login_facebook_button) showFragmentLoading();
+        if(id == R.id.login_facebook_button) {
+            facebookLoginClicked = true;
+            showFragmentLoading();
+        }
         // Case sign in button
         else if (id == R.id.middle_login_button_signin) {
             // Log.d(TAG, "CLICKED ON SIGNIN");
@@ -762,7 +766,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         else if (id == R.id.middle_login_link_fgtpassword) {
             getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
-        // Case redister
+        // Case register
         else if (id == R.id.middle_login_link_register) {
             cameFromRegister = true;
             getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

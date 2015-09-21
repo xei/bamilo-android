@@ -73,7 +73,7 @@ public class MyProfileActionProvider extends ActionProvider {
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
 
         // Case in Bamilo and API 17 set spinner as gone
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && ShopSelector.isRtl())
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && ShopSelector.isRtlShop())
             mSpinner.setVisibility(View.GONE);
 
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
@@ -108,7 +108,7 @@ public class MyProfileActionProvider extends ActionProvider {
         subMenuItems.add(NavigationAction.MyAccount);
         subMenuItems.add(NavigationAction.MyOrders);
 
-        if(!ShopSelector.isRtl() && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
+        if(!ShopSelector.isRtlShop() && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
             subMenuItems.add(NavigationAction.Country);
         }
     }
@@ -132,11 +132,11 @@ public class MyProfileActionProvider extends ActionProvider {
     /**
      * update totalFavourites<br>
      * call after each click on MyProfile Button on ActionBar
-     * 
+     *
      * @param totalFavourites
      */
     public void setTotalFavourites(int totalFavourites) {
-        this.mTotalFavourites = totalFavourites; 
+        this.mTotalFavourites = totalFavourites;
     }
 
     /**

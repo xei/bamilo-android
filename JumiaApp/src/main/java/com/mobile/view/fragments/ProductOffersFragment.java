@@ -18,11 +18,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.Offer;
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.OfferList;
+import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -52,11 +53,11 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     private static final String TAG = ProductOffersFragment.class.getSimpleName();
     
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
 
     private String mCompleteProductName;
     
-    private ProductOffers productOffers;
+    private OfferList productOffers;
     
     private static final String PRODUCT_OFFERS = "product_offers";
     
@@ -111,13 +112,12 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Get product URL from arguments
-        mCompleteProductUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-        // Get product name from arguments
+        // Get data from arguments
+        mCompleteProductSku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
         mCompleteProductName = getArguments().getString(ConstantsIntentExtra.PRODUCT_NAME);
         // Get from saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteProductSku = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_SKU);
             mCompleteProductName = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_NAME);
             productOffers = savedInstanceState.getParcelable(PRODUCT_OFFERS);
         }
@@ -159,10 +159,8 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        Bundle arg = new Bundle();
-        if(productOffers == null){
-            arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
-            triggerContentEvent(new GetProductOffersHelper(), arg, this);
+        if (productOffers == null) {
+            triggerGetProductOffers(mCompleteProductSku);
         } else {
             setAppContent();
         }
@@ -175,7 +173,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+        outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
         outState.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProductName);
         if(productOffers != null && CollectionUtils.isEmpty(productOffers.getOffers())){
             outState.putParcelable(PRODUCT_OFFERS, productOffers);
@@ -247,10 +245,10 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
      * Order offers by price
      * @param productOffersArray The product offers
      */
-    private void orderOffersByLowerPrice(ProductOffers productOffersArray){
+    private void orderOffersByLowerPrice(OfferList productOffersArray){
         if(productOffersArray != null){
-            ArrayList<Offer> offers = productOffersArray.getOffers();
-            if(offers != null && offers.size() > 0){
+            ArrayList<ProductOffer> offers = productOffersArray.getOffers();
+            if(CollectionUtils.isNotEmpty(offers)){
                 Collections.sort(offers, new CustomComparator());
                 productOffers.setOffers(offers); 
           }
@@ -260,13 +258,44 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     /**
      * Sort
      */
-    public class CustomComparator implements Comparator<Offer> {
+    public class CustomComparator implements Comparator<ProductOffer> {
         @Override
-        public int compare(Offer o1, Offer o2) {
-            return ((Double)o1.getPriceOfferDouble()).compareTo(o2.getPriceOfferDouble());
+        public int compare(ProductOffer o1, ProductOffer o2) {
+            return ((Double)o1.getFinalPrice()).compareTo(o2.getFinalPrice());
         }
     }
-    
+
+    /*
+     * ############# TRIGGERS #############
+     */
+
+    private void triggerGetProductOffers(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(GetProductHelper.SKU_TAG, sku);
+        values.put(GetProductOffersHelper.ALL_OFFERS, true);
+        Bundle arg = new Bundle();
+        arg.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEvent(new GetProductOffersHelper(), arg, this);
+    }
+
+    /**
+     * Trigger to add an item to cart
+     * @param sku The sku
+     * @param simpleSKU The simple sku
+     * @param price The price
+     */
+    private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
+        // GA OFFER TRACKING
+        Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
+        TrackerDelegator.trackAddOfferToCart(simpleSKU, price);
+    }
     
     /*
      * ############# RESPONSE #############
@@ -326,7 +355,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
             showFragmentContentContainer();
-            showFragmentNoNetworkRetry();
+            showFragmentErrorRetry();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
 //            mBundleButton.setEnabled(true);
@@ -394,7 +423,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Print.d(TAG, "ON ITEM CLICK");
-        Offer offer = productOffers.getOffers().get(position);
+        ProductOffer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
             String targetUrl = offer.getSeller().getUrl();
@@ -414,9 +443,9 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     }
 
     @Override
-    public void onAddOfferToCart(Offer offer) {
+    public void onAddOfferToCart(ProductOffer offer) {
         // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getPriceForTracking());
+        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
     }
     
     private void executeAddToShoppingCartCompleted() {
@@ -430,24 +459,5 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
             getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
         }
     }
-
-
-    /**
-     * Trigger to add an item to cart
-     * @param sku The sku
-     * @param simpleSKU The simple sku
-     * @param price The price
-     */
-    private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
-        ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
-        // GA OFFER TRACKING              
-        Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
-        TrackerDelegator.trackAddOfferToCart(simpleSKU,price);
-    }
+    
 }

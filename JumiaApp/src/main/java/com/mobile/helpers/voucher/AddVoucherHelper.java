@@ -3,7 +3,7 @@ package com.mobile.helpers.voucher;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.voucher.Voucher;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -39,8 +39,8 @@ public class AddVoucherHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        Voucher voucher = (Voucher) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, voucher);
+        PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
+        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, purchaseEntity);
     }
 
     //    @Override

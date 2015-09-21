@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,18 +15,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.OnDialogFilterListener;
-import com.mobile.newFramework.objects.catalog.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.CatalogFilter.RangeValuesFilter;
-import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
-import com.mobile.newFramework.objects.catalog.CategoryFilterOption;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -75,7 +69,7 @@ public class DialogFilterFragment extends DialogFragment {
 
     private OnDialogFilterListener mParentFrament;
 
-    private Object[] initialFilterValues;
+    private FilterSelectionController filterSelectionController;
 
     private boolean toCancelFilters;
 
@@ -106,7 +100,7 @@ public class DialogFilterFragment extends DialogFragment {
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-        initialFilterValues = new Object[mFilters.size()];
+        filterSelectionController = new FilterSelectionController(mFilters);
         toCancelFilters = true;
     }
 
@@ -224,7 +218,7 @@ public class DialogFilterFragment extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         if(toCancelFilters){
-            goToInitialFilterValues();
+            filterSelectionController.goToInitialValues();
         }
     }
     
@@ -237,102 +231,6 @@ public class DialogFilterFragment extends DialogFragment {
         if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
 
-    /**
-     * Add catalog filter to initial filter values
-     *
-     * @param catalogFilter
-     */
-    void addToInitialFilterValues(final int position, final CatalogFilter catalogFilter){
-        if(initialFilterValues[position] != null) {
-            return;
-        }
-
-
-        // If normal Catalog filter
-        if(!catalogFilter.isPriceFilter()){
-
-            final SparseArray<CatalogFilterOption> catalogFilterOptions = catalogFilter.getSelectedOption();
-
-            DeviceInfoHelper.executeCodeBasedOnIceCreamSandwichVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                @Override
-                public void highVersionCallback() {
-                    initialFilterValues[position] =  (catalogFilterOptions != null && catalogFilterOptions.size() > 0) ? catalogFilterOptions.clone() : new SparseArray<>();
-                }
-
-                @Override
-                public void lowerVersionCallback() {
-                    SparseArray<CatalogFilterOption> catalogFilterOptionsClone = new SparseArray<>();
-                    if(catalogFilterOptions != null && catalogFilterOptions.size() > 0){
-                         for(int i = 0; i<catalogFilterOptions.size();i++){
-                             int key = catalogFilterOptions.keyAt(i);
-                             CatalogFilterOption catalogFilterOption = catalogFilterOptions.get(key);
-                             if(catalogFilterOption != null) {
-                                 catalogFilterOptionsClone.put(key, catalogFilterOption);
-                             }
-                         }
-                    }
-                    initialFilterValues[position] = catalogFilterOptionsClone;
-                }
-            });
-
-
-        //If Catalog filter price
-        } else {
-            RangeValuesFilter rangeValuesFilter = new RangeValuesFilter();
-
-            if(catalogFilter.hasRangeValues()) {
-                rangeValuesFilter.range = new int[2];
-                rangeValuesFilter.range[0] = catalogFilter.getMinRangeValue();
-                rangeValuesFilter.range[1] = catalogFilter.getMaxRangeValue();
-            }
-
-            rangeValuesFilter.rangeWithDiscount = catalogFilter.isRangeWithDiscount();
-            initialFilterValues[position] = rangeValuesFilter;
-
-        }
-
-    }
-
-    /**
-     * Go to initial state of filters.
-     *
-     */
-    void goToInitialFilterValues() {
-
-        for(int i = 0; i < initialFilterValues.length; i++){
-
-            CatalogFilter catalogFilter = mFilters.get(i);
-
-            //Normal filter
-            if (!catalogFilter.isPriceFilter()) {
-                if(initialFilterValues[i] instanceof SparseArray){
-                    catalogFilter.switchSelectedOption((SparseArray<CatalogFilterOption>)initialFilterValues[i]);
-                }
-             //Price Filter
-            } else {
-                if(initialFilterValues[i] instanceof RangeValuesFilter){
-                    catalogFilter.setPriceValues((RangeValuesFilter) initialFilterValues[i]);
-                }
-
-            }
-        }
-
-    }
-
-    /**
-     * Init all filter values which are not initialized yet.
-     *
-     */
-    void initAllInitialFilterValues(){
-
-        for(int i = 0; i < initialFilterValues.length; i++){
-            // If the position is null, means that initial values of the filter is not initialized yet
-            if(initialFilterValues[i] == null){
-                addToInitialFilterValues(i, mFilters.get(i));
-            }
-        }
-    }
-
     /*
      * ################# MAIN FRAGMENT ################
      */
@@ -340,14 +238,14 @@ public class DialogFilterFragment extends DialogFragment {
      * Class used to create the main fragment that shows the list of supported filters
      * @author sergiopereira
      */
-    static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
+    public static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
         private DialogFilterFragment mParent;
         
         private ListView mFilterListView;
-        
+
         private ContentValues mContentValues;
-        
+
         /**
          * Constructor
          * @param parent
@@ -403,7 +301,7 @@ public class DialogFilterFragment extends DialogFragment {
             Print.d(TAG, "ON ITEM CLICK: " + position);
             // Get selected filter
             CatalogFilter selectedFilter = mFilters.get(position);
-            mParent.addToInitialFilterValues(position, selectedFilter);
+            mParent.filterSelectionController.addToInitialValues(position);
             // Get the id
             String filterId = selectedFilter.getId();
             // Create bundle
@@ -462,75 +360,13 @@ public class DialogFilterFragment extends DialogFragment {
          * Create a content values and send it to parent
          * @author sergiopereira
          */
-        private void processOnClickDone(){
+        private void processOnClickDone() {
             Print.d(TAG, "CLICKED ON: DONE");
-            // Create query
-            mContentValues = createContentValues();
             // Validate and send to catalog fragment
-            mParent.onSubmitFilterValues(mContentValues);
+            mParent.onSubmitFilterValues(mParent.filterSelectionController.getValues());
             mParent.toCancelFilters = false;
             // Dismiss dialog
             mParent.dismiss();
-        }
-
-        /**
-         * Create content values to filter catalog
-         * @return ContentValues
-         * @author sergiopereira
-         */
-        private ContentValues createContentValues(){
-            // Create query
-            ContentValues contentValues = new ContentValues();
-            // Save all values
-            for (CatalogFilter filter : mFilters) {
-                // Get filter id and values
-                String filterId = filter.getId();
-                // Case category filter
-                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID)) {
-                    addCategoryFilter(filter, contentValues);
-                // Case brand filter
-                } else if(filter.hasOptionSelected() && filterId.equals(BRAND_ID)) {
-                    addBrandFilter(filter, contentValues);
-                // Case generic filter
-                } else if(filter.hasOptionSelected()){
-                    addGenericFilter(filter, contentValues);
-                // Case price filter, get range value
-                } else if(filter.hasRangeValues() || filter.isRangeWithDiscount()){
-                    addPriceFilter(filter, contentValues);
-                }
-
-                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
-            }
-            return contentValues;
-        }
-        
-        /**
-         * Clean all saved values from filters
-         * 
-         */
-        private void cleanAllFilters(){
-            for (CatalogFilter filter : mFilters) {
-                cleanFilter(filter);
-               
-              //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
-            }
-        }
-        
-        /**
-         * Clean values of specified filter
-         * @param filter
-         * 
-         */
-        private void cleanFilter(CatalogFilter filter){
-            // Generic filter: Get filter id and values, clean and disable old selection
-            if(filter.hasOptionSelected())
-                filter.cleanSelectedOption();
-            // Price filter: Get range value 
-            if(filter.hasRangeValues())
-                filter.cleanRangeValues();
-            // Price filter: Get discount only
-            if(filter.isRangeWithDiscount())
-                filter.setRangeWithDiscount(false);
         }
         
         /**
@@ -539,18 +375,18 @@ public class DialogFilterFragment extends DialogFragment {
          * @param contentValues
          * @author sergiopereira
          */
-        private void addCategoryFilter(CatalogFilter filter, ContentValues contentValues){
-            CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
-            if(selectedOption instanceof CategoryFilterOption){
-                String url = ((CategoryFilterOption) selectedOption).getUrl();
-                Print.d(TAG, "SELECTED A NEW CATEGORY: " + url);
-                if(url != null)
-                    contentValues.put(URL, url);
-            } else {
-                cleanFilter(filter);
-                Toast.makeText(getActivity(), getResources().getString(R.string.category_filter_error), Toast.LENGTH_SHORT).show();
-            }
-        }
+//        private void addCategoryFilter(CatalogFilter filter, ContentValues contentValues){
+//            CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
+//            if(selectedOption instanceof CategoryFilterOption){
+//                String url = ((CategoryFilterOption) selectedOption).getUrl();
+//                Print.d(TAG, "SELECTED A NEW CATEGORY: " + url);
+//                if(url != null)
+//                    contentValues.put(URL, url);
+//            } else {
+//                cleanFilter(filter);
+//                Toast.makeText(getActivity(), getResources().getString(R.string.category_filter_error), Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         /**
          * Add to content values all selected brands into the SEARCH_QUERY tag
@@ -558,52 +394,52 @@ public class DialogFilterFragment extends DialogFragment {
          * @param contentValues
          * @author sergiopereira
          */
-        private void addBrandFilter(CatalogFilter filter, ContentValues contentValues){
-            String query = "";
-            int size = filter.getSelectedOption().size();
-            for(int i = 0; i < size; i++)
-                query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
-            contentValues.put(BRAND, query);
-        }
-        
+//        private void addBrandFilter(CatalogFilter filter, ContentValues contentValues){
+//            String query = "";
+//            int size = filter.getSelectedOption().size();
+//            for(int i = 0; i < size; i++)
+//                query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
+//            contentValues.put(BRAND, query);
+//        }
+
         /**
          * Add to the content values selected filter
          * @param filter
          * @param contentValues
          * @author sergiopereira
          */
-        private void addGenericFilter(CatalogFilter filter, ContentValues contentValues){
-            // Get filter id and values
-            String filterId = filter.getId();
-            String filterValue = "";
-            // Get 
-            int size = filter.getSelectedOption().size();
-            for(int i = 0; i < size; i++)
-                filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
-            contentValues.put(filterId, filterValue);
-        }
-        
+//        private void addGenericFilter(CatalogFilter filter, ContentValues contentValues){
+//            // Get filter id and values
+//            String filterId = filter.getId();
+//            String filterValue = "";
+//            // Get
+//            int size = filter.getSelectedOption().size();
+//            for(int i = 0; i < size; i++)
+//                filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
+//            contentValues.put(filterId, filterValue);
+//        }
+
         /**
          * Add to the content values selected price filter
          * @param filter
          * @param contentValues
          * @author sergiopereira
          */
-        private void addPriceFilter(CatalogFilter filter, ContentValues contentValues){
-            // Get filter id and values
-            String filterId = filter.getId();
-            // String filterId = filter.getId();
-            if(filter.hasRangeValues()){
-                int min = filter.getMinRangeValue();
-                int max = filter.getMaxRangeValue();
-                contentValues.put(filterId, min + "-" + max);
-            }
-            // String special_price = 1
-            if(filter.isRangeWithDiscount()){
-                contentValues.put("special_price", "1");
-            }
-        }
-        
+//        private void addPriceFilter(CatalogFilter filter, ContentValues contentValues){
+//            // Get filter id and values
+//            String filterId = filter.getId();
+//            // String filterId = filter.getId();
+//            if(filter.hasRangeValues()){
+//                int min = filter.getMinRangeValue();
+//                int max = filter.getMaxRangeValue();
+//                contentValues.put(filterId, min + "-" + max);
+//            }
+//            // String special_price = 1
+//            if(filter.isRangeWithDiscount()){
+//                contentValues.put("special_price", "1");
+//            }
+//        }
+
         /**
          * Process the click on clean button
          * @author sergiopereira
@@ -611,10 +447,10 @@ public class DialogFilterFragment extends DialogFragment {
         private void processOnClickClean(){
             Print.d(TAG, "CLICKED ON: CLEAR");
 
-            mParent.initAllInitialFilterValues();
+            mParent.filterSelectionController.initAllInitialFilterValues();
 
             // Clean all saved values
-            cleanAllFilters();
+            mParent.filterSelectionController.cleanAllFilters();
             // Update adapter
             ((FiltersArrayAdapter) mFilterListView.getAdapter()).notifyDataSetChanged();
         }
@@ -655,17 +491,17 @@ public class DialogFilterFragment extends DialogFragment {
             // Set title
             ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(filter.getName());
             // Set sub title
-            if (!filter.hasOptionSelected() && !filter.hasRangeValues() && !filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.all_label);
-            else if(filter.hasRangeValues() && !filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
-            else if(filter.hasRangeValues() && filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() + " " + getContext().getString(R.string.string_with_discount_only));
-            else if(!filter.hasRangeValues() && filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.string_with_discount_only);
-            else if (filter.hasOptionSelected())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
-                
+//            if (!filter.hasOptionSelected() && !filter.hasRangeValues() && !filter.isRangeWithDiscount())
+//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.all_label);
+//            else if(filter.hasRangeValues() && !filter.isRangeWithDiscount())
+//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
+//            else if(filter.hasRangeValues() && filter.isRangeWithDiscount())
+//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() + " " + getContext().getString(R.string.string_with_discount_only));
+//            else if(!filter.hasRangeValues() && filter.isRangeWithDiscount())
+//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.string_with_discount_only);
+//            else if (filter.hasOptionSelected())
+//                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
+//            ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText("O que me apetecer");
             // Return the filter view
             return convertView;
         }
@@ -675,11 +511,11 @@ public class DialogFilterFragment extends DialogFragment {
          * @param array
          * @return String
          */
-        private String getOptionsToString(SparseArray<CatalogFilterOption> array){
-            String string = "";
-            for (int i = 0; i < array.size(); i++) string += ((i == 0) ? "" : ", ") + array.valueAt(i).getLabel();
-            return string;
-        }
+//        private String getOptionsToString(SparseArray<CatalogFilterOption> array){
+//            String string = "";
+//            for (int i = 0; i < array.size(); i++) string += ((i == 0) ? "" : ", ") + array.valueAt(i).getLabel();
+//            return string;
+//        }
     }
     
 }

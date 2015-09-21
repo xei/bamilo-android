@@ -11,7 +11,7 @@ import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.analytics.Tracker;
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -369,20 +369,16 @@ public class AnalyticsGoogle {
 	 *
 	 * specific function to track purchase flow from home page teasers
 	 *
-	 * @param event
+	 * @param category
+	 * @param actionInt
 	 * @param label
 	 * @param value
-	 * @param position
 	 */
-	public void trackBannerFlowPurchase(TrackingEvent event, String label, long value, int position) {
+	public void trackBannerFlowPurchase(String category, int actionInt, String label, long value) {
 		// Validation
 		if (!isEnabled) return;
-		// Get and send page
-		String category = mContext.getString(event.getCategory());
-		String action = mContext.getString(event.getAction());
-		if(position != -1){
-			category = category+"_"+position;
-		}
+		// Get action
+		String action = mContext.getString(actionInt);
 		// Tracking
 		trackEvent(category, action, label, value);
 	}
@@ -391,15 +387,15 @@ public class AnalyticsGoogle {
 	 *
 	 * Event to track the specific teaser and position the user clicked
 	 *
-	 * @param event
+	 * @param cat
 	 * @param label
 	 * @param position
 	 */
-	public void trackEventBannerClick(TrackingEvent event, String label, int position) {
+	public void trackEventBannerClick(int cat, String label, int position) {
 		// Validation
 		if (!isEnabled) return;
 		// Get and send page
-		String category = mContext.getString(event.getCategory());
+		String category = mContext.getString(cat);
 		String action = mContext.getString(TrackingEvent.HOME_BANNER_CLICK.getAction());
 		if(position != -1){
 			category = category+"_"+position;
@@ -444,7 +440,7 @@ public class AnalyticsGoogle {
 	 * 
 	 * @param items
 	 */
-	public void trackCheckout(List<ShoppingCartItem> items) {
+	public void trackCheckout(List<PurchaseCartItem> items) {
 		// Validation
 		if (!isEnabled) return;
 		// Validate items
@@ -458,7 +454,7 @@ public class AnalyticsGoogle {
 			isCheckoutStarted = true;
 		}
 		// Track each item
-		for (ShoppingCartItem item : items) {
+		for (PurchaseCartItem item : items) {
 			String sku = item.getConfigSimpleSKU();
 			double price = item.getPriceForTracking() * item.getQuantity();
 			trackEvent(event, sku, (long) price);

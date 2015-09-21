@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
-
     private String productSku;
     private String productName;
     private ArrayList<RatingStar> ratingTypes;
@@ -29,9 +28,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
     private int average;
     private String sellerUrl;
     private String sellerName;
-
 	private int commentsCount;
 	private ArrayList<ProductReviewComment> reviewComments;
+	private int currentPage;
+	private int totalPages;
 
 	public ProductRatingPage() {
 	    productName = "";
@@ -55,16 +55,17 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject dataObject) throws JSONException {
+
 		reviewComments = new ArrayList<>();
 
 		// just used for seller reviews
 		 sellerName = dataObject.optString(RestConstants.JSON_NAME_TAG);
-		 sellerUrl = dataObject.optString(RestConstants.JSON_URL_TAG);
+		 sellerUrl = dataObject.optString(RestConstants.URL);
 
 		JSONObject productObject = dataObject.optJSONObject(RestConstants.JSON_PRODUCT_TAG);
 		if (productObject != null) {
             productName = productObject.optString(RestConstants.JSON_NAME_TAG);
-            productSku = productObject.optString(RestConstants.JSON_SKU_TAG);
+            productSku = productObject.optString(RestConstants.SKU);
         }
         JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.JSON_RATING_STAR_SIZE_TAG);
 
@@ -97,7 +98,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	        JSONArray comments = reviewsObject.optJSONArray(RestConstants.JSON_COMMENTS_TAG);
 
 	        // just used for seller reviews
-	        average = reviewsObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG,-1);
+	        average = reviewsObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG, -1);
 
 	        if(comments != null){
 	            int size = comments.length();
@@ -108,6 +109,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	                reviewComments.add(reviewComment);
 	            }
 	        }
+
+			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
+			if(paginationObject != null){
+				currentPage = paginationObject.getInt(RestConstants.CURRENT_PAGE);
+				totalPages = paginationObject.getInt(RestConstants.TOTAL_PAGES);
+			}
 
 		}
 
@@ -249,6 +256,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		dest.writeInt(average);
 	    dest.writeString(sellerName);
         dest.writeString(sellerUrl);
+		dest.writeInt(currentPage);
+		dest.writeInt(totalPages);
 	}
 
 	private ProductRatingPage(Parcel in) {
@@ -264,6 +273,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		average = in.readInt();
 		sellerName = in.readString();
 		sellerUrl = in.readString();
+		currentPage = in.readInt();
+		totalPages = in.readInt();
 
 	}
 
@@ -276,5 +287,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
             return new ProductRatingPage[size];
         }
     };
-	
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public int getTotalPages() {
+		return totalPages;
+	}
 }

@@ -10,7 +10,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -357,7 +357,7 @@ public class DeepLinkManager {
         String size = data.getQueryParameter(PDV_SIZE_TAG);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetSearchProductHelper.SKU_TAG, sku);
+        bundle.putString(GetProductHelper.SKU_TAG, sku);
         bundle.putString(PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -446,7 +446,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.WISH_LIST);
         return bundle;
     }
 
@@ -472,25 +472,20 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
-        // Get catalog
-        String catalogUrlKey = segments.get(PATH_DATA_POS);
 
-        // create the url with more that one segment:
-        // case [KE, c, mobile-phones, samsung] ---> mobile-phones/samsung
-        if(segments.size() > MIN_SEGMENTS){
-            for (int i = MIN_SEGMENTS; i < segments.size(); i++) {
-                catalogUrlKey = catalogUrlKey + "/" + segments.get(i);
-            }
-        }
+//        // create the url with more that one segment:
+//        // case ng/c/?category=womens-dresses&sort=price&dir=asc
+        String deeplinkUrl = data.toString();
+        String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
 
         // Log
         Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, data.toString());
+        bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
         bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;

@@ -17,8 +17,12 @@ import org.json.JSONObject;
  *
  * @author Andre Lopes
  *
+ * // TODO Update this class to use the ProductBase class
+ *
  */
 public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
+
+    private String sku;
 
     private String price;
 
@@ -34,6 +38,10 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
         return price;
     }
 
+    public String getSku() {
+        return sku;
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -47,17 +55,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
             if (!super.initialize(jsonObject)) {
                 return false;
             }
-
-			/*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-
-			double priceDouble = -1;
-			try {
-				priceDouble = Double.parseDouble(priceString);
-				price = CurrencyFormatter.formatCurrency(priceDouble);
-			} catch (NumberFormatException e) {
-				price = priceString;
-				e.printStackTrace();
-			}*/
+            sku = jsonObject.getString(RestConstants.SKU);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
@@ -78,7 +76,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                     while (!isImageUrlDefined && index < imageArraySize) {
                         JSONObject imageObject = imageArray.getJSONObject(index);
                         if (imageObject != null) {
-                            imageUrl = imageObject.optString(RestConstants.JSON_URL_TAG);
+                            imageUrl = imageObject.optString(RestConstants.URL);
                             isImageUrlDefined = true;
                         }
                         index++;
@@ -122,11 +120,13 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(price);
+        dest.writeString(sku);
     }
 
     private FeaturedItemProduct(Parcel in) {
         super(in);
         price = in.readString();
+        sku = in.readString();
     }
 
     public static final Parcelable.Creator<FeaturedItemProduct> CREATOR = new Parcelable.Creator<FeaturedItemProduct>() {

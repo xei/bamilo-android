@@ -52,7 +52,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     private static final int CLICK_FROM_LANDSCAPE_CONTAINER = 1;
 
-    private static final String ROOT_CATEGORIES = null;
+    private static final Object ROOT_CATEGORIES = null;
 
     private ListView mCategoryList;
 
@@ -235,7 +235,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showCategoryList(ArrayList<Category> categories) {
         // Case root
-        if(mCategoryKey == ROOT_CATEGORIES) showRootCategories(categories);
+        if(isRootCategory()) showRootCategories(categories);
         // Case branch
         else if(categories != null && categories.size() > 0) showSubCategory(categories.get(0));
         // Case error
@@ -328,7 +328,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showChildrenInLandscape(Category category) {
         // Create and add the header for back
-        if(mLandscapeCategoryChildrenList.getHeaderViewsCount() == 0 && mCategoryKey != ROOT_CATEGORIES) {
+        if(mLandscapeCategoryChildrenList.getHeaderViewsCount() == 0 && !isRootCategory()) {
             View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label));
             mLandscapeCategoryChildrenList.addHeaderView(headerForBack);
         }
@@ -455,16 +455,24 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             case CLICK_FROM_DEFAULT_CONTAINER:
                 Print.i(TAG, "CLICK_FROM_DEFAULT_CONTAINER");
                 // Case root
-                if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
+                if(isRootCategory()){
+                    onClickRootCategory(parent, position);
+                }
                 // Case branch or leaf
-                else onClickNestedCategory(parent, position);
+                else {
+                    onClickNestedCategory(parent, position);
+                }
                 break;
             case CLICK_FROM_LANDSCAPE_CONTAINER:
                 Print.i(TAG, "CLICK_FROM_LANDSCAPE_CONTAINER");
                 // Case root level from landscape without back button
-                if(mCategoryKey == ROOT_CATEGORIES) onClickSubCategoryWithoutBack(parent, position);
+                if(isRootCategory()){
+                    onClickSubCategoryWithoutBack(parent, position);
+                }
                 // Case other level from landscape with back button
-                else onClickSubCategoryWithBack(parent, position);
+                else {
+                    onClickSubCategoryWithBack(parent, position);
+                }
                 break;
             default:
                 Print.w(TAG, "WARNING: UNKNOWN CLICK");
@@ -647,7 +655,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -701,6 +709,10 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         if(isOnStoppingProcess) return;
         // Generic errors
         super.handleErrorEvent(bundle);
+    }
+
+    protected boolean isRootCategory(){
+        return mCategoryKey == ROOT_CATEGORIES;
     }
 
 }

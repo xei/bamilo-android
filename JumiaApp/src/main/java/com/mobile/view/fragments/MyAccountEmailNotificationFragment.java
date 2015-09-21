@@ -218,11 +218,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void showNewslettersForm() {
         try {
-            FormField formField = mNewslettersForm.fields.get(0);
+            FormField formField = mNewslettersForm.getFields().get(0);
             if (mNewsletterOptionsSaved != null)
                 mNewsletterOptions = mNewsletterOptionsSaved;
             else
-                mNewsletterOptions = formField.newsletterOptions;
+                mNewsletterOptions = formField.getNewsletterOptions();
             generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
             showFragmentContentContainer();
@@ -236,11 +236,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     }
 
     /**
-     * Gemerate the newsletter option and add it to container
-     *
-     * @author msilva
-     * @param newsletterOptions
-     * @param newsletterList
+     * Generate the newsletter option and add it to container
      */
     private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions,
             LinearLayout newsletterList) {
@@ -331,14 +327,12 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         getBaseActivity().onBackPressed();
     }
 
-    /**
+    /*
      * ############# REQUESTS #############
      */
+
     /**
      * Trigger to subscribe newsletters
-     * 
-     * @param values
-     * @author sergiopereira
      */
     private void triggerSubscribeNewsletters(ContentValues values) {
         Print.i(TAG, "TRIGGER: SUBSCRIBE");
@@ -362,27 +356,24 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
     }
 
-    /**
+    /*
      * ############# RESPONSE #############
      */
+
     /**
      * Filter the success response
-     * 
-     * @param bundle
-     * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         Print.i(TAG, "ON SUCCESS EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
@@ -410,14 +401,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /**
      * Filter the error response
-     * 
-     * @param bundle
-     * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
+        Print.i(TAG, "ON ERROR EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
@@ -430,10 +420,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
         showFragmentContentContainer();
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");

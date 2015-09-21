@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -17,8 +16,7 @@ import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -98,12 +96,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
-        
-        TrackerDelegator.trackCheckoutStep(params);
+
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
     /*
@@ -359,13 +353,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         GetShippingMethodsHelper.ShippingMethodFormStruct shippingMethodsForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
         // Get order summary
-        OrderSummary orderSummary = shippingMethodsForm.getOrderSummary();
+        PurchaseEntity orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
-
-        loadForm(shippingMethodsForm.getFormBuilder());
+        // Form
+        ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        loadForm(form);
 
         //Total price
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
     }
 
     public void onSuccessSetShippingMethods(Bundle bundle){
@@ -378,13 +373,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onErrorGetShippingMethods(){
         Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        super.showFragmentErrorRetry();
+
     }
 
     public void onErrorSetShippingMethods(){
         Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
-
+        super.showUnexpectedErrorWarning();
     }
 
     /**

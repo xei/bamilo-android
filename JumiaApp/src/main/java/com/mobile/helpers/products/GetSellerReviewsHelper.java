@@ -24,6 +24,10 @@ import java.util.Map;
  * @author Paulo Carvalho
  * 
  */
+
+/* deprecated by alexandrapires: use GetReviewsHelper instead */
+
+@Deprecated
 public class GetSellerReviewsHelper extends SuperBaseHelper {
 
     private static String TAG = GetSellerReviewsHelper.class.getSimpleName();

@@ -378,6 +378,10 @@ public class DeviceInfoHelper {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
     }
 
+    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+        executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
+    }
+
     /**
      * Execute callbacks based on HoneyComb version.
      *

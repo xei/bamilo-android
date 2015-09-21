@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider"
-        android:background="@drawable/selector_listitem_highlight"
+        android:background="@drawable/selector_list_item_highlight"
         android:paddingBottom="@dimen/rounded_margin_mid"
         android:paddingTop="@dimen/rounded_margin_mid" >
 

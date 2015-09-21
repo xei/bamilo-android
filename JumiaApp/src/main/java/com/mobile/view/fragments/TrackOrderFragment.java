@@ -244,7 +244,7 @@ public class TrackOrderFragment extends BaseFragment {
     private void onClickTrackOrder(){
         getBaseActivity().hideKeyboard();
         String orderNumber = mEditText.getText().toString();
-        if (orderNumber != null && orderNumber.length() > 0) {
+        if (TextUtils.isNotEmpty(orderNumber)) {
             // set status container visible from this point on
             showStatusContainer();
             setTipVisibility(false);

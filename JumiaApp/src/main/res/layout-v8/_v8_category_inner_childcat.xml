@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_normal"
+    android:background="@drawable/selector_list_item_highlight" >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/text"
+        style="@style/text_normal"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/double_home_items_margin"
+        android:fontFamily="roboto_light"
+        android:gravity="center_vertical|right"
+        android:text="Category"
+        android:textSize="@dimen/text_form" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/divider_horizontal"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-@user_details @Calabash_Tests @f_pre_1.9
+@user_details @Calabash_Tests @f_pre_1.9  @f_2.7
 Feature: See personal data
 
 Background: 
@@ -18,6 +18,7 @@ Scenario: See the user details
 * I wait for 2 seconds
 * I enter the password
 * I wait for 2 seconds
+* I swipe down moving with 2 steps
 * I press Login Button
 * I wait to see the home
 * I wait for the overflow button
@@ -25,9 +26,9 @@ Scenario: See the user details
 * I should see sign out button
 * I wait for 2 seconds
 * I enter My Account
-* I wait for 5 seconds
+* I wait for 2 seconds
 * I enter My User Data
-* I wait for 4 seconds
+* I wait for 2 seconds
 * I should see my email
 * I wait for 2 seconds
 * I should see my first name
@@ -38,9 +39,9 @@ Scenario: Try with empty fields
 * I wait for the overflow button
 * I wait for 2 seconds
 * I enter My Account
-* I wait for 5 seconds
+* I wait for 2 seconds
 * I enter My User Data
-* I wait for 5 seconds
+* I wait for 2 seconds
 * I press Save
 * I wait for 2 seconds
 * I should see the password is to short message
@@ -54,7 +55,7 @@ Scenario: Try different passwords
 * I wait for 5 seconds
 * I enter My User Data
 * I wait for 5 seconds
-* I enter the new password
+* I enter the password
 * I enter a wrong repeated password
 * I wait for 2 seconds
 * I press Save

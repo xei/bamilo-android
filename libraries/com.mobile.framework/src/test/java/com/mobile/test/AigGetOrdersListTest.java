@@ -1,15 +1,12 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
+import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
-import com.mobile.newFramework.objects.orders.SuperOrder;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class AigGetOrdersListTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/order/list/";
+        return AigMobApiNigeriaTestSuite.HOST+"/order/list/";
     }
 
     @Override
@@ -44,7 +41,7 @@ public class AigGetOrdersListTest extends AigTestCase {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
 
-        SuperOrder superOrder = (SuperOrder) response.getMetadata().getData();
+        MyOrder superOrder = (MyOrder) response.getMetadata().getData();
 
         assertNotNull("Orders List is null", superOrder);
         assertNotNull("Orders List Nr Pages is null", superOrder.getNumPages());
