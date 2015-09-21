@@ -42,7 +42,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     public static int mPositionToStart = 0;
 
-    private int mTabsCount = 2;
+//    private int mTabsCount = 2;
+private int mTabsCount = 3;
 
     private boolean mHasSummary = true;
 
@@ -61,7 +62,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public ProductDetailsInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-                R.layout.details_info_fragment_main,
+                //     R.layout.details_info_fragment_main,
+                R.layout._def_details_info_fragment_main_new,
                 0,
                 KeyboardState.ADJUST_CONTENT);
     }
@@ -109,9 +111,11 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
-        int layout = R.layout.tab_simple_half_item;
+     //   int layout = R.layout.tab_simple_half_item;
+        int layout = R.layout.tab_simple_half_item_new;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-            layout = R.layout.tab_simple_item;
+          //  layout = R.layout.tab_simple_item;
+            layout = R.layout.tab_simple_item_new;
         }
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
@@ -250,9 +254,21 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         @Override
         protected Fragment createNewFragment(int position) {
-            return (titlesPageInt.get(position) == R.string.product_desc_summary_title) ?
+         /*   return (titlesPageInt.get(position) == R.string.product_desc_summary_title) ?
                     ProductDetailsSummaryFragment.getInstance(getArguments()) :
-                    ProductDetailsSpecificationsFragment.getInstance(getArguments());
+                    ProductDetailsSpecificationsFragment.getInstance(getArguments());*/
+
+            //changed:
+            Fragment fragment = null;
+
+            if(titlesPageInt.get(position).equals(R.string.product_desc_summary_title))
+                fragment=  ProductDetailsSummaryFragment.getInstance(getArguments());
+            else if (titlesPageInt.get(position).equals(R.string.product_specifications))
+                fragment=  ProductDetailsSpecificationsFragment.getInstance(getArguments());
+            else
+                fragment=  ReviewsFragmentNew.getInstance(getArguments()); //added: go to ratings page
+
+            return fragment;
         }
 
         @Override
@@ -263,8 +279,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private List<Integer> getFragmentTitleValues(){
         Integer[] titles = {
-                mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications,
-                R.string.product_specifications};
+       /*         mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications,
+                R.string.product_specifications};*/
+                mHasSummary ? R.string.description : R.string.product_specifications,
+                R.string.product_specifications, R.string.rat_rev};
 
         return Arrays.asList(titles);
     }
