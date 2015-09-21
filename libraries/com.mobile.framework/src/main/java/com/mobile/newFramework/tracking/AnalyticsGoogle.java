@@ -11,7 +11,7 @@ import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.analytics.Tracker;
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -440,7 +440,7 @@ public class AnalyticsGoogle {
 	 * 
 	 * @param items
 	 */
-	public void trackCheckout(List<ShoppingCartItem> items) {
+	public void trackCheckout(List<PurchaseCartItem> items) {
 		// Validation
 		if (!isEnabled) return;
 		// Validate items
@@ -454,7 +454,7 @@ public class AnalyticsGoogle {
 			isCheckoutStarted = true;
 		}
 		// Track each item
-		for (ShoppingCartItem item : items) {
+		for (PurchaseCartItem item : items) {
 			String sku = item.getConfigSimpleSKU();
 			double price = item.getPriceForTracking() * item.getQuantity();
 			trackEvent(event, sku, (long) price);

@@ -47,7 +47,7 @@ public class AigGetCountryConfigurationsTest extends AigTestCase {
         assertNotNull("Country CS Email is null", country.getCsEmail());
         assertNotNull("Country Currency Iso is null", country.getCurrencyIso());
         assertNotNull("Country Decimal Separator is null", country.getDecimalsSep());
-        assertNotNull("Country Language Name is null", country.getLangName());
+//        assertNotNull("Country Language Name is null", country.getLangName());
 
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");

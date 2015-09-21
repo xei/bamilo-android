@@ -95,7 +95,7 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
 
             if(productObject != null){
 
-                sku = productObject.optString(RestConstants.JSON_SKU_TAG);
+                sku = productObject.optString(RestConstants.SKU);
 
                 priceOffer = productObject.optString(RestConstants.JSON_PRICE_TAG);
 
@@ -123,7 +123,7 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
                 //Simple array it's only supposed to have one simple, is a "buy now" kind of product
                 if(simplesArray != null && simplesArray.length() > 0){
                     JSONObject simpleObject = simplesArray.getJSONObject(0);
-                    simpleSku = simpleObject.optString(RestConstants.JSON_SKU_TAG);
+                    simpleSku = simpleObject.optString(RestConstants.SKU);
 
                 }
 

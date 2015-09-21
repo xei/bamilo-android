@@ -29,7 +29,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -169,7 +169,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
         
         // Clean cart and payment
-        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
+        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         // Update cart info
         getBaseActivity().updateCartInfo();
@@ -224,7 +224,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             params.putDouble(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getPriceForTracking());
             params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
-            params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
+            params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(JumiaApplication.INSTANCE.getCart().getCouponDiscount()));
             params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
                         
