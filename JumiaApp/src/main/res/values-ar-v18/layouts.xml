@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
+    <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
+    <item name="dialog_language_list_item"              type="layout">@layout/_def_dialog_language_list_item</item>
+</resources>

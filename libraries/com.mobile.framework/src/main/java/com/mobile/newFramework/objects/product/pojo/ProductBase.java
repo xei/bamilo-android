@@ -39,7 +39,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mSku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+        mSku = jsonObject.getString(RestConstants.SKU);
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
         mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         // Optional

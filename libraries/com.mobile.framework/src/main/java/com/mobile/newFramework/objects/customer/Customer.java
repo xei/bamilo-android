@@ -46,8 +46,8 @@ public class Customer implements IJSONSerializable, Parcelable {
             jsonObject = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
             // Data
             id = jsonObject.getString(RestConstants.ID);
-            firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
-            lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
+            firstName = jsonObject.getString(RestConstants.FIRST_NAME);
+            lastName = jsonObject.getString(RestConstants.LAST_NAME);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
             gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
@@ -125,13 +125,6 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.email = email;
     }
 
-    /**
-     * @param gender the gender to set
-     */
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getBirthday() {
         return birthday;
     }
@@ -158,8 +151,8 @@ public class Customer implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(RestConstants.ID, id);
-            jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
-            jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
+            jsonObject.put(RestConstants.FIRST_NAME, firstName);
+            jsonObject.put(RestConstants.LAST_NAME, lastName);
             jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
             jsonObject.put(RestConstants.JSON_GENDER_TAG, gender);
         } catch (JSONException e) {

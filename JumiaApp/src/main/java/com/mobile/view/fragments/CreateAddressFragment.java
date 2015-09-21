@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
@@ -27,6 +28,7 @@ import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -101,6 +103,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
     protected ScrollView mScrollViewContainer;
+
+    protected PurchaseEntity orderSummary;
 
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
@@ -818,6 +822,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCreateAddressFormSuccessEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        // Get order summary
+        //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         mFormResponse = form;

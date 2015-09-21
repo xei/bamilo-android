@@ -43,7 +43,7 @@ public class WishList implements IJSONSerializable, Parcelable {
         // Max pages
         mMaxPages = pagination.getInt(RestConstants.TOTAL_PAGES);
         // Products
-        JSONArray productsArray = jsonObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+        JSONArray productsArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         int size = productsArray.length();
         if (size > 0) {
             mProducts = new ArrayList<>();

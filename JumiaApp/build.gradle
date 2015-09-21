@@ -113,7 +113,7 @@ android {
             versionName "2.7"
             versionCode getAppVersionCode(55)
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "pt","ar"
         }
 
         jumiaPreInstall {
@@ -121,7 +121,7 @@ android {
             versionName "2.7"
             versionCode 55
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "pt","ar"
             android.sourceSets {
                 jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
             }
@@ -132,7 +132,7 @@ android {
             versionName "2.7"
             versionCode 57
             signingConfig signingConfigs.jumiaMtnngSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "pt","ar"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
             }
@@ -143,7 +143,7 @@ android {
             versionName "2.7"
             versionCode 11
             signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "pt","ar"
             android.sourceSets {
                 jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
             }
@@ -179,7 +179,7 @@ android {
             versionName "1.5"
             versionCode getAppVersionCode(10)
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en","ur"
         }
 
         darazPreInstall {
@@ -187,7 +187,7 @@ android {
             versionName "1.5"
             versionCode 10
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en","ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
             }

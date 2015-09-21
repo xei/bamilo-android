@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -71,9 +71,9 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         //TODO move to observable
         super.createSuccessBundleParams(baseResponse, bundle);
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = (ShoppingCart) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
-        Print.d(TAG, "ADD CART: " + cart.getCartValue());
+        Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
 
