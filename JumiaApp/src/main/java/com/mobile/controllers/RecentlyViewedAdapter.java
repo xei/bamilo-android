@@ -45,7 +45,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView name;
         private TextView discount;
         private TextView price;
-        private TextView discountPercentage;
+        private TextView percentage;
         private TextView brand;
         private View isNew;
         private Button varianceButton;
@@ -131,7 +131,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.brand = (TextView) itemView.findViewById(R.id.item_brand);
             item.price = (TextView) itemView.findViewById(R.id.item_regprice);
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            item.discountPercentage = (TextView) itemView.findViewById(R.id.item_percentage);
+            item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
             item.variantChooseError = itemView.findViewById(R.id.error_variant);
             item.stockError = itemView.findViewById(R.id.error_stock);
@@ -221,11 +221,9 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             if (addableToCart.hasDiscount()) {
                 // Set discount
                 prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
-                // TODO placeholder
-                int discountPercentage = addableToCart.getMaxSavingPercentage();
-                prodItem.discountPercentage.setText("-" + discountPercentage + "%");
+                prodItem.percentage.setText(String.format(getContext().getString(R.string.format_discount_percentage), addableToCart.getMaxSavingPercentage()));
                 prodItem.discount.setVisibility(View.VISIBLE);
-                prodItem.discountPercentage.setVisibility(View.VISIBLE);
+                prodItem.percentage.setVisibility(View.VISIBLE);
                 // Set price
                 prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -235,7 +233,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             } else {
                 // Set price
                 prodItem.discount.setVisibility(View.GONE);
-                prodItem.discountPercentage.setVisibility(View.INVISIBLE);
+                prodItem.percentage.setVisibility(View.INVISIBLE);
                 prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
