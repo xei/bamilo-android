@@ -28,6 +28,11 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         super();
     }
 
+    public CheckoutFormShipping(CheckoutFormShipping shippingMethodsForm) {
+        mOrderSummary = shippingMethodsForm.mOrderSummary;
+        mForm = shippingMethodsForm.mForm;
+    }
+
     /*
      * (non-Javadoc)
      *
