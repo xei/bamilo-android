@@ -6,8 +6,8 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.Seller;
-import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Class that manages the full representation of a given product.
@@ -29,7 +28,7 @@ public class ProductComplete extends ProductMultiple {
     private String mDescription;
     private String mShortDescription;
     private ArrayList<String> mImageList;
-    private ArrayList<Variation> mVariations;
+    //private ArrayList<Variation> mVariations;
     private BundleList mProductBundle;
     private boolean hasSeller;
     private boolean hasBundle;
@@ -40,9 +39,8 @@ public class ProductComplete extends ProductMultiple {
     private ArrayList<ProductRegular> mRelatedProducts;
     private ArrayList<ProductSpecification> mProductSpecs;
     private String mShareUrl;
-
-    //added
-    private String mName;
+    private boolean isFashion;
+    private boolean hasVariations;
 
     /**
      * Complete product empty constructor.
@@ -68,6 +66,8 @@ public class ProductComplete extends ProductMultiple {
         try {
             // Base
             super.initialize(jsonObject);
+            // Fashion PDV
+            isFashion = TextUtils.equals(jsonObject.optString(RestConstants.VERTICAL), RestConstants.FASHION);
             // Share url
             mShareUrl = jsonObject.optString(RestConstants.JSON_SHARE_URL_TAG);
             // Bundle
@@ -123,21 +123,21 @@ public class ProductComplete extends ProductMultiple {
             }
             // Variations
             JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
-            if (variationsObject != null) {
-                mVariations = new ArrayList<>();
-                @SuppressWarnings("rawtypes")
-                Iterator keys = variationsObject.keys();
-                while (keys.hasNext()) {
-                    String sku = (String) keys.next();
-                    JSONObject variationObject = variationsObject.getJSONObject(sku);
-                    Variation variation = new Variation();
-                    variation.initialize(sku, variationObject);
-                    mVariations.add(variation);
-                }
-            }
+            hasVariations = variationsObject != null && variationsObject.length() > 0;
 
-            //added
-            mName = jsonObject.optString("name");
+//            JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
+//            if (variationsObject != null) {
+//                mVariations = new ArrayList<>();
+//                @SuppressWarnings("rawtypes")
+//                Iterator keys = variationsObject.keys();
+//                while (keys.hasNext()) {
+//                    String sku = (String) keys.next();
+//                    JSONObject variationObject = variationsObject.getJSONObject(sku);
+//                    Variation variation = new Variation();
+//                    variation.initialize(sku, variationObject);
+//                    mVariations.add(variation);
+//                }
+//            }
 
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
@@ -172,16 +172,16 @@ public class ProductComplete extends ProductMultiple {
         return mShortDescription;
     }
 
-    public ArrayList<Variation> getVariations() {
-        return mVariations;
+//    public ArrayList<Variation> getVariations() {
+//        return mVariations;
+//    }
+
+    public boolean hasVariations() {
+        return hasVariations;
     }
 
     public BundleList getProductBundle() {
         return mProductBundle;
-    }
-
-    public void setProductBundle(BundleList mProductBundle) {
-        this.mProductBundle = mProductBundle;
     }
 
     public boolean hasSeller() {
@@ -196,13 +196,13 @@ public class ProductComplete extends ProductMultiple {
         return mSeller;
     }
 
-    public double getMinPriceOffer() {
-        return mMinPriceOffer;
-    }
-
-    public int getTotalOffers() {
-        return mTotalOffers;
-    }
+//    public double getMinPriceOffer() {
+//        return mMinPriceOffer;
+//    }
+//
+//    public int getTotalOffers() {
+//        return mTotalOffers;
+//    }
 
     public ArrayList<ProductSpecification> getProductSpecifications() {
         return mProductSpecs;
@@ -214,6 +214,10 @@ public class ProductComplete extends ProductMultiple {
 
     public String getShareUrl() {
         return mShareUrl;
+    }
+
+    public boolean isFashion() {
+        return isFashion;
     }
 
     /*
@@ -239,7 +243,7 @@ public class ProductComplete extends ProductMultiple {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeList(mImageList);
-        dest.writeList(mVariations);
+        //dest.writeList(mVariations);
         dest.writeString(mDescription);
         dest.writeByte((byte) (hasSeller ? 1 : 0));
         dest.writeByte((byte) (hasBundle ? 1 : 0));
@@ -250,14 +254,16 @@ public class ProductComplete extends ProductMultiple {
         dest.writeInt(mTotalOffers);
         dest.writeList(mProductSpecs);
         dest.writeString(mShortDescription);
+        dest.writeByte((byte) (isFashion ? 1 : 0));
+        dest.writeByte((byte) (hasVariations ? 1 : 0));
     }
 
     private ProductComplete(Parcel in) {
         super(in);
         mImageList = new ArrayList<>();
         in.readList(mImageList, null);
-        mVariations = new ArrayList<>();
-        in.readList(mVariations, Variation.class.getClassLoader());
+//        mVariations = new ArrayList<>();
+//        in.readList(mVariations, Variation.class.getClassLoader());
         mDescription = in.readString();
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
@@ -269,6 +275,8 @@ public class ProductComplete extends ProductMultiple {
         mProductSpecs = new ArrayList<>();
         in.readList(mProductSpecs, ProductSpecification.class.getClassLoader());
         mShortDescription = in.readString();
+        isFashion = in.readByte() == 1;
+        hasVariations = in.readByte() == 1;
     }
 
     public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {
