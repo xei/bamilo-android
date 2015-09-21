@@ -66,7 +66,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     public ProductDetailsSummaryFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
-                R.layout.product_summary_fragment,
+                //      R.layout.product_summary_fragment,
+                R.layout._def_product_summary_fragment_new,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -213,21 +214,22 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     }
     
     private void getViews(){
-        mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
+  /*      mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
         mProductPriceSpecial = (TextView) mainView.findViewById(R.id.product_price_special);
         mProductPriceNormal = (TextView) mainView.findViewById(R.id.product_price_normal);
         mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
         mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
-        mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
+        mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);*/
         mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
+        mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
     }
-    
+
     private void displayProductInformation() {
-        mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        displayPriceInformation();
+    //    mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+    //    displayPriceInformation();
         displayFeatures();
         displayDescription();
-        showAtLeastOne();
+   //     showAtLeastOne();
     }
 
     /**
@@ -266,7 +268,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private void displayFeatures() {
         String shortDescription = mCompleteProduct.getShortDescription();
         // Don't show the features box if there is no content for it
-        if (TextUtils.isEmpty(shortDescription)) {
+/*        if (TextUtils.isEmpty(shortDescription)) {
             Print.i(TAG, "shortDescription : empty");
             if(mProductFeaturesContainer != null){
                 mProductFeaturesContainer.setVisibility(View.GONE);
@@ -289,6 +291,16 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 //        }
 //        mProductFeaturesText.setText(htmlText);
             mProductFeaturesText.setText(shortDescription);
+   //     }
+   */
+        if (TextUtils.isEmpty(shortDescription)) {
+            Print.i(TAG, "shortDescription : empty");
+            if(mProductFeaturesText != null){
+                mProductFeaturesText.setVisibility(View.GONE);
+            }
+        } else {
+            mProductFeaturesText.setText(shortDescription);
+
         }
     }
 
@@ -299,7 +311,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         String longDescription = mCompleteProduct.getDescription();
 
 
-        if (TextUtils.isEmpty(longDescription)) {
+   /*     if (TextUtils.isEmpty(longDescription)) {
             Print.i(TAG, "longDescription : empty");
             if(mProductDescriptionContainer != null){
                 mProductDescriptionContainer.setVisibility(View.GONE);
@@ -317,6 +329,17 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 //                }
 //            }
 //            mProductDescriptionText.setText(htmlText);
+            mProductDescriptionText.setText(longDescription);
+        }*/
+
+        //added apires: set long description
+        if (TextUtils.isEmpty(longDescription)) {
+            Print.i(TAG, "longDescription : empty");
+            if(mProductDescriptionText != null){
+                mProductDescriptionText.setVisibility(View.GONE);
+            }
+        } else {
+            //TODO validate if it's to remove or not
             mProductDescriptionText.setText(longDescription);
         }
     }
