@@ -613,10 +613,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER: FACEBOOK LOGIN");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, this);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values, saveCredentials), this);
     }
 
     /**
@@ -956,7 +953,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     private void trackCheckoutStarted(String customerId) {
         try {
             PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
-            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking());
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking(), cart.getAttributeSetIdList());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

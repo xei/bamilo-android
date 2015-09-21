@@ -276,7 +276,7 @@ public class DynamicFormItem {
                 case email:
                 case text:
                 case password:
-                    buildText(params, controlWidth);
+                    buildEditableText(params, controlWidth);
                     break;
                 case relatedNumber:
                     buildRelatedNumber(params, controlWidth);
@@ -286,6 +286,9 @@ public class DynamicFormItem {
                     break;
                 case rating:
                     buildRatingOptionsTerms(params, controlWidth);
+                    break;
+                case errorMessage:
+                    buildText(params, controlWidth);
                     break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
@@ -303,7 +306,7 @@ public class DynamicFormItem {
         container.setOrientation(LinearLayout.VERTICAL);
         this.control = container;
         // Create text field
-        buildText(params, controlWidth);
+        buildEditableText(params, controlWidth);
         // Create radio group
         buildRelatedRadioGroup(container, entry.getRelatedField());
     }
@@ -1277,6 +1280,16 @@ public class DynamicFormItem {
 
 
     private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
+        this.control.setLayoutParams(params);
+        this.control.setPadding(0, 10, 0, 10);
+        ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
+
+        TextView textView = (TextView)View.inflate(this.context, R.layout.text_view_info, null);
+        textView.setText(entry.getValue());
+        ((ViewGroup) this.control).addView(textView);
+    }
+
+    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // Create text
         ViewGroup dataContainer = createTextDataContainer(controlWidth);

@@ -10,6 +10,7 @@ import com.mobile.view.R;
  *
  * @author sergiopereira
  */
+@Deprecated
 public enum ToastFactory {
 
     ERROR_FB_PERMISSION(R.string.error_fb_permission_not_granted, Toast.LENGTH_LONG),

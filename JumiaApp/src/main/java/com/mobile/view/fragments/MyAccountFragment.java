@@ -26,10 +26,10 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
-import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
+
 import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**

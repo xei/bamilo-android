@@ -87,13 +87,6 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-//    /**
-//     * The md5 registry
-//     */
-//    boolean resendInitializationSignal = false;
-//    private Handler resendHandler;
-//    private Message resendMsg;
-
     /**
      * Payment methods Info
      */
@@ -106,6 +99,12 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
     private HashMap<String, String> bannerSkus = new HashMap<>();
+
+    /**
+     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
+     */
+    private static HashMap<String, Boolean> sWishListTemporary;
+
 
     /*
      * (non-Javadoc)
@@ -193,25 +192,6 @@ public class JumiaApplication extends A4SApplication {
         msg.obj = bundle;
         // Send result message
         initializationHandler.sendMessage(msg);
-
-//        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
-//
-////            //&& ServiceSingleton.getInstance().getService() == null) {
-////
-////            Print.d(TAG, "ON HANDLE WITH ERROR");
-////            resendInitializationSignal = true;
-////            resendHandler = initializationHandler;
-////            resendMsg = msg;
-////
-////            doBindService();
-//
-//            initializationHandler.sendMessage(msg);
-//
-//
-//        } else {
-//            Print.d(TAG, "ON INIT HANDLE");
-//            initializationHandler.sendMessage(msg);
-//        }
     }
 
     /*
@@ -292,27 +272,11 @@ public class JumiaApplication extends A4SApplication {
         this.formDataRegistry = formDataRegistry;
     }
 
-//    public void doBindService() {
-//
-//        if (resendInitializationSignal) {
-//            resendHandler.sendMessage(resendMsg);
-//            resendInitializationSignal = false;
-//        }
-//
-//        if (!mIsBound) {
-//            /**
-//             * Establish a connection with the service. We use an explicit class
-//             * name because we want a specific service implementation that we
-//             * know will be running in our own process (and thus won't be
-//             * supporting component replacement by other applications).
-//             */
-//            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-//        }
-//    }
-
     /**
      * @return the loggedIn
+     * @deprecated This flag is not persisted on rotation.
      */
+    @Deprecated
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -321,53 +285,17 @@ public class JumiaApplication extends A4SApplication {
      * @param loggedIn
      *            the loggedIn to set
      */
+    @Deprecated
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
 
-
-//    public void setResendHandler(Handler mHandler) {
-//        resendInitializationSignal = true;
-//        resendMsg = new Message();
-//        resendHandler = mHandler;
-//    }
-
-//    /**
-//     * Service Stuff
-//     */
-//
-//    public ServiceConnection mConnection = new ServiceConnection() {
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//            Log.i(TAG, "onServiceDisconnected");
-//            mIsBound = false;
-//        }
-//
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            // This is called when the connection with the service has been
-//            // established, giving us the service object we can use to
-//            // interact with the service. We are communicating with our
-//            // service through an IDL interface, so get a client-side
-//            // representation of that from the raw service object.
-//            Log.i(TAG, "onServiceConnected");
-//            mIsBound = true;
-//            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-//
-//            if (resendInitializationSignal) {
-//                resendHandler.sendMessage(resendMsg);
-//                resendInitializationSignal = false;
-//            }
-//
-//            if (resendMenuHandler != null) {
-//                resendMenuHandler.sendEmptyMessage(0);
-//                resendMenuHandler = null;
-//            }
-//            // Register the fragment callback
-//            registerCallBackIsWaiting();
-//        }
-//    };
+    /**
+     * Validate if customer is logged in (not null).
+     */
+    public static boolean isCustomerLoggedIn() {
+        return CUSTOMER != null;
+    }
 
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
@@ -484,6 +412,7 @@ public class JumiaApplication extends A4SApplication {
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
+        sWishListTemporary = null;
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
     }
@@ -526,6 +455,14 @@ public class JumiaApplication extends A4SApplication {
     public void clearBannerFlowSkus() {
         bannerSkus = null;
     }
+
+    /**
+     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
+     */
+    public static HashMap<String, Boolean> getWishListTemporaryPdvData() {
+        return sWishListTemporary == null ? sWishListTemporary = new HashMap<>() : sWishListTemporary;
+    }
+
 
 }
 
