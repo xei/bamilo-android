@@ -717,7 +717,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(ShopSelector.isRtl()){
+                if(ShopSelector.isRtlShop()){
                     inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -766,7 +766,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateMaintenance(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (ShopSelector.isRtl()) {
+        if (ShopSelector.isRtlShop()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);

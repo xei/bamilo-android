@@ -4,7 +4,7 @@
     style="@style/list_row_rounded_style"
     android:layoutDirection="locale"
     android:layout_height="@dimen/catalog_list_item_height"
-    android:gravity="center" >
+    android:gravity="center">
 
     <!-- IMAGE CONTAINER -->
 

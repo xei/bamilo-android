@@ -143,7 +143,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_catalog_fragment_header;
         else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.catalog_item_list_rounded;
         else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
-        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout._def_catalog_fragment_footer;
+        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout.catalog_fragment_footer;
         // Create a new view
         return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }

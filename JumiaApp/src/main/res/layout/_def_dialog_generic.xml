@@ -10,8 +10,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/modal_dialog_header"
         android:paddingBottom="@dimen/margin_large"
+        android:paddingEnd="@dimen/margin_veryhuge"
         android:paddingLeft="@dimen/margin_veryhuge"
         android:paddingRight="@dimen/margin_veryhuge"
+        android:paddingStart="@dimen/margin_veryhuge"
         android:paddingTop="@dimen/margin_large" >
 
         <com.mobile.components.customfontviews.TextView
@@ -49,28 +51,29 @@
             android:layout_alignParentTop="true" />
 
         <LinearLayout
-            android:id="@id/button_container"
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/grey_line"
+            android:layoutDirection="locale"
             android:orientation="horizontal" >
-
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button2"
-                style="@style/dialog_button_style"
-                android:contentDescription="@string/yes_label"
-                android:text="@string/ok_label" />
-
-            <View
-                android:id="@+id/grey_line_vertical"
-                style="@style/line_dialog_vertical" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button1"
                 style="@style/dialog_button_style"
                 android:contentDescription="@string/productdetail_gotocart_description"
                 android:text="@string/cancel_label" />
+
+            <View
+                android:id="@+id/grey_line_vertical"
+                style="@style/line_dialog_vertical" />
+
+            <com.mobile.components.customfontviews.Button
+                android:id="@+id/button2"
+                style="@style/dialog_button_style"
+                android:contentDescription="@string/yes_label"
+                android:text="@string/ok_label" />
         </LinearLayout>
     </RelativeLayout>
 
