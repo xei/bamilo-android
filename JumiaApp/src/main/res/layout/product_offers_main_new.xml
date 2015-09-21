@@ -19,6 +19,7 @@
             style="@style/List1"
             color="@color/black"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_huge"
             android:layout_marginEnd="@dimen/margin_huge"
             android:layout_marginLeft="@dimen/margin_large"
@@ -32,9 +33,11 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_brand"
+            android:layout_below="@id/offer_product_name"
             style="@style/Caption"
             color="@color/black_800"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_huge"
             android:layout_marginEnd="@dimen/margin_huge"
             android:layout_marginLeft="@dimen/margin_large"
@@ -49,11 +52,24 @@
 
     </RelativeLayout>
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:color="@color/black_800"
+        android:layout_below="@id/offers_header"
+        />
+
     <GridView
         android:id="@+id/offers_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:listSelector="@color/transparent"
-        android:numColumns="1" />
+        android:layout_below="@id/divider"
+        android:numColumns="1"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:background="@color/black_800"
+        />
 
 </RelativeLayout>
