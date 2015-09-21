@@ -244,12 +244,13 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     protected void updateWishListContainer() {
         // Update content
         WishListAdapter adapter = (WishListAdapter) mListView.getAdapter();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        } else {
-            WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), mWishList.getProducts(), this);
-            mListView.setAdapter(listAdapter);
-        }
+        adapter.notifyDataSetChanged();
+        //if (adapter != null) {
+        //    adapter.notifyDataSetChanged();
+        //} else {
+        //    WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), mWishList.getProducts(), this);
+        //    mListView.setAdapter(listAdapter);
+        //}
     }
 
     /**

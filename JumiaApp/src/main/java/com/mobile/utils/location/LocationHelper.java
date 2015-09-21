@@ -18,7 +18,6 @@ import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;

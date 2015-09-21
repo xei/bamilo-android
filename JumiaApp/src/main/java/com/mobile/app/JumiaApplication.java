@@ -100,6 +100,12 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearchCategory = true;
     private HashMap<String, String> bannerSkus = new HashMap<>();
 
+    /**
+     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
+     */
+    private static HashMap<String, Boolean> sWishListTemporary;
+
+
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -453,7 +459,6 @@ public class JumiaApplication extends A4SApplication {
     /**
      * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
      */
-    private static HashMap<String, Boolean> sWishListTemporary;
     public static HashMap<String, Boolean> getWishListTemporaryPdvData() {
         return sWishListTemporary == null ? sWishListTemporary = new HashMap<>() : sWishListTemporary;
     }

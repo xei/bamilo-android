@@ -1,7 +1,7 @@
 package com.mobile.newFramework.pojo;
 
 /**
- * @author nunocastro
+ * Class used to save all int constants
  */
 public class IntConstants {
 
