@@ -86,7 +86,7 @@
                 android:layout_toLeftOf="@+id/product_detail_seller_sold_by"
                 android:gravity="right|center_vertical"
                 android:text="Jumia"
-                android:textColor="@color/orange_ffa200"
+                android:textColor="@color/color_accent"
                 android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
