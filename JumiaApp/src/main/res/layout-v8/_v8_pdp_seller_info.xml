@@ -7,7 +7,7 @@
 
     <!-- PRODUCT SELLER INFO -->
     <!-- HEADER TITLE -->
-    <include layout="@layout/header" android:id="@+id/HeaderSection" />
+    <include layout="@layout/header" android:id="@+id/pdv_specs_title" />
 
 
     <!--CONTENT -->
@@ -73,7 +73,7 @@
 
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
+            style="@style/TextHeader"
             color="@color/black"
             android:layout_centerVertical="true"
             android:text="3 - 8 days"
@@ -84,7 +84,7 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
+            style="@style/TextHeader"
             color="@color/black"
             android:layout_centerVertical="true"
             android:text="Delivery time "
@@ -109,7 +109,7 @@
 
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
+            style="@style/TextHeader"
             color="@color/black"
             android:layout_centerVertical="true"
             android:text="3 - 8 days"
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content" />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/Header"
+            style="@style/TextHeader"
             color="@color/black"
             android:layout_centerVertical="true"
             android:text="Warranty"

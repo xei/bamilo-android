@@ -168,8 +168,9 @@
     
     <dimen name="shipping_time_fee_min_height">@dimen/dimen_120px</dimen>
    
-    <!-- PDV IMAGE -->
+    <!-- PDV -->
     <dimen name="pdv_image">270dp</dimen>
+    <integer name="pdv_related_products_num_columns">3</integer>
 
     <!-- NO CONNECTION -->
     <dimen name="no_connection_label_small_size">19sp</dimen>

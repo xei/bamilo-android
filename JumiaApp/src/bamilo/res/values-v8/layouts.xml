@@ -4,6 +4,10 @@
 
     <!-- GENERIC -->
     <item name="fragment_loading_more" 		            type="layout">@layout/_v8_loading_more</item>
+    <item name="header" 	                            type="layout">@layout/_v8_header</item>
+    <item name="single_line_list" 	                    type="layout">@layout/_v8_single_line_list</item>
+    <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
+    <item name="pdp_details" 	                        type="layout">@layout/_v8_pdp_details</item>
 
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address" 	    type="layout">@layout/_v8_checkout_my_order_billing_address</item>
@@ -64,11 +68,6 @@
     <item name="product_details_fragment_offers"        type="layout">@layout/_v8_product_details_fragment_offers</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_v8_product_details_fragment_header</item>
 
-    <!-- added new 2.7 generic layouts -->
-    <item name="header" 	                            type="layout">@layout/_v8_header</item>
-    <item name="single_line_list" 	                    type="layout">@layout/_v8_single_line_list</item>
-    <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
-    <item name="pdp_details" 	                        type="layout">@layout/_v8_pdp_details</item>
     <!-- added new v2.7 PDV layouts -->
     <item name="pdp_price_tag" 	                        type="layout">@layout/_v8_pdp_price_tag</item>
     <item name="pdp_rating" 	                        type="layout">@layout/_v8_pdp_rating</item>
@@ -77,7 +76,6 @@
     <item name="pdp_product_item_grid" 	                type="layout">@layout/_v8_pdp_product_item_grid</item>
     <item name="pdp_product_title" 	                    type="layout">@layout/_v8_pdp_product_title</item>
     <item name="buy_bar" 	                            type="layout">@layout/_v8_buy_bar</item>
-
 
     <!-- NAVIGATION DRAWER -->
     <item name="navigation_fragment_main"               type="layout">@layout/_v8_navigation_fragment_main</item>

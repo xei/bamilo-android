@@ -9,7 +9,7 @@
     <!-- PRODUCT SPECIFICATIONS/ DESCRIPTION -->
     <!-- HEADER -->
 
-    <include layout="@layout/header" android:id="@+id/HeaderSection" />
+    <include layout="@layout/header" android:id="@+id/pdv_specs_title" />
     <!-- CONTENT -->
 
     <com.mobile.components.customfontviews.TextView
@@ -21,7 +21,7 @@
         android:text="Multiline_text"
         android:layout_marginTop="@dimen/item_margin_top"
         android:layout_marginBottom="@dimen/item_margin_top"
-        android:id="@+id/tx_multiline_text"
+        android:id="@+id/pdv_specs_multi_line"
         android:textAlignment="gravity"
         android:maxLines="@integer/details_max_lines"
 

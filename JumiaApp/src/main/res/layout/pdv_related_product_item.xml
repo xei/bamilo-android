@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- IMAGE -->
+
+    <include
+        android:id="@+id/image_loadable"
+        layout="@layout/image_loadable"
+        android:layout_width="match_parent"
+        android:layout_height="138dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:layout_marginTop="@dimen/layout_marginLeft" />
+
+    <!-- INFO -->
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/image_loadable"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <!-- BRAND -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/TextCaption"
+            android:text="NIKE"
+            android:textColor="@color/black_800" />
+
+        <!-- NAME -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/header_text"
+            style="@style/TextBody_1"
+            android:text="DESCRIPTION"
+            android:textColor="@color/black" />
+
+        <!-- PRICE -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_discount"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_price"
+                style="@style/TextBody_3"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/black_800" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

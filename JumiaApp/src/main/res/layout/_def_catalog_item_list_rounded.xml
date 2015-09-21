@@ -120,7 +120,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
-        style="@style/discount_percentage"
+        style="@style/PdvBadgeStyle"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

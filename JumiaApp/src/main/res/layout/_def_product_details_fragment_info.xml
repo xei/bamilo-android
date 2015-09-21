@@ -31,7 +31,7 @@
             android:textColor="@color/red_basic" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/product_price_normal"
+            android:id="@+id/product_price"
             style="@style/text_header"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/product_price_special"

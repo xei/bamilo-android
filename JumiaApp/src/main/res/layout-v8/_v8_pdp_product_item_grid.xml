@@ -51,7 +51,7 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/txTitle"
+            android:id="@+id/gen_header_text"
             style="@style/Body1"
             android:textColor="@color/black"
             android:text="DESCRIPTION"

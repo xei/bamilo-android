@@ -215,7 +215,7 @@
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
     <string name="product_sort_button">Sort</string>
-    <string name="product_specifications">Specifications</string>
+    <string name="specifications">Specifications</string>
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
     <string name="product_variant_placeholder">&#8230;</string>

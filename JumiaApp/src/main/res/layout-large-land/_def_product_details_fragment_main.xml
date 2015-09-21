@@ -76,7 +76,7 @@
                         android:textColor="@color/red_middle" />
 
                     <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/product_price_normal"
+                        android:id="@+id/product_price"
                         style="@style/text_header"
                         android:layout_alignBaseline="@+id/product_price_special"
                         android:layout_below="@id/product_detail_name"
@@ -170,7 +170,7 @@
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_detail_discount_percentage"
-                        style="@style/discount_percentage"
+                        style="@style/PdvBadgeStyle"
                         android:layout_alignBottom="@id/product_image_layout"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"

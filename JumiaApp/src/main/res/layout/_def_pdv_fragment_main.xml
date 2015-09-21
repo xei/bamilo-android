@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- BUTTON BAR -->
+
+    <include
+        android:id="@+id/pdp_buy_bar"
+        layout="@layout/buy_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <!-- SCROLL CONTAINER -->
+
+    <com.mobile.utils.ScrollViewWithHorizontal
+        android:id="@+id/product_detail_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pdp_buy_bar"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--TITLE-->
+
+            <include
+                android:id="@+id/pdv_title_container"
+                layout="@layout/pdv_fragment_title" />
+
+            <!-- IMAGE CONTAINER -->
+
+            <include
+                android:id="@+id/imageGallery"
+                layout="@layout/pdv_fragment_image" />
+
+            <!-- PRODUCT IMAGES LIST -->
+
+            <include
+                android:id="@+id/productImages"
+                layout="@layout/pdv_fragment_gallery" />
+
+            <!--TITLE-->
+
+            <include
+                android:id="@+id/pdv_title_fashion_container"
+                layout="@layout/pdv_fragment_title" />
+
+            <!-- SEPARATOR -->
+
+            <View style="@style/divider_horizontal" />
+
+            <!-- PRICE -->
+
+            <include layout="@layout/pdv_price_tag" />
+
+            <!-- SEPARATOR -->
+
+            <View style="@style/divider_horizontal" />
+
+            <!-- RATING -->
+
+            <include
+                android:id="@+id/RatingSection"
+                layout="@layout/pdv_rate_list" />
+
+            <!-- SPECIFICATIONS -->
+            <include
+                android:id="@+id/SpecificationsSection"
+                layout="@layout/pdv_fragment_specs_desc" />
+
+            <!-- SIZE FROM SIMPLES -->
+
+            <include
+                android:id="@+id/SizeSection"
+                layout="@layout/single_line_list" />
+
+            <!-- VARIATIONS -->
+
+            <include
+                android:id="@+id/OtherVariationsSection"
+                layout="@layout/single_line_list" />
+
+            <!-- SELLER -->
+
+            <include
+                android:id="@+id/SellerSection"
+                layout="@layout/pdv_fragment_seller_info" />
+
+            <!-- DESCRIPTION -->
+
+            <include
+                android:id="@+id/DescriptionSection"
+                layout="@layout/pdv_fragment_specs_desc" />
+
+            <!-- COMBOS -->
+
+            <include
+                android:id="@+id/CombosSection"
+                layout="@layout/pdv_fragment_combos" />
+
+            <!-- RELATED ITEMS -->
+
+            <include
+                android:id="@+id/RelatedSection"
+                layout="@layout/pdv_fragment_related_prods" />
+
+        </LinearLayout>
+
+    </com.mobile.utils.ScrollViewWithHorizontal>
+
+</RelativeLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PdvPriceTagStyle">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_special_price"
+        style="@style/TextList_1" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_price"
+        style="@style/TextList_2"
+        android:layout_marginLeft="@dimen/layout_marginLeft" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_detail_discount_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_marginLeft="@dimen/layout_marginLeft" />
+
+</LinearLayout>

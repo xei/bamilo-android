@@ -18,11 +18,11 @@
 	<!-- SHOPPING CART -->
 	<item name="shopping_basket" 				type="layout">@layout/_v8_shopping_basket</item>
 
-    <!-- PDV -->
+    <!-- PDV TODO: DELETE-->
     <item name="product_details_fragment_main" 	type="layout">@layout/_v8_product_details_fragment_main</item>
 
     <!-- PDV -->
-    <item name="pdp_details_fragment_main" 	type="layout">@layout/_v8_pdp_details_fragment_main</item>
+    <item name="pdp_details_fragment_main" 	    type="layout">@layout/_v8_pdp_details_fragment_main</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"           type="layout">@layout/_v8_track_order_fragment</item>

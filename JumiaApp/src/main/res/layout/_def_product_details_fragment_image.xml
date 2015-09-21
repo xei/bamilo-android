@@ -38,7 +38,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_discount_percentage"
-        style="@style/discount_percentage"
+        style="@style/PdvBadgeStyle"
         android:layout_alignBottom="@id/product_image_layout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

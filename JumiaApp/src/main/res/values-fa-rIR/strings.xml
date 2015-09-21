@@ -214,7 +214,7 @@
     <string name="product_outof_stock">کالا موجود نیست.</string>
     <string name="product_sold_by">فروخته شده توسط:</string>
     <string name="product_sort_button">مرتب سازی</string>
-    <string name="product_specifications">مشخصات کالا</string>
+    <string name="specifications">مشخصات کالا</string>
     <string name="product_variance_choose">لطفا انتخاب کنید</string>
     <string name="product_variance_choose_error">لطفا یکی از موارد را انتخاب کنید</string>
     <string name="product_variant_placeholder">&#8230;</string>
