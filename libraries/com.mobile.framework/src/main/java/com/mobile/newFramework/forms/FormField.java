@@ -142,6 +142,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case "checkbox_link":
                     mInputType = InputType.checkBoxLink;
                     break;
+                case "errorMessage":
+                    inputType = InputType.errorMessage;
+                    break;
                 default:
                     return false;
             }
@@ -272,7 +275,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
              * ########### PAYMENT METHODS ###########
              */
 
-            if (mKey.equals(RestConstants.PAYMENT_METHOD)) {
+            if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != InputType.errorMessage){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
                 dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);

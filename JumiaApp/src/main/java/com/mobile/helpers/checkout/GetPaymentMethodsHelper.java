@@ -6,6 +6,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -40,7 +41,7 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get("payment_method").getPaymentInfoList());
+        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList());
     }
 
 }

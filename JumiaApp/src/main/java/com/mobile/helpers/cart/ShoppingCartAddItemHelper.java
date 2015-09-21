@@ -4,6 +4,7 @@
  */
 package com.mobile.helpers.cart;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -75,14 +76,12 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-
-
         //TODO move to observable
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
+        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
@@ -100,5 +99,21 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         super.createErrorBundleParams(baseResponse, bundle);
         bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
+    }
+
+
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String sku, String simpleSku) {
+        // Item data
+        ContentValues values = new ContentValues();
+        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSku);
+        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        // Request data
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 }

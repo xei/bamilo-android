@@ -51,7 +51,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     private String mCompleteProductSku;
     private ArrayList<ProductSpecification> mProductSpecifications;
     private LayoutInflater inflater;
-    private static final String SPECIFICATION = "specification";
 
     /**
      * Get instance
