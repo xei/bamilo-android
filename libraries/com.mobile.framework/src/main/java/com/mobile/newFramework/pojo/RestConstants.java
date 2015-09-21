@@ -261,9 +261,7 @@ public class RestConstants {
     public static final String JSON_ORDER_UNIT_PRICE_TAG = "unit_price";
     public static final String JSON_ORDER_PAYMENT_TAG = "payment";
     public static final String JSON_ORDER_TOTAL_NUM_TAG = "total_orders";
-    public static final String JSON_ORDER_PAGINATION_TAG = "pagination";
-    public static final String JSON_ORDER_CURRENT_PAGE_TAG = "current_page";
-    public static final String JSON_ORDER_TOTAL_PAGES_TAG = "total_pages";
+
     /**
      * Order Tracking TAGS
      */
@@ -416,6 +414,13 @@ public class RestConstants {
     public static final String JSON_MULTI = "multi";
     public static final String JSON_FILTER_SEPARATOR = "filter_separator";
     public static final String JSON_OPTION_TAG = "option";
+
+    public static final String TOTAL_PAGES = "total_pages";
+    public static final String CURRENT_PAGE = "current_page";
+    public static final String PAGE = "page";
+    public static final String PER_PAGE = "per_page";
+    public static final String PAGINATION = "pagination";
+
 
 
     public static final String ADDRESSES = "addresses";

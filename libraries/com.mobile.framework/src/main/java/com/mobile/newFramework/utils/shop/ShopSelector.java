@@ -1,16 +1,13 @@
 package com.mobile.newFramework.utils.shop;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.configs.Version;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -18,7 +15,6 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Locale;

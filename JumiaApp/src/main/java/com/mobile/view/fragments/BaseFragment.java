@@ -944,8 +944,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
-        return false;
 
+        /**
+         * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
+         * // CODE_CUSTOMER_NOT_LOGGED_IN should be an ErrorCode
+         * // CASE REQUEST_ERROR && CUSTOMER_NOT_LOGGED_IN
+         */
+
+        return false;
     }
 
     protected void clearCredentials() {

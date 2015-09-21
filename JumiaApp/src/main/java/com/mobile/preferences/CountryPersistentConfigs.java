@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.google.gson.Gson;
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;

@@ -29,6 +29,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ValidProductList;
+import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
@@ -477,6 +478,20 @@ public interface AigApiInterface {
 
     @GET("/")
     void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
-
     String getChangePasswordForm = "getChangePasswordForm";
+
+    @GET("/")
+    void getWishList(@QueryMap Map<String, String> data, Callback<BaseResponse<WishList>> callback);
+    String getWishList = "getWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String addToWishList = "addToWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeFromWishList = "removeFromWishList";
+
 }
