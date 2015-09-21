@@ -1,6 +1,7 @@
 package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
+import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -102,6 +103,24 @@ public class ProductMultiple extends ProductRegular {
         return getSimples().get(mSelectedSimplePosition);
     }
 
+    /**
+     * Get selected simple variation
+     */
+    @Nullable
+    public ProductSimple getSelectedSimple() {
+        // Case Own simple variation
+        if(hasOwnSimpleVariation()) {
+            return  getOwnSimpleVariation();
+        }
+        // Case Multi simple variations
+        else if(hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
+            return getSelectedSimpleVariation();
+        }
+        // Case invalid
+        else {
+            return null;
+        }
+    }
 
     /*
      * ############ PARCELABLE ############

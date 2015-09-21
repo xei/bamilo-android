@@ -5,7 +5,7 @@ import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
@@ -88,9 +88,8 @@ public class AigRestAdapter {
             // AGENT
             request.addHeader(HeaderConstants.USER_AGENT, agent + " " + AigRestContract.AUTHENTICATION_USER_AGENT);
 
-            String countryCode = ShopSelector.getCountryCode();
-            if(TextUtils.isNotEmpty(countryCode)) {
-                request.addHeader(HeaderConstants.USER_LANGUAGE, countryCode);
+            if(TextUtils.isNotEmpty(AigRestContract.USER_LANGUAGE)) {
+                request.addHeader(HeaderConstants.USER_LANGUAGE, AigRestContract.USER_LANGUAGE);
             }
             //Print.d("##########################################################");
         }

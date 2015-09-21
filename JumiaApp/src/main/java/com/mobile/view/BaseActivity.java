@@ -51,7 +51,7 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -478,7 +478,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -1223,7 +1223,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
         final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 
@@ -1323,7 +1323,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case Favorite:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        // Validate customer is logged in
+                        if (!JumiaApplication.isCustomerLoggedIn()) {
+                            // Goto Login and next WishList
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
                         break;
                     case RecentSearch:
                         // RECENT SEARCHES
@@ -1937,7 +1945,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void recoverUserDataFromBackground() {
         Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials

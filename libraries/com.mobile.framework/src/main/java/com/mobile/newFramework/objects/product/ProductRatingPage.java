@@ -60,12 +60,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 		// just used for seller reviews
 		 sellerName = dataObject.optString(RestConstants.JSON_NAME_TAG);
-		 sellerUrl = dataObject.optString(RestConstants.JSON_URL_TAG);
+		 sellerUrl = dataObject.optString(RestConstants.URL);
 
 		JSONObject productObject = dataObject.optJSONObject(RestConstants.JSON_PRODUCT_TAG);
 		if (productObject != null) {
             productName = productObject.optString(RestConstants.JSON_NAME_TAG);
-            productSku = productObject.optString(RestConstants.JSON_SKU_TAG);
+            productSku = productObject.optString(RestConstants.SKU);
         }
         JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.JSON_RATING_STAR_SIZE_TAG);
 
@@ -110,10 +110,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	            }
 	        }
 
-			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
 			if(paginationObject != null){
-				currentPage = paginationObject.getInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG);
-				totalPages = paginationObject.getInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG);
+				currentPage = paginationObject.getInt(RestConstants.CURRENT_PAGE);
+				totalPages = paginationObject.getInt(RestConstants.TOTAL_PAGES);
 			}
 
 		}

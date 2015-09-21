@@ -10,7 +10,8 @@ import com.mobile.components.RangeSeekBar;
 import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.catalog.CatalogFilterOption;
+import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -39,6 +40,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     private int mInterval;
 
+    private CatalogPriceFilter mFilter;
     /**
      * 
      * @param parent
@@ -62,6 +64,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mFilter = (CatalogPriceFilter)mCatalogFilter;
     }
     
     /*
@@ -81,7 +84,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get data from filter
-        CatalogFilterOption filterOption = mCatalogFilter.getFilterOption();
+        CatalogPriceFilterOption filterOption = mFilter.getOption();
         // Get min and max
         mCurrMinValue = mMin = filterOption.getMin();
         mCurrMaxValue = mMax = filterOption.getMax();
@@ -89,7 +92,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
         
         // Title
-        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mCatalogFilter.getName());
+        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mFilter.getName());
         // Get back button
         view.findViewById(R.id.dialog_filter_header_title).setOnClickListener(this);
         // Get clear button
@@ -110,17 +113,17 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         ((ViewGroup) view.findViewById(R.id.dialog_filter_range_bar)).addView(mRangeBar);
         
         // Get range values from pre selection
-        if(mCatalogFilter.hasRangeValues()) {
-            mCurrMinValue = mCatalogFilter.getMinRangeValue();
-            mCurrMaxValue = mCatalogFilter.getMaxRangeValue();
-        }
+//        if(mFilter.hasRangeValues()) {
+            mCurrMinValue = filterOption.getRangeMin();
+            mCurrMaxValue = filterOption.getRangeMax();
+//        }
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Set current range
         mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue);
         // Set discount box
-        mDiscountBox.setChecked(mCatalogFilter.isRangeWithDiscount());
+//        mDiscountBox.setChecked(mFilter.isRangeWithDiscount());
         
         Print.d(TAG, "FILTER CURRENT RANGE: " + mCurrMinValue + " " + mCurrMaxValue);
     }
@@ -168,8 +171,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Reset discount box
         mDiscountBox.setChecked(false);
         // Clean saved values
-        mCatalogFilter.cleanRangeValues();
-        mCatalogFilter.setRangeWithDiscount(false);
+        mFilter.cleanFilter();
+//        mFilter.setRangeWithDiscount(false);
         Print.d(TAG, "FILTER: CLEAN " + mMin + " " + mMax + " " + mCurrMinValue + " " + mCurrMaxValue);
     }
 
@@ -182,13 +185,14 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Validate current values
         if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
             // Clean saved values
-            mCatalogFilter.cleanRangeValues();
+            mFilter.cleanFilter();
         } else {
             // Save current values
-            mCatalogFilter.setRangeValues(mCurrMinValue, mCurrMaxValue);
+            mFilter.getOption().setRangeMin(mCurrMinValue);
+            mFilter.getOption().setRangeMax(mCurrMaxValue);
         }
         // Validate discount check
-        mCatalogFilter.setRangeWithDiscount(mDiscountBox.isChecked());
+//        mFilter.setRangeWithDiscount(mDiscountBox.isChecked());
         // Goto back
         mParent.allowBackPressed();
     }

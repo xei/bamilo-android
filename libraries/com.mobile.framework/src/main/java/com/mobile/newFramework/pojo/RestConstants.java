@@ -27,8 +27,8 @@ public class RestConstants {
     public static final String JSON_USER_AGENT_TAG = "user_agent";
 
     // Customer Tags
-    public static final String JSON_FIRST_NAME_TAG = "first_name";
-    public static final String JSON_LAST_NAME_TAG = "last_name";
+    public static final String FIRST_NAME = "first_name";
+    public static final String LAST_NAME = "last_name";
     public static final String JSON_EMAIL_TAG = "email";
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
@@ -48,13 +48,11 @@ public class RestConstants {
 
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
-    public static final String JSON_URL_TAG = "url";
+    public static final String URL = "url";
 
     // Form Tags
     public static final String JSON_FORM_TAG = "form";
-    public static final String JSON_METHOD_TAG = "method";
-
-    public static final String JSON_SUBMIT_TAG = "submit";
+    public static final String METHOD = "method";
     public static final String JSON_FIELDS_TAG = "fields";
 
     // FormField Tags
@@ -94,7 +92,7 @@ public class RestConstants {
     public static final String REVIEW_RATING_FIELD = "ratings";
 
     // CompleteProduct Tags
-    public static final String JSON_SKU_TAG = "sku";
+    public static final String SKU = "sku";
     public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
@@ -158,29 +156,26 @@ public class RestConstants {
     public static final String JSON_URL_KEY_TAG = "url_key";
     public static final String JSON_CHILDREN_TAG = "children";
     public static final String JSON_API_URL_TAG = "api_url";
-    public static final String JSON_CATEGORY_URL_TAG = JSON_URL_TAG;
+    public static final String JSON_CATEGORY_URL_TAG = URL;
     public static final String JSON_HAS_CHILDREN = "hasChildren";
 
     // ShoppingCart Tags
-    public static final String JSON_CART_TAG = "cart";
-    public static final String JSON_CART_VALUE_TAG = "value";
-    public static final String JSON_CART_COUNT_TAG = "total_products";
-    public static final String JSON_CART_PRODUCTS_TAG = "products";
-    public static final String JSON_CART_SHIPPING_VALUE_TAG = "amount";
-    public static final String JSON_CART_COUPON_CODE_TAG = "code";
-    public static final String JSON_CART_SUM_COSTS_TAG = "sum_costs_configuration";
-    public static final String JSON_CART_EXTRA_COSTS_TAG = "extra_costs";
-    public static final String JSON_CART_SUM_COSTS_VALUE_TAG = "sum_costs_value";
-    public static final String JSON_CART_PRICE_RULES_TAG = "price_rules";
-    public static final String JSON_CART_SUB_TOTAL = "sub_total";
-    public static final String JSON_CART_SUB_TOTAL_CONVERTED = "sub_total_converted";
-    public static final String JSON_CART_VAT_LABEL_ENABLE = "label_configuration";
-    public static final String JSON_CART_TOTAL = "total";
-    public static final String JSON_CART_TOTAL_CONVERTED = "total_converted";
-    public static final String JSON_CART_ENTITY = "cart_entity";
-    public static final String JSON_CART_COUPON = "coupon";
-    public static final String JSON_CART_DELIVERY = "delivery";
-    public static final String JSON_CART_VAT = "vat";
+    public static final String CART = "cart";
+    public static final String TOTAL_PRODUCTS = "total_products";
+    public static final String PRODUCTS = "products";
+    public static final String AMOUNT = "amount";
+    public static final String CODE = "code";
+    public static final String EXTRA_COSTS = "extra_costs";
+    public static final String SUM_COSTS_VALUE = "sum_costs_value";
+    public static final String PRICE_RULES = "price_rules";
+    public static final String SUB_TOTAL = "sub_total";
+    public static final String SUB_TOTAL_CONVERTED = "sub_total_converted";
+    public static final String TOTAL = "total";
+    public static final String TOTAL_CONVERTED = "total_converted";
+    public static final String CART_ENTITY = "cart_entity";
+    public static final String COUPON = "coupon";
+    public static final String DELIVERY = "delivery";
+    public static final String VAT = "vat";
 
     // ShoppingCartItem Tags
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
@@ -191,7 +186,6 @@ public class RestConstants {
     public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_ITEM_PRICE_TAG = "unit_price";
     public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_converted";
-    public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
     public static final String JSON_MAX_QUANTITY = "max_quantity";
     public static final String JSON_VARIATION_TAG = "variation";
     public static final String JSON_SIMPLE_SKU_TAG = "simple_sku";
@@ -218,13 +212,13 @@ public class RestConstants {
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
 
     // Address Tags
-    public static final String JSON_ADDRESSES_TAG = "addresses";
-    public static final String JSON_PHONE_TAG = "phone";
-    public static final String JSON_ADDITIONAL_PHONE_TAG = "additional_phone";
-    public static final String JSON_ADDRESS1_TAG = "address1";
-    public static final String JSON_ADDRESS2_TAG = "address2";
+    public static final String CUSTOMER_ADDRESS_ID = "customer_address_id";
+    public static final String PHONE = "phone";
+    public static final String ADDITIONAL_PHONE = "additional_phone";
+    public static final String ADDRESS_1 = "address1";
+    public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
-    public static final String JSON_POSTCODE_TAG = "postcode";
+    public static final String POSTCODE = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
 
@@ -267,9 +261,7 @@ public class RestConstants {
     public static final String JSON_ORDER_UNIT_PRICE_TAG = "unit_price";
     public static final String JSON_ORDER_PAYMENT_TAG = "payment";
     public static final String JSON_ORDER_TOTAL_NUM_TAG = "total_orders";
-    public static final String JSON_ORDER_PAGINATION_TAG = "pagination";
-    public static final String JSON_ORDER_CURRENT_PAGE_TAG = "current_page";
-    public static final String JSON_ORDER_TOTAL_PAGES_TAG = "total_pages";
+
     /**
      * Order Tracking TAGS
      */
@@ -277,27 +269,19 @@ public class RestConstants {
     public static final String JSON_GRAND_TOTAL_TAG = "grandTotal";
     public static final String JSON_GRAND_TOTAL_CONVERTED_TAG = "grandTotal_converted";
 
-    public static final String JSON_ORDER_TAG = "order";
     public static final String JSON_ORDER_ID_TAG = "order_id";
     public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
     public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
-    public static final String JSON_ORDER_ITEM_COLLECTION_TAG = "item_collection";
     public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
     public static final String PAYMENT_METHOD = "payment_method";
+    public static final String PAYMENT = "payment";
+    public static final String PAYMENT_METHOD_FORM = "paymentMethodForm";
     public static final String JSON_ORDER_STATUS_TAG = "status";
     public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
     public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
-    public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
-    public static final String JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG = "grand_total_converted";
-    public static final String JSON_ORDER_SHIP_AMOUNT_TAG = "shipping_amount";
-    public static final String JSON_ORDER_EXTRA_PAYMENTS_TAG = "extra_payment_cost";
-    public static final String JSON_ORDER_INSTALLMENT_FEES_TAG = "installment_fees";
-    public static final String JSON_ORDER_USER_DEVICE_TAG = "customer_device";
-    public static final String JSON_ORDER_SHIP_MET_TAG = "shipping_method";
-    public static final String JSON_ORDER_PAYMENT_PROVIDER_TAG = "provider";
+    public static final String SHIPPING_METHOD = "shipping_method";
     public static final String JSON_ORDER_BIL_ADDRESS_TAG = "billing_address";
     public static final String JSON_ORDER_SHIP_ADDRESS_TAG = "shipping_address";
-    public static final String JSON_ORDER_COUPON_DISCOUNT_TAG = "discount";
     public static final String JSON_ORDER_COUPON_CODE_TAG = "coupon_code";
 
     /**
@@ -312,7 +296,6 @@ public class RestConstants {
 
 
     public static final String JSON_NEXT_STEP_TAG = "next_step";
-    public static final String JSON_NATIVE_CHECKOUT_AVAILABLE = "native_checkout_mobile_api";
     public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
     public static final String JSON_TEXT_TAG = "text";
     public static final String JSON_TOOLTIP_TEXT_TAG = "tooltip_text";
@@ -330,11 +313,9 @@ public class RestConstants {
     public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
     public static final String JSON_PICKUP_REGIONS = "regions";
 
-    public static final String JSON_BILLING_FORM_TAG = "billingForm";
     public static final String JSON_CUSTOMER_TAG = "customer";
     public static final String JSON_ADDRESS_LIST_TAG = "address_list";
 
-    public static final String JSON_PRODUCTS_TAG = "products";
     public static final String JSON_BRANDS_TAG = "brands";
     public static final String JSON_ERROR_MESSAGE_TAG = "error_message";
     public static final String JSON_NOTICE_MESSAGE_TAG = "notice_message";
@@ -428,5 +409,21 @@ public class RestConstants {
     /**
      * CATALOG
      */
-    public static final String JSON_SEARCH_TERM_TAG = "searchterm";
+    public static final String JSON_FILTERS_TAG = "filters";
+    public static final String JSON_SEARCH_TERM_TAG = "searchTerm";
+    public static final String JSON_MULTI = "multi";
+    public static final String JSON_FILTER_SEPARATOR = "filter_separator";
+    public static final String JSON_OPTION_TAG = "option";
+
+    public static final String TOTAL_PAGES = "total_pages";
+    public static final String CURRENT_PAGE = "current_page";
+    public static final String PAGE = "page";
+    public static final String PER_PAGE = "per_page";
+    public static final String PAGINATION = "pagination";
+
+
+
+    public static final String ADDRESSES = "addresses";
+
+
 }

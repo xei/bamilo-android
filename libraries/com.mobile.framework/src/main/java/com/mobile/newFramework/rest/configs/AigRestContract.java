@@ -8,6 +8,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,6 +40,9 @@ public class AigRestContract {
     public static String COOKIE_SHOP_DOMAIN;
     public static String COOKIE_SHOP_URI;
 
+    //PREFERENCES
+    public static String USER_LANGUAGE;
+
     private AigRestContract() {
         // ...
     }
@@ -51,6 +55,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_api_version);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -62,6 +67,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_restbase_path);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -73,6 +79,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_api_version);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
+        USER_LANGUAGE = ShopSelector.getCountryCode();
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 

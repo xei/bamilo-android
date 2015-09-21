@@ -41,9 +41,6 @@ public class ProductComplete extends ProductMultiple {
     private ArrayList<ProductSpecification> mProductSpecs;
     private String mShareUrl;
 
-    //added
-    private String mName;
-
     /**
      * Complete product empty constructor.
      */
@@ -78,7 +75,7 @@ public class ProductComplete extends ProductMultiple {
                 mImageList = new ArrayList<>();
                 for (int i = 0; i < imageArray.length(); ++i) {
                     JSONObject imageJsonObject = imageArray.getJSONObject(i);
-                    mImageList.add(imageJsonObject.getString(RestConstants.JSON_URL_TAG));
+                    mImageList.add(imageJsonObject.getString(RestConstants.URL));
                 }
             }
             // Seller
@@ -135,10 +132,6 @@ public class ProductComplete extends ProductMultiple {
                     mVariations.add(variation);
                 }
             }
-
-            //added
-            mName = jsonObject.optString("name");
-
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
             return false;

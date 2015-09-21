@@ -15,17 +15,14 @@ import android.widget.ListView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountryAdapter;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
-import com.mobile.helpers.configs.GetCountryConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -344,7 +341,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void triggerGetJumiaCountries() {
-        triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
+        triggerContentEvent(new GetAvailableCountriesHelper(), null, this);
     }
 
     /*

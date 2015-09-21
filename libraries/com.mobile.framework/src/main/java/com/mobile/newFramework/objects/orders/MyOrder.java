@@ -16,9 +16,9 @@ import java.util.ArrayList;
  * Class used to save the newsletter subscription
  * @author sergiopereira
  */
-public class SuperOrder implements IJSONSerializable {
+public class MyOrder implements IJSONSerializable {
 
-    private static final String TAG = SuperOrder.class.getSimpleName();
+    public static final String TAG = MyOrder.class.getSimpleName();
 
     private int currentPage = 0;
     private int numPages = 0;
@@ -29,7 +29,7 @@ public class SuperOrder implements IJSONSerializable {
     /**
      * Empty constructor
      */
-    public SuperOrder() {
+    public MyOrder() {
         // ...
     }
 
@@ -40,9 +40,9 @@ public class SuperOrder implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-            JSONObject paginationObject = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
-            currentPage = paginationObject.optInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG, 0);
-            numPages = paginationObject.optInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG, 0);
+            JSONObject paginationObject = jsonObject.optJSONObject(RestConstants.PAGINATION);
+            currentPage = paginationObject.optInt(RestConstants.CURRENT_PAGE, 0);
+            numPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
 
             totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
             Print.d( "ORDERS TOTAL: " + totalOrders);
@@ -84,24 +84,12 @@ public class SuperOrder implements IJSONSerializable {
         return currentPage;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
     public int getNumPages() {
         return numPages;
     }
 
-    public void setNumPages(int numPages) {
-        this.numPages = numPages;
-    }
-
     public int getTotalOrders() {
         return totalOrders;
-    }
-
-    public void setTotalOrders(int totalOrders) {
-        this.totalOrders = totalOrders;
     }
 
     public ArrayList<Order> getOrders() {
