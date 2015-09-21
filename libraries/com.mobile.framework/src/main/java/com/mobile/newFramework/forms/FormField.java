@@ -143,7 +143,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     mInputType = InputType.checkBoxLink;
                     break;
                 case "errorMessage":
-                    inputType = InputType.errorMessage;
+                    mInputType = InputType.errorMessage;
                     break;
                 default:
                     return false;
