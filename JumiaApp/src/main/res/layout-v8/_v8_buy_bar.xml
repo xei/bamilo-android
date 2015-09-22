@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:text="@string/buy_now_button"
         android:id="@+id/pdv_button_buy"
-        android:background="@color/orange1"
+        android:background="@color/color_accent"
         android:textColor="@color/white"
         android:paddingLeft="@dimen/layout_marginLeft"
         android:paddingRight="@dimen/layout_marginLeft"

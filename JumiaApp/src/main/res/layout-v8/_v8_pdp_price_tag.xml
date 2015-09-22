@@ -10,7 +10,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_discount"
         style="@style/PdvBadgeStyle"
-        android:textColor="@color/orange1"
+        android:textColor="@color/color_accent"
         android:layout_marginRight="10dp"
         />
 

@@ -48,7 +48,7 @@
             android:layout_marginRight="@dimen/layout_item_height"
             android:layout_marginStart="@dimen/layout_item_height"
             android:text="RS 524"
-            android:textColor="@color/orange1" />
+            android:textColor="@color/color_accent" />
 
         <ImageView
 

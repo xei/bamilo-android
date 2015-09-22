@@ -28,7 +28,7 @@
         android:id="@+id/pdv_button_buy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/orange1"
+        android:background="@color/color_accent"
         android:paddingLeft="@dimen/layout_marginLeft"
         android:paddingRight="@dimen/layout_marginLeft"
         android:text="@string/buy_now_button"

@@ -655,7 +655,7 @@
     </style>
 
     <style name="Badge">
-        <item name="android:textColor">@color/orange1</item>
+        <item name="android:textColor">@color/color_accent</item>
         <item name="android:textSize">8sp</item>
     </style>
 
