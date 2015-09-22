@@ -24,7 +24,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@android:color/white">
 
             <!--TITLE-->
 
@@ -34,15 +35,7 @@
 
             <!-- IMAGE CONTAINER -->
 
-            <include
-                android:id="@+id/imageGallery"
-                layout="@layout/pdv_fragment_image" />
-
-            <!-- PRODUCT IMAGES LIST -->
-
-            <include
-                android:id="@+id/productImages"
-                layout="@layout/pdv_fragment_gallery" />
+            <include layout="@layout/pdv_fragment_image" />
 
             <!--TITLE-->
 
@@ -65,48 +58,48 @@
             <!-- RATING -->
 
             <include
-                android:id="@+id/RatingSection"
+                android:id="@+id/pdv_rating_container"
                 layout="@layout/pdv_rate_list" />
 
             <!-- SPECIFICATIONS -->
             <include
-                android:id="@+id/SpecificationsSection"
+                android:id="@+id/pdv_specs_container"
                 layout="@layout/pdv_fragment_specs_desc" />
 
             <!-- SIZE FROM SIMPLES -->
 
             <include
-                android:id="@+id/SizeSection"
+                android:id="@+id/pdv_simples_container"
                 layout="@layout/single_line_list" />
 
             <!-- VARIATIONS -->
 
             <include
-                android:id="@+id/OtherVariationsSection"
+                android:id="@+id/pdv_variations_container"
                 layout="@layout/single_line_list" />
 
             <!-- SELLER -->
 
             <include
-                android:id="@+id/SellerSection"
+                android:id="@+id/pdv_seller_container"
                 layout="@layout/pdv_fragment_seller_info" />
 
             <!-- DESCRIPTION -->
 
             <include
-                android:id="@+id/DescriptionSection"
+                android:id="@+id/pdv_desc_container"
                 layout="@layout/pdv_fragment_specs_desc" />
 
             <!-- COMBOS -->
 
             <include
-                android:id="@+id/CombosSection"
+                android:id="@+id/pdv_combos_container"
                 layout="@layout/pdv_fragment_combos" />
 
             <!-- RELATED ITEMS -->
 
             <include
-                android:id="@+id/RelatedSection"
+                android:id="@+id/pdv_related_container"
                 layout="@layout/pdv_fragment_related_prods" />
 
         </LinearLayout>

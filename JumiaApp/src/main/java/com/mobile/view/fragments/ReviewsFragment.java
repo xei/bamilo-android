@@ -205,7 +205,7 @@ public class ReviewsFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Get views
         productName = (TextView) view.findViewById(R.id.product_detail_name);
-        productPriceNormal = (TextView) view.findViewById(R.id.product_price);
+        productPriceNormal = (TextView) view.findViewById(R.id.pdv_text_price);
         productPriceSpecial = (TextView) view.findViewById(R.id.product_price_special);
         productRatingContainer = (LinearLayout) view.findViewById(R.id.product_ratings_container);
         

@@ -3,16 +3,16 @@
     style="@style/PdvPriceTagStyle">
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_special_price"
+        android:id="@+id/pdv_text_special_price"
         style="@style/TextList_1" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_price"
+        android:id="@+id/pdv_text_price"
         style="@style/TextList_2"
         android:layout_marginLeft="@dimen/layout_marginLeft" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_detail_discount_percentage"
+        android:id="@+id/pdv_text_discount"
         style="@style/PdvBadgeStyle"
         android:layout_marginLeft="@dimen/layout_marginLeft" />
 

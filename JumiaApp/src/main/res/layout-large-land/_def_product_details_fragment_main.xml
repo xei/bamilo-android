@@ -76,7 +76,7 @@
                         android:textColor="@color/red_middle" />
 
                     <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/product_price"
+                        android:id="@+id/pdv_text_price"
                         style="@style/text_header"
                         android:layout_alignBaseline="@+id/product_price_special"
                         android:layout_below="@id/product_detail_name"
@@ -122,7 +122,7 @@
                         android:gravity="center">
 
                         <FrameLayout
-                            android:id="@+id/product_detail_image_gallery_container"
+                            android:id="@+id/pdv_slide_show_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
@@ -156,7 +156,7 @@
                         android:src="@drawable/selector_productdetails_share" />
 
                     <ImageView
-                        android:id="@+id/product_detail_image_is_favourite"
+                        android:id="@+id/pdv_button_wish_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -169,7 +169,7 @@
                         android:src="@drawable/selector_favorite" />
 
                     <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/product_detail_discount_percentage"
+                        android:id="@+id/pdv_text_discount"
                         style="@style/PdvBadgeStyle"
                         android:layout_alignBottom="@id/product_image_layout"
                         android:layout_alignParentEnd="true"
@@ -356,7 +356,7 @@
                         android:clickable="true">
 
                         <RatingBar
-                            android:id="@+id/product_detail_product_rating"
+                            android:id="@+id/pdv_rating_bar"
                             style="@style/starRatingBarBig"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -368,13 +368,13 @@
 
 
                         <com.mobile.components.customfontviews.TextView
-                            android:id="@+id/product_detail_product_rating_count"
+                            android:id="@+id/pdv_rating_bar_count"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:layout_marginLeft="@dimen/margin_mid"
                             android:layout_marginStart="@dimen/margin_mid"
-                            android:layout_toEndOf="@+id/product_detail_product_rating"
-                            android:layout_toRightOf="@+id/product_detail_product_rating"
+                            android:layout_toEndOf="@+id/pdv_rating_bar"
+                            android:layout_toRightOf="@+id/pdv_rating_bar"
                             android:gravity="center_vertical|left|start"
                             android:textColor="@color/grey_light"
                             android:textSize="@dimen/text_s" />

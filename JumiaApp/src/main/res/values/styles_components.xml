@@ -62,9 +62,9 @@
         <item name="android:textColor">@color/orange1</item>
     </style>
 
-    <style name="PDVFullImageStyle" >
+    <style name="PDVSlideShowStyle" >
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">312dp</item>
+        <item name="android:layout_height">342dp</item>
     </style>
 
     <!--<style name="PDVSmallImageStyle" >-->

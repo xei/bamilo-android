@@ -15,7 +15,7 @@
     <!-- ITEM COMBO CONTENT: 1 BUNDLE = 1 COMBO -->
 
     <LinearLayout
-        android:id="@+id/tableBundles"
+        android:id="@+id/pdv_bundles_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/imBtShare"
+        android:id="@+id/pdv_button_share"
         android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         android:src="@drawable/ic_share" />
 
     <ImageButton
-        android:id="@+id/imBtCall"
+        android:id="@+id/pdv_button_call"
         android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -25,7 +25,7 @@
         android:src="@drawable/ic_call" />
 
     <com.mobile.components.customfontviews.Button
-        android:id="@+id/btBuy"
+        android:id="@+id/pdv_button_buy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/orange1"

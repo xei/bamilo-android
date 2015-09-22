@@ -13,7 +13,6 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineStyle"
-        android:background="@color/white" />
+        style="@style/SingleLineStyle" />
 
 </LinearLayout>

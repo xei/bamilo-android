@@ -475,7 +475,22 @@
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 
-
+    <style name="discount_percentage">
+        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width
+        </item>
+        <item name="android:layout_height">
+            @dimen/product_list_item_discount_percentage_image_height
+        </item>
+        <item name="android:background">@drawable/discount_badge</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:text">-99%</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+        <item name="android:layoutDirection">ltr</item>
+    </style>
 
     <!-- TEXT STYLES -->
 
@@ -782,5 +797,22 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <!-- MATERIAL BOTTOM SHEET -->
+
+    <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation.Window</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="BottomSheetAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
 
 </resources>

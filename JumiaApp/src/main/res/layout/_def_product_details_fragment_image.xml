@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/product_detail_image_gallery_container"
+            android:id="@+id/pdv_slide_show_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" 
             android:visibility="gone"/>
@@ -37,7 +37,7 @@
     <!-- DISCOUNT -->
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_detail_discount_percentage"
+        android:id="@+id/pdv_text_discount"
         style="@style/PdvBadgeStyle"
         android:layout_alignBottom="@id/product_image_layout"
         android:layout_alignParentEnd="true"
@@ -65,7 +65,7 @@
     <!-- FAVOURITE -->
 
     <ImageView
-        android:id="@+id/product_detail_image_is_favourite"
+        android:id="@+id/pdv_button_wish_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

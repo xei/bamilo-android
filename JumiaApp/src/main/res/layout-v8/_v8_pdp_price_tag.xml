@@ -8,14 +8,14 @@
     >
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_detail_discount_percentage"
+        android:id="@+id/pdv_text_discount"
         style="@style/PdvBadgeStyle"
         android:textColor="@color/orange1"
         android:layout_marginRight="10dp"
         />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_price"
+        android:id="@+id/pdv_text_price"
         style="@style/List2"
         android:textColor="@color/black_800"
         android:layout_centerVertical="true"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_special_price"
+        android:id="@+id/pdv_text_special_price"
         style="@style/List1"
         android:textColor="@color/black"
         android:layout_centerVertical="true"

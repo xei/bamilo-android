@@ -301,7 +301,7 @@ public class Ad4PushTracker {
     private void stopingSDK(Context context, boolean isToStop) {
         if (null != mA4S) {
             Print.d(TAG, "Stop SDK:" + isToStop);
-            mA4S.setDoNotTrackEnabled(context, isToStop);
+            A4S.setDoNotTrackEnabled(context, isToStop);
         }
     }
 

@@ -381,6 +381,7 @@ public class RestConstants {
 
     public static final String JSON_VALID_TAG = "valid";
     public static final String VARIATION_NAME = "variation_name";
+    public static final String VARIATIONS_AVAILABLE_LIST = "variations_available_list";
     public static final String VARIATION_DEFAULT_POSITION = "variation_default_position";
 
     /**

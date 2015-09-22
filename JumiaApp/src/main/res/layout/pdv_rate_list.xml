@@ -12,7 +12,7 @@
 
     <!-- changeFashion: choose the right rating bar considering vertical type -->
     <RatingBar
-        android:id="@+id/product_detail_product_rating"
+        android:id="@+id/pdv_rating_bar"
         style="@style/starRatingBarBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:visibility="gone" />
 
     <RatingBar
-        android:id="@+id/product_detail_product_rating_fashion"
+        android:id="@+id/pdv_rating_bar_fashion"
         style="@style/starRatingBarFashionBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:visibility="gone" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_detail_product_rating_count"
+        android:id="@+id/pdv_rating_bar_count"
         style="@style/TextInfo"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginStart="@dimen/margin_mid" />
