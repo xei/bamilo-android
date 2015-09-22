@@ -120,7 +120,7 @@
 <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
 <item name="dialog_filter_fragment_price"                       type="layout">@layout/_def_dialog_filter_fragment_price</item>
 <item name="product_item_bundle"                       type="layout">@layout/_def_product_item_bundle</item>
-<item name="shopping_basket_product_element"                       type="layout">@layout/_def_shopping_basket_product_element</item>
+<item name="shopping_basket_product_element"                       type="layout">@layout/_v8_shopping_basket_product_element</item>
 <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
 <item name="product_details_fragment_bundle"                       type="layout">@layout/_def_product_details_fragment_bundle</item>
 <item name="dialog_list_sub_item_1"                       type="layout">@layout/_def_dialog_list_sub_item_1</item>
