@@ -45,7 +45,7 @@
     <style name="activity_sectionheader_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
         <item name="android:textSize">@dimen/text_s</item>
         <item name="android:layout_marginLeft">@dimen/margin_huge</item>
         <item name="android:layout_marginStart">@dimen/margin_huge</item>
@@ -150,7 +150,7 @@
         <item name="android:layout_height">@dimen/action_bar_icon_size</item>
         <item name="android:textSize">11sp</item>
         <item name="android:text">0</item>
-        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingStart">5dp</item>
@@ -402,7 +402,7 @@
     <style name="divider_horizontal_orange">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/orange_ffa200</item>
+        <item name="android:background">@color/orange_f68b1e</item>
     </style>
 
     <!-- BUTTON FOR BOTTOM CONTAINER -->
@@ -574,7 +574,7 @@
         <item name="android:layout_width">33dp</item>
         <item name="android:layout_height">33dp</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -701,7 +701,7 @@
     </style>
 
     <style name="TextSubHeadOrange" parent="TextSubHead">
-        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
     </style>
 
     <style name="TextPriceSubHead" parent="TextSubHead">
@@ -718,7 +718,7 @@
         <item name="android:layout_marginRight">@dimen/dimen_mat_2px</item>
         <item name="android:paddingLeft">@dimen/dimen_mat_4px</item>
         <item name="android:paddingRight">@dimen/dimen_mat_4px</item>
-        <item name="android:textColor">@color/orange_ffa200</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
@@ -738,6 +738,11 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="dialog_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+    
     <!-- HEADERS TEASER  -->
     <style name="HeaderTeaser" parent="TextTitle_2">
         <item name="android:layout_width">match_parent</item>
