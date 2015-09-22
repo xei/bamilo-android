@@ -266,11 +266,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
         HashMap<String, String> productBySku = new HashMap<>();
-        for (String sku : itemsToCart) {
-            productBySku.put(sku, sku.split("-")[0]);
+        for (String simpleSku : itemsToCart) {
+            // sku -> simple sku
+            productBySku.put(simpleSku.split("-")[0], simpleSku);
         }
         // Case valid deep link
-        if (productBySku.size() != 0) {
+        if (!productBySku.isEmpty()) {
             triggerAddAllItems(productBySku);
         }
         // Case invalid deep link
@@ -531,15 +532,15 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
             ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-
             if (notAdded != null && !notAdded.isEmpty()) {
                 Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
             }
         }
 
         getBaseActivity().updateCartInfo();
-        if(JumiaApplication.INSTANCE.getCart() != null)
+        if (JumiaApplication.INSTANCE.getCart() != null) {
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+        }
     }
 
     /**

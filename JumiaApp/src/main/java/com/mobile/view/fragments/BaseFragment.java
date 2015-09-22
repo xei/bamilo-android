@@ -717,7 +717,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(ShopSelector.isRtl()){
+                if(ShopSelector.isRtlShop()){
                     inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -766,7 +766,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateMaintenance(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (ShopSelector.isRtl()) {
+        if (ShopSelector.isRtlShop()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
@@ -944,8 +944,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
-        return false;
 
+        /**
+         * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
+         * // CODE_CUSTOMER_NOT_LOGGED_IN should be an ErrorCode
+         * // CASE REQUEST_ERROR && CUSTOMER_NOT_LOGGED_IN
+         */
+
+        return false;
     }
 
     protected void clearCredentials() {

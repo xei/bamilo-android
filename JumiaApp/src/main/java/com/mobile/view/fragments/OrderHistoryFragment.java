@@ -374,7 +374,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                             if (errorCode == ErrorCode.REQUEST_ERROR) {
                                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                                 if (errorMessages != null) {
-                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_LOGOUT_NOTLOGGED_IN)) {
+                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
                                         triggerLogin();
                                         isNotLoggedIn =true;
                                     }
