@@ -1,6 +1,8 @@
 package com.mobile.newFramework.pojo;
 
 import com.mobile.newFramework.rest.errors.JumiaError;
+import com.mobile.newFramework.utils.EventTask;
+import com.mobile.newFramework.utils.EventType;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,10 @@ public class BaseResponse<T>{
     private Metadata<T> metadata;
     private Map<String, String> sessions;
     private JumiaError error;
+
+    private EventType eventType;
+    private EventTask eventTask;
+    private boolean prioritary;
 
     public BaseResponse(){
         setMetadata(new Metadata<T>());
@@ -77,6 +83,30 @@ public class BaseResponse<T>{
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public EventTask getEventTask() {
+        return eventTask;
+    }
+
+    public void setEventTask(EventTask eventTask) {
+        this.eventTask = eventTask;
+    }
+
+    public boolean isPrioritary() {
+        return prioritary;
+    }
+
+    public void setPrioritary(boolean prioritary) {
+        this.prioritary = prioritary;
     }
 }
 
