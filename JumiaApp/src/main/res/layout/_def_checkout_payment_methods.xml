@@ -22,7 +22,7 @@
         android:layout_marginRight="33dp"
         android:layout_marginEnd="33dp"
         android:text="*"
-        android:textColor="@color/orange_ffa200"
+        android:textColor="@color/color_accent"
         android:textSize="@dimen/text_title" />
 
     <!-- DIVIDER -->
