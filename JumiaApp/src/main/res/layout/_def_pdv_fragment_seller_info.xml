@@ -37,9 +37,6 @@
             style="@style/starRatingBarSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:isIndicator="true" />
 
         <com.mobile.components.customfontviews.TextView
@@ -48,13 +45,8 @@
             color="@color/black_800"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
-            android:layout_toEndOf="@+id/pdv_rating_bar"
-            android:layout_toRightOf="@+id/pdv_rating_bar"
-            android:text="(0)" />
-
+            android:layout_marginStart="@dimen/margin_mid" />
 
     </LinearLayout>
 
@@ -77,19 +69,14 @@
             color="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Delivery time:" />
+            android:text="@string/delivery_time1" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txDeliverTimeContent"
             style="@style/TextHeader"
             color="@color/black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="3 - 8 days"
-
-            />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -116,17 +103,13 @@
             color="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:text="Warranty:" />
+            android:layout_marginLeft="16dp" />
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextHeader"
             color="@color/black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="3 - 8 days" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

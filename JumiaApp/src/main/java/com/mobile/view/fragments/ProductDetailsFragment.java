@@ -350,9 +350,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Save complete product
         mProduct = product;
         mCompleteProductSku = product.getSku();
-        // Tracking
-        TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
-        // Swt layout
+        // Set layout
         setTitle();
         setWishListButton();
         setSlideShow();
@@ -367,6 +365,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setRelatedItems();
         // Show container
         showFragmentContentContainer();
+        // Tracking
+        TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
     }
 
     /**
@@ -620,7 +620,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
             ExpandableGridViewComponent relatedGridView = (ExpandableGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
-            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_related_product_item, mProduct.getRelatedProducts()));
+            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout._def_pdv_fragment_related_item, mProduct.getRelatedProducts()));
             relatedGridView.setOnItemClickListener(this);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
@@ -1103,14 +1103,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         int count = 0;
 
         for (ProductBundle item : bundleProducts) {
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdp_product_item_bundle, null);
+            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle_item, null);
             FillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
             {
                 //separator
-                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdp_plus_bundle, null);
+                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle, null);
                 mTableBundles.addView(imSep);
             }
             count++;

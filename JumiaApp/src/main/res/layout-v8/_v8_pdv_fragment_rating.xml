@@ -3,14 +3,16 @@
     android:id="@+id/ratingContainer"
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_item_height"
-    android:gravity="center_vertical"
+    android:gravity="center_vertical|right"
     android:orientation="horizontal"
-    android:paddingEnd="@dimen/layout_padding"
     android:paddingLeft="@dimen/layout_padding"
-    android:paddingRight="@dimen/layout_padding"
-    android:paddingStart="@dimen/layout_padding">
+    android:paddingRight="@dimen/layout_padding">
 
-    <!-- changeFashion: choose the right rating bar considering vertical type -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_rating_bar_count"
+        style="@style/TextInfo"
+        android:layout_marginRight="@dimen/margin_mid" />
+
     <RatingBar
         android:id="@+id/pdv_rating_bar"
         style="@style/starRatingBarBig"
@@ -26,11 +28,5 @@
         android:layout_height="wrap_content"
         android:isIndicator="true"
         android:visibility="gone" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_rating_bar_count"
-        style="@style/TextInfo"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginStart="@dimen/margin_mid" />
 
 </LinearLayout>

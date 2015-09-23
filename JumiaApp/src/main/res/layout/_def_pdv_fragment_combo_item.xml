@@ -3,16 +3,9 @@
     android:id="@+id/comboGlobal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/layout_padding"
-    android:layout_marginEnd="@dimen/layout_padding"
-    android:layout_marginLeft="@dimen/layout_padding"
-    android:layout_marginRight="@dimen/layout_padding"
-    android:layout_marginStart="@dimen/layout_padding"
-    android:layout_marginTop="@dimen/layout_padding"
+    android:layout_margin="@dimen/layout_padding"
     android:background="@color/white"
-    android:orientation="vertical"
-
-    >
+    android:orientation="vertical">
 
 
     <!-- ITEM COMBO CONTENT: 1 BUNDLE = 1 COMBO -->
@@ -43,24 +36,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginEnd="@dimen/layout_item_height"
+            android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/layout_item_height"
             android:layout_marginRight="@dimen/layout_item_height"
-            android:layout_marginStart="@dimen/layout_item_height"
             android:text="RS 524"
             android:textColor="@color/color_accent" />
 
         <ImageView
-
             android:id="@+id/imArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_gravity="right"
+            android:layout_gravity="right|end"
             android:src="@drawable/ic_arrow_combo" />
 
-
     </RelativeLayout>
-
 
 </LinearLayout>

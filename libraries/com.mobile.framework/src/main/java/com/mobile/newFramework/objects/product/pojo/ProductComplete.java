@@ -28,7 +28,6 @@ public class ProductComplete extends ProductMultiple {
     private String mDescription;
     private String mShortDescription;
     private ArrayList<String> mImageList;
-    //private ArrayList<Variation> mVariations;
     private BundleList mProductBundle;
     private boolean hasSeller;
     private boolean hasBundle;
@@ -124,21 +123,6 @@ public class ProductComplete extends ProductMultiple {
             // Variations
             JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
             hasVariations = variationsObject != null && variationsObject.length() > 0;
-
-//            JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
-//            if (variationsObject != null) {
-//                mVariations = new ArrayList<>();
-//                @SuppressWarnings("rawtypes")
-//                Iterator keys = variationsObject.keys();
-//                while (keys.hasNext()) {
-//                    String sku = (String) keys.next();
-//                    JSONObject variationObject = variationsObject.getJSONObject(sku);
-//                    Variation variation = new Variation();
-//                    variation.initialize(sku, variationObject);
-//                    mVariations.add(variation);
-//                }
-//            }
-
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
             return false;
@@ -164,17 +148,9 @@ public class ProductComplete extends ProductMultiple {
         return mDescription;
     }
 
-    public void setImageList(ArrayList<String> mImageList) {
-        this.mImageList = mImageList;
-    }
-
     public String getShortDescription() {
         return mShortDescription;
     }
-
-//    public ArrayList<Variation> getVariations() {
-//        return mVariations;
-//    }
 
     public boolean hasVariations() {
         return hasVariations;
@@ -195,14 +171,6 @@ public class ProductComplete extends ProductMultiple {
     public Seller getSeller() {
         return mSeller;
     }
-
-//    public double getMinPriceOffer() {
-//        return mMinPriceOffer;
-//    }
-//
-//    public int getTotalOffers() {
-//        return mTotalOffers;
-//    }
 
     public ArrayList<ProductSpecification> getProductSpecifications() {
         return mProductSpecs;
@@ -262,8 +230,6 @@ public class ProductComplete extends ProductMultiple {
         super(in);
         mImageList = new ArrayList<>();
         in.readList(mImageList, null);
-//        mVariations = new ArrayList<>();
-//        in.readList(mVariations, Variation.class.getClassLoader());
         mDescription = in.readString();
         hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;

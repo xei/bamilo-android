@@ -9,11 +9,13 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_price"
         style="@style/TextList_2"
-        android:layout_marginLeft="@dimen/layout_marginLeft" />
+        android:layout_marginLeft="@dimen/layout_marginLeft"
+        android:layout_marginStart="@dimen/layout_marginLeft"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_discount"
         style="@style/PdvBadgeStyle"
-        android:layout_marginLeft="@dimen/layout_marginLeft" />
+        android:layout_marginLeft="@dimen/layout_marginLeft"
+        android:layout_marginStart="@dimen/layout_marginLeft"/>
 
 </LinearLayout>

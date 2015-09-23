@@ -35,7 +35,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
             style="@style/TextCaption"
-            android:text="NIKE"
             android:textColor="@color/black_800" />
 
         <!-- NAME -->
@@ -43,7 +42,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/header_text"
             style="@style/TextBody_1"
-            android:text="DESCRIPTION"
             android:textColor="@color/black" />
 
         <!-- PRICE -->
@@ -62,6 +60,7 @@
                 android:id="@+id/item_price"
                 style="@style/TextBody_3"
                 android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:textColor="@color/black_800" />
 
         </LinearLayout>

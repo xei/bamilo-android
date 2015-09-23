@@ -79,6 +79,8 @@
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
 
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>
+    <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
+    <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -200,10 +202,5 @@
     <item name="dialog_filter_fragment_size"                type="layout">@layout/_def_dialog_filter_fragment_size</item>
     <item name="simple_email_notification_option"           type="layout">@layout/_def_simple_email_notification_option</item>
 
-
-    <!--<item name="navigation_categories_component"                       type="layout">@layout/_def_navigation_categories_component</item>-->
-    <!--<item name="teaser_inner_currentcat"                       type="layout">@layout/_def_teaser_inner_currentcat</item>-->
-    <!--<item name="teaser_inner_childcat"                       type="layout">@layout/_def_teaser_inner_childcat</item>-->
-    <!--<item name="teaser_campaigns_group"                       type="layout">@layout/_def_teaser_campaigns_group</item>-->
 </resources>
 

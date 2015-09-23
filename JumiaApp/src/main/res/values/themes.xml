@@ -62,16 +62,13 @@
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
-        <!-- #### Check Box View -->
-        <!--
-        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
-        <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_orange</item>
-        <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>
-        -->
 
+        <!-- #### Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
         <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_green</item>
+        <!-- <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_orange</item> -->
         <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_green</item>
+        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>-->
 
         <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
@@ -127,17 +124,8 @@
 
     <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_btn_check_holo_green</item>
-        <!--
-        <item name="android:button">@drawable/selector_btn_check_holo_orange</item>
-        -->
+        <!-- <item name="android:button">@drawable/selector_btn_check_holo_orange</item> -->
     </style>
-
-    <!-- Check Box -->
-<!--
-    <style name="Widget.Jumia.PDV.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/selector_btn_check_holo_green</item>
-    </style>
--->
 
     <!-- List View -->
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
@@ -166,7 +154,7 @@
     </style>
 
     <style name="Theme.Jumia.Dialog.NoTitle" parent="@android:style/Theme.Dialog">
-        <!--<item name="android:windowBackground">@drawable/dialog_shadow</item>-->
+        <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>

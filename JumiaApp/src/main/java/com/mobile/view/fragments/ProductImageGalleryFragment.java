@@ -321,12 +321,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
      *
      */
     private void launchProductGalleryActivity(){
-        //ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
         Intent intent = new Intent(getBaseActivity().getApplicationContext(), ProductImageGalleryActivity.class);
         intent.putExtra(ConstantsIntentExtra.IMAGE_LIST, mImageList);
         intent.putExtra(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
         intent.putExtra(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
-        //intent.putExtra(ConstantsIntentExtra.PRODUCT_GALLERY_POS, ProductDetailsFragment.sSharedSelectedPosition);
         getBaseActivity().startActivity(intent);
         getBaseActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
@@ -403,7 +401,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         if (size > 1) {
             LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (int i = 0; i < mImageList.size(); i++) {
-                View holder = inflater.inflate(R.layout.pdv_fragment_gallery_item, mThumbnailContainer, false);
+                View holder = inflater.inflate(R.layout._def_pdv_fragment_gallery_item, mThumbnailContainer, false);
                 View loading = holder.findViewById(R.id.loading_progress);
                 ImageView im = (ImageView) holder.findViewById(R.id.image);
                 RocketImageLoader.instance.loadImage(mImageList.get(i), im, loading, R.drawable.no_image_small);

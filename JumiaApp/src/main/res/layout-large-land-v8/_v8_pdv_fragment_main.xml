@@ -12,15 +12,15 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
-    <!-- Left Container -->
+    <!-- RIGHT CONTAINER -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignEnd="@id/center_point"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@id/center_point"
+        android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/center_point"
         android:orientation="vertical">
 
         <!--TITLE-->
@@ -50,11 +50,11 @@
         layout="@layout/_def_pdv_fragment_buy_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/center_point"
+        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@id/center_point" />
 
     <!-- RIGHT CONTAINER -->
 
@@ -62,10 +62,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"
-        android:layout_alignLeft="@id/center_point"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point">
+        android:layout_alignEnd="@id/center_point"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@id/center_point">
 
         <LinearLayout
             android:layout_width="match_parent"
