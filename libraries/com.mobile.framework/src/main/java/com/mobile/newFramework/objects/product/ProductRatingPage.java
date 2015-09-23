@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class that represents the response from the get products rating
@@ -32,6 +33,9 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	private ArrayList<ProductReviewComment> reviewComments;
 	private int currentPage;
 	private int totalPages;
+
+	private JSONObject byStarsObject; //added
+	private HashMap<String,String> byStars;	//added
 
 	public ProductRatingPage() {
 	    productName = "";
@@ -60,12 +64,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 		// just used for seller reviews
 		 sellerName = dataObject.optString(RestConstants.JSON_NAME_TAG);
-		 sellerUrl = dataObject.optString(RestConstants.JSON_URL_TAG);
+		 sellerUrl = dataObject.optString(RestConstants.URL);
 
 		JSONObject productObject = dataObject.optJSONObject(RestConstants.JSON_PRODUCT_TAG);
 		if (productObject != null) {
             productName = productObject.optString(RestConstants.JSON_NAME_TAG);
-            productSku = productObject.optString(RestConstants.JSON_SKU_TAG);
+            productSku = productObject.optString(RestConstants.SKU);
         }
         JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.JSON_RATING_STAR_SIZE_TAG);
 
@@ -89,6 +93,11 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
                     this.ratingTypes.add(type);
                 }
             }
+
+			//added by_stars for ratings page
+			byStarsObject = ratingsObject.optJSONObject("by_stars");
+
+
         }
         JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
 		if(reviewsObject != null){
@@ -110,10 +119,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	            }
 	        }
 
-			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
 			if(paginationObject != null){
-				currentPage = paginationObject.getInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG);
-				totalPages = paginationObject.getInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG);
+				currentPage = paginationObject.getInt(RestConstants.CURRENT_PAGE);
+				totalPages = paginationObject.getInt(RestConstants.TOTAL_PAGES);
 			}
 
 		}
@@ -211,6 +220,19 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
     }
 
 
+	/**
+	 * Get number of ratings / star throught star name
+	 * @return
+	 */
+	public String getByStarValue(String name)
+	{
+		String value = "0";
+		if(byStarsObject != null)
+			value = byStarsObject.optString(name);
+
+		return value;
+
+	}
 
 
 
