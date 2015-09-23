@@ -35,7 +35,7 @@
         <!-- BRAND -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/Caption"
+            style="@style/TextCaption"
             color="@color/black_800"
             android:lines="1"
             android:text="Brand"
@@ -46,7 +46,7 @@
         <!-- TITLE -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/List1"
+            style="@style/TextList_1"
             color="@color/black"
             android:lines="1"
             android:text="Title"
