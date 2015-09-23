@@ -22,7 +22,7 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_description_text"
                 style="@style/Body3"
-                color="@color/black"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|start|center"
@@ -40,7 +40,7 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_features_text"
                 style="@style/Body3"
-                color="@color/black"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|start|center"
