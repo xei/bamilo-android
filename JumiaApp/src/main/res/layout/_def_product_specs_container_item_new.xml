@@ -7,6 +7,8 @@
     android:gravity="center_vertical"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
     >
 
 
@@ -14,10 +16,10 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_key"
         style="@style/text_normal"
-        color="@color/black_800"
+        android:textColor="@color/black_800"
         android:layout_width="120dp"
         android:layout_marginRight="8dp"
-        android:text="key" />
+       />
 
     <View
         android:id="@+id/item_center"
@@ -31,12 +33,13 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_value"
         style="@style/text_normal"
-        color="@color/black"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_toRightOf="@id/item_center"
         android:layout_toEndOf="@id/item_center"
         android:singleLine="false"
         android:layout_marginLeft="8dp"
-        android:text="vafghfghfgh  sdgdf dfgdfgdgggggggggsfsdf dfgdfg dfgd dfg dfg lue" />
+        android:layout_marginStart="8dp"
+       />
 
 </LinearLayout>
