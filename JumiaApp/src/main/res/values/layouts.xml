@@ -77,7 +77,14 @@
     <item name="product_details_fragment_info"          type="layout">@layout/_def_product_details_fragment_info</item>
     <item name="product_details_fragment_offers"        type="layout">@layout/_def_product_details_fragment_offers</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
+
+    <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="details_info_fragment_main_new"         type="layout">@layout/_def_details_info_fragment_main_new</item>
+    <item name="product_summary_fragment_new"           type="layout">@layout/_def_product_summary_fragment_new</item>
+    <item name="product_specs_container_new"            type="layout">@layout/_def_product_specs_container_new</item>
+    <item name="product_specs_container_item_new"       type="layout">@layout/_def_product_specs_container_item_new</item>
+    <item name="reviews_fragment_new"                   type="layout">@layout/_def_review_fragment_new</item>
+    <item name="review_list"                            type="layout">@layout/_def_review_list</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -155,6 +162,8 @@
 <item name="rating_bar_component"                       type="layout">@layout/_def_rating_bar_component</item>
 
 <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
+
+
 <item name="dialog_filter_fragment_price"                       type="layout">@layout/_def_dialog_filter_fragment_price</item>
 <item name="product_item_bundle"                       type="layout">@layout/_def_product_item_bundle</item>
 <item name="shopping_basket_product_element"                       type="layout">@layout/_def_shopping_basket_product_element</item>
