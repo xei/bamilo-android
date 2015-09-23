@@ -16,20 +16,8 @@
 
 package com.mobile.utils.datepicker;
 
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
-
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -46,10 +34,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.newFramework.utils.output.Print;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.mobile.view.R;
-import com.mobile.utils.datepicker.Utils;
 import com.mobile.utils.datepicker.SimpleMonthAdapter.CalendarDay;
+import com.mobile.view.R;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Dialog allowing users to select a date.
@@ -135,7 +129,7 @@ public class DatePickerDialog extends DialogFragment implements
      */
     interface OnDateChangedListener {
 
-        public void onDateChanged();
+        void onDateChanged();
     }
 
     public DatePickerDialog() {

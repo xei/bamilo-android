@@ -215,7 +215,7 @@
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
     <string name="product_sort_button">Sort</string>
-    <string name="product_specifications">Specifications</string>
+    <string name="specifications">Specifications</string>
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
     <string name="product_variant_placeholder">&#8230;</string>
@@ -389,5 +389,17 @@
     <string name="language">Language</string>
     <string name="country">Country</string>
     <string name="birthday_label">birthday</string>
-    <string name="birthday_error">Please choose a valid Birthday.</string>  
+    <string name="birthday_error">Please choose a valid Birthday.</string>
+    <string name="see_other_variations">See other variations</string>
+    <string name="be_first_rate">be the first to rate</string>
+    <string name="seller_info">SELLER INFORMATION</string>
+    <string name="read_more">Read More</string>
+    <string name="more_specifications">More Specifications</string>
+    <string name="delivery_time1">Delivery time</string>
+    <string name="see_other_colors">See other colors</string>
+    <string name="combo">COMBOS</string>
+    <string name="may_like">YOU MAY ALSO LIKE</string>
+    <string name="buy_the_look">BUY THE LOOK</string>
+    <string name="pdv_size">Size</string>
+    <string name="buy_now_button">BUY NOW</string>
 </resources>

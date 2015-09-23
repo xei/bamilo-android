@@ -17,14 +17,6 @@
 package com.mobile.utils.datepicker;
 
 
-import java.security.InvalidParameterException;
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -45,10 +37,16 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.mobile.utils.datepicker.TouchExplorationHelper;
-import com.mobile.view.R;
-import com.mobile.utils.datepicker.Utils;
 import com.mobile.utils.datepicker.SimpleMonthAdapter.CalendarDay;
+import com.mobile.view.R;
+
+import java.security.InvalidParameterException;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 /**
  * A calendar-like view displaying a specified month and the appropriate selectable day numbers
  * within the specified month.
@@ -670,6 +668,6 @@ public class SimpleMonthView extends View {
      * Handles callbacks when the user clicks on a time object.
      */
     public interface OnDayClickListener {
-        public void onDayClick(SimpleMonthView view, CalendarDay day);
+        void onDayClick(SimpleMonthView view, CalendarDay day);
     }
 }
