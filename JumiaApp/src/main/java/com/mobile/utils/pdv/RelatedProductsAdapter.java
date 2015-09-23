@@ -36,7 +36,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ProductViewHolder holder;
         if(convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout._def_pdv_fragment_related_item, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.pdv_fragment_related_item, parent, false);
             holder = new ProductViewHolder(convertView);
             convertView.setTag(holder);
         } else {
