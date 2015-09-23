@@ -1,7 +1,6 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,7 +19,6 @@ import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.CompleteProductUtils;
@@ -276,7 +274,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
 
-        CompleteProductUtils.setPrice(item, holder.price, holder.discount);
+        CompleteProductUtils.setPriceRules(item, holder.price, holder.discount);
 
         // Case discount
         if(item.hasDiscount()) {

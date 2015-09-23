@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -972,7 +971,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            CompleteProductUtils.setPrice(item, view.mPrice,view.mDiscount);
+            CompleteProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
         }
         
         /**

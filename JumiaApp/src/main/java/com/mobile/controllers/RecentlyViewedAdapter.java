@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.R;
@@ -219,7 +217,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             // Set name
             prodItem.name.setText(addableToCart.getName());
 
-            CompleteProductUtils.setPrice(addableToCart,prodItem.price, prodItem.discount);
+            CompleteProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
             // Validate special price
             if (addableToCart.hasDiscount()) {
                 // Set discount

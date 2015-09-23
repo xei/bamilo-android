@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -60,6 +59,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -374,17 +374,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
+        CompleteProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
         if (mProduct.hasDiscount()) {
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getSpecialPrice()));
-            mPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
-            mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            mPriceText.setVisibility(View.VISIBLE);
             String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage());
             mDiscountPercentageText.setText(discount);
             mDiscountPercentageText.setVisibility(View.VISIBLE);
         } else {
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
-            mPriceText.setVisibility(View.GONE);
             mDiscountPercentageText.setVisibility(View.GONE);
         }
     }
@@ -876,6 +871,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (simple != null) {
                 String text = mProduct.getVariationName() + ": " + simple.getVariationValue();
                 ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
+                CompleteProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
             }
         } catch (NullPointerException e) {
             // ...
