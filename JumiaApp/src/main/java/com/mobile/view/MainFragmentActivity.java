@@ -52,12 +52,13 @@ import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
 import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
-import com.mobile.view.fragments.ReviewsFragment;
+import com.mobile.view.fragments.ReviewsFragmentNew;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
@@ -289,7 +290,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
                 break;
             case POPULARITY:
-                fragment = ReviewsFragment.getInstance(bundle);
+            //    fragment = ReviewsFragment.getInstance(bundle);
+                fragment = ReviewsFragmentNew.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
                 fragment = ReviewWriteFragment.getInstance(bundle);
@@ -361,9 +363,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case EMAIL_NOTIFICATION:
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
-            case FAVORITE_LIST:
+            case WISH_LIST:
                 removeEntries = true;
-                //fragment = WishListFragment.getInstance();
+                fragment = WishListFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
