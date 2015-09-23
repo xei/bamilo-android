@@ -263,8 +263,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private List<Integer> getFragmentTitleValues(){
         Integer[] titles = {
-                mHasSummary ? R.string.product_desc_summary_title : R.string.product_specifications,
-                R.string.product_specifications};
+                mHasSummary ? R.string.product_desc_summary_title : R.string.specifications,
+                R.string.specifications};
 
         return Arrays.asList(titles);
     }

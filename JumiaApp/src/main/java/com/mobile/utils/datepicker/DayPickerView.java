@@ -16,11 +16,6 @@
 
 package com.mobile.utils.datepicker;
 
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -37,9 +32,13 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-import com.mobile.utils.datepicker.Utils;
 import com.mobile.utils.datepicker.DatePickerDialog.OnDateChangedListener;
 import com.mobile.utils.datepicker.SimpleMonthAdapter.CalendarDay;
+
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * This displays a list of months in a calendar format with selectable days.
