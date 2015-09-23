@@ -671,19 +671,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case rating
         if (id == R.id.pdv_rating_container) onClickRating();
         // Case description
-        else if (id == R.id.product_detail_specifications || id == R.id.product_detail_name) onClickShowDescription();
+        // TODO
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
         else if (id == R.id.pdv_button_wish_list) onClickWishListButton();
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
-        // Case seller link
-        else if (id == R.id.seller_name_container) goToSellerCatalog();
-        // Case seller rating
-        else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
-        // Case product offers
-        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
         // Case simples
         else if (id == R.id.pdv_simples_container) onClickSimpleSizesButton();
         // Case share
@@ -694,16 +688,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
     }
 
-    /**
-     * function that sends the user to the product offers view
-     */
-    private void goToProductOffers() {
-        Log.i(TAG, "ON CLICK OFFERS");
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
+//    /**
+//     * function that sends the user to the product offers view
+//     */
+//    private void goToProductOffers() {
+//        Log.i(TAG, "ON CLICK OFFERS");
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+//        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+//    }
 
     /**
      * Process the click on rating
@@ -1103,14 +1097,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         int count = 0;
 
         for (ProductBundle item : bundleProducts) {
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle_item, null);
+            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle_item, mTableBundles, false);
             FillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
             {
                 //separator
-                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle, null);
+                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout._def_pdv_fragment_bundle, mTableBundles, false);
                 mTableBundles.addView(imSep);
             }
             count++;
@@ -1145,38 +1139,38 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mPrice.setText(CurrencyFormatter.formatCurrency(p.getPrice()));
     }
 
-    /**
-     * function responsible for calling the catalog with the products from a specific seller
-     */
-    private void goToSellerCatalog() {
-        Print.d("SELLER", "GO TO CATALOG");
-        if (mProduct.hasSeller()) {
-            Bundle bundle = new Bundle();
-            String targetUrl = mProduct.getSeller().getUrl();
-            String targetTitle = mProduct.getSeller().getName();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        }
-    }
+//    /**
+//     * function responsible for calling the catalog with the products from a specific seller
+//     */
+//    private void goToSellerCatalog() {
+//        Print.d("SELLER", "GO TO CATALOG");
+//        if (mProduct.hasSeller()) {
+//            Bundle bundle = new Bundle();
+//            String targetUrl = mProduct.getSeller().getUrl();
+//            String targetTitle = mProduct.getSeller().getName();
+//            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+//            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+//            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+//            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+//            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+//        }
+//    }
 
-    /**
-     * function responsible for showing the rating and reviews of a specific seller
-     */
-    private void goToSellerRating() {
-        JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
-        JumiaApplication.INSTANCE.setFormReviewValues(null);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
-        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
-        bundle.putString(SELLER_ID, mProduct.getSeller().getSellerId());
-        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
+//    /**
+//     * function responsible for showing the rating and reviews of a specific seller
+//     */
+//    private void goToSellerRating() {
+//        JumiaApplication.cleanRatingReviewValues();
+//        JumiaApplication.cleanSellerReviewValues();
+//        JumiaApplication.INSTANCE.setFormReviewValues(null);
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+//        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+//        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
+//        bundle.putString(SELLER_ID, mProduct.getSeller().getSellerId());
+//        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
+//    }
 
 
 //    /**

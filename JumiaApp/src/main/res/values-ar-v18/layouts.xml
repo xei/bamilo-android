@@ -67,15 +67,15 @@
     <item name="shop_fragment_main"                     type="layout">@layout/_def_shop_fragment_main</item>
 
     <!-- PDV -->
-    <item name="product_details_fragment_seller_info"   type="layout">@layout/_def_product_details_fragment_seller_info</item>
+    <!--<item name="product_details_fragment_seller_info"   type="layout">@layout/_def_product_details_fragment_seller_info</item>-->
     <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
-    <item name="product_details_fragment_image"         type="layout">@layout/_def_product_details_fragment_image</item>
-    <item name="product_details_fragment_info"          type="layout">@layout/_def_product_details_fragment_info</item>
-    <item name="product_details_fragment_offers"        type="layout">@layout/_def_product_details_fragment_offers</item>
+    <!--<item name="product_details_fragment_image"         type="layout">@layout/_def_product_details_fragment_image</item>-->
+    <!--<item name="product_details_fragment_info"          type="layout">@layout/_def_product_details_fragment_info</item>-->
+    <!--<item name="product_details_fragment_offers"        type="layout">@layout/_def_product_details_fragment_offers</item>-->
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
 
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
@@ -160,7 +160,7 @@
     <item name="product_item_bundle"                        type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"            type="layout">@layout/_def_shopping_basket_product_element</item>
     <item name="tip_share_layout"                           type="layout">@layout/_def_tip_share_layout</item>
-    <item name="product_details_fragment_bundle"            type="layout">@layout/_def_product_details_fragment_bundle</item>
+    <!--<item name="product_details_fragment_bundle"            type="layout">@layout/_def_product_details_fragment_bundle</item>-->
     <item name="dialog_list_sub_item_1"                     type="layout">@layout/_def_dialog_list_sub_item_1</item>
     <item name="dialog_list_sub_item_2"                     type="layout">@layout/_def_dialog_list_sub_item_2</item>
     <item name="header_title"                               type="layout">@layout/_def_header_title</item>
@@ -180,7 +180,7 @@
     <item name="loading_bar"                                type="layout">@layout/_def_loading_bar</item>
     <item name="dialog_filter_fragment_category"            type="layout">@layout/_def_dialog_filter_fragment_category</item>
     <item name="dialog_filter_fragment_brand"               type="layout">@layout/_def_dialog_filter_fragment_brand</item>
-    <item name="product_details_fragment_buttons"           type="layout">@layout/_def_product_details_fragment_buttons</item>
+    <!--<item name="product_details_fragment_buttons"           type="layout">@layout/_def_product_details_fragment_buttons</item>-->
 
     <item name="dialog_filter_fragment_color"               type="layout">@layout/_def_dialog_filter_fragment_color</item>
     <item name="tip_favourite_layout"                       type="layout">@layout/_def_tip_favourite_layout</item>
