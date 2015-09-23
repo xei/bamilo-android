@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
@@ -31,6 +34,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -42,6 +46,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -132,7 +137,16 @@ public class ReviewsFragmentNew extends BaseFragment {
 
     public TextView txHeaderUsers;
 
-    public TextView btWriteReview;
+    public TextView txAverageRatings;
+
+
+    public LinearLayout mRatingsBoard;
+
+    public LinearLayout mProgressBoard;
+
+    public LinearLayout mWriteReview;
+
+    private Resources resources;
 
     /**
      * Get instance
@@ -151,7 +165,7 @@ public class ReviewsFragmentNew extends BaseFragment {
     public ReviewsFragmentNew() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
-                R.layout._def_review_fragment_new,
+                R.layout.reviews_fragment_new,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -210,47 +224,59 @@ public class ReviewsFragmentNew extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
 
+        resources = getResources();
         //fill headers
         txHeaderRatings = (TextView) view.findViewById(R.id.ratingsHeader).findViewById(R.id.txTitle);
-        txHeaderRatings.setText("RATINGS ("+String.valueOf(totalPages)+")");
+        String ratingsHeader = resources.getString(R.string.average_raings_header);
+        txHeaderRatings.setText(ratingsHeader+" (" + String.valueOf(selectedProduct.getTotalRatings()) + ")");
 
         txHeaderUsers = (TextView) view.findViewById(R.id.usersHeader).findViewById(R.id.txTitle);
-        txHeaderUsers.setText("USER REVIEWS ("+String.valueOf(totalPages)+")");
+        String usersReviewsHeader = resources.getString(R.string.average_reviews_header);
+        txHeaderUsers.setText(usersReviewsHeader+" ("+String.valueOf(selectedProduct.getTotalReviews())+")");
 
-        //get button for write a review
-        btWriteReview = (TextView) view.findViewById(R.id.btWriteReview);
-        btWriteReview.setOnClickListener(new OnClickListener() {
+
+        //ratings board
+        mRatingsBoard = (LinearLayout) view.findViewById(R.id.ratingsBoard);
+
+        //progress bars board
+        mProgressBoard = (LinearLayout) mRatingsBoard.findViewById(R.id.progressBoard);
+
+
+        //reviews content
+        reviewsContainer = (LinearLayout) view.findViewById(R.id.linear_reviews);
+
+        mWriteReview = (LinearLayout) view.findViewById(R.id.lWriteReview);
+        mWriteReview.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   startWriteReviewFragment();
                 writeReview();
             }
         });
 
-        // Get views
-   /*     productName = (TextView) view.findViewById(R.id.product_detail_name);
-        productPriceNormal = (TextView) view.findViewById(R.id.product_price_normal);
-        productPriceSpecial = (TextView) view.findViewById(R.id.product_price_special);
-        productRatingContainer = (LinearLayout) view.findViewById(R.id.product_ratings_container);
 
-        centerPoint = view.findViewById(R.id.center_point);
-        //seller
-        sellerRatingContainer = (RelativeLayout) view.findViewById(R.id.seller_reviews_rating_container);
-        sellerRatingBar = (RatingBar) view.findViewById(R.id.seller_reviews_item_rating);
-        sellerRatingCount = (TextView) view.findViewById(R.id.seller_reviews_item_reviews);
 
-        TextView emptyScreenText = (TextView) view.findViewById(R.id.fragment_root_empty_text);
-        if(isProductRating){
-            emptyScreenText.setText(getResources().getString(R.string.reviews_empty));
-        } else {
-            emptyScreenText.setText(getResources().getString(R.string.reviews_empty_seller));
-        }
+    }
 
-        reviewsContainer = (LinearLayout) view.findViewById(R.id.linear_reviews);
-        marginLandscape = view.findViewById(R.id.margin_landscape);
-        if(reviews == null) {
-            reviews = new ArrayList<>();
-        }*/
+
+    /**
+     * Fill average rating and total of ratings in ratingsBoard
+     */
+    private void FillAverageRatingData(ArrayList<RatingStar> ratingTypes)
+    {
+        txAverageRatings = (TextView) mRatingsBoard.findViewById(R.id.averageValue);
+
+        String averageStar;
+        if(ratingTypes == null || ratingTypes.size() == 0)
+            averageStar = String.valueOf(selectedProduct.getAvgRating());
+        else
+            averageStar = String.valueOf(ratingTypes.get(0).getRating());
+        txAverageRatings.setText(String.valueOf(averageStar));  //add most voted star?
+
+
+        TextView txTotalCustomersMessage = (TextView) mRatingsBoard.findViewById(R.id.badgeValue);
+        String from =  resources.getString(R.string.from_avg_rat);
+        String customers =  resources.getString(R.string.from_avg_cus);
+        txTotalCustomersMessage.setText(from+" "+selectedProduct.getTotalRatings()+" "+customers);
 
     }
 
@@ -264,7 +290,7 @@ public class ReviewsFragmentNew extends BaseFragment {
         super.onStart();
         Print.i(TAG, "ON START");
 
-   /*     inflater = LayoutInflater.from(getActivity());
+        inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
             if(mProductSku == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)){
                 String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
@@ -281,10 +307,10 @@ public class ReviewsFragmentNew extends BaseFragment {
                 showFragmentErrorRetry();
             }
         } else {
-            checkReviewsTypeVisibility();
+        //    checkReviewsTypeVisibility();
             showFragmentContent();
             showFragmentContentOfSeller();
-        }*/
+        }
     }
 
     /**
@@ -294,7 +320,7 @@ public class ReviewsFragmentNew extends BaseFragment {
         // Set content
         setAppContentLayout();
 
-        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
+ /*       if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
 
             if(isProductRating){
                 //Validate if country configs allows rating and review, only show write review fragment if both are allowed
@@ -308,7 +334,7 @@ public class ReviewsFragmentNew extends BaseFragment {
                     marginLandscape.setVisibility(View.VISIBLE);
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -609,6 +635,10 @@ public class ReviewsFragmentNew extends BaseFragment {
                 totalPages = productRatingPage.getTotalPages();
             }
             showFragmentContentOfSeller();
+            //fill header after getting RatingPage object
+            FillAverageRatingData(productRatingPage.getRatingTypes());  //to test tomorrow
+            //added: fill progress bars
+            setProgressRating(selectedProduct.getTotalRatings(), mProgressBoard);
             // Append the new page to the current
             displayReviews(productRatingPage, true);
             showFragmentContentContainer();
@@ -698,7 +728,7 @@ public class ReviewsFragmentNew extends BaseFragment {
                         reviews.addAll(productRatingPage.getReviewComments());
                     }
                 } else {
-                    reviews = new ArrayList<>();
+                    reviews =  productRatingPage.getReviewComments();
                 }
             } else {
                 reviews = new ArrayList<>();
@@ -714,8 +744,8 @@ public class ReviewsFragmentNew extends BaseFragment {
         if(reviewsContainer.getChildCount() > 0)
             reviewsContainer.removeAllViews();
 
-        if(productRatingContainer.getChildCount() > 0)
-            productRatingContainer.removeAllViews();
+   /*     if(productRatingContainer.getChildCount() > 0)
+            productRatingContainer.removeAllViews();*/
 
 
         if(!isProductRating){
@@ -730,8 +760,9 @@ public class ReviewsFragmentNew extends BaseFragment {
 
         } else {
             //alexandrapires: mobapi 1.8 correction: productRatingPage can come null (reviews/ratings/comments)
-            if(productRatingPage != null)
-                insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
+      //      if(productRatingPage != null)
+              //  insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true, productRatingPage.getAverage());
+
         }
 
 
@@ -760,6 +791,8 @@ public class ReviewsFragmentNew extends BaseFragment {
                 LinearLayout gridElement = new LinearLayout(getActivity().getApplicationContext());
                 gridElement.setOrientation(LinearLayout.HORIZONTAL);
                 LayoutParams gridParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, numColumns);
+                gridElement.setBackgroundColor(Color.parseColor("#fafafa"));
+
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                 if(ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
@@ -771,31 +804,18 @@ public class ReviewsFragmentNew extends BaseFragment {
 
                         final ProductReviewComment review = reviews.get(i);
 
-                        final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsContainer, false);
-                        // Hide last divider
-                        if (j == group - 1) {
-                            theInflatedView.findViewById(R.id.top_review_line).setVisibility(View.GONE);
-                        }
+                        final View theInflatedView = inflater.inflate(R.layout.review_list, reviewsContainer, false);
 
-                        if(i == startPoint+numColumns -1){
-                            theInflatedView.findViewById(R.id.horizintal_review_line).setVisibility(View.GONE);
-                        }
-
-//                        theInflatedView.setBackgroundColor(Color.CYAN);
                         final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
                         final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
                         final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
 
                         final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
-                        LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.ratings_container);
-
-                        if(ratingsContainer.getChildCount() > 0)
-                            ratingsContainer.removeAllViews();
 
 
-                        ArrayList<RatingStar> ratingOptionArray = review.getRatingStars();
+                        RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.rating_value);
+                        userRating.setRating((float) review.getRating());
 
-                        insertRatingTypes(ratingOptionArray, ratingsContainer,false,review.getAverage());
 
                         final String[] stringCor = review.getDate().split(" ");
                         userName.setText(review.getName() + ",");
@@ -854,14 +874,14 @@ public class ReviewsFragmentNew extends BaseFragment {
             // Otherwise it was only a empty response for a page after the first
             if (firstRequest) {
                 reviewsContainer.setVisibility(View.GONE);
-                getView().findViewById(R.id.reviews_empty).setVisibility(View.VISIBLE);
+    //            getView().findViewById(R.id.reviews_empty).setVisibility(View.VISIBLE);
             }
             firstRequest = false;
         }
 
-        View loadingLayout = getView().findViewById(R.id.catalog_loading_more);
-        loadingLayout.setVisibility(View.GONE);
-        loadingLayout.refreshDrawableState();
+   //     View loadingLayout = getView().findViewById(R.id.catalog_loading_more);
+   //     loadingLayout.setVisibility(View.GONE);
+   //     loadingLayout.refreshDrawableState();
 
         // Validate if the current request size is < MAX_REVIEW_COUNT
         // Or from saved values the current size == comments max count
@@ -873,94 +893,54 @@ public class ReviewsFragmentNew extends BaseFragment {
 
     }
 
+
     /**
-     * insert rate types on the review
-     * @param ratingOptionArray
-     * @param parent
-     */
-    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar, int average){
+     * Set progressbar progress and it's value number with the info coming from byStar
+     * @param maxTotal - total of ratings
+     * @param progressContainer - container where are all progress bars corresponding from 1 - 5   rating
+     * */
+    private void setProgressRating(int maxTotal, View progressContainer)
+    {
+        //get progress bars and value numbers
+        ProgressBar progressBarFive = (ProgressBar) progressContainer.findViewById(R.id.progressBarFive);
+        progressBarFive.setMax(maxTotal);
+        ProgressBar progressBarFour = (ProgressBar) progressContainer.findViewById(R.id.progressBarFour);
+        progressBarFour.setMax(maxTotal);
+        ProgressBar progressBarThree = (ProgressBar) progressContainer.findViewById(R.id.progressBarThree);
+        progressBarThree.setMax(maxTotal);
+        ProgressBar progressBarTwo = (ProgressBar) progressContainer.findViewById(R.id.progressBarTwo);
+        progressBarTwo.setMax(maxTotal);
+        ProgressBar progressBarOne = (ProgressBar) progressContainer.findViewById(R.id.progressBarOne);
+        progressBarOne.setMax(maxTotal);
+
+        TextView txValueFive = (TextView) progressContainer.findViewById(R.id.fiveValue);
+        txValueFive.setText(mProductRatingPage.getByStarValue("5"));
+        progressBarFive.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("5")));
+
+        TextView txValueFour = (TextView) progressContainer.findViewById(R.id.fourValue);
+        txValueFour.setText(mProductRatingPage.getByStarValue("4"));
+        progressBarFour.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("4")));
+
+        TextView txValueThree = (TextView) progressContainer.findViewById(R.id.threeValue);
+        txValueThree.setText(mProductRatingPage.getByStarValue("3"));
+        progressBarThree.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("3")));
 
 
-        int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
-
-        if(isBigStar)
-            starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
-
-        if(ratingOptionArray != null && ratingOptionArray.size() > 0){
-
-            // calculate how many lines of rate types the review will have, supossing 3 types for line;
-            int rateCount = ratingOptionArray.size();
-            int rest = rateCount % RATING_TYPE_BY_LINE;
-            int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
-            if(rest >= 1)
-                numLines = numLines + rest;
-
-            int countType = 0;
-
-            for (int i = 0; i < numLines; i++) {
-
-                LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
-                LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT,RATING_TYPE_BY_LINE);
-
-                typeLine.setOrientation(LinearLayout.HORIZONTAL);
-                //#RTL
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if(ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                    typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
-//                    typeLine.setLayoutDirection(View.LaLayoutDirection.LOCALE);
-                }
-
-                typeLine.setLayoutParams(params);
-                parent.addView(typeLine);
-
-                for (int j = countType; j < countType+RATING_TYPE_BY_LINE; j++) {
-
-                    if(j < ratingOptionArray.size()){
-                        final View rateTypeView = inflater.inflate(starsLayout, null, false);
-
-                        rateTypeView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT,1));
-
-                        final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
-                        final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
-
-                        userRating.setRating((float) ratingOptionArray.get(j).getRating());
-                        ratingTitle.setText(ratingOptionArray.get(j).getTitle());
-
-                        typeLine.addView(rateTypeView);
-                    }
-
-                }
-                countType = countType + RATING_TYPE_BY_LINE;
-            }
+        TextView txValueTwo = (TextView) progressContainer.findViewById(R.id.twoValue);
+        txValueTwo.setText(mProductRatingPage.getByStarValue("2"));
+        progressBarTwo.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("2")));
 
 
-        } else {
-        //if rating Options == null then its a seller review
-
-            if(parent.getChildCount() > 0){
-                parent.removeAllViews();
-            }
-
-            LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,ReviewsFragment.RATING_TYPE_BY_LINE);
-
-            typeLine.setOrientation(LinearLayout.HORIZONTAL);
+        TextView txValueOne = (TextView) progressContainer.findViewById(R.id.oneValue);
+        txValueOne.setText(mProductRatingPage.getByStarValue("1"));
+        progressBarOne.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("1")));
 
 
-            View rateTypeView = inflater.inflate(starsLayout, null, false);
 
-            rateTypeView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT,1));
-            
-            final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
-            final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
-              
-            userRating.setRating(average);
-            ratingTitle.setVisibility(View.GONE);
-           
-            typeLine.addView(rateTypeView);
-            parent.addView(typeLine);
-        }
     }
+
+
+
     
     
     /**
