@@ -214,7 +214,7 @@
     <string name="product_outof_stock">Le produit n\'est plus disponible</string>
     <string name="product_sold_by">Vendu par:</string>
     <string name="product_sort_button">Filtrer</string>
-    <string name="product_specifications">Caractéristiques</string>
+    <string name="specifications">Caractéristiques</string>
     <string name="product_variance_choose">Choisissez</string>
     <string name="product_variance_choose_error">Choisissez parmi</string>
     <string name="product_variant_placeholder">&#8230;</string>

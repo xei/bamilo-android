@@ -110,10 +110,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	            }
 	        }
 
-			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
 			if(paginationObject != null){
-				currentPage = paginationObject.getInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG);
-				totalPages = paginationObject.getInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG);
+				currentPage = paginationObject.getInt(RestConstants.CURRENT_PAGE);
+				totalPages = paginationObject.getInt(RestConstants.TOTAL_PAGES);
 			}
 
 		}

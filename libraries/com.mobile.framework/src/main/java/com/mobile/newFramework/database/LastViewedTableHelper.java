@@ -69,20 +69,24 @@ public class LastViewedTableHelper extends BaseTable {
     /**
      * Insert viewed product into database
      */
-    public static void insertLastViewedProduct(ProductComplete completeProduct) throws IllegalStateException, SQLiteException {
-        if (completeProduct != null) {
-            String sku = completeProduct.getSku();
-            // TODO database new approach to validate and limit number of items
-            if (!verifyIfExist(sku)) {
-                if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
-                    removeOldestEntry();
+    public static void insertLastViewedProduct(ProductComplete completeProduct) {
+        try {
+            if (completeProduct != null) {
+                String sku = completeProduct.getSku();
+                // TODO database new approach to validate and limit number of items
+                if (!verifyIfExist(sku)) {
+                    if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+                        removeOldestEntry();
+                    }
+                    SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
+                    db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
+                    db.close();
                 }
-                SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
-                db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
-                db.close();
             }
+        } catch (IllegalStateException | SQLiteException e) {
+            // ...
         }
     }
 

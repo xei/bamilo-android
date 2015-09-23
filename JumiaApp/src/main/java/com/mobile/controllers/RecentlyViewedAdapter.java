@@ -46,7 +46,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView name;
         private TextView discount;
         private TextView price;
-        private TextView discountPercentage;
+        private TextView percentage;
         private TextView brand;
         private View isNew;
         private Button varianceButton;
@@ -132,7 +132,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.brand = (TextView) itemView.findViewById(R.id.item_brand);
             item.price = (TextView) itemView.findViewById(R.id.item_regprice);
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            item.discountPercentage = (TextView) itemView.findViewById(R.id.item_percentage);
+            item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
             item.variantChooseError = itemView.findViewById(R.id.error_variant);
             item.stockError = itemView.findViewById(R.id.error_stock);
@@ -226,15 +226,15 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
 
                 // TODO placeholder
                 int discountPercentage = addableToCart.getMaxSavingPercentage();
-                prodItem.discountPercentage.setText("-" + discountPercentage + "%");
-                prodItem.discountPercentage.setVisibility(View.VISIBLE);
+                prodItem.percentage.setText("-" + discountPercentage + "%");
+                prodItem.percentage.setVisibility(View.VISIBLE);
 
                 prodItem.price.setSelected(true);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
                 prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
             } else {
                 // Set price
-                prodItem.discountPercentage.setVisibility(View.INVISIBLE);
+                prodItem.percentage.setVisibility(View.INVISIBLE);
                 }
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility

@@ -29,8 +29,7 @@ public class InfinitePagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        // warning: scrolling to very high values (1,000,000+) results in
-        // strange drawing behaviour
+        // warning: scrolling to very high values (1,000,000+) results in strange drawing behaviour
         if (infinitePagesEnabled) {
             return Integer.MAX_VALUE;
         } else { 

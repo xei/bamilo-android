@@ -25,7 +25,6 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     protected double mSpecialPrice;
     protected double mSpecialPriceConverted;
     protected int mMaxSavingPercentage;
-    protected String mVertical="";
     private String mPriceRange;
 
     /**
@@ -48,7 +47,6 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-        mVertical = jsonObject.optString(RestConstants.JSON_VERTICAL_TAG);
 
         mPriceRange = jsonObject.optString(RestConstants.JSON_PRICE_RANGE, null);
         return true;
@@ -94,14 +92,6 @@ public class ProductBase implements Parcelable, IJSONSerializable {
 
     public double getPriceForTracking() {
         return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
-    }
-
-
-    public boolean isFashion()
-    {
-        if(mVertical != null && mVertical.equalsIgnoreCase("fashion"))
-            return true;
-        return false;
     }
 
     /*

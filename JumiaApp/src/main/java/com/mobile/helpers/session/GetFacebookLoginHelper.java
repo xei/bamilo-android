@@ -81,4 +81,11 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
         }
 
     }
+
+    public static Bundle createBundle(ContentValues values, boolean saveCredentials) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
+        return bundle;
+    }
 }

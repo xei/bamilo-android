@@ -26,10 +26,10 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
-import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.view.R;
+
 import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -237,7 +237,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     }
 
     private void handleOnChooseLanguageItemClick(AdapterView<?> parent, int position) {
-        if(position == POSITION_LANGUAGE){
+        if(position == POSITION_COUNTRY){
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        } else if(position == POSITION_LANGUAGE){
             CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.choose_language);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override

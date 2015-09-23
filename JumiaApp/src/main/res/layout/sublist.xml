@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="48dp"
     android:gravity="center_vertical"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/layout_padding"
-    android:paddingStart="@dimen/layout_padding"
-    >
+    android:paddingStart="@dimen/layout_padding">
 
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_specs_button"
+        style="@style/Caption"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        style="@style/Caption"
-        android:textColor="@color/black"
-        android:text="Item sublist"
-        android:id="@+id/tx_slist_title"
-        android:layout_marginTop="@dimen/v8_margin_sublist_text"
-        android:layout_marginBottom="@dimen/v8_margin_sublist_text"
         android:layout_centerVertical="true"
-        />
+        android:layout_marginBottom="@dimen/v8_margin_sublist_text"
+        android:layout_marginTop="@dimen/v8_margin_sublist_text"
+        android:text="Item sublist"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>
