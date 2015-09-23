@@ -16,7 +16,10 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        >
 
     </LinearLayout>
 
