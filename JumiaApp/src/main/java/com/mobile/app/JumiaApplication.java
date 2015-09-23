@@ -41,6 +41,7 @@ import com.mobile.utils.CheckVersion;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -392,11 +393,9 @@ public class JumiaApplication extends A4SApplication {
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
+        cleanAllPreviousLanguageValues();
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());
-        registerForm = null;
-        paymentMethodForm = null;
-        registerSavedInstanceState = null;
         CUSTOMER = null;
         getCustomerUtils().save();
         mCustomerUtils = null;
@@ -407,7 +406,6 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
-        mSellerReviewForm = null;
         isSellerReview = false;
         ratingReviewValues = null;
         sellerReviewValues = null;
@@ -415,6 +413,18 @@ public class JumiaApplication extends A4SApplication {
         sWishListTemporary = null;
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
+    }
+
+    public void cleanAllPreviousLanguageValues(){
+        try {
+            AigHttpClient.clearCache(this);
+        } catch (IOException e) {
+            Print.e(TAG, "Error clearing requests cache", e);
+        }
+        registerForm = null;
+        paymentMethodForm = null;
+        registerSavedInstanceState = null;
+        mSellerReviewForm = null;
     }
 
     /**
