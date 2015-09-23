@@ -25,6 +25,7 @@ public class ProductMultiple extends ProductRegular {
     private String mVariationName;
     private ArrayList<ProductSimple> mSimples;
     private int mSelectedSimplePosition;
+    private String mVariationsAvailable;
 
     /**
      * Empty constructor
@@ -41,6 +42,7 @@ public class ProductMultiple extends ProductRegular {
         mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
         // Get variation name
         mVariationName = jsonObject.optString(RestConstants.VARIATION_NAME);
+        mVariationsAvailable = jsonObject.optString(RestConstants.VARIATIONS_AVAILABLE_LIST);
         // Default selected simple position
         mSelectedSimplePosition = jsonObject.optInt(RestConstants.VARIATION_DEFAULT_POSITION, NO_DEFAULT_SIMPLE_POS);
         // Simples
@@ -81,6 +83,10 @@ public class ProductMultiple extends ProductRegular {
 
     public String getVariationName() {
         return mVariationName;
+    }
+
+    public String getVariationsAvailable() {
+        return mVariationsAvailable;
     }
 
     public int getSelectedSimplePosition() {
@@ -130,6 +136,7 @@ public class ProductMultiple extends ProductRegular {
         super(in);
         mSizeGuideUrl = in.readString();
         mVariationName = in.readString();
+        mVariationsAvailable = in.readString();
         if (in.readByte() == 0x01) {
             mSimples = new ArrayList<>();
             in.readList(mSimples, ProductSimple.class.getClassLoader());
@@ -144,6 +151,7 @@ public class ProductMultiple extends ProductRegular {
         super.writeToParcel(dest, flags);
         dest.writeString(mSizeGuideUrl);
         dest.writeString(mVariationName);
+        dest.writeString(mVariationsAvailable);
         if (mSimples == null) {
             dest.writeByte((byte) (0x00));
         } else {

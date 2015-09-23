@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PDVSlideShowStyle"
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="16dp">
+
+    <!-- IMAGE -->
+
+    <FrameLayout
+        android:id="@+id/pdv_slide_show_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- FAVOURITE -->
+
+    <ImageView
+        android:id="@+id/pdv_button_wish_list"
+        style="@style/PDVWishListButtonStyle" />
+
+</RelativeLayout>

@@ -74,6 +74,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private boolean noPaymentNeeded = false;
     
     private boolean removeVoucher = false;
+    
     private PurchaseEntity orderSummary;
 
     private ContentValues mSavedState;
@@ -81,6 +82,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private String paymentName = "";
 
     private View checkoutTotalView;
+
+    private View buttonEnterLayout;
     
     /**
      * Get new instance of CheckoutPaymentMethodsFragment.
@@ -142,7 +145,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-
+        buttonEnterLayout = view.findViewById(R.id.checkout_button_container);
         //checkout total view
         if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
             checkoutTotalView = view.findViewById(R.id.total_view_stub);
@@ -266,6 +269,15 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
+
+        if(getView().findViewById(R.id.text_information) == null) {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.VISIBLE);
+            buttonEnterLayout.setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.GONE);
+            buttonEnterLayout.setVisibility(View.GONE);
+        }
+
         showFragmentContentContainer();
     }
     

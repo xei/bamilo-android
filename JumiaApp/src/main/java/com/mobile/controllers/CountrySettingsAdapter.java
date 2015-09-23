@@ -66,7 +66,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
             view.setEnabled(false);
-            view.setOnClickListener(null);
+//            view.setOnClickListener(null);
         } else {
             country.setText(R.string.language);
             info.setText(countryObject.languages.getSelectedLanguage().getLangName());

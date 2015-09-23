@@ -410,8 +410,7 @@
     <dimen name="v8_scrooll_marginBottom">10dp</dimen>
 
     <!-- PDP Related products column numbers -->
-    <integer name="grid_line_items_mobile">2</integer>
-    <integer name="grid_line_items_tablet_portrait">3</integer>
+    <integer name="pdv_related_products_num_columns">2</integer>
     <integer name="details_max_lines">4</integer>
 
     <!-- PDP layout dimension components -->
@@ -425,6 +424,7 @@
     <dimen name="buy_bar_image_item_width">48dp</dimen>
     <dimen name="v8_margin_sublist_text">19dp</dimen>
 
+    <dimen name="pdv_layout_offset">20dp</dimen>
 
 
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
@@ -486,7 +486,5 @@
 
 
     <!-- KICKOUT -->
-
     <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
-
 </resources>

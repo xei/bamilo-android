@@ -18,6 +18,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -652,6 +653,21 @@ public class TrackerDelegator {
         }
     }
 
+
+    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type ) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
+        bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        trackProductAddedToCart(bundle);
+    }
+
     /**
      * Tracking a product added to cart
      */
@@ -696,6 +712,25 @@ public class TrackerDelegator {
         }
 
     }
+
+    /**
+     *
+     */
+    public static void trackProduct(ProductRegular mCompleteProduct, String source, String path, boolean isRelatedItem) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SOURCE_KEY, source);
+        bundle.putString(TrackerDelegator.PATH_KEY, path);
+        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
+        bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
+        bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories());
+        trackProduct(bundle);
+    }
+
 
     /**
      * Tracking a complete product
@@ -1018,7 +1053,6 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.CALL, bundle);
-
     }
 
 

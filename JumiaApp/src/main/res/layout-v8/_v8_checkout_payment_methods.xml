@@ -19,7 +19,7 @@
         android:layout_alignTop="@id/checkout_payment_methods_title"
         android:layout_marginLeft="33dp"
         android:text="*"
-        android:textColor="@color/orange_ffa200"
+        android:textColor="@color/color_accent"
         android:textSize="@dimen/text_title" />
 
     <!-- DIVIDER -->
