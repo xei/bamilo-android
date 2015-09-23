@@ -11,8 +11,12 @@
         android:id="@+id/product_info_pager_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         app:stsBottomBorderThickness="0dp"
-        app:stsIndicatorColor="@color/orange_tab_bar"
+        app:stsDividerThickness="0dp"
+        app:stsDividerColor="@color/white"
+        app:stsIndicatorColor="@color/color_accent"
+        app:stsIndicatorThickness="0.5dp"
         android:layoutDirection="ltr"/>
 
     <!-- CONTENT -->
