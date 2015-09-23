@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.helpers.SuperBaseHelper;

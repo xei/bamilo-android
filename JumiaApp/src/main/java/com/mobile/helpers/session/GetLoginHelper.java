@@ -17,7 +17,6 @@ import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 

@@ -6,12 +6,9 @@ package com.mobile.helpers.account;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.orders.MyOrder;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 import java.util.HashMap;
@@ -29,10 +26,6 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
     public static final String PAGE_NUMBER = "page";
 
     public static final String PER_PAGE = "per_page";
-
-    public static final String CURRENT_PAGE = "current_page";
-
-    public static final String TOTAL_PAGES = "total_pages";
 
 
     @Override

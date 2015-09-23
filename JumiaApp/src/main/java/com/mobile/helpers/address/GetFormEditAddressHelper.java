@@ -5,15 +5,12 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 

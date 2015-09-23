@@ -3,10 +3,6 @@
  */
 package com.mobile.helpers.checkout;
 
-import android.os.Bundle;
-
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.SetShippingMethod;
@@ -14,10 +10,8 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.utils.CheckoutStepManager;
 
 /**
  * Helper used to set the shipping address 
