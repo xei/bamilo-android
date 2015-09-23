@@ -63,7 +63,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url, int region, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
+        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // FIXME: API v2.0
         bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
         bundle.putString(GetCitiesHelper.CUSTOM_TAG, tag);
         return bundle;
