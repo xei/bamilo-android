@@ -37,6 +37,7 @@
         style="@style/discount_percentage"
         android:layout_alignBottom="@+id/item_discount"
         android:layout_toLeftOf="@+id/item_regprice"
+        android:layout_marginTop="4dp"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
@@ -56,6 +57,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/TextBody_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
         android:layout_marginLeft="@dimen/margin_60px"
         android:layout_marginRight="@dimen/margin_60px"
@@ -67,6 +70,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignRight="@+id/item_brand"
         android:layout_below="@id/item_name"
         android:layout_marginTop="4dp"
@@ -77,6 +82,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/item_name"
         android:layout_marginLeft="@dimen/margin_20px"
         android:layout_toLeftOf="@id/item_discount"

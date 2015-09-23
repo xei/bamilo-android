@@ -18,22 +18,15 @@
         android:clickable="false"
         android:focusable="false" />
 
-    <RelativeLayout
-        android:id="@+id/dialog_title_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/dialog_item_checkbox"
-        android:gravity="right|center_vertical" >
-
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_text"
-            style="@style/dialog_list_itemtext"
-            android:layout_width="match_parent"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_l"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_centerInParent="true"
             android:text="ListItem text" />
 
-    </RelativeLayout>
 
 </RelativeLayout>

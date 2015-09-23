@@ -52,6 +52,8 @@
             android:id="@+id/catalog_bar_button_filter"
             android:drawablePadding="@dimen/margin_10px"
             style="@style/TextList2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:textColor="@color/black"
             android:drawableRight="@drawable/selector_catalog_filter"
             android:text="@string/filter_label" />
@@ -77,6 +79,8 @@
             android:id="@+id/catalog_bar_button_sort"
             android:drawablePadding="@dimen/margin_10px"
             style="@style/TextList2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:textColor="@color/black"
             android:drawableRight="@drawable/selector_catalog_sort"
             android:text="@string/products_sort_popularity" />
