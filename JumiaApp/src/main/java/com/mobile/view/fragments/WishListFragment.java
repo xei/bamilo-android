@@ -91,7 +91,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (savedInstanceState != null) {
             Log.i(TAG, "GET DATA FROM SAVED STATE");
             mWishList = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
-            sForceReloadWishListFromNetwork = savedInstanceState.getParcelable(ConstantsIntentExtra.FLAG_1);
+            sForceReloadWishListFromNetwork = savedInstanceState.getBoolean(ConstantsIntentExtra.FLAG_1);
         }
     }
 
@@ -269,6 +269,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         try {
             ProductMultiple item = ((WishListAdapter) mListView.getAdapter()).getItem(mSelectedPositionToDelete);
             ((WishListAdapter) mListView.getAdapter()).remove(item);
+            // Case empty
+            if(mListView.getAdapter().isEmpty()) {
+                mWishList = null;
+                showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+            }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             Log.i(TAG, "WARNING: EXCEPTION ON REMOVE SELECTED POSITION: " + mSelectedPositionToDelete);
         }
