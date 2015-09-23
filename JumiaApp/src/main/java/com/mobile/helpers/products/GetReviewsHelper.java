@@ -41,11 +41,4 @@ public class GetReviewsHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
    }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productRatingPage);
-    }
-
 }

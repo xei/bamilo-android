@@ -53,15 +53,17 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getOrdersList);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
-        // Get order summary from response
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, orders.getOrders());
-        bundle.putInt(CURRENT_PAGE, orders.getCurrentPage());
-        bundle.putInt(TOTAL_PAGES, orders.getTotalOrders());
-        bundle.putInt(TOTAL_PAGES, orders.getNumPages());
-    }
+//    @Override
+//    public void postSuccess(BaseResponse baseResponse) {
+//        super.postSuccess(baseResponse);
+//        MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+//        // Get order summary from response
+//        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, orders.getOrders());
+//        bundle.putInt(CURRENT_PAGE, orders.getCurrentPage());
+//        bundle.putInt(TOTAL_PAGES, orders.getTotalOrders());
+//        bundle.putInt(TOTAL_PAGES, orders.getNumPages());
+//    }
+
+
 
 }

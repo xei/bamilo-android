@@ -58,8 +58,8 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setCart(null);
@@ -69,7 +69,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
     }
 
 }

@@ -36,13 +36,6 @@ public class GetRegionsHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getRegions);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        AddressRegions regions = (AddressRegions) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
-    }
-
     public static Bundle createBundle(String url) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);

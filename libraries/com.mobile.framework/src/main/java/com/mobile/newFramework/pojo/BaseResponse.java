@@ -1,5 +1,6 @@
 package com.mobile.newFramework.pojo;
 
+import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.rest.errors.JumiaError;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
@@ -26,6 +27,13 @@ public class BaseResponse<T>{
 
     public BaseResponse(){
         setMetadata(new Metadata<T>());
+    }
+
+    public BaseResponse(EventType eventType, ErrorCode errorCode){
+        setEventType(eventType);
+        JumiaError jumiaError = new JumiaError();
+        jumiaError.setErrorCode(errorCode);
+        setError(jumiaError);
     }
 
     public boolean hadSuccess() {

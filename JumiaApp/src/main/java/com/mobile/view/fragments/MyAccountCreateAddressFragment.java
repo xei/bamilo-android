@@ -9,6 +9,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
@@ -102,8 +103,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    protected void onCreateAddressSuccessEvent(Bundle bundle) {
-        super.onCreateAddressSuccessEvent(bundle);
+    protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
+        super.onCreateAddressSuccessEvent(baseResponse);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
                 (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString()+"":""); //replaced getID because doesn't come from api
 
@@ -125,29 +126,29 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
-        super.onGetCreateAddressFormErrorEvent(bundle);
+    protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
+        super.onGetCreateAddressFormErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
     @Override
-    protected void onGetRegionsErrorEvent(Bundle bundle) {
-        super.onGetRegionsErrorEvent(bundle);
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
+        super.onGetRegionsErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
     @Override
-    protected void onGetCitiesErrorEvent(Bundle bundle) {
-        super.onGetCitiesErrorEvent(bundle);
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
+        super.onGetCitiesErrorEvent(baseResponse);
         onErrorOccurred();
 
     }
 
     @Override
-    protected void onCreateAddressErrorEvent(Bundle bundle) {
-        super.onCreateAddressErrorEvent(bundle);
+    protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
+        super.onCreateAddressErrorEvent(baseResponse);
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
 //            @SuppressWarnings("unchecked")

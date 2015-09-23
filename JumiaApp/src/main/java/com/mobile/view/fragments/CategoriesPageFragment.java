@@ -19,7 +19,9 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -403,7 +405,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         triggerContentEventNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
 
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 // Validate fragment state
                 if (isOnStoppingProcess) return;
                 // Hide loading
@@ -411,11 +413,11 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 // Validate fragment state
                 if (isOnStoppingProcess) return;
                 // Get categories
-                ArrayList<Category> categories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                Categories categories = (Categories) baseResponse.getMetadata().getData();
                 // Show categories and hide loading
                 showChildrenInLandscape(CollectionUtils.isNotEmpty(categories) ? categories.get(0) : new Category());
                 hideLandscapeLoading();
@@ -688,12 +690,12 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Get categories
-        mCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        mCategories = (Categories) baseResponse.getMetadata().getData();
         // Show categories
         showCategoryList(mCategories);
     }
@@ -703,12 +705,12 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Generic errors
-        super.handleErrorEvent(bundle);
+        super.handleErrorEvent(baseResponse);
     }
 
     protected boolean isRootCategory(){

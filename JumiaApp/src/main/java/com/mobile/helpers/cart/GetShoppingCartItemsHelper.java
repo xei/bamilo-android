@@ -34,15 +34,13 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
-        // Create bundle
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
     }
 
 }

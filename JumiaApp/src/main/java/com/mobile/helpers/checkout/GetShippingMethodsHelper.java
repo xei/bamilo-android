@@ -32,13 +32,13 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         CheckoutFormShipping shippingMethodsForm = (CheckoutFormShipping) baseResponse.getMetadata().getData();
 
         ShippingMethodFormStruct shippingMethodFormStruct = new ShippingMethodFormStruct(shippingMethodsForm);
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, shippingMethodFormStruct);
+        baseResponse.getMetadata().setData(shippingMethodFormStruct);
     }
 
     public class ShippingMethodFormStruct extends CheckoutFormShipping {

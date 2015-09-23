@@ -4,14 +4,11 @@
  */
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.database.ImageResolutionTableHelper;
 import com.mobile.newFramework.database.SectionsTablesHelper;
-import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.Section;
 import com.mobile.newFramework.objects.configs.Sections;
@@ -54,11 +51,12 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         // Get api info
         ApiInformationStruct apiInformation = new ApiInformationStruct((ApiInformation) baseResponse.getMetadata().getData());
+        baseResponse.getMetadata().setData(apiInformation);
 
         //TODO move to observable
         // Save mob api version
@@ -77,7 +75,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
             clearOutDatedMainSections(outDatedSections, apiInformation);
         }
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation);
     }
 
 

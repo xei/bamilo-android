@@ -20,6 +20,7 @@ import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -185,20 +186,20 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.d(TAG, "ON RESPONSE COMPLETE:");
 
         if (isOnStoppingProcess) return;
 
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            ArrayList<Suggestion> response = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {
@@ -239,11 +240,11 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.d(TAG, "ON RESPONSE ERROR:");
 
         if (isOnStoppingProcess) return;
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:

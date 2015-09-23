@@ -22,6 +22,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -552,8 +553,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     /**
      * Process the success response
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -572,7 +573,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 //            break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-                mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
                 showOrderSummary();
                 hideActivityProgress();
                 showFragmentContentContainer();
@@ -588,8 +589,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     /**
      * Process the error response
      */
-    protected boolean onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -598,12 +599,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
@@ -632,8 +633,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -641,8 +642,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
 }

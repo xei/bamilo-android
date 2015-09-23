@@ -48,13 +48,5 @@ public class GetFormAddAddressHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getCreateAddressForm);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        Form form = (Form) baseResponse.getMetadata().getData();
-        //form.sortForm(mEventType);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-    }
-
 }
 

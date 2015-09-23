@@ -25,7 +25,9 @@ import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -452,12 +454,12 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
         // Get categories
-        mCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        mCategories = (Categories) baseResponse.getMetadata().getData();
         // Show categories
         showCategoryList(mCategories);
     }
@@ -467,12 +469,12 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         /*
         // Generic errors
         if(super.handleErrorEvent(bundle)){

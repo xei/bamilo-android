@@ -31,13 +31,13 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         // Create bundle
         CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
+//        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);

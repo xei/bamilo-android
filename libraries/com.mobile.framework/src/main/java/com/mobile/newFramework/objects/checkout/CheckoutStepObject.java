@@ -14,6 +14,13 @@ public class CheckoutStepObject implements IJSONSerializable {
 
     private String nextStep;
 
+    public CheckoutStepObject() {
+    }
+
+    public CheckoutStepObject(CheckoutStepObject checkoutStepObject) {
+        this.nextStep = checkoutStepObject.nextStep;
+    }
+
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         nextStep = jsonObject.getJSONObject(RestConstants.MULTI_STEP_ENTITY).getString(RestConstants.JSON_NEXT_STEP_TAG);

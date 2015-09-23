@@ -18,8 +18,6 @@ public class GetReviewFormHelper extends SuperBaseHelper {
 
     protected static String TAG = GetReviewFormHelper.class.getSimpleName();
 
-    public static final String PRODUCT_URL = "productUrl";
-
     @Override
     public EventType getEventType() {
         return EventType.GET_FORM_REVIEW_EVENT;
@@ -33,14 +31,6 @@ public class GetReviewFormHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getReviewForm);
-    }
-
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        Form form = (Form) baseResponse.getMetadata().getData();
-        //form.sortForm(mEventType);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
     }
 
 }

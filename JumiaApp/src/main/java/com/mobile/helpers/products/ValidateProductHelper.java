@@ -38,11 +38,4 @@ public class ValidateProductHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.validateProducts);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        ValidProductList validProducts = (ValidProductList) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, validProducts);
-    }
-
 }

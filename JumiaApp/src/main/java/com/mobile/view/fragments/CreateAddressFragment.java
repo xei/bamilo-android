@@ -31,7 +31,9 @@ import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
+import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -854,8 +856,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -863,8 +865,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /**
@@ -876,8 +878,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @return boolean
      * @author sergiopereira
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if (isOnStoppingProcess || eventType == null) {
@@ -890,20 +892,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 onInitFormSuccessEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
-                onGetCreateAddressFormSuccessEvent(bundle);
+                onGetCreateAddressFormSuccessEvent(baseResponse);
                 break;
             case GET_REGIONS_EVENT:
-                onGetRegionsSuccessEvent(bundle);
+                onGetRegionsSuccessEvent(baseResponse);
                 break;
             case GET_CITIES_EVENT:
-                onGetCitiesSuccessEvent(bundle);
+                onGetCitiesSuccessEvent(baseResponse);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                onGetPostalCodesSuccessEvent(bundle);
+                onGetPostalCodesSuccessEvent(baseResponse);
                 break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
-                onCreateAddressSuccessEvent(bundle);
+                onCreateAddressSuccessEvent(baseResponse);
                 break;
             default:
                 break;
@@ -917,21 +919,21 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         triggerCreateAddressForm();
     }
 
-    protected void onGetCreateAddressFormSuccessEvent(Bundle bundle) {
+    protected void onGetCreateAddressFormSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         // Get order summary
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-        Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        Form form = (Form)baseResponse.getMetadata().getData();
         mFormResponse = form;
         // Load form, get regions
         loadCreateAddressForm(form);
     }
 
-    protected void onGetRegionsSuccessEvent(Bundle bundle) {
+    protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-        regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        regions = (AddressRegions) baseResponse.getMetadata().getData();
         // Validate response
         if (CollectionUtils.isNotEmpty(regions)) {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
@@ -942,10 +944,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
     }
 
-    protected void onGetCitiesSuccessEvent(Bundle bundle) {
+    protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
 
-        ArrayList<AddressCity> citiesArray = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
 
         GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
 
@@ -963,17 +965,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     }
 
-    protected void onGetPostalCodesSuccessEvent(Bundle bundle) {
+    protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
+        GetPostalCodeHelper.AddressPostalCodesStruct postalCodesStruct = (GetPostalCodeHelper.AddressPostalCodesStruct) baseResponse.getMetadata().getData();
         Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
-        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + bundle.getString(GetPostalCodeHelper.CUSTOM_TAG));
-        String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
-        ArrayList<AddressPostalCode> postalCodes = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-        setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodes);
+        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
+        String requestedRegionAndField = postalCodesStruct.getCustomTag();
+
+        setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
         // Show
         showFragmentContentContainer();
     }
 
-    protected void onCreateAddressSuccessEvent(Bundle bundle) {
+    protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
     }
 
@@ -982,9 +985,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @return boolean
      * @author sergiopereira
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -992,7 +995,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
@@ -1002,20 +1005,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 onInitFormErrorEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
-                onGetCreateAddressFormErrorEvent(bundle);
+                onGetCreateAddressFormErrorEvent(baseResponse);
                 break;
             case GET_REGIONS_EVENT:
-                onGetRegionsErrorEvent(bundle);
+                onGetRegionsErrorEvent(baseResponse);
                 break;
             case GET_CITIES_EVENT:
-                onGetCitiesErrorEvent(bundle);
+                onGetCitiesErrorEvent(baseResponse);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                onGetPostalCodesErrorEvent(bundle);
+                onGetPostalCodesErrorEvent(baseResponse);
                 break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
-                onCreateAddressErrorEvent(bundle);
+                onCreateAddressErrorEvent(baseResponse);
                 break;
             default:
                 break;
@@ -1029,23 +1032,23 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED INIT_FORMS");
     }
 
-    protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
+    protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
     }
 
-    protected void onGetRegionsErrorEvent(Bundle bundle) {
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_REGIONS_EVENT");
     }
 
-    protected void onGetCitiesErrorEvent(Bundle bundle) {
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
-    protected void onGetPostalCodesErrorEvent(Bundle bundle) {
+    protected void onGetPostalCodesErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
-    protected void onCreateAddressErrorEvent(Bundle bundle) {
+    protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
         // Clean flag to wait for both different responses
         oneAddressCreated = false;

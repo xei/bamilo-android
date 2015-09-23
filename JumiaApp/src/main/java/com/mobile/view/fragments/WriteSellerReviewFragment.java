@@ -21,6 +21,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -464,8 +465,8 @@ public class WriteSellerReviewFragment extends BaseFragment {
         setReviewName(mDynamicSellerReviewForm);
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         // Validate fragment visibility
@@ -516,7 +517,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
             return false;
         case GET_FORM_SELLER_REVIEW_EVENT:
             Print.i(TAG, "GET_FORM_SELLER_REVIEW_EVENT");
-            mSellerReviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mSellerReviewForm = (Form)baseResponse.getMetadata().getData();
             setReviewLayout(mSellerReviewForm);
             showFragmentContentContainer();
             return true;
@@ -525,9 +526,9 @@ public class WriteSellerReviewFragment extends BaseFragment {
         }
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         // Validate fragment visibility
@@ -541,7 +542,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
         
         isExecutingSendReview = false;
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return true;
+        if(super.handleErrorEvent(baseResponse)) return true;
         
         switch (eventType) {
         case GET_FORM_SELLER_REVIEW_EVENT:
@@ -584,13 +585,13 @@ public class WriteSellerReviewFragment extends BaseFragment {
     IResponseCallback mCallBack = new IResponseCallback() {
 
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 

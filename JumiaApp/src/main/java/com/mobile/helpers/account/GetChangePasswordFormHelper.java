@@ -28,9 +28,4 @@ public class GetChangePasswordFormHelper extends SuperBaseHelper{
         return EventType.GET_CHANGE_PASSWORD_FORM_EVENT;
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, (Form) baseResponse.getMetadata().getData());
-    }
 }

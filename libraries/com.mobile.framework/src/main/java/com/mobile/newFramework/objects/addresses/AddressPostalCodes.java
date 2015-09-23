@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddressPostalCodes extends ArrayList<AddressPostalCode> implements IJSONSerializable {
 
@@ -19,6 +20,12 @@ public class AddressPostalCodes extends ArrayList<AddressPostalCode> implements 
      */
     public AddressPostalCodes() {
     }
+
+	public AddressPostalCodes(List<AddressPostalCode> addressCities) {
+		for(AddressPostalCode addressPostalCode : addressCities){
+			add(addressPostalCode);
+		}
+	}
 
 	/**
 	 * ############### IJSON ###############

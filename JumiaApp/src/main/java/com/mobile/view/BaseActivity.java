@@ -48,13 +48,16 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
@@ -1086,13 +1089,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 new IResponseCallback() {
 
                     @Override
-                    public void onRequestError(Bundle bundle) {
-                        processErrorSearchEvent(bundle);
+                    public void onRequestError(BaseResponse baseResponse) {
+                        processErrorSearchEvent(baseResponse);
                     }
 
                     @Override
-                    public void onRequestComplete(Bundle bundle) {
-                        processSuccessSearchEvent(bundle);
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        processSuccessSearchEvent(baseResponse);
                     }
                 });
     }
@@ -1104,15 +1107,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Process the search error event
      *
-     * @param bundle
+     * @param baseResponse
      * @author sergiopereira
      */
-    private void processErrorSearchEvent(Bundle bundle) {
+    private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        ArrayList suggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1153,15 +1154,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Process success search event
      *
-     * @param bundle
+     * @param baseResponse
      * @author sergiopereira
      */
-    private void processSuccessSearchEvent(Bundle bundle) {
+    private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        ArrayList suggestions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
+//        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1975,13 +1976,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
         JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: CART");
                 //...
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: CART");
                 updateCartInfo();
             }
@@ -1998,19 +1999,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
                 boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);

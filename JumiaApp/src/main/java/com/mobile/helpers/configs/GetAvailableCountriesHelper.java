@@ -45,10 +45,9 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, availableCountries);
 
         //TODO move to observable
         // Gets the previous Countries list
@@ -75,8 +74,8 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createErrorBundleParams(baseResponse, bundle);
+    public void postError(BaseResponse baseResponse) {
+        super.postError(baseResponse);
 
         //TODO move to observable
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -86,7 +85,6 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
             mEditor.apply();
-            bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
         }
     }
 

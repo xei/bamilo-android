@@ -13,7 +13,10 @@ import com.mobile.helpers.address.GetMyAddressesHelper;
 import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -191,7 +194,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
      */
 
     @Override
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -199,13 +202,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch(eventType){
@@ -232,7 +235,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     }
 
     @Override
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -240,14 +243,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
 
         switch(eventType){
             case GET_CUSTOMER_ADDRESSES_EVENT:
-                hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
-                this.addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                this.addresses = (Addresses)baseResponse.getMetadata().getData();
 
                 if(this.addresses != null){
                     // Show addresses using saved value, if is the same address for Bill and Ship

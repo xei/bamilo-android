@@ -59,11 +59,10 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setCart(null);

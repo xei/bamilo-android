@@ -49,11 +49,4 @@ public class GetProductBundleHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundle);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, android.os.Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        BundleList productBundle = (BundleList) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productBundle);
-    }
-
 }

@@ -10,6 +10,8 @@ import android.view.View;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.helpers.configs.GetTermsConditionsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.statics.StaticTermsConditions;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -147,35 +149,35 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
         if (getBaseActivity() != null) {
-            super.handleSuccessEvent(bundle);
+            super.handleSuccessEvent(baseResponse);
         } else {
             return;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_TERMS_EVENT:
                 showFragmentContentContainer();
-                termsText = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+                termsText = ((StaticTermsConditions)baseResponse.getMetadata().getData()).getHtml();
                 textView.setText(termsText);
         }
     }
 
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
-        super.handleErrorEvent(bundle);
+        super.handleErrorEvent(baseResponse);
 
     }
 

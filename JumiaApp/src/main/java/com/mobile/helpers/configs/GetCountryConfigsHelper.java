@@ -39,8 +39,8 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();
