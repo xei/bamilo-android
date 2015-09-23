@@ -34,6 +34,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
+import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -482,7 +483,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
             TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
-            getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, ((SetPaymentMethod) nextStepStruct.getCheckoutStepObject()).getOrderSummary());
+            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));

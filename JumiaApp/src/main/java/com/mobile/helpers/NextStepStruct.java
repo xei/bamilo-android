@@ -16,7 +16,7 @@ public class NextStepStruct {
 
     public NextStepStruct(CheckoutStepObject checkoutStepObject) {
         this.checkoutStepObject = checkoutStepObject;
-        CheckoutStepManager.getNextFragment(checkoutStepObject.getNextStep());
+        fragmentType = CheckoutStepManager.getNextFragment(checkoutStepObject.getNextStep());
     }
 
     public CheckoutStepObject getCheckoutStepObject() {

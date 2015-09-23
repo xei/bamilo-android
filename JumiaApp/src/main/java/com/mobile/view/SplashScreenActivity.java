@@ -343,7 +343,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLastSuccessResponse = baseResponse;
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        ErrorCode errorCode = baseResponse.getError() != null ? baseResponse.getError().getErrorCode() : null;
 
         Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 

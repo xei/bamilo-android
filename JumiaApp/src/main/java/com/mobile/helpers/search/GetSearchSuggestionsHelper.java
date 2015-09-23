@@ -166,7 +166,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 //        bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
 
         BaseResponse baseResponse = new BaseResponse();
-        postSuccess(baseResponse);
+        super.postSuccess(baseResponse);
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
