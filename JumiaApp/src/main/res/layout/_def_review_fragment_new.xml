@@ -11,20 +11,46 @@
 
         <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
 
-        <include layout="@layout/_def_ratings_board"  />
+        <include layout="@layout/_def_ratings_board"  android:id="@+id/ratingsBoard" />
 
         <!-- USERS SECTION -->
 
         <include layout="@layout/header"  android:id="@+id/usersHeader" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reviews_scrollview_container"
+        >
+
+        <LinearLayout
+            android:id="@+id/linear_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            />
+
+    </ScrollView>
+
+    <!--
         <com.mobile.components.ScrollViewReachable
         android:id="@+id/reviews_scrollview_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="false">
+        android:fillViewport="false" android:background="@color/white_f9f9f9"
+            >
+
+                <LinearLayout
+                    android:id="@+id/linear_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    />
 
         </com.mobile.components.ScrollViewReachable>
-
+        -->
 
 
 </LinearLayout>
