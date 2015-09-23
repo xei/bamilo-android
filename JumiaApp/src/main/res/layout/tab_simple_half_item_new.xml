@@ -9,6 +9,8 @@
     android:gravity="center"
     android:paddingLeft="@dimen/margin_midhuge"
     android:paddingRight="@dimen/margin_midhuge"
+    android:paddingStart="@dimen/margin_midhuge"
+    android:paddingEnd="@dimen/margin_midhuge"
     android:singleLine="true"
     android:text="Description"
 
