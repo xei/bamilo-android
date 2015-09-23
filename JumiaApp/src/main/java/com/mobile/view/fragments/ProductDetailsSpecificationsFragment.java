@@ -250,7 +250,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     private void addSpecTable(ProductSpecification productSpecification){
 
      //   final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        final View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_new, mProductSpecsContainer, false);
+        final View theInflatedView = inflater.inflate(R.layout.product_specs_container_new, mProductSpecsContainer, false);
     //    final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
         final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.txTitle);
         final LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
