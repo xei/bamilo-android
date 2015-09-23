@@ -6,7 +6,7 @@
     >
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price"
-        style="@style/Body3"
+        style="@style/TextBody_3"
         android:textColor="@color/black"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -17,7 +17,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_normal"
-        style="@style/Body3"
+        style="@style/TextBody_3"
         android:textColor="@color/black_800"
         android:layout_centerVertical="true"
         android:text="Rs.399"
