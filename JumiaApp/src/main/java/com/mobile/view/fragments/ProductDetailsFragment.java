@@ -1386,6 +1386,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+                // Force wish list reload for next time
+                WishListFragment.sForceReloadWishListFromNetwork = true;
+                // Update value
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
