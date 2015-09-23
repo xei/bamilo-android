@@ -50,7 +50,7 @@ public abstract class RtlDynamicFragmentAdapter extends RtlAdapterService {
     @Override
     public CharSequence getPageTitle(int position) {
         if(titleList.size() <= position){
-            titleList.add(parent.getString(titlesPageInt.get(position)).toUpperCase());
+            titleList.add(parent.getString(titlesPageInt.get(position)));
         }
         return titleList.get(position);
     }
