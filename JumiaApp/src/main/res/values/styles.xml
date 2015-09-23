@@ -166,10 +166,10 @@
         <item name="android:background">@drawable/selector_listitem_rounded_margin_highlight</item>
     </style>
 
-    <style name="new_list_row_style">
+    <style name="grid_row_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/selector_list_item_highlight</item>
+        <item name="android:background">@drawable/selector_grid_item_highlight</item>
     </style>
 
     <style name="list_row_rounded_style">
@@ -462,7 +462,6 @@
     </style>
 
 
-
     <!-- BUTTON CONTAINER HAS ALWAYS A BOTTOM PADDING -->
     <style name="button_container">
         <item name="android:layout_width">match_parent</item>
@@ -736,6 +735,16 @@
         <item name="android:textSize">8sp</item>
     </style>
 
+    <style name="TextList1" parent="text_base">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextList2" parent="text_base">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="TextMenu" parent="text_base">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
@@ -746,9 +755,15 @@
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
-    <style name="ListDivider">
+    <style name="HorizontalListDivider">
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="VerticalListDivider">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">1dp</item>
         <item name="android:background">@color/black_300</item>
     </style>
 
@@ -786,7 +801,7 @@
 
     <!-- HORIZONTAL LIST -->
 
-    <style name="HorizontalListStyle" >
+    <style name="HorizontalListStyle">
         <item name="android:fadingEdge">horizontal</item>
         <item name="android:fadingEdgeLength">@dimen/home_horizontal_fade</item>
         <item name="android:requiresFadingEdge">horizontal</item>
@@ -795,13 +810,13 @@
 
     <!-- WHITE HORIZONTAL LIST -->
 
-    <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
+    <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle">
         <item name="android:background">@android:color/white</item>
     </style>
 
     <!-- NEW STYLES PDV REDESIGN -->
     <!--added new text styles redesign -->
-    <style name="Header"> 
+    <style name="Header">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
     </style>
@@ -862,4 +877,19 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation.Window</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="BottomSheetAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
 </resources>

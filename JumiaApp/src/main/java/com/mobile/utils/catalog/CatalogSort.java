@@ -20,9 +20,9 @@ public enum CatalogSort {
     
     PRICE_DOWN("price", R.string.products_sort_pricedown, "desc"),
     
-    NAME("name", R.string.products_sort_name, null),
+    NAME("name", R.string.products_sort_name, null), // not working
 
-    BRAND("brand", R.string.products_sort_brand, null);
+    BRAND("brand", R.string.products_sort_brand, null); // not working
 
     public String id;
     public int name;

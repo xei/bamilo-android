@@ -78,18 +78,18 @@ public class CustomerPreferences {
      * @param context
      * @return
      */
-    public static boolean getCatalogLayout(Context context) {
-        String value = load(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW);
-        return TextUtils.isEmpty(value) ? false : Boolean.parseBoolean(value);
+    public static String getCatalogLayout(Context context) {
+        String level = load(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW);
+        return TextUtils.isEmpty(level) ? "1" : level;
     }
     
     /**
      * Set 
      * @param context
-     * @param value
+     * @param level
      */
-    public static void saveCatalogLayout(Context context, boolean value) {
-        store(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW, String.valueOf(value));
+    public static void saveCatalogLayout(Context context, String level) {
+        store(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW, level);
     }
     
     /*

@@ -200,7 +200,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
         if(mAdapter == null) {
-            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
+            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable, DialogListAdapter.DIALOG_LIST_TYPE);
         }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);

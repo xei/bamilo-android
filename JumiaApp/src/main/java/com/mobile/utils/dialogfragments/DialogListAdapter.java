@@ -14,7 +14,12 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 
 /**
+ * Adapter that shows a list of generic items for a dialg
+ *
  * Created by rsoares on 8/25/15.
+ *
+ * @modified Paulo Carvalho
+ *
  */
 public class DialogListAdapter extends BaseAdapter {
 
@@ -26,17 +31,29 @@ public class DialogListAdapter extends BaseAdapter {
 
     protected ArrayList<String> mItemsAvailable;
 
+    public static final int DIALOG_LIST_TYPE = 0;
+
+    public static final int DIALOG_SORT_LIST_TYPE = 1;
+
+    protected int mlayout;
+
     /**
      * Constructor
      */
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems) {
-        this(mActivity,mItems,null);
+    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, int listType) {
+        this(mActivity,mItems,null,listType);
     }
 
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable) {
+    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable, int listType) {
         mInflater = LayoutInflater.from(mActivity);
         this.mItems = mItems;
         this.mItemsAvailable = mItemsAvailable;
+
+        if(listType == DIALOG_LIST_TYPE){
+            mlayout = R.layout.dialog_list_item;
+        } else {
+            mlayout = R.layout.dialog_sort_list_item;
+        }
     }
 
     /*
@@ -83,7 +100,7 @@ public class DialogListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
+            view = mInflater.inflate(mlayout, parent, false);
         } else {
             view = convertView;
         }
@@ -92,11 +109,15 @@ public class DialogListAdapter extends BaseAdapter {
         if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
             view.setEnabled(false);
             textView.setVisibility(View.GONE);
-            textViewUnAvailable.setVisibility(View.VISIBLE);
-            textViewUnAvailable.setText(mItems.get(position));
+            if(textViewUnAvailable != null){
+                textViewUnAvailable.setVisibility(View.VISIBLE);
+                textViewUnAvailable.setText(mItems.get(position));
+            }
         } else {
             view.setEnabled(true);
-            textViewUnAvailable.setVisibility(View.GONE);
+            if(textViewUnAvailable != null)
+                textViewUnAvailable.setVisibility(View.GONE);
+
             textView.setVisibility(View.VISIBLE);
             textView.setText(mItems.get(position));
         }

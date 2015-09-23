@@ -1496,6 +1496,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * Show and set title on actionbar
+     *
+     * @param actionBarTitle
+     */
+    public void setActionBarTitle(String actionBarTitle) {
+//        logoTextView.setVisibility(View.VISIBLE);
+//        logoTextView.setText(getString(actionBarTitleResId));
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setTitle(actionBarTitle);
+    }
+
+    /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {

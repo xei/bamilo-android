@@ -15,7 +15,7 @@ import com.mobile.view.R;
 public class DialogLanguagesListAdapter extends DialogListAdapter{
 
     public DialogLanguagesListAdapter(Context mActivity, Languages languages) {
-        super(mActivity, languages.getLanguageNames());
+        super(mActivity, languages.getLanguageNames(), DIALOG_LIST_TYPE);
     }
 
     @Override
