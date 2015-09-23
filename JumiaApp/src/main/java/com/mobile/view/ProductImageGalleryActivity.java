@@ -7,12 +7,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
+import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.JumiaViewPagerWithZoom;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mobile.utils;
+package com.mobile.components.viewpager;
 
 import android.content.Context;
 import android.util.AttributeSet;

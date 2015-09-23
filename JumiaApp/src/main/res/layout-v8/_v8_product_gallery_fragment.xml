@@ -16,7 +16,7 @@
 
     <!-- VIEW PAGER -->
 
-    <com.mobile.utils.JumiaViewPagerWithZoom
+    <com.mobile.components.viewpager.JumiaViewPagerWithZoom
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
