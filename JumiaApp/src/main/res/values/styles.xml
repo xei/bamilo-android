@@ -332,6 +332,15 @@
         <item name="android:thumb">@null</item>
     </style>
 
+    <style name="starRatingBarFashionBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/star_ratingbar_fashion_big</item>
+        <item name="android:indeterminateDrawable">@drawable/star_ratingbar_fashion_big</item>
+        <item name="android:minHeight">17dp</item>
+        <item name="android:maxHeight">17dp</item>
+        <item name="android:thumb">@null</item>
+    </style>
+
     <style name="starRatingBarVeryBig" parent="@android:style/Widget.RatingBar">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/star_ratingbar_verybig</item>
@@ -619,7 +628,103 @@
         <item name="android:textColor">@drawable/selector_text_secondary</item>
     </style>
 
-    <!-- ################# MATERIAL ################# -->
+
+
+
+    <!-- NEW STYLES PDV REDESIGN -->
+    <!--added new text styles redesign -->
+
+    <style name="Display1">
+        <item name="android:fontFamily">light</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="Info">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="List1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="List2">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Badge">
+        <item name="android:textColor">@color/color_accent</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Caption">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CaptionBold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Body1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Body2">
+        <item name="android:fontFamily">medium</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
+    <style name="Body3">
+        <item name="android:fontFamily">regular</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
+
+
+
+    <!-- CUSTOM TEXT STYLES -->
+
+    <style name="TextTimer" parent="TextTitle_2">
+        <item name="android:textColor">@color/red_cc0000</item>
+    </style>
+
+    <style name="TextSubHeadOrange" parent="TextSubHead">
+        <item name="android:textColor">@color/orange_f68b1e</item>
+    </style>
+
+    <style name="TextPriceSubHead" parent="TextSubHead">
+        <item name="android:textColor">@color/red_basic</item>
+    </style>
+
+    <!-- BASE BUTTONS STYLES -->
+
+    <style name="ButtonFlat" parent="TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/dimen_mat_36px</item>
+        <item name="android:minWidth">@dimen/dimen_mat_88px</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_mat_2px</item>
+        <item name="android:layout_marginRight">@dimen/dimen_mat_2px</item>
+        <item name="android:paddingLeft">@dimen/dimen_mat_4px</item>
+        <item name="android:paddingRight">@dimen/dimen_mat_4px</item>
+        <item name="android:textColor">@color/orange_f68b1e</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/selector_card_view</item>
+    </style>
 
     <!-- CLICKABLE VIEW -->
     <style name="ClickableStyle">
@@ -633,6 +738,11 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="dialog_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+    
     <!-- HEADERS TEASER  -->
     <style name="HeaderTeaser" parent="TextTitle_2">
         <item name="android:layout_width">match_parent</item>
@@ -677,94 +787,6 @@
         <item name="cardBackgroundColor">@android:color/white</item>
     </style>
 
-    <!-- BASE TEXT STYLES -->
-    <style name="text_base">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">roboto_regular</item>
-        <item name="android:gravity">left|start|center_vertical</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="TextDisplay_1" parent="text_base">
-        <item name="android:textSize">34sp</item>
-    </style>
-
-    <style name="TextHeadLine" parent="text_base">
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="TextTitle_2" parent="text_base">
-        <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
-    </style>
-
-    <style name="TextTitle_1" parent="text_base">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextSubHead" parent="text_base">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TextBody_2" parent="text_base">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
-    </style>
-
-    <style name="TextBody_1" parent="text_base">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextCaption" parent="text_base">
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="TextMenu" parent="text_base">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
-    </style>
-
-    <style name="TextButton" parent="text_base">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
-    </style>
-
-    <!-- CUSTOM TEXT STYLES -->
-
-    <style name="TextTimer" parent="TextTitle_2">
-        <item name="android:textColor">@color/red_cc0000</item>
-    </style>
-
-    <style name="TextSubHeadOrange" parent="TextSubHead">
-        <item name="android:textColor">@color/orange_f68b1e</item>
-    </style>
-
-    <style name="TextPriceSubHead" parent="TextSubHead">
-        <item name="android:textColor">@color/red_basic</item>
-    </style>
-
-    <!-- BASE BUTTONS STYLES -->
-
-    <style name="ButtonFlat" parent="TextButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/dimen_mat_36px</item>
-        <item name="android:minWidth">@dimen/dimen_mat_88px</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_mat_2px</item>
-        <item name="android:layout_marginRight">@dimen/dimen_mat_2px</item>
-        <item name="android:paddingLeft">@dimen/dimen_mat_4px</item>
-        <item name="android:paddingRight">@dimen/dimen_mat_4px</item>
-        <item name="android:textColor">@color/orange_f68b1e</item>
-        <item name="android:fontFamily">roboto_regular</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/selector_card_view</item>
-    </style>
-
     <!-- HORIZONTAL LIST -->
 
     <style name="HorizontalListStyle" >
@@ -780,72 +802,33 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
-    <style name="dialog_title">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-    </style>
+    <!-- PDV -->
 
-    <!-- NEW STYLES PDV REDESIGN -->
-    <!--added new text styles redesign -->
-    <style name="Header"> 
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Display1">
-        <item name="android:fontFamily">light</item>
-        <item name="android:textSize">40sp</item>
-    </style>
-
-    <style name="Info">
-        <item name="android:fontFamily">regular</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="List1">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="List2">
-        <item name="android:fontFamily">regular</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="Badge">
-        <item name="android:textColor">@color/orange_f68b1e</item>
-        <item name="android:textSize">8sp</item>
-    </style>
-
-    <style name="Button">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="Caption">
-        <item name="android:fontFamily">regular</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="CaptionBold">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Body1">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="Body2">
-        <item name="android:fontFamily">medium</item>
-        <item name="android:textSize">13sp</item>
+    <style name="PDVWishListButtonStyle" parent="WishListButtonStyle">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
     </style>
 
 
-    <style name="Body3">
-        <item name="android:fontFamily">regular</item>
-        <item name="android:textSize">13sp</item>
+    <!-- MATERIAL BOTTOM SHEET -->
+
+    <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation.Window</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="BottomSheetAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
     </style>
 
 </resources>

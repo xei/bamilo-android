@@ -71,17 +71,6 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         if (matchObject != null) {
             regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
         }
-
-        // TODO - REMOVE THIS
-
-        if (regex.substring(0, 1).equals("/")) {
-            regex = regex.substring(1);
-        }
-
-        if (regex.charAt(regex.length() - 1) == '/') {
-            regex = regex.substring(0, regex.length() - 1);
-        }
-
         return true;
     }
 

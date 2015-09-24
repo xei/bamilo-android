@@ -5,6 +5,8 @@ package com.mobile.newFramework.pojo;
  */
 public class IntConstants {
 
+    public static final int DEFAULT_POSITION = 0;
+
     public static final int MAX_ITEMS_PER_PAGE = 24;
 
     public static final int FIRST_PAGE = 1;
