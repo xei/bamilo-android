@@ -299,8 +299,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()) + " " + mContext.getString(R.string.off_label));
-            //FIXME need PDV merge
-            //holder.percentage.setSelected(item.isFshion());
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
