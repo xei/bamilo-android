@@ -7,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +39,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -119,6 +119,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private ProductRegular mWishListItemClicked = null;
 
+    private String mCompleteUrl;
+
     /**
      * Create and return a new instance.
      *
@@ -170,15 +172,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
             // Url and parameters
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
 //            RestUrlUtils.getQueryParameters(url, mQueryValues);
-            if(url != null) {
-                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(url)));
+            if (!TextUtils.isEmpty(mCompleteUrl)) {
+                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
+                Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
+                builder.clearQuery();
+                mCompleteUrl = builder.toString();
             }
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
-                mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                mQueryValues.put(GetCatalogPageHelper.QUERY, arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
@@ -314,7 +319,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
         // Remove scroll listener
-        if(mGridView != null) {
+        if (mGridView != null) {
             mGridView.removeOnScrollListener(onRecyclerScrollListener);
         }
     }
@@ -342,7 +347,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && TextUtils.isEmpty(mCompleteUrl)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -485,7 +490,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Show the no filter layout error.
      *
-     * @param  stringId The message.
+     * @param stringId The message.
      */
     private void showFilterError(int stringId) {
         Print.i(TAG, "ON SHOW FILTER NO RESULT");
@@ -518,7 +523,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Show the no filter unexpected error.
      */
-    private void showFilterUnexpectedError(){
+    private void showFilterUnexpectedError() {
         showFilterError(ErrorLayoutFactory.CATALOG_UNEXPECTED_ERROR);
     }
 
@@ -600,7 +605,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Updated the clicked product to add to or remove from wish list.
      */
     private void updateWishListProduct() {
-        if(mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
+        if (mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
             mWishListItemClicked.setIsWishList(!mWishListItemClicked.isWishList());
             mGridView.getAdapter().notifyDataSetChanged();
         }
@@ -674,7 +679,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         //Remove old filters from final request values
-        for(String key : mCurrentFilterValues.keySet()){
+        for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
         }
 
@@ -743,7 +748,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @return line number
      */
-    private int setButtonActiveLine(Boolean isShowingGridLayout){
+    private int setButtonActiveLine(Boolean isShowingGridLayout) {
         if (!isShowingGridLayout) {
             return getResources().getInteger(R.integer.activate_go_top_buttom_line);
         } else {
@@ -777,6 +782,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         setSortButton();
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
+        if (mQueryValues != null) {
+            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+        }
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
@@ -834,7 +843,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     };
 
-    protected void setVisibilityTopButton(RecyclerView recyclerView){
+    protected void setVisibilityTopButton(RecyclerView recyclerView) {
         // Set the goto top button
         GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
         int last = manager.findLastVisibleItemPosition();
@@ -893,7 +902,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.putAll(mCurrentFilterValues);
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
+        // Query parameters
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        // validate if is to use complete URL or not
+        if (validateURL()) {
+            bundle.putString(GetCatalogPageHelper.URL, mCompleteUrl);
+        }
         // Case initial request or load more
         if (page == IntConstants.FIRST_PAGE) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
@@ -1040,25 +1054,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the error code
      *
-     * @param bundle    - the request bundle
+     * @param bundle - the request bundle
      */
     private void onLoadingMoreRequestError(Bundle bundle) {
         // Mark error on loading more
         mErrorLoading = true;
         // Scroll to hide the loading view
         mGridView.stopScroll();
-        mGridView.scrollBy(0, - getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
+        mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
         // Show respective warning indicating to use the warning bar
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
         // Case super not handle the error show unexpected error
-        if(!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
+        if (!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
     }
 
     @Override
     public void onHeaderClick(String targetType, String url, String title) {
         ITargeting.TargetType target = ITargeting.TargetType.byValue(targetType);
         Bundle bundle = new Bundle();
-        switch (target){
+        switch (target) {
             case CATALOG:
                 onClickCatalog(url, title, bundle);
                 break;
@@ -1086,11 +1100,23 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private String getCatalogCategory(){
+    private String getCatalogCategory() {
         String mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY);
-        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(mSearchQuery)){
+        if (!TextUtils.isEmpty(mSearchQuery)) {
             mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
         }
         return mSearchQuery;
+    }
+
+    /**
+     * only use complete Url request if Category and Query parameters are not present, and complete url is not empty
+     *
+     * @return
+     */
+    private boolean validateURL() {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
+            return true;
+        }
+        return false;
     }
 }
