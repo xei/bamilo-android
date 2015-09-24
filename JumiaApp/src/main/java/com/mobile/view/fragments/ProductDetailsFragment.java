@@ -1002,6 +1002,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case GET_PRODUCT_BUNDLE:
                 BundleList bundleList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                // build combo section from here
             default:
                 break;
         }
@@ -1164,9 +1165,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private void triggerGetProductBundle(String sku) {
         Bundle arg = new Bundle();
-        arg.putParcelable(GetProductHelper.SKU_TAG, sku);
+        arg.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
         triggerContentEvent(new GetProductBundleHelper(), arg, this);
     }
+
+
 
 //    /**
 //     * function responsible for calling the catalog with the products from a specific seller
