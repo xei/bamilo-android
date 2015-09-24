@@ -136,7 +136,9 @@ public class Variation implements IJSONSerializable, Parcelable{
 		return specialPrice;
 	}
 
-
+	public boolean hasDiscount() {
+		return specialPrice > 0 && specialPrice != Double.NaN;
+	}
 
 
 	private String getImageUrl(String url) {

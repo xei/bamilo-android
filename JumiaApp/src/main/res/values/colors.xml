@@ -54,9 +54,9 @@
     <color name="grey_campaign_bar">#dadada</color>
     <color name="green_campaign_bar">#0a9f2a</color>
     <color name="yellow_campaign_bar">#ffc64a</color>
-    <color name="orange_campaign_bar">@color/orange_ffa200</color>
+    <color name="orange_campaign_bar">@color/orange_f68b1e</color>
 
-    <color name="orange_tab_bar">@color/orange_ffa200</color>
+    <color name="orange_tab_bar">@color/orange_f68b1e</color>
     <color name="grey_tab_background">#ebebeb</color>
     <color name="grey_div_background">#d3d3d3</color>
 
@@ -72,8 +72,8 @@
     <color name="wizard_bck">#90000000</color>
 
     <!-- ANDROID 5.0: COLOR ACCENT -->
-    <color name="color_accent">@color/orange_ffa200</color>
-    <color name="orange_ffa200">#ffa200</color>
+    <color name="color_accent">@color/orange_f68b1e</color>
+    <color name="orange_f68b1e">#f68b1e</color>
     <color name="white_f9f9f9">#f9f9f9</color>
     <color name="red_cc0000">#cc0000</color>
     <!--<color name="color_selection">#7FC0C0C0</color>-->
@@ -83,8 +83,18 @@
     <color name="kickout_background">#111111</color>
     <color name="white_95_op">#f2ffffff</color>
 
+    <!-- DATE PICKER-->
+
+    <color name="date_picker_text_normal">#FF999999</color>
+    <color name="line_background">#cccccc</color>
+    <color name="calendar_header">#999999</color>
+    <color name="date_picker_view_animator">#f2f2f2</color>
+    <color name="calendar_selected_date_text">#FFD1D2D4</color>
+    <color name="done_text_color_normal">#333333</color>
+    <color name="done_text_color_disabled">#CCCCCC</color>
+    <color name="darker_orange">#f68b1e</color>
+    <color name="circle_background">#cdd5ec</color>
     <!-- new colors -->
-    <color name="orange1">#f68b1e</color>
     <color name="green1">#a3cf62</color>
     <color name="blue1">#416998</color>
     <color name="black_900">#202020</color>

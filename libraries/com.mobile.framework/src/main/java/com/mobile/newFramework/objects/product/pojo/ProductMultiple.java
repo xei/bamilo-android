@@ -1,6 +1,7 @@
 package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
+import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -24,6 +25,7 @@ public class ProductMultiple extends ProductRegular {
     private String mVariationName;
     private ArrayList<ProductSimple> mSimples;
     private int mSelectedSimplePosition;
+    private String mVariationsAvailable;
 
     /**
      * Empty constructor
@@ -40,6 +42,7 @@ public class ProductMultiple extends ProductRegular {
         mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
         // Get variation name
         mVariationName = jsonObject.optString(RestConstants.VARIATION_NAME);
+        mVariationsAvailable = jsonObject.optString(RestConstants.VARIATIONS_AVAILABLE_LIST);
         // Default selected simple position
         mSelectedSimplePosition = jsonObject.optInt(RestConstants.VARIATION_DEFAULT_POSITION, NO_DEFAULT_SIMPLE_POS);
         // Simples
@@ -82,6 +85,10 @@ public class ProductMultiple extends ProductRegular {
         return mVariationName;
     }
 
+    public String getVariationsAvailable() {
+        return mVariationsAvailable;
+    }
+
     public int getSelectedSimplePosition() {
         return mSelectedSimplePosition;
     }
@@ -102,6 +109,24 @@ public class ProductMultiple extends ProductRegular {
         return getSimples().get(mSelectedSimplePosition);
     }
 
+    /**
+     * Get selected simple variation
+     */
+    @Nullable
+    public ProductSimple getSelectedSimple() {
+        // Case Own simple variation
+        if(hasOwnSimpleVariation()) {
+            return  getOwnSimpleVariation();
+        }
+        // Case Multi simple variations
+        else if(hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
+            return getSelectedSimpleVariation();
+        }
+        // Case invalid
+        else {
+            return null;
+        }
+    }
 
     /*
      * ############ PARCELABLE ############
@@ -111,6 +136,7 @@ public class ProductMultiple extends ProductRegular {
         super(in);
         mSizeGuideUrl = in.readString();
         mVariationName = in.readString();
+        mVariationsAvailable = in.readString();
         if (in.readByte() == 0x01) {
             mSimples = new ArrayList<>();
             in.readList(mSimples, ProductSimple.class.getClassLoader());
@@ -125,6 +151,7 @@ public class ProductMultiple extends ProductRegular {
         super.writeToParcel(dest, flags);
         dest.writeString(mSizeGuideUrl);
         dest.writeString(mVariationName);
+        dest.writeString(mVariationsAvailable);
         if (mSimples == null) {
             dest.writeByte((byte) (0x00));
         } else {

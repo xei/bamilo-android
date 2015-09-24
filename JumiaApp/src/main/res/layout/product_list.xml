@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/item_container"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_height"
-    android:paddingTop="@dimen/pi_layout_padding"
-    android:paddingBottom="@dimen/pi_layout_padding"
-    android:paddingLeft="@dimen/pi_layout_padding"
+    android:layout_height="114dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingStart="20dp"
     android:clickable="true"
+    android:background="@drawable/border"
     >
 
     <!-- PRODUCT ITEM LIST -->
@@ -15,20 +17,21 @@
     <include
         android:id="@+id/item_image_loadable"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/item_height"
-        android:layout_marginLeft="@dimen/pi_layout_margin"
+        android:layout_height="match_parent"
         layout="@layout/image_loadable"
         android:layout_alignParentLeft="true"
         />
 
 
     <LinearLayout
+        android:id="@+id/right_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/item_image_loadable"
         android:gravity="center_vertical"
-        android:layout_marginLeft="@dimen/pi_layout_margin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
 
         >
 
@@ -56,11 +59,10 @@
 
         <!-- PRICE (VARIATIONS) -->
 
-        <include layout="@layout/pdp_small_price_tag"   />
+        <include layout="@layout/pdv_small_price_tag"   />
 
         <!-- RATING (CATALOG) -->
 
     </LinearLayout>
-
 
 </RelativeLayout>

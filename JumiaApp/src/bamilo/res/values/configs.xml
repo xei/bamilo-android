@@ -6,6 +6,7 @@
 	<item name="is_bamilo_specific" type="bool">true</item>
 	<bool name="is_force_http">true</bool>
     <bool name="rtl_enabled">true</bool>
+    <bool name="is_layout_rtl">true</bool>
 
 	<!-- COUNTRIES -->
 	<!-- country.xml -->

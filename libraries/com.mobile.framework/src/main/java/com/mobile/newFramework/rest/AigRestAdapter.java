@@ -5,7 +5,7 @@ import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
