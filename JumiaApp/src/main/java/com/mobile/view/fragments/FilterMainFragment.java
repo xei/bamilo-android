@@ -15,7 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.interfaces.OnDialogFilterListener;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
@@ -60,8 +60,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private int currentFilterPosition;
 
-    private OnDialogFilterListener filterListener;
-
     private FilterFragment currentFragment;
 
     private boolean toCancelFilters;
@@ -89,8 +87,15 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         Bundle bundle = getArguments();
-        mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-        filterListener = bundle.getParcelable(FILTER_LISTENER);
+
+        if(savedInstanceState != null){
+            mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
+//            filterListener = savedInstanceState.getParcelable(FILTER_LISTENER);
+        } else {
+            mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+//            filterListener = bundle.getParcelable(FILTER_LISTENER);
+        }
+
         filterSelectionController = new FilterSelectionController(mFilters);
         currentFilterPosition = -1;
         toCancelFilters = true;
@@ -117,6 +122,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE");
+        outState.putParcelableArrayList(FILTER_TAG, mFilters);
+//        outState.putParcelable(FILTER_LISTENER, filterListener);
         super.onSaveInstanceState(outState);
     }
 
@@ -124,9 +131,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     public void onDestroy() {
         Print.i(TAG, "ON DESTROY");
         super.onDestroy();
-        if(toCancelFilters){
-            filterSelectionController.goToInitialValues();
-        }
+//        if(toCancelFilters){
+//            filterSelectionController.goToInitialValues();
+//        }
     }
 
     private void onFiltersKeyItemClick(int position) {
@@ -216,11 +223,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         Print.d(TAG, "CLICKED ON: DONE");
         toCancelFilters = false;
 
-        // Validate and send to catalog fragment
-        if(filterListener != null) {
-            filterListener.onSubmitFilterValues(filterSelectionController.getValues());
-        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
 
+        getBaseActivity().communicateBetweenFragments(FragmentType.CATALOG.toString(), bundle);
         getBaseActivity().onBackPressed();
 
     }
@@ -275,4 +281,11 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    @Override
+    public boolean allowBackPressed() {
+        if(toCancelFilters){
+            filterSelectionController.goToInitialValues();
+        }
+        return super.allowBackPressed();
+    }
 }
