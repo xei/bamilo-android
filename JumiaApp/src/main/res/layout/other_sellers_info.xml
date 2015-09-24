@@ -5,6 +5,8 @@
     android:id="@+id/sellers_info"
     android:paddingLeft="@dimen/layout_padding"
     android:paddingRight="@dimen/layout_padding"
+    android:paddingStart="@dimen/layout_padding"
+    android:paddingEnd="@dimen/layout_padding"
     >
 
     <!-- SELLER INFO -->
@@ -13,10 +15,10 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_owner_name"
         style="@style/TextBody_1"
-        color="@color/black"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
 
         />
 
@@ -53,7 +55,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/Caption"
+            style="@style/TextCaption"
             color="@color/black_800"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
@@ -69,21 +71,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"  android:orientation="horizontal"
         android:paddingBottom="10dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/deliverSection"
         >
-        <com.mobile.components.customfontviews.TextView
-            style="@style/Caption"
-            color="@color/black"
-            android:layout_centerVertical="true"
-            android:text="Delivery time:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txDeliver"
-            />
+
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/Caption"
-            color="@color/black"
+            style="@style/TextCaption"
+            android:textColor="@color/black"
             android:layout_centerVertical="true"
             android:text="3 - 8 days"
             android:layout_width="wrap_content"

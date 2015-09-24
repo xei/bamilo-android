@@ -13,7 +13,7 @@
         style="@style/Caption"
         android:textColor="@color/black"
         android:text="Item sublist"
-        android:id="@+id/tx_slist_title"
+        android:id="@+id/pdv_specs_button"
         android:layout_marginTop="@dimen/v8_margin_sublist_text"
         android:layout_marginBottom="@dimen/v8_margin_sublist_text"
         android:layout_centerVertical="true"

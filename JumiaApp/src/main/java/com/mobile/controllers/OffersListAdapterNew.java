@@ -115,8 +115,8 @@ public class OffersListAdapterNew extends BaseAdapter {
 
             // item.textView = (TextView) itemView.findViewById( R.id.text);
             item.offerAddToCart = (Button) itemView.findViewById(R.id.offer_addcart);
-            item.offerPrice = (TextView) itemView.findViewById(R.id.offer_price_normal);
-            item.offerSpecialPrice = (TextView) itemView.findViewById(R.id.offer_price);
+            item.offerPrice = (TextView) itemView.findViewById(R.id.offer_price);
+            item.offerSpecialPrice = (TextView) itemView.findViewById(R.id.offer_price_normal);
             item.offerProductOwner = (TextView) itemView.findViewById(R.id.offer_owner_name);
 
             item.offerRating = (RatingBar) itemView.findViewById(R.id.item_rating);
@@ -160,26 +160,8 @@ public class OffersListAdapterNew extends BaseAdapter {
         return itemView;
     }
 
-    /**
-     * Updates the Orders array list
-     * 
-     * @param offers
-     *            The array list containing the orders
-     */
-    public void updateOffers(ArrayList<ProductOffer> offers) {
-        this.offers = offers;
-        this.notifyDataSetChanged();
-    }
-
-    public void clearProducts() {
-        offers.clear();
-        notifyDataSetChanged();
-    }
 
 
-    public ArrayList<ProductOffer> getOffersList() {
-        return offers;
-    }
   
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.

@@ -1,3 +1,7 @@
+package com.mobile.newFramework.utils;
+
+import com.mobile.newFramework.rest.configs.AigRestContract;
+
 /**
  * EventType
  * Type of the available events in the EventManager. For each type there
@@ -12,15 +16,8 @@
  *
  * Copyright (c) Rocket Internet All Rights Reserved
  */
-package com.mobile.newFramework.utils;
-
-import com.mobile.newFramework.rest.configs.AigRestContract;
-
-/**
- * @author guilherme Type of the available events in the EventManager. For each type there is an associated class, example: Type:GET_CATEGORIES_EVENT
- *         Class: GetCategoriesEvent Each event specifies its action and the timeti should remain in the cache by the httpclient
- */
 public enum EventType {
+
     INITIALIZE,
 
     INIT_FORMS("http:/forms/index/", AigRestContract.MAX_CACHE_TIME),
@@ -40,8 +37,6 @@ public enum EventType {
     LOGOUT_EVENT("https:/customer/logout/", AigRestContract.NO_CACHE),
 
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
-
-
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
 
@@ -76,8 +71,6 @@ public enum EventType {
     GET_FORM_RATING_EVENT("http:/forms/rating/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_SELLER_REVIEW_EVENT("http:/forms/sellerreview/", AigRestContract.MAX_CACHE_TIME),
-
-
 
     REVIEW_RATING_PRODUCT_EVENT,
 
@@ -119,19 +112,21 @@ public enum EventType {
 
     SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
 
-    GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
-
     CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", AigRestContract.NO_CACHE),
 
     EDIT_ADDRESS_EVENT("https:/customer/addressedit", AigRestContract.NO_CACHE),
 
+    GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
+
     SET_BILLING_ADDRESS_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
 
     GET_REGIONS_EVENT,
 
     GET_CITIES_EVENT,
+
+    GET_POSTAL_CODE_EVENT,
 
     GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 
@@ -150,8 +145,6 @@ public enum EventType {
     ADD_VOUCHER("http:/order/addvoucher/", AigRestContract.NO_CACHE),
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
-
-
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
 
@@ -177,8 +170,6 @@ public enum EventType {
 
     ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
 
-
-
     GET_SELLER_REVIEWS,
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
@@ -189,8 +180,13 @@ public enum EventType {
 
     GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action, AigRestContract.NO_CACHE);
+    GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action, AigRestContract.NO_CACHE),
 
+    ADD_PRODUCT_TO_WISH_LIST("http:/wishlist/addproduct/", AigRestContract.NO_CACHE),
+
+    REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/", AigRestContract.NO_CACHE),
+
+    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE);
 
 
     public final String action;

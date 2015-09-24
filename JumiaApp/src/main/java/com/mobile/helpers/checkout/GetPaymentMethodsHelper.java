@@ -4,8 +4,9 @@ import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
+import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -34,13 +35,13 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
 
         // Create bundle
-        SuperGetPaymentMethodsForm responseData = (SuperGetPaymentMethodsForm) baseResponse.getMetadata().getData();
+        CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get("payment_method").getPaymentInfoList());
+        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList());
     }
 
 }

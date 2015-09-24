@@ -214,7 +214,7 @@
     <string name="product_outof_stock">O artigo está esgotado</string>
     <string name="product_sold_by">Vendido por:</string>
     <string name="product_sort_button">Ordenar</string>
-    <string name="product_specifications">Especificações</string>
+    <string name="specifications">Especificações</string>
     <string name="product_variance_choose">Por favor, selecione</string>
     <string name="product_variance_choose_error">Por favor, selecione entre vários</string>
     <string name="product_variant_placeholder">&#8230;</string>

@@ -115,12 +115,11 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         // Get data from arguments
         mCompleteProductSku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
         mCompleteProductName = getArguments().getString(ConstantsIntentExtra.PRODUCT_NAME);
-        mCompleteBrand = getArguments().getString("brand");
+        mCompleteBrand = getArguments().getString(ConstantsIntentExtra.PRODUCT_BRAND);
         // Get from saved instance
         if(savedInstanceState != null){
             mCompleteProductSku = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_SKU);
             mCompleteProductName = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_NAME);
-            productOffers = savedInstanceState.getParcelable(PRODUCT_OFFERS);
         }
     }
 
@@ -232,11 +231,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     private void setAppContent(){
         mProductName.setText(mCompleteProductName);
         mProductBrand.setText(mCompleteBrand);
-        // set the number of grid columns depending on the screen size    
-        int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
-        mOffersList.setNumColumns(numColumns);
         OffersListAdapterNew offersAdapter = new OffersListAdapterNew(getActivity().getApplicationContext(),productOffers.getOffers(), this);
-    //    OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(),productOffers.getOffers(), this);
         mOffersList.setAdapter(offersAdapter);
         mOffersList.setOnItemClickListener(this);
     }

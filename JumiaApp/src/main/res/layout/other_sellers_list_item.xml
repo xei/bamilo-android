@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:id="@+id/left_side_seller"
         android:gravity="center"
         >
@@ -24,28 +25,30 @@
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/layout_padding"
             android:paddingRight="@dimen/layout_padding"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="@dimen/layout_padding"
             android:id="@+id/price"
             >
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price"
-                style="@style/Body3"
+                style="@style/TextBody_3"
                 android:textColor="@color/black"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:text="Rs.399"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price_normal"
-                style="@style/Body3"
+                style="@style/TextBody_3"
                 android:textColor="@color/black_800"
                 android:layout_centerVertical="true"
-                android:text="Rs.399"
                 android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+                android:layout_width="wrap_content"
+                />
 
 
         </LinearLayout>
@@ -72,7 +75,7 @@
             android:layout_height="48dp"
             android:text="@string/buy_now_button"
             android:id="@+id/offer_addcart"
-            android:background="@color/orange1"
+            android:background="@color/color_accent"
             android:textColor="@color/white"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"

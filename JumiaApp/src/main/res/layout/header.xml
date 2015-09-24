@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/black_300"
-    >
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/txTitle"
-        style="@style/Header"
-        android:textColor="@color/black"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:layout_marginTop="@dimen/layout_padding"
-        android:layout_marginBottom="@dimen/item_margin_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gen_header_text"
+    style="@style/HeaderStyle" />
