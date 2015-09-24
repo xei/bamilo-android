@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -33,8 +32,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
-import com.mobile.utils.ui.CustomBottomSheet;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -49,7 +48,7 @@ import java.util.List;
  * Created by alexandrapires on 9/11/15.
  * This class represents the page for bundle products in a combo. It allows to add checked combo products to cart at once
  */
-public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener,DialogInterface.OnDismissListener{
+public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener,DialogSimpleListFragment.OnDialogListListener {
 
 
     private BundleList bundleList;
@@ -62,7 +61,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private ComboGridAdapter adapter;
     private Button btBuyCombo;
     private Context c;
-    private  CustomBottomSheet bottomSheet;
+  //  private  CustomBottomSheet bottomSheet;
 
     private Hashtable<ProductBundle,ProductSimple> selectedProducts;
 
@@ -83,7 +82,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public ComboFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.pdp_combos_page,
+                R.layout.pdv_combos_page,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -104,8 +103,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
-            totalPrice = arguments.getDouble("totalPrice");
             bundleList = arguments.getParcelable("bundleList");
+            totalPrice = bundleList.getBundlePriceDouble();
 
         }
 
@@ -133,9 +132,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         adapter.setOnViewHolderClickListener(this);
         gv.setAdapter(adapter);
         gv.setGridLayoutManager(1);
-        //      Drawable divider = getBaseActivity().getApplicationContext().getDrawable(R.drawable.divider);
 
-        //     gv.addItemDecoration(divider);    //depending if is tablet or not: se this later
         gv.setHasFixedSize(true);
         gv.setItemAnimator(new DefaultItemAnimator());
 
@@ -255,12 +252,27 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
+    private void onClickBundleButton(ProductBundle productBundle) {
+        Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
+        try {
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
+                    getBaseActivity(),
+                    getString(R.string.product_variance_choose),
+                    productBundle,
+                    this);
+            dialog.show(getFragmentManager(), null);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+        }
+    }
+
+
 
     private void ShowBottomSheet(ProductBundle productBundle, String variationName)
     {
-        bottomSheet = CustomBottomSheet.newInstance(c,productBundle,variationName);
+/*        bottomSheet = CustomBottomSheet.newInstance(c,productBundle,variationName);
         bottomSheet.setOnDismissListener(this);
-        bottomSheet.show(getFragmentManager(), null);
+        bottomSheet.show(getFragmentManager(), null);*/
 
 
     }
@@ -453,18 +465,15 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
 
+
+
     @Override
-    public void onDismiss(DialogInterface dialog) {
-
-        //get bundle and it selected simple
-        ProductBundle selectedBundle = bottomSheet.getProductBundle();
-        ProductSimple simple = bottomSheet.getSelectedSimple();
-
-        //put
-        selectedProducts.put(selectedBundle,simple);
-
+    public void onDialogListItemSelect(int position) {
+        String s ="a";
     }
 
-
-
+    @Override
+    public void onDialogListClickView(View view) {
+        String a = "";
+    }
 }
