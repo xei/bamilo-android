@@ -6,6 +6,8 @@
 	<item name="is_shop_specific" type="bool">false</item>
 	<item name="is_bamilo_specific" type="bool">false</item>
 	<bool name="is_force_http">false</bool>
+    <bool name="is_layout_rtl">false</bool>
+
 	<!-- ##### PRE INSTALL ##### -->
 	<bool name="create_pre_install_file">false</bool>
 	<!-- CUSTOM PRE INSTALL FOLDERS -->
