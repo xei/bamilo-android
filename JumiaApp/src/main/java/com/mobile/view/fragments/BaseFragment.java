@@ -666,6 +666,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
+    public void showInfoAddToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        }
+    }
+
+    public void showInfoAddToShoppingCartFailed() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+        }
+    }
+
     /**
      * Set the inflated stub
      * @param stub The view stub
@@ -1056,6 +1068,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void onClickRetryButton(View view) {
         // ...
+        onResume();
     }
 
     /**
@@ -1148,5 +1161,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         campaigns.add(campaign);
         return campaigns;
     }
+
+
+
 
 }
