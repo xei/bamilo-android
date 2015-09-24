@@ -88,9 +88,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             rating = (RatingBar) view.findViewById(R.id.product_detail_product_rating);
             reviews = (TextView) view.findViewById(R.id.product_detail_product_rating_count);
 
-            price = (TextView) view.findViewById(R.id.product_price_normal);
-            discount = (TextView) view.findViewById(R.id.product_price);
-            percentage = (TextView) view.findViewById(R.id.product_detail_discount_percentage);
+            price = (TextView) view.findViewById(R.id.pdv_text_price);
+            discount = (TextView) view.findViewById(R.id.pdv_text_special_price);
+            percentage = (TextView) view.findViewById(R.id.pdv_text_discount);
 
             brand = (TextView) view.findViewById(R.id.item_brand);
 
@@ -115,8 +115,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      */
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = R.layout.pdp_combo_item_list;
-        if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.pdp_combo_item_list;
+        int layout = R.layout.pdv_combo_item_list;
+        if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.pdv_combo_item_list;
         //    else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
         // Create a new view
         return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
