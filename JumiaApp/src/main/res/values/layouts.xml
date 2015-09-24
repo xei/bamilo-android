@@ -206,5 +206,7 @@
     <item name="dialog_filter_fragment_size"                type="layout">@layout/_def_dialog_filter_fragment_size</item>
     <item name="simple_email_notification_option"           type="layout">@layout/_def_simple_email_notification_option</item>
 
+    <item name="product_offers_main_new"                        type="layout">@layout/_def_product_offers_main_new</item>
+
 </resources>
 
