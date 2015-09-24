@@ -206,7 +206,7 @@
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="poll_question_label">Poll Question</string>
-    <string name="posted_by">posted by</string>
+
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
@@ -372,7 +372,7 @@
     <string name="you_may_like">You May Like</string>
     <string name="top_sellers">Top Sellers</string>
     <string name="product_desc_summary_title">Summary</string>
-    <string name="description">Description</string>
+
     <string name="key_features">Key Features</string>
     <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
@@ -406,10 +406,13 @@
     <string name="average_rating_write_review">Write a review</string>
     <string name="average_raings_header">RATINGS</string>
     <string name="average_reviews_header">USER REVIEWS</string>
+    <string name="description">Description</string>
+    <string name="rat_rev">Ratings Reviews</string>
+    <string name="posted_by">posted by</string>
 
     <!-- NEW 2.8 -->
     <string name="choose_language">Choose Language</string>
     <string name="language">Language</string>
     <string name="country">Country</string>
-    <string name="rat_rev">Ratings Reviews</string>
+
 </resources>
