@@ -66,8 +66,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     public final static String FILTER_TAG = "catalog_filters";
 
-    public final static String FILTER_LISTENER = "catalog_filter_listener";
-
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Filters,
@@ -90,10 +88,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         if(savedInstanceState != null){
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
-//            filterListener = savedInstanceState.getParcelable(FILTER_LISTENER);
         } else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-//            filterListener = bundle.getParcelable(FILTER_LISTENER);
         }
 
         filterSelectionController = new FilterSelectionController(mFilters);
@@ -123,17 +119,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArrayList(FILTER_TAG, mFilters);
-//        outState.putParcelable(FILTER_LISTENER, filterListener);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        Print.i(TAG, "ON DESTROY");
-        super.onDestroy();
-//        if(toCancelFilters){
-//            filterSelectionController.goToInitialValues();
-//        }
     }
 
     private void onFiltersKeyItemClick(int position) {

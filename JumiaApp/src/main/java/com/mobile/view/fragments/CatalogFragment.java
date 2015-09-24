@@ -658,22 +658,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWizardStub.setVisibility(View.GONE);
     }
 
-//    /**
-//     * Process the click on filter button
-//     */
-//    private void onClickFilterButton() {
-//        Print.i(TAG, "ON CLICK FILTER BUTTON");
-//        try {
-//            // Show dialog
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
-//            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-//            newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
-//        } catch (NullPointerException e) {
-//            Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
-//        }
-//    }
-
     private void onClickFilterButton(){
         Print.i(TAG, "ON CLICK FILTER BUTTON");
         try {
