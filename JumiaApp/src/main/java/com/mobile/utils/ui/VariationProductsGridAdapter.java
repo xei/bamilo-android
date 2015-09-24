@@ -1,21 +1,18 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -33,11 +30,9 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
 
     private Context mContext;
 
-    private int mLastPosition = -1;
-
     private OnViewHolderClickListener mOnViewHolderClicked;
 
-    private int nColumns;
+    private int nColumns=1;
 
 
 
@@ -53,7 +48,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
         public ImageView image;
         public TextView price;
         public View progress;
-        public ImageView favourite;
         public TextView discount;
 
         /**
@@ -66,8 +60,8 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
             brand = (TextView) view.findViewById(R.id.item_brand);
             image = (ImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
-            price = (TextView) view.findViewById(R.id.product_price_normal);
-            discount = (TextView) view.findViewById(R.id.product_price);
+            price = (TextView) view.findViewById(R.id.pdv_text_special_price);
+            discount = (TextView) view.findViewById(R.id.pdv_text_price);
 
         }
     }
@@ -89,14 +83,14 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
     public int getNumberOfColumns()
     {
 
-        Resources resources = mContext.getResources();
 
-        if(!resources.getBoolean(R.bool.isTablet) || DeviceInfoHelper.isTabletInLandscape(mContext) )
-            nColumns = resources.getInteger(R.integer.grid_line_items_mobile);
-        else
-            nColumns = resources.getInteger(R.integer.grid_line_items_tablet_portrait);
+        if( mContext.getResources().getBoolean(R.bool.isTablet) ) {
+            nColumns =  mContext.getResources().getInteger(R.integer.pdv_related_products_num_columns);
+        }
 
         return nColumns;
+
+
     }
 
     /*
@@ -105,7 +99,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
      */
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Create a new view
+
         return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list, parent, false));
     }
     
@@ -159,34 +153,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
 
 
 
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println("getView " + position + " " + convertView);
-        ProductViewHolder holder = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate( R.layout.pdp_product_item_grid, parent, false);
-            holder = new ProductViewHolder(convertView);
-            // Get item
-            Variation item = mDataSet.get(position);
-            // Set name
-            holder.name.setText(item.getName());
-            // Set brand
-            holder.brand.setText(item.getBrand());
-            // Set is new image
-            // Set image
-            RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_small);
-            // Set is favorite image
-      //      setFavourite(holder, item, position);
-            convertView.setTag(holder);
-        } else {
-            holder = (ProductViewHolder)convertView.getTag();
-        }
-        return convertView;
-    }
-
-
-
-
     
     /**
      * Set the product price.
@@ -195,34 +161,18 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
      */
     private void setProductPrice(ProductViewHolder holder, Variation item) {
         // Case discount
-      /*  if(item.hasDiscount()) {
+        if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
         // Case normal
-        else {*/
+        else {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setText("");
-      //  }
-    }
-    
-
-
-    /**
-     * Set an animation for new items.
-     * @param holder - the view holder
-     * @param position - the current position
-     */
-    private void setAnimation(ProductViewHolder holder, int position) {
-        if(position > mLastPosition) {
-            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.entry_up_from_bottom);
-            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_fade_in);
-            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_slide_in_bottom);
-            holder.itemView.startAnimation(animation);
-            mLastPosition = position;
         }
     }
+    
 
 
 
