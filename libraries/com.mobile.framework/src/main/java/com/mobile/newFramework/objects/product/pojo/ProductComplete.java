@@ -125,6 +125,7 @@ public class ProductComplete extends ProductMultiple {
 
          //   JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
             // Variations its an array object
+
             JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
             if (variationsArray != null && variationsArray.length() > 0) {
                 mProductVariations = new ArrayList<>();
