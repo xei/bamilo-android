@@ -11,7 +11,6 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.DividerItemDecoration;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.ToastFactory;
@@ -79,16 +78,13 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        //gridview
+
         mGridVariations = (VariationProductsGridView) view.findViewById(R.id.gridVariations);
-        mAdapter = new VariationProductsGridAdapter(getBaseActivity().getApplicationContext(),mProductComplete.getVariations());
+        mAdapter = new VariationProductsGridAdapter(getBaseActivity().getApplicationContext(),mProductComplete.getProductVariations());
         mAdapter.setOnViewHolderClickListener(this);
+
         mGridVariations.setAdapter(mAdapter);
-        mGridVariations.setGridLayoutManager(getBaseActivity().getApplicationContext(), 1);
-
-        DividerItemDecoration divider = new DividerItemDecoration(getResources().getDrawable(R.drawable.divider),true,true);
-
-        mGridVariations.addItemDecoration(divider);
+        mGridVariations.setGridLayoutManager(getBaseActivity().getApplicationContext(), mAdapter.getNumberOfColumns());
         mGridVariations.setHasFixedSize(true);
 
     }
