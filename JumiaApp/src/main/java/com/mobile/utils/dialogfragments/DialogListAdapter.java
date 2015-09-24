@@ -33,27 +33,17 @@ public class DialogListAdapter extends BaseAdapter {
 
     public static final int DIALOG_LIST_TYPE = 0;
 
-    public static final int DIALOG_SORT_LIST_TYPE = 1;
-
-    protected int mlayout;
-
     /**
      * Constructor
      */
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, int listType) {
-        this(mActivity,mItems,null,listType);
+    public DialogListAdapter(Context mActivity, ArrayList<String> mItems) {
+        this(mActivity,mItems,null);
     }
 
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable, int listType) {
+    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable) {
         mInflater = LayoutInflater.from(mActivity);
         this.mItems = mItems;
         this.mItemsAvailable = mItemsAvailable;
-
-        if(listType == DIALOG_LIST_TYPE){
-            mlayout = R.layout.dialog_list_item;
-        } else {
-            mlayout = R.layout.dialog_sort_list_item;
-        }
     }
 
     /*
@@ -100,7 +90,7 @@ public class DialogListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = mInflater.inflate(mlayout, parent, false);
+            view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
         } else {
             view = convertView;
         }

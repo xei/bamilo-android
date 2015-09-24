@@ -39,10 +39,13 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/PdvBadgeStyle"
-        android:layout_above="@+id/image_loadable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_loadable"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
     <com.mobile.components.customfontviews.TextView

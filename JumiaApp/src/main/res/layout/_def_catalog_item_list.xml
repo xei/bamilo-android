@@ -38,7 +38,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/TextCaption"
-        android:textColor="@color/red_basic"
+        android:textColor="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_alignLeft="@id/center_view"
         android:layout_alignStart="@id/center_view"
@@ -61,6 +61,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_alignLeft="@id/center_view"
         android:layout_alignStart="@id/center_view"
@@ -72,6 +74,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@id/item_discount"
         android:layout_toEndOf="@id/item_discount"
         android:layout_toRightOf="@id/item_discount"
@@ -125,11 +129,12 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/rounded_margin_mid"
-        android:layout_marginBottom="@dimen/margin_60px"
         android:gravity="center" />
 
     <View

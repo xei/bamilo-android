@@ -52,8 +52,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
 	private DialogListAdapter mAdapter;
 
-    private String mSizeGuideUrl;
-
 
 	/**
 	 *
@@ -80,7 +78,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogSortListFragment newInstance(Fragment fragment, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
+	public static DialogSortListFragment newInstance(Fragment fragment, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
 	    Print.d(TAG, "NEW INSTANCE");
 	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
 	    dialogListFragment.mActivity = fragment.getActivity();
@@ -91,7 +89,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         dialogListFragment.mItems = items;
         dialogListFragment.mItemsAvailable = itemsAvailable;
         dialogListFragment.mInitialPosition = initialPosition;
-        dialogListFragment.mSizeGuideUrl = sizeGuideUrl;
 	    return dialogListFragment;
 	}
 	
@@ -125,10 +122,9 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
      * @param title
      * @param items
      * @param initialPosition
-     * @param sizeGuideUrl
      * @return
      */
-    public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
+    public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
         Print.d(TAG, "NEW INSTANCE");
         DialogSortListFragment dialogListFragment = new DialogSortListFragment();
         dialogListFragment.mActivity = fragment.getActivity();
@@ -139,8 +135,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         dialogListFragment.mItems = items;
         dialogListFragment.mItemsAvailable = itemsAvailable;
         dialogListFragment.mInitialPosition = initialPosition;
-        dialogListFragment.mSizeGuideUrl = sizeGuideUrl; 
-        return dialogListFragment;   
+        return dialogListFragment;
     }
 
     public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, DialogListAdapter dialogListAdapter, int initialPosition) {
@@ -174,7 +169,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    return inflater.inflate(R.layout.dialog_sort_list_content, container);
+	    return inflater.inflate(R.layout.dialog_list_content, container);
 	}
 	
 	/*
@@ -190,7 +185,11 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
             dismiss();
             return;
         }
-
+        // Hide Size guide on sort list
+        View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
+        View button = view.findViewById(R.id.dialog_list_size_guide_button);
+        button.setVisibility(View.GONE);
+        divider.setVisibility(View.GONE);
         // Set title
         TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
         titleView.setText(mTitle);
@@ -199,7 +198,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
         if(mAdapter == null) {
-            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable, DialogListAdapter.DIALOG_SORT_LIST_TYPE);
+            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
         }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);

@@ -3,7 +3,6 @@ package com.mobile.utils.dialogfragments;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  *
  */
-public class DialogListFragment extends DialogFragment implements OnItemClickListener, OnClickListener {
+public class DialogListFragment extends BottomSheet implements OnItemClickListener, OnClickListener {
 	
     private final static String TAG = DialogListFragment.class.getSimpleName();
 	
@@ -164,7 +163,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
+//	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
         // R.style.Theme_Jumia_Dialog_NoTitle
 	}
 	
@@ -200,7 +199,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
         if(mAdapter == null) {
-            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable, DialogListAdapter.DIALOG_LIST_TYPE);
+            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
         }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);
