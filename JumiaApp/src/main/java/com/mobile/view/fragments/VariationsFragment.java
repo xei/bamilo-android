@@ -27,7 +27,9 @@ import java.util.EnumSet;
 public class VariationsFragment extends BaseFragment implements OnViewHolderClickListener {
 
     private ProductComplete mProductComplete;
+
     private VariationProductsGridView mGridVariations;
+
     private VariationProductsGridAdapter mAdapter;
 
     /**
