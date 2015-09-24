@@ -6,6 +6,8 @@
     android:gravity="center"
     android:paddingLeft="@dimen/layout_padding"
     android:paddingRight="@dimen/layout_padding"
+    android:paddingStart="@dimen/layout_padding"
+    android:paddingEnd="@dimen/layout_padding"
 
     >
 

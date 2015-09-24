@@ -10,7 +10,7 @@
     <include
         android:id="@+id/item_image_loadable"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/ci_image_height"
+        android:layout_height="120dp"
         layout="@layout/image_loadable"
         android:layout_alignParentLeft="true"
         />
@@ -18,7 +18,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/ci_image_height"
+        android:layout_height="120dp"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/item_image_loadable"
         android:gravity="center_vertical"
@@ -29,8 +29,8 @@
         <!-- BRAND -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/Caption"
-            color="@color/black_800"
+            style="@style/TextCaption"
+            android:textColor="@color/black_800"
             android:lines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,8 +39,8 @@
         <!-- TITLE -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/List1"
-            color="@color/black"
+            style="@style/TextList_1"
+            android:textColor="@color/black"
             android:lines="1"
             android:text="Title"
             android:layout_width="wrap_content"
@@ -48,10 +48,11 @@
             />
 
         <!-- PRICE -->
-        <include layout="@layout/pdp_small_price_tag" />
+
+        <include layout="@layout/pdv_small_price_tag" />
 
         <!-- RATING -->
-        <include layout="@layout/pdp_rating_small"   android:id="@+id/rating" />
+        <include layout="@layout/pdv_rating_small"   android:id="@+id/rating" />
 
         <!-- CHECKBOX -->
         <com.mobile.components.customfontviews.CheckBox
@@ -62,8 +63,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:checked="true"
-            android:layout_marginLeft="@dimen/ci_chbox_margin"
-            android:layout_marginBottom="@dimen/ci_chbox_margin"
+            android:layout_marginLeft="10dp"
             android:clickable="false"
             />
 
