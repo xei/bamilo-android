@@ -64,6 +64,7 @@ public enum FragmentType {
     VARIATIONS,
     WRITE_REVIEW_SELLER;
 
+
     private int id;
     private final static String DIVIDER = ":";
 
