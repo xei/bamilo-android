@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class VariationProductsGridAdapter extends RecyclerView.Adapter<VariationProductsGridAdapter.ProductViewHolder> implements OnClickListener {
 
-
     private ArrayList<Variation> mDataSet;
 
     private Context mContext;
@@ -33,8 +32,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
     private OnViewHolderClickListener mOnViewHolderClicked;
 
     private int nColumns=1;
-
-
 
     /**
      * Provide a reference to the views for each data item.<br>

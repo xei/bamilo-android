@@ -28,6 +28,7 @@ public class VariationProductsGridView extends RecyclerView {
     }
 
     public void setGridLayoutManager(Context context,int columns) {
+
         mGridLayoutManager = new GridLayoutManager(context, columns);
         mGridLayoutManager.setSmoothScrollbarEnabled(true);
         setLayoutManager(mGridLayoutManager);
