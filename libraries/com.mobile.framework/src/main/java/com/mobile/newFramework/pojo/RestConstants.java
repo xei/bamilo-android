@@ -70,6 +70,7 @@ public class RestConstants {
     public static final String JSON_DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
+    public static final String JSON_FORMAT_TAG = "format";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
@@ -381,6 +382,7 @@ public class RestConstants {
 
     public static final String JSON_VALID_TAG = "valid";
     public static final String VARIATION_NAME = "variation_name";
+    public static final String VARIATIONS_AVAILABLE_LIST = "variations_available_list";
     public static final String VARIATION_DEFAULT_POSITION = "variation_default_position";
 
     /**
@@ -426,5 +428,7 @@ public class RestConstants {
 
     public static final String ADDRESSES = "addresses";
 
+    public static final String VERTICAL = "vertical";
+    public static final String FASHION = "fashion";
 
 }

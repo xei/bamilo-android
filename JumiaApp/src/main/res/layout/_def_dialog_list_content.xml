@@ -12,10 +12,8 @@
         android:background="@drawable/modal_dialog_header"
         android:gravity="left|start"
         android:paddingBottom="@dimen/margin_large"
-        android:paddingEnd="@dimen/dialog_list_margin_horizontal"
         android:paddingLeft="@dimen/dialog_list_margin_horizontal"
         android:paddingRight="@dimen/dialog_list_margin_horizontal"
-        android:paddingStart="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large" />
 
     <!-- SIZES -->
@@ -46,12 +44,10 @@
         android:background="@drawable/selector_listitem_highlight_dialog"
         android:gravity="center"
         android:paddingBottom="@dimen/margin_large"
-        android:paddingEnd="@dimen/dialog_list_margin_horizontal"
         android:paddingLeft="@dimen/dialog_list_margin_horizontal"
         android:paddingRight="@dimen/dialog_list_margin_horizontal"
-        android:paddingStart="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large"
         android:text="@string/size_guide_label"
-        android:textColor="@color/orange_ffa200" />
+        android:textColor="@color/color_accent" />
 
 </LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ################# RTL BASE STYLES ################# -->
+
+    <style name="text_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/grey_middle</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- TODO : ADD HERE BASE STYLES -->
+
+</resources>

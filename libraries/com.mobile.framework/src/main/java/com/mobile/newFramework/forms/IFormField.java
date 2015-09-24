@@ -21,6 +21,8 @@ public interface IFormField {
 
     String getLinkText();
 
+    String getFormat();
+
     Map<String, String> getDataSet();
 
     void setOnDataSetReceived(OnDataSetReceived listener);
