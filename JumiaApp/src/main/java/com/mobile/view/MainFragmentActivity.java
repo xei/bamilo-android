@@ -58,8 +58,8 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
-import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.VariationsFragment;
+import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
@@ -402,6 +402,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
+
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {
