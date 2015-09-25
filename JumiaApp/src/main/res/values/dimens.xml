@@ -36,6 +36,7 @@
     <dimen name="dimen_48px">16dp</dimen>
     <dimen name="dimen_50px">16.67dp</dimen>
     <dimen name="dimen_60px">20dp</dimen>
+    <dimen name="dimen_66px">22dp</dimen>
     <dimen name="dimen_70px">23.33dp</dimen>
     <dimen name="dimen_71px">23.66dp</dimen>
     <dimen name="dimen_78px">26dp</dimen>
@@ -426,7 +427,6 @@
     <dimen name="pdv_layout_offset">20dp</dimen>
 
 
-
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
     <!-- MATERIAL DIMENSION 1:1 -->
@@ -487,6 +487,8 @@
 
     <!-- KICKOUT -->
     <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
+
+    <integer name="variations_num_columns">1</integer>
 
 
 </resources>

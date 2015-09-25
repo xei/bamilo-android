@@ -101,8 +101,8 @@
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="favourite_add_to_cart">کالا به سبد خرید شما اضافه شد.</string>
     <string name="favourite_addalltocart">اضافه کردن تمام کالاها به سبد خرید</string>
-    <string name="favourite_no_favourites">شما هیچ کالای مورد علاقه ای در لیست ندارد</string>
-    <string name="favourites">لیست علاقه مندی ها</string>
+    <string name="save_no_saved">شما هیچ کالای مورد علاقه ای در لیست ندارد</string>
+    <string name="saved">لیست علاقه مندی ها</string>
     <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
     <string name="filter_label">فیلتر کردن</string>
     <string name="forgotpass_header">بازیابی رمز عبور</string>
@@ -218,10 +218,10 @@
     <string name="product_variance_choose">لطفا انتخاب کنید</string>
     <string name="product_variance_choose_error">لطفا یکی از موارد را انتخاب کنید</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">کالا به لیست علاقه مندی ها اضافه شد.</string>
+    <string name="products_added_saved">کالا به لیست علاقه مندی ها اضافه شد.</string>
     <string name="products_could_notloaded">بارگذاری کالاهی بیشتر ناموفق بود. دوباره امتحان کنید.</string>
     <string name="products_label">کالاها</string>
-    <string name="products_removed_favourite">کالا از لیست علاقه مندی ها حذف شد.</string>
+    <string name="products_removed_saved">کالا از لیست علاقه مندی ها حذف شد.</string>
     <string name="products_sort_bestrated">بهترین رتبه بندی</string>
     <string name="products_sort_brand">برند</string>
     <string name="products_sort_name">نام</string>
@@ -229,7 +229,7 @@
     <string name="products_sort_popularity">محبوبیت</string>
     <string name="products_sort_pricedown">گران تر به ارزان تر</string>
     <string name="products_sort_priceup">ارزان تر به گران تر</string>
-    <string name="products_tip_favourite_text">کلیک برای مشاهده لیست علاقه مندی ها</string>
+    <string name="products_tip_saved_text">کلیک برای مشاهده لیست علاقه مندی ها</string>
     <string name="products_tip_swipe_text">انگشت خود را به راست و چپ بکشید تا کالاها بر اساس معیارهای دیگر مرتب سازی شوند.</string>
     <string name="promotion_tip_tap_text">کادر بالا را لمس نموده تا کد در حافظه ذخیره شده و در موقع لزوم از آن استفاده نمایید.</string>
     <string name="rating_option_error_message">تمامی گزینه های امتیازدهی می بایست تکمیل شود</string>
@@ -309,7 +309,7 @@
     <string name="teaser_campaign_button_second_line">پیشنهادات</string>
     <string name="terms_and_conditions">شرایط و ضوابط</string>
     <string name="thank_you_order_title">با تشکر از شما!</string>
-    <string name="tip_favourite_text">برای اضافه کردن این کالا به لیست علاقه مندی ها کلیک کنید و لیست کامل را در صفحه مشخصات کاربری مشاهده کنید.</string>
+    <string name="tip_saved_text">برای اضافه کردن این کالا به لیست علاقه مندی ها کلیک کنید و لیست کامل را در صفحه مشخصات کاربری مشاهده کنید.</string>
     <string name="tip_share_text">برای به اشتراک گذاری این کالا کلیک کنید.</string>
     <string name="tip_swipe_text">انگشت خود را به سمت چپ یا راست بکشید تا \n تصاویر دیگر را مشاهده کنید.</string>
     <string name="tip_tap_text">عکس مورد نظر را لمس کرده تا گالری تصاویر را مشاهده کنید.</string>

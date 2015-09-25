@@ -15,6 +15,7 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.cache.WishListCache;
 
 /**
  * Helper used to get the default wish list.
@@ -40,6 +41,8 @@ public class GetWishListHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
         WishList wishList = (WishList) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, wishList);
+        // Save new wish list
+        WishListCache.set(wishList.getWishListCache());
     }
 
     @Override
