@@ -144,7 +144,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     *
+     * Get a new instance.
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
@@ -450,6 +450,29 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                 delliverySection.setVisibility(View.VISIBLE);
             }
+            if ( mProduct.getSeller().getWarranty() != "") {
+
+                ViewGroup warrantySection = (ViewGroup) sellerView.findViewById(R.id.warrantySection);
+                TextView txwarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
+                String Warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
+                txwarranty.setText(Warranty);
+
+                warrantySection.setVisibility(View.VISIBLE);
+            }
+
+            //show button offers with separator if has offers
+            View btOffers = sellerView.findViewById(R.id.pdv_other_sellers_button);
+            View separator = sellerView.findViewById(R.id.separator);
+            if(mProduct.hasOffers())
+            {
+                TextView txOffers = (TextView) btOffers.findViewById(R.id.pdv_sublist_button);
+                txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
+                btOffers.setOnClickListener(this);
+            }
+            else {
+                btOffers.setVisibility(View.GONE);
+                separator.setVisibility(View.GONE);
+            }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);
         }
@@ -643,10 +666,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void updateWishListValue() {
         try {
-            boolean value = !mProduct.isWishList();
-            JumiaApplication.getWishListTemporaryPdvData().put(mCompleteProductSku, value); // WishList cache to update Catalog
+            boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-            mProduct.setIsWishList(value);
             ToastManager.show(getBaseActivity(), value ? ToastManager.SUCCESS_ADDED_FAVOURITE : ToastManager.SUCCESS_REMOVED_FAVOURITE);
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
@@ -675,7 +696,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
-        else if (id == R.id.pdv_button_wish_list) onClickWishListButton();
+        else if (id == R.id.pdv_button_wish_list) onClickWishListButton(view);
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
         // Case simples
@@ -686,18 +707,25 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_call) onClickCallToOrder();
         // Case buy button
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
+        // case other offers
+        else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
     }
 
-//    /**
-//     * function that sends the user to the product offers view
-//     */
-//    private void goToProductOffers() {
-//        Log.i(TAG, "ON CLICK OFFERS");
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
+
+
+    /**
+     * Process the click on other offers button if has offers
+     */
+    private void onClickOtherOffersProduct() {
+        Log.i(TAG, "ON CLICK OTHER OFFERS");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+
 
     /**
      * Process the click on rating
@@ -730,6 +758,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickVariationButton() {
         Log.i(TAG, "ON CLICK TO SHOW OTHER VARIATIONS");
         // TODO: Call the new fragment
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+        getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -781,12 +812,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Process the click on wish list button
      */
-    private void onClickWishListButton() {
+    private void onClickWishListButton(View view) {
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
             try {
                 // Get item
-                if (mProduct.isWishList()) {
+                if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
                 } else {
                     triggerAddToWishList(mProduct.getSku());
@@ -848,6 +879,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
+
 
     /**
      * Process the click to show simples
@@ -944,6 +976,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+                // Force wish list reload for next time
+                WishListFragment.sForceReloadWishListFromNetwork = true;
+                // Update value
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:

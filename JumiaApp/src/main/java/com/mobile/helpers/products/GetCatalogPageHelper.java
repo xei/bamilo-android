@@ -1,6 +1,7 @@
 package com.mobile.helpers.products;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -10,9 +11,11 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.Map;
 
@@ -20,7 +23,6 @@ import java.util.Map;
  * Get Catalog Page helper
  *
  * @author sergiopereira
- *
  */
 public class GetCatalogPageHelper extends SuperBaseHelper {
 
@@ -51,6 +53,17 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         mCurrentPage = catalogArguments.getAsInteger(PAGE);
         //
         return super.getRequestData(args);
+    }
+
+
+    @Override
+    protected String getRequestUrl(Bundle args) {
+        // Get catalog URL
+        String baseUrl = args.getString(URL);
+        // Case search then url is empty
+        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
+        //
+        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
     }
 
     @Override

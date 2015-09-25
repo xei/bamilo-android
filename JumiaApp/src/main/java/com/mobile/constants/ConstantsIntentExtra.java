@@ -39,6 +39,7 @@ public class ConstantsIntentExtra {
     public static final String IMAGE_LIST = mPackage + "ProductImages";
     public static final String PRODUCT = mPackage + "Product";
     public static final String PRODUCT_GALLERY_POS = mPackage + "ProductPosition";
+    public static final String PRODUCT_BRAND = mPackage + "brand";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
@@ -111,6 +112,7 @@ public class ConstantsIntentExtra {
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
 
     public static final String DATA = mPackage + "data";
+    public static final String FLAG_1 = mPackage + "flag1";
 
 
 }
