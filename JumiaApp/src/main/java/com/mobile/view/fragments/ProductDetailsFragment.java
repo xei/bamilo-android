@@ -732,7 +732,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         
         // TODO: Call the new fragment
         Bundle bundle = new Bundle();
-        bundle.putParcelable("mProductComplete", mProduct);
+        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

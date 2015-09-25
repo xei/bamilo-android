@@ -74,21 +74,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
     }
 
 
-    /**
-     * Get the number of columns as it's tablet or not
-     * */
-    public int getNumberOfColumns()
-    {
-
-
-        if( mContext.getResources().getBoolean(R.bool.isTablet) ) {
-            nColumns =  mContext.getResources().getInteger(R.integer.pdv_related_products_num_columns);
-        }
-
-        return nColumns;
-
-
-    }
 
     /*
      * (non-Javadoc)

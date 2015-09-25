@@ -64,7 +64,7 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
-            mProductComplete = arguments.getParcelable("mProductComplete");
+            mProductComplete = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
 
         }
 
@@ -86,7 +86,7 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
         mAdapter.setOnViewHolderClickListener(this);
 
         mGridVariations.setAdapter(mAdapter);
-        mGridVariations.setGridLayoutManager(getBaseActivity().getApplicationContext(), mAdapter.getNumberOfColumns());
+        mGridVariations.setGridLayoutManager(getBaseActivity().getApplicationContext(), getResources().getInteger(R.integer.variations_num_columns));
         mGridVariations.setHasFixedSize(true);
 
     }
