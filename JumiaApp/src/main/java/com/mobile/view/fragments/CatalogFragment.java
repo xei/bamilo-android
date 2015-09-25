@@ -117,8 +117,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private ProductRegular mWishListItemClicked = null;
 
-    private boolean mHideWizard = false;
-
     /**
      * Create and return a new instance.
      *
@@ -183,7 +181,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
-            mHideWizard = arguments.getBoolean(ConstantsIntentExtra.TO_SHOW_WIZARD);
         }
 
         // Get data from saved instance
@@ -405,10 +402,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        if (!mHideWizard) {
-            UICatalogHelper.isToShowWizard(this, mWizardStub, this);
-        }
+
     }
 
     /**
@@ -471,10 +465,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        if (!mHideWizard) {
-            UICatalogHelper.isToShowWizard(this, mWizardStub, this);
-        }
+
+//        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**

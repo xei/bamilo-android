@@ -749,8 +749,6 @@ public class DeepLinkManager {
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             bundle = loadDeepLink(data);
             Print.i(TAG, "DEEP LINK: RECEIVED FROM URI");
-            // Do not show wizard when coming from URI
-            bundle.putBoolean(ConstantsIntentExtra.TO_SHOW_WIZARD, true);
         }
         return bundle;
     }

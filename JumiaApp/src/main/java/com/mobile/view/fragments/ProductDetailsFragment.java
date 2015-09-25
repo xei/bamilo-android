@@ -132,7 +132,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTitleFashionContainer;
 
-    private boolean mHideWizard = false;
     /**
      * Empty constructor
      */
@@ -175,8 +174,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             } else {
                 categoryTree = "";
             }
-            // Get wizard flag
-            mHideWizard = arguments.getBoolean(ConstantsIntentExtra.TO_SHOW_WIZARD);
             restoreParams(arguments);
         }
     }
@@ -350,10 +347,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void displayProduct(ProductComplete product) {
         Print.d(TAG, "ON SHOW PRODUCT");
-        // Show wizard
-        if(!mHideWizard){
-            isToShowWizard();
-        }
         // Save complete product
         mProduct = product;
         mCompleteProductSku = product.getSku();
