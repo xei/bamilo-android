@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
+import android.os.Parcel;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -9,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -56,8 +60,17 @@ public class CatalogCheckFilter extends CatalogFilter{
     }
 
     @Override
-    protected String getValues() {
-        return multi ? processMulti() : processSingle();
+    protected ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        if(hasAppliedFilters()) {
+            values.put(id, multi ? processMulti() : processSingle());
+        }
+        return values;
+    }
+
+    @Override
+    public boolean hasAppliedFilters() {
+        return CollectionUtils.isNotEmpty(selectedFilterOptions);
     }
 
     private String processSingle() {
@@ -122,4 +135,24 @@ public class CatalogCheckFilter extends CatalogFilter{
 
         this.selectedFilterOptions = selectedFilterOptions;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeList(this.filterOptions);
+        dest.writeParcelable(this.selectedFilterOptions, flags);
+    }
+
+    protected CatalogCheckFilter(Parcel in) {
+        super(in);
+        this.filterOptions = new ArrayList<MultiFilterOptionInterface>();
+        in.readList(this.filterOptions, List.class.getClassLoader());
+        this.selectedFilterOptions = in.readParcelable(SelectedFilterOptions.class.getClassLoader());
+    }
+
 }

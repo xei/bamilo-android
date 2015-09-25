@@ -299,7 +299,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private int getDefaultPosition(DynamicFormItem formItem, int size){
         try {
-            // TODO : Remove the -1
             int position = Integer.valueOf(formItem.getEntry().getValue()) - 1;
             return position > -1 && position < size ? position : 0;
         } catch (NullPointerException | NumberFormatException e) {

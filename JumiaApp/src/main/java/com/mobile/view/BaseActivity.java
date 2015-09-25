@@ -81,6 +81,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
+import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
 
@@ -1253,11 +1254,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
-
         sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }
@@ -2034,6 +2033,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+    }
+
+    public boolean communicateBetweenFragments(String tag, Bundle bundle){
+        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment != null){
+            ((BaseFragment)fragment).notifyFragment(bundle);
+            return true;
+        }
+        return false;
     }
 
 //    /**

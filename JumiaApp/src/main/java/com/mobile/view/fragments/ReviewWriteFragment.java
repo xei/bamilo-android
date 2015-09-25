@@ -460,7 +460,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+            TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
 
             getView().findViewById(R.id.send_review).setOnClickListener(this);
 

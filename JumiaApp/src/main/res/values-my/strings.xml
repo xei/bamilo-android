@@ -214,7 +214,7 @@
     <string name="product_outof_stock">လက္က်န္ကုန္ပစၥည္းမရွိေတာ့ပါ</string>
     <string name="product_sold_by">: မွ ေရာင္းခ်ပါသည္</string>
     <string name="product_sort_button">အမ်ိဳးအစားခြဲျခားရန္</string>
-    <string name="product_specifications">သီးျခားသတ္မွတ္ခ်က္</string>
+    <string name="specifications">သီးျခားသတ္မွတ္ခ်က္</string>
     <string name="product_variance_choose">ေက်းဇူးျပဳ၍ ေရြးခ်ယ္ပါ</string>
     <string name="product_variance_choose_error">ေက်းဇူးျပဳ၍ တစ္ခုေရြးခ်ယ္ပါ</string>
     <string name="product_variant_placeholder">&#8230;</string>

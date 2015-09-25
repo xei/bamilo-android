@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.LayoutDirection;
 import android.view.Gravity;
 import android.view.View;
@@ -22,7 +23,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RatingBar;
-import android.text.format.DateFormat;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
