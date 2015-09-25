@@ -18,9 +18,7 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -34,14 +32,6 @@ import java.util.ArrayList;
  */
 public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.ProductViewHolder> implements OnClickListener{
 
-
-    private static final int ITEM_VIEW_TYPE_LIST = 1;
-
-    private static final int ITEM_VIEW_TYPE_GRID = 2;
-
-    private boolean isShowingGridLayout;
-
-    private boolean isTabletInLandscape;
 
     private ArrayList<ProductBundle> mDataSet;
 
@@ -103,8 +93,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
     public ComboGridAdapter(Context context, ArrayList<ProductBundle> data) {
         mContext = context;
         mDataSet = data;
-        isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
-        isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
     }
 
     /*
@@ -113,22 +101,10 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      */
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = R.layout.pdv_combo_item_list;
-        if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.pdv_combo_item_list;
-        //    else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
-        // Create a new view
-        return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
+
+        return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.pdv_combo_item_list, parent, false));
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)
-     */
-    @Override
-    public int getItemViewType(int position) {
-
-        return isShowingGridLayout ? ITEM_VIEW_TYPE_GRID : ITEM_VIEW_TYPE_LIST;
-    }
 
     /*
      * (non-Javadoc)
@@ -272,22 +248,13 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     @Override
     public void onClick(View view) {
-
         if (mOnViewHolderClicked != null) {
             // position
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
             CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
-            if(cb.isChecked())
-            {
-                cb.setChecked(false);
-
-            }else
-            {
-                cb.setChecked(true);
-
-            }
+            cb.setChecked(!cb.isChecked());
 
             productBundle.setChecked(cb.isChecked());
             mDataSet.set(position,productBundle);
