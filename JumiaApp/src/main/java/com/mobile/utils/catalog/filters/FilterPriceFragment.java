@@ -1,10 +1,10 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.utils.catalog.filters;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.mobile.components.RangeSeekBar;
 import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
@@ -13,14 +13,16 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
+import com.mobile.view.fragments.FilterMainFragment;
 
 /**
  * 
  * @author sergiopereira
  *
  */
-public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Integer>, OnClickListener {
+public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Integer> {
 
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
@@ -41,16 +43,17 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private int mInterval;
 
     private CatalogPriceFilter mFilter;
+
+    private String currencySymbol;
+
     /**
-     * 
-     * @param parent
+     *
      * @param bundle
      * @return
      */
-    public static FilterPriceFragment newInstance(DialogFilterFragment parent, Bundle bundle) {
-        Print.d(TAG, "NEW INSTANCE: PRICE");
+    public static FilterPriceFragment newInstance(Bundle bundle) {
+        Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterPriceFragment frag = new FilterPriceFragment();
-        frag.mParent = parent;
         frag.setArguments(bundle);
         return frag;
     }
@@ -63,7 +66,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mCatalogFilter = bundle.getParcelable(FilterMainFragment.FILTER_TAG);
         mFilter = (CatalogPriceFilter)mCatalogFilter;
     }
     
@@ -73,7 +76,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_filter_fragment_price, container, false);
+        return inflater.inflate(R.layout.filter_fragment_price, container, false);
     }
 
     /*
@@ -90,19 +93,20 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mCurrMaxValue = mMax = filterOption.getMax();
         mInterval = filterOption.getInterval();
         Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
-        
-        // Title
-        ((TextView) view.findViewById(R.id.dialog_filter_header_title)).setText(mFilter.getName());
-        // Get back button
-        view.findViewById(R.id.dialog_filter_header_title).setOnClickListener(this);
-        // Get clear button
-        view.findViewById(R.id.dialog_filter_header_clear).setOnClickListener(this);
-        // Get cancel button
-        view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
-        // Get save button
-        view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
+
         // Get check box
         mDiscountBox = (CheckBox) view.findViewById(R.id.dialog_filter_check_discount);
+        if(mFilter.getOption().getCheckBoxOption() != null){
+            mDiscountBox.setVisibility(View.VISIBLE);
+            mDiscountBox.setText(mFilter.getOption().getCheckBoxOption().getLabel());
+            mDiscountBox.setChecked(mFilter.getOption().getCheckBoxOption().isSelected());
+            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mFilter.getOption().getCheckBoxOption().setSelected(isChecked);
+                }
+            });
+        }
         // Get range text
         mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
         
@@ -120,8 +124,11 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
+
+        currencySymbol = CurrencyFormatter.getCurrencySymbol();
+
         // Set current range
-        mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue);
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
         // Set discount box
 //        mDiscountBox.setChecked(mFilter.isRangeWithDiscount());
         
@@ -136,24 +143,26 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
         mCurrMinValue = getMinRealValue(minValue);
         mCurrMaxValue = getMaxRealValue(maxValue);
-        mRangeValues.setText( mCurrMinValue + " - " + mCurrMaxValue );
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
+
+        processOnClickDone();
     }
 
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
-    @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
+//    @Override
+//    public void onClick(View view) {
+//         Get view id
+//        int id = view.getId();
         // Back && Cancel
-        if(id == mBackButtonId || id == mCancelButtonId) mParent.allowBackPressed();
-        // Clean
-        else if(id == mClearButtonId) processOnClickClean();
-        // Save
-        else if(id == mDoneButtonId) processOnClickDone();
-    }
+//        if(id == mBackButtonId || id == mCancelButtonId) mParent.allowBackPressed();
+//        // Clean
+//        else if(id == mClearButtonId) processOnClickClean();
+//        // Save
+//        else if(id == mDoneButtonId) processOnClickDone();
+//    }
     
     /**
      * Process the click on clean button
@@ -167,7 +176,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Reset text
-        mRangeValues.setText(mCurrMinValue + " - " + mCurrMaxValue);
+        setIntervalText(mCurrMinValue, mCurrMaxValue);
         // Reset discount box
         mDiscountBox.setChecked(false);
         // Clean saved values
@@ -194,7 +203,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Validate discount check
 //        mFilter.setRangeWithDiscount(mDiscountBox.isChecked());
         // Goto back
-        mParent.allowBackPressed();
+//        mParent.allowBackPressed();
     }
     
     /**
@@ -237,4 +246,12 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         return (mInterval != 0) ? max * mInterval : max;   
     }
 
+    @Override
+    public void cleanValues() {
+        processOnClickClean();
+    }
+
+    protected void setIntervalText(int minValue, int maxValue){
+        mRangeValues.setText( currencySymbol + " " + minValue + " - " + maxValue );
+    }
 }
