@@ -85,4 +85,6 @@
     <item name="home_offset_percentage" format="float" type="dimen">.15</item>
     <dimen name="home_small_teaser_item_width">215dp</dimen>
 
+    <integer name="combos_num_columns">2</integer>
+
 </resources>
