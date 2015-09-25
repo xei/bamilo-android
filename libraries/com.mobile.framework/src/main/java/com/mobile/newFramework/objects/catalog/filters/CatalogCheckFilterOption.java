@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
@@ -70,4 +73,36 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     public String getVal() {
         return val;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(this.id);
+        dest.writeString(this.label);
+        dest.writeString(this.val);
+        dest.writeByte(selected ? (byte) 1 : (byte) 0);
+    }
+
+    protected CatalogCheckFilterOption(Parcel in) {
+        super(in);
+        this.id = in.readString();
+        this.label = in.readString();
+        this.val = in.readString();
+        this.selected = in.readByte() != 0;
+    }
+
+    public static final Creator<CatalogCheckFilterOption> CREATOR = new Creator<CatalogCheckFilterOption>() {
+        public CatalogCheckFilterOption createFromParcel(Parcel source) {
+            return new CatalogCheckFilterOption(source);
+        }
+
+        public CatalogCheckFilterOption[] newArray(int size) {
+            return new CatalogCheckFilterOption[size];
+        }
+    };
 }

@@ -34,7 +34,8 @@ public enum NavigationAction {
     Offers("offers"),
     Seller("seller"),
     ForgotPassword("forgotpassword"),
-    Terms("terms");
+    Terms("terms"),
+    Filters("filters");
 
 	private final String action;
 
