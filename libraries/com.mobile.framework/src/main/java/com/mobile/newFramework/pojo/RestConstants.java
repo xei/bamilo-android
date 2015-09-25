@@ -431,4 +431,6 @@ public class RestConstants {
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
 
+    public static final String WISH_LIST_PRODUCTS = "wishlist_products";
+
 }

@@ -26,7 +26,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class used to fill the grid catalog.<br>
@@ -68,8 +67,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     private String mTargetType;
 
     private String mTitle;
-
-    private HashMap<String, Boolean> mWishListTemporaryPdvData;
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -124,13 +121,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         mDataSet = data;
         isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
         isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
-    }
-
-    /**
-     * Save to update the wish list value with respective sku.
-     */
-    public void updateWishListPdvData(HashMap<String, Boolean> map) {
-        mWishListTemporaryPdvData = map;
     }
 
     /*
@@ -257,11 +247,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param item - the product
      */
     private void setFavourite(ProductViewHolder holder, ProductRegular item, int position) {
-        // Validate temporary wish list data
-        if (mWishListTemporaryPdvData != null && mWishListTemporaryPdvData.containsKey(item.getSku())) {
-            item.setIsWishList(mWishListTemporaryPdvData.get(item.getSku()));
-            mWishListTemporaryPdvData.remove(item.getSku());
-        }
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
