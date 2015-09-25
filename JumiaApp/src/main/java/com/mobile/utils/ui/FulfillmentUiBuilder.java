@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.checkout.Fulfillment;
+import com.mobile.newFramework.objects.checkout.GlobalSeller;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -29,11 +30,27 @@ public class FulfillmentUiBuilder {
     public static View getView(Context context, Fulfillment fulfillment){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup fulfillmentMain = (ViewGroup) inflater.inflate(R.layout.fulfillment_main, null, false);
-        TextView fulfillmentWho = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_who);
-        TextView fulfillmentShippingTime = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_shipping_time);
+        TextView fulfillmentWho = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_seller_name);
 
-        fulfillmentWho.setText(String.format(context.getString(R.string.fulfilled_by), fulfillment.getGlobalSeller()));
-        fulfillmentShippingTime.setText(fulfillment.getGlobalSeller().getDeliveryTime());
+
+        GlobalSeller seller = fulfillment.getGlobalSeller();
+
+        fulfillmentWho.setText(String.format(context.getString(R.string.fulfilled_by), seller.getName()));
+        if(seller.isGlobal()){
+            TextView fulfillmentShippingInfo = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_shipping_info);
+            fulfillmentShippingInfo.setText(seller.getShippingInfo());
+            fulfillmentShippingInfo.setVisibility(View.VISIBLE);
+
+            TextView fulfillmentDeliverInfo = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_deliver_info);
+            fulfillmentDeliverInfo.setText(seller.getInfo());
+            fulfillmentDeliverInfo.setVisibility(View.VISIBLE);
+
+        } else {
+            TextView fulfillmentShippingTime = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_shipping_time);
+            fulfillmentShippingTime.setText(seller.getDeliveryTime());
+            fulfillmentShippingTime.setVisibility(View.VISIBLE);
+        }
+
 
         ViewGroup fulfillmentProductsLayout = (ViewGroup)fulfillmentMain.findViewById(R.id.fulfillment_products_layout);
 

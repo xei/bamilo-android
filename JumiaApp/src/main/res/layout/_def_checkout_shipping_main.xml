@@ -15,6 +15,7 @@
             android:id="@+id/checkout_shipping_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/rounded_margin_mid"
             android:orientation="vertical">
 
             <include layout="@layout/checkout_shipping_methods" />
