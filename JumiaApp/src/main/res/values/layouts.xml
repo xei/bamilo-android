@@ -203,5 +203,7 @@
 <item name="review_fragment"                       type="layout">@layout/_def_review_fragment</item>
 <item name="simple_email_notification_option"                       type="layout">@layout/_def_simple_email_notification_option</item>
 
+    <item name="product_offers_main_new"                        type="layout">@layout/_def_product_offers_main_new</item>
+
 </resources>
 

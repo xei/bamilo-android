@@ -490,6 +490,8 @@
 
     <integer name="variations_num_columns">1</integer>
 
+    <integer name="grid_num_columns">1</integer>
+
 
 
     <integer name="combos_num_columns">1</integer>

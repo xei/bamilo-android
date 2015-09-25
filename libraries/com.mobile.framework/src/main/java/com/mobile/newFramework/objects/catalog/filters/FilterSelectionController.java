@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.util.SparseArray;
 
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.ArrayList;
 
