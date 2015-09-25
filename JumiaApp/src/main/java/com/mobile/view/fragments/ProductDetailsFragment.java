@@ -564,11 +564,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         {
             mComboProductsLayout.setVisibility(View.GONE);
         }
-    /*    if (mProduct.getProductBundle() != null && mProduct.getProductBundle().getBundleProducts().size() > 0) {
-            buildComboSection(mProduct.getProductBundle());
-        } else {
-            mComboProductsLayout.setVisibility(View.GONE);
-        }*/
+
     }
 
     /**
@@ -714,7 +710,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickCombosProduct() {
         Log.i(TAG, "ON CLICK COMBOS SECTION");
         Bundle bundle = new Bundle();
-        bundle.putParcelable("bundleList", mProduct.getProductBundle());
+        bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
         getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1171,9 +1167,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
     private void triggerGetProductBundle(String sku) {
-        Bundle arg = new Bundle();
-        arg.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
-        triggerContentEvent(new GetProductBundleHelper(), arg, this);
+        triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
 
 
