@@ -101,8 +101,8 @@
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
     <string name="favourite_add_to_cart">ေစ်း၀ယ္လွည္းသို႔ ထည္႔ထားေသာ ပစၥည္း</string>
     <string name="favourite_addalltocart">ပစၥည္းအားလံုး ေစ်း၀ယ္လွည္းသို႔ ထည္႔သြင္းမည္</string>
-    <string name="favourite_no_favourites">သင့္အၾကိဳက္ပစၥည္းမ်ားမရွိေသးပါ။</string>
-    <string name="favourites">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးမ်ား</string>
+    <string name="save_no_saved">သင့္အၾကိဳက္ပစၥည္းမ်ားမရွိေသးပါ။</string>
+    <string name="saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးမ်ား</string>
     <string name="fgt_pass">Password ေမ့သြားပါသလား?</string>
     <string name="filter_label">စစ္ထုတ္ရန္</string>
     <string name="forgotpass_header">Password ျပန္လည္ရယူရန္</string>
@@ -218,10 +218,10 @@
     <string name="product_variance_choose">ေက်းဇူးျပဳ၍ ေရြးခ်ယ္ပါ</string>
     <string name="product_variance_choose_error">ေက်းဇူးျပဳ၍ တစ္ခုေရြးခ်ယ္ပါ</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔သြင္းၿပီးပါၿပီ&#160;</string>
+    <string name="products_added_saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔သြင္းၿပီးပါၿပီ&#160;</string>
     <string name="products_could_notloaded">ပစၥည္းမ်ား Loading ျပဳလုပ္၍မရပါ။ ေက်းဇူးျပဳ၍ ထပ္မံႀကိဳးစားပါ။</string>
     <string name="products_label">ကုန္ပစၥည္းမ်ား</string>
-    <string name="products_removed_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းမွ ဖယ္ရွားၿပီးပါၿပီ&#160;</string>
+    <string name="products_removed_saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းမွ ဖယ္ရွားၿပီးပါၿပီ&#160;</string>
     <string name="products_sort_bestrated">အေကာင္းဆံုးအမွတ္ေပးခ်က္&#160;</string>
     <string name="products_sort_brand">Brand&#160;</string>
     <string name="products_sort_name">အမည္&#160;</string>
@@ -229,7 +229,7 @@
     <string name="products_sort_popularity">လူႀကိဳက္မ်ားေက်ာ္ၾကားမႈ&#160;</string>
     <string name="products_sort_pricedown">ေစ်းႏႈန္းအက်&#160;</string>
     <string name="products_sort_priceup">ေစ်းႏႈန္းအတက္&#160;</string>
-    <string name="products_tip_favourite_text">အႀကိဳက္ဆံုးကုန္ပစၥည္းမ်ားကို ကလစ္ႏွိပ္လိုက္ပါ!</string>
+    <string name="products_tip_saved_text">အႀကိဳက္ဆံုးကုန္ပစၥည္းမ်ားကို ကလစ္ႏွိပ္လိုက္ပါ!</string>
     <string name="products_tip_swipe_text">အမ်ိဳးအစားခြဲျခားပံုေျပာင္းရန္ဘယ္ညာ တစ္ဘက္ဘက္သို႔ေရႊ႕ပါ</string>
     <string name="promotion_tip_tap_text">ကုဒ္အားclipboardသို႕ ေကာ္ပီကူးရန္ အေပၚရွိအကြက္ကို ႏွိပ္ျပီး လြယ္ကူစြာ ေငြေပးေခ်ပါ။</string>
     <string name="rating_option_error_message">အဆင့္သတ္မွတ္ေပးျခင္းမ်ားအားလံုး ျဖည္႔ေပးရပါမည္။</string>
@@ -309,7 +309,7 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="terms_and_conditions">စည္းမ်ဥ္းစည္းကမ္းမ်ား</string>
     <string name="thank_you_order_title">ေက်းဇူးတင္ပါသည္!</string>
-    <string name="tip_favourite_text">ဤပစၥည္းအား အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔ရန္ကလစ္ႏွိပ္ၿပီး My profile တြင္စာရင္းအားျပန္ၾကည္႕ပါ။</string>
+    <string name="tip_saved_text">ဤပစၥည္းအား အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔ရန္ကလစ္ႏွိပ္ၿပီး My profile တြင္စာရင္းအားျပန္ၾကည္႕ပါ။</string>
     <string name="tip_share_text">ဤပစၥည္းအေၾကာင္း ေ၀မွ်ရန္ ကလစ္ႏွိပ္ပါ။</string>
     <string name="tip_swipe_text">အျခားရုပ္ပံုမ်ားၾကည္႔ရႈရန္ ဘယ္ညာတစ္ဘက္ဘက္သို႔ ေရႊ႕ပါ</string>
     <string name="tip_tap_text">ကုန္ပစၥည္းျပခန္းသို႔၀င္ရန္ ႏွိပ္ပါ။</string>

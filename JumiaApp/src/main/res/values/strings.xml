@@ -102,8 +102,6 @@
     <string name="fallback_welcome">WELCOME TO</string>
     <string name="favourite_add_to_cart">Item Added to Cart</string>
     <string name="favourite_addalltocart">Add All Items to Cart</string>
-    <string name="favourite_no_favourites">You have no favourite items at the moment</string>
-    <string name="favourites">My Favourites</string>
     <string name="fgt_pass">Forgot Password?</string>
     <string name="filter_label">Filter</string>
     <string name="forgotpass_header">Password Recovery</string>
@@ -219,10 +217,8 @@
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">Item added to My Favourites</string>
     <string name="products_could_notloaded">Loading more products failed. Please try again.</string>
     <string name="products_label">Products</string>
-    <string name="products_removed_favourite">Item removed from My Favourites</string>
     <string name="products_sort_bestrated">Best Rating</string>
     <string name="products_sort_brand">Brand</string>
     <string name="products_sort_name">Name</string>
@@ -230,7 +226,6 @@
     <string name="products_sort_popularity">Popularity</string>
     <string name="products_sort_pricedown">Price down</string>
     <string name="products_sort_priceup">Price up</string>
-    <string name="products_tip_favourite_text">Click to Favourite products!</string>
     <string name="products_tip_swipe_text">Swipe left or right to change the sort type</string>
     <string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
     <string name="rating_option_error_message">All ratings options must be filled</string>
@@ -310,7 +305,6 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="thank_you_order_title">Thank You!</string>
-    <string name="tip_favourite_text">Click to favourite this product and view the full list in My Profile</string>
     <string name="tip_share_text">Click to share this product</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images</string>
     <string name="tip_tap_text">Tap to open the product gallery</string>
@@ -390,6 +384,9 @@
     <string name="country">Country</string>
     <string name="birthday_label">birthday</string>
     <string name="birthday_error">Please choose a valid Birthday.</string>
+    <string name="filter_placeholder">(%d)</string>
+    <string name="clear_all_lowercase_label">Clear All</string>
+    <string name="apply_label">Apply</string>
     <string name="see_other_variations">See other variations</string>
     <string name="be_first_rate">be the first to rate</string>
     <string name="seller_info">SELLER INFORMATION</string>
@@ -402,4 +399,11 @@
     <string name="buy_the_look">BUY THE LOOK</string>
     <string name="pdv_size">Size</string>
     <string name="buy_now_button">BUY NOW</string>
+    <string name="save_no_saved">You have no saved items at the moment</string>
+    <string name="saved">Saved</string>
+    <string name="products_added_saved">Item added to Saved</string>
+    <string name="products_removed_saved">Item removed from Saved</string>
+    <string name="products_tip_saved_text">Click to Save products!</string>
+    <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
+    <string name="warranty">Warranty: %s</string>
 </resources>

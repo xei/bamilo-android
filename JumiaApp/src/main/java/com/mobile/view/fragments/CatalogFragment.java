@@ -24,7 +24,6 @@ import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -51,7 +50,6 @@ import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.UICatalogHelper;
-import com.mobile.utils.dialogfragments.DialogFilterFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
@@ -68,7 +66,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
@@ -338,7 +336,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
     }
-    
+
+    @Override
+    public void notifyFragment(Bundle bundle) {
+        super.notifyFragment(bundle);
+        if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
+            onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
+        }
+    }
+
     /*
      * ############## LAYOUT ##############
      */
@@ -390,8 +396,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Update catalog items with saved temporary wish list values
-        adapter.updateWishListPdvData(JumiaApplication.getWishListTemporaryPdvData());
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
@@ -598,7 +602,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
-            if (mWishListItemClicked.isWishList()) {
+            if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
@@ -614,7 +618,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void updateWishListProduct() {
         if(mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
-            mWishListItemClicked.setIsWishList(!mWishListItemClicked.isWishList());
             mGridView.getAdapter().notifyDataSetChanged();
         }
     }
@@ -663,17 +666,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWizardStub.setVisibility(View.GONE);
     }
 
-    /**
-     * Process the click on filter button
-     */
-    private void onClickFilterButton() {
+    private void onClickFilterButton(){
         Print.i(TAG, "ON CLICK FILTER BUTTON");
         try {
             // Show dialog
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
-            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
+            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
+            getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
@@ -684,7 +683,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @param filterValues - the new content values from dialog
      */
-    public void onSubmitFilterValues(ContentValues filterValues) {
+    private void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         //Remove old filters from final request values
         for(String key : mCurrentFilterValues.keySet()){
@@ -693,12 +692,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
         // Save the current filter values
         mCurrentFilterValues = filterValues;
-        // Set the filter button selected or not
-        UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
-        // Get new catalog
-        triggerGetInitialCatalogPage();
+
         // Track catalog filtered
         TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
     }
