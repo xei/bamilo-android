@@ -405,4 +405,5 @@
     <string name="products_removed_saved">Item removed from Saved</string>
     <string name="products_tip_saved_text">Click to Save products!</string>
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
+    <string name="warranty">Warranty: %s</string>
 </resources>

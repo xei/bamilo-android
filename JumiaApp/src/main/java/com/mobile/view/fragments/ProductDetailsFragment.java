@@ -450,6 +450,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                 delliverySection.setVisibility(View.VISIBLE);
             }
+            if ( mProduct.getSeller().getWarranty() != "") {
+
+                ViewGroup warrantySection = (ViewGroup) sellerView.findViewById(R.id.warrantySection);
+                TextView txwarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
+                String Warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
+                txwarranty.setText(Warranty);
+
+                warrantySection.setVisibility(View.VISIBLE);
+            }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);
         }

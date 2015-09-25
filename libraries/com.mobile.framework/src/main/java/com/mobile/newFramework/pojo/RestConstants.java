@@ -136,9 +136,10 @@ public class RestConstants {
     public static final String JSON_SKU_TAG ="sku";
 
     // Seller tags
-    public static final String JSON_SELLER_TAG = "seller";
+    public static final String JSON_SELLER_TAG = "seller_entity";
     public static final String JSON_MIN_DELIVERY_TAG = "min_delivery_time";
     public static final String JSON_MAX_DELIVERY_TAG = "max_delivery_time";
+    public static final String JSON_WARRANTY_TAG = "warranty";
 
     // Variation Tags
     public static final String JSON_LINK_TAG = "link";
