@@ -4,6 +4,7 @@
 package com.mobile.helpers.products;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
@@ -54,6 +55,17 @@ public class GetProductBundleHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
         BundleList productBundle = (BundleList) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productBundle);
+    }
+
+
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String sku) {
+        // Item data
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
+        return bundle;
     }
 
 }
