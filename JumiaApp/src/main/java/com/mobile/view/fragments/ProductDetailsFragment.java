@@ -40,6 +40,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.objects.product.pojo.ProductSpecification;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -926,8 +927,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         // Validate fragment visibility
@@ -939,7 +940,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Hide dialog progress
         hideActivityProgress();
         // Validate event
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
@@ -950,7 +951,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 executeAddToShoppingCartCompleted(false);
                 break;
             case GET_PRODUCT_DETAIL:
-                ProductComplete product = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                ProductComplete product = (ProductComplete)baseResponse.getMetadata().getData();
                 // Validate product
                 if (product == null || product.getName() == null) {
                     ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_NOT_RETRIEVED);
@@ -982,12 +983,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
 
         // Specific errors
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
@@ -999,7 +1000,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         hideActivityProgress();
 
         // Generic errors
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             //mBundleButton.setEnabled(true);
             return;
         }
@@ -1011,13 +1012,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Hide dialog progress
                 hideActivityProgress();
                 // Validate error
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     showUnexpectedErrorWarning();
                 }
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
 
                     if (errorMessages != null) {
                         int titleRes = R.string.error_add_to_cart_failed;
