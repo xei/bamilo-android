@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
-import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
