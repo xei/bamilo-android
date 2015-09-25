@@ -1068,7 +1068,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void onClickRetryButton(View view) {
         // ...
-        onResume();
     }
 
     /**
