@@ -201,5 +201,9 @@ public class CurrencyFormatter {
             return false;
         }
     }
+
+    public static String getCurrencySymbol(){
+        return currencyUnitPattern.replace("%s","");
+    }
     
 }
