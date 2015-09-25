@@ -431,4 +431,8 @@ public class RestConstants {
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
 
+    public static final String JSON_SELLER_ENTITY = "seller_entity";
+    public static final String JSON_IS_GLOBAL = "is_global";
+    public static final String JSON_FULFILLMENT = "fulfillment";
+
 }
