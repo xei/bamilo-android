@@ -33,8 +33,8 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
+import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -101,12 +101,6 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearchCategory = true;
     private HashMap<String, String> bannerSkus = new HashMap<>();
 
-    /**
-     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
-     */
-    private static HashMap<String, Boolean> sWishListTemporary;
-
-
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -140,21 +134,13 @@ public class JumiaApplication extends A4SApplication {
          */
         Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if (!TextUtils.isEmpty(currencyCode)) {
-            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
-        }
-
-        /**
-         * When app try recover from background
-         */
-        if(!TextUtils.isEmpty(SHOP_ID)) {
+        if(!TextUtils.isEmpty(SHOP_ID) && !TextUtils.isEmpty(currencyCode)) {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
         // Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -410,7 +396,7 @@ public class JumiaApplication extends A4SApplication {
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
-        sWishListTemporary = null;
+        WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
     }
@@ -465,14 +451,6 @@ public class JumiaApplication extends A4SApplication {
     public void clearBannerFlowSkus() {
         bannerSkus = null;
     }
-
-    /**
-     * This Map is used to save wish list value on PDV to update the catalog onRecover from background.
-     */
-    public static HashMap<String, Boolean> getWishListTemporaryPdvData() {
-        return sWishListTemporary == null ? sWishListTemporary = new HashMap<>() : sWishListTemporary;
-    }
-
 
 }
 

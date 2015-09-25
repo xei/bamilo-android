@@ -385,8 +385,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Update catalog items with saved temporary wish list values
-        adapter.updateWishListPdvData(JumiaApplication.getWishListTemporaryPdvData());
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
@@ -591,7 +589,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
-            if (mWishListItemClicked.isWishList()) {
+            if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
@@ -607,7 +605,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void updateWishListProduct() {
         if(mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
-            mWishListItemClicked.setIsWishList(!mWishListItemClicked.isWishList());
             mGridView.getAdapter().notifyDataSetChanged();
         }
     }

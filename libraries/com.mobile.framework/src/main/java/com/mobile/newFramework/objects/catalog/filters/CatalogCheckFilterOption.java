@@ -1,7 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
 import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -60,6 +60,7 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     }
 
     @Override
+    @NonNull
     public String getLabel() {
         return label;
     }
@@ -70,6 +71,7 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     }
 
     @Override
+    @NonNull
     public String getVal() {
         return val;
     }
