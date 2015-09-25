@@ -443,12 +443,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //get delivery time section and change content
                 ViewGroup delliverySection = (ViewGroup) sellerView.findViewById(R.id.deliverSection);
                 TextView txDeliverTime = (TextView) delliverySection.findViewById(R.id.txDeliver);
-                txDeliverTime.setText(getResources().getString(R.string.delivery_time1) + ":");
-
-                TextView mSellerDeliveryTime = (TextView) delliverySection.findViewById(R.id.txDeliverTimeContent);
-                mSellerDeliveryTime.setText(min + " - " + max + " " + getResources().getString(R.string.product_delivery_days));
+                String DeliveryTime = String.format(getResources().getString(R.string.delivery_time1)+" "+getResources().getString(R.string.product_delivery_days), min, max);
+                txDeliverTime.setText(DeliveryTime);
 
                 delliverySection.setVisibility(View.VISIBLE);
+            }
+            if ( mProduct.getSeller().getWarranty() != "") {
+
+                ViewGroup warrantySection = (ViewGroup) sellerView.findViewById(R.id.warrantySection);
+                TextView txwarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
+                String Warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
+                txwarranty.setText(Warranty);
+
+                warrantySection.setVisibility(View.VISIBLE);
             }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);

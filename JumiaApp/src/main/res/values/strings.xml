@@ -392,7 +392,7 @@
     <string name="seller_info">SELLER INFORMATION</string>
     <string name="read_more">Read More</string>
     <string name="more_specifications">More Specifications</string>
-    <string name="delivery_time1">Delivery time</string>
+    <string name="delivery_time1">Delivery time: %1$s - %2$s</string>>
     <string name="see_other_colors">See other colors</string>
     <string name="combo">COMBOS</string>
     <string name="may_like">YOU MAY ALSO LIKE</string>
@@ -405,4 +405,5 @@
     <string name="products_removed_saved">Item removed from Saved</string>
     <string name="products_tip_saved_text">Click to Save products!</string>
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
+    <string name="warranty">Warranty: %s</string>
 </resources>
