@@ -73,8 +73,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
-    public static final int NO_TITLE = 0;
-
     private NavigationAction action;
 
     protected DialogFragment dialog;

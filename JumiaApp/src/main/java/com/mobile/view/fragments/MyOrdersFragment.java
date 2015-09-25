@@ -56,7 +56,7 @@ public class MyOrdersFragment extends BaseFragment {
      * Empty constructor
      */
     public MyOrdersFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
                 R.layout.myorders_fragment_main,
                 R.string.my_orders_label,

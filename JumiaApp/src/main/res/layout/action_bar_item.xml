@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/action_cart_image"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:clickable="true"
+        android:src="@drawable/selector_shop" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/action_cart_count"
+        style="@style/TextCaption"
+        android:text="Home"
+        android:textColor="?android:attr/textColorPrimary" />
+
+</LinearLayout>

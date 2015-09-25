@@ -67,7 +67,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
                 R.layout.product_summary_fragment,
-                NO_TITLE,
+                R.string.product_desc_summary_title,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

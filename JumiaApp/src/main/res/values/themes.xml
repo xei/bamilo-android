@@ -39,10 +39,10 @@
     <!-- ####################################################################### -->
 
     <!-- Jumia -->
-    <style name="Theme.Jumia" parent="Theme.AppCompat.Light">
+    <style name="Theme.Jumia" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- #### Custom Material Color Palette -->
         <!-- Color for the app bar -->
-        <item name="colorPrimary">@color/grey_tab_background</item>
+        <item name="colorPrimary">@color/black_900</item>
         <!-- Color for the status bar and contextual app bars -->
         <item name="colorPrimaryDark">@color/grey_dark</item>
         <!-- Color for UI controls like checkboxes and text fields -->
@@ -50,26 +50,24 @@
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/grey_dark</item>
         <!-- Color for app background -->
-        <item name="android:windowBackground">@color/background_color</item>
+        <item name="android:windowBackground">@color/window_background_color</item>
         <!-- #### Text -->
-        <item name="android:textColorPrimary">@color/grey_middle</item>
-        <item name="android:textColorSecondary">@color/grey_middle</item>
-        <item name="android:textColorTertiary">@color/grey_middle</item>
-        <item name="android:editTextColor">@color/grey_middle</item>
-        <item name="editTextColor">@color/grey_middle</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorTertiary">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="editTextColor">@color/white</item>
         <!-- #### Action Bar -->
         <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
-
         <!-- #### Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
         <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_green</item>
         <!-- <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_orange</item> -->
         <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_green</item>
         <!--<item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>-->
-
         <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
         <!-- #### Custom Spinner View -->
@@ -84,9 +82,9 @@
     <!-- Theme for ActionBar from support library compatibility -->
     <style name="Widget.Jumia.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- Apply the color filter for AB -->
-        <item name="android:colorControlNormal">@color/grey_middledark</item>
-        <item name="colorControlNormal">@color/grey_middledark</item>
-        <!-- Apply the ArrawStyle for AB -->
+        <item name="android:colorControlNormal">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <!-- Apply the ArrowStyle for AB -->
         <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
         <!-- To apply the color filter over indicator in Android v5.0.1 -->
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
@@ -98,7 +96,7 @@
     <!-- Style for DrawerArrow from support library compatibility -->
     <style name="Widget.Jumia.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
-        <item name="color">@color/grey_middledark</item>
+        <item name="color">@color/white</item>
     </style>
 
     <!-- Style for ActionBar Buttons from support library compatibility -->
@@ -112,9 +110,9 @@
 
     <!-- Search view from support library compatibility -->
     <style name="Widget.Jumia.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
-        <item name="queryBackground">@drawable/selector_textfield_orange</item>
-        <item name="closeIcon">@drawable/btn_clearsearchfield</item>
-        <item name="searchIcon">@drawable/selector_search_edit_icon</item>
+        <!--<item name="queryBackground">@drawable/selector_textfield_orange</item>-->
+        <!--<item name="closeIcon">@drawable/btn_clearsearchfield</item>-->
+        <!--<item name="searchIcon">@drawable/selector_search_edit_icon</item>-->
         <item name="collapseIcon">?attr/homeAsUpIndicator</item>
     </style>
 
