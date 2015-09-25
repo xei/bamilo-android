@@ -153,7 +153,7 @@ public class DeepLinkManager {
             String tag = DEFAULT_TAG;
 
             // Validate current URI size
-            if (CollectionUtils.isNotEmpty(segments) && segments.size() > 2) {
+            if (CollectionUtils.isNotEmpty(segments) && segments.size() >= 2) {
                 tag = segments.get(PATH_VIEW_POS);
                 country = segments.get(PATH_CC_POS);
             }
@@ -571,8 +571,10 @@ public class DeepLinkManager {
      */
     public static boolean validateCountryDeepLink(Context context,Intent intent,Handler callback ){
         String selectedCountryCode = ShopPreferences.getShopId(context);
+        Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
         // Validate saved shop id
         if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED) {
+            Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
             return checkDeepLink(context, intent, callback);
         } else {
             Print.e(TAG, "DEEP LINK CC IS THE SAME");
@@ -589,9 +591,12 @@ public class DeepLinkManager {
      * @return true or false if there is a valid country from deeplink
      */
     private static boolean checkDeepLink(Context context, Intent intent, Handler callback){
+        Print.e(TAG, "checkDeepLink:");
         Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
+        Print.e(TAG, "checkDeepLink:"+mDeepLinkBundle);
         if(mDeepLinkBundle != null){
             String countryCode = mDeepLinkBundle.getString(DeepLinkManager.COUNTRY_TAG);
+            Print.e(TAG, "countryCode:"+countryCode);
             if(!TextUtils.isEmpty(countryCode)){
                 LocationHelper.getInstance().initializeLocationHelper(context, callback);
                 if(LocationHelper.getInstance().isCountryAvailable(countryCode)){
