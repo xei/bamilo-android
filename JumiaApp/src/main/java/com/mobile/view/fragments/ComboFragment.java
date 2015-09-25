@@ -156,12 +156,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         {
             if(productBundle.isChecked())
             {
-                findSelectedSimple(productBundle);
+              //  findSelectedSimple(productBundle);
 
             }
         }
-
-        executeAddProductToCart();
 
     }
 
@@ -245,19 +243,30 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         }
         // Case Multi simple variations
         else if(productBundle.hasMultiSimpleVariations() &&  productBundle.getSimples().size() > 0) {
-            ShowBottomSheet(productBundle,productBundle.getVariationName());
+            //ShowBottomSheet(productBundle,productBundle.getVariationName());
+            onClickSimpleVariationsButton(productBundle);
 
         }
 
     }
 
 
-    private void onClickBundleButton(ProductBundle productBundle) {
+    private void removedSelectedSimple(ProductBundle productBundle) {
+        // Case Own simple variation
+        if(productBundle.hasOwnSimpleVariation()) {
+            selectedProducts.remove(productBundle);
+        }
+
+    }
+
+
+
+    private void onClickSimpleVariationsButton(ProductBundle productBundle) {
         Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
-                    getString(R.string.product_variance_choose),
+                    productBundle.getVariationName(),
                     productBundle,
                     this);
             dialog.show(getFragmentManager(), null);
@@ -268,14 +277,26 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
 
-    private void ShowBottomSheet(ProductBundle productBundle, String variationName)
-    {
-/*        bottomSheet = CustomBottomSheet.newInstance(c,productBundle,variationName);
-        bottomSheet.setOnDismissListener(this);
-        bottomSheet.show(getFragmentManager(), null);*/
+    @Override
+    public void onDialogListItemSelect(int position) {
+        try {
+            ProductBundle productBundle;
+         //   ProductSimple simple = productBundle.getSelectedSimple(position);
+        /*    if (simple != null) {
 
-
+            }*/
+        } catch (NullPointerException e) {
+            // ...
+        }
     }
+
+    @Override
+    public void onDialogListClickView(View view) {
+        String a = "";
+    }
+
+
+
 
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {
@@ -308,6 +329,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             else
                 totalPrice += selectedBundle.getPrice();
 
+            findSelectedSimple(selectedBundle);
+
         }else
         {
             if(selectedBundle.hasDiscount())
@@ -315,6 +338,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             else
                 totalPrice -= selectedBundle.getPrice();
         }
+
+        //select simple
 
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
 
@@ -467,13 +492,5 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
 
-    @Override
-    public void onDialogListItemSelect(int position) {
-        String s ="a";
-    }
 
-    @Override
-    public void onDialogListClickView(View view) {
-        String a = "";
-    }
 }
