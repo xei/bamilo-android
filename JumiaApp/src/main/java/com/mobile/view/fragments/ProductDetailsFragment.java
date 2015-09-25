@@ -779,6 +779,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
+     * Process the click on other offers button if has offers
+     */
+    private void onClickOtherOffersProduct() {
+        Log.i(TAG, "ON CLICK OTHER OFFERS");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
      * Process the click on buy
      */
     private void onClickBuyProduct() {
