@@ -406,4 +406,5 @@
     <string name="products_tip_saved_text">Click to Save products!</string>
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
     <string name="warranty">Warranty: %s</string>
+    <string name="other_sellers_starting">Other Sellers starting from:</string>
 </resources>

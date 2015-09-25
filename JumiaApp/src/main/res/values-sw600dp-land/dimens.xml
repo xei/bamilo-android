@@ -87,4 +87,6 @@
 
     <integer name="variations_num_columns">2</integer>
 
+    <integer name="grid_num_columns">2</integer>
+
 </resources>

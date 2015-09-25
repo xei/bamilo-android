@@ -35,6 +35,7 @@ public class ProductComplete extends ProductMultiple {
     private Seller mSeller;
     private double mMinPriceOffer;
     private double mMinPriceOfferConverted;
+    private boolean hasOffers;
     private int mTotalOffers;
     private ArrayList<ProductRegular> mRelatedProducts;
     private ArrayList<ProductSpecification> mProductSpecs;
@@ -69,6 +70,8 @@ public class ProductComplete extends ProductMultiple {
             super.initialize(jsonObject);
             // Fashion PDV
             isFashion = TextUtils.equals(jsonObject.optString(RestConstants.VERTICAL), RestConstants.FASHION);
+            //has offers
+            hasOffers = false;
             // Share url
             mShareUrl = jsonObject.optString(RestConstants.JSON_SHARE_URL_TAG);
             // Bundle
@@ -94,6 +97,8 @@ public class ProductComplete extends ProductMultiple {
                 mMinPriceOffer = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
                 mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
                 mTotalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG);
+                hasOffers = true;
+
             }
             // Related products
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
@@ -204,6 +209,10 @@ public class ProductComplete extends ProductMultiple {
     public boolean isFashion() {
         return isFashion;
     }
+
+    public boolean hasOffers() { return hasOffers; }
+
+    public double getmMinPriceOffer() { return mMinPriceOffer;}
 
     /*
      * ############ PARCELABLE ############

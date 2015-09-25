@@ -459,6 +459,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                 warrantySection.setVisibility(View.VISIBLE);
             }
+
+            //show button offers with separator if has offers
+            View btOffers = sellerView.findViewById(R.id.pdv_other_sellers_button);
+            View separator = sellerView.findViewById(R.id.separator);
+            if(mProduct.hasOffers())
+            {
+                TextView txOffers = (TextView) btOffers.findViewById(R.id.pdv_sublist_button);
+                txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
+                btOffers.setOnClickListener(this);
+            }
+            else {
+                btOffers.setVisibility(View.GONE);
+                separator.setVisibility(View.GONE);
+            }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);
         }
@@ -693,18 +707,25 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_call) onClickCallToOrder();
         // Case buy button
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
+        // case other offers
+        else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
     }
 
-//    /**
-//     * function that sends the user to the product offers view
-//     */
-//    private void goToProductOffers() {
-//        Log.i(TAG, "ON CLICK OFFERS");
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
+
+
+    /**
+     * Process the click on other offers button if has offers
+     */
+    private void onClickOtherOffersProduct() {
+        Log.i(TAG, "ON CLICK OTHER OFFERS");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+
 
     /**
      * Process the click on rating
