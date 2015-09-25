@@ -45,8 +45,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private ArrayList<ProductBundle> mDataSet;
 
-    private double totalItemsPrice=0.0;
-
     private Context mContext;
 
     private int mLastPosition = -1;
@@ -270,21 +268,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         this.mOnViewHolderClicked = listener;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
 
-    public double getTotalItemsPrice()
-    {
-        return getTotalItemsPrice();
-    }
-
-
-    public void setTotalItemsPrice(double totalPrice)
-    {
-        totalItemsPrice = totalPrice;
-    }
 
     @Override
     public void onClick(View view) {
