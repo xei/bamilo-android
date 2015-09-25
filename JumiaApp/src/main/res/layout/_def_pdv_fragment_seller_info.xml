@@ -83,6 +83,7 @@
     <!-- WARRANTY: OPTIONAL -->
 
     <LinearLayout
+        android:id="@+id/warrantySection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/layout_padding"
@@ -99,17 +100,12 @@
             android:src="@drawable/ic_warranty" />
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txWarranty"
             style="@style/TextHeader"
             color="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp" />
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/TextHeader"
-            color="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
