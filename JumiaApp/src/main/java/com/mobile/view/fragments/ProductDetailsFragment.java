@@ -699,16 +699,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_combos_container) onClickCombosProduct();
     }
 
-//    /**
-//     * function that sends the user to the product offers view
-//     */
-//    private void goToProductOffers() {
-//        Log.i(TAG, "ON CLICK OFFERS");
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
 
 
     /**
@@ -1002,7 +992,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case GET_PRODUCT_BUNDLE:
                 BundleList bundleList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                //keep the bundle
+                mProduct.setProductBundle(bundleList);
                 // build combo section from here
+                buildComboSection(bundleList);
             default:
                 break;
         }
