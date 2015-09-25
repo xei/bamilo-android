@@ -335,7 +335,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         ViewGroup mRegionGroup = (ViewGroup) control.getControl();
         IcsSpinner spinner = (IcsSpinner) mRegionGroup.getChildAt(0);
         FormListItem mSelectedRegion = (FormListItem) spinner.getSelectedItem();
-        model.put(control.getName(), mSelectedRegion.getValue());
+        if(mSelectedRegion != null)
+            model.put(control.getName(), mSelectedRegion.getValue());
     }
 
     /**

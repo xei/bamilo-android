@@ -50,7 +50,7 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
         try {
             id = jsonObject.optString(RestConstants.ID);
             name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
-            method = jsonObject.optString(RestConstants.JSON_METHOD_TAG);
+            method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
 
             fields.clear();
@@ -94,7 +94,7 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
         try {
             jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.JSON_FORM_TAG, name);
-            jsonObject.put(RestConstants.JSON_METHOD_TAG, method);
+            jsonObject.put(RestConstants.METHOD, method);
             jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
 
             JSONArray fieldArray = new JSONArray();

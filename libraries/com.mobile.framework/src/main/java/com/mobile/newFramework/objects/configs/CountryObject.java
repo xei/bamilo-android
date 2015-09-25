@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     private boolean forceHttps;
     private boolean isLive;
     private String userAgentToAccessDevServers;
-
+    private Languages languages;
     /**
      * Empty Constructor
      */
@@ -195,7 +196,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        url = jsonObject.optString(RestConstants.JSON_URL_TAG);
+        url = jsonObject.optString(RestConstants.URL);
         if (url != null) {
             // This is necessary otherwise Uri.Builder will encode the authority
             url = url.replace("/mobapi/", "");
@@ -206,6 +207,12 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
         // Used only for access dev servers
         userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
+        try {
+            languages = new Languages(jsonObject);
+        }catch (JSONException ex){
+            Print.e(ex.getMessage());
+        }
+
         return true;
     }
 
@@ -217,6 +224,14 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public RequiredJson getRequiredJson() {
         return null;
+    }
+
+    public Languages getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
     }
 }
 

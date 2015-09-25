@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
@@ -18,6 +18,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -41,7 +42,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class TrackerDelegator {
@@ -256,7 +256,7 @@ public class TrackerDelegator {
                 params.getLong(QUANTITY_KEY), params.getString(CARTVALUE_KEY), EUR_CURRENCY);
     }
 
-    public static void trackCheckout(List<ShoppingCartItem> items) {
+    public static void trackCheckout(List<PurchaseCartItem> items) {
         AnalyticsGoogle.get().trackCheckout(items);
     }
 
@@ -264,7 +264,7 @@ public class TrackerDelegator {
      *
      */
     public static void trackItemShared(Intent intent, String category) {
-        String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
+        String sku = intent.getExtras().getString(RestConstants.SKU);
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
@@ -415,11 +415,11 @@ public class TrackerDelegator {
     /**
      * For Native Checkout
      */
-    public static void trackPurchaseNativeCheckout(final Bundle params, final Map<String, ShoppingCartItem> mItems) {
+    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<PurchaseCartItem> mItems, final String attributeIdList) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                trackNativeCheckoutPurchase(params, mItems);
+                trackNativeCheckoutPurchase(params, mItems, attributeIdList);
             }
 
         }).start();
@@ -456,7 +456,7 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // AD4
-        Ad4PushTracker.get().trackCheckoutEnded(order.number, order.valueConverted, order.value, order.average, order.items.size(), order.coupon);
+        Ad4PushTracker.get().trackCheckoutEnded(order.number, order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -478,7 +478,7 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
     }
 
-    private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
+    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems, String attributeIdList) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);
@@ -523,7 +523,7 @@ public class TrackerDelegator {
         //GA Banner Flow
         trackBannerClick(items);
         // Ad4
-        Ad4PushTracker.get().trackCheckoutEnded(orderNr, grandTotal, cartValue, averageValue, numberOfItems, coupon);
+        Ad4PushTracker.get().trackCheckoutEnded(orderNr, grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -601,11 +601,11 @@ public class TrackerDelegator {
     /**
      * Tracking the start of checkout
      */
-    public static void trackCheckoutStart(TrackingEvent event, String userId, int cartQt, double cartValue) {
+    public static void trackCheckoutStart(TrackingEvent event, String userId, int cartQt, double cartValue, String attributeIdList) {
         // GA
         AnalyticsGoogle.get().trackEvent(event, userId, 0l);
         // AD4Push
-        Ad4PushTracker.get().trackCheckoutStarted(cartQt, cartValue);
+        Ad4PushTracker.get().trackCheckoutStarted(cartQt, cartValue, attributeIdList);
         // GTM
         GTMManager.get().gtmTrackStartCheckout(cartQt, cartValue, EUR_CURRENCY);
         // FB
@@ -653,6 +653,21 @@ public class TrackerDelegator {
         }
     }
 
+
+    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type ) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
+        bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        trackProductAddedToCart(bundle);
+    }
+
     /**
      * Tracking a product added to cart
      */
@@ -697,6 +712,25 @@ public class TrackerDelegator {
         }
 
     }
+
+    /**
+     *
+     */
+    public static void trackProduct(ProductRegular mCompleteProduct, String source, String path, boolean isRelatedItem) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SOURCE_KEY, source);
+        bundle.putString(TrackerDelegator.PATH_KEY, path);
+        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
+        bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
+        bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories());
+        trackProduct(bundle);
+    }
+
 
     /**
      * Tracking a complete product
@@ -1019,7 +1053,6 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.CALL, bundle);
-
     }
 
 
@@ -1065,9 +1098,9 @@ public class TrackerDelegator {
      * Track the new cart for each user interaction, add or remove.
      * @author sergiopereira
      */
-    public static void trackCart(double cartValue, int cartCount) {
+    public static void trackCart(double cartValue, int cartCount, String attributeIds) {
         // Ad4
-        Ad4PushTracker.get().trackCart(cartValue, cartCount);
+        Ad4PushTracker.get().trackCart(cartValue, cartCount, attributeIds);
     }
 
     public static void trackAddBundleToCart(String productSku, double price) {

@@ -15,6 +15,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 
@@ -65,8 +66,6 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, loginCustomer.getCustomer());
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
-
-        //TODO move to observable
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
@@ -79,6 +78,14 @@ public class GetFacebookLoginHelper extends SuperBaseHelper {
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
+        // Save new wish list
+        WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
+    }
 
+    public static Bundle createBundle(ContentValues values, boolean saveCredentials) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
+        return bundle;
     }
 }

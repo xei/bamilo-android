@@ -3,6 +3,7 @@
  */
 package com.mobile.helpers.products;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -42,6 +43,14 @@ public class GetProductHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
         ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
+    }
+
+    public static Bundle createBundle(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(GetProductHelper.SKU_TAG, sku);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 
 }

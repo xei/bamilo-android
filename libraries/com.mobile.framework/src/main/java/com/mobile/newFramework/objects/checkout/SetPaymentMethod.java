@@ -6,7 +6,7 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +20,7 @@ import org.json.JSONObject;
  */
 public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
 
-    private OrderSummary orderSummary;
+    private PurchaseEntity orderSummary;
 
     public SetPaymentMethod() {
         super();
@@ -38,11 +38,12 @@ public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
         // Next checkout step
         super.initialize(jsonObject);
         // Order
-        orderSummary = new OrderSummary(jsonObject);
+        orderSummary = new PurchaseEntity();
+        orderSummary.initialize(jsonObject);
         return true;
     }
 
-    public OrderSummary getOrderSummary() {
+    public PurchaseEntity getOrderSummary() {
         return orderSummary;
     }
 
@@ -57,7 +58,7 @@ public class SetPaymentMethod extends CheckoutStepObject implements Parcelable {
     }
 
     private SetPaymentMethod(Parcel in) {
-        orderSummary = (OrderSummary) in.readValue(OrderSummary.class.getClassLoader());
+        orderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
     }
 
     public static final Creator<SetPaymentMethod> CREATOR = new Creator<SetPaymentMethod>() {
