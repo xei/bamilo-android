@@ -31,8 +31,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
 
     private OnViewHolderClickListener mOnViewHolderClicked;
 
-    private int nColumns=1;
-
     /**
      * Provide a reference to the views for each data item.<br>
      * @author alexandrapires
