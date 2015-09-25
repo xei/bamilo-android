@@ -29,7 +29,6 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.ComboGridView;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
@@ -40,7 +39,6 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 
 
@@ -53,7 +51,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private BundleList bundleList;
     private double totalPrice=0.0;
-    private boolean isAddingProductToCart=false;
 
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
@@ -61,9 +58,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private ComboGridAdapter adapter;
     private Button btBuyCombo;
     private Context c;
-  //  private  CustomBottomSheet bottomSheet;
+    private ProductBundle mBundleWithMultiple;
 
-    private Hashtable<ProductBundle,ProductSimple> selectedProducts;
 
     /**
      * Create and return a new instance.
@@ -109,8 +105,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         }
 
         c = getBaseActivity().getApplicationContext();
-        selectedProducts = new Hashtable<>();
-
 
     }
 
@@ -139,6 +133,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         btBuyCombo = (Button) view.findViewById(R.id.btBuyCombo);
         btBuyCombo.setOnClickListener(this);
 
+
+
     }
 
 
@@ -149,127 +145,103 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private void addComboToChart()
     {
-        //   findSelectedSimple(productBundle);
+
         ArrayList<ProductBundle> listBundles = bundleList.getBundleProducts();    //adapter.getItems(); //must be updated
 
         for(ProductBundle productBundle : listBundles)
         {
             if(productBundle.isChecked())
             {
-              //  findSelectedSimple(productBundle);
+                if(productBundle.hasOwnSimpleVariation()) {
+                    addToCartWithOnlySimple(productBundle);
+                }
+                else if(productBundle.hasMultiSimpleVariations() &&  productBundle.getSimples().size() > 0) {
+                    addToCartWithChoosenSimple(productBundle);
+                }
 
             }
         }
+
 
     }
 
     /**
-     * add a choosen Simples of a Product Bundle to cart
+     * add to cart
      *
      * @param productBundle - arguments
      */
-    private void executeAddProductToCart() {
-        // Get selected simple
-
-        for( ProductBundle productBundle : selectedProducts.keySet())
-        {
-            ProductSimple simple = selectedProducts.get(productBundle);
-
-            //   ProductSimple simple = getSelectedSimple(productBundle);//selectedProducts.get(productBundle);
-            // Validate simple
-            if (simple == null) {
-                //showVariantsDialog();
-                return;
-            }
-            // Validate quantity
-            if (simple.getQuantity() == 0) {
-                Toast.makeText(getBaseActivity(), R.string.product_outof_stock, Toast.LENGTH_SHORT).show();
-                isAddingProductToCart = false;
-                return;
-            }
-            // Validate simple sku
-            String simpleSku = simple.getSku();
-            // Add one unity to cart
-            triggerAddItemToCart(productBundle.getSku(), simpleSku);
-            // Tracking
-            android.os.Bundle bundle = new android.os.Bundle();
-            bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
-            bundle.putDouble(TrackerDelegator.PRICE_KEY, productBundle.getPriceForTracking());
-            bundle.putString(TrackerDelegator.NAME_KEY, productBundle.getName());
-            bundle.putString(TrackerDelegator.BRAND_KEY, productBundle.getBrand());
-            bundle.putDouble(TrackerDelegator.RATING_KEY, productBundle.getAvgRating());
-            bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, productBundle.getMaxSavingPercentage());
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, productBundle.getCategories());
-            bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-            TrackerDelegator.trackProductAddedToCart(bundle);
-        }
 
 
 
+    private void proceedWithAddItemToCart(ProductBundle productBundle,ProductSimple simple)
+    {
+        // Validate simple sku
+        String simpleSku = simple.getSku();
+        // Add one unity to cart
+        triggerAddItemToCart(productBundle.getSku(), simpleSku);
+        // Tracking
+        android.os.Bundle bundle = new android.os.Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, productBundle.getPriceForTracking());
+        bundle.putString(TrackerDelegator.NAME_KEY, productBundle.getName());
+        bundle.putString(TrackerDelegator.BRAND_KEY, productBundle.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, productBundle.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, productBundle.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, productBundle.getCategories());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+        TrackerDelegator.trackProductAddedToCart(bundle);
     }
-
 
 
 
     /**
-     * allows to get a SimpleProduct or choose one between several in case of multiple simples for a ProductBundle
+     * add to cart a product with an only simples
      *
      * @param productBundle - arguments
      */
-    private ProductSimple getSelectedSimple(ProductBundle productBundle) {
-        // Case Own simple variation
-        if(productBundle.hasOwnSimpleVariation()) {
-            return productBundle.getSimples().get(0);
-        }
-        // Case Multi simple variations
-        else if(productBundle.hasMultiSimpleVariations() &&  productBundle.getSimples().size() > 0) {
-            return productBundle.getSimples().get(0);   //show bottomsheet here to choose the simple
 
-        }
-        // Case invalid
-        else {
-            return null;
-        }
-    }
-
-
-
-
-    private void findSelectedSimple(ProductBundle productBundle) {
-        // Case Own simple variation
-        if(productBundle.hasOwnSimpleVariation()) {
-            selectedProducts.put(productBundle, productBundle.getSimples().get(0));
-        }
-        // Case Multi simple variations
-        else if(productBundle.hasMultiSimpleVariations() &&  productBundle.getSimples().size() > 0) {
-            //ShowBottomSheet(productBundle,productBundle.getVariationName());
-            onClickSimpleVariationsButton(productBundle);
-
-        }
-
-    }
-
-
-    private void removedSelectedSimple(ProductBundle productBundle) {
-        // Case Own simple variation
-        if(productBundle.hasOwnSimpleVariation()) {
-            selectedProducts.remove(productBundle);
-        }
+    private void addToCartWithOnlySimple(ProductBundle productBundle)
+    {
+        ProductSimple simples = productBundle.getSimples().get(0);
+        proceedWithAddItemToCart(productBundle, simples);
 
     }
 
 
 
-    private void onClickSimpleVariationsButton(ProductBundle productBundle) {
+    /**
+     * opens a dialog to choose the simples and add to cart
+     *
+     * @param productBundle - arguments
+     */
+
+    private void addToCartWithChoosenSimple(ProductBundle productBundle)
+    {
+        mBundleWithMultiple = productBundle;
+        onClickSimpleVariationsButton();
+    }
+
+
+
+    /**
+     * show dialog to choose the variation simples
+     *
+     *
+     */
+
+
+    private void onClickSimpleVariationsButton() {
         Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
-                    productBundle.getVariationName(),
-                    productBundle,
+                    mBundleWithMultiple.getVariationName(),
+                    mBundleWithMultiple,
                     this);
+
             dialog.show(getFragmentManager(), null);
+
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
@@ -277,14 +249,22 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
 
+
+    /**
+     * choose the simple and add to cart
+     *
+     * @param productBundle - arguments
+     */
+
     @Override
     public void onDialogListItemSelect(int position) {
         try {
-            ProductBundle productBundle;
-         //   ProductSimple simple = productBundle.getSelectedSimple(position);
-        /*    if (simple != null) {
 
-            }*/
+            //get selected simple
+            ProductSimple selectedSimple = mBundleWithMultiple.getSimples().get(position);
+            //add to cart with selected simple
+            proceedWithAddItemToCart(mBundleWithMultiple,selectedSimple);
+
         } catch (NullPointerException e) {
             // ...
         }
@@ -292,7 +272,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     @Override
     public void onDialogListClickView(View view) {
-        String a = "";
+
     }
 
 
@@ -316,6 +296,16 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     }
 
+
+
+
+
+    /**
+     * updates the sombo total price in checking/unchecking bundle
+     *
+     * @param productBundle - arguments
+     */
+
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
 
@@ -329,8 +319,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             else
                 totalPrice += selectedBundle.getPrice();
 
-            findSelectedSimple(selectedBundle);
-
         }else
         {
             if(selectedBundle.hasDiscount())
@@ -338,8 +326,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             else
                 totalPrice -= selectedBundle.getPrice();
         }
-
-        //select simple
 
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
 
@@ -381,9 +367,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             return;
 
         super.handleSuccessEvent(bundle);
-
-        //Finnish add product to cart
-        isAddingProductToCart= false;
         executeAddToShoppingCartCompleted(false);
     }
 
