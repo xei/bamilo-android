@@ -487,4 +487,8 @@
 
     <!-- KICKOUT -->
     <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
+
+    <integer name="variations_num_columns">1</integer>
+
+
 </resources>
