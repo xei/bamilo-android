@@ -62,6 +62,7 @@ public enum FragmentType {
     PRODUCT_OFFERS,
     INNER_SHOP,
     WRITE_REVIEW_SELLER,
+    FILTERS,
     COMBOPAGE
     ;
 
