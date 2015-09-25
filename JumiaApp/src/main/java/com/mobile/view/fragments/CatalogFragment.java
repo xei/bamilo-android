@@ -386,8 +386,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
-        getBaseActivity().setActionBarTitle(mTitle);
-//        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Set sort button
         setSortButton();
         // Set filter button
@@ -462,8 +462,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Save title
         mTitle = catalogPage.getName();
         // Set title bar
-        getBaseActivity().setActionBarTitle(mTitle);
-//        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Show header
         if (catalogPage.getPage() == IntConstants.FIRST_PAGE) {
             showHeaderBanner();
@@ -506,8 +505,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void showFilterError(int stringId) {
         Print.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
-        getBaseActivity().setActionBarTitle(mTitle);
-//        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Show layout
 //        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
 //            @Override
@@ -792,10 +790,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         setSortButton();
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
-        if(mQueryValues != null){
-            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
-        }
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
@@ -910,6 +904,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
+        // Get Sort
+        mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+        mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);

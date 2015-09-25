@@ -155,13 +155,17 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Case footer
         if(isFooter(position)) return ITEM_VIEW_TYPE_FOOTER;
         // Case item
-        if(level == ITEM_VIEW_TYPE_GRID){
-            return ITEM_VIEW_TYPE_GRID;
-        }else if(level == ITEM_VIEW_TYPE_LIST){
-            return ITEM_VIEW_TYPE_LIST;
-        }else {
-            return ITEM_VIEW_TYPE_SINGLE;
+        switch (level){
+            case ITEM_VIEW_TYPE_GRID:
+                return ITEM_VIEW_TYPE_GRID;
+            case ITEM_VIEW_TYPE_LIST:
+                return ITEM_VIEW_TYPE_LIST;
+            case ITEM_VIEW_TYPE_SINGLE:
+                return ITEM_VIEW_TYPE_SINGLE;
+            default:
+                return ITEM_VIEW_TYPE_LIST;
         }
+
     }
 
     /*

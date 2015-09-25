@@ -68,30 +68,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	 */
 	public DialogSortListFragment(){}
 
-	
-	/**
-	 * Called from PDV.
-	 * @param fragment
-	 * @param id
-	 * @param title
-	 * @param items
-	 * @param initialPosition
-	 * @return
-	 */
-	public static DialogSortListFragment newInstance(Fragment fragment, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
-	    Print.d(TAG, "NEW INSTANCE");
-	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
-	    dialogListFragment.mActivity = fragment.getActivity();
-        if (fragment instanceof OnDialogListListener) dialogListFragment.mSelectListener = (OnDialogListListener) fragment;
-        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
-        //dialogListFragment.mId = id;
-        dialogListFragment.mTitle = title;
-        dialogListFragment.mItems = items;
-        dialogListFragment.mItemsAvailable = itemsAvailable;
-        dialogListFragment.mInitialPosition = initialPosition;
-	    return dialogListFragment;
-	}
-	
+
 	/**
 	 * Called from Shopping cart.
 	 * @param fragment
@@ -113,44 +90,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	    dialogListFragment.mInitialPosition = initialPosition;
 	    return dialogListFragment;
 	}
-    
-    /**
-     * Called from Favorites.
-     * @param fragment
-     * @param listener
-     * @param id
-     * @param title
-     * @param items
-     * @param initialPosition
-     * @return
-     */
-    public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
-        Print.d(TAG, "NEW INSTANCE");
-        DialogSortListFragment dialogListFragment = new DialogSortListFragment();
-        dialogListFragment.mActivity = fragment.getActivity();
-        dialogListFragment.mSelectListener = listener; 
-        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
-        //dialogListFragment.mId = id;
-        dialogListFragment.mTitle = title;
-        dialogListFragment.mItems = items;
-        dialogListFragment.mItemsAvailable = itemsAvailable;
-        dialogListFragment.mInitialPosition = initialPosition;
-        return dialogListFragment;
-    }
-
-    public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, DialogListAdapter dialogListAdapter, int initialPosition) {
-        Print.d(TAG, "NEW INSTANCE");
-        DialogSortListFragment dialogListFragment = new DialogSortListFragment();
-        dialogListFragment.mActivity = fragment.getActivity();
-        dialogListFragment.mSelectListener = listener;
-        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
-        //dialogListFragment.mId = id;
-        dialogListFragment.mTitle = title;
-        dialogListFragment.mAdapter = dialogListAdapter;
-        dialogListFragment.mItems = dialogListAdapter.getItems();
-        dialogListFragment.mInitialPosition = initialPosition;
-        return dialogListFragment;
-    }
 
 	/*
 	 * (non-Javadoc)
