@@ -84,6 +84,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         facebookLoginClicked = false;
         FacebookHelper.facebookLogout();
         showFragmentContentContainer();
+        checkNetworkStatus();
     }
 
     @Override
@@ -92,9 +93,11 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         facebookLoginClicked = false;
         e.printStackTrace();
         FacebookHelper.facebookLogout();
-        if(!NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext())){
-            isNetworkFacebookError = true;
-        }
+        checkNetworkStatus();
+    }
+
+    protected void checkNetworkStatus(){
+        isNetworkFacebookError = !NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext());
     }
 
     /**

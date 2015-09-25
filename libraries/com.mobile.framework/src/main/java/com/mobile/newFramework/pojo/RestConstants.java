@@ -133,15 +133,21 @@ public class RestConstants {
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";
     public static final String JSON_SHARE_URL_TAG = "share_url";
+    public static final String JSON_SKU_TAG ="sku";
 
     // Seller tags
-    public static final String JSON_SELLER_TAG = "seller";
+    public static final String JSON_SELLER_TAG = "seller_entity";
     public static final String JSON_MIN_DELIVERY_TAG = "min_delivery_time";
     public static final String JSON_MAX_DELIVERY_TAG = "max_delivery_time";
+    public static final String JSON_WARRANTY_TAG = "warranty";
 
     // Variation Tags
     public static final String JSON_LINK_TAG = "link";
     public static final String JSON_VARIATION_IMAGE_TAG = JSON_IMAGE_TAG;
+    public static final String JSON_VARIATION_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_VARIATION_BRAND_TAG = JSON_BRAND_TAG;
+    public static final String JSON_VARIATION_PRICE_TAG = JSON_PRICE_TAG;
+    public static final String JSON_VARIATION_SPECIALPRICE_TAG = JSON_SPECIAL_PRICE_TAG;
 
     // ProductsPage Tags
     public static final String JSON_RESULTS_TAG = "results";
@@ -430,5 +436,7 @@ public class RestConstants {
 
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
+
+    public static final String WISH_LIST_PRODUCTS = "wishlist_products";
 
 }

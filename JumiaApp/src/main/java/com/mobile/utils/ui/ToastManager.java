@@ -94,10 +94,10 @@ public class ToastManager {
                 Toast.makeText(context, context.getString(R.string.succes_login), Toast.LENGTH_LONG).show();
                 break;
             case SUCCESS_ADDED_FAVOURITE:
-                Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.products_added_saved), Toast.LENGTH_SHORT).show();
                 break;
             case SUCCESS_REMOVED_FAVOURITE:
-                Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.products_removed_saved), Toast.LENGTH_SHORT).show();
                 break;
             case SUCCESS_ADDED_CART:
                 Toast.makeText(context, context.getString(R.string.added_to_shop_cart_dialog_text), Toast.LENGTH_SHORT).show();

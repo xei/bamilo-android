@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.Seller;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -39,6 +40,7 @@ public class ProductComplete extends ProductMultiple {
     private int mTotalOffers;
     private ArrayList<ProductRegular> mRelatedProducts;
     private ArrayList<ProductSpecification> mProductSpecs;
+    private ArrayList<Variation> mProductVariations;
     private String mShareUrl;
     private boolean isFashion;
     private boolean hasVariations;
@@ -126,9 +128,20 @@ public class ProductComplete extends ProductMultiple {
                     mProductSpecs.add(prodSpecs);
                 }
             }
-            // Variations
-            JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
-            hasVariations = variationsObject != null && variationsObject.length() > 0;
+
+         //   JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
+            // Variations its an array object
+
+            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
+            if (variationsArray != null && variationsArray.length() > 0) {
+                mProductVariations = new ArrayList<>();
+                for (int i = 0; i < variationsArray.length(); i++) {
+                    Variation variation = new Variation();
+                    variation.initialize(variationsArray.getJSONObject(i));
+                    mProductVariations.add(variation);
+                }
+            }
+            hasVariations = variationsArray != null && variationsArray.length() > 0;
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
             return false;
@@ -182,6 +195,10 @@ public class ProductComplete extends ProductMultiple {
         return mProductSpecs;
     }
 
+    public ArrayList<Variation> getProductVariations() {
+        return mProductVariations;
+    }
+
     public ArrayList<ProductRegular> getRelatedProducts() {
         return mRelatedProducts;
     }
@@ -231,6 +248,7 @@ public class ProductComplete extends ProductMultiple {
         dest.writeDouble(mMinPriceOfferConverted);
         dest.writeInt(mTotalOffers);
         dest.writeList(mProductSpecs);
+        dest.writeList(mProductVariations);
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
         dest.writeByte((byte) (hasVariations ? 1 : 0));
@@ -250,6 +268,8 @@ public class ProductComplete extends ProductMultiple {
         mTotalOffers = in.readInt();
         mProductSpecs = new ArrayList<>();
         in.readList(mProductSpecs, ProductSpecification.class.getClassLoader());
+        mProductVariations = new ArrayList<>();
+        in.readList(mProductVariations, Variation.class.getClassLoader());
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
         hasVariations = in.readByte() == 1;
