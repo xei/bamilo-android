@@ -57,8 +57,9 @@
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
     <item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
     <item name="catalog_fragment_no_result"             type="layout">@layout/_v8_catalog_fragment_no_result</item>
-    <item name="catalog_item_grid_rounded"              type="layout">@layout/_v8_catalog_item_grid_rounded</item>
-    <item name="catalog_item_list_rounded"              type="layout">@layout/_v8_catalog_item_list_rounded</item>
+    <item name="catalog_item_grid"                      type="layout">@layout/_v8_catalog_item_grid</item>
+    <item name="catalog_item_list"                      type="layout">@layout/_v8_catalog_item_list</item>
+    <item name="catalog_item_single"                    type="layout">@layout/_v8_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_v8_catalog_fragment_footer</item>
 
     <!-- PDV -->
@@ -103,7 +104,6 @@
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
-    <item name="dialog_language_list_item"              type="layout">@layout/_v8_dialog_language_list_item</item>
 
     <!-- RECENTLY VIEWED -->
     <item name="addabletocart_item"                     type="layout">@layout/_v8_addabletocart_item</item>

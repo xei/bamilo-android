@@ -27,11 +27,8 @@ public class UICatalogHelper {
     /**
      * Set the catalog title
      */
-    public static void setCatalogTitle(BaseActivity baseActivity, String name, int value) {
-        // Get string from plurals
-        String subTitle = baseActivity.getResources().getQuantityString(R.plurals.numberOfItems, value, value);
-        // Set title with sub title
-        baseActivity.setTitleAndSubTitle(name, "(" + subTitle + ")");
+    public static void setCatalogTitle(BaseActivity baseActivity, String name) {
+        baseActivity.setActionBarTitle(name);
     }
 
 
