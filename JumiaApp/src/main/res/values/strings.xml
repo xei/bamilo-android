@@ -405,4 +405,7 @@
     <string name="buy_the_look">BUY THE LOOK</string>
     <string name="pdv_size">Size</string>
     <string name="buy_now_button">BUY NOW</string>
+    <string name="fulfilled_by">Fulfilled by %s</string>
+    <string name="qty_placeholder">Qty: %d</string>
+    <string name="shipment" formatted="false">Shipment %d of %d</string>
 </resources>
