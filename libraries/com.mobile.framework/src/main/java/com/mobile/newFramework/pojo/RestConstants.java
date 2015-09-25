@@ -433,6 +433,8 @@ public class RestConstants {
 
     public static final String JSON_SELLER_ENTITY = "seller_entity";
     public static final String JSON_IS_GLOBAL = "is_global";
+    public static final String JSON_GLOBAL = "global";
     public static final String JSON_FULFILLMENT = "fulfillment";
+    public static final String JSON_CMS_INFO_TAG = "cms_info";
 
 }

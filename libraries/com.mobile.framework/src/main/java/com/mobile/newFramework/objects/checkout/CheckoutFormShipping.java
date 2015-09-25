@@ -3,7 +3,6 @@ package com.mobile.newFramework.objects.checkout;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.components.FullSizeListView;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -14,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that represents the response from the get products rating
@@ -25,7 +23,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
 
     private ShippingMethodFormBuilderHolder mForm;
 
-    private List<Fulfillment> fulfillmentList;
+    private ArrayList<Fulfillment> fulfillmentList;
     /**
      * Empty constructor
      */
@@ -103,4 +101,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         }
     };
 
+    public ArrayList<Fulfillment> getFulfillmentList() {
+        return fulfillmentList;
+    }
 }

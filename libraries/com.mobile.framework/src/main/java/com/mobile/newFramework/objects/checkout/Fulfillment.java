@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.checkout;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
@@ -24,16 +27,13 @@ import java.util.List;
  * @date 2015/09/24
  *
  */
-public class Fulfillment implements IJSONSerializable{
-
-    private String sellerName;
-    private boolean isGlobal;
-    private String deliveryTime;
+public class Fulfillment implements IJSONSerializable, Parcelable {
 
     private List<PurchaseCartItem> products;
+    private GlobalSeller globalSeller;
 
     public Fulfillment(){
-        sellerName = "Jumia";
+
         products = new ArrayList<>();
     }
 
@@ -50,9 +50,7 @@ public class Fulfillment implements IJSONSerializable{
         }
 
         JSONObject sellerEntityObject = jsonObject.getJSONObject(RestConstants.JSON_SELLER_ENTITY);
-        sellerName = sellerEntityObject.optString(RestConstants.JSON_NAME_TAG);
-        isGlobal = sellerEntityObject.getBoolean(RestConstants.JSON_IS_GLOBAL);
-        deliveryTime = sellerEntityObject.getString(RestConstants.JSON_DELIVERY_TIME);
+        globalSeller = new GlobalSeller(sellerEntityObject);
         return true;
     }
 
@@ -66,19 +64,38 @@ public class Fulfillment implements IJSONSerializable{
         return null;
     }
 
-    public String getSellerName() {
-        return sellerName;
-    }
-
-    public boolean isGlobal() {
-        return isGlobal;
-    }
-
-    public String getDeliveryTime() {
-        return deliveryTime;
-    }
 
     public List<PurchaseCartItem> getProducts() {
         return products;
     }
+
+    public GlobalSeller getGlobalSeller() {
+        return globalSeller;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(products);
+        dest.writeParcelable(this.globalSeller, flags);
+    }
+
+    protected Fulfillment(Parcel in) {
+        this.products = in.createTypedArrayList(PurchaseCartItem.CREATOR);
+        this.globalSeller = in.readParcelable(GlobalSeller.class.getClassLoader());
+    }
+
+    public static final Creator<Fulfillment> CREATOR = new Creator<Fulfillment>() {
+        public Fulfillment createFromParcel(Parcel source) {
+            return new Fulfillment(source);
+        }
+
+        public Fulfillment[] newArray(int size) {
+            return new Fulfillment[size];
+        }
+    };
 }
