@@ -75,20 +75,12 @@ public class Seller implements IJSONSerializable, Parcelable {
         return mRatingValue;
     }
 
-    public String getSellerId() {
-        return mSellerId;
-    }
-
     public void setSellerId(String mSellerId) {
         this.mSellerId = mSellerId;
     }
 
     public String getWarranty() {
         return mWarranty;
-    }
-
-    public void setWarranty(String mWarranty) {
-        this.mWarranty = mWarranty;
     }
 
     /*

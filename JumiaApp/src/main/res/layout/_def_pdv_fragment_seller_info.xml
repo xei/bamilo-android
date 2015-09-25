@@ -71,6 +71,13 @@
             android:layout_height="wrap_content"
             android:text="@string/delivery_time1" />
 
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txDeliverTimeContent"
+            style="@style/TextHeader"
+            color="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <!-- WARRANTY: OPTIONAL -->
