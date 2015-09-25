@@ -3,6 +3,7 @@
  */
 package com.mobile.helpers.products;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -26,6 +27,8 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     public static final String ALL_OFFERS = "all_offers";
 
+    public static final String OFFER_SKU = "sku";
+
 
     @Override
     public EventType getEventType() {
@@ -42,6 +45,19 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         super.createSuccessBundleParams(baseResponse, bundle);
         OfferList productOffers = (OfferList) baseResponse.getMetadata().getData();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productOffers);
+    }
+
+
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(OFFER_SKU, sku);
+        values.put(ALL_OFFERS, true);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
     
 }

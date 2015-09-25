@@ -9,15 +9,14 @@
 
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_specs_button"
+        android:id="@+id/pdv_sublist_button"
         style="@style/Caption"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/v8_margin_sublist_text"
-        android:layout_marginTop="@dimen/v8_margin_sublist_text"
         android:text="Item sublist"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        />
 
 
 </LinearLayout>
