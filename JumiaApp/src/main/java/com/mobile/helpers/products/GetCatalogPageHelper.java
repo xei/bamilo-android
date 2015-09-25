@@ -23,7 +23,6 @@ import java.util.Map;
  * Get Catalog Page helper
  *
  * @author sergiopereira
- *
  */
 public class GetCatalogPageHelper extends SuperBaseHelper {
 
