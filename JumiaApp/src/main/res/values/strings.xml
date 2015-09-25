@@ -407,4 +407,16 @@
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
     <string name="warranty">Warranty: %s</string>
     <string name="other_sellers_starting">Other Sellers starting from:</string>
+    <string name="buy_combo">BUY COMBO</string>
+    <string name="total_price_bottom">Total:</string>
+    <string name="from_avg_rat">from</string>
+    <string name="from_avg_cus">customers</string>
+    <string name="average_rating">Average</string>
+    <string name="average_rating_used_prod">Have you used this product?</string>
+    <string name="average_rate_now">Rate it now</string>
+    <string name="average_rating_write_review">Write a review</string>
+    <string name="average_raings_header">RATINGS</string>
+    <string name="average_reviews_header">USER REVIEWS</string>
+    <string name="description1">Description</string>
+    <string name="rat_rev">Ratings Reviews</string>
 </resources>

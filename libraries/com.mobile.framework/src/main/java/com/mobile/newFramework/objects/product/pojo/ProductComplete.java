@@ -178,6 +178,8 @@ public class ProductComplete extends ProductMultiple {
         return mProductBundle;
     }
 
+    public void setProductBundle(BundleList mProductBundle) { this.mProductBundle = mProductBundle; }
+
     public boolean hasSeller() {
         return hasSeller;
     }
