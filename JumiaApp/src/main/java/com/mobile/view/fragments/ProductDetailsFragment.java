@@ -144,7 +144,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     *
+     * Get a new instance.
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
@@ -643,10 +643,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void updateWishListValue() {
         try {
-            boolean value = !mProduct.isWishList();
-            JumiaApplication.getWishListTemporaryPdvData().put(mCompleteProductSku, value); // WishList cache to update Catalog
+            boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-            mProduct.setIsWishList(value);
             ToastManager.show(getBaseActivity(), value ? ToastManager.SUCCESS_ADDED_FAVOURITE : ToastManager.SUCCESS_REMOVED_FAVOURITE);
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
@@ -675,7 +673,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
-        else if (id == R.id.pdv_button_wish_list) onClickWishListButton();
+        else if (id == R.id.pdv_button_wish_list) onClickWishListButton(view);
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
         // Case simples
@@ -781,12 +779,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Process the click on wish list button
      */
-    private void onClickWishListButton() {
+    private void onClickWishListButton(View view) {
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
             try {
                 // Get item
-                if (mProduct.isWishList()) {
+                if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
                 } else {
                     triggerAddToWishList(mProduct.getSku());
@@ -944,6 +942,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+                // Force wish list reload for next time
+                WishListFragment.sForceReloadWishListFromNetwork = true;
+                // Update value
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
