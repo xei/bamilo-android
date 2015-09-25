@@ -171,7 +171,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
             // Url and parameters
             mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-//            RestUrlUtils.getQueryParameters(url, mQueryValues);
+            // This lines are ment to support opening url through a complete url.
+            // Its remvoe the parameters, saved on the query values, and then clear the parameters from the
+            // the complete url, so it ca be used in the new parameter the user may choose
             if (!TextUtils.isEmpty(mCompleteUrl)) {
                 mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
                 Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
