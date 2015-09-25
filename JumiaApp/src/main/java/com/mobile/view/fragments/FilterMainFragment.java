@@ -21,6 +21,7 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
+import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -46,7 +47,7 @@ import java.util.List;
  * @version 1.0
  * @date 2015/09/07
  *
- * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
+ *
  */
 public class FilterMainFragment extends BaseFragment implements View.OnClickListener{
 
@@ -65,6 +66,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     private boolean toCancelFilters;
 
     public final static String FILTER_TAG = "catalog_filters";
+
+    public final static String FILTER_POSITION_TAG = "filters_position";
+
+    public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -88,12 +93,16 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         if(savedInstanceState != null){
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
+            currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
+            filterSelectionController = new FilterSelectionController(mFilters, (FilterOptionInterface[])savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES));
+
         } else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+            currentFilterPosition = 0;
+            filterSelectionController = new FilterSelectionController(mFilters);
         }
 
-        filterSelectionController = new FilterSelectionController(mFilters);
-        currentFilterPosition = -1;
+
         toCancelFilters = true;
     }
 
@@ -104,6 +113,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
 
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
+
+        filtersKey.setSelection(currentFilterPosition);
+        loadFilterFragment(currentFilterPosition);
+
         filtersKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -118,39 +131,45 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE");
-        outState.putParcelableArrayList(FILTER_TAG, mFilters);
+        outState.putParcelableArray(INITIAL_FILTER_VALUES, filterSelectionController.getInitialValues());
+        outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
+        outState.putInt(FILTER_POSITION_TAG,currentFilterPosition);
         super.onSaveInstanceState(outState);
     }
 
     private void onFiltersKeyItemClick(int position) {
 
         if(currentFilterPosition != position) {
-            final CatalogFilter catalogFilter = mFilters.get(position);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(FILTER_TAG, catalogFilter);
+            loadFilterFragment(position);
+        }
+    }
 
-            currentFragment = null;
+    private void loadFilterFragment(int position){
+        final CatalogFilter catalogFilter = mFilters.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(FILTER_TAG, catalogFilter);
 
-            if (catalogFilter instanceof CatalogRatingFilter) {
-                currentFragment = FilterRatingFragment.newInstance(bundle);
-            } else if (catalogFilter instanceof CatalogCheckFilter) {
+        currentFragment = null;
 
-                if (catalogFilter.getOptionType() == CatalogColorFilterOption.class) {
-                    currentFragment = FilterColorFragment.newInstance(bundle);
-                } else {
-                    currentFragment = FilterCheckFragment.newInstance(bundle);
-                }
+        if (catalogFilter instanceof CatalogRatingFilter) {
+            currentFragment = FilterRatingFragment.newInstance(bundle);
+        } else if (catalogFilter instanceof CatalogCheckFilter) {
 
-            } else if (catalogFilter instanceof CatalogPriceFilter) {
-                currentFragment = FilterPriceFragment.newInstance(bundle);
+            if (catalogFilter.getOptionType() == CatalogColorFilterOption.class) {
+                currentFragment = FilterColorFragment.newInstance(bundle);
+            } else {
+                currentFragment = FilterCheckFragment.newInstance(bundle);
             }
 
-            if (currentFragment != null) {
-                currentFilterPosition = position;
-                filterSelectionController.addToInitialValues(position);
-                ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
-                fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true, true);
-            }
+        } else if (catalogFilter instanceof CatalogPriceFilter) {
+            currentFragment = FilterPriceFragment.newInstance(bundle);
+        }
+
+        if (currentFragment != null) {
+            currentFilterPosition = position;
+            filterSelectionController.addToInitialValues(position);
+            ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
+            fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true, true);
         }
     }
 

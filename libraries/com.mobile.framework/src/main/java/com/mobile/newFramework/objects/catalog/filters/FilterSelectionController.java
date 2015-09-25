@@ -30,6 +30,11 @@ public class FilterSelectionController {
         initialValues = new FilterOptionInterface[catalogFilters.size()];
     }
 
+    public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters, FilterOptionInterface[] initialValues) {
+        this.catalogFilters = catalogFilters;
+        this.initialValues = initialValues;
+    }
+
     /**
      * Go to initial state of filters.
      *
@@ -113,4 +118,11 @@ public class FilterSelectionController {
         return contentValues;
     }
 
+    public ArrayList<CatalogFilter> getCatalogFilters() {
+        return catalogFilters;
+    }
+
+    public FilterOptionInterface[] getInitialValues() {
+        return initialValues;
+    }
 }

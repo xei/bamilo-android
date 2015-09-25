@@ -13,7 +13,7 @@ import org.json.JSONObject;
 /**
  * Created by rsoares on 9/16/15.
  */
-public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilterOptionInterface, Parcelable {
+public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilterOptionInterface {
 
     private String id;
     private String label;
