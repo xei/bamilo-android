@@ -33,6 +33,7 @@ import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
+import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
@@ -58,6 +59,7 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
@@ -361,9 +363,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case EMAIL_NOTIFICATION:
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
-            case FAVORITE_LIST:
+            case WISH_LIST:
                 removeEntries = true;
-                //fragment = WishListFragment.getInstance();
+                fragment = WishListFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
@@ -392,6 +394,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case WRITE_REVIEW_SELLER:
                 fragment = WriteSellerReviewFragment.getInstance(bundle);
+                break;
+            case FILTERS:
+                fragment = FilterMainFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");

@@ -80,7 +80,7 @@ public class PaymentMethodForm implements Parcelable {
             setPaymentType(METHOD_RENDER_INTERNAL);
         }
 
-        String method = mJSONObject.optString(RestConstants.JSON_METHOD_TAG);
+        String method = mJSONObject.optString(RestConstants.METHOD);
         if (method.equalsIgnoreCase("get")) {
             setMethod(RequestType.GET);
         } else {
@@ -90,7 +90,7 @@ public class PaymentMethodForm implements Parcelable {
         try {
             JSONObject formJson = mJSONObject.optJSONObject(RestConstants.JSON_FORM_TAG);
             if(formJson == null || formJson.length() == 0 ){
-                String url = mJSONObject.optString(RestConstants.JSON_URL_TAG);
+                String url = mJSONObject.optString(RestConstants.URL);
                 setAction(url);
                 return;
             }

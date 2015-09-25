@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ################# GENERIC COMPONENTS STYLES ################# -->
+
+    <style name="PDVSlideShowStyle" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
+
+
+</resources>

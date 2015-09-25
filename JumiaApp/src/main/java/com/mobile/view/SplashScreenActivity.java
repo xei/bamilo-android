@@ -26,7 +26,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetApiInfoHelper;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -442,7 +442,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountriesConfigsError() {
         Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper(), null, this);
+        JumiaApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
     }
 
     /**

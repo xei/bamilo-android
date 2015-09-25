@@ -3,11 +3,12 @@ package com.mobile.newFramework.objects.catalog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.R;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -25,27 +26,23 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     protected static final String TAG = CatalogPage.class.getSimpleName();
 
-    public static final int MAX_ITEMS_PER_PAGE = 24;
-
-    public static final int FIRST_PAGE = 1;
-
     private String mId;
 
     private String mName;
 
     private int mTotal;
 
-    private int mPage = 1;
+    private int mPage = IntConstants.FIRST_PAGE;
 
-    private int mMaxPages = 1;
+    private int mMaxPages = IntConstants.FIRST_PAGE;
 
     private ArrayList<ProductRegular> mProducts;
-
-    private ArrayList<CatalogFilter> mFilters;
 
     private Banner mCatalogBanner;
 
     private String mSearchTerm;
+
+    private ArrayList<CatalogFilter> filters;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -89,7 +86,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             mProducts.add(product);
         }
         // Get filters
-        mFilters = new ArrayList<>();
 
         // Get category filter
         /*
@@ -116,6 +112,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             }
         }*/
 
+        filters = new CatalogFilters(metadataObject);
+
         //Get Banner
         if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
             JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.JSON_BANNER_TAG);
@@ -129,43 +127,43 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
 
 
-    /**
-     * Parse the JSON for categories, supported parent and leaf structure
-     * @param categoriesArray - the json array
-     * @throws JSONException
-     */
-    @SuppressWarnings("unused")
-    private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
-//        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
-        JSONArray categoryArray = null;
-        // Get the first position
-        JSONObject parentObject = categoriesArray.optJSONObject(0);
-        JSONArray leafObject = categoriesArray.optJSONArray(0);
-        // IS PARENT    - If first item is a JSON object
-        if(parentObject != null) {
-//            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
-            categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
-        }
-        // IS LEAF      - If first item is a JSON array
-        else if(leafObject != null) {
-//            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
-            categoryArray = leafObject;
-        }
-        // Create category option and save it
-        ArrayList<CatalogFilterOption> options = new ArrayList<>();
-        if(categoryArray != null) {
-//            Log.d(TAG, "PARSE ADD TO CATALOG");
-            for (int i = 0; i < categoryArray.length(); ++i) {
-                JSONObject json = categoryArray.optJSONObject(i);
-                if(json != null) {
-                    CategoryFilterOption opt = new CategoryFilterOption(json);
-                    options.add(opt);
-                }
-            }
-        }
-        // Create the category filter and save it
-        mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
-    }
+//    /**
+//     * Parse the JSON for categories, supported parent and leaf structure
+//     * @param categoriesArray - the json array
+//     * @throws JSONException
+//     */
+//    @SuppressWarnings("unused")
+//    private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
+////        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
+//        JSONArray categoryArray = null;
+//        // Get the first position
+//        JSONObject parentObject = categoriesArray.optJSONObject(0);
+//        JSONArray leafObject = categoriesArray.optJSONArray(0);
+//        // IS PARENT    - If first item is a JSON object
+//        if(parentObject != null) {
+////            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
+//            categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+//        }
+//        // IS LEAF      - If first item is a JSON array
+//        else if(leafObject != null) {
+////            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
+//            categoryArray = leafObject;
+//        }
+//        // Create category option and save it
+//        ArrayList<CatalogFilterOption> options = new ArrayList<>();
+//        if(categoryArray != null) {
+////            Log.d(TAG, "PARSE ADD TO CATALOG");
+//            for (int i = 0; i < categoryArray.length(); ++i) {
+//                JSONObject json = categoryArray.optJSONObject(i);
+//                if(json != null) {
+//                    CategoryFilterOption opt = new CategoryFilterOption(json);
+//                    options.add(opt);
+//                }
+//            }
+//        }
+//        // Create the category filter and save it
+//        mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
+//    }
 
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
@@ -183,7 +181,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return number or pages
      */
     private int calcMaxPages() {
-        return (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
+        return (mTotal / IntConstants.MAX_ITEMS_PER_PAGE) + ((mTotal % IntConstants.MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
@@ -215,7 +213,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Update the max pages that application can request
         mMaxPages = calcMaxPages();
         // Case replace data
-        if(mPage == FIRST_PAGE) mProducts = catalog.getProducts();
+        if(mPage == IntConstants.FIRST_PAGE) mProducts = catalog.getProducts();
         // Case append data
         else CollectionUtils.addAll(mProducts, catalog.getProducts());
     }
@@ -255,14 +253,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return the filters
      */
     public ArrayList<CatalogFilter> getFilters() {
-        return mFilters;
+        return filters;
     }
 
     /**
      * @return the filters
      */
     public boolean hasFilters() {
-        return CollectionUtils.isNotEmpty(mFilters);
+        return CollectionUtils.isNotEmpty(filters);
     }
 
     /**
@@ -323,11 +321,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mProducts);
         }
-        if (mFilters == null) {
+        if (filters == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mFilters);
+            dest.writeList(filters);
         }
         dest.writeValue(mCatalogBanner);
         dest.writeString(mSearchTerm);
@@ -350,10 +348,10 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             mProducts = null;
         }
         if (in.readByte() == 0x01) {
-            mFilters = new ArrayList<>();
-            in.readList(mFilters, CatalogFilter.class.getClassLoader());
+            filters = new ArrayList<>();
+            in.readList(filters, CatalogFilter.class.getClassLoader());
         } else {
-            mFilters = null;
+            filters = null;
         }
         mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
         mSearchTerm = in.readString();

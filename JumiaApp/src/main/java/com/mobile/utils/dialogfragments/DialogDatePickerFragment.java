@@ -23,14 +23,14 @@ import java.util.GregorianCalendar;
 //import org.holoeverywhere.widget.DatePicker;
 
 /**
- * 
+ *
  * @author sergiopereira
  *
  */
 public class DialogDatePickerFragment extends DialogFragment implements OnClickListener {
-    
+
     private final static String TAG = DialogDatePickerFragment.class.getSimpleName();
-    
+
     private String mTitle;
     private String mId;
     private Activity mActivity;
@@ -54,8 +54,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
      * Empty Constructor
      */
     public DialogDatePickerFragment() { }
-    
-    
+
+
     /**
      *
      * @param activity
@@ -80,8 +80,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialogDatePickerFragment.mYear = year;
         return dialogDatePickerFragment;
     }
-    
-    
+
+
     /**
      *
      * @param activity
@@ -105,7 +105,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialogDatePickerFragment.mYear = year;
         return dialogDatePickerFragment;
     }
-        
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
@@ -124,7 +124,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.dialog_datepicker_content, container);
-        
+
         TextView titleView = (TextView) view.findViewById(R.id.datepicker_title);
         titleView.setText(this.mTitle);
 
@@ -151,12 +151,12 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
-        
+
         return view;
     }
 
     /**
-     * 
+     *
      * @return
      */
     public boolean isSetOnce() {
@@ -187,15 +187,15 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     public int getYear(){
         return mYear;
     }
-    
+
     public int getMonth(){
         return mMonth;
     }
-    
+
     public int getDay(){
         return mDay;
     }
-    
+
     public void setDate(String dateString) {
 
         Date date;
@@ -226,7 +226,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 //
 //            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
 //        }
-       isSetOnce = true;
+        isSetOnce = true;
     }
 
     public void setDate(int year, int month, int day) {
@@ -265,8 +265,8 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         dialog.getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
     }
-    
-    
+
+
     @Override
     public void onPause() {
         super.onPause();

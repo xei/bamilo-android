@@ -459,7 +459,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+            TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
 
             getView().findViewById(R.id.send_review).setOnClickListener(this);
 
@@ -803,7 +803,7 @@ public class ReviewWriteFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(ratingForm.action, dynamicRatingForm);
+                    executeSendReview(ratingForm.getAction(), dynamicRatingForm);
                 }
             } else {
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
@@ -812,7 +812,7 @@ public class ReviewWriteFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(reviewForm.action, dynamicRatingForm);
+                    executeSendReview(reviewForm.getAction(), dynamicRatingForm);
                 }
             }
         }

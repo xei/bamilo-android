@@ -86,9 +86,9 @@ public class CurrencyFormatter {
      */
     public static void loadCurrencyInformation(Context context) {
     	SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-    	currencyThousandsDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_SEP, ",");
+    	currencyThousandsDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, ",");
     	currencyFractionCount = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0);
-    	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, ".");
+    	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, ".");
     	currencyUnitPattern = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
     }
 
@@ -200,6 +200,10 @@ public class CurrencyFormatter {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static String getCurrencySymbol(){
+        return currencyUnitPattern.replace("%s","");
     }
     
 }

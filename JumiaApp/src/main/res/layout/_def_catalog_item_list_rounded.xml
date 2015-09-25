@@ -13,7 +13,7 @@
         android:layout_marginRight="@dimen/catalog_list_item_image_padding"
         android:layout_marginStart="@dimen/rounded_margin_mid"
         layout="@layout/image_loadable"
-        android:background="@color/orange_ffa200" />
+        android:background="@color/color_accent" />
 
     <ImageView
         android:id="@+id/image_is_new"
@@ -120,7 +120,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
-        style="@style/discount_percentage"
+        style="@style/PdvBadgeStyle"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

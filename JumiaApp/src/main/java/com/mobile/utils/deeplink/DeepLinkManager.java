@@ -459,7 +459,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.WISH_LIST);
         return bundle;
     }
 

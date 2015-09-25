@@ -13,10 +13,23 @@ package com.mobile.newFramework.forms;
 
 /**
  * Defines the form field input type enum.
- * @author GuilhermeSilva
  *
+ * @author GuilhermeSilva
  */
 public enum InputType {
-    text, number, password, radioGroup, checkBox, email, date, meta, metadate, semiRequired, list, hide, checkBoxList, rating, sellerReview,
-    radioRelated
+    text,
+    number,
+    password,
+    radioGroup,
+    checkBox,
+    email,
+    date,
+    meta,
+    metadata,
+    list,
+    hide,
+    checkBoxLink,
+    rating,
+    relatedNumber,
+    errorMessage
 }
