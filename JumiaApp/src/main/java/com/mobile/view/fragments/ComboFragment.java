@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -99,7 +98,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
-            bundleList = arguments.getParcelable("bundleList");
+            bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
             totalPrice = bundleList.getBundlePriceDouble();
 
         }
@@ -280,13 +279,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {
-        ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
+
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
     }
 
 
@@ -342,6 +336,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         Print.i(TAG, "ON CLICK VIEW");
         // Get id
         int id = view.getId();
