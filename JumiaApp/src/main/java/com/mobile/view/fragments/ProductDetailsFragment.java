@@ -729,7 +729,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickVariationButton() {
         Log.i(TAG, "ON CLICK TO SHOW OTHER VARIATIONS");
-        
         // TODO: Call the new fragment
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);

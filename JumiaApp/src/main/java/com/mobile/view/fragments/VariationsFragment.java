@@ -65,7 +65,6 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             mProductComplete = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-
         }
 
 
