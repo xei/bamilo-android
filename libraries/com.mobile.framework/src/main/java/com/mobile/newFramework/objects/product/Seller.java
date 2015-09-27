@@ -23,6 +23,8 @@ public class Seller implements IJSONSerializable, Parcelable {
 
     private String mSellerId;
 
+    private String mWarranty;
+
     private int mRatingCount;
 
     private int mRatingValue;
@@ -35,6 +37,7 @@ public class Seller implements IJSONSerializable, Parcelable {
 //        Log.i(TAG, "EMPTY constructor");
         mName = "";
         mUrl = "";
+        mWarranty = "";
         mRatingCount = 0;
         mRatingValue = 0;
         setSellerId("");
@@ -72,12 +75,12 @@ public class Seller implements IJSONSerializable, Parcelable {
         return mRatingValue;
     }
 
-    public String getSellerId() {
-        return mSellerId;
-    }
-
     public void setSellerId(String mSellerId) {
         this.mSellerId = mSellerId;
+    }
+
+    public String getWarranty() {
+        return mWarranty;
     }
 
     /*
@@ -90,6 +93,7 @@ public class Seller implements IJSONSerializable, Parcelable {
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         mUrl = jsonObject.optString(RestConstants.URL);
         mSellerId = jsonObject.optString(RestConstants.ID);
+        mWarranty = jsonObject.optString(RestConstants.JSON_WARRANTY_TAG);
         JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
         if(reviewObject != null){
             mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
@@ -135,6 +139,7 @@ public class Seller implements IJSONSerializable, Parcelable {
         dest.writeString(mName);
         dest.writeString(mUrl);
         dest.writeString(mSellerId);
+        dest.writeString(mWarranty);
         dest.writeInt(mRatingCount);
         dest.writeInt(mRatingValue);
     }
@@ -146,6 +151,7 @@ public class Seller implements IJSONSerializable, Parcelable {
         mName = in.readString();
         mUrl = in.readString();
         mSellerId = in.readString();
+        mWarranty = in.readString();
         mRatingCount = in.readInt();
         mRatingValue = in.readInt();
 

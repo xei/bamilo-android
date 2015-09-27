@@ -3,7 +3,6 @@ package com.mobile.newFramework.tracking;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -14,10 +13,12 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Helper singleton class for the Google Analytics tracking library.
@@ -605,8 +606,11 @@ public class AnalyticsGoogle {
 
 	/**
 	 * Google Analytics "General Campaign Measurement"
-	 * 
-	 * @param campaignString Campaign
+	 *
+	 * Method used to create a UTM string with all the info and their constrains.
+	 *
+	 * specifications: https://jira.rocket-internet.de/browse/NAFAMZ-13827
+	 * @param campaignString string sent in the UTM parameter of a push notification
 	 * 
 	 */
 	public void setGACampaign(String campaignString) {
@@ -615,9 +619,63 @@ public class AnalyticsGoogle {
 		// Data
 		if (!TextUtils.isEmpty(campaignString)) {
 			// Track
-			String utmURI = (!campaignString.contains("utm_campaign")) ? "utm_campaign=" + campaignString + "&utm_source=push&utm_medium=referrer" : campaignString;
-			Print.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
-			mGACampaign = utmURI;
+			if(campaignString.contains("utm_campaign") && campaignString.contains("utm_source") && campaignString.contains("utm_medium")){
+				mGACampaign = campaignString;
+			} else {
+				String utmCampaign = "";
+				String utmMedium = "";
+				String utmSource = "";
+
+				if(campaignString.contains("utm_campaign=")){
+					utmCampaign = "utm_campaign="+getUtmParameter(campaignString, "utm_campaign=")+"&";
+				}
+
+				if(campaignString.contains("utm_source=")){
+					utmSource = "utm_source="+getUtmParameter(campaignString, "utm_source=");
+				} else {
+					if(!TextUtils.isEmpty(utmCampaign))
+						utmSource = "utm_source=push";
+				}
+
+				if(campaignString.contains("utm_medium=")){
+					utmMedium ="utm_medium="+getUtmParameter(campaignString, "utm_medium=");
+					if(!TextUtils.isEmpty(utmSource))
+						utmMedium = "&"+utmMedium;
+				} else {
+					if(!TextUtils.isEmpty(utmCampaign))
+						utmMedium = "&utm_medium=referrer";
+				}
+				mGACampaign = utmCampaign + utmSource + utmMedium;
+				Print.i(TAG,"TRACK CAMPAIGN: campaign->:"+mGACampaign);
+			}
+		} else {
+			// Case it does not comes any UTM info
+			mGACampaign = campaignString;
+		}
+	}
+
+	/**
+	 * Functions that receives s string and looks for the value of a specific parameter
+	 *
+	 * @param campaignString
+	 * @param parameter
+	 * @return utm parameter
+	 */
+	public String getUtmParameter(String campaignString, String parameter) {
+		try{
+			String[] separated = campaignString.split(parameter);
+			String beforeParameter = separated[0];
+			String afterParameter =separated[1];
+
+			if(afterParameter.contains("&")){
+				String[] separatedPost = afterParameter.split("&");
+				return separatedPost[0];
+			} else {
+				return afterParameter;
+			}
+		} catch (PatternSyntaxException | NullPointerException | IndexOutOfBoundsException e){
+		 e.printStackTrace();
+			return "";
 		}
 	}
 	
