@@ -187,9 +187,10 @@ public class DeepLinkManager {
                 case REGISTER_TAG:
                     bundle = processRegisterLink();
                     break;
-                case CATEGORY_TAG:
-                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
-                    break;
+                // NO LONGER USED
+//                case CATEGORY_TAG:
+//                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
+//                    break;
                 case SEARCH_TERM_TAG:
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
@@ -259,22 +260,22 @@ public class DeepLinkManager {
         return bundle;
     }
 
-    /**
-     * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
-     *
-     * @param categoryId The category id
-     * @return {@link Bundle}
-     * @author sergiopereira
-     */
-    private static Bundle processCategoryLink(String categoryId) {
-        Print.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
-        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
-        return bundle;
-    }
+//    /**
+//     * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
+//     *
+//     * @param categoryId The category id
+//     * @return {@link Bundle}
+//     * @author sergiopereira
+//     */
+//    private static Bundle processCategoryLink(String categoryId) {
+//        Print.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
+//        // Create bundle
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
+//        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
+//        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
+//        return bundle;
+//    }
 
     /**
      * Method used to create a bundle for track order view with the order id. JUMIA://com.jumia.android/ng/o/1233
