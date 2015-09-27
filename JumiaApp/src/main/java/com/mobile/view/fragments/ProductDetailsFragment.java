@@ -57,6 +57,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
@@ -77,7 +78,7 @@ import java.util.Map;
  * @author Michael Kroez
  * @modified spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, RocketImageLoaderLoadImagesListener, AdapterView.OnItemClickListener, DialogSimpleListFragment.OnDialogListListener {
+public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, RocketImageLoaderLoadImagesListener, AdapterView.OnItemClickListener, OnDialogListListener {
 
     private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
@@ -132,6 +133,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mTitleContainer;
 
     private ViewGroup mTitleFashionContainer;
+
+    boolean isAddingProductToCart = false;
 
     /**
      * Empty constructor
@@ -242,6 +245,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             displayProduct(mProduct);
         }
+        isAddingProductToCart = false;
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
     }
 
@@ -802,6 +806,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Validate quantity
             if (simple.isOutOfStock()) {
                 ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                isAddingProductToCart = false;
             } else {
                 triggerAddItemToCart(mProduct.getSku(), simple.getSku());
                 // Tracking
@@ -811,9 +816,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
             onClickSimpleSizesButton();
+            isAddingProductToCart = true;
         }
         // Case error unexpected
         else {
+            isAddingProductToCart = false;
             showUnexpectedErrorWarning();
         }
     }
@@ -935,6 +942,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (simple != null) {
                 String text = mProduct.getVariationName() + ": " + simple.getVariationValue();
                 ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
+
+                if(isAddingProductToCart) {
+                    onClickBuyProduct();
+                }
+
             }
         } catch (NullPointerException e) {
             // ...
@@ -1010,6 +1022,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 executeAddToShoppingCartCompleted(false);
+                isAddingProductToCart = false;
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -1084,6 +1097,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                isAddingProductToCart = false;
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
@@ -1208,6 +1222,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
 
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
+    }
 
 
 //    /**

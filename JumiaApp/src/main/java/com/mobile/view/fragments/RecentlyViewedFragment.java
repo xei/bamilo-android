@@ -59,6 +59,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private Button mAddAllToCartButton;
 
+    private boolean isAddingProductToCart = false;
+
+    private int mClickedPositionToAdd = -1;
+
     /**
      * Empty constructor
      */
@@ -122,6 +126,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Get RecentlyViewed
         Print.i(TAG, "LOAD LAST VIEWED ITEMS");
         new GetRecentlyViewedHelper(this);
+        isAddingProductToCart = false;
     }
 
 
@@ -261,6 +266,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             getBaseActivity().warningFactory.hideWarning();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
+            // Saved the product position to be able to add after picking size
+            mClickedPositionToAdd = position;
             ProductMultiple addableToCart = mProducts.get(position);
             showVariantsDialog(addableToCart);
         } catch (NullPointerException e) {
@@ -346,14 +353,18 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             // Validate simple variations
             if(product.hasMultiSimpleVariations() && !product.hasSelectedSimpleVariation()) {
                 onClickVariation(view);
+                isAddingProductToCart = true;
             } else {
+                isAddingProductToCart = false;
                 triggerAddProductToCart(product, position);
             }
         } catch (IndexOutOfBoundsException e) {
+            isAddingProductToCart = false;
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
             Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         } catch (NullPointerException e) {
+            isAddingProductToCart = false;
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
         }
@@ -567,12 +578,25 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onDialogListItemSelect(int position) {
         // Update the recently adapter
         mAdapter.notifyDataSetChanged();
+        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
+            ProductMultiple product = mProducts.get(mClickedPositionToAdd);
+            // Validate simple variations
+            if(product.hasSelectedSimpleVariation()) {
+                triggerAddProductToCart(product, mClickedPositionToAdd);
+                isAddingProductToCart = false;
+            }
+        }
     }
 
     @Override
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
     }
 
 }

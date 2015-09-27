@@ -61,6 +61,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private boolean isErrorOnLoadingMore = false;
 
+    private boolean  isAddingProductToCart = false;
+
+    private int mClickedPositionToAdd = -1;
+
     /**
      * Create and return a new instance.
      */
@@ -132,6 +136,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        isAddingProductToCart = false;
     }
 
     /*
@@ -353,6 +358,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
+            mClickedPositionToAdd = position;
             ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(position);
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
@@ -370,12 +376,27 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         ((WishListAdapter) mListView.getAdapter()).notifyDataSetChanged();
+        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
+            ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(mClickedPositionToAdd);
+            // Validate has simple variation selected
+            ProductSimple simple = product.getSelectedSimple();
+            // Validate simple variations
+            if(product.hasSelectedSimpleVariation() && simple != null) {
+                triggerAddProductToCart(product.getSku(), simple.getSku());
+                isAddingProductToCart = false;
+            }
+        }
     }
 
     @Override
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
     }
 
     /**
@@ -413,15 +434,18 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         ProductSimple simple = product.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
+            isAddingProductToCart = false;
             triggerAddProductToCart(product.getSku(), simple.getSku());
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
             // TODO: add item to cart after variation dialog
+            isAddingProductToCart = true;
             onClickVariation(view);
         }
         // Case error unexpected
         else {
+            isAddingProductToCart = false;
             showUnexpectedErrorWarning();
         }
     }
@@ -439,6 +463,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     }
 
     protected synchronized void triggerAddProductToCart(String sku, String simpleSku) {
+        isAddingProductToCart = false;
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSku), this);
     }
 

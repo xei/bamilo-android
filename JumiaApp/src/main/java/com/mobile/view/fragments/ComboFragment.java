@@ -58,6 +58,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private Button btBuyCombo;
     private Context c;
     private ProductBundle mBundleWithMultiple;
+//    private boolean isAddingProductToCart = false;
 
 
     /**
@@ -131,18 +132,22 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         btBuyCombo = (Button) view.findViewById(R.id.btBuyCombo);
         btBuyCombo.setOnClickListener(this);
-
-
-
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Print.i(TAG, "ON RESUME");
+//        isAddingProductToCart = false;
+//    }
 
 
     /**
-     * Add selected combo products to chart
+     * Add selected combo products to cart
      *
      */
 
-    private void addComboToChart()
+    private void addComboToCart()
     {
 
         ArrayList<ProductBundle> listBundles = bundleList.getBundleProducts();    //adapter.getItems(); //must be updated
@@ -252,7 +257,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * choose the simple and add to cart
      *
-     * @param productBundle - arguments
+     * @param position
      */
 
     @Override
@@ -274,8 +279,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     }
 
-
-
+    @Override
+    public void onDismiss() {
+    }
 
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {
@@ -297,7 +303,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * updates the sombo total price in checking/unchecking bundle
      *
-     * @param productBundle - arguments
      */
 
     @Override
@@ -343,7 +348,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Case sort button
         if (id == R.id.btBuyCombo) {
             Print.i(TAG, "ADD CART CLICKED");
-            addComboToChart();
+            addComboToCart();
         }
     }
 

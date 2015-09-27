@@ -54,6 +54,8 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         void onDialogListItemSelect(int position);
 
         void onDialogListClickView(View view);
+
+        void onDismiss();
     }
 
     /**
@@ -169,6 +171,9 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if (mListener != null) {
+            mListener.onDismiss();
+        }
         super.onDismiss(dialog);
     }
 
