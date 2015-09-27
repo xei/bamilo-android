@@ -151,6 +151,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Total
         mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
+        // Get Save order summary
+        Bundle  args = savedInstanceState;
+        if(args != null && args.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
+            mOrderSummary = args.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
+        }
         // Show order summary
         showOrderSummary();
     }
@@ -643,6 +648,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE");
+        outState.putParcelable(ConstantsIntentExtra.ORDER_SUMMARY, mOrderSummary);
     }
 
 }
