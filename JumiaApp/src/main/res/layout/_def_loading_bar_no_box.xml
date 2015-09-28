@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading_bar"
+    android:layout_width="@dimen/loading_width"
+    android:layout_height="@dimen/loading_height"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:layoutDirection="locale"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <com.mobile.components.loading.LoadingBarView
+        android:id="@+id/fragment_root_loading_gif"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="@dimen/loading_gif_layout"
+        android:layout_height="@dimen/loading_gif_layout"
+        app:gifResource="@drawable/loading_bar_big" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="@string/loading_message"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_light" />
+
+</LinearLayout>

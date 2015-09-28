@@ -36,19 +36,19 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     
     private static final int ITEM_VIEW_TYPE_HEADER = 0;
     
-    private static final int ITEM_VIEW_TYPE_LIST = 1;
+    public static final int ITEM_VIEW_TYPE_LIST = 1;
     
-    private static final int ITEM_VIEW_TYPE_GRID = 2;
+    public static final int ITEM_VIEW_TYPE_GRID = 2;
+
+    public static final int ITEM_VIEW_TYPE_SINGLE = 3;
     
-    private static final int ITEM_VIEW_TYPE_FOOTER = 3;
+    private static final int ITEM_VIEW_TYPE_FOOTER = 4;
 
     private static final int HEADER_POSITION = 0;
 
     private boolean isToShowHeader;
 
     private boolean isToShowFooter;
-
-    private boolean isShowingGridLayout;
 
     private boolean isTabletInLandscape;
 
@@ -67,6 +67,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     private String mTargetType;
 
     private String mTitle;
+
+    private int level;
+
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -88,6 +91,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         public ImageView recent;
         public ImageView favourite;
         public ImageView headerImage;
+        public View verticalDivider;
         
         /**
          * Constructor 
@@ -108,6 +112,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             recent = (ImageView) view.findViewById(R.id.image_is_new);
             favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
             headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
+            verticalDivider = view.findViewById(R.id.vdivider);
         }
     }
 
@@ -119,7 +124,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
         mContext = context;
         mDataSet = data;
-        isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
+        level = Integer.parseInt(CustomerPreferences.getCatalogLayout(mContext));
         isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
     }
 
@@ -129,11 +134,12 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      */
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = R.layout.catalog_item_list_rounded;
+        int layout = R.layout.catalog_item_single;
         if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_catalog_fragment_header;
-        else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.catalog_item_list_rounded;
-        else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
-        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout._def_catalog_fragment_footer;
+        else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.catalog_item_list;
+        else if (viewType == ITEM_VIEW_TYPE_SINGLE) layout = R.layout.catalog_item_single;
+        else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid;
+        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout.catalog_fragment_footer;
         // Create a new view
         return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
@@ -149,7 +155,17 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Case footer
         if(isFooter(position)) return ITEM_VIEW_TYPE_FOOTER;
         // Case item
-        return isShowingGridLayout ? ITEM_VIEW_TYPE_GRID : ITEM_VIEW_TYPE_LIST;
+        switch (level){
+            case ITEM_VIEW_TYPE_GRID:
+                return ITEM_VIEW_TYPE_GRID;
+            case ITEM_VIEW_TYPE_LIST:
+                return ITEM_VIEW_TYPE_LIST;
+            case ITEM_VIEW_TYPE_SINGLE:
+                return ITEM_VIEW_TYPE_SINGLE;
+            default:
+                return ITEM_VIEW_TYPE_LIST;
+        }
+
     }
 
     /*
@@ -220,6 +236,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
+        // Set vertical divider
+        if(level == ITEM_VIEW_TYPE_GRID) {
+            holder.verticalDivider.setVisibility(View.VISIBLE);
+        } else if (isTabletInLandscape) {
+            holder.verticalDivider.setVisibility(View.VISIBLE);
+        } else {
+            holder.verticalDivider.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -251,7 +275,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
         holder.favourite.setOnClickListener(this);
-
     }
     
     /**
@@ -264,8 +287,8 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
+            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()) + " " + mContext.getString(R.string.off_label));
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
@@ -288,8 +311,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
-                int count = item.getTotalReviews();
-                String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
+                int count = item.getTotalRatings();
+//                String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
+                String string = "("+count+")";
                 holder.reviews.setText(string);
             }
             // Hide rating
@@ -317,11 +341,11 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
 
     /**
-     * Set the flag used to switch between list or grid layout
-     * @param isShowingGridLayout - the flag
+     * Set the new level used to switch catalog views
+     * @param level - the flag
      */
-    public void updateLayout(boolean isShowingGridLayout){
-        this.isShowingGridLayout = isShowingGridLayout;
+    public void updateLayout(int level){
+        this.level = level;
         notifyDataSetChanged();
     }
     

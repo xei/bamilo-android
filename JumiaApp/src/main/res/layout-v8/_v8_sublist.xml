@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical|right"
+    android:paddingRight="@dimen/layout_padding"
+    >
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        style="@style/TextCaption"
+        android:textColor="@color/black"
+        android:text="Item sublist"
+        android:id="@+id/pdv_specs_button"
+        android:layout_marginTop="@dimen/v8_margin_sublist_text"
+        android:layout_marginBottom="@dimen/v8_margin_sublist_text"
+        android:layout_centerVertical="true"
+        />
+
+
+</LinearLayout>

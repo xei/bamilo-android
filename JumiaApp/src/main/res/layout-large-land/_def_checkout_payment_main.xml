@@ -39,7 +39,7 @@
         <!-- NEXT BUTTON -->
 
         <LinearLayout
-            android:id="@id/checkout_payment_button_container"
+            android:id="@id/checkout_button_container"
             style="@style/button_container"
             android:layout_alignParentBottom="true" >
 

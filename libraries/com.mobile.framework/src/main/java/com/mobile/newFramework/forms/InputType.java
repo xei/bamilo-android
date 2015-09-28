@@ -30,5 +30,6 @@ public enum InputType {
     hide,
     checkBoxLink,
     rating,
-    relatedNumber
+    relatedNumber,
+    errorMessage
 }

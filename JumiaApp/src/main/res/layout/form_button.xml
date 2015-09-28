@@ -5,6 +5,5 @@
     android:contentDescription="@string/register_birthday_description"
     android:background="@drawable/spinner_background_holo_orange"
     android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:textSize="18sp"
-    android:gravity="left" />
+    android:textSize="@dimen/text_form"
+    android:gravity="left|bottom" />

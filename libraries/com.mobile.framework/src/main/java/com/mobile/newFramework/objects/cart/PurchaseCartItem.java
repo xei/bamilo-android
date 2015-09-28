@@ -265,6 +265,9 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         return mSpecialPriceConverted > 0;
     }
 
+    public String getAttributeSetId (){
+        return mAttributeSetId;
+    }
     /**
      * ########### Parcelable ###########
      *

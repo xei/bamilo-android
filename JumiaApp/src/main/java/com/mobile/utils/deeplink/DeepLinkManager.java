@@ -3,7 +3,6 @@ package com.mobile.utils.deeplink;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -15,6 +14,7 @@ import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
@@ -446,7 +446,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.WISH_LIST);
         return bundle;
     }
 
@@ -708,11 +708,51 @@ public class DeepLinkManager {
         Uri data = intent.getData();
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
+            // ## Google Analytics "General Campaign Measurement" ##
+//            TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), constructUTMLink(data));
             bundle = loadDeepLink(data);
             Print.i(TAG, "DEEP LINK: RECEIVED FROM URI");
         }
         return bundle;
     }
+
+    /**
+     * builds an utm string if the if the deeplink via URI has utm parameters
+     * defaults values needed to be clarified by marketing, postponed to next release
+     * @param data
+     * @return
+     */
+//    private static String constructUTMLink(Uri data){
+//        String campaign = data.getQueryParameter("utm_campaign");
+//        String source = data.getQueryParameter("utm_source");
+//        String medium = data.getQueryParameter("utm_medium");
+//        String utmLink = "";
+//       if(TextUtils.isEmpty(campaign) && TextUtils.isEmpty(source) && TextUtils.isEmpty(medium)){
+//           return "";
+//       } else if (!TextUtils.isEmpty(campaign) && !TextUtils.isEmpty(source) && !TextUtils.isEmpty(medium)) {
+//           return "utm_campaign="+campaign+"&utm_source="+source+"&utm_medium="+medium;
+//       } else {
+//
+//           if(!TextUtils.isEmpty(campaign)){
+//               utmLink = "utm_campaign="+campaign;
+//               if(!TextUtils.isEmpty(source)){
+//                   utmLink = utmLink + "&utm_source="+ source;
+//               } else if(!TextUtils.isEmpty(medium)){
+//                   utmLink = utmLink + "&utm_medium="+ medium;
+//               }
+//           } else {
+//               if(!TextUtils.isEmpty(source)){
+//                   utmLink = "utm_source="+source;
+//                   if(!TextUtils.isEmpty(medium)){
+//                       utmLink = utmLink+"&utm_medium="+medium;
+//                   }
+//               } else if(!TextUtils.isEmpty(medium)){
+//                   utmLink = "utm_medium="+medium;
+//               }
+//           }
+//          return utmLink;
+//       }
+//    }
 
     /**
      * Validate deep link from Push Notification.

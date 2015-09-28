@@ -39,8 +39,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
     private TextView mProductName;
-    private TextView mProductPriceSpecial;
-    private TextView mProductPriceNormal;
+    private TextView mPriceNormal;
+    private TextView mPriceStrike;
     private RelativeLayout mProductFeaturesContainer;
     private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
@@ -51,8 +51,6 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ProductDetailsSummaryFragment getInstance(Bundle bundle) {
         ProductDetailsSummaryFragment fragment = new ProductDetailsSummaryFragment();
@@ -214,8 +212,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     
     private void getViews(){
         mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
-        mProductPriceSpecial = (TextView) mainView.findViewById(R.id.product_price_special);
-        mProductPriceNormal = (TextView) mainView.findViewById(R.id.product_price_normal);
+        mPriceNormal = (TextView) mainView.findViewById(R.id.product_price_special);
+        mPriceStrike = (TextView) mainView.findViewById(R.id.pdv_text_price);
         mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
         mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
         mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
@@ -234,29 +232,16 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      * displays information related to the product price
      */
     private void displayPriceInformation() {
-        String unitPrice = String.valueOf(mCompleteProduct.getPrice());
-        /*--if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();*/
-        String specialPrice = String.valueOf(mCompleteProduct.getSpecialPrice());
-        /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
-
-        displayPriceInfo(unitPrice, specialPrice);
-    }
-    
-    private void displayPriceInfo(String unitPrice, String specialPrice) {
-        /*-if (specialPrice == null && unitPrice == null) {
-            mProductPriceNormal.setVisibility(View.GONE);
-            mProductPriceSpecial.setVisibility(View.GONE);
-        } else*/
-        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the special price
-            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            mProductPriceNormal.setVisibility(View.GONE);
-        } else {
+        if (mCompleteProduct.hasDiscount()) {
             // display special and normal price
-            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-            mProductPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            mProductPriceNormal.setVisibility(View.VISIBLE);
-            mProductPriceNormal.setPaintFlags(mProductPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            mPriceNormal.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getSpecialPrice()));
+            mPriceStrike.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getPrice()));
+            mPriceStrike.setVisibility(View.VISIBLE);
+            mPriceStrike.setPaintFlags(mPriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            // display only the special price
+            mPriceNormal.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getPrice()));
+            mPriceStrike.setVisibility(View.GONE);
         }
     }
 

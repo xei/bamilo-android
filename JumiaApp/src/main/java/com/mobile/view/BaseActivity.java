@@ -77,6 +77,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
+import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.NavigationFragment;
 
@@ -454,7 +455,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtl()) {
+        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtlShop()) {
             // Show the application name in the action bar
             setActionBarTitle(R.string.app_name);
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
@@ -478,7 +479,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -1217,11 +1218,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
-
         sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }
@@ -1297,7 +1296,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case Favorite:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        // Validate customer is logged in
+                        if (!JumiaApplication.isCustomerLoggedIn()) {
+                            // Goto Login and next WishList
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
                         break;
                     case RecentSearch:
                         // RECENT SEARCHES
@@ -1459,6 +1466,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayShowTitleEnabled(true);
         //getSupportActionBar().setTitle(getString(actionBarTitleResId));
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
+    }
+
+    /**
+     * Show and set title on actionbar
+     *
+     * @param actionBarTitle
+     */
+    public void setActionBarTitle(String actionBarTitle) {
+//        logoTextView.setVisibility(View.VISIBLE);
+//        logoTextView.setText(getString(actionBarTitleResId));
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setTitle(actionBarTitle);
     }
 
     /**
@@ -1911,7 +1931,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void recoverUserDataFromBackground() {
         Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
@@ -1990,6 +2010,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+    }
+
+    public boolean communicateBetweenFragments(String tag, Bundle bundle){
+        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment != null){
+            ((BaseFragment)fragment).notifyFragment(bundle);
+            return true;
+        }
+        return false;
     }
 
 //    /**

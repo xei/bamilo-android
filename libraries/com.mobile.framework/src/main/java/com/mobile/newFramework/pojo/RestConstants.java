@@ -70,6 +70,7 @@ public class RestConstants {
     public static final String JSON_DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
+    public static final String JSON_FORMAT_TAG = "format";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
@@ -132,15 +133,21 @@ public class RestConstants {
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";
     public static final String JSON_SHARE_URL_TAG = "share_url";
+    public static final String JSON_SKU_TAG ="sku";
 
     // Seller tags
-    public static final String JSON_SELLER_TAG = "seller";
+    public static final String JSON_SELLER_TAG = "seller_entity";
     public static final String JSON_MIN_DELIVERY_TAG = "min_delivery_time";
     public static final String JSON_MAX_DELIVERY_TAG = "max_delivery_time";
+    public static final String JSON_WARRANTY_TAG = "warranty";
 
     // Variation Tags
     public static final String JSON_LINK_TAG = "link";
     public static final String JSON_VARIATION_IMAGE_TAG = JSON_IMAGE_TAG;
+    public static final String JSON_VARIATION_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_VARIATION_BRAND_TAG = JSON_BRAND_TAG;
+    public static final String JSON_VARIATION_PRICE_TAG = JSON_PRICE_TAG;
+    public static final String JSON_VARIATION_SPECIALPRICE_TAG = JSON_SPECIAL_PRICE_TAG;
 
     // ProductsPage Tags
     public static final String JSON_RESULTS_TAG = "results";
@@ -220,6 +227,7 @@ public class RestConstants {
     public static final String ADDRESS_1 = "address1";
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
+    public static final String CITY_ID = "city_id";
     public static final String POSTCODE = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
@@ -263,9 +271,7 @@ public class RestConstants {
     public static final String JSON_ORDER_UNIT_PRICE_TAG = "unit_price";
     public static final String JSON_ORDER_PAYMENT_TAG = "payment";
     public static final String JSON_ORDER_TOTAL_NUM_TAG = "total_orders";
-    public static final String JSON_ORDER_PAGINATION_TAG = "pagination";
-    public static final String JSON_ORDER_CURRENT_PAGE_TAG = "current_page";
-    public static final String JSON_ORDER_TOTAL_PAGES_TAG = "total_pages";
+
     /**
      * Order Tracking TAGS
      */
@@ -384,6 +390,7 @@ public class RestConstants {
 
     public static final String JSON_VALID_TAG = "valid";
     public static final String VARIATION_NAME = "variation_name";
+    public static final String VARIATIONS_AVAILABLE_LIST = "variations_available_list";
     public static final String VARIATION_DEFAULT_POSITION = "variation_default_position";
 
     /**
@@ -414,13 +421,24 @@ public class RestConstants {
      * CATALOG
      */
     public static final String JSON_FILTERS_TAG = "filters";
-    public static final String JSON_SEARCH_TERM_TAG = "searchterm";
+    public static final String JSON_SEARCH_TERM_TAG = "searchTerm";
     public static final String JSON_MULTI = "multi";
     public static final String JSON_FILTER_SEPARATOR = "filter_separator";
     public static final String JSON_OPTION_TAG = "option";
 
+    public static final String TOTAL_PAGES = "total_pages";
+    public static final String CURRENT_PAGE = "current_page";
+    public static final String PAGE = "page";
+    public static final String PER_PAGE = "per_page";
+    public static final String PAGINATION = "pagination";
+
+
 
     public static final String ADDRESSES = "addresses";
 
+    public static final String VERTICAL = "vertical";
+    public static final String FASHION = "fashion";
+
+    public static final String WISH_LIST_PRODUCTS = "wishlist_products";
 
 }

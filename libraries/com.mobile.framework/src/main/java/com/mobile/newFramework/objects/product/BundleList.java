@@ -160,4 +160,10 @@ public class BundleList implements IJSONSerializable, Parcelable {
         }
     };
 
+
+    public double getBundlePriceDouble()
+    {
+        return bundlePriceDouble;
+    }
+
 }

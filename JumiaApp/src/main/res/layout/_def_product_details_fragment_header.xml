@@ -32,7 +32,7 @@
         android:textColor="@color/red_middle" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/product_price_normal"
+        android:id="@+id/pdv_text_price"
         style="@style/text_header"
         android:layout_alignBaseline="@+id/product_price_special"
         android:layout_below="@id/product_detail_name"

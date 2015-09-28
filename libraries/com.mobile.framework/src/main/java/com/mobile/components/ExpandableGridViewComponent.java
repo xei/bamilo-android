@@ -22,7 +22,6 @@ public class ExpandableGridViewComponent extends GridView {
 
 	/**
 	 * Class Constructor
-	 * @param context
 	 */
 	public ExpandableGridViewComponent(Context context) {
 		super(context);
@@ -30,8 +29,6 @@ public class ExpandableGridViewComponent extends GridView {
 
 	/**
 	 * Class Constructor
-	 * @param context
-	 * @param attrs
 	 */
 	public ExpandableGridViewComponent(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -39,9 +36,6 @@ public class ExpandableGridViewComponent extends GridView {
 
 	/**
 	 * Class Constructor
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
 	 */
 	public ExpandableGridViewComponent(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -82,7 +76,6 @@ public class ExpandableGridViewComponent extends GridView {
 	
 	/**
 	 * Set Expandable Value
-	 * @param expanded
 	 */
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
