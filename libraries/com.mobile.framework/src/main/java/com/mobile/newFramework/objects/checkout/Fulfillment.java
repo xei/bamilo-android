@@ -49,7 +49,7 @@ public class Fulfillment implements IJSONSerializable, Parcelable {
             products.add(new PurchaseCartItem(productsArray.getJSONObject(i)));
         }
 
-        JSONObject sellerEntityObject = jsonObject.getJSONObject(RestConstants.JSON_SELLER_ENTITY);
+        JSONObject sellerEntityObject = jsonObject.getJSONObject(RestConstants.JSON_SELLER_TAG);
         globalSeller = new GlobalSeller(sellerEntityObject);
         return true;
     }
