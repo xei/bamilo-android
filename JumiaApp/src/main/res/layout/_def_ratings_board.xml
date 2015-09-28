@@ -33,8 +33,8 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/averageRating"
-                style="@style/Caption"
-                color="@color/black"
+                style="@style/TextCaption"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/average_rating"
@@ -44,8 +44,8 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/averageValue"
-                style="@style/Display1"
-                color="@color/black_800"
+                style="@style/TextDisplay_1"
+                android:textColor="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="46/5"
@@ -57,7 +57,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/badgeValue"
-                style="@style/Badge"
+                style="@style/TextBadge"
                 android:textColor="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/five"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/fiveValue"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
@@ -149,7 +149,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/four"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/fourValue"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
@@ -194,7 +194,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/three"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/threeValue"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
@@ -238,7 +238,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/two"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/twoValue"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
@@ -284,7 +284,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/one"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -306,7 +306,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/oneValue"
-                    style="@style/Badge"
+                    style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
@@ -354,7 +354,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/info"
-                style="@style/Caption"
+                style="@style/TextCaption"
                 color="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -365,7 +365,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/info2"
-                style="@style/Caption"
+                style="@style/TextCaption"
                 color="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -392,8 +392,8 @@
             <!-- buttom write -->
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/btWriteReview"
-                style="@style/List2"
-                color="@color/orange"
+                style="@style/TextList_2"
+                android:textColor="@color/orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Write a Review"

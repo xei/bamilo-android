@@ -21,7 +21,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_description_text"
-                style="@style/Body3"
+                style="@style/TextBody_3"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_features_text"
-                style="@style/Body3"
+                style="@style/TextBody_3"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
