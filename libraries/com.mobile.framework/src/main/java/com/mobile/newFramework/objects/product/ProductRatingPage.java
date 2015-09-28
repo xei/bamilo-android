@@ -34,8 +34,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	private int currentPage;
 	private int totalPages;
 
-	private JSONObject byStarsObject; //added
-	private HashMap<String,String> byStars;	//added
+	//added
+	private JSONObject byStarsObject;
+	private HashMap<String,String> byStars;
+	private int mBasedOn;
 
 	public ProductRatingPage() {
 	    productName = "";
@@ -48,6 +50,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	    average = -1;
 	    sellerUrl = "";
 	    sellerName = "";
+		byStars = new HashMap<>();
+		mBasedOn = 0;
 	}
 
 	/*
@@ -78,9 +82,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		    maxStarSize =  starSizeObject.optInt(RestConstants.JSON_NAME_TAG, 5);
 		}
 
+
 		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.REVIEW_RATING_FIELD);
 
 		if (ratingsObject != null) {
+			mBasedOn = ratingsObject.optInt(RestConstants.JSON_BASED_ON_TAG);
+
             JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.JSON_RATING_TYPE_TAG);
             if (ratingTypes != null && ratingTypes.length() > 0) {
                 for (int i = 0; i < ratingTypes.length(); i++) {
@@ -182,6 +189,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
     public void setMaxStarSize(int maxStarSize) {
         this.maxStarSize = maxStarSize;
     }
+
+	public int getmBasedOn() { return mBasedOn;}
 
     /**
      * field user for seller only
