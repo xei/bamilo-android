@@ -88,10 +88,12 @@ private int mTabsCount = 3;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        if(savedInstanceState != null){
-            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
+        Bundle bundle = getArguments();
+        if(bundle != null)
+        {
+            mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
         } else {
-            mPositionToStart = -1;
+            mPositionToStart = 0;
         }
     }
 
@@ -132,10 +134,11 @@ private int mTabsCount = 3;
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
             if(ShopSelector.isRtl()){
                 mProductInfoPager.enableRtl();
-                mPositionToStart = mProductInfoPagerAdapter.getCount();
+       /*         mPositionToStart = mProductInfoPagerAdapter.getCount();
             } else {
-                mPositionToStart = 0;
+                mPositionToStart = 0;*/
             }
+            setPagerPosition(mPositionToStart);
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);
