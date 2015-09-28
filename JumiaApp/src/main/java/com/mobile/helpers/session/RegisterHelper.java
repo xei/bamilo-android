@@ -54,7 +54,6 @@ public class RegisterHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new RegisterCustomer(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.registerCustomer);
     }
 
@@ -70,4 +69,5 @@ public class RegisterHelper extends SuperBaseHelper {
         // Save customer
         JumiaApplication.CUSTOMER = ((Customer) baseResponse.getMetadata().getData());
     }
+
 }

@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.product.WishList;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -13,6 +15,7 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.cache.WishListCache;
 
 /**
  * Helper used to get the default wish list.
@@ -31,6 +34,14 @@ public class GetWishListHelper extends SuperBaseHelper {
     @Override
     public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getWishList);
+    }
+
+    @Override
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+        
+        // Save new wish list
+        WishListCache.set(((WishList) baseResponse.getMetadata().getData()).getWishListCache());
     }
 
     /**

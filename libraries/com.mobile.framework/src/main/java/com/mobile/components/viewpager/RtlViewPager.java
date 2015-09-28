@@ -22,7 +22,7 @@ public class RtlViewPager extends ViewPager {
     private boolean isRtlEnabled;
 
     public interface RtlService{
-        void invertItems();
+        public void invertItems();
     }
 
     public RtlViewPager(Context context) {

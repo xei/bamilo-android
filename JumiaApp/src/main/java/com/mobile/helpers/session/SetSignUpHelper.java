@@ -16,6 +16,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Map;
@@ -62,7 +63,6 @@ public class SetSignUpHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        //TODO move to observable
         // Save credentials
         if (saveCredentials) {
             Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
@@ -81,8 +81,9 @@ public class SetSignUpHelper extends SuperBaseHelper {
 
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-//        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
+
+        // Save new wish list
+        WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
     }
 
 }

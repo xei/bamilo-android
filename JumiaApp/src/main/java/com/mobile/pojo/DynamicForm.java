@@ -300,11 +300,15 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             }
             // Case related number
             else if (control != null && control.getType() == InputType.relatedNumber ) {
-                model.put(control.getName(), control.getValue()); // Get number
-                IFormField related = control.getEntry().getRelatedField(); // Get related option
+                // Get number
+                model.put(control.getName(), control.getValue());
+                // Get related option
+                IFormField related = control.getEntry().getRelatedField();
                 RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
+                // Get selected position
                 int idx = group.getSelectedIndex();
-                String value = group.getItemByIndex(idx);
+                // Get option value from related item
+                String value = related.getOptions().get(idx).getValue();
                 model.put(related.getName(), value);
             }
             // Case default

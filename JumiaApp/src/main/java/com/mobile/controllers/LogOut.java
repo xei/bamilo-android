@@ -9,6 +9,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
 
@@ -58,7 +59,7 @@ public class LogOut {
             public void onRequestError(BaseResponse baseResponse) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
-                    cleanCartData(baseActivity);
+                    cleanData(baseActivity);
                 }
             }
 
@@ -66,7 +67,7 @@ public class LogOut {
             public void onRequestComplete(BaseResponse baseResponse) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
-                    cleanCartData(baseActivity);
+                    cleanData(baseActivity);
                 }
             }
         });
@@ -74,12 +75,13 @@ public class LogOut {
     
     /**
      * Clear cart data from memory and other components.
-     * @param baseActivity
-     * @author sergiopereira
      */
-    private static void cleanCartData(BaseActivity baseActivity) {
+    private static void cleanData(BaseActivity baseActivity) {
         // Clear cookies, cart, credentials
         AigHttpClient.getInstance().clearCookieStore();
+        // Clean wish list
+        WishListCache.clean();
+        // Clean cart
         JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
         JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
@@ -87,6 +89,7 @@ public class LogOut {
         baseActivity.updateCartInfo();
         // Inform parent activity
         baseActivity.onLogOut();
+        // Tracking
         TrackerDelegator.clearTransactionCount();
     }
 

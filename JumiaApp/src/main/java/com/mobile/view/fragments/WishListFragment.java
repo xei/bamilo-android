@@ -42,6 +42,12 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private static final String TAG = WishListFragment.class.getSimpleName();
 
+    /**
+     *  Flag used to reload the wish list content from network.
+     *  Used only from PDV.
+     */
+    public static boolean sForceReloadWishListFromNetwork;
+
     private GridView mListView;
 
     private View mLoadingMore;
@@ -55,7 +61,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     private int mNumberOfColumns = 1;
 
     private boolean isErrorOnLoadingMore = false;
-
 
     /**
      * Create and return a new instance.
@@ -71,7 +76,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favorite,
                 R.layout._def_wishlist_fragment,
-                R.string.favourites,
+                R.string.saved,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -87,6 +92,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (savedInstanceState != null) {
             Log.i(TAG, "GET DATA FROM SAVED STATE");
             mWishList = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            sForceReloadWishListFromNetwork = savedInstanceState.getBoolean(ConstantsIntentExtra.FLAG_1);
         }
     }
 
@@ -138,6 +144,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE");
         outState.putParcelable(ConstantsIntentExtra.DATA, mWishList);
+        outState.putBoolean(ConstantsIntentExtra.FLAG_1, sForceReloadWishListFromNetwork);
     }
 
     /*
@@ -198,8 +205,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case first time
-        else if (mWishList == null) {
-            triggerGetPaginatedWishList();
+        else if (mWishList == null || sForceReloadWishListFromNetwork) {
+            sForceReloadWishListFromNetwork = false;
+            mWishList = null;
+            triggerGetPaginatedWishList(IntConstants.FIRST_PAGE);
         }
         // Case recover saved state
         else {
@@ -261,6 +270,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         try {
             ProductMultiple item = ((WishListAdapter) mListView.getAdapter()).getItem(mSelectedPositionToDelete);
             ((WishListAdapter) mListView.getAdapter()).remove(item);
+            // Case empty
+            if(mListView.getAdapter().isEmpty()) {
+                mWishList = null;
+                showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+            }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             Log.i(TAG, "WARNING: EXCEPTION ON REMOVE SELECTED POSITION: " + mSelectedPositionToDelete);
         }
@@ -417,12 +431,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ############## TRIGGERS ##############
      */
 
-    private void triggerGetPaginatedWishList() {
-        if(mWishList == null) {
-            triggerContentEvent(new GetWishListHelper(), GetWishListHelper.createBundle(IntConstants.FIRST_PAGE), this);
-        } else {
-            triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(mWishList.getPage() + 1), this);
-        }
+    private void triggerGetPaginatedWishList(int page) {
+        triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -534,7 +544,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (!isErrorOnLoadingMore && !isLoadingMoreData && isBottomReached && mWishList != null && mWishList.hasMorePages()) {
             Log.i(TAG, "LOAD MORE DATA");
             setLoadingMore(true);
-            triggerGetPaginatedWishList();
+            triggerGetPaginatedWishList(mWishList.getPage() + 1);
         }
     }
 }

@@ -15,7 +15,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/txSellerName"
         style="@style/TextBody_1"
-        color="@color/black_800"
+        android:textColor="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/layout_padding"
@@ -41,7 +41,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_rating_bar_rating_count"
-            style="@style/Caption"
+            style="@style/TextCaption"
             color="@color/black_800"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txDeliver"
             style="@style/TextHeader"
-            color="@color/black"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/delivery_time1" />
@@ -74,7 +74,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txDeliverTimeContent"
             style="@style/TextHeader"
-            color="@color/black"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -83,6 +83,7 @@
     <!-- WARRANTY: OPTIONAL -->
 
     <LinearLayout
+        android:id="@+id/warrantySection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/layout_padding"
@@ -99,19 +100,40 @@
             android:src="@drawable/ic_warranty" />
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txWarranty"
             style="@style/TextHeader"
-            color="@color/black"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp" />
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextHeader"
-            color="@color/black"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <!-- OTHER SELLERS BUTTON: optional -->
+
+    <!-- SEPARATOR -->
+
+    <View style="@style/divider_horizontal"   android:id="@+id/separator"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <include
+        android:id="@+id/pdv_other_sellers_button"
+        layout="@layout/sublist" />
+
+<!--
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_other_sellers_button"
+        style="@style/Caption"
+        android:textColor="@color/black"
+        />
+        -->
 
 
 </LinearLayout>
