@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Class used to represent a wish list page.
@@ -25,6 +26,7 @@ public class WishList implements IJSONSerializable, Parcelable {
     private int mPage = IntConstants.FIRST_PAGE;
     private int mMaxPages = IntConstants.FIRST_PAGE;
     private ArrayList<ProductMultiple> mProducts;
+    private HashSet<String> mWishListCache;
 
     /**
      * Empty constructor
@@ -47,15 +49,21 @@ public class WishList implements IJSONSerializable, Parcelable {
         int size = productsArray.length();
         if (size > 0) {
             mProducts = new ArrayList<>();
+            mWishListCache = new HashSet<>();
             for (int i = 0; i < size; i++) {
                 JSONObject simpleObject = productsArray.getJSONObject(i);
                 ProductMultiple product = new ProductMultiple();
                 if (product.initialize(simpleObject)) {
                     mProducts.add(product);
+                    mWishListCache.add(product.getSku());
                 }
             }
         }
         return true;
+    }
+
+    public HashSet<String> getWishListCache() {
+        return mWishListCache;
     }
 
     public int getPage() {

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/line_separator"
+    >
+
+    <include
+        android:id="@+id/image_loadable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/layout_marginLeft"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        layout="@layout/image_loadable" />
+
+    <!-- this will have later
+
+    <ImageView
+        android:id="@+id/image_is_favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="false"
+        android:padding="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/catalog_item_vertical_padding"
+        android:src="@drawable/btn_addfavourites" />
+        -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_below="@id/image_loadable"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:id="@+id/info"
+        >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/TextCaption"
+            android:textColor="@color/black_800"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIKE"
+            />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txTitle"
+            style="@style/TextBody_1"
+            android:textColor="@color/black"
+            android:text="DESCRIPTION"
+            android:maxLines="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_discount"
+                style="@style/TextBody_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               />
+
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_price"
+                style="@style/TextBody_3"
+                android:textColor="@color/black_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

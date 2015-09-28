@@ -5,7 +5,7 @@
     >
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/Caption"
+        style="@style/TextCaption"
         android:textColor="@color/black"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

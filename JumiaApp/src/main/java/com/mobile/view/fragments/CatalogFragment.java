@@ -7,12 +7,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -39,6 +39,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -49,8 +50,8 @@ import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.UICatalogHelper;
-import com.mobile.utils.dialogfragments.DialogListFragment;
-import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import com.mobile.utils.dialogfragments.DialogSortListFragment;
+import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -72,6 +73,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private final static String TRACK_LIST = "list";
 
     private final static String TRACK_GRID = "grid";
+
+    private final static String TRACK_SINGLE = "single";
 
     private final static int FIRST_POSITION = 0;
 
@@ -107,8 +110,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
 
-    private boolean mIsToShowGridLayout = false;
-
     private String mCategoryId; // Verify if catalog page was open via navigation drawer
 
     private String mCategoryTree;
@@ -116,6 +117,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private ContentValues mQueryValues = new ContentValues();
 
     private ProductRegular mWishListItemClicked = null;
+
+    private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
+
+    private String mCompleteUrl;
 
     /**
      * Create and return a new instance.
@@ -152,7 +157,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Load line to active top button
-        mTopButtonActivateLine = setButtonActiveLine(mIsToShowGridLayout);
+        mTopButtonActivateLine = setButtonActiveLine(mLevel);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -168,15 +173,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
             // Url and parameters
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-//            RestUrlUtils.getQueryParameters(url, mQueryValues);
-            if(url != null) {
-                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(url)));
+            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            // This lines are ment to support opening url through a complete url.
+            // Its remvoe the parameters, saved on the query values, and then clear the parameters from the
+            // the complete url, so it ca be used in the new parameter the user may choose
+            if (!TextUtils.isEmpty(mCompleteUrl)) {
+                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
+                Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
+                builder.clearQuery();
+                mCompleteUrl = builder.toString();
             }
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
-                mQueryValues.put(GetCatalogPageHelper.QUERY,arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                mQueryValues.put(GetCatalogPageHelper.QUERY, arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
@@ -206,17 +216,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
-        mIsToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
-        mNumberOfColumns = getResources().getInteger(mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
-        // Get sort button 
+//        String level = CustomerPreferences.getCatalogLayout(getBaseActivity());
+        mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
+        if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
+            mNumberOfColumns = getResources().getInteger(R.integer.catalog_grid_num_columns);
+        } else {
+            mNumberOfColumns = getResources().getInteger(R.integer.catalog_list_num_columns);
+        }
+        // Get sort button
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
         mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
         // Get switch button
         View mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
-        mColumnsButton.setSelected(mIsToShowGridLayout);
-        mTopButtonActivateLine = setButtonActiveLine(mIsToShowGridLayout);
+        ((ImageView)mColumnsButton).setImageLevel(mLevel);
+        mTopButtonActivateLine = setButtonActiveLine(mLevel);
         // Get up button
         mTopButton = view.findViewById(R.id.catalog_button_top);
         mTopButton.setOnClickListener(this);
@@ -312,7 +327,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
         // Remove scroll listener
-        if(mGridView != null) {
+        if (mGridView != null) {
             mGridView.removeOnScrollListener(onRecyclerScrollListener);
         }
     }
@@ -348,7 +363,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL()) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -376,7 +391,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Set sort button
         setSortButton();
         // Set filter button
@@ -385,8 +401,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Update catalog items with saved temporary wish list values
-        adapter.updateWishListPdvData(JumiaApplication.getWishListTemporaryPdvData());
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
@@ -453,7 +467,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Save title
         mTitle = catalogPage.getName();
         // Set title bar
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Show header
         if (catalogPage.getPage() == IntConstants.FIRST_PAGE) {
             showHeaderBanner();
@@ -491,12 +505,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Show the no filter layout error.
      *
-     * @param  stringId The message.
+     * @param stringId The message.
      */
     private void showFilterError(int stringId) {
         Print.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Show layout
 //        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
 //            @Override
@@ -524,7 +538,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Show the no filter unexpected error.
      */
-    private void showFilterUnexpectedError(){
+    private void showFilterUnexpectedError() {
         showFilterError(ErrorLayoutFactory.CATALOG_UNEXPECTED_ERROR);
     }
 
@@ -591,7 +605,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
-            if (mWishListItemClicked.isWishList()) {
+            if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
@@ -607,7 +621,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void updateWishListProduct() {
         if(mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
-            mWishListItemClicked.setIsWishList(!mWishListItemClicked.isWishList());
             mGridView.getAdapter().notifyDataSetChanged();
         }
     }
@@ -676,7 +689,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
         //Remove old filters from final request values
-        for(String key : mCurrentFilterValues.keySet()){
+        for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
         }
 
@@ -698,23 +711,23 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onClickSwitchColumnsButton(View button) {
         Print.i(TAG, "ON CLICK COLUMNS BUTTON");
         try {
-            // Case selected is showing the GRID LAYOUT and the LIST ICON
-            boolean mIsToShowGridLayout = button.isSelected();
+            mLevel =((ImageView)button).getDrawable().getLevel();
+            switchCatalogView();
             // Save user preference
-            CustomerPreferences.saveCatalogLayout(getBaseActivity(), !mIsToShowGridLayout);
+            CustomerPreferences.saveCatalogLayout(getBaseActivity(), ""+mLevel);
             // Update the icon
-            button.setSelected(!mIsToShowGridLayout);
+            ((ImageView)button).setImageLevel(mLevel);
             //change back to top line number
-            mTopButtonActivateLine = setButtonActiveLine(!mIsToShowGridLayout);
+            mTopButtonActivateLine = setButtonActiveLine(mLevel);
             // Update the number of columns
-            mNumberOfColumns = getResources().getInteger(!mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
+            mNumberOfColumns = updateCatalogColumnsNumber();
             // Update the columns and layout
             GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
             manager.setSpanCount(mNumberOfColumns);
             manager.requestLayout();
-            ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!mIsToShowGridLayout);
+            ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(mLevel);
             // Track catalog
-            TrackerDelegator.trackCatalogSwitchLayout((!mIsToShowGridLayout) ? TRACK_LIST : TRACK_GRID);
+            TrackerDelegator.trackCatalogSwitchLayout(trackView());
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SWITCH CATALOG COLUMNS", e);
         }
@@ -743,11 +756,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @return line number
      */
-    private int setButtonActiveLine(Boolean isShowingGridLayout){
-        if (!isShowingGridLayout) {
-            return getResources().getInteger(R.integer.activate_go_top_buttom_line);
-        } else {
-            return getResources().getInteger(R.integer.activate_go_top_buttom_line_grid);
+    private int setButtonActiveLine(int level){
+        switch (level) {
+            case CatalogGridAdapter.ITEM_VIEW_TYPE_LIST:
+                return getResources().getInteger(R.integer.activate_go_top_buttom_line);
+            case CatalogGridAdapter.ITEM_VIEW_TYPE_GRID:
+                return getResources().getInteger(R.integer.activate_go_top_buttom_line_grid);
+            case CatalogGridAdapter.ITEM_VIEW_TYPE_SINGLE:
+                return getResources().getInteger(R.integer.activate_go_top_buttom_line_single);
+            default:
+                return getResources().getInteger(R.integer.activate_go_top_buttom_line_grid);
         }
     }
 
@@ -762,7 +780,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSortOptions.add(getString(sort.name));
         }
         // Show dialog
-        DialogListFragment.newInstance(this, this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal()).show(getChildFragmentManager(), null);
+        DialogSortListFragment.newInstance(this, this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal()).show(getChildFragmentManager(), null);
     }
 
     /*
@@ -834,7 +852,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     };
 
-    protected void setVisibilityTopButton(RecyclerView recyclerView){
+    protected void setVisibilityTopButton(RecyclerView recyclerView) {
         // Set the goto top button
         GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
         int last = manager.findLastVisibleItemPosition();
@@ -891,9 +909,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
+        // Get Sort
+        mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+        mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
+        // Query parameters
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
+        // validate if is to use complete URL or not
+        if (validateURL()) {
+            bundle.putString(GetCatalogPageHelper.URL, mCompleteUrl);
+        }
         // Case initial request or load more
         if (page == IntConstants.FIRST_PAGE) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
@@ -1040,25 +1067,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the error code
      *
-     * @param bundle    - the request bundle
+     * @param bundle - the request bundle
      */
     private void onLoadingMoreRequestError(Bundle bundle) {
         // Mark error on loading more
         mErrorLoading = true;
         // Scroll to hide the loading view
         mGridView.stopScroll();
-        mGridView.scrollBy(0, - getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
+        mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
         // Show respective warning indicating to use the warning bar
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
         // Case super not handle the error show unexpected error
-        if(!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
+        if (!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
     }
 
     @Override
     public void onHeaderClick(String targetType, String url, String title) {
         ITargeting.TargetType target = ITargeting.TargetType.byValue(targetType);
         Bundle bundle = new Bundle();
-        switch (target){
+        switch (target) {
             case CATALOG:
                 onClickCatalog(url, title, bundle);
                 break;
@@ -1086,11 +1113,70 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private String getCatalogCategory(){
+    private String getCatalogCategory() {
         String mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY);
-        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(mSearchQuery)){
+        if (!TextUtils.isEmpty(mSearchQuery)) {
             mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
         }
         return mSearchQuery;
+    }
+
+    /**
+     * only use complete Url request if Category and Query parameters are not present, and complete url is not empty
+     *
+     * @return
+     */
+    private boolean validateURL() {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * switch the icon and type of catalog view depending on the previous one
+     */
+    private void switchCatalogView(){
+        if(mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_LIST){
+            mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_SINGLE;
+        } else if(mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
+            mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
+        } else {
+            mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_GRID;
+        }
+    }
+
+    /**
+     * Gets the number of columns defined for a specfic view
+     * @return columns number
+     */
+    private int updateCatalogColumnsNumber(){
+        if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
+            return getResources().getInteger(R.integer.catalog_grid_num_columns);
+        } else {
+            return getResources().getInteger(R.integer.catalog_list_num_columns);
+        }
+    }
+
+    /**
+     *
+     * @return the type of the current catalog view
+     */
+    private String trackView(){
+        if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
+            return  TRACK_GRID;
+        } else if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_LIST){
+            return TRACK_LIST;
+        } else {
+            return TRACK_SINGLE;
+        }
+    }
+
+    private boolean validateCompleteURL(){
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
+            if (!com.mobile.newFramework.utils.TextUtils.isEmpty(mCompleteUrl))
+                return true;
+        }
+        return false;
     }
 }
