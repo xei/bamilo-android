@@ -1040,7 +1040,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 BrandsTableHelper.updateBrandCounter(product.getBrand());
                 break;
             case GET_PRODUCT_BUNDLE:
-                BundleList bundleList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                BundleList bundleList = (BundleList)baseResponse.getMetadata().getData();
                 //keep the bundle
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here

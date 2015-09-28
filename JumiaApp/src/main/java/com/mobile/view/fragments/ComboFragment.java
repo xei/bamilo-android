@@ -18,6 +18,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -252,7 +254,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * choose the simple and add to cart
      *
-     * @param productBundle - arguments
+     *
      */
 
     @Override
@@ -297,7 +299,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * updates the sombo total price in checking/unchecking bundle
      *
-     * @param productBundle - arguments
+     *
      */
 
     @Override
@@ -352,7 +354,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT: ");
 
         // Hide dialog progress
@@ -361,7 +363,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (getBaseActivity() == null)
             return;
 
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         executeAddToShoppingCartCompleted(false);
     }
 
@@ -370,21 +372,21 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
 
         // Hide dialog progress
         hideActivityProgress();
 
         // Specific errors
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
 
                     if (errorMessages != null) {
                         int titleRes = R.string.error_add_to_cart_failed;
