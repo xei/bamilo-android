@@ -50,6 +50,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private BundleList bundleList;
     private double totalPrice=0.0;
+    private String productSku;
 
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
@@ -99,6 +100,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
+            productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             totalPrice = bundleList.getBundlePriceDouble();
 
         }
@@ -121,7 +123,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         gv = (ComboGridView) view.findViewById(R.id.combo_grid_view);
 
-        adapter = new ComboGridAdapter(c,bundleList.getBundleProducts());
+        adapter = new ComboGridAdapter(c,bundleList.getBundleProducts(),productSku);
         adapter.setOnViewHolderClickListener(this);
         gv.setAdapter(adapter);
         gv.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
@@ -306,7 +308,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         //get Selected Item
         ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
         //update total price and select a simple if is checked
-        if(selectedBundle.isChecked())
+/*        if(selectedBundle.isChecked())
         {
             if(selectedBundle.hasDiscount())
                 totalPrice += selectedBundle.getSpecialPrice();
@@ -319,9 +321,16 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                 totalPrice -= selectedBundle.getSpecialPrice();
             else
                 totalPrice -= selectedBundle.getPrice();
-        }
+        }*/
 
-        mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
+      //  bundleList.setSelectedBundlePosition(position);
+
+        if(!selectedBundle.getSku().equals(productSku)) {
+            bundleList.updateTotalPriceWhenChecking(position);
+            totalPrice = bundleList.getBundlePriceDouble();
+
+            mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
+        }
 
     }
 
