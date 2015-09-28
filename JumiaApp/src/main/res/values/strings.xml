@@ -406,8 +406,6 @@
     <string name="products_tip_saved_text">Click to Save products!</string>
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
     <string name="warranty">Warranty: %s</string>
-    <string name="open">open</string>
-    <string name="close">close</string>
 
     <string name="from_avg_rat">from</string>
     <string name="from_avg_cus">customers</string>
@@ -417,13 +415,10 @@
     <string name="average_rating_write_review">Write a review</string>
     <string name="average_raings_header">RATINGS</string>
     <string name="average_reviews_header">USER REVIEWS</string>
-    <string name="description">Description</string>
-    <string name="rat_rev">Ratings Reviews</string>
+    <string name="rat_rev">Ratings/Reviews</string>
     <string name="posted_by">posted by</string>
+    <string name="product_specifications">Product Specifications</string>
 
-    <!-- NEW 2.8 -->
-    <string name="choose_language">Choose Language</string>
-    <string name="language">Language</string>
-    <string name="country">Country</string>
+
 
 </resources>
