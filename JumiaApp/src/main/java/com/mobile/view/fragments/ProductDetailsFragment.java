@@ -502,7 +502,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription();
+                onClickShowDescription(0);
             }
         });
     }
@@ -543,12 +543,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
         // TODO: Move to onClick
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickShowDescription();
-            }
-        });
+        button.setOnClickListener(this);
     }
 
     /**
@@ -676,7 +671,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(2);//onClickRating();
         // Case description
         // TODO
         // Case variation button
@@ -694,6 +689,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case buy button
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
             // seller link
+        /*
         else if (id == R.id.seller_name_container) goToSellerCatalog();
             // seller rating
         else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
@@ -701,8 +697,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
         //added: if buy add to Chart
         else if (id == R.id.btBuy)  executeAddProductToCart();
+        */
 
         else if (id == R.id.SizeSection) showVariantsDialog();
+        else if( id == R.id.pdv_specs_button) onClickShowDescription(1);
 
     }
 
@@ -735,10 +733,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Show the product description
      */
-    private void onClickShowDescription() {
+    private void onClickShowDescription(int position) {
         Log.i(TAG, "ON CLICK TO SHOW DESCRIPTION");
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+        bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
