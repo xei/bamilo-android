@@ -70,5 +70,8 @@
     <dimen name="home_small_teaser_item_width">216dp</dimen>
     <dimen name="home_shop_week_teaser_min_height">258dp</dimen>
     <integer name="home_featured_stores_teaser_num_columns">3</integer>
+
+    <integer name="grid_num_columns">2</integer>
+    
     
 </resources>

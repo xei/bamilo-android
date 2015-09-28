@@ -62,4 +62,6 @@
     <dimen name="home_small_teaser_item_width">288dp</dimen>
     <dimen name="home_main_teaser_height">320dp</dimen>
 
+    <integer name="grid_num_columns">2</integer>
+
 </resources>

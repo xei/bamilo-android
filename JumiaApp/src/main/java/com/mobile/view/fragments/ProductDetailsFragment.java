@@ -27,6 +27,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
@@ -459,6 +460,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                 warrantySection.setVisibility(View.VISIBLE);
             }
+
+            //show button offers with separator if has offers
+            View btOffers = sellerView.findViewById(R.id.pdv_other_sellers_button);
+            View separator = sellerView.findViewById(R.id.separator);
+            if(mProduct.hasOffers())
+            {
+                TextView txOffers = (TextView) btOffers.findViewById(R.id.pdv_sublist_button);
+                txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
+                btOffers.setOnClickListener(this);
+            }
+            else {
+                btOffers.setVisibility(View.GONE);
+                separator.setVisibility(View.GONE);
+            }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);
         }
@@ -543,18 +558,27 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
         // TODO: Move to onClick
-        button.setOnClickListener(this);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickShowDescription();
+            }
+        });
     }
 
     /**
-     * Set combos
+     * Set combos: if has bundle get bundle list
      */
     private void setCombos() {
-        if (mProduct.getProductBundle() != null && mProduct.getProductBundle().getBundleProducts().size() > 0) {
-            buildComboSection(mProduct.getProductBundle());
-        } else {
+
+        if(mProduct.hasBundle())    //
+        {
+            triggerGetProductBundle(mProduct.getSku());
+        }else
+        {
             mComboProductsLayout.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -688,6 +712,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_call) onClickCallToOrder();
         // Case buy button
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
+        // Case combos section
+        else if (id == R.id.pdv_combos_container) onClickCombosProduct();
+        // case other offers
+        else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
             // seller link
         /*
         else if (id == R.id.seller_name_container) goToSellerCatalog();
@@ -714,6 +742,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 //        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
 //        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
 //    }
+
+    /**
+     * Process the click on rating
+     */
+    private void onClickCombosProduct() {
+        Log.i(TAG, "ON CLICK COMBOS SECTION");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
+        getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+
 
     /**
      * Process the click on rating
@@ -750,6 +790,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the click on other offers button if has offers
+     */
+    private void onClickOtherOffersProduct() {
+        Log.i(TAG, "ON CLICK OTHER OFFERS");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1000,6 +1052,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 LastViewedTableHelper.insertLastViewedProduct(product);
                 BrandsTableHelper.updateBrandCounter(product.getBrand());
                 break;
+            case GET_PRODUCT_BUNDLE:
+                BundleList bundleList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                //keep the bundle
+                mProduct.setProductBundle(bundleList);
+                // build combo section from here
+                buildComboSection(bundleList);
             default:
                 break;
         }
@@ -1133,12 +1191,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             count++;
         }
-        mTableBundles.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //opens bundle page here
-            }
-        });
+        mComboProductsLayout.setOnClickListener(this);
         mComboProductsLayout.setVisibility(View.VISIBLE);
     }
 
@@ -1162,6 +1215,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         com.mobile.components.customfontviews.TextView mPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_price);
         mPrice.setText(CurrencyFormatter.formatCurrency(p.getPrice()));
     }
+
+
+
+    private void triggerGetProductBundle(String sku) {
+        triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
+    }
+
+
 
 //    /**
 //     * function responsible for calling the catalog with the products from a specific seller

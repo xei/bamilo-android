@@ -55,8 +55,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static ProductDetailsSpecificationsFragment getInstance(Bundle bundle) {
         ProductDetailsSpecificationsFragment fragment = new ProductDetailsSpecificationsFragment();
@@ -244,7 +242,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
 
     /**
      * Add specification table to the specification list
-     * @param productSpecification
      */
     private void addSpecTable(ProductSpecification productSpecification){
 

@@ -33,6 +33,7 @@ import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
+import com.mobile.view.fragments.ComboFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
@@ -47,7 +48,7 @@ import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
-import com.mobile.view.fragments.ProductOffersFragment;
+import com.mobile.view.fragments.ProductOffersFragmentNew;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
 import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
@@ -380,7 +381,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductSizeGuideFragment.newInstance(bundle);
                 break;
             case PRODUCT_OFFERS:
-                fragment = ProductOffersFragment.newInstance(bundle);
+              //  fragment = ProductOffersFragment.newInstance(bundle);
+                fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
                 fragment = MyAccountMyAddressesFragment.newInstance();
@@ -396,6 +398,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case WRITE_REVIEW_SELLER:
                 fragment = WriteSellerReviewFragment.getInstance(bundle);
+                break;
+            case COMBOPAGE:
+                fragment = ComboFragment.getInstance(bundle);
                 break;
             case FILTERS:
                 fragment = FilterMainFragment.getInstance(bundle);

@@ -204,7 +204,7 @@
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="poll_question_label">Poll Question</string>
-
+    <string name="posted_by">posted by</string>
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
@@ -421,4 +421,17 @@
 
 
 
+    <string name="other_sellers_starting">Other Sellers starting from:</string>
+    <string name="buy_combo">BUY COMBO</string>
+    <string name="total_price_bottom">Total:</string>
+    <string name="from_avg_rat">from</string>
+    <string name="from_avg_cus">customers</string>
+    <string name="average_rating">Average</string>
+    <string name="average_rating_used_prod">Have you used this product?</string>
+    <string name="average_rate_now">Rate it now</string>
+    <string name="average_rating_write_review">Write a review</string>
+    <string name="average_raings_header">RATINGS</string>
+    <string name="average_reviews_header">USER REVIEWS</string>
+    <string name="description1">Description</string>
+    <string name="rat_rev">Ratings Reviews</string>
 </resources>

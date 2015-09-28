@@ -59,14 +59,15 @@
     <item name="catalog_fragment_wizard"                type="layout">@layout/_def_catalog_fragment_wizard</item>
     <item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_def_catalog_fragment_wizard_favourite</item>
     <item name="catalog_fragment_no_result"             type="layout">@layout/_def_catalog_fragment_no_result</item>
-    <item name="catalog_item_grid_rounded"              type="layout">@layout/_def_catalog_item_grid_rounded</item>
-    <item name="catalog_item_list_rounded"              type="layout">@layout/_def_catalog_item_list_rounded</item>
     <item name="filters_main"                           type="layout">@layout/_def_filters_main</item>
     <item name="filter_bottom_buttons"                  type="layout">@layout/_def_filter_bottom_buttons</item>
     <item name="list_sub_item_1"                        type="layout">@layout/_def_list_sub_item_1</item>
     <item name="list_sub_item_2"                        type="layout">@layout/_def_list_sub_item_2</item>
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
     <item name="filter_fragment_price"                   type="layout">@layout/_def_filter_fragment_price</item>
+    <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
+    <item name="catalog_item_list"                      type="layout">@layout/_def_catalog_item_list</item>
+    <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
     <!-- INNER SHOP -->
@@ -146,7 +147,6 @@
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
-    <item name="dialog_language_list_item"              type="layout">@layout/_def_dialog_language_list_item</item>
 
     <!-- RECENTLY VIEWED -->
     <item name="addabletocart_item"                     type="layout">@layout/_def_addabletocart_item</item>
@@ -210,6 +210,8 @@
 <item name="form_spinner_item"                       type="layout">@layout/_def_form_spinner_item</item>
 <item name="review_fragment"                       type="layout">@layout/_def_review_fragment</item>
 <item name="simple_email_notification_option"                       type="layout">@layout/_def_simple_email_notification_option</item>
+
+    <item name="product_offers_main_new"                        type="layout">@layout/_def_product_offers_main_new</item>
 
 </resources>
 
