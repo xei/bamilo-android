@@ -22,9 +22,9 @@ public class CompleteProductUtils {
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
 
         //If Campaign product already has simple
-        }else if(productBase instanceof CampaignItem && ((CampaignItem) productBase).getSelectedSize() != null){
-
-            setPrice(((CampaignItem) productBase).getSelectedSize(),price,specialPrice);
+        }else if(productBase instanceof CampaignItem && ((CampaignItem) productBase).hasSelectedSize()){
+            CampaignItem campaignItem = (CampaignItem) productBase;
+            setPrice(campaignItem.getSizes().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
 
         //If hasn't simple but has range
         } else if(TextUtils.isNotEmpty(priceRange)){
