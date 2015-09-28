@@ -34,6 +34,8 @@ public class BundleList implements IJSONSerializable, Parcelable {
     private double bundlePriceConverted;
     private int bundleLeaderPos;
     private ArrayList<ProductBundle> bundleProducts;
+    private ProductBundle selectedBundle;
+    private int selectedBundlePosition = -1;
 
     /**
      * Complete product bundle empty constructor.
@@ -165,5 +167,54 @@ public class BundleList implements IJSONSerializable, Parcelable {
     {
         return bundlePriceDouble;
     }
+
+    public void setBundlePriceDouble(double bundlePriceDouble)
+    {
+        this.bundlePriceDouble= bundlePriceDouble;
+    }
+
+    public void updateTotalPriceWhenChecking(int bundlePosition)
+    {
+        if(bundleProducts != null && bundleProducts.size() > 0)
+        {
+            //get selected bundle
+            ProductBundle productBundle = bundleProducts.get(bundlePosition);
+            //change for the oposite state
+            productBundle.setChecked(!productBundle.isChecked());
+            //update total price
+            if(productBundle.isChecked())
+            {
+                if(productBundle.hasDiscount())
+                    bundlePriceDouble += productBundle.getSpecialPrice();
+                else
+                    bundlePriceDouble += productBundle.getPrice();
+
+            }else
+            {
+                if(productBundle.hasDiscount())
+                    bundlePriceDouble -= productBundle.getSpecialPrice();
+                else
+                    bundlePriceDouble -= productBundle.getPrice();
+            }
+
+            //update item in bundle array
+            bundleProducts.set(bundlePosition,productBundle);
+
+
+        }
+    }
+
+    public ProductBundle getSelectedBundle(int bundlePosition)
+    {
+        if(bundleProducts != null && bundleProducts.size() > 0)
+        {
+            return bundleProducts.get(bundlePosition);
+        }
+
+        return null;
+    }
+
+
+    public void setSelectedBundlePosition(int bundlePosition) { this.selectedBundlePosition = bundlePosition; }
 
 }
