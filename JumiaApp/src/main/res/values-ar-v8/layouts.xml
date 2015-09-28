@@ -93,6 +93,9 @@
     <item name="category_inner_childcat"                type="layout">@layout/_v8_category_inner_childcat</item>
     <item name="category_inner_currentcat"              type="layout">@layout/_v8_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_v8_navigation_fragment_categories</item>
+    <item name="category_header"                        type="layout">@layout/_v8_category_header</item>
+    <item name="category_single_line_list"              type="layout">@layout/_v8_category_single_line_list</item>
+    <item name="category_sublist"                       type="layout">@layout/_v8_category_sublist</item>
 
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_v8_my_account_user_data_fragment</item>

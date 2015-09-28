@@ -10,6 +10,7 @@ import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAd
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -35,9 +36,9 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
 
     private Context context;
     private LayoutInflater infalInflater;
-    private final int CATEGORY_HEADER_LAYOUT = R.layout.header;
-    private final int CATEGORY_LIST_ITEM_LAYOUT = R.layout.single_line_list;
-    private final int CATEGORY_SUBLIST_ITEM_LAYOUT = R.layout.sublist;
+    private final int CATEGORY_HEADER_LAYOUT = R.layout.category_header;
+    private final int CATEGORY_LIST_ITEM_LAYOUT = R.layout.category_single_line_list;
+    private final int CATEGORY_SUBLIST_ITEM_LAYOUT = R.layout.category_sublist;
 
     private Categories categories;
     /**
@@ -121,7 +122,15 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
             } else {
                 item.categorySignal.setVisibility(View.GONE);
             }
-            RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon);
+            // Do not show the empty icon
+            if(TextUtils.isEmpty(parentCategory.getImage())){
+                item.categoryIcon.setVisibility(View.INVISIBLE);
+            } else {
+                item.categoryIcon.setVisibility(View.VISIBLE);
+                RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon);
+            }
+
+
 //            if (item.categoryIcon.getDrawable() == null) {
 //                Print.i("ADAPTER", "NO DRAWABLE");
 //                RocketImageLoader.instance.loadImage(parentCategory.getImage(), item.categoryIcon, null, R.drawable.no_image_small);
