@@ -558,12 +558,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
         // TODO: Move to onClick
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickShowDescription();
-            }
-        });
+        button.setOnClickListener(this);
     }
 
     /**
@@ -727,7 +722,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.btBuy)  executeAddProductToCart();
         */
 
-        else if (id == R.id.SizeSection) showVariantsDialog();
+      //  else if (id == R.id.SizeSection) showVariantsDialog();
         else if( id == R.id.pdv_specs_button) onClickShowDescription(1);
 
     }
