@@ -67,14 +67,16 @@
     <dimen name="wizard_product_height">150dp</dimen>
 
     <!-- CATALOG -->
-    <dimen name="catalog_list_item_height">155dp</dimen>
-    <dimen name="catalog_grid_item_height">300dp</dimen>
+    <dimen name="catalog_list_item_height">145dp</dimen>
+    <dimen name="catalog_grid_item_height">375dp</dimen>
+    <dimen name="catalog_single_item_height">475dp</dimen>
     <dimen name="catalog_list_item_image_width">112dp</dimen>
-    <dimen name="catalog_list_item_image_height">140dp</dimen>
+    <dimen name="catalog_list_item_image_height">130dp</dimen>
     <dimen name="catalog_list_item_image_padding">20dp</dimen>
     <dimen name="catalog_item_vertical_padding">15dp</dimen>
     <dimen name="catalog_grid_item_image_width">146dp</dimen>
-    <dimen name="catalog_grid_item_image_height">182.5dp</dimen>
+    <dimen name="catalog_grid_item_image_height">270dp</dimen>
+    <dimen name="catalog_single_item_image_height">350dp</dimen>
     <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
     <integer name="activate_go_top_buttom_line">5</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
@@ -182,5 +184,11 @@
     <dimen name="home_small_teaser_item_width">195dp</dimen>
     <dimen name="home_shop_week_teaser_min_height">258dp</dimen>
     <integer name="home_featured_stores_teaser_num_columns">3</integer>
+
+    <integer name="variations_num_columns">2</integer>
+
+    <integer name="grid_num_columns">2</integer>
+
+    <integer name="combos_num_columns">2</integer>
 
 </resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ratingContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/layout_padding"
+    android:paddingLeft="@dimen/layout_padding"
+    android:paddingRight="@dimen/layout_padding"
+    android:paddingStart="@dimen/layout_padding">
+
+    <!-- changeFashion: choose the right rating bar considering vertical type -->
+    <RatingBar
+        android:id="@+id/product_detail_product_rating"
+        style="@style/starRatingBarSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:visibility="gone" />
+
+
+    <RatingBar
+        android:id="@+id/product_detail_product_rating_fashion"
+        style="@style/starRatingBarFashionSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:visibility="gone" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/product_detail_product_rating_count"
+        style="@style/TextCaption"
+        color="@color/black_800"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginStart="@dimen/margin_mid" />
+
+</LinearLayout>

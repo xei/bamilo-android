@@ -61,7 +61,12 @@ public enum FragmentType {
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
     INNER_SHOP,
-    WRITE_REVIEW_SELLER;
+    VARIATIONS,
+
+    WRITE_REVIEW_SELLER,
+    FILTERS,
+    COMBOPAGE
+    ;
 
     private int id;
     private final static String DIVIDER = ":";

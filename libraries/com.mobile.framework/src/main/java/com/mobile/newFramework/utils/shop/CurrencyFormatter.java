@@ -202,6 +202,10 @@ public class CurrencyFormatter {
         }
     }
 
+    public static String getCurrencySymbol(){
+        return currencyUnitPattern.replace("%s","");
+    }
+
     public static String formatCurrencyRange(String value){
         String[] values = value.split("-");
         String finalValue = formatCurrency(values[0]);
