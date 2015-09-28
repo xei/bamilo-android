@@ -39,6 +39,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private int mLastPosition = -1;
 
+    private String productSku;
+
     private OnViewHolderClickListener mOnViewHolderClicked;
 
 
@@ -60,6 +62,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         public TextView price;
         public TextView percentage;
         public TextView reviews;
+        public CheckBox cbItem;
 
         /**
          * Constructor
@@ -80,6 +83,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             discount = (TextView) view.findViewById(R.id.pdv_text_special_price);
             percentage = (TextView) view.findViewById(R.id.pdv_text_discount);
 
+            cbItem = (CheckBox) view.findViewById(R.id.item_check);
+
             brand = (TextView) view.findViewById(R.id.item_brand);
 
         }
@@ -90,9 +95,10 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * @param context - the application context
      * @param data - the array lisl
      */
-    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data) {
+    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data,String productSku) {
         mContext = context;
         mDataSet = data;
+        this.productSku = productSku;
     }
 
     /*
@@ -155,6 +161,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         setSpecificViewForListLayout(holder, item);
         // Set prices
         setProductPrice(holder, item);
+        //set selection
+        holder.cbItem.setChecked(item.isChecked());
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
@@ -252,14 +260,17 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             // position
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
-            CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
-            cb.setChecked(!cb.isChecked());
+            if(!productSku.equals(productBundle.getSku())) {
+                CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
-            productBundle.setChecked(cb.isChecked());
-            mDataSet.set(position,productBundle);
+                cb.setChecked(!cb.isChecked());
 
-            mOnViewHolderClicked.onViewHolderClick(this, position);
+        /*    productBundle.setChecked(cb.isChecked());
+            mDataSet.set(position,productBundle);*/
+
+                mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
 
         }
 
