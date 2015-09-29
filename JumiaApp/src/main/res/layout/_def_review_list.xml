@@ -55,6 +55,7 @@
         android:layout_toRightOf="@id/ratings_container"
         android:text="12-05-1987"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="right|end"
         />
 

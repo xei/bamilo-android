@@ -6,7 +6,12 @@
     <!-- SPECIFICATIONS CONTAINER -->
 
     <!-- HEADER -->
+    <!--
     <include layout="@layout/header" android:id="@+id/HeaderSpecs" />
+    -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/HeaderSpecs"
+        style="@style/HeaderStyle" />
 
     <!-- SPECIFICATIONS LIST -->
     <LinearLayout

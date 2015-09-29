@@ -9,13 +9,23 @@
 
         <!-- RATINGS SECTION -->
 
+        <!--
         <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
+        -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/ratingsHeader"
+        style="@style/HeaderStyle" />
 
         <include layout="@layout/_def_ratings_board"  android:id="@+id/ratingsBoard" />
 
         <!-- USERS SECTION -->
 
+    <!--
         <include layout="@layout/header"  android:id="@+id/usersHeader" />
+        -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/usersHeader"
+        style="@style/HeaderStyle" />
 
     <ScrollView
         android:layout_width="match_parent"

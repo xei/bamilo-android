@@ -7,7 +7,7 @@
 
     <!-- TOP PART -->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_height="wrap_content"
         android:minHeight="26dp"
         android:orientation="horizontal"
@@ -25,10 +25,13 @@
 
         <!-- LEFT SIDE -->
         <LinearLayout
-            android:layout_width="160dp"
+            android:layout_width="@dimen/ratings_average_with"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/specs_item_key"
             >
 
             <com.mobile.components.customfontviews.TextView
@@ -75,8 +78,10 @@
             android:layout_width="1dp"
             android:background="@color/black_300"
             android:layout_toRightOf="@id/specs_item_key"
+            android:layout_toEndOf="@id/specs_item_key"
             android:layout_height="100dp"
             android:minHeight="26dp"
+
             />
 
 
@@ -85,10 +90,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="left"
+            android:gravity="left|start"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:id="@+id/progressBoard"
+            android:layout_toRightOf="@id/item_center"
+            android:layout_toEndOf="@id/item_center"
 
             >
 
@@ -218,6 +225,7 @@
                     android:id="@+id/threeValue"
                     style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -308,6 +316,7 @@
                     android:id="@+id/oneValue"
                     style="@style/TextBadge"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -323,13 +332,14 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- BOTTOM PART -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
+        android:layout_below="@id/top"
         >
 
         <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -348,6 +358,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_alignRight="@id/center_point"
+            android:layout_alignEnd="@id/center_point"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             >
@@ -384,6 +395,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_alignLeft="@id/center_point"
+            android:layout_alignStart="@id/center_point"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:clickable="true"
@@ -405,6 +417,8 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+
 
 
 </LinearLayout>
