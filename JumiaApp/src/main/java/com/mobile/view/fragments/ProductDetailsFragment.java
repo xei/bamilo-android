@@ -135,6 +135,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTitleFashionContainer;
 
+    private View offersContainer;
+
     /**
      * Empty constructor
      */
@@ -223,6 +225,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mComboProductsLayout.setVisibility(View.GONE);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
+
+        offersContainer = view.findViewById(R.id.pdv_other_sellers_button);
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -363,6 +367,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setProductSize();
         setProductVariations();
         setSellerInfo();
+        setOffers();
         setDescription();
         setCombos();
         setRelatedItems();
@@ -370,6 +375,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
+    }
+
+    private void setOffers() {
+        //show button offers with separator if has offers
+        View separator = offersContainer.findViewById(R.id.separator);
+        if(mProduct.hasOffers())
+        {
+            TextView txOffers = (TextView) offersContainer.findViewById(R.id.pdv_sublist_button);
+            txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
+            offersContainer.setOnClickListener(this);
+            separator.setVisibility(View.VISIBLE);
+        }
+        else {
+            offersContainer.setVisibility(View.GONE);
+            separator.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -463,20 +484,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 txWarranty.setText(Warranty);
 
                 warrantySection.setVisibility(View.VISIBLE);
-            }
-
-            //show button offers with separator if has offers
-            View btOffers = sellerView.findViewById(R.id.pdv_other_sellers_button);
-            View separator = sellerView.findViewById(R.id.separator);
-            if(mProduct.hasOffers())
-            {
-                TextView txOffers = (TextView) btOffers.findViewById(R.id.pdv_sublist_button);
-                txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
-                btOffers.setOnClickListener(this);
-            }
-            else {
-                btOffers.setVisibility(View.GONE);
-                separator.setVisibility(View.GONE);
             }
         } else if (sellerView != null) {
             sellerView.setVisibility(View.GONE);
