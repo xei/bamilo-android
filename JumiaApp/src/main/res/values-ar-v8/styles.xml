@@ -16,15 +16,6 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="dialog_list_itemtext">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">@dimen/text_m</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

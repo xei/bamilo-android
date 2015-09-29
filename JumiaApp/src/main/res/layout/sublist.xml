@@ -10,7 +10,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_sublist_button"
-        style="@style/Caption"
+        style="@style/TextCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

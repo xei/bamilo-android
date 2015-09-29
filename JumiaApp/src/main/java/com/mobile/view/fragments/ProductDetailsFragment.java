@@ -430,6 +430,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (mProduct.getSeller().getRatingCount() == 1) {
                 rating = getString(R.string.string_rating).toLowerCase();
             }
+
+            sellerView.setOnClickListener(this);
             TextView mSellerRatingValue = (TextView) sellerView.findViewById(R.id.seller_rating_bar_rating_count);
             mSellerRatingValue.setText(mProduct.getSeller().getRatingCount() + " " + rating);
             RatingBar mSellerRating = (RatingBar) sellerView.findViewById(R.id.seller_rating_bar);
@@ -725,6 +727,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // case other offers
         else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
 
+        else if(id == R.id.pdv_seller_container) goToSellerRating();
     }
 
 //    /**
@@ -788,6 +791,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * function responsible for showing the rating and reviews of a specific seller
+     */
+    private void goToSellerRating() {
+        JumiaApplication.cleanRatingReviewValues();
+        JumiaApplication.cleanSellerReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
+
+        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mProduct.get());
+        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
+        bundle.putString(SELLER_ID, mProduct.getSeller().getName());
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1183,7 +1202,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mComboProductsLayout.setVisibility(View.GONE);
                 return;
             }
-
         }
         //load header
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
@@ -1216,10 +1234,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             ProductBundle item = bundleProducts.get(i);
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
 
-            FillProductBundleInfo(comboProductItem, item);
+           
             if(!item.getSku().equals(mProduct.getSku()))
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
 
+            fillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
@@ -1241,7 +1260,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param p    - product bundle
      */
-    private void FillProductBundleInfo(View view, ProductBundle p) {
+    private void fillProductBundleInfo(View view, ProductBundle p) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);

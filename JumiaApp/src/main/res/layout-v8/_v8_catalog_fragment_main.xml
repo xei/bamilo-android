@@ -24,9 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/catalog_loading_more"
-        android:background="@color/transparent"
-        android:paddingLeft="@dimen/margin_10px"
-        android:paddingRight="@dimen/margin_10px"
+        android:background="@color/white"
         android:clipToPadding="false"
         android:layout_marginTop="@dimen/catalog_tool_bar_height" />
 

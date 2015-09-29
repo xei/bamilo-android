@@ -18,31 +18,29 @@
         android:clickable="false"
         android:focusable="false" />
 
-    <RelativeLayout
-        android:id="@+id/dialog_title_container"
-        android:layout_width="match_parent"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/dialog_item_checkbox"
-        android:gravity="right|center_vertical" >
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dialog_list_margin_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_l" />
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_text"
-            style="@style/dialog_list_itemtext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:text="ListItem text" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_text_unavailable"
-            style="@style/dialog_list_itemtext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:text="ListItem text 2"
-            android:textColor="@color/grey_light"
-            android:visibility="gone" />
-    </RelativeLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_text_unavailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dialog_list_margin_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textSize="@dimen/text_l"
+        android:textColor="@color/grey_light"
+        android:visibility="gone" />
 
 </RelativeLayout>

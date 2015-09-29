@@ -34,6 +34,8 @@
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
+    <item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>
+    <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping"              type="layout">@layout/_v8_form_radiobutton_shipping</item>
@@ -57,8 +59,9 @@
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
     <item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
     <item name="catalog_fragment_no_result"             type="layout">@layout/_v8_catalog_fragment_no_result</item>
-    <item name="catalog_item_grid_rounded"              type="layout">@layout/_v8_catalog_item_grid_rounded</item>
-    <item name="catalog_item_list_rounded"              type="layout">@layout/_v8_catalog_item_list_rounded</item>
+    <item name="catalog_item_grid"                      type="layout">@layout/_v8_catalog_item_grid</item>
+    <item name="catalog_item_list"                      type="layout">@layout/_v8_catalog_item_list</item>
+    <item name="catalog_item_single"                    type="layout">@layout/_v8_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_v8_catalog_fragment_footer</item>
 
     <!-- PDV -->
@@ -103,7 +106,6 @@
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
-    <item name="dialog_language_list_item"              type="layout">@layout/_v8_dialog_language_list_item</item>
 
     <!-- RECENTLY VIEWED -->
     <item name="addabletocart_item"                     type="layout">@layout/_v8_addabletocart_item</item>
