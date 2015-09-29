@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/im"
-        android:layout_width="90dp"
+        android:layout_width="@dimen/combo_bundle_item_with"
         android:layout_height="102dp"
         android:orientation="vertical">
 
