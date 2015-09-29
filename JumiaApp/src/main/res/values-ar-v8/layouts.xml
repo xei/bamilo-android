@@ -164,4 +164,11 @@
     <item name="form_spinner_item"                       type="layout">@layout/_v8_form_spinner_item</item>
     <item name="review_fragment"                       type="layout">@layout/_v8_review_fragment</item>
     <item name="simple_email_notification_option"                       type="layout">@layout/_v8_simple_email_notification_option</item>
+
+    <!-- specificatioons/description/ratings -->
+    <item name="ratings_board"                            type="layout">@layout/_v8_ratings_board</item>
+    <item name="product_specs_container_item_new"          type="layout">@layout/_v8_product_specs_container_item_new</item>
+    <item name="product_summary_fragment_new"           	type="layout">@layout/_v8_product_summary_fragment_new</item>
+    <item name="review_list"           			type="layout">@layout/_v8_review_list</item>
+
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:minHeight="26dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical|right"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+
+    >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/specs_item_value"
+        style="@style/text_normal"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:singleLine="false"
+        android:text="aaaa"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        />
+
+
+    <View
+        android:id="@+id/item_center"
+        android:layout_width="1dp"
+        android:background="@color/black_400"
+        android:layout_toRightOf="@id/specs_item_value"
+        android:layout_height="wrap_content"
+        android:minHeight="26dp"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/specs_item_key"
+        style="@style/text_normal"
+        android:textColor="@color/black_800"
+        android:layout_width="@dimen/specs_column_with"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="aaa"
+
+        />
+
+
+
+
+</LinearLayout>
