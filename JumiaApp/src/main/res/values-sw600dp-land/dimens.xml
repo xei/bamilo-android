@@ -91,4 +91,7 @@
 
     <integer name="grid_num_columns">2</integer>
 
+    <dimen name="ratings_average_with">260dp</dimen>
+    <dimen name="specs_column_with">220dp</dimen>
+
 </resources>
