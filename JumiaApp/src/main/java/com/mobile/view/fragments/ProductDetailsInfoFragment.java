@@ -133,6 +133,7 @@ private int mTabsCount = 3;
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
             if(ShopSelector.isRtl()){
+                mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
                 mProductInfoPager.enableRtl();
        /*         mPositionToStart = mProductInfoPagerAdapter.getCount();
             } else {
