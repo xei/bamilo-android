@@ -50,7 +50,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
