@@ -712,17 +712,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // case other offers
         else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
             // seller link
-        /*
-        else if (id == R.id.seller_name_container) goToSellerCatalog();
-            // seller rating
-        else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
-            // product offers
-        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
-        //added: if buy add to Chart
-        else if (id == R.id.btBuy)  executeAddProductToCart();
-        */
 
-      //  else if (id == R.id.SizeSection) showVariantsDialog();
         else if( id == R.id.pdv_specs_button) onClickShowDescription(1);
 
     }
