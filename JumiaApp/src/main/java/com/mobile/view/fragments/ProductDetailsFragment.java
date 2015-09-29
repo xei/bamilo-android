@@ -133,6 +133,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTitleFashionContainer;
 
+  //  private HorizontalListView mGridBundlesCombo;
+
+    //private ComboGridAdapter mGridBundlesComboAdapter;
+
     /**
      * Empty constructor
      */
@@ -716,6 +720,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_combos_container) onClickCombosProduct();
         // case other offers
         else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
+
     }
 
 //    /**
@@ -730,6 +735,30 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 //    }
 
 
+
+    /**
+     * checks/ uncheck a bundle item from combo and updates the combo's total price
+     */
+    private void onClickComboItem(View bundleItemView,TextView txTotalPrice, BundleList bundleList, int position)
+    {
+
+        bundleList.updateTotalPriceWhenChecking(position);
+
+        //get the bundle to update checkbox state
+        ProductBundle productBundle = bundleList.getSelectedBundle(position);
+        CheckBox cboxItem = (CheckBox) bundleItemView.findViewById(R.id.item_check);
+        cboxItem.setChecked(productBundle.isChecked());
+
+        //get updated total price
+        double totalBundlePrice = bundleList.getBundlePriceDouble();
+        txTotalPrice.setText(CurrencyFormatter.formatCurrency(totalBundlePrice));
+
+        //update bundleListObject in productComplete
+        mProduct.setProductBundle(bundleList);
+
+    }
+
+
     /**
      * Process the click on rating
      */
@@ -737,6 +766,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Log.i(TAG, "ON CLICK COMBOS SECTION");
         Bundle bundle = new Bundle();
         bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1143,12 +1173,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Build combo section if has bundles
      * TODO: Improve
      **/
-    private void buildComboSection(BundleList bundleList) {
+    private void buildComboSection(final BundleList bundleList) {
         if (bundleList == null) {
             if (mComboProductsLayout != null) {
                 mComboProductsLayout.setVisibility(View.GONE);
                 return;
             }
+
         }
         //load header
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
@@ -1160,13 +1191,25 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         comboHeaderTitle.setText(titleCombo);
 
+        //set total price
+        TextView txTotalPrice = (TextView) mComboProductsLayout.findViewById(R.id.txTotalComboPrice);
+        txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getBundlePriceDouble()));
+
         ArrayList<ProductBundle> bundleProducts = bundleList.getBundleProducts();
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = 0;
 
-        for (ProductBundle item : bundleProducts) {
+
+//        for (ProductBundle item : bundleProducts) {
+        for(int i=0; i< bundleProducts.size(); i++)
+        {
+            ProductBundle item = bundleProducts.get(i);
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
+
             FillProductBundleInfo(comboProductItem, item);
+            if(!item.getSku().equals(mProduct.getSku()))
+                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
+
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
@@ -1201,6 +1244,33 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         com.mobile.components.customfontviews.TextView mPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_price);
         mPrice.setText(CurrencyFormatter.formatCurrency(p.getPrice()));
     }
+
+
+    private class ComboItemClickListener implements OnClickListener
+    {
+        ViewGroup bundleItemView;
+        TextView txTotalComboPrice;
+
+        BundleList bundleList;
+        int selectedPosition;
+
+
+        public ComboItemClickListener(ViewGroup bundleItemView, TextView txTotalComboPrice, BundleList bundleList, int selectedPosition)
+        {
+            this.bundleItemView= bundleItemView;
+            this.txTotalComboPrice = txTotalComboPrice;
+
+            this.bundleList= bundleList;
+            this.selectedPosition = selectedPosition;
+        }
+
+
+        public void onClick(View v) {
+            onClickComboItem(bundleItemView,txTotalComboPrice, bundleList, selectedPosition);
+        }
+
+    }
+
 
 
 
