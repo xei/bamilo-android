@@ -266,7 +266,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             if(filter.hasAppliedFilters()) {
                 filterTitleTextView.setTypeface(null, Typeface.BOLD);
                 if(!(filter instanceof CatalogPriceFilter)){
-                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.filter_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
+                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
                     filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {
