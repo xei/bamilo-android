@@ -151,6 +151,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
+        // Reset the share
+        sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -164,8 +166,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
-        // Reset the share
-        sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
@@ -446,21 +446,21 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 String max = "" + mProduct.getSimples().get(0).getMaxDeliveryTime();
 
                 //get delivery time section and change content
-                ViewGroup delliverySection = (ViewGroup) sellerView.findViewById(R.id.deliverSection);
-                TextView txDeliverTime = (TextView) delliverySection.findViewById(R.id.txDeliver);
+                ViewGroup deliverySection = (ViewGroup) sellerView.findViewById(R.id.deliverSection);
+                TextView txDeliverTime = (TextView) deliverySection.findViewById(R.id.txDeliver);
                 txDeliverTime.setText(getResources().getString(R.string.delivery_time1) + ":");
 
-                TextView mSellerDeliveryTime = (TextView) delliverySection.findViewById(R.id.txDeliverTimeContent);
+                TextView mSellerDeliveryTime = (TextView) deliverySection.findViewById(R.id.txDeliverTimeContent);
                 mSellerDeliveryTime.setText(min + " - " + max + " " + getResources().getString(R.string.product_delivery_days));
 
-                delliverySection.setVisibility(View.VISIBLE);
+                deliverySection.setVisibility(View.VISIBLE);
             }
             if ( mProduct.getSeller().getWarranty() != "") {
 
                 ViewGroup warrantySection = (ViewGroup) sellerView.findViewById(R.id.warrantySection);
-                TextView txwarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
+                TextView txWarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
                 String Warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
-                txwarranty.setText(Warranty);
+                txWarranty.setText(Warranty);
 
                 warrantySection.setVisibility(View.VISIBLE);
             }
