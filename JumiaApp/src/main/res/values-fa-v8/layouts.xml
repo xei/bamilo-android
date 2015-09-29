@@ -175,5 +175,12 @@
     <item name="dialog_filter_fragment_size"                type="layout">@layout/_v8_dialog_filter_fragment_size</item>
     <item name="simple_email_notification_option"           type="layout">@layout/_v8_simple_email_notification_option</item>
 
+    <!-- COMBOS -->
+    <item name="bottom_combo"                                  type="layout">@layout/_v8_bottom_combo</item>
+    <item name="pdv_combo_item_list"                           type="layout">@layout/_v8_pdv_combo_item_list</item>
+    <item name="pdv_fragment_bundle_item"                      type="layout">@layout/_v8_pdv_fragment_bundle_item</item>
+    <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
+    <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
+
 </resources>
 
