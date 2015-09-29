@@ -633,17 +633,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON DISPLAY SLIDE SHOW");
         // Validate the ProductImageGalleryFragment
         ProductImageGalleryFragment fragment = (ProductImageGalleryFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
+        Print.i(TAG, "Child fragment stack: " + getChildFragmentManager().getFragments());
         // CASE CREATE
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
-            ArrayList<String> images;
-            if(ShopSelector.isRtl()) {
-                images = (ArrayList) mProduct.getImageList().clone();
-                Collections.reverse(images);
-            } else {
-                images = mProduct.getImageList();
-            }
+            ArrayList<String> images = ShopSelector.isRtl() ? (ArrayList) mProduct.getImageList().clone() : mProduct.getImageList();
+
             // Create bundle with images
             Bundle args = new Bundle();
             args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
@@ -651,7 +647,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             // Create fragment
             fragment = ProductImageGalleryFragment.getInstanceAsNested(args);
-            FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment);
+            FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
         else {
