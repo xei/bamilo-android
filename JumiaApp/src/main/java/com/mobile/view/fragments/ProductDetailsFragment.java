@@ -134,10 +134,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTitleFashionContainer;
 
-  //  private HorizontalListView mGridBundlesCombo;
-
-    //private ComboGridAdapter mGridBundlesComboAdapter;
-
     /**
      * Empty constructor
      */
@@ -578,7 +574,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         if(mProduct.hasBundle())    //
         {
-            triggerGetProductBundle(mProduct.getSku());
+            if(mProduct.getProductBundle() == null || mProduct.getProductBundle().getBundleProducts().size() == 0) {
+                triggerGetProductBundle(mProduct.getSku());
+            }
+            else
+            {
+                mComboProductsLayout.setVisibility(View.VISIBLE);
+                buildComboSection(mProduct.getProductBundle());
+            }
         }else
         {
             mComboProductsLayout.setVisibility(View.GONE);
