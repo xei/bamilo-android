@@ -87,7 +87,7 @@
 
             <include
                 android:id="@+id/pdv_rating_container"
-                layout="@layout/_def_pdv_fragment_rating" />
+                layout="@layout/pdv_fragment_rating" />
 
             <!-- SPECIFICATIONS -->
             <include
