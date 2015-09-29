@@ -173,6 +173,11 @@ public class BundleList implements IJSONSerializable, Parcelable {
         this.bundlePriceDouble= bundlePriceDouble;
     }
 
+
+
+    /**
+     * Change a bundle product state and update total combo's price when checking/unchecking a bundle product
+     * */
     public void updateTotalPriceWhenChecking(int bundlePosition)
     {
         if(bundleProducts != null && bundleProducts.size() > 0)
