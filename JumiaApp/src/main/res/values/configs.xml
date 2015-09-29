@@ -4,7 +4,7 @@
     <!-- APP -->
     <bool name="is_to_show_dev_env">false</bool>
     <bool name="rtl_enabled">false</bool>
-    
+
 	<!-- CHECK VERSION -->
     <item name="check_version_enabled" type="bool">true</item>
 
