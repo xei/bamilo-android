@@ -51,6 +51,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -66,6 +67,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -627,9 +629,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // CASE CREATE
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
+
+            ArrayList<String> images;
+            if(ShopSelector.isRtl()) {
+                images = (ArrayList) mProduct.getImageList().clone();
+                Collections.reverse(images);
+            } else {
+                images = mProduct.getImageList();
+            }
             // Create bundle with images
             Bundle args = new Bundle();
-            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mProduct.getImageList());
+            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             // Create fragment
@@ -1041,6 +1051,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 // Save product
                 mProduct = product;
+
+                sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
+
                 // Show product or update partial
                 displayProduct(mProduct);
                 // Tracking
