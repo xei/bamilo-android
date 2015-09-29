@@ -16,4 +16,6 @@
     <!-- KICKOUT -->
 
     <dimen name="kickout_box_width">500dp</dimen>
+
+    <dimen name="combo_bundle_item_with">140dp</dimen>
 </resources>
