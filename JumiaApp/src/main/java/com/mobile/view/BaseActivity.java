@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
@@ -424,6 +425,65 @@ public abstract class BaseActivity extends AppCompatActivity {
             mSupportActionBar.setDisplayHomeAsUpEnabled(true);
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
+
+            mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            mSupportActionBar.addTab(mSupportActionBar.newTab()
+                    .setIcon(R.drawable.ic_home_highlight)
+                    .setText(R.string.home_label)
+            .setTabListener(new ActionBar.TabListener() {
+                @Override
+                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+            }));
+            mSupportActionBar.addTab(mSupportActionBar.newTab()
+                    .setIcon(R.drawable.btn_fav_selected)
+                    .setText(R.string.action_label_wishlist)
+            .setTabListener(new ActionBar.TabListener() {
+                @Override
+                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+            }));
+            mSupportActionBar.addTab(mSupportActionBar.newTab()
+                    .setCustomView(R.layout.action_bar_cart_button)
+                    .setText(R.string.cart_label)
+            .setTabListener(new ActionBar.TabListener() {
+                @Override
+                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+
+                @Override
+                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                }
+            }));
         }
     }
 
