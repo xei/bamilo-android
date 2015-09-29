@@ -51,6 +51,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -1190,6 +1191,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             titleCombo = getResources().getString(R.string.buy_the_look);
 
         comboHeaderTitle.setText(titleCombo);
+
+        //Change drawable if is rtl
+        ImageView imarrow = (ImageView)  mComboProductsLayout.findViewById(R.id.imArrow);
+        if(ShopSelector.isRtl())
+            imarrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_combo_inv));
+
 
         //set total price
         TextView txTotalPrice = (TextView) mComboProductsLayout.findViewById(R.id.txTotalComboPrice);
