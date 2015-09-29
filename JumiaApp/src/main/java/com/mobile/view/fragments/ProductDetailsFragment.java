@@ -1234,11 +1234,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             ProductBundle item = bundleProducts.get(i);
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
 
-           
+            fillProductBundleInfo(comboProductItem, item);
             if(!item.getSku().equals(mProduct.getSku()))
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
 
-            fillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
