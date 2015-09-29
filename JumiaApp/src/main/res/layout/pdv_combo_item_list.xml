@@ -26,6 +26,7 @@
         android:layout_toEndOf="@+id/item_image_loadable"
         android:gravity="center_vertical"
         android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
 
         >
 
@@ -52,10 +53,12 @@
 
         <!-- PRICE -->
 
-        <include layout="@layout/pdv_small_price_tag" />
+        <include layout="@layout/pdv_small_price_tag"   android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <!-- RATING -->
-        <include layout="@layout/pdv_rating_small"   android:id="@+id/rating" />
+        <include layout="@layout/pdv_rating_small"   android:id="@+id/rating"   android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <!-- CHECKBOX -->
         <com.mobile.components.customfontviews.CheckBox
