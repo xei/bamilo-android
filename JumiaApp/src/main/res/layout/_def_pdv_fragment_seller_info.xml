@@ -11,23 +11,20 @@
         style="@style/HeaderStyle"
         android:text="@string/seller_info" />
 
-    <!--SPACE -->
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
     <!--CONTENT -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
         style="@style/TextBody_1"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:textStyle="bold"/>
 
     <!-- RATING -->
 
     <LinearLayout
+        android:id="@+id/seller_rating_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/layout_padding"
@@ -40,7 +37,8 @@
             style="@style/starRatingBarSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true" />
+            android:isIndicator="true"
+            android:layout_gravity="center_vertical"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_rating_bar_count"
