@@ -439,4 +439,9 @@ public class RestConstants {
 
     public static final String WISH_LIST_PRODUCTS = "wishlist_products";
 
+    public static final String JSON_IS_GLOBAL = "is_global";
+    public static final String JSON_GLOBAL = "global";
+    public static final String JSON_FULFILLMENT = "fulfillment";
+    public static final String JSON_CMS_INFO_TAG = "cms_info";
+
 }

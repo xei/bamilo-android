@@ -1206,7 +1206,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         for (ProductBundle item : bundleProducts) {
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
-            FillProductBundleInfo(comboProductItem, item);
+            fillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
@@ -1228,7 +1228,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param p    - product bundle
      */
-    private void FillProductBundleInfo(View view, ProductBundle p) {
+    private void fillProductBundleInfo(View view, ProductBundle p) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
