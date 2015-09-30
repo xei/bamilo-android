@@ -177,5 +177,8 @@
     <item name="dialog_filter_fragment_size"                type="layout">@layout/_v8_dialog_filter_fragment_size</item>
     <item name="simple_email_notification_option"           type="layout">@layout/_v8_simple_email_notification_option</item>
 
+    <!-- variations-->
+    <item name="product_list"           type="layout">@layout/_v8_product_list</item>
+
 </resources>
 
