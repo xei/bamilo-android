@@ -67,7 +67,7 @@ public class RestConstants {
     public static final String JSON_TERMS_TAG = "terms";
     public static final String JSON_LINK_TEXT_TAG = "link_text";
     public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
-    public static final String JSON_DELIVERY_TIME = "delivery_time";
+    public static final String DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
     public static final String JSON_FORMAT_TAG = "format";
@@ -142,7 +142,7 @@ public class RestConstants {
     public static final String JSON_WARRANTY_TAG = "warranty";
 
     // Variation Tags
-    public static final String JSON_LINK_TAG = "link";
+    public static final String LINK = "link";
     public static final String JSON_VARIATION_IMAGE_TAG = JSON_IMAGE_TAG;
     public static final String JSON_VARIATION_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_VARIATION_BRAND_TAG = JSON_BRAND_TAG;
@@ -305,7 +305,7 @@ public class RestConstants {
 
     public static final String JSON_NEXT_STEP_TAG = "next_step";
     public static final String JSON_SHIPPING_METHOD_TAG = "shippingMethodForm";
-    public static final String JSON_TEXT_TAG = "text";
+    public static final String TEXT = "text";
     public static final String JSON_TOOLTIP_TEXT_TAG = "tooltip_text";
     public static final String JSON_CVC_TEXT_TAG = "cvc_text";
 
@@ -429,19 +429,14 @@ public class RestConstants {
     public static final String PAGE = "page";
     public static final String PER_PAGE = "per_page";
     public static final String PAGINATION = "pagination";
-
-
-
     public static final String ADDRESSES = "addresses";
-
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
-
     public static final String WISH_LIST_PRODUCTS = "wishlist_products";
 
-    public static final String JSON_IS_GLOBAL = "is_global";
-    public static final String JSON_GLOBAL = "global";
-    public static final String JSON_FULFILLMENT = "fulfillment";
-    public static final String JSON_CMS_INFO_TAG = "cms_info";
+    public static final String IS_GLOBAL = "is_global";
+    public static final String GLOBAL = "global";
+    public static final String FULFILLMENT = "fulfillment";
+    public static final String CMS_INFO = "cms_info";
 
 }
