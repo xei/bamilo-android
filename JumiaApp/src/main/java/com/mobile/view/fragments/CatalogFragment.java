@@ -275,10 +275,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-        // Navigation
-        if (!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null) {
-            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
-        }
     }
 
     /*
@@ -1127,10 +1123,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @return
      */
     private boolean validateURL() {
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
-            return true;
-        }
-        return false;
+        return !mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl);
     }
 
     /**

@@ -5,22 +5,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/navigation_options_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical" />
-
-
-    <!-- BACK BUTTON -->
-
-    <include
-        android:id="@+id/categories_back_navigation"
-        layout="@layout/category_inner_top_back" />
-
-    <!-- CONTENT -->
-
     <FrameLayout
         android:id="@+id/navigation_container_list"
         android:layout_width="match_parent"

@@ -569,32 +569,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /*
-     * ############### NAVIGATION MENU #################
-     */
-
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationMenu(NavigationAction page) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateMenu(page);
-        }
-    }
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationCategorySelection(String categoryId) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateCategorySelected(categoryId);
-        }
-    }
-
-
-    /*
      * ############### OPTIONS MENU #################
      */
 
