@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -8,10 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.helpers.configs.GetTermsConditionsHelper;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -23,21 +21,20 @@ import java.util.EnumSet;
  * @author Manuel Silva
  * 
  */
-public class SessionTermsFragment extends BaseFragment implements IResponseCallback {
+public class StaticPageFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = SessionTermsFragment.class.getSimpleName();
+    private static final String TAG = StaticPageFragment.class.getSimpleName();
 
     private TextView textView;
-    
-    private String termsText;
+    private Bundle mStaticPageBundle;
 
     /**
      * New instance SessionTermsFragment.
      * @param bundle The arguments
      * @return SessionTermsFragment
      */
-    public static SessionTermsFragment getInstance(Bundle bundle) {
-        SessionTermsFragment termsFragment = new SessionTermsFragment();
+    public static StaticPageFragment getInstance(Bundle bundle) {
+        StaticPageFragment termsFragment = new StaticPageFragment();
         termsFragment.setArguments(bundle);
         return termsFragment;
     }
@@ -45,11 +42,11 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
     /**
      * Empty constructor
      */
-    public SessionTermsFragment() {
+    public StaticPageFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Terms,
-                R.layout.terms_conditions_fragment,
-                R.string.terms_and_conditions,
+                R.layout.static_page_fragment,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
     
@@ -73,6 +70,8 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        // Get static page key from arguments
+        mStaticPageBundle = savedInstanceState == null ? getArguments() : savedInstanceState;
     }
     
     /*
@@ -83,12 +82,21 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        // Get title
+        String title = mStaticPageBundle.getString(RestConstants.JSON_TITLE_TAG);
+        title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
+        // Title AB
+        getBaseActivity().setActionBarTitle(title);
+        // Title Layout
+        ((TextView) view.findViewById(R.id.terms_title)).setText(title);
+        // Content
         textView = (TextView) view.findViewById(R.id.terms_text);
-        triggerTerms();
+        // Get static page
+        triggerStaticPage();
     }
 
-    private void triggerTerms() {
-        triggerContentEvent(new GetTermsConditionsHelper(), null, this);
+    private void triggerStaticPage() {
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.JSON_KEY_TAG)), this);
     }
 
     /*
@@ -113,11 +121,17 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON RESUME");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState = mStaticPageBundle;
+        super.onSaveInstanceState(outState);
+    }
+
     /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
+         * (non-Javadoc)
+         *
+         * @see com.mobile.view.fragments.MyFragment#onPause()
+         */
     @Override
     public void onPause() {
         super.onPause();
@@ -148,39 +162,34 @@ public class SessionTermsFragment extends BaseFragment implements IResponseCallb
 
     @Override
     public void onRequestComplete(Bundle bundle) {
+        Print.w(TAG, "ON SUCCESS REQUEST COMPLETE");
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         if (getBaseActivity() != null) {
             super.handleSuccessEvent(bundle);
         } else {
             return;
         }
-
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        switch (eventType) {
-            case GET_TERMS_EVENT:
-                showFragmentContentContainer();
-                termsText = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
-                textView.setText(termsText);
-        }
+        showFragmentContentContainer();
+        textView.setText(bundle.getString(Constants.BUNDLE_RESPONSE_KEY));
     }
 
     @Override
     public void onRequestError(Bundle bundle) {
+        Print.w(TAG, "ON ERROR REQUEST COMPLETE");
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        super.handleErrorEvent(bundle);
-
+        if(!super.handleErrorEvent(bundle)){
+            showContinueShopping();
+        }
     }
 
     @Override
     protected void onClickRetryButton(View view) {
-        triggerTerms();
+        triggerStaticPage();
     }
 }

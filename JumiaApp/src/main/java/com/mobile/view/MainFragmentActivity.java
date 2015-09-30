@@ -58,8 +58,8 @@ import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
-import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
@@ -310,8 +310,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case TERMS:
-                fragment = SessionTermsFragment.getInstance(bundle);
+            case STATIC_PAGE:
+                fragment = StaticPageFragment.getInstance(bundle);
                 break;
             case MY_ACCOUNT:
                 removeEntries = true;
