@@ -21,6 +21,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -110,11 +111,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         }
 
-        listBundlesOneSimple= new ArrayList<>();
-        listBundlesMultipleSimple = new ArrayList<>();
-
-        c = getBaseActivity().getApplicationContext();
-
     }
 
     /*
@@ -125,6 +121,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        c = getBaseActivity().getApplicationContext();
         //update total price
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
@@ -156,8 +153,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private void separateProductsBySimpleType()
     {
 
-        listBundlesOneSimple.clear();
-        listBundlesMultipleSimple.clear();
+        listBundlesOneSimple= new ArrayList<>();
+        listBundlesMultipleSimple = new ArrayList<>();
         countMultipleProcessed = 0;
 
 
@@ -194,12 +191,12 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         separateProductsBySimpleType();
 
         //if there is a list of bundles with multiple, show dialog
-        if(listBundlesMultipleSimple.size() > 0)
+        if(CollectionUtils.isNotEmpty(listBundlesMultipleSimple))
         {
             ProductBundle productBundle = listBundlesMultipleSimple.get(0);
             addToCartWithChoosenSimple(productBundle);
 
-        }else if(listBundlesOneSimple.size() > 0)   //if there isn't bundles with multiplesimple , just simply add to cart
+        }else if(CollectionUtils.isNotEmpty(listBundlesOneSimple))   //if there isn't bundles with multiplesimple , just simply add to cart
         {
             for(ProductBundle productBundle : this.listBundlesOneSimple)
             {
