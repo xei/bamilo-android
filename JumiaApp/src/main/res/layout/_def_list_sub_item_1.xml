@@ -28,7 +28,7 @@
         android:fontFamily="roboto_regular"
         android:gravity="left|start|center_vertical"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:singleLine="true"
         android:visibility="gone"
         />

@@ -16,4 +16,5 @@
     <item type="drawable" name="spinnerbutton_normal_holo_light">@drawable/spinnerbutton_normal_holo_light_rtl</item>
     <item type="drawable" name="spinnerbutton_pressed_holo_light">@drawable/spinnerbutton_pressed_holo_light_rtl</item>
     <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
+    <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
 </resources>

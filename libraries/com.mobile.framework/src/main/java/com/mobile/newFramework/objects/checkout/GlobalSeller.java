@@ -35,14 +35,14 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        deliveryTime = jsonObject.getString(RestConstants.JSON_DELIVERY_TIME);
-        isGlobal = jsonObject.getBoolean(RestConstants.JSON_IS_GLOBAL);
+        deliveryTime = jsonObject.getString(RestConstants.DELIVERY_TIME);
+        isGlobal = jsonObject.getBoolean(RestConstants.IS_GLOBAL);
         if(isGlobal){
-            JSONObject global = jsonObject.getJSONObject(RestConstants.JSON_GLOBAL);
-            info = global.getString(RestConstants.JSON_CMS_INFO_TAG);
+            JSONObject global = jsonObject.getJSONObject(RestConstants.GLOBAL);
+            info = global.getString(RestConstants.CMS_INFO);
             shippingInfo = global.getString(RestConstants.SHIPPING);
-            JSONObject linkObject = global.getJSONObject(RestConstants.JSON_LINK_TAG);
-            staticText = linkObject.getString(RestConstants.JSON_TEXT_TAG);
+            JSONObject linkObject = global.getJSONObject(RestConstants.LINK);
+            staticText = linkObject.getString(RestConstants.TEXT);
             staticLink = linkObject.getString(RestConstants.URL);
         }
 
