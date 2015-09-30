@@ -18,13 +18,13 @@
 
 
     <!-- HOME -->
-    <item
-        android:id="@+id/menu_home"
-        android:icon="@drawable/ic_home_highlight"
-        android:orderInCategory="1"
-        android:title="@string/home_label"
-        android:visible="true"
-        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/menu_home"-->
+        <!--android:icon="@drawable/btn_home"-->
+        <!--android:orderInCategory="1"-->
+        <!--android:title="@string/home_label"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="always" />-->
 
     <!-- SEARCH VIEW -->
     <item
@@ -38,13 +38,13 @@
         app:showAsAction="always|collapseActionView" />
 
     <!-- CART -->
-    <item
-        android:id="@+id/menu_basket"
-        android:orderInCategory="3"
-        android:title="@string/action_label_basket"
-        android:visible="false"
-        app:actionLayout="@layout/action_bar_cart_button"
-        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/menu_basket"-->
+        <!--android:orderInCategory="3"-->
+        <!--android:title="@string/action_label_basket"-->
+        <!--android:visible="false"-->
+        <!--app:actionLayout="@layout/action_bar_cart_button"-->
+        <!--app:showAsAction="always" />-->
 
 
     <!-- ######## OVERFLOW MENU ######## -->

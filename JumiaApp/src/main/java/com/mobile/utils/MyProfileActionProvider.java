@@ -204,7 +204,7 @@ public class MyProfileActionProvider extends ActionProvider {
             switch (navAction) {
                 case Home:
                     title.setText(R.string.home_label);
-                    icon.setImageResource(R.drawable.ic_home_highlight);
+                    icon.setImageResource(R.drawable.ico_dropdown_home);
                     break;
                 case LoginOut:
                     boolean hasCredentials = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials();
@@ -226,15 +226,11 @@ public class MyProfileActionProvider extends ActionProvider {
                     break;
                 case MyAccount:
                     title.setText(R.string.my_account);
-                    icon.setImageResource(R.drawable.ic_settings_highlighted);
+                    icon.setImageResource(R.drawable.ico_dropdown_myaccount);
                     break;
                 case MyOrders:
                     title.setText(R.string.my_orders_label);
-                    icon.setImageResource(R.drawable.ic_orderstatuts_highlighted);
-                    break;
-                case Country:
-                    title.setText(R.string.nav_country);
-                    icon.setImageResource(R.drawable.ico_dropdown_changecountry);
+                    icon.setImageResource(R.drawable.ico_dropdown_order);
                     break;
                 default:
                     Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");

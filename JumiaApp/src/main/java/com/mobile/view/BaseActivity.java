@@ -405,6 +405,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
         setActionTitle(actionBarTitleResId);
+        if(action == NavigationAction.Favorites || action == NavigationAction.Basket || action == NavigationAction.Home){
+            setupActionBar();
+        } else {
+            hideActionBarTabs();
+        }
     }
 
     /**
@@ -426,64 +431,100 @@ public abstract class BaseActivity extends AppCompatActivity {
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
 
-            mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            mSupportActionBar.addTab(mSupportActionBar.newTab()
-                    .setIcon(R.drawable.ic_home_highlight)
-                    .setText(R.string.home_label)
-            .setTabListener(new ActionBar.TabListener() {
-                @Override
-                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            //only add tabs if there isn't any
+            if(mSupportActionBar.getTabCount() == 0){
 
+                mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                mSupportActionBar.addTab(mSupportActionBar.newTab()
+                        .setCustomView(R.layout.tab_home)
+                        .setTabListener(new ActionBar.TabListener() {
+                            @Override
+                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "HOME onTabSelected");
+                                if(action != NavigationAction.Home){
+//                            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                                }
+                            }
+
+                            @Override
+                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "HOME onTabUnselected");
+
+                            }
+
+                            @Override
+                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "HOME onTabReselected");
+                                if(action != NavigationAction.Home){
+                                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                                }
+                            }
+                        }));
+                mSupportActionBar.addTab(mSupportActionBar.newTab()
+                        .setCustomView(R.layout.tab_saved)
+                        .setTabListener(new ActionBar.TabListener() {
+                            @Override
+                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "SAVED onTabSelected");
+                                if(action != NavigationAction.Favorites){
+                                    onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                                }
+
+                            }
+
+                            @Override
+                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "SAVED onTabUnselected");
+                            }
+
+                            @Override
+                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "SAVED onTabReselected");
+                            }
+                        }));
+                mSupportActionBar.addTab(mSupportActionBar.newTab()
+                        .setCustomView(R.layout.tab_cart)
+                        .setTabListener(new ActionBar.TabListener() {
+                            @Override
+                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "CART onTabSelected");
+                                if(action != NavigationAction.Basket){
+                                    onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                                }
+
+                            }
+
+                            @Override
+                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "CART onTabUnselected");
+
+                            }
+
+                            @Override
+                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                                Print.i(TAG, "CART onTabReselected");
+
+                            }
+                        }));
+            } else {
+                mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                if(action == NavigationAction.Home){
+                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(0));
+                } else if(action == NavigationAction.Favorites){
+                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(1));
+                } else {
+                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(2));
                 }
 
-                @Override
-                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            }
 
-                }
+        }
+    }
 
-                @Override
-                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-            }));
-            mSupportActionBar.addTab(mSupportActionBar.newTab()
-                    .setIcon(R.drawable.btn_fav_selected)
-                    .setText(R.string.action_label_wishlist)
-            .setTabListener(new ActionBar.TabListener() {
-                @Override
-                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-
-                @Override
-                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-
-                @Override
-                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-            }));
-            mSupportActionBar.addTab(mSupportActionBar.newTab()
-                    .setCustomView(R.layout.action_bar_cart_button)
-                    .setText(R.string.cart_label)
-            .setTabListener(new ActionBar.TabListener() {
-                @Override
-                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-
-                @Override
-                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-
-                @Override
-                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                }
-            }));
+    public void hideActionBarTabs(){
+        mSupportActionBar = getSupportActionBar();
+        if(mSupportActionBar != null) {
+            mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
     }
 
@@ -677,13 +718,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         }
         // CASE HOME ACTION
-        else if (itemId == R.id.menu_home) {
-            // Close drawer
-            closeNavigationDrawer();
-            // Goto cart
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            return true;
-        }
+//        else if (itemId == R.id.menu_home) {
+//            // Close drawer
+//            closeNavigationDrawer();
+//            // Goto cart
+//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//            return true;
+//        }
         // DEFAULT:
         else {
             return super.onOptionsItemSelected(item);
@@ -821,24 +862,24 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @modified sergiopereira
      */
     private void setActionHome(final Menu menu) {
-        MenuItem home = menu.findItem(MyMenuItem.HOME.resId);
-        // Validate country
-        if (!initialCountry) {
-            home.setVisible(true);
-            home.setEnabled(true);
-//            View actionHomeView = MenuItemCompat.getActionView(home);
-////            mActionCartCount = (TextView) actionHomeView.findViewById(R.id.action_cart_count);
-////            View actionCartImage = actionHomeView.findViewById(R.id.action_cart_image);
-//            actionHomeView.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
-//                }
-//            });
-//            updateCartInfoInActionBar();
-        } else {
-            home.setVisible(false);
-        }
+//        MenuItem home = menu.findItem(MyMenuItem.HOME.resId);
+//        // Validate country
+//        if (!initialCountry) {
+//            home.setVisible(true);
+//            home.setEnabled(true);
+////            View actionHomeView = MenuItemCompat.getActionView(home);
+//////            mActionCartCount = (TextView) actionHomeView.findViewById(R.id.action_cart_count);
+//////            View actionCartImage = actionHomeView.findViewById(R.id.action_cart_image);
+////            actionHomeView.setOnClickListener(new OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
+////                }
+////            });
+////            updateCartInfoInActionBar();
+//        } else {
+//            home.setVisible(false);
+//        }
     }
 
 

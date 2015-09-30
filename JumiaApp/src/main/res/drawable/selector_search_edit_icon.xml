@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Pressed -->
-    <item android:drawable="@drawable/ic_menu_search_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_search_bar_active" android:state_pressed="true"/>
     <!-- Default -->
-    <item android:drawable="@drawable/ic_menu_search"/>
+    <item android:drawable="@drawable/ic_search_bar"/>
 
 </selector>

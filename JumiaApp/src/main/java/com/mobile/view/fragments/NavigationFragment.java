@@ -203,7 +203,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         try {
             mNavigationOptions.removeAllViews();
             // Add Home
-            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_home, mHomeStringId, this);
+            createGenericComponent(mNavigationOptions, R.drawable.btn_home, mHomeStringId, this);
             // Add Category
             createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_categories, mCategoryStringId, null);
         } catch (IllegalArgumentException e) {

@@ -117,6 +117,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             isChangeCountry = false;
             showAvailableCountries();
             getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+            getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         
     }
