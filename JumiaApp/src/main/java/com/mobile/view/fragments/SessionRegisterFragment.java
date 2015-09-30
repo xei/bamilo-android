@@ -24,6 +24,7 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -558,7 +559,10 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 saveFormState();
-                getBaseActivity().onSwitchFragment(FragmentType.TERMS, null, FragmentController.ADD_TO_BACK_STACK);
+                Bundle bundle = new Bundle();
+                bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
+                bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
+                getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });
