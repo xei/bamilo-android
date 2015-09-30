@@ -424,7 +424,6 @@ public class RestConstants {
     public static final String JSON_FILTER_SEPARATOR = "filter_separator";
     public static final String JSON_OPTION_TAG = "option";
 
-
     public static final String TOTAL_PAGES = "total_pages";
     public static final String CURRENT_PAGE = "current_page";
     public static final String PAGE = "page";
@@ -434,7 +433,11 @@ public class RestConstants {
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
     public static final String WISH_LIST_PRODUCTS = "wishlist_products";
-    public static final String IS_GLOBAL = "is_global";
-    public static final String GLOBAL = "global";
-    public static final String CMS_INFO = "cms_info";
+
+
+    public static final String JSON_IS_GLOBAL = "is_global";
+    public static final String JSON_GLOBAL = "global";
+    public static final String JSON_FULFILLMENT = "fulfillment";
+    public static final String JSON_CMS_INFO_TAG = "cms_info";
+
 }

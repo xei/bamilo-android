@@ -419,5 +419,8 @@
     <string name="average_reviews_header">USER REVIEWS</string>
     <string name="description1">Description</string>
     <string name="rat_rev">Ratings Reviews</string>
+    <string name="fulfilled_by">Fulfilled by %s</string>
+    <string name="qty_placeholder">Qty: %d</string>
+    <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
 </resources>
