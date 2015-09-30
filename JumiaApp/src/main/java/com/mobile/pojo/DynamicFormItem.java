@@ -267,15 +267,6 @@ public class DynamicFormItem {
                     buildDate(params, controlWidth);
                     break;
                 case number:
-
-                    // TODO: VALIDATE IF THIS IS NECESSARY
-//                    boolean datePart = isDatePart();
-//                    controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : context.getResources().getDimensionPixelSize(R.dimen.form_date_width);
-//                    params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//                    if (datePart) {
-//                        params.setMargins(0, 0, (int) (10 * scale), 0);
-//                    }
-
                 case email:
                 case text:
                 case password:
@@ -788,9 +779,8 @@ public class DynamicFormItem {
                     break;
                 case metadata:
                 case date:
-                    result = true;
                     if (this.entry.getValidation().isRequired()) {
-                        if (com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
+                        if (TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
                             result = false;
                         }
                     }

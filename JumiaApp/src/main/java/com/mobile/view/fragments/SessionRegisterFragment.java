@@ -272,19 +272,8 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 Print.d(TAG, "registerButton onClick");
-
-//                if (serverForm != null && !serverForm.checkRequired()) {
-//                    registerRequiredText.setVisibility(View.VISIBLE);
-//                    // Tracking signup failed
-//                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-//                    return;
-//                } else {
-//                    registerRequiredText.setVisibility(View.GONE);
-//                }
-
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
-
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
