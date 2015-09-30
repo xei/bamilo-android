@@ -29,6 +29,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
+import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -803,11 +804,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickOtherOffersProduct() {
         Log.i(TAG, "ON CLICK OTHER OFFERS");
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        triggerGetProductOffers(mProduct.getSku());
     }
 
     /**
@@ -1000,6 +997,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
+
+    private void triggerGetProductOffers(String sku) {
+        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
+    }
+
     /*
      * ############## RESPONSE ##############
      */
@@ -1064,6 +1066,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
                 buildComboSection(bundleList);
+            case GET_PRODUCT_OFFERS:
+            //    OfferList productOffers = bundle.getParcelable(Constants.BUNDLE_DATA_KEY);
+                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+                bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+                bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
             default:
                 break;
         }
