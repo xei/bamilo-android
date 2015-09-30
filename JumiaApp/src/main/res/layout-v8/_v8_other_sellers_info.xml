@@ -36,12 +36,9 @@
             android:id="@+id/item_reviews"
             style="@style/TextCaption"
             color="@color/black_800"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             />
 
         <!-- changeFashion: choose the right rating bar considering vertical type -->

@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="114dp"
     android:id="@+id/offers_list_item"
-    android:background="@color/white"
+    android:background="@drawable/border"
     >
 
     <!-- OTHER SELLERS ITEM -->
@@ -13,7 +13,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/left_side_seller"
         android:gravity="center"
         >
@@ -22,7 +21,7 @@
         <LinearLayout
             android:orientation="horizontal" android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|left"
             android:paddingLeft="@dimen/layout_padding"
             android:paddingRight="@dimen/layout_padding"
             android:paddingStart="@dimen/layout_padding"
@@ -33,21 +32,19 @@
                 android:id="@+id/offer_price"
                 style="@style/TextBody_3"
                 android:textColor="@color/black"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="aaa"
                 />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price_normal"
                 style="@style/TextBody_3"
                 android:textColor="@color/black_800"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:text="aaa"
                 />
 
 
