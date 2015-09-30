@@ -388,7 +388,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if(mProduct.hasOffers())
         {
             TextView txOffers = (TextView) offersContainer.findViewById(R.id.pdv_sublist_button);
-            txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
+            txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
             offersContainer.setOnClickListener(this);
             separator.setVisibility(View.VISIBLE);
         }
@@ -735,13 +735,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case combos section
         else if (id == R.id.pdv_combos_container) onClickCombosProduct();
         // Case other offers
-        else if (id == R.id.pdv_seller_button_others) onClickOtherOffersProduct();
+        else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
         // Case global seller button
         else if (id == R.id.pdv_button_global_seller) onClickGlobalSellerButton();
         // Case global delivery button
         else if (id == R.id.pdv_seller_overseas_delivery_link) onClickGlobalDeliveryLinkButton();
         // Case seller container
         else if(id == R.id.pdv_seller_container) goToSellerRating();
+
     }
 
     /**
