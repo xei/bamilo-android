@@ -177,5 +177,10 @@
     <item name="dialog_filter_fragment_size"                type="layout">@layout/_v8_dialog_filter_fragment_size</item>
     <item name="simple_email_notification_option"           type="layout">@layout/_v8_simple_email_notification_option</item>
 
+    <!-- other offers -->
+    <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
+    <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
+
 </resources>
 
