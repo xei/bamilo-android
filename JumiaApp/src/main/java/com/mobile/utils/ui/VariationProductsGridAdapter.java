@@ -55,8 +55,8 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
             brand = (TextView) view.findViewById(R.id.item_brand);
             image = (ImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
-            price = (TextView) view.findViewById(R.id.pdv_text_special_price);
-            discount = (TextView) view.findViewById(R.id.pdv_text_price);
+            price = (TextView) view.findViewById(R.id.pdv_text_price);
+            discount = (TextView) view.findViewById(R.id.pdv_text_special_price);
 
         }
     }

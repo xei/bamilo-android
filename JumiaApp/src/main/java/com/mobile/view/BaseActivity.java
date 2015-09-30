@@ -79,7 +79,6 @@ import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
