@@ -804,7 +804,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickOtherOffersProduct() {
         Log.i(TAG, "ON CLICK OTHER OFFERS");
-        triggerGetProductOffers(mProduct.getSku());
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1066,13 +1070,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
                 buildComboSection(bundleList);
-            case GET_PRODUCT_OFFERS:
-            //    OfferList productOffers = bundle.getParcelable(Constants.BUNDLE_DATA_KEY);
-                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-                bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-                bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
             default:
                 break;
         }
