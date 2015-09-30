@@ -56,8 +56,8 @@
     <item name="error_info_layout"                      type="layout">@layout/_def_error_layout</item>
 
     <!-- CATALOG -->
-    <item name="catalog_fragment_main"                  type="layout">@layout/_def_catalog_fragment_main</item>
-    <item name="catalog_fragment_tool_bar"              type="layout">@layout/_def_catalog_fragment_tool_bar</item>
+    <item name="catalog_fragment_main" 				    type="layout">@layout/_def_catalog_fragment_main</item>
+    <item name="catalog_fragment_tool_bar" 			    type="layout">@layout/_def_catalog_fragment_tool_bar</item>
     <item name="catalog_fragment_wizard"                type="layout">@layout/_def_catalog_fragment_wizard</item>
     <item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_def_catalog_fragment_wizard_favourite</item>
     <item name="catalog_fragment_no_result"             type="layout">@layout/_def_catalog_fragment_no_result</item>
@@ -126,6 +126,9 @@
     <item name="category_inner_childcat"                type="layout">@layout/_def_category_inner_childcat</item>
     <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
+    <item name="category_header"                        type="layout">@layout/_def_category_header</item>
+    <item name="category_single_line_list"              type="layout">@layout/_def_category_single_line_list</item>
+    <item name="category_sublist"                       type="layout">@layout/_def_category_sublist</item>
 
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>

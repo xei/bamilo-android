@@ -22,7 +22,6 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CategoriesCollectionFragment;
 import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
@@ -269,9 +268,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     return;
                 }
                 fragment = HomePageFragment.newInstance(bundle);
-                break;
-            case CATEGORIES:
-                fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
                 if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
