@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,6 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
-import com.mobile.newFramework.objects.product.pojo.ProductSpecification;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -69,11 +67,9 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class displays the product detail screen.
@@ -408,9 +404,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
-            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage());
+            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage())+ " " + getString(R.string.off_label);
             mDiscountPercentageText.setText(discount);
             mDiscountPercentageText.setVisibility(View.VISIBLE);
+
+            if(!mProduct.isFashion()) {
+                mDiscountPercentageText.setSelected(true);
+            }else
+            {
+                mDiscountPercentageText.setSelected(false);
+                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
+            }
         } else {
             mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
             mPriceText.setVisibility(View.GONE);
@@ -431,14 +435,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
+                mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
                 mProductRating.setRating((float) mProduct.getAvgRating());
+                mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
 
-        mProductRating.setVisibility(View.VISIBLE);
+   //     mProductRating.setVisibility(View.VISIBLE);
     }
 
     /**
