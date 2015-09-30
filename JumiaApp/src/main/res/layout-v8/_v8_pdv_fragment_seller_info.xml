@@ -27,7 +27,7 @@
         android:id="@+id/pdv_seller_delivery_info"
         style="@style/TextHeader"
         android:layout_marginRight="@dimen/layout_padding"
-        android:paddingBottom="16dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@color/black"
         android:visibility="gone" />
 
