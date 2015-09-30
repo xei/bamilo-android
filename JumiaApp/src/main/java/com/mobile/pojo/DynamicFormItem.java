@@ -264,7 +264,7 @@ public class DynamicFormItem {
                     break;
                 case metadata:
                 case date:
-                    buildDate(params, controlWidth);
+                    buildDate(controlWidth);
                     break;
                 case number:
                 case email:
@@ -665,9 +665,14 @@ public class DynamicFormItem {
                 break;
             case metadata:
             case date:
-                GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
-                Date d = new Date(cal.getTimeInMillis());
-                result = DateFormat.format(DATE_FORMAT, d).toString();
+                // Case selected a date
+                if (selectedYear != 0) {
+                    GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
+                    Date d = new Date(cal.getTimeInMillis());
+                    result = DateFormat.format(DATE_FORMAT, d).toString();
+                } else {
+                    result = "";
+                }
                 break;
             case hide:
             case email:
@@ -1160,8 +1165,8 @@ public class DynamicFormItem {
     }
 
 
-    private void buildDate(RelativeLayout.LayoutParams params, int controlWidth) {
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    private void buildDate(int controlWidth) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.topMargin = 6;
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
