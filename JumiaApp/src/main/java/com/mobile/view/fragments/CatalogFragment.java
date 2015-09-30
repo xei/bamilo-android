@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,6 +37,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -211,22 +211,31 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Function that removes the parameters from the url in order to have the complete url without parameteres
      * @param builder
      */
-    private void removeParametersFromQuery(Uri.Builder builder){
+    private void removeParametersFromQuery(final Uri.Builder builder){
 
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            builder.clearQuery();
-            mCompleteUrl = builder.toString();
-        } else {
-            if(builder.toString().contains("?")){
-                // only retains the substring from the beginning to the character '?'
-               mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
-            } else {
-                // does nothing, because url complete does not have any extra parameters
+        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+            @Override
+            public void highVersionCallback() {
+                builder.clearQuery();
                 mCompleteUrl = builder.toString();
             }
-        }
+
+            @Override
+            public void lowerVersionCallback() {
+                if(builder.toString().contains("?")){
+                    // only retains the substring from the beginning to the character '?'
+                    mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
+                } else {
+                    // does nothing, because url complete does not have any extra parameters
+                    mCompleteUrl = builder.toString();
+                }
+            }
+        });
 
     }
+
+
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -1192,4 +1201,5 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         return false;
     }
+
 }
