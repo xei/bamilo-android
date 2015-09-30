@@ -112,6 +112,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
         mCompleteProductName = arguments.getString(ConstantsIntentExtra.PRODUCT_NAME);
         mCompleteBrand = arguments.getString(ConstantsIntentExtra.PRODUCT_BRAND);
+        productOffers = arguments.getParcelable(RestConstants.JSON_DATA_TAG);
 
     }
 
