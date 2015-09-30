@@ -412,8 +412,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
@@ -476,8 +475,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
+//        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
