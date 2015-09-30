@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandableGridViewComponent;
