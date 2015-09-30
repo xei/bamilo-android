@@ -442,5 +442,5 @@ public class RestConstants {
     public static final String CMS_INFO = "cms_info";
 
 
-    public static final String JSON_PRICE_RANGE = "price_range";
+    public static final String PRICE_RANGE = "price_range";
 }

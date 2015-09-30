@@ -48,7 +48,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 
-        mPriceRange = jsonObject.optString(RestConstants.JSON_PRICE_RANGE, null);
+        mPriceRange = jsonObject.optString(RestConstants.PRICE_RANGE, null);
         return true;
     }
 
