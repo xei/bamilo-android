@@ -171,6 +171,8 @@
     <item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>
     <item name="review_fragment"                        type="layout">@layout/_v8_review_fragment</item>
     <item name="simple_email_notification_option"       type="layout">@layout/_v8_simple_email_notification_option</item>
+    <!-- variations-->
+    <item name="product_list"                           type="layout">@layout/_v8_product_list</item>
 
 </resources>
 
