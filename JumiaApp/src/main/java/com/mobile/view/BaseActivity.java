@@ -80,8 +80,8 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
+import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
@@ -651,32 +651,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean isInitialCountry() {
         return initialCountry;
     }
-
-    /*
-     * ############### NAVIGATION MENU #################
-     */
-
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationMenu(NavigationAction page) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateMenu(page);
-        }
-    }
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationCategorySelection(String categoryId) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateCategorySelected(categoryId);
-        }
-    }
-
 
     /*
      * ############### OPTIONS MENU #################
@@ -1592,6 +1566,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * Show and set title on actionbar
+     *
+     * @param actionBarTitle
+     */
+    public void setActionBarTitle(String actionBarTitle) {
+//        logoTextView.setVisibility(View.VISIBLE);
+//        logoTextView.setText(getString(actionBarTitleResId));
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setTitle(actionBarTitle);
+    }
+
+    /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
@@ -2083,6 +2070,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+    }
+
+    public boolean communicateBetweenFragments(String tag, Bundle bundle){
+        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment != null){
+            ((BaseFragment)fragment).notifyFragment(bundle);
+            return true;
+        }
+        return false;
     }
 
 //    /**

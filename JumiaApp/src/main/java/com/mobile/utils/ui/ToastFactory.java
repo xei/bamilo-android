@@ -23,8 +23,8 @@ public enum ToastFactory {
     ERROR_UNEXPECTED_PLEASE_RETRY(R.string.error_please_try_again, Toast.LENGTH_SHORT),
 
     SUCCESS_LOGIN(R.string.succes_login, Toast.LENGTH_LONG),
-    SUCCESS_ADDED_FAVOURITE(R.string.products_added_favourite, Toast.LENGTH_SHORT),
-    SUCCESS_REMOVED_FAVOURITE(R.string.products_removed_favourite, Toast.LENGTH_SHORT),
+    SUCCESS_ADDED_FAVOURITE(R.string.products_added_saved, Toast.LENGTH_SHORT),
+    SUCCESS_REMOVED_FAVOURITE(R.string.products_removed_saved, Toast.LENGTH_SHORT),
     SUCCESS_ADDED_CART(R.string.added_to_shop_cart_dialog_text, Toast.LENGTH_SHORT);
 
 

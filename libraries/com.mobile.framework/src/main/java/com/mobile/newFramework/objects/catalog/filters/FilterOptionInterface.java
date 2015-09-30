@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcelable;
+
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
  *
@@ -13,5 +15,5 @@ package com.mobile.newFramework.objects.catalog.filters;
  * @date 2015/09/04
  *
  */
-public interface FilterOptionInterface {
+public interface FilterOptionInterface extends Parcelable{
 }

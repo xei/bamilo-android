@@ -33,7 +33,7 @@ public enum FragmentType {
     SHOPPING_CART,
     CHECKOUT_BASKET,
     CHECKOUT_THANKS,
-    TERMS,
+    STATIC_PAGE,
     MY_ACCOUNT,
     MY_ACCOUNT_MY_ADDRESSES,
     MY_ACCOUNT_CREATE_ADDRESS,
@@ -61,7 +61,12 @@ public enum FragmentType {
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
     INNER_SHOP,
-    WRITE_REVIEW_SELLER;
+    VARIATIONS,
+
+    WRITE_REVIEW_SELLER,
+    FILTERS,
+    COMBOPAGE
+    ;
 
     private int id;
     private final static String DIVIDER = ":";

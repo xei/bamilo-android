@@ -16,6 +16,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
@@ -151,8 +152,16 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Total
         mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
-        // Show order summary
-        showOrderSummary();
+        // Get saved order summary
+        Bundle  args = savedInstanceState;
+        if(args != null && args.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
+            mOrderSummary = args.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
+            // Show order summary
+            showOrderSummary();
+        } else {
+            triggerGetShoppingCart();
+        }
+
     }
 
     /*
@@ -525,14 +534,14 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * ############# REQUESTS #############
      */
 
-//    /**
-//     * Trigger to get the shopping cart
-//     * @author sergiopereira
-//     */
-//    private void triggerGetShoppingCart() {
-//        Print.i(TAG, "TRIGGER: GET SHOPPING CART");
-//        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
-//    }
+    /**
+     * Trigger to get the shopping cart
+     * @author sergiopereira
+     */
+    private void triggerGetShoppingCart() {
+        Print.i(TAG, "TRIGGER: GET SHOPPING CART");
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
+    }
 
     /**
      * Trigger to remove an item from the shopping cart
@@ -564,12 +573,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//            Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-//            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//            showOrderSummary();
-//            showFragmentContentContainer();
-//            break;
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+            Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
+            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            showOrderSummary();
+            showFragmentContentContainer();
+            break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
                 mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -643,6 +652,16 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE");
+        if (mOrderSummary != null) {
+            outState.putParcelable(ConstantsIntentExtra.ORDER_SUMMARY, mOrderSummary);
+        }
+
     }
 
 }

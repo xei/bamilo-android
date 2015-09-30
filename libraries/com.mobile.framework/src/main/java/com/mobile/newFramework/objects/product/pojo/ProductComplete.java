@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.Seller;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -29,17 +31,17 @@ public class ProductComplete extends ProductMultiple {
     private String mShortDescription;
     private ArrayList<String> mImageList;
     private BundleList mProductBundle;
-    private boolean hasSeller;
     private boolean hasBundle;
     private Seller mSeller;
     private double mMinPriceOffer;
     private double mMinPriceOfferConverted;
+    private boolean hasOffers;
     private int mTotalOffers;
     private ArrayList<ProductRegular> mRelatedProducts;
     private ArrayList<ProductSpecification> mProductSpecs;
+    private ArrayList<Variation> mProductVariations;
     private String mShareUrl;
     private boolean isFashion;
-    private boolean hasVariations;
 
     /**
      * Complete product empty constructor.
@@ -67,6 +69,8 @@ public class ProductComplete extends ProductMultiple {
             super.initialize(jsonObject);
             // Fashion PDV
             isFashion = TextUtils.equals(jsonObject.optString(RestConstants.VERTICAL), RestConstants.FASHION);
+            //has offers
+            hasOffers = false;
             // Share url
             mShareUrl = jsonObject.optString(RestConstants.JSON_SHARE_URL_TAG);
             // Bundle
@@ -84,7 +88,6 @@ public class ProductComplete extends ProductMultiple {
             JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
             if (sellerObject != null) {
                 mSeller = new Seller(sellerObject);
-                hasSeller = true;
             }
             //Offers
             JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
@@ -92,6 +95,8 @@ public class ProductComplete extends ProductMultiple {
                 mMinPriceOffer = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
                 mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
                 mTotalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG);
+                hasOffers = true;
+
             }
             // Related products
             JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
@@ -121,8 +126,16 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Variations
-            JSONObject variationsObject = jsonObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
-            hasVariations = variationsObject != null && variationsObject.length() > 0;
+            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
+            if (variationsArray != null && variationsArray.length() > 0) {
+                mProductVariations = new ArrayList<>();
+                for (int i = 0; i < variationsArray.length(); i++) {
+                    Variation variation = new Variation();
+                    variation.initialize(variationsArray.getJSONObject(i));
+                    mProductVariations.add(variation);
+                }
+            }
+
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
             return false;
@@ -153,15 +166,17 @@ public class ProductComplete extends ProductMultiple {
     }
 
     public boolean hasVariations() {
-        return hasVariations;
+        return CollectionUtils.isNotEmpty(mProductVariations);
     }
 
     public BundleList getProductBundle() {
         return mProductBundle;
     }
 
+    public void setProductBundle(BundleList mProductBundle) { this.mProductBundle = mProductBundle; }
+
     public boolean hasSeller() {
-        return hasSeller;
+        return mSeller != null;
     }
 
     public boolean hasBundle() {
@@ -176,6 +191,10 @@ public class ProductComplete extends ProductMultiple {
         return mProductSpecs;
     }
 
+    public ArrayList<Variation> getProductVariations() {
+        return mProductVariations;
+    }
+
     public ArrayList<ProductRegular> getRelatedProducts() {
         return mRelatedProducts;
     }
@@ -187,6 +206,10 @@ public class ProductComplete extends ProductMultiple {
     public boolean isFashion() {
         return isFashion;
     }
+
+    public boolean hasOffers() { return hasOffers; }
+
+    public double getMinPriceOffer() { return mMinPriceOffer;}
 
     /*
      * ############ PARCELABLE ############
@@ -213,7 +236,6 @@ public class ProductComplete extends ProductMultiple {
         dest.writeList(mImageList);
         //dest.writeList(mVariations);
         dest.writeString(mDescription);
-        dest.writeByte((byte) (hasSeller ? 1 : 0));
         dest.writeByte((byte) (hasBundle ? 1 : 0));
         dest.writeParcelable(mSeller, flags);
         dest.writeParcelable(mProductBundle, flags);
@@ -221,9 +243,9 @@ public class ProductComplete extends ProductMultiple {
         dest.writeDouble(mMinPriceOfferConverted);
         dest.writeInt(mTotalOffers);
         dest.writeList(mProductSpecs);
+        dest.writeList(mProductVariations);
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
-        dest.writeByte((byte) (hasVariations ? 1 : 0));
     }
 
     private ProductComplete(Parcel in) {
@@ -231,7 +253,6 @@ public class ProductComplete extends ProductMultiple {
         mImageList = new ArrayList<>();
         in.readList(mImageList, null);
         mDescription = in.readString();
-        hasSeller = in.readByte() == 1;
         hasBundle = in.readByte() == 1;
         mSeller = in.readParcelable(Seller.class.getClassLoader());
         mProductBundle = in.readParcelable(BundleList.class.getClassLoader());
@@ -240,9 +261,10 @@ public class ProductComplete extends ProductMultiple {
         mTotalOffers = in.readInt();
         mProductSpecs = new ArrayList<>();
         in.readList(mProductSpecs, ProductSpecification.class.getClassLoader());
+        mProductVariations = new ArrayList<>();
+        in.readList(mProductVariations, Variation.class.getClassLoader());
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
-        hasVariations = in.readByte() == 1;
     }
 
     public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {

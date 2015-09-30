@@ -29,6 +29,7 @@ public enum NavigationAction {
     Seller,
     ForgotPassword,
     Terms,
+    Filters,
     Unknown
 
 }

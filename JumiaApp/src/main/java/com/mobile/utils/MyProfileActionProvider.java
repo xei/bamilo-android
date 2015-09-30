@@ -213,7 +213,7 @@ public class MyProfileActionProvider extends ActionProvider {
                     icon.setImageResource(R.drawable.ico_dropdown_signin);
                     break;
                 case Favorites:
-                    title.setText(R.string.favourites);
+                    title.setText(R.string.saved);
                     icon.setImageResource(R.drawable.ico_dropdown_favourites);
                     break;
                 case RecentSearches:

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/rounded_box"
+    android:paddingBottom="10dp"
+    >
+
+
+    <!-- TITLE -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/fulfillment_title"
+        style="@style/rounded_box_title_grey" />
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/fulfillment_divider"
+        style="@style/divider_horizontal"
+        android:layout_below="@id/fulfillment_title"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        style="@style/rounded_box_text_view"
+        android:id="@+id/fulfillment_products_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/fulfillment_divider"/>
+
+    <com.mobile.components.customfontviews.TextView
+        style="@style/rounded_box_text_view"
+        android:id="@+id/fulfillment_seller_name"
+        android:fontFamily="regular"
+        android:textSize="13sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/grey_middledark"
+        android:layout_below="@id/fulfillment_products_layout"
+        android:layout_marginBottom="10dp"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        style="@style/rounded_box_text_view"
+        android:id="@+id/fulfillment_shipping_time"
+        android:fontFamily = "regular_light"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/grey_middle"
+        android:layout_below="@id/fulfillment_seller_name"
+        android:visibility="gone"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        style="@style/rounded_box_text_view"
+        android:id="@+id/fulfillment_shipping_info"
+        android:fontFamily = "regular_light"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/orange_f68b1e"
+        android:layout_below="@id/fulfillment_seller_name"
+        android:layout_marginRight="30dp"
+        android:visibility="gone"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/fulfillment_deliver_info"
+        android:fontFamily = "regular_light"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textColor="@color/orange_f68b1e"
+        android:layout_below="@id/fulfillment_shipping_info"
+        android:layout_marginRight="30dp"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

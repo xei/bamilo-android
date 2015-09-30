@@ -311,9 +311,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-            if(action != null){
-                getBaseActivity().updateNavigationMenu(action);
-            }
+//            if(action != null){
+//                getBaseActivity().updateNavigationMenu(action);
+//            }
         }
     }
 
@@ -662,6 +662,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
+    }
+
+    public void showInfoAddToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        }
+    }
+
+    public void showInfoAddToShoppingCartFailed() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+        }
     }
 
     /**
@@ -1146,5 +1158,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         campaigns.add(campaign);
         return campaigns;
     }
+
+
+
 
 }
