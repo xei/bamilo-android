@@ -27,10 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginBottom="6dp"
             android:layout_marginRight="6dp"
-            android:layout_marginEnd="6dp"
             android:checked="true"
             android:clickable="false"
 

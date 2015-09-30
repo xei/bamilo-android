@@ -22,7 +22,6 @@
         android:layout_height="120dp"
         android:orientation="vertical"
         android:layout_toLeftOf="@+id/item_image_loadable"
-        android:layout_toStartOf="@+id/item_image_loadable"
         android:gravity="center_vertical|right"
         android:layout_marginRight="@dimen/layout_padding"
 
