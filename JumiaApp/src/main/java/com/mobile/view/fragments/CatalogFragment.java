@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -180,8 +181,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (!TextUtils.isEmpty(mCompleteUrl)) {
                 mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
                 Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
-                builder.clearQuery();
-                mCompleteUrl = builder.toString();
+                removeParametersFromQuery(builder);
             }
 
             // In case of searching by keyword
@@ -207,6 +207,26 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
+    /**
+     * Function that removes the parameters from the url in order to have the complete url without parameteres
+     * @param builder
+     */
+    private void removeParametersFromQuery(Uri.Builder builder){
+
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            builder.clearQuery();
+            mCompleteUrl = builder.toString();
+        } else {
+            if(builder.toString().contains("?")){
+                // only retains the substring from the beginning to the character '?'
+               mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
+            } else {
+                // does nothing, because url complete does not have any extra parameters
+                mCompleteUrl = builder.toString();
+            }
+        }
+
+    }
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
