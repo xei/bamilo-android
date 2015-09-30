@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
@@ -180,7 +181,7 @@ public class BundleList implements IJSONSerializable, Parcelable {
      * */
     public void updateTotalPriceWhenChecking(int bundlePosition)
     {
-        if(bundleProducts != null && bundleProducts.size() > 0)
+        if(CollectionUtils.isNotEmpty(bundleProducts))
         {
             //get selected bundle
             ProductBundle productBundle = bundleProducts.get(bundlePosition);
@@ -211,7 +212,7 @@ public class BundleList implements IJSONSerializable, Parcelable {
 
     public ProductBundle getSelectedBundle(int bundlePosition)
     {
-        if(bundleProducts != null && bundleProducts.size() > 0)
+        if(CollectionUtils.isNotEmpty(bundleProducts))
         {
             return bundleProducts.get(bundlePosition);
         }
