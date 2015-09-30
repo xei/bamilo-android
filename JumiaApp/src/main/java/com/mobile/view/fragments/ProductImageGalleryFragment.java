@@ -85,7 +85,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 //    }
 
     /**
-     * Constucctor as nested
+     * Constructor as nested
      */
     @SuppressLint("ValidFragment")
     public ProductImageGalleryFragment() { //Boolean isNested) {
@@ -160,6 +160,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Show default
+        onUpdateThumbnailIndicator(ProductDetailsFragment.sSharedSelectedPosition);
         mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition, true);
     }
 

@@ -62,7 +62,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
@@ -72,7 +72,7 @@
 
             <include
                 android:id="@+id/pdv_rating_container"
-                layout="@layout/_def_pdv_fragment_rating" />
+                layout="@layout/pdv_fragment_rating" />
 
             <!-- SPECIFICATIONS -->
             <include
@@ -96,6 +96,12 @@
             <include
                 android:id="@+id/pdv_seller_container"
                 layout="@layout/pdv_fragment_seller_info" />
+
+            <!-- OTHER SELLERS -->
+
+            <include
+                android:id="@+id/pdv_other_sellers_button"
+                layout="@layout/sublist" />
 
             <!-- DESCRIPTION -->
 

@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/item_margin_top"
     android:paddingTop="@dimen/item_margin_top"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:layoutDirection="ltr">
 
     <LinearLayout
         android:id="@+id/pdv_thumbnail_indicator_container"

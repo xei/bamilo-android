@@ -4,7 +4,7 @@
     android:layout_height="48dp"
     android:minHeight="48dp"
     android:background="@color/grey_dividerlight"
-    android:paddingLeft="@dimen/dimen_48px"
+    android:paddingLeft="@dimen/margin_large"
     android:paddingStart="@dimen/margin_large"
     android:gravity="center_vertical"
     android:orientation="horizontal"

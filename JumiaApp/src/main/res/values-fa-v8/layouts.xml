@@ -171,6 +171,9 @@
     <item name="review_fragment"                        type="layout">@layout/_v8_review_fragment</item>
     <item name="simple_email_notification_option"       type="layout">@layout/_v8_simple_email_notification_option</item>
 
+    <!-- variations-->
+    <item name="product_list"           type="layout">@layout/_v8_product_list</item>
+
     <!-- specificatioons/description/ratings -->
     <item name="ratings_board"                            type="layout">@layout/_v8_ratings_board</item>
     <item name="product_specs_container_item_new"          type="layout">@layout/_v8_product_specs_container_item_new</item>

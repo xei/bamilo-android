@@ -82,6 +82,7 @@
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
+    <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
 
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
@@ -90,6 +91,7 @@
     <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
     <item name="pdv_fragment_bundle_item" 	            type="layout">@layout/_def_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
+    <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
