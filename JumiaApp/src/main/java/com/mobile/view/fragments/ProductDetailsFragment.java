@@ -452,11 +452,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSellerContainer.setOnClickListener(this);
             // Name
             ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_name)).setText(mProduct.getSeller().getName());
-            // Rating bar
-            ((RatingBar) mSellerContainer.findViewById(R.id.pdv_seller_rating_bar)).setRating(mProduct.getSeller().getRatingValue());
-            int count = mProduct.getSeller().getRatingCount();
-            String text = count == 0 ? getString(R.string.be_first_rate) : getString(R.string.parenthesis_placeholder, count);
-            ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_rating_bar_count)).setText(text);
             // Case global seller
             if(mProduct.getSeller().isGlobal()) {
                 // Set global button
