@@ -1123,10 +1123,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @return
      */
     private boolean validateURL() {
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
-            return true;
-        }
-        return false;
+        return !mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl);
     }
 
     /**
