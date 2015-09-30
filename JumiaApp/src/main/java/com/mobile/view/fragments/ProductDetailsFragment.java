@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandableGridViewComponent;
@@ -26,6 +26,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
@@ -48,8 +49,10 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -66,6 +69,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +117,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTableBundles;
 
-    private ViewGroup sellerView;
+    private ViewGroup mSellerContainer;
 
     private ViewGroup mDescriptionView;
 
@@ -133,6 +137,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private ViewGroup mTitleFashionContainer;
 
+    private View mGlobalButton;
+
+    private View offersContainer;
+
     /**
      * Empty constructor
      */
@@ -149,6 +157,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
+        // Reset the share
+        sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -162,8 +172,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
-        // Reset the share
-        sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
@@ -189,7 +197,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
-        // Title TODO: IMPROVE
+        // Title
         mTitleContainer = (ViewGroup) view.findViewById(R.id.pdv_title_container);
         mTitleFashionContainer = (ViewGroup) view.findViewById(R.id.pdv_title_fashion_container);
         // Slide show
@@ -212,7 +220,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mOtherVariationsLayout = (ViewGroup) view.findViewById(R.id.pdv_variations_container);
         mSizeLayout = (ViewGroup) view.findViewById(R.id.pdv_simples_container);
         // Seller
-        sellerView = (ViewGroup) view.findViewById(R.id.pdv_seller_container);
+        mSellerContainer = (ViewGroup) view.findViewById(R.id.pdv_seller_container);
+        mGlobalButton = view.findViewById(R.id.pdv_button_global_seller);
         // Product Description
         mDescriptionView = (ViewGroup) view.findViewById(R.id.pdv_desc_container);
         // Product Combos
@@ -221,6 +230,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mComboProductsLayout.setVisibility(View.GONE);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
+
+        offersContainer = view.findViewById(R.id.pdv_other_sellers_button);
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -361,6 +372,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setProductSize();
         setProductVariations();
         setSellerInfo();
+        setOffers();
         setDescription();
         setCombos();
         setRelatedItems();
@@ -368,6 +380,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
+    }
+
+    private void setOffers() {
+        //show button offers with separator if has offers
+        View separator = offersContainer.findViewById(R.id.separator);
+        if(mProduct.hasOffers())
+        {
+            TextView txOffers = (TextView) offersContainer.findViewById(R.id.pdv_sublist_button);
+            txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
+            offersContainer.setOnClickListener(this);
+            separator.setVisibility(View.VISIBLE);
+        }
+        else {
+            offersContainer.setVisibility(View.GONE);
+            separator.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -409,74 +437,63 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * function responsible for showing the seller info
-     * TODO: Improve
+     * Show the seller info
      */
     public void setSellerInfo() {
+        // Validate seller
         if (mProduct.hasSeller()) {
-            sellerView.setVisibility(View.VISIBLE);
-            //added: load headers:
-            TextView txhTitle = (TextView) (sellerView.findViewById(R.id.pdv_specs_title));
-            txhTitle.setText(getResources().getString(R.string.seller_info));
-            TextView mSellerName = (TextView) sellerView.findViewById(R.id.txSellerName);
-            mSellerName.setText(mProduct.getSeller().getName());
-            String rating = getString(R.string.string_ratings).toLowerCase();
-            if (mProduct.getSeller().getRatingCount() == 1) {
-                rating = getString(R.string.string_rating).toLowerCase();
+            // Set seller view
+            mSellerContainer.setVisibility(View.VISIBLE);
+            // Name
+            TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            sellerName.setText(mProduct.getSeller().getName());
+            sellerName.setOnClickListener(this);
+            // Case global seller
+            if(mProduct.getSeller().isGlobal()) {
+                // Set global button
+                mGlobalButton.setVisibility(View.VISIBLE);
+                mGlobalButton.setOnClickListener(this);
+                // Delivery Info
+                mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
+                ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
+                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
+                    TextView info = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_black));
+                    info.setText(mProduct.getSeller().getDeliveryCMSInfo());
+                    info.setVisibility(View.VISIBLE);
+                }
+                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
+                    TextView info2 = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_orange));
+                    info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
+                    info2.setVisibility(View.VISIBLE);
+                }
+                TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
+                link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
+                link.setPaintFlags(link.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                link.setOnClickListener(this);
             }
-            TextView mSellerRatingValue = (TextView) sellerView.findViewById(R.id.seller_rating_bar_rating_count);
-            mSellerRatingValue.setText(mProduct.getSeller().getRatingCount() + " " + rating);
-            RatingBar mSellerRating = (RatingBar) sellerView.findViewById(R.id.seller_rating_bar);
-            mSellerRating.setRating(mProduct.getSeller().getRatingValue());
-            // TODO placeholder
-            if (CollectionUtils.isNotEmpty(mProduct.getSimples()) &&
-                    mProduct.getSimples().get(0).getMinDeliveryTime() > 0 &&
-                    mProduct.getSimples().get(0).getMaxDeliveryTime() > 0) {
-                //
-                String min = "" + mProduct.getSimples().get(0).getMinDeliveryTime();
-                String max = "" + mProduct.getSimples().get(0).getMaxDeliveryTime();
-
-                //get delivery time section and change content
-                ViewGroup delliverySection = (ViewGroup) sellerView.findViewById(R.id.deliverSection);
-                TextView txDeliverTime = (TextView) delliverySection.findViewById(R.id.txDeliver);
-                txDeliverTime.setText(getResources().getString(R.string.delivery_time1) + ":");
-
-                TextView mSellerDeliveryTime = (TextView) delliverySection.findViewById(R.id.txDeliverTimeContent);
-                mSellerDeliveryTime.setText(min + " - " + max + " " + getResources().getString(R.string.product_delivery_days));
-
-                delliverySection.setVisibility(View.VISIBLE);
+            // Case normal
+            else if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())){
+                // Delivery Info
+                TextView textView = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_delivery_info);
+                textView.setText(mProduct.getSeller().getDeliveryTime());
+                textView.setVisibility(View.VISIBLE);
             }
-            if ( mProduct.getSeller().getWarranty() != "") {
-
-                ViewGroup warrantySection = (ViewGroup) sellerView.findViewById(R.id.warrantySection);
-                TextView txwarranty = (TextView) warrantySection.findViewById(R.id.txWarranty);
-                String Warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
-                txwarranty.setText(Warranty);
-
-                warrantySection.setVisibility(View.VISIBLE);
+            // Seller warranty
+            if (TextUtils.isNotEmpty(mProduct.getSeller().getWarranty())) {
+                TextView textView = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_warranty));
+                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
+                textView.setText(warranty);
+                textView.setVisibility(View.VISIBLE);
             }
-
-            //show button offers with separator if has offers
-            View btOffers = sellerView.findViewById(R.id.pdv_other_sellers_button);
-            View separator = sellerView.findViewById(R.id.separator);
-            if(mProduct.hasOffers())
-            {
-                TextView txOffers = (TextView) btOffers.findViewById(R.id.pdv_sublist_button);
-                txOffers.setText(getResources().getString(R.string.other_sellers_starting)+" "+CurrencyFormatter.formatCurrency(mProduct.getmMinPriceOffer()));
-                btOffers.setOnClickListener(this);
-            }
-            else {
-                btOffers.setVisibility(View.GONE);
-                separator.setVisibility(View.GONE);
-            }
-        } else if (sellerView != null) {
-            sellerView.setVisibility(View.GONE);
+        }
+        // Hide seller
+        else {
+            mSellerContainer.setVisibility(View.GONE);
         }
     }
 
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
-     * TODO: Improve
      */
     private void setTitle() {
         if (mProduct.isFashion()) {
@@ -508,7 +525,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mDescriptionView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.read_more));
-        // TODO: Move to onClick
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -529,30 +545,35 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Load specifications button if has specifications
      */
     private void setSpecifications() {
-        ArrayList<ProductSpecification> arrSpecs = mProduct.getProductSpecifications();
-        // Hide view if is fashion too
-        if (mProduct.isFashion() || CollectionUtils.isEmpty(arrSpecs)) {
-            mSpecificationsView.setVisibility(View.GONE);
-            return;
-        }
+//        ArrayList<ProductSpecification> arrSpecs = mProduct.getProductSpecifications();
+//        // Hide view if is fashion too
+//        if (mProduct.isFashion() || CollectionUtils.isEmpty(arrSpecs)) {
+//            mSpecificationsView.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        //load content
+//        HashMap<String, String> mSpecs;
+//        String specs = "";
+//        for (int i = 0; i < arrSpecs.size(); i++) {
+//            mSpecs = arrSpecs.get(i).getSpecifications();
+//            for (Map.Entry<String, String> pair : mSpecs.entrySet()) {
+//                specs += "&#149; " + pair.getKey() + " " + pair.getValue() + "<br>";
+//            }
+//        }
 
-        //load content
-        HashMap<String, String> mSpecs;
-        String specs = "";
-        for (int i = 0; i < arrSpecs.size(); i++) {
-            mSpecs = arrSpecs.get(i).getSpecifications();
-            for (Map.Entry<String, String> pair : mSpecs.entrySet()) {
-                specs += "&#149; " + pair.getKey() + " " + pair.getValue() + "<br>";
-            }
+        String features = mProduct.getShortDescription();
+        if (TextUtils.isEmpty(features)) {
+            mDescriptionView.setVisibility(View.GONE);
+            return;
         }
         // Title
         ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_title)).setText(getString(R.string.specifications));
         // Multi line
-        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_multi_line)).setText(Html.fromHtml(specs));
+        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_multi_line)).setText(features);
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
-        // TODO: Move to onClick
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -620,14 +641,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // CASE CREATE
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
+
+            ArrayList<String> images = ShopSelector.isRtl() ? (ArrayList) mProduct.getImageList().clone() : mProduct.getImageList();
+
             // Create bundle with images
             Bundle args = new Bundle();
-            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mProduct.getImageList());
+            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             // Create fragment
             fragment = ProductImageGalleryFragment.getInstanceAsNested(args);
-            FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment);
+            FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
         else {
@@ -691,8 +715,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         int id = view.getId();
         // Case rating
         if (id == R.id.pdv_rating_container) onClickRating();
-        // Case description
-        // TODO
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
@@ -709,21 +731,49 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
         // Case combos section
         else if (id == R.id.pdv_combos_container) onClickCombosProduct();
-        // case other offers
+        // Case other offers
         else if (id == R.id.pdv_other_sellers_button) onClickOtherOffersProduct();
+        // Case global seller button
+        else if (id == R.id.pdv_button_global_seller) onClickGlobalSellerButton();
+        // Case global delivery button
+        else if (id == R.id.pdv_seller_overseas_delivery_link) onClickGlobalDeliveryLinkButton();
+        // Case seller container
+        else if(id == R.id.pdv_seller_name) goToSellerCatalog();
+
     }
 
-//    /**
-//     * function that sends the user to the product offers view
-//     */
-//    private void goToProductOffers() {
-//        Log.i(TAG, "ON CLICK OFFERS");
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
+    private void goToSellerCatalog() {
+        Log.i(TAG, "ON CLICK SELLER NAME");
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mProduct.getSeller().getUrl());
+        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
 
+    /**
+     * Process the click on global policy
+     */
+    private void onClickGlobalDeliveryLinkButton() {
+        Log.i(TAG, "ON CLICK GLOBAL SELLER");
+        Bundle bundle = new Bundle();
+        bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
+        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.policy));
+        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the click on global button
+     */
+    @SuppressWarnings("ConstantConditions")
+    private void onClickGlobalSellerButton() {
+        Log.i(TAG, "ON CLICK GLOBAL SELLER");
+        try {
+            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.product_detail_scrollview);
+            scrollView.smoothScrollTo(0, mSellerContainer.getTop());
+        } catch (NullPointerException e) {
+            Log.i(TAG, "WARNING: NPE ON TRY SCROLL TO SELLER VIEW");
+         // ...
+        }
+    }
 
     /**
      * Process the click on rating
@@ -734,8 +784,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
         getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
-
 
     /**
      * Process the click on rating
@@ -767,7 +815,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickVariationButton() {
         Log.i(TAG, "ON CLICK TO SHOW OTHER VARIATIONS");
-        // TODO: Call the new fragment
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1017,6 +1064,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 // Save product
                 mProduct = product;
+
+                sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
+
                 // Show product or update partial
                 displayProduct(mProduct);
                 // Tracking
@@ -1162,7 +1212,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         for (ProductBundle item : bundleProducts) {
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
-            FillProductBundleInfo(comboProductItem, item);
+            fillProductBundleInfo(comboProductItem, item);
             mTableBundles.addView(comboProductItem);
 
             if (count < bundleProducts.size() - 1)   //add plus separator
@@ -1184,7 +1234,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param p    - product bundle
      */
-    private void FillProductBundleInfo(View view, ProductBundle p) {
+    private void fillProductBundleInfo(View view, ProductBundle p) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);

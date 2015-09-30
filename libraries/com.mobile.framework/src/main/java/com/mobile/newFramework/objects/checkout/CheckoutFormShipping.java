@@ -8,8 +8,11 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents the response from the get products rating
@@ -20,6 +23,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
 
     private ShippingMethodFormBuilderHolder mForm;
 
+    private ArrayList<Fulfillment> fulfillmentList;
     /**
      * Empty constructor
      */
@@ -42,6 +46,14 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         // Order
         mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
+
+        JSONArray fulfillmentArray = jsonObject.getJSONObject(RestConstants.CART_ENTITY).optJSONArray(RestConstants.FULFILLMENT);
+        if(fulfillmentArray != null) {
+            fulfillmentList = new ArrayList<>();
+            for (int i = 0; i < fulfillmentArray.length(); i++) {
+                fulfillmentList.add(new Fulfillment(fulfillmentArray.getJSONObject(i)));
+            }
+        }
         return true;
     }
 
@@ -89,4 +101,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         }
     };
 
+    public ArrayList<Fulfillment> getFulfillmentList() {
+        return fulfillmentList;
+    }
 }

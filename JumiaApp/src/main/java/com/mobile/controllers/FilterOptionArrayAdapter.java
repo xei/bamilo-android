@@ -158,7 +158,7 @@ import com.mobile.view.R;
     protected void setProductsCount(TextView textView, MultiFilterOptionInterface option){
         if(option instanceof CatalogFilterOption) {
             textView.setVisibility(View.VISIBLE);
-            textView.setText(textView.getResources().getString(R.string.filter_placeholder, ((CatalogFilterOption) option).getTotalProducts()));
+            textView.setText(textView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogFilterOption) option).getTotalProducts()));
         } else {
             textView.setVisibility(View.GONE);
         }

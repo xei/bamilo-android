@@ -65,8 +65,6 @@
             style="@style/TextBody_3"
             android:textColor="@color/black"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Rs.399"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_title"
@@ -76,23 +74,23 @@
             android:id="@+id/pdv_text_price"
             style="@style/TextBody_3"
             android:textColor="@color/black_800"
-            android:layout_centerVertical="true"
-            android:text="Rs.399"
-            android:layout_toRightOf="@id/pdv_text_special_price"
             android:layout_below="@id/item_title"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/pdv_text_special_price"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_marginRight="5dp"
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_text_discount"
             style="@style/PdvBadgeStyle"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/pdv_text_price"
             android:layout_below="@id/item_title"
+            android:layout_toLeftOf="@id/pdv_text_price"
+            android:layout_marginRight="5dp"
             android:visibility="gone"
+
             />
 
 
