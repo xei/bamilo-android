@@ -40,7 +40,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private int mLastPosition = -1;
 
-    private String productSku;
+    private String mProductSku;
 
     private OnViewHolderClickListener mOnViewHolderClicked;
 
@@ -99,10 +99,10 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * @param context - the application context
      * @param data - the array lisl
      */
-    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data,String productSku) {
+    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data,String mProductSku) {
         mContext = context;
         mDataSet = data;
-        this.productSku = productSku;
+        this.mProductSku = mProductSku;
     }
 
     /**
@@ -290,7 +290,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
 
-            if(!productSku.equals(productBundle.getSku())) {
+            if(!mProductSku.equals(productBundle.getSku())) {
                 CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
                 cb.setChecked(!cb.isChecked());
