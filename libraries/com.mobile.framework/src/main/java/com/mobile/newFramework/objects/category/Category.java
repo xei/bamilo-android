@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.CollectionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,39 +35,21 @@ public class Category implements IJSONSerializable, Parcelable {
 
     private String mApiUrl;
 
-    private String mVertical;
-
     private String mImage;
 
-    private boolean mHasChildren;
+    private ArrayList<Category> mSubCategories;
 
-    private Category mParent;
-
-    private ArrayList<Category> mChildren;
-
-    private boolean mIsHeader;
+    private boolean isSection;
     /**
      * Category empty constructor.
      */
     public Category() {
-        mType = "";
-        mName = "defaultName";
-        mUrlKey = "";
-        mApiUrl = "";
-        mVertical = "";
-        mChildren = new ArrayList<>();
-        mParent = null;
-        mHasChildren = false;
-        mIsHeader = true;
-        mImage = "";
+        // ...
     }
 
-    /**
-     * @return returns a boolean indicating if the category has any
-     *         subcategories.
-     */
-    public boolean getHasChildrenInArray() {
-        return mChildren.size() > 0;
+    public void markAsSection() {
+        isSection = true;
+        mSubCategories = null;
     }
 
     /**
@@ -75,22 +57,7 @@ public class Category implements IJSONSerializable, Parcelable {
      * @return true or false
      */
     public boolean hasChildren(){
-        return mHasChildren;
-    }
-
-
-    /**
-     * Set if has childre
-     */
-    public void setHasChildren(boolean hasChildren){
-        this.mHasChildren = hasChildren;
-    }
-
-
-    // Getters
-
-    public void addChild(Category child) {
-        mChildren.add(child);
+        return CollectionUtils.isNotEmpty(mSubCategories);
     }
 
     /**
@@ -122,7 +89,7 @@ public class Category implements IJSONSerializable, Parcelable {
      * @return the children
      */
     public ArrayList<Category> getChildren() {
-        return mChildren;
+        return mSubCategories;
     }
 
     /**
@@ -133,40 +100,11 @@ public class Category implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the parent category
-     */
-    public Category getParent() {
-        return mParent;
-    }
-
-
-
-    public void setChildren(ArrayList<Category> children ) {
-        this.mChildren = children;
-    }
-
-
-    /**
-     *
-     * @return vertical value
-     */
-    public String getVertical() {
-        return mVertical;
-    }
-
-    /**
      *
      * @return isHeader value
      */
-    public Boolean getIsHeader() {
-        return mIsHeader;
-    }
-
-    /**
-     * set is Header
-     */
-    public void setIsHeader(boolean isHeader) {
-        this.mIsHeader =  isHeader;
+    public Boolean isSection() {
+        return isSection;
     }
 
     /**
@@ -183,48 +121,26 @@ public class Category implements IJSONSerializable, Parcelable {
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        mChildren.clear();
-        try {
-            mType = jsonObject.optString(RestConstants.JSON_CATEGORY_TYPE_TAG);
-            if(getIsHeader()){
-                mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
-            } else {
-                mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG);
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        mType = jsonObject.optString(RestConstants.JSON_CATEGORY_TYPE_TAG);
+        mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
+        mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+        mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG);
+        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+        mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
+        // Get sub categories
+        JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+        if (childrenArray != null) {
+            mSubCategories = new ArrayList<>();
+            for (int i = 0; i < childrenArray.length(); ++i) {
+                JSONObject childObject = childrenArray.getJSONObject(i);
+                Category child = new Category();
+                child.initialize(childObject);
+                mSubCategories.add(child);
             }
-            mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-            mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-            mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG);
-            mHasChildren = jsonObject.optBoolean(RestConstants.JSON_HAS_CHILDREN);
-            mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-            mVertical = jsonObject.optString(RestConstants.JSON_CATEGORY_VERTICAL);
-            mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
-            if (TextUtils.isEmpty(mPath)) mPath = calcCategoryPath();
-            JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
-            if (childrenArray != null) {
-                mChildren = new ArrayList<>();
-                for (int i = 0; i < childrenArray.length(); ++i) {
-                    JSONObject childObject = childrenArray.getJSONObject(i);
-                    Category child = new Category();
-                    child.mParent = this;
-                    child.setIsHeader(false);
-                    child.initialize(childObject);
-                    mChildren.add(child);
-                }
-            }
-            if (mParent == null) {
-
-            }
-        } catch (JSONException e) {
-            // Log.w(TAG, "WARNING: ON INIT CATEGORY" , e);
-            return false;
         }
         return true;
-    }
-
-    private String calcCategoryPath() {
-        if ( mParent == null) return "/" + mUrlKey;
-        else return mParent.calcCategoryPath() + "/" + mUrlKey;
     }
 
     @Override
@@ -238,7 +154,7 @@ public class Category implements IJSONSerializable, Parcelable {
 
             JSONArray childrenArray = new JSONArray();
 
-            for (Category child : mChildren) {
+            for (Category child : mSubCategories) {
                 childrenArray.put(child.toJSON());
             }
 
@@ -280,25 +196,20 @@ public class Category implements IJSONSerializable, Parcelable {
         dest.writeString(mName);
         dest.writeString(mUrlKey);
         dest.writeString(mApiUrl);
-        dest.writeList(mChildren);
-        dest.writeValue(mParent);
-        dest.writeString(mVertical);
+        dest.writeList(mSubCategories);
         dest.writeString(mImage);
     }
 
     /**
      * Parcel constructor
-     * @param in
      */
     protected Category(Parcel in) {
         mType = in.readString();
         mName = in.readString();
         mUrlKey = in.readString();
         mApiUrl = in.readString();
-        mChildren = new ArrayList<>();
-        in.readList(mChildren, Category.class.getClassLoader());
-        mParent = (Category) in.readValue(Category.class.getClassLoader());
-        mVertical = in.readString();
+        mSubCategories = new ArrayList<>();
+        in.readList(mSubCategories, Category.class.getClassLoader());
         mImage = in.readString();
     }
 

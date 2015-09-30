@@ -264,9 +264,16 @@ public class RocketImageLoader {
                                     progressView.setVisibility(View.GONE);
                                 }
 
-                                Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
-                                imageView.setImageBitmap(response.getBitmap());
-                                imageView.startAnimation(animation);
+                                // Animation
+                                Boolean noAnimate = (Boolean) imageView.getTag(R.id.no_animate);
+                                if (noAnimate == null || noAnimate) {
+                                    imageView.setImageBitmap(response.getBitmap());
+                                } else {
+                                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
+                                    imageView.setImageBitmap(response.getBitmap());
+                                    imageView.startAnimation(animation);
+                                }
+
                                 
                                 if (listener != null) {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());

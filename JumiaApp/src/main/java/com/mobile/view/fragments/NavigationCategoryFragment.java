@@ -9,7 +9,6 @@ import android.view.ViewStub;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mobile.components.AnimatedExpandableListView;
@@ -48,10 +47,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
     /**
      * Create a new instance and save the bundle data
-     *
-     * @param bundle
-     * @return NavigationCategoryFragment
-     * @author sergiopereira
      */
     public static NavigationCategoryFragment getInstance(Bundle bundle) {
         NavigationCategoryFragment categoriesFragment = new NavigationCategoryFragment();
@@ -116,8 +111,8 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         Print.i(TAG, "ON SHOW ROOT CATEGORIES");
         CategoriesListAdapter mCategoryAdapter = new CategoriesListAdapter(getBaseActivity().getApplicationContext(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
-        mCategoryList.setOnChildClickListener(this);
         mCategoryList.setOnGroupClickListener(this);
+        mCategoryList.setOnChildClickListener(this);
     }
 
     /**
@@ -137,9 +132,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      * Trigger to get categories
      */
     private void triggerGetCategories() {
-
         ContentValues contentValues = new ContentValues();
-
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
@@ -149,9 +142,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
     /**
      * Show product list
-     *
-     * @param category
-     * @author sergiopereira
      */
     private void goToCatalog(Category category) {
         // Update counter for tracking
@@ -184,11 +174,13 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         if (isOnStoppingProcess) return;
         // Get categories
         mCategories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-        for (int i = 0; i < mCategories.size(); i++) {
-            Print.i(TAG, "CATEGORY PARENT:" + mCategories.get(i).getName() + " isHeader:" + mCategories.get(i).getIsHeader());
+        if (CollectionUtils.isNotEmpty(mCategories)) {
+            // Show categories
+            showCategoryList(mCategories);
+        } else {
+            // Show retry
+            showRetry();
         }
-        // Show categories
-        showCategoryList(mCategories);
     }
 
     /*
@@ -200,23 +192,10 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
-
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        /*
-        // Generic errors
-        if(super.handleErrorEvent(bundle)){
-            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-            if(errorCode == ErrorCode.SSL){
-                getBaseActivity().closeNavigationDrawer();
-                hideFragmentRootViews();
-            }
-            return;
-        }
-        */
         if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK) {
             showFragmentNoNetworkRetry();
         } else {
-            // Show retry
             showRetry();
         }
     }
@@ -256,51 +235,38 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
     /**
      * set behavior when clicking on a child
-     *
-     * @param parent
-     * @param v
-     * @param groupPosition
-     * @param childPosition
-     * @param id
-     * @return
      */
     @Override
-    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-//      Print.i(TAG, "CHILD GO TO CATALOG:" + ((Category) v.getTag()).getApiUrl());
-        if (!CollectionUtils.isEmpty(mCategories) && !CollectionUtils.isEmpty(mCategories.get(groupPosition).getChildren())) {
-            goToCatalog(mCategories.get(groupPosition).getChildren().get(childPosition));
-        }
-        return false;
+    public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+        Category category = (Category) parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
+        goToCatalog(category);
+        return true;
     }
 
     /**
      * Set behavior when clicking on a group
-     *
-     * @param parent
-     * @param v
-     * @param groupPosition
-     * @param id
-     * @return
      */
     @Override
-    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-        if (!CollectionUtils.isEmpty(mCategories)) {
-            if (mCategories.get(groupPosition).hasChildren()) {
-                ImageView image = (ImageView) v.findViewById(R.id.category_signal);
-                if (mCategoryList.isGroupExpanded(groupPosition)) {
-                    mCategoryList.collapseGroupWithAnimation(groupPosition);
-                    image.setSelected(false);
-                } else {
-                    mCategoryList.expandGroupWithAnimation(groupPosition);
-                    image.setSelected(true);
-                }
-            } else if (mCategories.get(groupPosition).getIsHeader()) {
-                Print.i(TAG, "DO NOTHING");
+    public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
+        CategoriesListAdapter adapter = (CategoriesListAdapter) parent.getExpandableListAdapter();
+        Category category = (Category) adapter.getGroup(groupPosition);
+        Print.i(TAG, "ON GROUP CLICKED:" + category.getName());
+        // Case has sub categories
+        if (category.hasChildren()) {
+            if (parent.isGroupExpanded(groupPosition)) {
+                adapter.updateIndicator(view, false);
+                ((AnimatedExpandableListView) parent).collapseGroupWithAnimation(groupPosition);
             } else {
-//              Print.i(TAG, "PARENT GO TO CATALOG:" + ((Category) v.getTag(R.id.parent_category)).getApiUrl());
-                goToCatalog(mCategories.get(groupPosition));
+                adapter.updateIndicator(view, true);
+                ((AnimatedExpandableListView) parent).expandGroupWithAnimation(groupPosition);
             }
+        }
+        // Case is not a section
+        else if (!category.isSection()) {
+            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getApiUrl());
+            goToCatalog(category);
         }
         return true;
     }
+
 }
