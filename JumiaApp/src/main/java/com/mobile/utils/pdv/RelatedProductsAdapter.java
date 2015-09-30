@@ -47,7 +47,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         // Set name
         holder.name.setText(item.getName());
         // Set brand
-        holder.brand.setText(item.getBrand());
+        holder.brand.setText("ionvsopdfoasdfoasdofnasdofauio+sd" + item.getBrand());
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set prices
@@ -80,7 +80,6 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         public ProductViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.header_text);
-            brand = (TextView) view.findViewById(R.id.item_brand);
             image = (ImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
             brand = (TextView) view.findViewById(R.id.item_brand);
