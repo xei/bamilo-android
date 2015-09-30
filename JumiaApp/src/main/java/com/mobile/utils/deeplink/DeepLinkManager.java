@@ -486,22 +486,23 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
-
-//        // create the url with more that one segment:
-//        // case ng/c/?category=womens-dresses&sort=price&dir=asc
-        String deeplinkUrl = data.toString();
-        String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
-
-        // Log
-        Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
-        bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+        // case ng/c/womens-dresses&sort=price&dir=asc
+        String deeplinkUrl = data.toString();
+        if(segments.size() >= MIN_SEGMENTS){
+            String catalogUrlKey = "?category="+segments.get(PATH_DATA_POS).toString();
+            //String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
+            Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
+
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
+            bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
+            bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+        }
+
         return bundle;
     }
 
