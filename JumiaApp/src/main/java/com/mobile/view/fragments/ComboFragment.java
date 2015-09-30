@@ -78,7 +78,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.pdv_combos_page,
-                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

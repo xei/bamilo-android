@@ -75,7 +75,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Filters,
                 R.layout.filters_main,
-                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

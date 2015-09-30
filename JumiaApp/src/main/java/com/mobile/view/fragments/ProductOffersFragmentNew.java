@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentType;
@@ -81,9 +80,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
                 R.layout.product_offers_main_new,   //new layout
-                NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

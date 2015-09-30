@@ -51,7 +51,6 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_list_page,   //new layout here
-                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

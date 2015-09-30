@@ -656,17 +656,17 @@
 
     <!-- CUSTOM TEXT STYLES -->
 
-    <style name="TextTimer" parent="TextTitle_2">
-        <item name="android:textColor">@color/red_cc0000</item>
-    </style>
+    <!--<style name="TextTimer" parent="TextTitle_2">-->
+        <!--<item name="android:textColor">@color/red_cc0000</item>-->
+    <!--</style>-->
 
-    <style name="TextSubHeadOrange" parent="TextSubHead">
-        <item name="android:textColor">@color/orange_f68b1e</item>
-    </style>
+    <!--<style name="TextSubHeadOrange" parent="TextSubHead">-->
+        <!--<item name="android:textColor">@color/orange_f68b1e</item>-->
+    <!--</style>-->
 
-    <style name="TextPriceSubHead" parent="TextSubHead">
-        <item name="android:textColor">@color/red_basic</item>
-    </style>
+    <!--<style name="TextPriceSubHead" parent="TextSubHead">-->
+        <!--<item name="android:textColor">@color/red_basic</item>-->
+    <!--</style>-->
 
     <!-- BASE BUTTONS STYLES -->
 
