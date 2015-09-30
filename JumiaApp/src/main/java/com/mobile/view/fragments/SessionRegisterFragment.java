@@ -30,7 +30,7 @@ import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.Errors;
@@ -379,7 +379,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         while (iter.hasNext()) {
             DynamicFormItem item = iter.next();
-            if (item.getType() == InputType.password) {
+            if (item.getType() == FormInputType.password) {
                 if (old.equals("")) {
                     old = item.getValue();
                 } else {
