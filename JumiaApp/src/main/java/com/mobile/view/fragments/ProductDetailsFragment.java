@@ -404,7 +404,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
-            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage()+" "+ getString(R.string.off_label));
+            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage()) +" "+ getString(R.string.off_label);
             mDiscountPercentageText.setText(discount);
             mDiscountPercentageText.setVisibility(View.VISIBLE);
 
