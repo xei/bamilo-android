@@ -137,6 +137,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private View offersContainer;
 
+    private int DESCRIPTION_PAGE=0, SPECIFICATIONS_PAGE= 1, RATINGS_PAGE=2;
+
     /**
      * Empty constructor
      */
@@ -529,7 +531,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription(0);
+                onClickShowDescription(DESCRIPTION_PAGE);
             }
         });
     }
@@ -576,7 +578,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
         // TODO: Move to onClick
-        button.setOnClickListener(this);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickShowDescription(SPECIFICATIONS_PAGE);
+            }
+        });
     }
 
     /**
@@ -711,7 +718,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickShowDescription(2);//onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(RATINGS_PAGE);//onClickRating();
         // Case description
         // TODO
         // Case variation button
