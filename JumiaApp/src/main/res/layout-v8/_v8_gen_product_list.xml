@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_alignRight="@+id/center_view"
         android:layout_below="@+id/item_brand"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:gravity="right|center_vertical"
         android:singleLine="false"
         android:maxLines="2"
