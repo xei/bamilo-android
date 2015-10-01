@@ -556,26 +556,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Load specifications button if has specifications
      */
     private void setSpecifications() {
-//        ArrayList<ProductSpecification> arrSpecs = mProduct.getProductSpecifications();
-//        // Hide view if is fashion too
-//        if (mProduct.isFashion() || CollectionUtils.isEmpty(arrSpecs)) {
-//            mSpecificationsView.setVisibility(View.GONE);
-//            return;
-//        }
-//
-//        //load content
-//        HashMap<String, String> mSpecs;
-//        String specs = "";
-//        for (int i = 0; i < arrSpecs.size(); i++) {
-//            mSpecs = arrSpecs.get(i).getSpecifications();
-//            for (Map.Entry<String, String> pair : mSpecs.entrySet()) {
-//                specs += "&#149; " + pair.getKey() + " " + pair.getValue() + "<br>";
-//            }
-//        }
-
         String features = mProduct.getShortDescription();
         if (TextUtils.isEmpty(features)) {
-            mDescriptionView.setVisibility(View.GONE);
+            mSpecificationsView.setVisibility(View.GONE);
             return;
         }
         // Title
