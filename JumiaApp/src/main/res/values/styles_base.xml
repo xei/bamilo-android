@@ -37,6 +37,7 @@
 
     <style name="TextBody_1" parent="text_base">
         <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">roboto_bold</item>
     </style>
 
     <style name="TextBody_2" parent="text_base">
