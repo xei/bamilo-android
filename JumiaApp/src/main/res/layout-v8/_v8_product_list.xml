@@ -42,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-
             />
 
         <!-- TITLE -->
@@ -50,7 +49,7 @@
             android:id="@+id/item_title"
             style="@style/TextList_1"
             color="@color/black"
-            android:lines="1"
+            android:singleLine="false"
             android:text="Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
