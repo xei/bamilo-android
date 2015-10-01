@@ -68,7 +68,7 @@
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
     <item name="filter_fragment_price"                   type="layout">@layout/_def_filter_fragment_price</item>
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
-    <item name="catalog_item_list"                      type="layout">@layout/_def_catalog_item_list</item>
+    <item name="gen_product_list"                      type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
