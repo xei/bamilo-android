@@ -174,11 +174,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             // Categories
-            if (arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)) {
-                categoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV";
-            } else {
-                categoryTree = "";
-            }
+            categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
+
             restoreParams(arguments);
         }
     }
@@ -263,6 +260,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
+        outState.putParcelable(ProductComplete.class.getSimpleName(), mProduct);
     }
 
     /*
@@ -323,6 +321,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
         isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
+        mProduct = bundle.getParcelable(ProductComplete.class.getSimpleName());
     }
 
     /**
@@ -1224,9 +1223,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
         //TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.gen_header_text);
         //changeFashion: change title if is fashion
-        String titleCombo = getResources().getString(R.string.combo);
-        if (mProduct.isFashion())
-            titleCombo = getResources().getString(R.string.buy_the_look);
+
+        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combo);
 
         comboHeaderTitle.setText(titleCombo);
 
