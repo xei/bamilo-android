@@ -72,9 +72,9 @@ public class FilterColorFragment extends FilterCheckFragment {
                 GradientDrawable gradient = new GradientDrawable();
                 gradient.setShape(GradientDrawable.OVAL);
                 gradient.setColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
-                gradient.setStroke(1,convertView.getResources().getColor(R.color.black_400));
+                gradient.setStroke(1, convertView.getResources().getColor(R.color.black_400));
 
-                convertView.findViewById(R.id.dialog_item_color_box).setBackground(gradient);
+                convertView.findViewById(R.id.dialog_item_color_box).setBackgroundDrawable(gradient);
                 convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
