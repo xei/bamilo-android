@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:minHeight="20dp"
         android:isIndicator="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <RatingBar
         android:id="@+id/pdv_rating_bar_fashion"

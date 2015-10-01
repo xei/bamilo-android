@@ -434,6 +434,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
+                mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
                 mProductRating.setRating((float) mProduct.getAvgRating());
