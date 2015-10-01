@@ -30,7 +30,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -560,7 +560,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
 
-                if (fillEmail && InputType.email.equals(item.getType())) {
+                if (fillEmail && FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -569,7 +569,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
 
-                if (InputType.email.equals(item.getType())) {
+                if (FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
