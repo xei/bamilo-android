@@ -404,9 +404,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
-            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage());
+            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage()) +" "+ getString(R.string.off_label);
             mDiscountPercentageText.setText(discount);
             mDiscountPercentageText.setVisibility(View.VISIBLE);
+
+            if(!mProduct.isFashion()) {
+                mDiscountPercentageText.setEnabled(true);
+            }else
+            {
+                mDiscountPercentageText.setEnabled(false);
+                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
+            }
         } else {
             mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
             mPriceText.setVisibility(View.GONE);
@@ -427,14 +435,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
+                mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
                 mProductRating.setRating((float) mProduct.getAvgRating());
+                mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
 
-        mProductRating.setVisibility(View.VISIBLE);
+   //     mProductRating.setVisibility(View.VISIBLE);
     }
 
     /**

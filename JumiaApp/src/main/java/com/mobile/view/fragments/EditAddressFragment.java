@@ -22,7 +22,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
@@ -388,7 +388,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Get city field
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
-            if (InputType.list == field.getInputType()) {
+            if (FormInputType.list == field.getInputType()) {
                 // Get API call
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
@@ -405,7 +405,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Get city field
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
-            if (field != null && InputType.list == field.getInputType()) {
+            if (field != null && FormInputType.list == field.getInputType()) {
                 // Get url
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
