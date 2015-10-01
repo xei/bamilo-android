@@ -16,7 +16,7 @@
         android:id="@+id/ratingsHeader"
         style="@style/HeaderStyle" />
 
-        <include layout="@layout/_def_ratings_board"  android:id="@+id/ratingsBoard" />
+        <include layout="@layout/ratings_board"  android:id="@+id/ratingsBoard" />
 
         <!-- USERS SECTION -->
 

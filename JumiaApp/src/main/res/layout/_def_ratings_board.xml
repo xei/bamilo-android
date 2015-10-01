@@ -87,16 +87,15 @@
 
         <!-- RIGHT SIDE -->
         <LinearLayout
+            android:id="@+id/progressBoard"
+            android:layout_toRightOf="@id/item_center"
+            android:layout_toEndOf="@id/item_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="left|start"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:id="@+id/progressBoard"
-            android:layout_toRightOf="@id/item_center"
-            android:layout_toEndOf="@id/item_center"
-
             >
 
             <!-- 5 -->
