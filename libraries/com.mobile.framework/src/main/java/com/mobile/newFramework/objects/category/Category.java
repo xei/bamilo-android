@@ -49,7 +49,6 @@ public class Category implements IJSONSerializable, Parcelable {
 
     public void markAsSection() {
         isSection = true;
-        mSubCategories = null;
     }
 
     /**
@@ -93,6 +92,13 @@ public class Category implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * @return the children
+     */
+    public void setChildren(ArrayList<Category> categories) {
+        mSubCategories = categories;
+    }
+
+    /**
      * @return the apiUrl
      */
     public String getApiUrl() {
@@ -123,7 +129,11 @@ public class Category implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         mType = jsonObject.optString(RestConstants.JSON_CATEGORY_TYPE_TAG);
-        mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
+        if(isSection){
+            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
+        } else {
+            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG);
+        }
         mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
         mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG);
@@ -137,6 +147,7 @@ public class Category implements IJSONSerializable, Parcelable {
                 JSONObject childObject = childrenArray.getJSONObject(i);
                 Category child = new Category();
                 child.initialize(childObject);
+                child.isSection = false;
                 mSubCategories.add(child);
             }
         }

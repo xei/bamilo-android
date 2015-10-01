@@ -3,7 +3,11 @@
     android:id="@+id/sublist_category"
     style="@style/SubListItemStyle"
     android:layout_centerVertical="true"
-    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp"
+    android:gravity="left|start|center_vertical"
+    android:layout_gravity="left|start|center_vertical"
     android:paddingLeft="@dimen/margin_110px"
     android:paddingStart="@dimen/margin_110px" />
 
