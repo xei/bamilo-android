@@ -101,6 +101,7 @@
     <item name="product_specs_container_item_new"       type="layout">@layout/_def_product_specs_container_item_new</item>
     <item name="reviews_fragment_new"                   type="layout">@layout/_def_review_fragment_new</item>
     <item name="review_list"                            type="layout">@layout/_def_review_list</item>
+    <item name="ratings_board"                          type="layout">@layout/_def_ratings_board</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
