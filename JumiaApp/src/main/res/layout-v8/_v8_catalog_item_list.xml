@@ -75,6 +75,7 @@
         android:textColor="@color/black_800" />
 
     <LinearLayout
+        android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/item_name"
@@ -120,9 +121,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/rounded_margin_mid"
-        android:layout_marginBottom="@dimen/margin_60px"
+        android:layout_alignBottom="@id/rating_container"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
     <View

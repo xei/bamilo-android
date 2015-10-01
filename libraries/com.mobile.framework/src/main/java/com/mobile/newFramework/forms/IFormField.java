@@ -15,7 +15,7 @@ public interface IFormField {
 
     String getName();
 
-    InputType getInputType();
+    FormInputType getInputType();
 
     String getLabel();
 
