@@ -26,6 +26,8 @@ import java.util.EnumSet;
  */
 public class VariationsFragment extends BaseFragment implements OnViewHolderClickListener {
 
+    protected static final String TAG = VariationsFragment.class.getSimpleName();
+
     private ProductComplete mProductComplete;
 
     private VariationProductsGridView mGridVariations;
