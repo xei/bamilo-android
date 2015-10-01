@@ -590,8 +590,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mComboProductsLayout.setVisibility(View.VISIBLE);
                 buildComboSection(mProduct.getProductBundle());
             }
-        }else
-        {
+        } else {
             mComboProductsLayout.setVisibility(View.GONE);
         }
 

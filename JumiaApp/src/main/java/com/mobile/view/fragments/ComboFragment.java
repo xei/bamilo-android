@@ -55,10 +55,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
-    private ComboGridView gv;
+    private ComboGridView gridView;
     private ComboGridAdapter adapter;
     private Button btBuyCombo;
-    private Context c;
+    private Context context;
     private ProductBundle mBundleWithMultiple;
 
     ArrayList<ProductBundle> listBundlesOneSimple;
@@ -121,26 +121,23 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        c = getBaseActivity().getApplicationContext();
+        context = getBaseActivity().getApplicationContext();
         //update total price
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
 
-        gv = (ComboGridView) view.findViewById(R.id.combo_grid_view);
+        gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
 
-        adapter = new ComboGridAdapter(c,bundleList.getBundleProducts(),productSku);
+        adapter = new ComboGridAdapter(context,bundleList.getBundleProducts(),productSku);
         adapter.setOnViewHolderClickListener(this);
-        gv.setAdapter(adapter);
-        gv.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
+        gridView.setAdapter(adapter);
+        gridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
 
-        gv.setHasFixedSize(true);
-        gv.setItemAnimator(new DefaultItemAnimator());
+        gridView.setHasFixedSize(true);
+        gridView.setItemAnimator(new DefaultItemAnimator());
 
         btBuyCombo = (Button) view.findViewById(R.id.btBuyCombo);
         btBuyCombo.setOnClickListener(this);
-
-
-
     }
 
 
@@ -152,8 +149,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private void separateProductsBySimpleType()
     {
-
-        listBundlesOneSimple= new ArrayList<>();
+        listBundlesOneSimple = new ArrayList<>();
         listBundlesMultipleSimple = new ArrayList<>();
         countMultipleProcessed = 0;
 
@@ -174,8 +170,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
             }
         }
-
-
     }
 
 
@@ -294,7 +288,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * choose the simple and add to cart
      *
-     * @param productBundle - arguments
      */
 
     @Override
@@ -347,7 +340,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     /**
      * updates the sombo total price in checking/unchecking bundle
      *
-     * @param productBundle - arguments
      */
 
     @Override
