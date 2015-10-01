@@ -14,6 +14,7 @@ import com.mobile.controllers.FilterOptionArrayAdapter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -69,12 +70,24 @@ public class FilterColorFragment extends FilterCheckFragment {
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
                 // Set color box
 
-                GradientDrawable gradient = new GradientDrawable();
+                final GradientDrawable gradient = new GradientDrawable();
                 gradient.setShape(GradientDrawable.OVAL);
                 gradient.setColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
-                gradient.setStroke(1,convertView.getResources().getColor(R.color.black_400));
+                gradient.setStroke(1, convertView.getResources().getColor(R.color.black_400));
 
-                convertView.findViewById(R.id.dialog_item_color_box).setBackground(gradient);
+                final View itemColorBox = convertView.findViewById(R.id.dialog_item_color_box);
+                DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+                    @Override
+                    public void highVersionCallback() {
+                        itemColorBox.setBackground(gradient);
+                    }
+
+                    @Override
+                    public void lowerVersionCallback() {
+                        itemColorBox.setBackgroundDrawable(gradient);
+                    }
+                });
+
                 convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
