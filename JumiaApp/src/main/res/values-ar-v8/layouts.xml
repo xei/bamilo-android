@@ -83,6 +83,7 @@
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_v8_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_v8_pdv_fragment_rating</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_v8_pdv_fragment_seller_info</item>
+    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>

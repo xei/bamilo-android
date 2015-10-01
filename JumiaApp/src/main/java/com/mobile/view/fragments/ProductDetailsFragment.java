@@ -67,6 +67,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -1244,7 +1245,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 //        for (ProductBundle item : bundleProducts) {
-        for(int i=0; i< bundleProducts.size(); i++)
+        for(int i = 0; i < bundleProducts.size(); i++)
         {
             ProductBundle item = bundleProducts.get(i);
             ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
