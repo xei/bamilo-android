@@ -107,7 +107,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     /**
      * update a bundle in the arrays; necessary for updating viewholder in case of a chosen simple
-     * @param bundle - productBundle
+     * @param productBundle
      *
      */
     public void setItemInArray(ProductBundle productBundle)
@@ -206,18 +206,14 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * @param item - the product
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
+        CompleteProductUtils.setPriceRules(item, holder.price,holder.discount);
         // Case discount
         if(item.hasDiscount()) {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-            holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
             holder.percentage.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setText("");
             holder.percentage.setVisibility(View.GONE);
         }
     }
