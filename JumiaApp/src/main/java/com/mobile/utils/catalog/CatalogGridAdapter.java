@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * Can be used to add a header and footer view.
  * @author sergiopereira
  */
-public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener {
+public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener, HeaderFooterInterface {
     
     private static final int ITEM_VIEW_TYPE_HEADER = 0;
     
@@ -70,9 +70,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHold
     private String mTitle;
 
     private int level;
-
-
-
 
     /**
      * Provide a suitable constructor (depends on the kind of data)

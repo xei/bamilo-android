@@ -5,7 +5,7 @@
 
     <!--WISH LIST-->
 
-    <GridView
+    <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/wish_list_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,7 +12,7 @@
 
     <!-- GRID VIEW -->
     <!--android:layout_marginTop="@dimen/catalog_tool_bar_height" +1-->
-    <com.mobile.utils.catalog.CatalogGridView
+    <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/catalog_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
