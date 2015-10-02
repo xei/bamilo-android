@@ -68,6 +68,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -475,6 +476,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
 
+        updateTabCartInfo();
+
     }
 
     private void setAppBarLayout(NavigationAction action) {
@@ -521,7 +524,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                 int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                params.bottomMargin += actionBarHeight;
+                params.bottomMargin += actionBarHeight + 5;
             }
         }
 
@@ -903,7 +906,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
         // Calculate the max width to fill action bar
-        //setSearchWidthToFillOnExpand();
+        setSearchWidthToFillOnExpand();
         // Set search
         setActionBarSearchBehavior(mSearchMenuItem);
         // Set visibility
@@ -911,19 +914,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-//    private void setSearchWidthToFillOnExpand() {
-//        // Get the width of main content
-//        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-//        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-//        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-//        // Calculate the search width
-//        int searchComponentWidth = mainContentWidth - genericIconWidth;
-//        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-//        // Set measures
-//        mSearchView.setMaxWidth(searchComponentWidth);
-//        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
-//    }
+    private void setSearchWidthToFillOnExpand() {
+        // Get the width of main content
+        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
+        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
+        // Calculate the search width
+        int searchComponentWidth = mainContentWidth - genericIconWidth;
+        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        // Set measures
+        mSearchView.setMaxWidth(searchComponentWidth);
+        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+    }
 
     /**
      * Set the search component
@@ -1275,6 +1278,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                    + JumiaApplication.INSTANCE.getCart().getCartCount());
 //        }
         updateCartInfoInActionBar();
+        updateTabCartInfo();
     }
 
     public void updateCartInfoInActionBar() {
@@ -1294,6 +1298,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                 mActionCartCount.setText(quantity);
             }
         });
+
+    }
+
+    private void updateTabCartInfo() {
+        // Update the cart tab
+        try {
+            // Show 0 while the cart is not updated
+            String quantity = JumiaApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount());
+            //noinspection ConstantConditions
+            ((TextView) mTabLayout.getTabAt(2).getCustomView().findViewById(R.id.tab_cart_number_products)).setText(quantity);
+        } catch (NullPointerException e) {
+            // ...
+        }
     }
 
 
