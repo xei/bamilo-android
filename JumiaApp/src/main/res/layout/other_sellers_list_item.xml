@@ -6,6 +6,34 @@
     android:background="@drawable/border"
     >
 
+
+    <!-- RIGHT SIDE BUTTON -->
+
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:id="@+id/right"
+
+        >
+
+        <com.mobile.components.customfontviews.Button
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="@string/buy_now_button"
+            android:id="@+id/offer_addcart"
+            android:background="@color/color_accent"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+
+
+            />
+
+    </RelativeLayout>
+
     <!-- OTHER SELLERS ITEM -->
     <!-- LEFT SIDE -->
     <LinearLayout
@@ -13,6 +41,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/right"
         android:id="@+id/left_side_seller"
         android:gravity="center"
         >
@@ -34,7 +63,6 @@
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="aaa"
                 />
 
             <com.mobile.components.customfontviews.TextView
@@ -44,7 +72,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="aaa"
                 />
 
 
@@ -58,30 +85,5 @@
 
     </LinearLayout>
 
-    <!-- RIGHT SIDE BUTTON -->
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/left_side_seller"
-        >
-
-        <com.mobile.components.customfontviews.Button
-            android:layout_width="120dp"
-            android:layout_height="48dp"
-            android:text="@string/buy_now_button"
-            android:id="@+id/offer_addcart"
-            android:background="@color/color_accent"
-            android:textColor="@color/white"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-
-
-            />
-
-    </RelativeLayout>
 
 </RelativeLayout>
