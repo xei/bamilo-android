@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -71,7 +72,11 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Get static page key from arguments
-        mStaticPageBundle = savedInstanceState == null ? getArguments() : savedInstanceState;
+        if(savedInstanceState != null && savedInstanceState.containsKey(ConstantsIntentExtra.FRAGMENT_BUNDLE)){
+            mStaticPageBundle = savedInstanceState.getBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE);
+        } else {
+            mStaticPageBundle = getArguments();
+        }
     }
     
     /*
@@ -123,8 +128,8 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState = mStaticPageBundle;
         super.onSaveInstanceState(outState);
+        outState.putBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE, mStaticPageBundle);
     }
 
     /*

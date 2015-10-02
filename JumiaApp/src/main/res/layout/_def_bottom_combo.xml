@@ -25,6 +25,7 @@
             style="@style/TextList_2"
             android:textColor="@color/black"
             android:layout_marginLeft="@dimen/layout_padding"
+            android:layout_marginStart="@dimen/layout_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_price_bottom"
@@ -36,7 +37,8 @@
             android:textColor="@color/orange_f68b1e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="@dimen/layout_padding"
             android:text="RS 524"
             android:id="@+id/txTotalComboPrice"
             />
