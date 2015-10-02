@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="114dp"
+    android:id="@+id/offers_list_item"
+    android:background="@drawable/border"
+    >
+
+    <!-- RIGHT SIDE BUTTON -->
+
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/right"
+        >
+
+        <com.mobile.components.customfontviews.Button
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="@string/buy_now_button"
+            android:id="@+id/offer_addcart"
+            android:background="@color/color_accent"
+            android:textColor="@color/white"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+
+
+            />
+
+    </RelativeLayout>
+
+    <!-- OTHER SELLERS ITEM -->
+    <!-- LEFT SIDE -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:id="@+id/left_side_seller"
+        android:layout_toRightOf="@id/right"
+        android:gravity="center"
+        >
+
+        <!-- PRICE -->
+        <LinearLayout
+            android:id="@+id/price"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:paddingLeft="@dimen/layout_padding"
+            android:paddingRight="@dimen/layout_padding"
+            >
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/offer_price_normal"
+                style="@style/TextBody_3"
+                android:textColor="@color/black_800"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/offer_price"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <!-- SELLER INFO SECTION -->
+
+        <include layout="@layout/_v8_other_sellers_info"
+            android:layout_below="@id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
