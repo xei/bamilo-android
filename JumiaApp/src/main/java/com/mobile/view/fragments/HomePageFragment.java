@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -58,7 +56,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     private HomePageObject mHomePage;
 
-    private ScrollView mScrollView;
+    private NestedScrollView mScrollView;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
@@ -133,7 +131,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
-        mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
+        mScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
         // Validate shared prefs
@@ -292,7 +290,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             mContainer.addView(viewHolder.itemView);
         }
         // Restore the scroll state
-        restoreScrollState();
+        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }
@@ -317,7 +315,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             }
         }
         // Restore the scroll state
-        restoreScrollState();
+        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }
@@ -336,29 +334,29 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         return false;
     }
 
-    /**
-     * Restore the saved scroll position
-     * @author sergiopereira
-     */
-    private void restoreScrollState() {
-        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-        // Has saved position
-        if (mScrollSavedPosition != null) {
-            // Wait until my scrollView is ready and scroll to saved position
-            try {
-                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @SuppressWarnings("deprecation")
-                    @Override
-                    public void onGlobalLayout() {
-                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
-                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    }
-                });
-            } catch (NullPointerException | IllegalStateException e) {
-                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
-            }
-        }
-    }
+//    /**
+//     * Restore the saved scroll position
+//     * @author sergiopereira
+//     */
+//    private void restoreScrollState() {
+//        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
+//        // Has saved position
+//        if (mScrollSavedPosition != null) {
+//            // Wait until my scrollView is ready and scroll to saved position
+//            try {
+//                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @SuppressWarnings("deprecation")
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+//                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                    }
+//                });
+//            } catch (NullPointerException | IllegalStateException e) {
+//                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
+//            }
+//        }
+//    }
 
     /*
      * ########### LISTENERS ###########

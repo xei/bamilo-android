@@ -21,7 +21,7 @@
 
         <!-- CONTENT -->
 
-        <ScrollView
+        <com.mobile.utils.AigScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/checkout_shipping_button_container"
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"/>
             </LinearLayout>
-        </ScrollView>
+        </com.mobile.utils.AigScrollView>
 
         <!-- NEXT BUTTON -->
 

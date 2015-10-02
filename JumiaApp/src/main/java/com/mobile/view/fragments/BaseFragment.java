@@ -233,8 +233,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-        // Get content layout
-        mContentView = view.findViewById(R.id.content_container);
+//        // Get content layout
+//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -256,7 +256,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
+            // Method used to set a bottom margin
+            getBaseActivity().setViewWithoutNestedScrollView(mContentView, action);
         }
+
     }
 
     /**

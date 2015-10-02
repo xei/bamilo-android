@@ -9,10 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
@@ -21,9 +22,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -31,11 +34,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -65,7 +68,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -147,7 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private final int titleResId;
 
-    private final int contentLayoutId;
+    //private final int contentLayoutId;
 
     private TextView mActionCartCount;
 
@@ -156,9 +158,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private FragmentController fragmentController;
 
     private boolean initialCountry = false;
-
-    @SuppressWarnings("unused")
-    private Set<EventType> userEvents;
 
     private Menu mCurrentMenu;
 
@@ -182,6 +181,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static KeyboardState currentAdjustState;
 
+    private TabLayout mTabLayout;
+
+    private AppBarLayout mAppBarLayout;
+
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -194,11 +197,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
-        this.userEvents = userEvents;
+        //this.userEvents = userEvents;
         this.action = action != null ? action : NavigationAction.Unknown;
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
-        this.contentLayoutId = contentLayoutId;
+        //this.contentLayoutId = contentLayoutId;
     }
 
     /*
@@ -223,15 +226,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Set content
         setContentView(activityLayoutId);
         // Set action bar
-        setupActionBar();
+        setupAppBarLayout();
         // Set navigation
         setupDrawerNavigation();
         // Set content view
         setupContentViews();
         // Update the content view if initial country selection
         updateContentViewsIfInitialCountrySelection();
-        // Set main layout
-        setAppContentLayout();
         // Set title in AB or TitleBar
         setTitle(titleResId);
         // For tracking
@@ -395,6 +396,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep) {
         Print.i(TAG, "ON UPDATE BASE COMPONENTS");
+        // Update the app bar layout
+        setAppBarLayout(action);
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         hideKeyboard();
@@ -405,11 +408,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
         setActionTitle(actionBarTitleResId);
-        if(action == NavigationAction.Favorites || action == NavigationAction.Basket || action == NavigationAction.Home){
-            setupActionBar();
-        } else {
-            hideActionBarTabs();
-        }
     }
 
     /**
@@ -424,108 +422,109 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @modified sergiopereira
      */
-    public void setupActionBar() {
+    public void setupAppBarLayout() {
+        // Get tab layout
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        // Get tool bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mSupportActionBar = getSupportActionBar();
         if(mSupportActionBar != null) {
             mSupportActionBar.setDisplayHomeAsUpEnabled(true);
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
+            mSupportActionBar.setElevation(0);
+        }
+        // Set tab layout
+        setupTabBarLayout();
+    }
 
-            //only add tabs if there isn't any
-            if(mSupportActionBar.getTabCount() == 0){
-
-                mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                mSupportActionBar.addTab(mSupportActionBar.newTab()
-                        .setCustomView(R.layout.tab_home)
-                        .setTabListener(new ActionBar.TabListener() {
-                            @Override
-                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "HOME onTabSelected");
-                                if(action != NavigationAction.Home){
-//                            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                                }
-                            }
-
-                            @Override
-                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "HOME onTabUnselected");
-
-                            }
-
-                            @Override
-                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "HOME onTabReselected");
-                                if(action != NavigationAction.Home){
-                                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                                }
-                            }
-                        }));
-                mSupportActionBar.addTab(mSupportActionBar.newTab()
-                        .setCustomView(R.layout.tab_saved)
-                        .setTabListener(new ActionBar.TabListener() {
-                            @Override
-                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "SAVED onTabSelected");
-                                if(action != NavigationAction.Favorites){
-                                    onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                                }
-
-                            }
-
-                            @Override
-                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "SAVED onTabUnselected");
-                            }
-
-                            @Override
-                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "SAVED onTabReselected");
-                            }
-                        }));
-                mSupportActionBar.addTab(mSupportActionBar.newTab()
-                        .setCustomView(R.layout.tab_cart)
-                        .setTabListener(new ActionBar.TabListener() {
-                            @Override
-                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "CART onTabSelected");
-                                if(action != NavigationAction.Basket){
-                                    onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                                }
-
-                            }
-
-                            @Override
-                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "CART onTabUnselected");
-
-                            }
-
-                            @Override
-                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                                Print.i(TAG, "CART onTabReselected");
-
-                            }
-                        }));
-            } else {
-                mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                if(action == NavigationAction.Home){
-                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(0));
-                } else if(action == NavigationAction.Favorites){
-                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(1));
-                } else {
-                    mSupportActionBar.selectTab(mSupportActionBar.getTabAt(2));
+    public void setupTabBarLayout() {
+        // Get tab layout
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout.Tab tab = mTabLayout.newTab();
+        tab.setCustomView(R.layout.tab_home);
+        mTabLayout.addTab(tab);
+        TabLayout.Tab tab2 = mTabLayout.newTab();
+        tab2.setCustomView(R.layout.tab_saved);
+        mTabLayout.addTab(tab2);
+        TabLayout.Tab tab3 = mTabLayout.newTab();
+        tab3.setCustomView(R.layout.tab_cart);
+        mTabLayout.addTab(tab3);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+                if (pos == 0 && action != NavigationAction.Home) {
+                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                } else if (pos == 1 && action != NavigationAction.Favorites) {
+                    onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                } else if (pos == 2 && action != NavigationAction.Basket) {
+                    onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+    private void setAppBarLayout(NavigationAction action) {
+        try {
+            // Case others
+            if (action != NavigationAction.Basket && action != NavigationAction.Favorites && action != NavigationAction.Home) {
+                mTabLayout.setVisibility(View.GONE);
+            }
+            else {
+                mTabLayout.setVisibility(View.VISIBLE);
+                // Case Home
+                if (action == NavigationAction.Home) {
+                    mTabLayout.getTabAt(0).select();
+                }
+                // Case Basket
+                else if (action == NavigationAction.Favorites) {
+                    mTabLayout.getTabAt(1).select();
+                }
+                // Case Basket
+                else {
+                    mTabLayout.getTabAt(2).select();
+                }
+            }
+            // Expand the app bar layout
+            mAppBarLayout.setExpanded(true, true);
+        } catch (NullPointerException e) {
+            // ...
         }
     }
 
-    public void hideActionBarTabs(){
-        mSupportActionBar = getSupportActionBar();
-        if(mSupportActionBar != null) {
-            mSupportActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+    /**
+     * Method used to add a bottom margin with tool bar size.<br>
+     * Because the Coordinator Layout first build the without tool bar size.<br>
+     * And after add the tool bar and translate the view to below.
+     */
+    public void setViewWithoutNestedScrollView(View view, NavigationAction action) {
+        // Case others
+        if (action != NavigationAction.Basket &&
+                action != NavigationAction.Favorites &&
+                action != NavigationAction.Home &&
+                action != NavigationAction.Products &&
+                view != null) {
+            TypedValue tv = new TypedValue();
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                params.bottomMargin += actionBarHeight;
+            }
         }
+
     }
 
     /**
@@ -685,20 +684,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         // CASE CART ACTION
         else if (itemId == R.id.menu_basket) {
-            // Close drawer
-            closeNavigationDrawer();
             // Goto cart
             onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             return true;
         }
-        // CASE HOME ACTION
-//        else if (itemId == R.id.menu_home) {
-//            // Close drawer
-//            closeNavigationDrawer();
-//            // Goto cart
-//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//            return true;
-//        }
         // DEFAULT:
         else {
             return super.onOptionsItemSelected(item);
@@ -731,9 +720,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 case SEARCH_VIEW:
                     setActionSearch(menu);
                     break;
-//                case HOME:
-//                    setActionHome(menu);
-//                    break;
                 case BASKET:
                     setActionCart(menu);
                     break;
@@ -835,7 +821,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Set the cart menu item
      * @modified sergiopereira
      */
-    private void setActionHome(final Menu menu) {
+//    private void setActionHome(final Menu menu) {
 //        MenuItem home = menu.findItem(MyMenuItem.HOME.resId);
 //        // Validate country
 //        if (!initialCountry) {
@@ -854,7 +840,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        } else {
 //            home.setVisible(false);
 //        }
-    }
+//    }
 
 
     /**
@@ -925,19 +911,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    private void setSearchWidthToFillOnExpand() {
-        // Get the width of main content
-        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-        // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
-    }
+//    private void setSearchWidthToFillOnExpand() {
+//        // Get the width of main content
+//        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
+//        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+//        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
+//        // Calculate the search width
+//        int searchComponentWidth = mainContentWidth - genericIconWidth;
+//        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+//        // Set measures
+//        mSearchView.setMaxWidth(searchComponentWidth);
+//        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+//    }
 
     /**
      * Set the search component
@@ -1474,30 +1460,30 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Method used to set the number of products
-     */
-    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
-        TextView titleView = (TextView) findViewById(R.id.titleProducts);
-        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        View headerTitle = findViewById(R.id.header_title);
-
-        if (titleView == null) {
-            return;
-        }
-        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
-            Print.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
-            // Set text and force measure
-            subtitleView.setText(subtitle);
-            // Set title
-            titleView.setText(title);
-            // Set visibility
-            headerTitle.setVisibility(View.VISIBLE);
-            subtitleView.setVisibility(View.VISIBLE);
-        } else if (TextUtils.isEmpty(title)) {
-            headerTitle.setVisibility(View.GONE);
-        }
-    }
+//    /**
+//     * Method used to set the number of products
+//     */
+//    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
+//        TextView titleView = (TextView) findViewById(R.id.titleProducts);
+//        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
+//        View headerTitle = findViewById(R.id.header_title);
+//
+//        if (titleView == null) {
+//            return;
+//        }
+//        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
+//            Print.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
+//            // Set text and force measure
+//            subtitleView.setText(subtitle);
+//            // Set title
+//            titleView.setText(title);
+//            // Set visibility
+//            headerTitle.setVisibility(View.VISIBLE);
+//            subtitleView.setVisibility(View.VISIBLE);
+//        } else if (TextUtils.isEmpty(title)) {
+//            headerTitle.setVisibility(View.GONE);
+//        }
+//    }
 
 //    /**
 //     * Method used to set the number of products
@@ -1524,19 +1510,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         findViewById(R.id.header_title).setVisibility(View.GONE);
     }
 
-    /**
-     * get the category tree title
-     *
-     * @return subtitle
-     */
-    public String getCategoriesTitle() {
-        TextView titleView = (TextView) findViewById(R.id.titleProducts);
-        if (!TextUtils.isEmpty(titleView.getText().toString())) {
-            return titleView.getText().toString();
-        } else {
-            return "";
-        }
-    }
+//    /**
+//     * get the category tree title
+//     *
+//     * @return subtitle
+//     */
+//    public String getCategoriesTitle() {
+//        TextView titleView = (TextView) findViewById(R.id.titleProducts);
+//        if (!TextUtils.isEmpty(titleView.getText().toString())) {
+//            return titleView.getText().toString();
+//        } else {
+//            return "";
+//        }
+//    }
 
     /*
      * (non-Javadoc)
@@ -1575,14 +1561,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportActionBar.setTitle("");
     }
 
-    private void setAppContentLayout() {
-        if (contentLayoutId == 0) {
-            return;
-        }
-        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
-        stub.setLayoutResource(contentLayoutId);
-        contentContainer = stub.inflate();
-    }
+//    private void setAppContentLayout() {
+//        if (contentLayoutId == 0) {
+//            return;
+//        }
+//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
+//        stub.setLayoutResource(contentLayoutId);
+//        contentContainer = stub.inflate();
+//    }
 
     /**
      * Show progress.

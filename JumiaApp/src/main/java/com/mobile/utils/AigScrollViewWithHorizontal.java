@@ -5,27 +5,26 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ScrollView;
 
-public class ScrollViewWithHorizontal extends ScrollView {
+public class AigScrollViewWithHorizontal extends AigScrollView {
 	private float xDistance, yDistance, lastX, lastY;
 
 	private Handler mHandler;
 	private View view;
 	
-	public ScrollViewWithHorizontal(Context context) {
+	public AigScrollViewWithHorizontal(Context context) {
 		super(context);
 	}
 
-	public ScrollViewWithHorizontal(Context context, AttributeSet attrs, int defStyle) {
+	public AigScrollViewWithHorizontal(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public ScrollViewWithHorizontal(Context context, AttributeSet attrs) {
+	public AigScrollViewWithHorizontal(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	   // true if we can scroll (not locked)
+	// true if we can scroll (not locked)
     // false if we cannot scroll (locked)
     private boolean mScrollable = true;
 

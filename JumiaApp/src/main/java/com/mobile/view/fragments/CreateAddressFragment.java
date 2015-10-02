@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
@@ -39,6 +38,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
+import com.mobile.utils.AigScrollView;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.RadioGroupLayout;
@@ -106,7 +106,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected ContentValues mShippingSavedValues;
     protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
-    protected ScrollView mScrollViewContainer;
+    protected AigScrollView mAigScrollViewContainer;
 
     protected PurchaseEntity orderSummary;
 
@@ -161,7 +161,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Scroll view
-        mScrollViewContainer = (ScrollView) view.findViewById(R.id.checkout_address_form_scroll);
+        mAigScrollViewContainer = (AigScrollView) view.findViewById(R.id.checkout_address_form_scroll);
         // Shipping title
         mShippingTitle = (TextView) view.findViewById(R.id.checkout_address_form_shipping_title);
         // Shipping form
@@ -767,10 +767,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             try {
                 // make the scroll move downward 200px just to let the user see the new billing address form
-                mScrollViewContainer.post(new Runnable() {
+                mAigScrollViewContainer.post(new Runnable() {
                     @Override
                     public void run() {
-                        mScrollViewContainer.smoothScrollBy(0, 200);
+                        mAigScrollViewContainer.smoothScrollBy(0, 200);
                     }
                 });
             } catch (Exception e) {

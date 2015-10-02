@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
@@ -30,6 +29,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.AigScrollView;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
@@ -76,7 +76,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private WebView mWebView;
 
-    private ScrollView mScrollView;
+    private AigScrollView mAigScrollView;
 
     private int mWebViewScrollPosition = 0;
 
@@ -131,7 +131,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get scroll
-        mScrollView = (ScrollView) view.findViewById(R.id.shop_scroll);
+        mAigScrollView = (AigScrollView) view.findViewById(R.id.shop_scroll);
         // Get main container
         mMainContainer = (ViewGroup) view.findViewById(R.id.shop_main_container);
         // Get web view
@@ -172,7 +172,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
          * Save the web view scroll position only for back workflow and not for rotation.
          * On rotation some devices need a different delay to scroll until the saved position.
          */
-        mWebViewScrollPosition = mScrollView != null ? mScrollView.getScrollY() : 0;
+        mWebViewScrollPosition = mAigScrollView != null ? mAigScrollView.getScrollY() : 0;
     }
 
     @Override
@@ -227,11 +227,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Load html and show container
             loadHtml(staticPage);
             // Show container after load delay
-            mScrollView.postDelayed(new Runnable() {
+            mAigScrollView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     // Restore the saved scroll position
-                    mScrollView.scrollTo(0, mWebViewScrollPosition);
+                    mAigScrollView.scrollTo(0, mWebViewScrollPosition);
                     // Show container
                     showFragmentContentContainer();
                 }

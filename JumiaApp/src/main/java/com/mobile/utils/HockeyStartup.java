@@ -6,12 +6,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SearchEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -197,7 +199,7 @@ public class HockeyStartup {
         
         public boolean ignoreDefaultHandler() {
             return false;
-        };
+        }
 
         @Override
         public boolean onCrashesFound() {
@@ -224,6 +226,12 @@ public class HockeyStartup {
             return sActivity.onWindowStartingActionMode(callback);
         }
 
+        @Nullable
+        @Override
+        public ActionMode onWindowStartingActionMode(Callback callback, int type) {
+            return null;
+        }
+
         @Override
         public void onWindowFocusChanged(boolean hasFocus) {
             sActivity.onWindowFocusChanged(hasFocus);
@@ -242,6 +250,11 @@ public class HockeyStartup {
         @Override
         public boolean onSearchRequested() {
             return sActivity.onSearchRequested();
+        }
+
+        @Override
+        public boolean onSearchRequested(SearchEvent searchEvent) {
+            return false;
         }
 
         @Override

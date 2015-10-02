@@ -92,7 +92,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkoutweb,
                 R.string.checkout_label,

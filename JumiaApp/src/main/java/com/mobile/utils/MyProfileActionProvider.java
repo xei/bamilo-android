@@ -139,7 +139,7 @@ public class MyProfileActionProvider extends ActionProvider {
         // Get current list
         ArrayList<NavigationAction> list = (ArrayList<NavigationAction>) getDropdownList();
         // Case Home or Cart
-        if ((action == NavigationAction.Home || action == NavigationAction.Basket)) {
+        if (action == NavigationAction.Home || action == NavigationAction.Basket || action == NavigationAction.Favorites) {
             // Remove home from array
             if(NavigationAction.Home == list.get(0)) list.remove(0);
         }

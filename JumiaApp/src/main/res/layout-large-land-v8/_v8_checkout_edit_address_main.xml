@@ -22,7 +22,7 @@
 
         <!-- CONTENT -->
 
-        <ScrollView
+        <com.mobile.utils.AigScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/checkout_my_order_buttons"
@@ -36,7 +36,7 @@
 
                 <include layout="@layout/checkout_edit_address_form" />
             </LinearLayout>
-        </ScrollView>
+        </com.mobile.utils.AigScrollView>
 
         <!-- BUTTONS -->
 
