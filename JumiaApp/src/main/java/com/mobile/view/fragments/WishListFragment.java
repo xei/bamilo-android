@@ -7,12 +7,9 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.GridView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.WishListAdapter;
 import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -30,7 +27,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.catalog.CatalogGridView;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
@@ -53,7 +50,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     public static boolean sForceReloadWishListFromNetwork;
 
-    private CatalogGridView mListView;
+    private HeaderFooterGridView mListView;
 
     private View mLoadingMore;
 
@@ -112,7 +109,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Loading more view
         mLoadingMore = view.findViewById(R.id.wish_list_loading_more);
         // List view
-        mListView = (CatalogGridView) view.findViewById(R.id.wish_list_grid);
+        mListView = (HeaderFooterGridView) view.findViewById(R.id.wish_list_grid);
         mListView.addOnScrollListener(onScrollListener);
         // Columns
         mNumberOfColumns = getResources().getInteger(R.integer.favourite_num_columns);
