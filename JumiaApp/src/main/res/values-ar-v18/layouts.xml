@@ -87,11 +87,12 @@
     <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
-    <item name="pdv_fragment_related_item" 	            type="layout">@layout/_def_pdv_fragment_related_item</item>
     <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
     <item name="pdv_fragment_bundle_item" 	            type="layout">@layout/_def_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
+    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
+    <item name="pdv_fragment_related_item_price" 	        type="layout">@layout/_def_pdv_fragment_related_item_price</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>

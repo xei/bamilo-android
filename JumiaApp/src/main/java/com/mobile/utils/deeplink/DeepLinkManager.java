@@ -108,9 +108,20 @@ public class DeepLinkManager {
         // Case empty
         if (CollectionUtils.isEmpty(segments)) {
             Print.w(TAG, "WARNING: DEEP LINK IS EMPTY");
+            // Validate if theres an host and add the default tag in order to redirect to Home screen if
+            // the deeplink comes with format: android-app://com.jumia.android.dev/jumia/ke
+            if(!TextUtils.isEmpty(host)){
+                Print.w(TAG, "ADD DEFAULT TAG");
+                ArrayList<String> arrayList = new ArrayList<>(segments);
+                arrayList.add(DEFAULT_TAG);
+                segments = arrayList;
+            } else {
+                return segments;
+            }
+
         }
         // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
-        else if(origin == FROM_URI) {
+         if(origin == FROM_URI) {
             // Add country code
             ArrayList<String> arrayList = new ArrayList<>(segments);
             arrayList.add(PATH_CC_POS, host);

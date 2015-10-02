@@ -46,24 +46,7 @@
 
         <!-- PRICE -->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_discount"
-                style="@style/TextBody_3"
-                android:textColor="@color/black"/>
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_price"
-                style="@style/TextBody_3"
-                android:layout_marginLeft="2dp"
-                android:layout_marginStart="2dp"
-                android:textColor="@color/black_800" />
-
-        </LinearLayout>
+    <include layout="@layout/pdv_fragment_related_item_price"/>
 
     </LinearLayout>
 
