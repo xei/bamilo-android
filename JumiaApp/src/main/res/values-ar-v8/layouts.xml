@@ -182,28 +182,13 @@
     <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
     <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
 
-</resources>
+    <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
 
-    <item name="loading_bar"                       type="layout">@layout/_v8_loading_bar</item>
-    <item name="product_details_fragment_buttons"                       type="layout">@layout/_v8_product_details_fragment_buttons</item>
-    <item name="tip_favourite_layout"                       type="layout">@layout/_v8_tip_favourite_layout</item>
-    <item name="shopping_basket"                       type="layout">@layout/_v8_shopping_basket</item>
-    <!--<item name="teaser_inner_childcat"                       type="layout">@layout/_v8_teaser_inner_childcat</item>-->
-    <item name="shopping_basket_product_element_container"                       type="layout">@layout/_v8_shopping_basket_product_element_container</item>
-    <item name="campaign_spinner_dropdown_item"                       type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                       type="layout">@layout/_v8_track_order_status</item>
-    <item name="offers_item"                       type="layout">@layout/_v8_offers_item</item>
-    <item name="dialog_list_header_item"                       type="layout">@layout/_v8_dialog_list_header_item</item>
-    <item name="loading_bar_no_box"                       type="layout">@layout/_v8_loading_bar_no_box</item>
-    <item name="product_gallery_fragment"                       type="layout">@layout/_v8_product_gallery_fragment</item>
-    <!--<item name="teaser_campaigns_group"                       type="layout">@layout/_v8_teaser_campaigns_group</item>-->
-    <item name="voucher_insert_layout"                       type="layout">@layout/_v8_voucher_insert_layout</item>
-    <item name="form_spinner_item"                       type="layout">@layout/_v8_form_spinner_item</item>
-    <item name="review_fragment"                       type="layout">@layout/_v8_review_fragment</item>
-    <item name="simple_email_notification_option"                       type="layout">@layout/_v8_simple_email_notification_option</item>
     <!-- other offers -->
     <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
     <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
     <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
+
+
 
 </resources>
