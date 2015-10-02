@@ -182,6 +182,7 @@
     <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
     <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
 
+
     <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
 
     <!-- other offers -->
