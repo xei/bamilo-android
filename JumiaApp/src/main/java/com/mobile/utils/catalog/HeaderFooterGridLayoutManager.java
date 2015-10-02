@@ -10,7 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
  * // TODO: Improve the approach for header and footer views.
  *
  */
-public class CatalogGridLayoutManager extends GridLayoutManager {
+public class HeaderFooterGridLayoutManager extends GridLayoutManager {
 
     private final static int ONE_COLUMN = 1;
 
@@ -23,7 +23,7 @@ public class CatalogGridLayoutManager extends GridLayoutManager {
      * @param context - the application context
      * @param spanCount - the number of columns
      */
-    public CatalogGridLayoutManager(Context context, int spanCount) {
+    public HeaderFooterGridLayoutManager(Context context, int spanCount) {
         super(context, spanCount);
     }
 
@@ -34,7 +34,7 @@ public class CatalogGridLayoutManager extends GridLayoutManager {
      * @param orientation - the orientation
      * @param reverseLayout - the flag to reverse the layout (used to show RTL layout)
      */
-    public CatalogGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
+    public HeaderFooterGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
         super(context, spanCount, orientation, reverseLayout);
     }
 
