@@ -15,6 +15,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -149,27 +150,15 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         prodItem.brand.setText(product.getBrand());
         // Set name
         prodItem.name.setText(product.getName());
+
+        CompleteProductUtils.setPriceRules(product,prodItem.price,prodItem.discount);
+
         // Validate special price
         if (product.hasDiscount()) {
-            // Set discount
-            prodItem.discount.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getSpecialPrice())));
             prodItem.percentage.setText(String.format(context.getString(R.string.format_discount_percentage), product.getMaxSavingPercentage()));
-            // Set price
-            prodItem.price.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getPrice())));
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            prodItem.price.setSelected(true);
-            prodItem.price.setTextColor(context.getResources().getColor(R.color.grey_light));
-            prodItem.price.setTextAppearance(context, R.style.text_normal_programatically);
-            prodItem.discount.setVisibility(View.VISIBLE);
             prodItem.percentage.setVisibility(View.VISIBLE);
         } else {
-            // Set price
-            prodItem.discount.setVisibility(View.GONE);
             prodItem.percentage.setVisibility(View.INVISIBLE);
-            prodItem.price.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getPrice())));
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            prodItem.price.setTextAppearance(context, R.style.text_bold_programatically);
-            prodItem.price.setTextColor(context.getResources().getColor(R.color.red_basic));
         }
     }
 

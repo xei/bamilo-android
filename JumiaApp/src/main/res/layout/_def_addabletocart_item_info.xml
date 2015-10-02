@@ -73,7 +73,9 @@
             style="@style/text_price"
             android:layout_alignTop="@id/item_discount"
             android:layout_toRightOf="@id/item_discount"
-            android:text="Price" />
+            android:layout_toEndOf="@id/item_discount"
+            android:text="Price"
+            android:textColor="@color/grey_light"/>
     </RelativeLayout>
     <!-- WARNINGS -->
 
