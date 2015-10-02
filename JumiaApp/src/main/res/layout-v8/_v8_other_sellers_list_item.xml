@@ -45,12 +45,13 @@
 
         <!-- PRICE -->
         <LinearLayout
-            android:orientation="horizontal" android:layout_width="match_parent"
+            android:id="@+id/price"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical|right"
             android:paddingLeft="@dimen/layout_padding"
             android:paddingRight="@dimen/layout_padding"
-            android:id="@+id/price"
             >
 
             <com.mobile.components.customfontviews.TextView
@@ -77,7 +78,10 @@
 
         <!-- SELLER INFO SECTION -->
 
-        <include layout="@layout/_v8_other_sellers_info" android:layout_below="@id/price" android:layout_width="match_parent"  android:layout_height="wrap_content"
+        <include layout="@layout/_v8_other_sellers_info"
+            android:layout_below="@id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             />
 
