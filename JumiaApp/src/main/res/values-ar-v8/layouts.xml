@@ -180,5 +180,14 @@
     <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
     <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
 
-</resources>
 
+    <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
+
+    <!-- other offers -->
+    <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
+    <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
+
+
+
+</resources>

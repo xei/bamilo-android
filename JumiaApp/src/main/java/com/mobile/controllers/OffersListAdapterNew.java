@@ -130,21 +130,20 @@ public class OffersListAdapterNew extends BaseAdapter {
             item = (Item) itemView.getTag();
         }
 
-        item.offerPrice.setText(CurrencyFormatter.formatCurrency(offers.get(position).getFinalPriceString()));
-        item.offerProductOwner.setText(offers.get(position).getSeller().getName());
+        final ProductOffer productOffer = offers.get(position);
+        item.offerPrice.setText(CurrencyFormatter.formatCurrency(productOffer.getFinalPriceString()));
+        item.offerProductOwner.setText(productOffer.getSeller().getName());
 
-        int ratingCount = offers.get(position).getSeller().getRatingCount();
+        int ratingCount = productOffer.getSeller().getRatingCount();
         String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
 
         item.offerReview.setText(reviewLabel);
-        item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
+        item.offerRating.setRating(productOffer.getSeller().getRatingValue());
         item.offerRating.setVisibility(View.VISIBLE);
 
-        if( !(offers.get(position).getMinDeliveryTime() == 0 && offers.get(position).getMaxDeliveryTime() == 0) ) {
+        if( !(productOffer.getMinDeliveryTime() == 0 && productOffer.getMaxDeliveryTime() == 0) ) {
             item.offerDeliveryTime.setVisibility(View.VISIBLE);
-            item.offerDeliveryTime.setText(context.getResources().getString(R.string.product_delivery_time) + " " +
-                    offers.get(position).getMinDeliveryTime() + " - " + offers.get(position).getMaxDeliveryTime() + " " +
-                    context.getResources().getString(R.string.product_delivery_days));
+            item.offerDeliveryTime.setText(context.getResources().getString(R.string.delivery_time_placeholder,productOffer.getMinDeliveryTime(), productOffer.getMaxDeliveryTime()));
         } else {
             item.offerDeliveryTime.setVisibility(View.GONE);
         }
@@ -153,7 +152,7 @@ public class OffersListAdapterNew extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                offerSelected.onAddOfferToCart(offers.get(position));
+                offerSelected.onAddOfferToCart(productOffer);
             }
         });
 
