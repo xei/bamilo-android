@@ -5,7 +5,7 @@
 
     <!--WISH LIST-->
 
-    <GridView
+    <com.mobile.utils.catalog.CatalogGridView
         android:id="@+id/wish_list_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,11 +16,11 @@
 
     <!--LOADING MORE-->
 
-    <include
-        android:id="@+id/wish_list_loading_more"
-        layout="@layout/fragment_loading_more"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_90px"
-        android:layout_alignBottom="@id/wish_list_grid" />
+    <!--<include-->
+        <!--android:id="@+id/wish_list_loading_more"-->
+        <!--layout="@layout/fragment_loading_more"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dimen_90px"-->
+        <!--android:layout_alignBottom="@id/wish_list_grid" />-->
 
 </RelativeLayout>

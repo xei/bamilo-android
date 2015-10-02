@@ -71,9 +71,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHold
 
     private int level;
 
-
-
-
     /**
      * Provide a suitable constructor (depends on the kind of data)
      * @param context - the application context
