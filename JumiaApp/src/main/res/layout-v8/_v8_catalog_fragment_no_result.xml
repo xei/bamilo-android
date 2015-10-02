@@ -9,8 +9,7 @@
         android:id="@+id/no_results_search_terms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:orientation="vertical" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
