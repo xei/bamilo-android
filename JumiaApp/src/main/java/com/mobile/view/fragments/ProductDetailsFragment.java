@@ -650,8 +650,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
-            ArrayList<String> images = ShopSelector.isRtl() ? (ArrayList) mProduct.getImageList().clone() : mProduct.getImageList();
+            ArrayList<String> images;
 
+            if(ShopSelector.isRtl()){
+                images = (ArrayList<String>) mProduct.getImageList().clone();
+                Collections.reverse(images);
+            } else {
+                images = mProduct.getImageList();
+            }
             // Create bundle with images
             Bundle args = new Bundle();
             args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);

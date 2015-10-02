@@ -47,7 +47,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogGridAdapter;
-import com.mobile.utils.catalog.CatalogGridView;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.UICatalogHelper;
@@ -81,7 +81,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int EMPTY_CATALOG = 0;
 
-    private CatalogGridView mGridView;
+    private HeaderFooterGridView mGridView;
 
     private TextView mSortButton;
 
@@ -222,7 +222,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
             @Override
             public void lowerVersionCallback() {
-                if(builder.toString().contains("?")){
+                if (builder.toString().contains("?")) {
                     // only retains the substring from the beginning to the character '?'
                     mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
                 } else {
@@ -269,7 +269,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get wizard
         mWizardStub = (ViewStub) view.findViewById(R.id.catalog_wizard_stub);
         // Get grid view
-        mGridView = (CatalogGridView) view.findViewById(R.id.catalog_grid_view);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.catalog_grid_view);
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
@@ -425,10 +425,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set the filter button selected or not
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
-        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Add listener
-        adapter.setOnViewHolderClickListener(this);
-        mGridView.setAdapter(adapter);
+        setCatalogAdapter(catalogPage);
         // Validate loading more view 
         isLoadingMoreData = false;
         // Validate if user can load more pages
@@ -464,9 +461,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
         if (adapter == null) {
             // Create adapter new data
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Set filter button
             UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
             // Set sort button
@@ -481,9 +476,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter applied/clean replace the current data
         else {
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Hide the goto top button
             UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
@@ -1200,6 +1193,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 return true;
         }
         return false;
+    }
+
+    private void setCatalogAdapter(CatalogPage catalogPage){
+        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
+        // Add listener
+        adapter.setOnViewHolderClickListener(this);
+        mGridView.setAdapter(adapter);
     }
 
 }

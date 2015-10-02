@@ -253,7 +253,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private void addToCartWithChoosenSimple(ProductBundle productBundle)
     {
         mBundleWithMultiple = productBundle;
-        onClickSimpleVariationsButton();
+        onClickSimpleVariationsButton(productBundle.getName());
     }
 
 
@@ -265,12 +265,12 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
 
 
-    private void onClickSimpleVariationsButton() {
+    private void onClickSimpleVariationsButton(String productName) {
         Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
-                    getString(R.string.product_variance_choose),
+                    productName,
                     mBundleWithMultiple,
                     this);
 
