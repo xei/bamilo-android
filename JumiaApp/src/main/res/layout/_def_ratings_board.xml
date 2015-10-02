@@ -86,250 +86,236 @@
 
 
         <!-- RIGHT SIDE -->
-        <LinearLayout
+
+        <RelativeLayout
             android:id="@+id/progressBoard"
-            android:layout_toRightOf="@id/item_center"
-            android:layout_toEndOf="@id/item_center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left|start"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_toRightOf="@id/specs_item_key"
+            android:layout_toEndOf="@id/specs_item_key"
             >
 
             <!-- 5 -->
 
-            <LinearLayout
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/five"
+                style="@style/TextBadge"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="5"
+                />
 
-                >
+            <ProgressBar
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/five"
-                    style="@style/TextBadge"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5"
+                android:layout_width="90dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="3dp"
+                android:id="@+id/progressBarFive"
+                android:progressDrawable="@drawable/ratings_progress"
+                android:layout_toRightOf="@id/five"
+                android:layout_toEndOf="@id/five"
 
-                    />
+                />
 
-                <ProgressBar
-
-                    android:layout_width="90dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="3dp"
-                    android:id="@+id/progressBarFive"
-                    android:progressDrawable="@drawable/ratings_progress"
-
-                    />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/fiveValue"
-                    style="@style/TextBadge"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(0)"
-
-                    />
-
-
-            </LinearLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/fiveValue"
+                style="@style/TextBadge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:layout_toRightOf="@id/progressBarFive"
+                android:layout_toEndOf="@id/progressBarFive"
+                />
 
             <!-- 4 -->
 
-            <LinearLayout
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/four"
+                style="@style/TextBadge"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:text="4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/five"
+                />
 
-                >
+            <ProgressBar
+                android:layout_width="90dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/ratings_progress"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="3dp"
+                android:id="@+id/progressBarFour"
+                android:layout_toRightOf="@id/four"
+                android:layout_toEndOf="@id/four"
+                android:layout_below="@id/five"
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/four"
-                    style="@style/TextBadge"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4"
+                />
 
-                    />
-
-                <ProgressBar
-                    android:layout_width="90dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/ratings_progress"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="3dp"
-                    android:id="@+id/progressBarFour"
-
-                    />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/fourValue"
-                    style="@style/TextBadge"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(0)"
-
-                    />
-
-
-            </LinearLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/fourValue"
+                style="@style/TextBadge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:layout_toRightOf="@id/progressBarFour"
+                android:layout_toEndOf="@id/progressBarFour"
+                android:layout_below="@id/fiveValue"
+                />
 
             <!-- 3 -->
 
-            <LinearLayout
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/three"
+                style="@style/TextBadge"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:text="3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/four"
 
-                >
+                />
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/three"
-                    style="@style/TextBadge"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3"
+            <ProgressBar
 
-                    />
+                android:layout_height="3dp"
+                android:id="@+id/progressBarThree"
+                android:layout_width="90dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/ratings_progress"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/three"
+                android:layout_toEndOf="@id/three"
+                android:layout_below="@id/four"
 
-                <ProgressBar
+                />
 
-                    android:layout_height="3dp"
-                    android:id="@+id/progressBarThree"
-                    android:layout_width="90dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/ratings_progress"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/threeValue"
+                style="@style/TextBadge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:layout_toRightOf="@id/progressBarThree"
+                android:layout_toEndOf="@id/progressBarThree"
+                android:layout_below="@id/fourValue"
 
-                    />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/threeValue"
-                    style="@style/TextBadge"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(0)"
-
-                    />
-
-
-            </LinearLayout>
+                />
 
             <!-- 2 -->
 
-            <LinearLayout
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/two"
+                style="@style/TextBadge"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:text="2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/three"
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/two"
-                    style="@style/TextBadge"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2"
+                />
 
-                    />
+            <ProgressBar
 
-                <ProgressBar
+                android:layout_height="3dp"
+                android:id="@+id/progressBarTwo"
+                android:layout_width="90dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/ratings_progress"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/two"
+                android:layout_toEndOf="@id/two"
+                android:layout_below="@id/three"
 
-                    android:layout_height="3dp"
-                    android:id="@+id/progressBarTwo"
-                    android:layout_width="90dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/ratings_progress"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                />
 
-                    />
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/twoValue"
+                style="@style/TextBadge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:layout_toRightOf="@id/progressBarTwo"
+                android:layout_toEndOf="@id/progressBarTwo"
+                android:layout_below="@id/threeValue"
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/twoValue"
-                    style="@style/TextBadge"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(0)"
-
-                    />
-
-
-            </LinearLayout>
+                />
 
             <!-- 1 -->
 
-            <LinearLayout
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/one"
+                style="@style/TextBadge"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:text="1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/two"
 
-                >
+                />
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/one"
-                    style="@style/TextBadge"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
+            <ProgressBar
 
-                    />
+                android:layout_height="3dp"
+                android:id="@+id/progressBarOne"
+                android:layout_width="90dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/ratings_progress"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/one"
+                android:layout_toEndOf="@id/one"
+                android:layout_below="@id/two"
 
-                <ProgressBar
+                />
 
-                    android:layout_height="3dp"
-                    android:id="@+id/progressBarOne"
-                    android:layout_width="90dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/ratings_progress"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/oneValue"
+                style="@style/TextBadge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:layout_toRightOf="@id/progressBarOne"
+                android:layout_toEndOf="@id/progressBarOne"
+                android:layout_below="@id/twoValue"
 
-                    />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/oneValue"
-                    style="@style/TextBadge"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(0)"
-
-                    />
-
-
-            </LinearLayout>
+                />
 
 
+        </RelativeLayout>
 
 
-        </LinearLayout>
 
     </RelativeLayout>
 
