@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
@@ -17,7 +18,7 @@
     <!-- PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
 
     <include
-        layout="@layout/_def_pdv_fragment_image"
+        layout="@layout/_def_pdv_fragment_image_land"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignEnd="@id/center_point"
@@ -45,19 +46,19 @@
     <com.mobile.utils.ScrollViewWithHorizontal
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/pdp_buy_bar"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point">
+        android:layout_alignStart="@id/center_point"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:descendantFocusability="blocksDescendants"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
 
             <!-- PRICE -->
