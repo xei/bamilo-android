@@ -97,7 +97,7 @@ public class MyProfileActionProvider extends ActionProvider {
             mSubMenuItems = new ArrayList<>();
             mSubMenuItems.add(NavigationAction.Home);
             mSubMenuItems.add(NavigationAction.LoginOut);
-            mSubMenuItems.add(NavigationAction.Favorites);
+            mSubMenuItems.add(NavigationAction.Saved);
             mSubMenuItems.add(NavigationAction.MyAccount);
             mSubMenuItems.add(NavigationAction.RecentSearches);
             mSubMenuItems.add(NavigationAction.RecentlyViewed);
@@ -139,7 +139,7 @@ public class MyProfileActionProvider extends ActionProvider {
         // Get current list
         ArrayList<NavigationAction> list = (ArrayList<NavigationAction>) getDropdownList();
         // Case Home or Cart
-        if (action == NavigationAction.Home || action == NavigationAction.Basket || action == NavigationAction.Favorites) {
+        if (action == NavigationAction.Home || action == NavigationAction.Basket || action == NavigationAction.Saved) {
             // Remove home from array
             if(NavigationAction.Home == list.get(0)) list.remove(0);
         }
@@ -212,7 +212,7 @@ public class MyProfileActionProvider extends ActionProvider {
                     title.setText(resTitle);
                     icon.setImageResource(R.drawable.ico_dropdown_signin);
                     break;
-                case Favorites:
+                case Saved:
                     title.setText(R.string.saved);
                     icon.setImageResource(R.drawable.ico_dropdown_favourites);
                     break;

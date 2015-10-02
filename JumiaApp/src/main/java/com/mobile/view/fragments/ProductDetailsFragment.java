@@ -67,6 +67,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -651,9 +652,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
             ArrayList<String> images;
-
             if(ShopSelector.isRtl()){
-                images = (ArrayList<String>) mProduct.getImageList().clone();
+                images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
             } else {
                 images = mProduct.getImageList();

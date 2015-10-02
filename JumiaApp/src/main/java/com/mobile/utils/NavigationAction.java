@@ -17,7 +17,7 @@ public enum NavigationAction {
     MyAccountMyAddresses,
     MyAccountEmailNotification,
     MyProfile,
-    Favorites,
+    Saved,
     RecentSearches,
     RecentlyViewed,
     Products,

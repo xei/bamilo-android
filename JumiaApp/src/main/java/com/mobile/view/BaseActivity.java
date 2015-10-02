@@ -458,7 +458,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 int pos = tab.getPosition();
                 if (pos == 0 && action != NavigationAction.Home) {
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                } else if (pos == 1 && action != NavigationAction.Favorites) {
+                } else if (pos == 1 && action != NavigationAction.Saved) {
                     onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 } else if (pos == 2 && action != NavigationAction.Basket) {
                     onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -483,7 +483,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setAppBarLayout(NavigationAction action) {
         try {
             // Case others
-            if (action != NavigationAction.Basket && action != NavigationAction.Favorites && action != NavigationAction.Home) {
+            if (action != NavigationAction.Basket && action != NavigationAction.Saved && action != NavigationAction.Home) {
                 mTabLayout.setVisibility(View.GONE);
             }
             else {
@@ -493,7 +493,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     mTabLayout.getTabAt(0).select();
                 }
                 // Case Basket
-                else if (action == NavigationAction.Favorites) {
+                else if (action == NavigationAction.Saved) {
                     mTabLayout.getTabAt(1).select();
                 }
                 // Case Basket
@@ -516,7 +516,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setViewWithoutNestedScrollView(View view, NavigationAction action) {
         // Case others
         if (action != NavigationAction.Basket &&
-                action != NavigationAction.Favorites &&
+                action != NavigationAction.Saved &&
                 action != NavigationAction.Home &&
                 action != NavigationAction.Products &&
                 view != null) {
@@ -1396,7 +1396,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
-                    case Favorites:
+                    case Saved:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
                         // Validate customer is logged in
