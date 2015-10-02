@@ -558,7 +558,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setSpecifications() {
         String features = mProduct.getShortDescription();
-        if (TextUtils.isEmpty(features)) {
+        if (mProduct.isFashion() || TextUtils.isEmpty(features)) {
             mSpecificationsView.setVisibility(View.GONE);
             return;
         }
