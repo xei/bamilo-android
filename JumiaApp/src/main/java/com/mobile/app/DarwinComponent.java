@@ -57,7 +57,7 @@ public class DarwinComponent extends ApplicationComponent {
         boolean countryConfigsAvailable = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         boolean isChangeShop = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CHANGED, false);
         
-        Print.i(TAG, "DarwinComponent shopId :  " + shopId + " countriesConfigs : " + countriesConfigs + " " + isChangeShop);
+        Print.i(TAG, "DarwinComponent shopId :  " + shopId + " countriesConfigs : " + countriesConfigs + " isChangeShop : " + isChangeShop + " countryConfigsAvailable : " + countryConfigsAvailable);
         
         if (shopId == null && countriesConfigs && !isChangeShop) {
             Print.i(TAG, "DarwinComponent AUTO_COUNTRY_SELECTION");

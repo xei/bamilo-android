@@ -374,7 +374,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS) {
             onProcessNoCountriesConfigsError();
         } else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) {
-            onProcessAutoCountrySelection();
+            onProcessAutoCountrySelection(bundle);
         } else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
             onProcessRequiresUserError();
         }
@@ -450,9 +450,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      *
      * @author sergiopereira
      */
-    private void onProcessAutoCountrySelection() {
+    private void onProcessAutoCountrySelection(Bundle bundle) {
         Print.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
-        LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+//        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+//            Print.i(TAG, "onProcessAutoCountrySelection");
+            // Validate if there is any country from deeplink when starting the app from clean slate
+            if(!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(), initializationHandler)){
+                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+            }
+//        }
     }
 
     /**
