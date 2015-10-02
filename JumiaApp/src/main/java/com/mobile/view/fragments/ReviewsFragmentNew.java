@@ -141,11 +141,14 @@ public class ReviewsFragmentNew extends BaseFragment {
 
     public LinearLayout mRatingsBoard;
 
-    public LinearLayout mProgressBoard;
+    public RelativeLayout mProgressBoard;
 
     public LinearLayout mWriteReview;
 
     private Resources resources;
+
+    private ProgressBar progressBarFive,progressBarFour,progressBarThree,progressBarTwo, progressBarOne;
+
 
     /**
      * Get instance
@@ -241,8 +244,7 @@ public class ReviewsFragmentNew extends BaseFragment {
         mRatingsBoard = (LinearLayout) view.findViewById(R.id.ratingsBoard);
 
         //progress bars board
-        mProgressBoard = (LinearLayout) mRatingsBoard.findViewById(R.id.progressBoard);
-
+        mProgressBoard = (RelativeLayout) mRatingsBoard.findViewById(R.id.progressBoard);
 
         //reviews content
         reviewsContainer = (LinearLayout) view.findViewById(R.id.linear_reviews);
@@ -276,7 +278,20 @@ public class ReviewsFragmentNew extends BaseFragment {
         else
             averageStar = String.valueOf(ratingTypes.get(0).getRating());
 
-        txAverageRatings.setText(String.valueOf(averageStar)+"/"+ String.valueOf(basedOn));
+
+        String average = String.valueOf(averageStar)+" / "+ String.valueOf(basedOn);
+
+        if(ShopSelector.isRtl()) {
+
+            if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                average = String.valueOf(basedOn) + " \\ " + String.valueOf(averageStar);
+            }else {
+                average = String.valueOf(averageStar)+" \\ "+ String.valueOf(basedOn);
+                txAverageRatings.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+        }
+
+        txAverageRatings.setText(average);
 
 
         TextView txTotalCustomersMessage = (TextView) mRatingsBoard.findViewById(R.id.badgeValue);
@@ -644,7 +659,7 @@ public class ReviewsFragmentNew extends BaseFragment {
             //fill header after getting RatingPage object
             FillAverageRatingData(productRatingPage);
             //added: fill progress bars
-            setProgressRating(selectedProduct.getTotalRatings(), mProgressBoard);
+            setProgressRating(selectedProduct.getTotalRatings());
             // Append the new page to the current
             displayReviews(productRatingPage, true);
             showFragmentContentContainer();
@@ -997,43 +1012,68 @@ public class ReviewsFragmentNew extends BaseFragment {
     /**
      * Set progressbar progress and it's value number with the info coming from byStar
      * @param maxTotal - total of ratings
-     * @param progressContainer - container where are all progress bars corresponding from 1 - 5   rating
      * */
-    private void setProgressRating(int maxTotal, View progressContainer)
+    private void setProgressRating(int maxTotal)
     {
         //get progress bars and value numbers
-        ProgressBar progressBarFive = (ProgressBar) progressContainer.findViewById(R.id.progressBarFive);
+
+        progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
+        progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
+        progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
+        progressBarTwo = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarTwo);
+        progressBarOne = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarOne);
+
+
         progressBarFive.setMax(maxTotal);
-        ProgressBar progressBarFour = (ProgressBar) progressContainer.findViewById(R.id.progressBarFour);
         progressBarFour.setMax(maxTotal);
-        ProgressBar progressBarThree = (ProgressBar) progressContainer.findViewById(R.id.progressBarThree);
         progressBarThree.setMax(maxTotal);
-        ProgressBar progressBarTwo = (ProgressBar) progressContainer.findViewById(R.id.progressBarTwo);
         progressBarTwo.setMax(maxTotal);
-        ProgressBar progressBarOne = (ProgressBar) progressContainer.findViewById(R.id.progressBarOne);
         progressBarOne.setMax(maxTotal);
 
-        TextView txValueFive = (TextView) progressContainer.findViewById(R.id.fiveValue);
+
+        //if is rtl, the progress bars shows up with inverted progression
+        if(ShopSelector.isRtl() &&  android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1)
+        {
+            progressBarFive.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue("5")));
+            progressBarFive.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+
+            progressBarFour.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue("4")));
+            progressBarFour.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+
+            progressBarThree.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue("3")));
+            progressBarThree.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+
+            progressBarTwo.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue("2")));
+            progressBarTwo.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+
+            progressBarOne.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue("1")));
+            progressBarOne.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+
+
+        } else {
+            progressBarFive.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("5")));
+            progressBarFour.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("4")));
+            progressBarThree.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("3")));
+            progressBarTwo.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("2")));
+            progressBarOne.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("1")));
+        }
+
+        TextView txValueFive = (TextView) mProgressBoard.findViewById(R.id.fiveValue);
         txValueFive.setText(mProductRatingPage.getByStarValue("5"));
-        progressBarFive.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("5")));
 
-        TextView txValueFour = (TextView) progressContainer.findViewById(R.id.fourValue);
+        TextView txValueFour = (TextView) mProgressBoard.findViewById(R.id.fourValue);
         txValueFour.setText(mProductRatingPage.getByStarValue("4"));
-        progressBarFour.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("4")));
 
-        TextView txValueThree = (TextView) progressContainer.findViewById(R.id.threeValue);
+        TextView txValueThree = (TextView) mProgressBoard.findViewById(R.id.threeValue);
         txValueThree.setText(mProductRatingPage.getByStarValue("3"));
-        progressBarThree.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("3")));
 
 
-        TextView txValueTwo = (TextView) progressContainer.findViewById(R.id.twoValue);
+        TextView txValueTwo = (TextView) mProgressBoard.findViewById(R.id.twoValue);
         txValueTwo.setText(mProductRatingPage.getByStarValue("2"));
-        progressBarTwo.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("2")));
 
 
-        TextView txValueOne = (TextView) progressContainer.findViewById(R.id.oneValue);
+        TextView txValueOne = (TextView) mProgressBoard.findViewById(R.id.oneValue);
         txValueOne.setText(mProductRatingPage.getByStarValue("1"));
-        progressBarOne.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue("1")));
 
 
 
