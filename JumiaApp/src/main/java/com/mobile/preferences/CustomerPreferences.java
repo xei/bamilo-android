@@ -17,7 +17,7 @@ public class CustomerPreferences {
     
     private static final String TAG = CustomerPreferences.class.getSimpleName();
     
-    private static final String LIST_CATALOG_TYPE = "1";
+    private static final String GRID_CATALOG_TYPE = "2";
     /*
      * ############# BASE #############
      */
@@ -80,7 +80,7 @@ public class CustomerPreferences {
      */
     public static String getCatalogLayout(Context context) {
         String level = load(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW);
-        return TextUtils.isEmpty(level) ? LIST_CATALOG_TYPE : level;
+        return TextUtils.isEmpty(level) ? GRID_CATALOG_TYPE : level;
     }
     
     /**

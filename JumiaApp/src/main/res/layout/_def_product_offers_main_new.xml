@@ -52,15 +52,12 @@
 
     <GridView
         android:id="@+id/offers_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:listSelector="@color/transparent"
         android:layout_below="@id/separator"
         android:numColumns="@integer/grid_num_columns"
-        android:horizontalSpacing="1dp"
-        android:verticalSpacing="1dp"
-        android:paddingBottom="1dp"
-        android:background="@color/grey_highlight"
+
         />
 
 </RelativeLayout>

@@ -5,8 +5,6 @@
     android:gravity="center_vertical"
     android:minHeight="@dimen/item_height_normal"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/margin_30px"
-    android:paddingStart="@dimen/margin_30px"
     android:descendantFocusability="blocksDescendants">
 
     <ImageView
@@ -15,6 +13,8 @@
         android:layout_height="@dimen/margin_50px"
         android:layout_marginEnd="@dimen/margin_30px"
         android:layout_marginRight="@dimen/margin_30px"
+        android:layout_marginLeft="@dimen/margin_30px"
+        android:layout_marginStart="@dimen/margin_30px"
         android:visibility="invisible" />
 
     <com.mobile.components.customfontviews.TextView
@@ -34,6 +34,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_60px"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_marginRight="@dimen/margin_60px"
         android:background="@drawable/selector_category_button" />
 

@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sublist_category"
-    style="@style/SubListItemStyle"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp"
+    android:gravity="left|start|center_vertical"
     android:layout_centerVertical="true"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/margin_110px"
-    android:paddingStart="@dimen/margin_110px" />
+    android:layout_gravity="left|start|center_vertical">
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sublist_category"
+        style="@style/SubListItemStyle"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_110px"
+        android:paddingStart="@dimen/margin_110px" />
+
+</LinearLayout>

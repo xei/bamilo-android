@@ -43,6 +43,7 @@
     <!-- LEFT CONTAINER -->
 
     <com.mobile.utils.ScrollViewWithHorizontal
+        android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"

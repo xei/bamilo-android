@@ -7,8 +7,9 @@
     android:layout_height="@dimen/item_height_normal"
     android:minHeight="@dimen/item_height_normal"
     android:layout_centerVertical="true"
-    android:gravity="center_vertical"
+    android:gravity="right|center_vertical"
     android:paddingRight="@dimen/margin_110px"
+    android:paddingLeft="@dimen/margin_110px"
     android:singleLine="true"
     android:ellipsize="end"
     android:textColor="@color/black" />

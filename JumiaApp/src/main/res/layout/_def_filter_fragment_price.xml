@@ -42,9 +42,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="roboto_regular"
                 android:text="@string/string_with_discount_only"
-                android:textColor="@color/grey_middle"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_l"
                 android:paddingStart="12dp"
-                android:layout_marginLeft="12dp"
                 android:visibility="gone" />
 </LinearLayout>

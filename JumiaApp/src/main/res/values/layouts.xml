@@ -68,7 +68,7 @@
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
     <item name="filter_fragment_price"                   type="layout">@layout/_def_filter_fragment_price</item>
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
-    <item name="catalog_item_list"                      type="layout">@layout/_def_catalog_item_list</item>
+    <item name="gen_product_list"                      type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
@@ -93,6 +93,9 @@
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
     <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
+    <item name="bottom_combo" 	                        type="layout">@layout/_def_bottom_combo</item>
+    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
+    <item name="pdv_fragment_related_item_price" 	        type="layout">@layout/_def_pdv_fragment_related_item_price</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -205,6 +208,8 @@
     <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
+    <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
 
 </resources>
 

@@ -16,7 +16,7 @@ package com.mobile.newFramework.forms;
  *
  * @author GuilhermeSilva
  */
-public enum InputType {
+public enum FormInputType {
     text,
     number,
     password,
