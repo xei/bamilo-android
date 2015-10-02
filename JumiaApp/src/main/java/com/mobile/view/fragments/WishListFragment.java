@@ -55,7 +55,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private CatalogGridView mListView;
 
-//    private View mLoadingMore;
+    private View mLoadingMore;
 
     private WishList mWishList;
 
@@ -110,7 +110,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Loading more view
-//        mLoadingMore = view.findViewById(R.id.wish_list_loading_more);
+        mLoadingMore = view.findViewById(R.id.wish_list_loading_more);
         // List view
         mListView = (CatalogGridView) view.findViewById(R.id.wish_list_grid);
         mListView.addOnScrollListener(onScrollListener);
@@ -313,7 +313,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     private void setLoadingMore(boolean isLoading) {
         isLoadingMoreData = isLoading;
-//        mLoadingMore.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        mLoadingMore.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     /*
@@ -574,7 +574,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 isErrorOnLoadingMore = false;
             }
             // Bottom reached
-            boolean isBottomReached = totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount;
+            boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
             // Case bottom reached and has more pages loading the next page
             if (!isErrorOnLoadingMore && !isLoadingMoreData && isBottomReached && mWishList != null && mWishList.hasMorePages()) {
                 Log.i(TAG, "LOAD MORE DATA");

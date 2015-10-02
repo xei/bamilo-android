@@ -28,9 +28,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
     private Context context;
     private OnWishListViewHolderClickListener listener;
 
-    private static int PRODUCT_VIEW = 0;
-    private static int FOOTER_VIEW = 1;
-
     public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
         this.context = context;
@@ -76,15 +73,11 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
 
     @Override
     public WishListProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = viewType == PRODUCT_VIEW ? R.layout.addabletocart_item : R.layout.fragment_loading_more;
-        return new WishListProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
+        return new WishListProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(WishListProductViewHolder holder, int position) {
-        if(isFooterView(position)){
-            return;
-        }
 
         ProductMultiple item = products.get(position);
 
@@ -182,7 +175,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
 
     @Override
     public int getItemCount() {
-        return products.size() + FOOTER_VIEW;
+        return products.size();
     }
 
     public ProductMultiple getItem(int position) {
@@ -197,16 +190,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
     public boolean isEmpty(){
         return products.isEmpty();
     }
-
-    @Override
-    public int getItemViewType(int position) {
-        return isFooterView(position) ? FOOTER_VIEW : PRODUCT_VIEW;
-    }
-
-    private boolean isFooterView(int position){
-        return position == products.size();
-    }
-
 
     @Override
     public void onClick(View view) {
