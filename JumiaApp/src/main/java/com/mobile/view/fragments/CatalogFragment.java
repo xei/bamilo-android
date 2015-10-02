@@ -425,10 +425,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set the filter button selected or not
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
-        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Add listener
-        adapter.setOnViewHolderClickListener(this);
-        mGridView.setAdapter(adapter);
+        setCatalogAdapter(catalogPage);
         // Validate loading more view 
         isLoadingMoreData = false;
         // Validate if user can load more pages
@@ -464,9 +461,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
         if (adapter == null) {
             // Create adapter new data
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Set filter button
             UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
             // Set sort button
@@ -481,9 +476,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter applied/clean replace the current data
         else {
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Hide the goto top button
             UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
@@ -1200,6 +1193,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 return true;
         }
         return false;
+    }
+
+    private void setCatalogAdapter(CatalogPage catalogPage){
+        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
+        // Add listener
+        adapter.setOnViewHolderClickListener(this);
+        mGridView.setAdapter(adapter);
     }
 
 }

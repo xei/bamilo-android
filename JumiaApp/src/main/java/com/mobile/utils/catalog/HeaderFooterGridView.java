@@ -41,9 +41,6 @@ public class HeaderFooterGridView extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
-        if(adapter instanceof CatalogGridAdapter) {
-            showFooterView();
-        }
     }
 
     /* */
