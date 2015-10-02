@@ -62,7 +62,7 @@ private int mTabsCount = 3;
     public ProductDetailsInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-              //       R.layout.details_info_fragment_main,
+                //       R.layout.details_info_fragment_main,
                 R.layout.details_info_fragment_main_new,
                 0,
                 KeyboardState.ADJUST_CONTENT);
@@ -132,9 +132,13 @@ private int mTabsCount = 3;
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
+            //#RTL
             if(ShopSelector.isRtl()){
-                mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                mProductInfoPager.enableRtl();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                    mProductInfoPager.enableRtl();
+                }
+
        /*         mPositionToStart = mProductInfoPagerAdapter.getCount();
             } else {
                 mPositionToStart = 0;*/
