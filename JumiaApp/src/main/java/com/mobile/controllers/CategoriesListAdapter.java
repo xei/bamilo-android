@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAdapter;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -85,7 +86,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         // ##### Case section #####
         if (category.isSection()) {
             View view = mInflater.inflate(R.layout.category_header, parent, false);
-            ((TextView) view.findViewById(R.id.parent_category)).setText(category.getName());
+            ((TextView) view.findViewById(R.id.parent_category)).setText(category.getName().toUpperCase());
             return view;
         }
         // ##### Case category #####
@@ -114,8 +115,14 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
             item.indicator.setVisibility(View.INVISIBLE);
         }
         // ##### SET CATEGORY ICON #####
-        item.icon.setTag(R.id.no_animate, true);
-        RocketImageLoader.instance.loadImage(category.getImage(), item.icon, true);
+        if (TextUtils.isEmpty(category.getImage())) {
+            item.icon.setVisibility(View.INVISIBLE);
+        } else {
+            item.icon.setVisibility(View.VISIBLE);
+            item.icon.setTag(R.id.no_animate, true);
+            RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
+        }
+
         //
         return convertView;
 

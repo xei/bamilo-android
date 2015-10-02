@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_alignRight="@+id/center_view"
         android:layout_marginLeft="@dimen/product_item_text_right_margin"
-        android:layout_marginTop="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/margin_30px"
         android:text="BRAND" />
 
     <com.mobile.components.customfontviews.TextView
@@ -49,8 +49,10 @@
         android:layout_width="match_parent"
         android:layout_alignRight="@+id/center_view"
         android:layout_below="@+id/item_brand"
-        android:layout_marginLeft="@dimen/product_item_text_right_margin"
+        android:layout_marginLeft="20dp"
         android:gravity="right|center_vertical"
+        android:singleLine="false"
+        android:maxLines="2"
         android:text="Name" />
 
     <com.mobile.components.customfontviews.TextView
@@ -75,11 +77,12 @@
         android:textColor="@color/black_800" />
 
     <LinearLayout
+        android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/item_name"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_60px"
+        android:layout_marginBottom="@dimen/margin_30px"
         android:layout_marginTop="@dimen/margin_30px"
         android:gravity="center_vertical|right"
         android:orientation="horizontal" >
@@ -120,9 +123,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/rounded_margin_mid"
-        android:layout_marginBottom="@dimen/margin_60px"
+        android:layout_alignBottom="@id/rating_container"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
     <View
