@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="114dp"
     android:id="@+id/offers_list_item"
-    android:background="@color/white"
+    android:background="@drawable/border"
     >
 
     <!-- RIGHT SIDE BUTTON -->
