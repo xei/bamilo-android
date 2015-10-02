@@ -17,6 +17,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -39,6 +40,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private int mLastPosition = -1;
 
+    private String mProductSku;
+
     private OnViewHolderClickListener mOnViewHolderClicked;
 
 
@@ -60,6 +63,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         public TextView price;
         public TextView percentage;
         public TextView reviews;
+        public CheckBox cbItem;
+        public TextView variation;
 
         /**
          * Constructor
@@ -80,7 +85,11 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             discount = (TextView) view.findViewById(R.id.pdv_text_special_price);
             percentage = (TextView) view.findViewById(R.id.pdv_text_discount);
 
+            cbItem = (CheckBox) view.findViewById(R.id.item_check);
+
             brand = (TextView) view.findViewById(R.id.item_brand);
+
+            variation = (TextView) view.findViewById(R.id.choosen_variation);
 
         }
     }
@@ -90,9 +99,24 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * @param context - the application context
      * @param data - the array lisl
      */
-    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data) {
+    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data,String mProductSku) {
         mContext = context;
         mDataSet = data;
+        this.mProductSku = mProductSku;
+    }
+
+    /**
+     * update a bundle in the arrays; necessary for updating viewholder in case of a chosen simple
+     * @param bundle - productBundle
+     *
+     */
+    public void setItemInArray(ProductBundle productBundle)
+    {
+        for(int i=0; i< mDataSet.size(); i++)
+        {
+            if(mDataSet.get(i).getSku().equals(productBundle.getSku()))
+                mDataSet.set(i,productBundle);
+        }
     }
 
     /*
@@ -139,6 +163,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      */
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
+
+        if(holder == null)
+            holder = new ProductViewHolder(LayoutInflater.from(mContext).inflate(R.layout.pdv_combo_item_list,null,false));
         // Set animation
         setAnimation(holder, position);
 
@@ -155,6 +182,16 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         setSpecificViewForListLayout(holder, item);
         // Set prices
         setProductPrice(holder, item);
+        //set selection
+        holder.cbItem.setChecked(item.isChecked());
+        //set variation if has multiple variations and there is a selected variation
+        if(item.hasMultiSimpleVariations() && item.getSelectedSimple() != null)
+        {
+            ProductSimple productSimple = item.getSelectedSimple();
+            holder.variation.setText(productSimple.getVariationValue());
+            holder.variation.setVisibility(View.VISIBLE);
+        }
+
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
@@ -173,7 +210,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
             holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
             holder.percentage.setVisibility(View.VISIBLE);
         }
@@ -252,14 +289,14 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             // position
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
-            CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
-            cb.setChecked(!cb.isChecked());
+            if(!mProductSku.equals(productBundle.getSku())) {
+                CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
 
-            productBundle.setChecked(cb.isChecked());
-            mDataSet.set(position,productBundle);
+                cb.setChecked(!cb.isChecked());
 
-            mOnViewHolderClicked.onViewHolderClick(this, position);
+                mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
 
         }
 
