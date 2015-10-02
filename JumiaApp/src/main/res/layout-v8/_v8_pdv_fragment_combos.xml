@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black_300"
+    android:gravity="right"
     >
 
     <!-- HEADER -->
@@ -12,14 +12,19 @@
         android:id="@+id/pdv_bundles_title"
         style="@style/HeaderStyle"
         android:text="@string/combo"
-
         />
 
     <!-- CONTAINER -->
 
-    <include
-        android:id="@+id/ComboSection"
-        layout="@layout/_def_pdv_fragment_combo_item" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_300">
+
+        <include
+            android:id="@+id/ComboSection"
+            layout="@layout/_v8_pdv_fragment_combo_item" />
+    </LinearLayout>
 
 
 </LinearLayout>
