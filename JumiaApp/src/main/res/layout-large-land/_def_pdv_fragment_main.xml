@@ -12,34 +12,18 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
-    <!-- Left Container -->
+    <!-- LEFT -->
 
-    <LinearLayout
+    <!-- PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
+
+    <include
+        layout="@layout/_def_pdv_fragment_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@id/center_point"
-        android:orientation="vertical">
-
-        <!--TITLE-->
-
-        <include
-            android:id="@+id/pdv_title_container"
-            layout="@layout/_def_pdv_fragment_title" />
-
-        <!-- IMAGE CONTAINER -->
-
-        <include layout="@layout/_def_pdv_fragment_image" />
-
-        <!--TITLE-->
-
-        <include
-            android:id="@+id/pdv_title_fashion_container"
-            layout="@layout/_def_pdv_fragment_title" />
-
-    </LinearLayout>
+        android:layout_alignRight="@id/center_point" />
 
     <!-- RIGHT -->
 
@@ -59,6 +43,7 @@
     <!-- RIGHT CONTAINER -->
 
     <com.mobile.utils.ScrollViewWithHorizontal
+        android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"
@@ -77,7 +62,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
@@ -87,7 +72,7 @@
 
             <include
                 android:id="@+id/pdv_rating_container"
-                layout="@layout/_def_pdv_fragment_rating" />
+                layout="@layout/pdv_fragment_rating" />
 
             <!-- SPECIFICATIONS -->
             <include
@@ -110,7 +95,13 @@
 
             <include
                 android:id="@+id/pdv_seller_container"
-                layout="@layout/_def_pdv_fragment_seller_info" />
+                layout="@layout/pdv_fragment_seller_info" />
+
+            <!-- OTHER SELLERS -->
+
+            <include
+                android:id="@+id/pdv_other_sellers_button"
+                layout="@layout/sublist" />
 
             <!-- DESCRIPTION -->
 

@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/catalog_tool_bar_height"
-    android:background="@color/black_300"
+    android:background="@color/white"
     android:gravity="center"
-    android:paddingBottom="1dp"
     android:orientation="horizontal">
 
 

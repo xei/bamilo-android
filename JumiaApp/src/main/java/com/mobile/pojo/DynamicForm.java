@@ -11,8 +11,8 @@ import android.widget.RatingBar;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.RadioGroupLayout;
@@ -281,12 +281,12 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         ContentValues model = new ContentValues();
         for (DynamicFormItem control : this) {
             // Case metadata
-            if (control != null && control.getType() == InputType.metadata) {
+            if (control != null && control.getType() == FormInputType.metadata) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName(), control.getValue());
             }
             // Case radio group vertical
-            else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
+            else if (null != control && control.getType() == FormInputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 ContentValues mValues = control.getSubFormsValues();
                 if (mValues != null) {
                     model.putAll(mValues);
@@ -295,11 +295,11 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
                 model.put(control.getName(), control.getValue());
             }
             // Case list from api call
-            else if (control != null && control.getType() == InputType.list ) {
+            else if (control != null && control.getType() == FormInputType.list ) {
                 saveListSelection(control, model);
             }
             // Case related number
-            else if (control != null && control.getType() == InputType.relatedNumber ) {
+            else if (control != null && control.getType() == FormInputType.relatedNumber ) {
                 // Get number
                 model.put(control.getName(), control.getValue());
                 // Get related option
@@ -318,7 +318,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
             // TODO VALIDATE IF THESE CASES ARE NECESSARY
             // Case ???
-            else if (null != control && control.getType() == InputType.rating) {
+            else if (null != control && control.getType() == FormInputType.rating) {
                 saveRatingForm(control, model);
             }
             // Case ???
@@ -365,7 +365,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         for (DynamicFormItem dynamicFormItem : this) {
 
             control = dynamicFormItem;
-            if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
+            if (null != control && control.getType() == FormInputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 return control.getSubFormsSelectedIndex();
             }
         }

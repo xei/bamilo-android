@@ -280,6 +280,9 @@
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
     <dimen name="catalog_single_item_image_height">310dp</dimen>
     <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+
+    <!--<dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen> + 1-->
+    <dimen name="catalog_tool_bar_margin">51dp</dimen>
     <dimen name="catalog_footer_height">@dimen/abc_action_bar_default_height_material</dimen>
 
     <dimen name="root_empty_container_height">240dp</dimen>
@@ -414,7 +417,7 @@
 
     <!-- PDP Related products column numbers -->
     <integer name="pdv_related_products_num_columns">2</integer>
-    <integer name="details_max_lines">4</integer>
+    <integer name="details_max_lines">7</integer>
 
     <!-- PDP layout dimension components -->
     <dimen name="layout_padding">20dp</dimen>
@@ -498,5 +501,8 @@
 
 
     <integer name="combos_num_columns">1</integer>
+
+    <dimen name="combo_bundle_item_with">90dp</dimen>
+
 
 </resources>

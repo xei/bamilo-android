@@ -32,7 +32,7 @@ public class PaymentInfo implements Parcelable{
 	
 	public void initialize(JSONObject mJSONObject){
 		
-		this.text = mJSONObject.optString(RestConstants.JSON_TEXT_TAG);
+		this.text = mJSONObject.optString(RestConstants.TEXT);
 		this.tooltip_text = mJSONObject.optString(RestConstants.JSON_TOOLTIP_TEXT_TAG);
 		this.cvc_text = mJSONObject.optString(RestConstants.JSON_CVC_TEXT_TAG);
 		JSONArray mJSONArray = mJSONObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);

@@ -47,7 +47,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
 
-        JSONArray fulfillmentArray = jsonObject.getJSONObject(RestConstants.CART_ENTITY).optJSONArray(RestConstants.JSON_FULFILLMENT);
+        JSONArray fulfillmentArray = jsonObject.getJSONObject(RestConstants.CART_ENTITY).optJSONArray(RestConstants.FULFILLMENT);
         if(fulfillmentArray != null) {
             fulfillmentList = new ArrayList<>();
             for (int i = 0; i < fulfillmentArray.length(); i++) {
