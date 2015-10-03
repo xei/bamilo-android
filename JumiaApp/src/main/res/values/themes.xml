@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!--
-         <style name="Theme.Jumia" parent="@style/Theme.Sherlock.Light">
-        <item name="actionBarStyle">@style/Widget.Jumia.ActionBar</item>
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.Jumia.ActionBar</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_sidemenu</item>
-        <item name="homeAsUpIndicator">@drawable/ic_sidemenu</item>
-        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
-        <item name="popupMenuStyle">@style/MyPopupMenu</item>
-        <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
-        <item name="android:windowBackground">@color/background_color</item>
-        <item name="actionModeShareDrawable">@drawable/selector_share</item>
-        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selector_actionbar_logo</item>
-        <item name="actionBarItemBackground">@drawable/selector_actionbar_logo</item>
-        For ViewPager IconPageIndicator
-        <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>
-        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
-        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
-        <item name="searchViewTextField">@drawable/selector_textfield_orange</item>
-        <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
-        <item name="searchViewCloseIcon">@drawable/btn_clearsearchfield</item>
-        <item name="textColorPrimary">@color/grey_middle</item>
-        <item name="searchAutoCompleteTextView">@style/text_actionbar_search</item>
-        <item name="actionButtonStyle">@style/action_button</item>
-        <item name="android:textColorHint">@color/green_basic</item>
-        ACTION BAR Tablet will use dimensions from actionBarSherlock
-        item name="actionBarSize">@dimen/action_bar_height</item
+    <!-- Jumia :: MATERIAL THEME-->
 
-
-        CUSTOM SPINNER STYLE
-        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
-        Widget.Sherlock.ActionBar
-    </style>
-    -->
-
-
-    <!-- ####################################################################### -->
-
-    <!-- Jumia -->
     <style name="Theme.Jumia" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- #### Custom Material Color Palette -->
         <!-- Color for the app bar -->
@@ -87,7 +51,7 @@
         <!-- Apply the ArrowStyle for AB -->
         <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
         <!-- To apply the color filter over indicator in Android v5.0.1 -->
-        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
+        <!--<item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>-->
         <!-- Apply the search view style -->
         <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>

@@ -6,7 +6,6 @@
     <string name="action_label_logout">Logout</string>
     <string name="action_label_search_hint">ရွာေဖြမည္ %s</string>
     <string name="action_label_share">ေ၀မွ်ရန္</string>
-    <string name="action_label_wishlist">ရရွိလိုေသာ ပစၥည္းစာရင္း</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
     <string name="add_to_shopping_cart">၀ယ္ယူမည္</string>
     <string name="added_bundle_to_shop_cart_dialog_text">ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းသို႔ ထည္႔ၿပီးပါၿပီ</string>
