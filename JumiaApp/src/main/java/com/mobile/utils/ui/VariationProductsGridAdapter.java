@@ -23,43 +23,13 @@ import java.util.ArrayList;
  * Adapter to fill grid for variation products in variation section
  * @author alexandrapires
  */
-public class VariationProductsGridAdapter extends RecyclerView.Adapter<VariationProductsGridAdapter.ProductViewHolder> implements OnClickListener {
+public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener {
 
     private ArrayList<Variation> mDataSet;
 
     private Context mContext;
 
     private OnViewHolderClickListener mOnViewHolderClicked;
-
-    /**
-     * Provide a reference to the views for each data item.<br>
-     * @author alexandrapires
-     *
-     */
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        // Data
-        public TextView name;
-        public TextView brand;
-        public ImageView image;
-        public TextView price;
-        public View progress;
-        public TextView discount;
-
-        /**
-         * Constructor
-         * @param view -  the view holder
-         */
-        public ProductViewHolder(View view) {
-            super(view);
-            name = (TextView) view.findViewById(R.id.item_title);
-            brand = (TextView) view.findViewById(R.id.item_brand);
-            image = (ImageView) view.findViewById(R.id.image_view);
-            progress = view.findViewById(R.id.image_loading_progress);
-            price = (TextView) view.findViewById(R.id.pdv_text_special_price);
-            discount = (TextView) view.findViewById(R.id.pdv_text_price);
-
-        }
-    }
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
@@ -78,9 +48,9 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list, parent, false));
+        return new ProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gen_product_list, parent, false));
     }
     
 
@@ -100,7 +70,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
       * @see android.support.v7.widget.RecyclerView.Adapter#onViewDetachedFromWindow(android.support.v7.widget.RecyclerView.ViewHolder)
       */
     @Override
-    public void onViewDetachedFromWindow(ProductViewHolder holder) {
+    public void onViewDetachedFromWindow(ProductListViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         // Cancel the animation for detached views
         holder.itemView.clearAnimation();
@@ -111,7 +81,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
      * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
      */
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(ProductListViewHolder holder, int position) {
         // Set animation
    //     setAnimation(holder, position);
         // Get item
@@ -129,17 +99,16 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
 
+        UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite);
+
     }
-
-
-
     
     /**
      * Set the product price.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setProductPrice(ProductViewHolder holder, Variation item) {
+    private void setProductPrice(ProductListViewHolder holder, Variation item) {
         // Case discount
         if(item.hasDiscount()) {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
@@ -188,7 +157,4 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<Variation
 
         }
     }
-
-
-
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -8,8 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/white"
-    tools:context="com.mobile.view.BaseActivity" >
+    android:background="@color/white">
 
     <!-- RANGE VALUES -->
 
@@ -19,7 +17,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="roboto_regular"
         android:gravity="right"
-        android:textColor="@color/grey_dark"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:layout_marginBottom="30dp"/>
 
@@ -39,9 +37,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="roboto_regular"
         android:text="@string/string_with_discount_only"
-        android:textColor="@color/grey_middle"
+        android:textColor="@color/black"
         android:textSize="@dimen/text_l"
-        android:paddingRight="12dp"
         android:gravity="right|center_vertical"
         android:button="@null"
         android:drawableRight="@drawable/selector_btn_check_holo_green"

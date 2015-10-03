@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="right"
+    >
+
+    <!-- HEADER -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_bundles_title"
+        style="@style/HeaderStyle"
+        android:text="@string/combo"
+        />
+
+    <!-- CONTAINER -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_300">
+
+        <include
+            android:id="@+id/ComboSection"
+            layout="@layout/_v8_pdv_fragment_combo_item" />
+    </LinearLayout>
+
+
+</LinearLayout>

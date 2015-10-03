@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+
     >
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_special_price"
         style="@style/TextBody_3"
         android:textColor="@color/black"
+        android:text="Rs.399"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="Rs.399"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -19,10 +18,11 @@
         android:id="@+id/pdv_text_price"
         style="@style/TextBody_3"
         android:textColor="@color/black_800"
-        android:layout_centerVertical="true"
         android:text="Rs.399"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_toRightOf="@id/pdv_text_special_price"
+        android:layout_toEndOf="@id/pdv_text_special_price"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />
 
@@ -33,7 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_toRightOf="@id/pdv_text_price"
+        android:layout_toEndOf="@id/pdv_text_price"
         android:visibility="gone"
         />
 
-</LinearLayout>
+</RelativeLayout>

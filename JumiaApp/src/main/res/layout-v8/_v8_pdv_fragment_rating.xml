@@ -11,21 +11,26 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_rating_bar_count"
         style="@style/TextInfo"
-        android:layout_marginRight="@dimen/margin_mid" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:text="sada"/>
 
     <RatingBar
         android:id="@+id/pdv_rating_bar"
         style="@style/starRatingBarBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minHeight="20dp"
         android:isIndicator="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <RatingBar
         android:id="@+id/pdv_rating_bar_fashion"
         style="@style/starRatingBarFashionBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minHeight="20dp"
         android:isIndicator="true"
         android:visibility="gone" />
 

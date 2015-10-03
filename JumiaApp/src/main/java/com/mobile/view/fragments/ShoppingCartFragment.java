@@ -834,7 +834,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
+        View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;

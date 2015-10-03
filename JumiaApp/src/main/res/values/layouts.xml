@@ -34,6 +34,8 @@
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_def_price_rules_element</item>
+    <item name="fulfillment_main"                       type="layout">@layout/_def_fulfillment_main</item>
+    <item name="fulfillment_product"                    type="layout">@layout/_def_fulfillment_product</item>
 
     <!-- FORMS -->
     <item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>
@@ -66,7 +68,7 @@
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
     <item name="filter_fragment_price"                   type="layout">@layout/_def_filter_fragment_price</item>
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
-    <item name="catalog_item_list"                      type="layout">@layout/_def_catalog_item_list</item>
+    <item name="gen_product_list"                      type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
@@ -74,16 +76,13 @@
     <item name="shop_fragment_main"                     type="layout">@layout/_def_shop_fragment_main</item>
 
     <!-- PDV -->
-    <!--<item name="product_details_fragment_seller_info"   type="layout">@layout/_def_product_details_fragment_seller_info</item>-->
     <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
-    <!--<item name="product_details_fragment_image"         type="layout">@layout/_def_product_details_fragment_image</item>-->
-    <!--<item name="product_details_fragment_info"          type="layout">@layout/_def_product_details_fragment_info</item>-->
-    <!--<item name="product_details_fragment_offers"        type="layout">@layout/_def_product_details_fragment_offers</item>-->
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
+    <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
 
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
@@ -92,6 +91,11 @@
     <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
     <item name="pdv_fragment_bundle_item" 	            type="layout">@layout/_def_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
+    <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
+    <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
+    <item name="bottom_combo" 	                        type="layout">@layout/_def_bottom_combo</item>
+    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
+    <item name="pdv_fragment_related_item_price" 	        type="layout">@layout/_def_pdv_fragment_related_item_price</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -128,6 +132,9 @@
     <item name="category_inner_childcat"                type="layout">@layout/_def_category_inner_childcat</item>
     <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
+    <item name="category_header"                        type="layout">@layout/_def_category_header</item>
+    <item name="category_single_line_list"              type="layout">@layout/_def_category_single_line_list</item>
+    <item name="category_sublist"                       type="layout">@layout/_def_category_sublist</item>
 
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
@@ -153,57 +160,54 @@
     <item name="campaign_fragment_list_item_title"      type="layout">@layout/_def_campaign_fragment_list_item_title</item>
 
 
-<item name="reviews_fragment_rating_bigtype_item"                       type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
-<item name="navigation_generic_component"                       type="layout">@layout/_def_navigation_generic_component</item>
-<item name="dialog_filter_header"                       type="layout">@layout/_def_dialog_filter_header</item>
-<item name="track_order_form"                       type="layout">@layout/_def_track_order_form</item>
-<item name="reviews_fragment_rating_samlltype_item"                       type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
-<item name="product_offers_main"                       type="layout">@layout/_def_product_offers_main</item>
-<item name="campaign_spinner_item"                       type="layout">@layout/_def_campaign_spinner_item</item>
-<item name="form_checkbox"                       type="layout">@layout/_def_form_checkbox</item>
-<item name="login_remember_checkbox"                       type="layout">@layout/_def_login_remember_checkbox</item>
-<item name="form_spinner_dropdown_item"                       type="layout">@layout/_def_form_spinner_dropdown_item</item>
-<item name="order_history_item"                       type="layout">@layout/_def_order_history_item</item>
-<item name="rating_bar_component"                       type="layout">@layout/_def_rating_bar_component</item>
+    <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
+    <item name="navigation_generic_component"           type="layout">@layout/_def_navigation_generic_component</item>
+    <item name="dialog_filter_header"                   type="layout">@layout/_def_dialog_filter_header</item>
+    <item name="track_order_form"                       type="layout">@layout/_def_track_order_form</item>
+    <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
+    <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
+    <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
+    <item name="form_checkbox"                          type="layout">@layout/_def_form_checkbox</item>
+    <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
+    <item name="form_spinner_dropdown_item"             type="layout">@layout/_def_form_spinner_dropdown_item</item>
+    <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
+    <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
 
-<item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
-<item name="product_item_bundle"                       type="layout">@layout/_def_product_item_bundle</item>
-<item name="shopping_basket_product_element"                       type="layout">@layout/_def_shopping_basket_product_element</item>
-<item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
-<!--<item name="product_details_fragment_bundle"                       type="layout">@layout/_def_product_details_fragment_bundle</item>-->
-<item name="header_title"                       type="layout">@layout/_def_header_title</item>
-<item name="dialog_list_content"                       type="layout">@layout/_def_dialog_list_content</item>
-<item name="reviews_fragment_item"                       type="layout">@layout/_def_reviews_fragment_item</item>
-<item name="shopping_basket_item_image"                       type="layout">@layout/_def_shopping_basket_item_image</item>
-<item name="review_write_fragment"                       type="layout">@layout/_def_review_write_fragment</item>
-<item name="order_history_product_item"                       type="layout">@layout/_def_order_history_product_item</item>
-<item name="dialog_generic_3buttons"                       type="layout">@layout/_def_dialog_generic_3buttons</item>
-<item name="review_write_fragment_nested"                       type="layout">@layout/_def_review_write_fragment_nested</item>
-<item name="forgotpassword"                       type="layout">@layout/_def_forgotpassword</item>
-<item name="preference_list_item"                       type="layout">@layout/_def_preference_list_item</item>
-<item name="dialog_generic"                       type="layout">@layout/_def_dialog_generic</item>
-<item name="my_account_bottom_buttons"                       type="layout">@layout/_def_my_account_bottom_buttons</item>
-<item name="track_order_item"                       type="layout">@layout/_def_track_order_item</item>
-<item name="loading_bar"                       type="layout">@layout/_def_loading_bar</item>
-<!--<item name="product_details_fragment_buttons"                       type="layout">@layout/_def_product_details_fragment_buttons</item>-->
+    <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
+    <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
+    <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
+    <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
+    <item name="header_title"                           type="layout">@layout/_def_header_title</item>
+    <item name="dialog_list_content"                    type="layout">@layout/_def_dialog_list_content</item>
+    <item name="reviews_fragment_item"                  type="layout">@layout/_def_reviews_fragment_item</item>
+    <item name="shopping_basket_item_image"             type="layout">@layout/_def_shopping_basket_item_image</item>
+    <item name="review_write_fragment"                  type="layout">@layout/_def_review_write_fragment</item>
+    <item name="order_history_product_item"             type="layout">@layout/_def_order_history_product_item</item>
+    <item name="dialog_generic_3buttons"                type="layout">@layout/_def_dialog_generic_3buttons</item>
+    <item name="review_write_fragment_nested"           type="layout">@layout/_def_review_write_fragment_nested</item>
+    <item name="forgotpassword"                         type="layout">@layout/_def_forgotpassword</item>
+    <item name="preference_list_item"                   type="layout">@layout/_def_preference_list_item</item>
+    <item name="dialog_generic"                         type="layout">@layout/_def_dialog_generic</item>
+    <item name="my_account_bottom_buttons"              type="layout">@layout/_def_my_account_bottom_buttons</item>
+    <item name="track_order_item"                       type="layout">@layout/_def_track_order_item</item>
+    <item name="loading_bar"                            type="layout">@layout/_def_loading_bar</item>
+    <item name="tip_favourite_layout"                   type="layout">@layout/_def_tip_favourite_layout</item>
+    <item name="shopping_basket"                        type="layout">@layout/_def_shopping_basket</item>
 
-<item name="tip_favourite_layout"                       type="layout">@layout/_def_tip_favourite_layout</item>
-<item name="shopping_basket"                       type="layout">@layout/_def_shopping_basket</item>
+    <item name="shopping_cart_product_container"        type="layout">@layout/_def_shopping_basket_product_element_container</item>
+    <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_def_campaign_spinner_dropdown_item</item>
+    <item name="track_order_status"                     type="layout">@layout/_def_track_order_status</item>
+    <item name="offers_item"                            type="layout">@layout/_def_offers_item</item>
+    <item name="dialog_list_header_item"                type="layout">@layout/_def_dialog_list_header_item</item>
+    <item name="loading_bar_no_box"                     type="layout">@layout/_def_loading_bar_no_box</item>
+    <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
 
-    <item name="shopping_basket_product_element_container"  type="layout">@layout/_def_shopping_basket_product_element_container</item>
-    <item name="campaign_spinner_dropdown_item"             type="layout">@layout/_def_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                         type="layout">@layout/_def_track_order_status</item>
-    <item name="offers_item"                                type="layout">@layout/_def_offers_item</item>
-    <item name="dialog_list_header_item"                    type="layout">@layout/_def_dialog_list_header_item</item>
-    <item name="loading_bar_no_box"                         type="layout">@layout/_def_loading_bar_no_box</item>
-    <item name="product_gallery_fragment"                   type="layout">@layout/_def_product_gallery_fragment</item>
+    <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
+    <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
+    <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
+    <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
-<item name="voucher_insert_layout"                       type="layout">@layout/_def_voucher_insert_layout</item>
-<item name="form_spinner_item"                       type="layout">@layout/_def_form_spinner_item</item>
-<item name="review_fragment"                       type="layout">@layout/_def_review_fragment</item>
-<item name="simple_email_notification_option"                       type="layout">@layout/_def_simple_email_notification_option</item>
-
-    <item name="product_offers_main_new"                        type="layout">@layout/_def_product_offers_main_new</item>
+    <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
 
 </resources>
 

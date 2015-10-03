@@ -313,9 +313,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-            if(action != null){
-                getBaseActivity().updateNavigationMenu(action);
-            }
+//            if(action != null){
+//                getBaseActivity().updateNavigationMenu(action);
+//            }
         }
     }
 

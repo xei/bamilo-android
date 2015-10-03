@@ -28,21 +28,10 @@
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
-            <!--TITLE-->
 
-            <include
-                android:id="@+id/pdv_title_container"
-                layout="@layout/_def_pdv_fragment_title" />
-
-            <!-- IMAGE CONTAINER -->
+            <!--PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
 
             <include layout="@layout/_def_pdv_fragment_image" />
-
-            <!--TITLE-->
-
-            <include
-                android:id="@+id/pdv_title_fashion_container"
-                layout="@layout/_def_pdv_fragment_title" />
 
             <!-- SEPARATOR -->
 
@@ -50,7 +39,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
@@ -83,7 +72,13 @@
 
             <include
                 android:id="@+id/pdv_seller_container"
-                layout="@layout/_def_pdv_fragment_seller_info" />
+                layout="@layout/pdv_fragment_seller_info" />
+
+            <!-- OTHER SELLERS -->
+
+            <include
+                android:id="@+id/pdv_other_sellers_button"
+                layout="@layout/sublist" />
 
             <!-- DESCRIPTION -->
 

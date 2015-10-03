@@ -37,6 +37,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -180,8 +181,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (!TextUtils.isEmpty(mCompleteUrl)) {
                 mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
                 Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
-                builder.clearQuery();
-                mCompleteUrl = builder.toString();
+                removeParametersFromQuery(builder);
             }
 
             // In case of searching by keyword
@@ -206,6 +206,35 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Track most viewed category
         TrackerDelegator.trackCategoryView();
     }
+
+    /**
+     * Function that removes the parameters from the url in order to have the complete url without parameteres
+     * @param builder
+     */
+    private void removeParametersFromQuery(final Uri.Builder builder){
+
+        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+            @Override
+            public void highVersionCallback() {
+                builder.clearQuery();
+                mCompleteUrl = builder.toString();
+            }
+
+            @Override
+            public void lowerVersionCallback() {
+                if(builder.toString().contains("?")){
+                    // only retains the substring from the beginning to the character '?'
+                    mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
+                } else {
+                    // does nothing, because url complete does not have any extra parameters
+                    mCompleteUrl = builder.toString();
+                }
+            }
+        });
+
+    }
+
+
 
     /*
      * (non-Javadoc)
@@ -275,10 +304,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-        // Navigation
-        if (!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null) {
-            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
-        }
     }
 
     /*
@@ -416,8 +441,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
@@ -480,8 +504,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
+//        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
@@ -1127,10 +1152,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @return
      */
     private boolean validateURL() {
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
-            return true;
-        }
-        return false;
+        return !mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl);
     }
 
     /**
@@ -1179,4 +1201,5 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         return false;
     }
+
 }

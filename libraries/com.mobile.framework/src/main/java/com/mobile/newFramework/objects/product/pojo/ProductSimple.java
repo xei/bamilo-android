@@ -27,6 +27,10 @@ public class ProductSimple extends ProductBase {
         super();
     }
 
+    public ProductSimple(JSONObject jsonObject) throws JSONException {
+        initialize(jsonObject);
+    }
+
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */

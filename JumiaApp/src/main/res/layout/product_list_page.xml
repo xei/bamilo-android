@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:numColumns="@integer/pdv_related_products_num_columns"
         android:layout_height="wrap_content"
-        ></com.mobile.utils.ui.VariationProductsGridView>
+        android:scrollbars="vertical"
+        />
 
 </LinearLayout>

@@ -10,17 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 /**
@@ -31,17 +24,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = NavigationFragment.class.getSimpleName();
 
-    private LinearLayout mNavigationOptions;
-
-    private RelativeLayout mCategoryBack;
-
     private LayoutInflater mInflater;
 
     private FragmentType mSavedStateType;
-
-    private int mHomeStringId = R.string.home_label;
-
-    private int mCategoryStringId = R.string.categories_label;
 
     /**
      * Constructor via bundle
@@ -94,15 +79,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        mCategoryBack = (RelativeLayout) view.findViewById(R.id.categories_back_navigation);
-        ((TextView)mCategoryBack.findViewById(R.id.text)).setText(getString(R.string.back_label));
-        mCategoryBack.setOnClickListener(this);
-        // Get container
-        mNavigationOptions = (LinearLayout) view.findViewById(R.id.navigation_options_container);
-        // Check if mNavigationContainer is being reconstructed
-        if (mNavigationOptions.getChildCount() <= 0){
-            addMenuItems();
-        }
 
         if (mSavedStateType == null) {
             Print.d(TAG, "SAVED IS NULL");
@@ -112,6 +88,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     }
 
     private void addListItems() {
+        Print.i(TAG,"ADD LIST ITEMS");
         Bundle args = new Bundle();
         args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
@@ -194,101 +171,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     /**
      * ########### LAYOUT ###########  
      */
-    
-    /**
-     * Create an Option for each item on array <code>navigation_items</code> and add it to Menu</br>
-     * Add Categories header to Menu
-     */
-    private void addMenuItems() {
-        try {
-            mNavigationOptions.removeAllViews();
-            // Add Home
-            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_home, mHomeStringId, this);
-            // Add Category
-            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_categories, mCategoryStringId, null);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * create generic component to add to navigation drawer
-     * @param parent
-     * @param component
-     * @param iconRes
-     * @param text
-     * @param listener
-     * @return
-     */
-    private void createGenericComponent(ViewGroup parent, int iconRes, int stringId, OnClickListener listener) {
-        View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
-        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        String text = getString(stringId);
-        tVSearch.setText(text);
-        tVSearch.setContentDescription("calabash_" + text);
-        
-        // RTL VALIDATION
-        if(ShopSelector.isRtl()){
-            tVSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRes, 0);
-        } else {
-            tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
-        }
-        // Remove selector from category item
-        if(stringId == mCategoryStringId){
-            tVSearch.setBackgroundResource(0);
-        }
-        tVSearch.setOnClickListener(listener);
-        tVSearch.setTag(stringId);
-        parent.addView(navComponent);
-    }
-
-    /**
-     * Method used to update the navigation menu
-     * @author sergiopereira
-     */
-    public void onUpdateMenu(NavigationAction page) {
-        Print.i(TAG, "ON UPDATE NAVIGATION MENU");
-        // Update items
-        if (!isOnStoppingProcess)
-            updateNavigationItems(page);
-    }
-
-    /**
-     * Method used to update the navigation menu
-     * @author sergiopereira
-     */
-    public void onUpdateCategorySelected(String categoryId) {
-        Print.i(TAG, "ON UPDATE NAVIGATION MENU");
-        // Update items
-//        if (!isOnStoppingProcess)
-//            setNavigationCategorySelection(categoryId);
-    }
-    
-    /**
-     * Updated generic items
-     * 
-     * @author sergiopereira
-     */
-    private void updateNavigationItems(NavigationAction page) {
-
-        switch (page){
-            case Home:
-                Print.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
-                if(mNavigationOptions != null){
-                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(true);
-//                    clearNavigationCategorySelection();
-                }
-                break;
-            default:
-                Print.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
-                if(mNavigationOptions != null){
-                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
-//                    clearNavigationCategorySelection();
-                }
-                break;
-        }
-
-    }
 
     /**
      * Method used to switch between the filter fragments
@@ -299,9 +182,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
         Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
-        case NAVIGATION_CATEGORIES_SUB_LEVEL:
-            // No tag fragment on back stack
-            filterType = null; 
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             NavigationCategoryFragment navigationCategoryFragment = NavigationCategoryFragment.getInstance(bundle);
             fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
@@ -367,61 +247,18 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Print.d(TAG, "ON CLICK");
         int id = view.getId();
 
-        switch (id) {
-            // Case Home
-            case R.id.component_text:
-                int tag = (int) view.getTag();
-                if(tag == R.string.home_label){
-                    Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
-                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    getBaseActivity().closeNavigationDrawer();
-                } else {
-                    Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: CATALOG");
-                }
-                break;
-            // Case Back button
-            case R.id.categories_back_navigation:
-                // should I clear the selected category?
-//                clearNavigationCategorySelection();
-                goToParentCategory();
-                break;
-            // Case unknown
-            default:
-                Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
-                getBaseActivity().closeNavigationDrawer();
-                break;
-        }
+        Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
+//        switch (id) {
+//            // Case unknown
+//            default:
+//                Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
+//                getBaseActivity().closeNavigationDrawer();
+//                break;
+//        }
         // Close
 
     }
 
-    /**
-     * control back button visibility
-     */
-    public void setBackButtonVisibility(int visibility){
-        if(mCategoryBack == null){
-            mCategoryBack = (RelativeLayout) getView().findViewById(R.id.categories_back_navigation);
-        }
-        mCategoryBack.setVisibility(visibility);
-    }
-
-//    /**
-//     * Clear selected Category
-//     */
-//    public void clearNavigationCategorySelection(){
-//        if(navigationCategoryFragment != null){
-//            navigationCategoryFragment.clearSelectedCategory();
-//        }
-//    }
-//
-//    /**
-//     * Set selected Category
-//     */
-//    public void setNavigationCategorySelection(String categoryId){
-//        if(navigationCategoryFragment != null){
-//            navigationCategoryFragment.setSelectedCategory(categoryId);
-//        }
-//    }
 
 
 }

@@ -1,8 +1,10 @@
 package com.mobile.utils.deeplink;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -16,8 +18,10 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
+import com.mobile.utils.location.LocationHelper;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
 
@@ -70,6 +74,7 @@ public class DeepLinkManager {
     private static final String SHOPS_IN_SHOP_TAG = "ss";
     public static final String FRAGMENT_TYPE_TAG = "fragment_type";
     public static final String PDV_SIZE_TAG = "size";
+    public static final String COUNTRY_TAG = "country";
 
     /**
      * Load the external deep link.<br>
@@ -103,9 +108,20 @@ public class DeepLinkManager {
         // Case empty
         if (CollectionUtils.isEmpty(segments)) {
             Print.w(TAG, "WARNING: DEEP LINK IS EMPTY");
+            // Validate if theres an host and add the default tag in order to redirect to Home screen if
+            // the deeplink comes with format: android-app://com.jumia.android.dev/jumia/ke
+            if(!TextUtils.isEmpty(host)){
+                Print.w(TAG, "ADD DEFAULT TAG");
+                ArrayList<String> arrayList = new ArrayList<>(segments);
+                arrayList.add(DEFAULT_TAG);
+                segments = arrayList;
+            } else {
+                return segments;
+            }
+
         }
         // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
-        else if(origin == FROM_URI) {
+         if(origin == FROM_URI) {
             // Add country code
             ArrayList<String> arrayList = new ArrayList<>(segments);
             arrayList.add(PATH_CC_POS, host);
@@ -142,12 +158,15 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK URI: " + data + " " + segments);
         //
         Bundle bundle = null;
+        String country = "";
         try {
             // Default case
             String tag = DEFAULT_TAG;
+
             // Validate current URI size
-            if (CollectionUtils.isNotEmpty(segments) && segments.size() > 1) {
-                 tag = segments.get(PATH_VIEW_POS);
+            if (CollectionUtils.isNotEmpty(segments) && segments.size() >= 2) {
+                tag = segments.get(PATH_VIEW_POS);
+                country = segments.get(PATH_CC_POS);
             }
             // Get bundle
             switch (tag) {
@@ -187,9 +206,10 @@ public class DeepLinkManager {
                 case REGISTER_TAG:
                     bundle = processRegisterLink();
                     break;
-                case CATEGORY_TAG:
-                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
-                    break;
+                // NO LONGER USED
+//                case CATEGORY_TAG:
+//                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
+//                    break;
                 case SEARCH_TERM_TAG:
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
@@ -222,6 +242,7 @@ public class DeepLinkManager {
             Print.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
         }
         bundle = addOriginGroupType(data,bundle);
+        bundle.putString(COUNTRY_TAG, country);
         return bundle;
     }
 
@@ -234,8 +255,12 @@ public class DeepLinkManager {
     private static Bundle addOriginGroupType(Uri data, Bundle bundle){
         if(bundle != null && data != null){
             bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
+            return bundle;
+        } else {
+            Bundle emptyBundle = new Bundle();
+            return emptyBundle;
         }
-        return bundle;
+
     }
 
     /**
@@ -259,22 +284,22 @@ public class DeepLinkManager {
         return bundle;
     }
 
-    /**
-     * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
-     *
-     * @param categoryId The category id
-     * @return {@link Bundle}
-     * @author sergiopereira
-     */
-    private static Bundle processCategoryLink(String categoryId) {
-        Print.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
-        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
-        return bundle;
-    }
+//    /**
+//     * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
+//     *
+//     * @param categoryId The category id
+//     * @return {@link Bundle}
+//     * @author sergiopereira
+//     */
+//    private static Bundle processCategoryLink(String categoryId) {
+//        Print.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
+//        // Create bundle
+//        Bundle bundle = new Bundle();
+//        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
+//        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
+//        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
+//        return bundle;
+//    }
 
     /**
      * Method used to create a bundle for track order view with the order id. JUMIA://com.jumia.android/ng/o/1233
@@ -472,22 +497,23 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
-
-//        // create the url with more that one segment:
-//        // case ng/c/?category=womens-dresses&sort=price&dir=asc
-        String deeplinkUrl = data.toString();
-        String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
-
-        // Log
-        Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
-        bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+        // case ng/c/womens-dresses&sort=price&dir=asc
+        String deeplinkUrl = data.toString();
+        if(segments.size() >= MIN_SEGMENTS){
+            String catalogUrlKey = "?category="+segments.get(PATH_DATA_POS).toString();
+            //String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
+            Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
+
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
+            bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
+            bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+        }
+
         return bundle;
     }
 
@@ -548,26 +574,57 @@ public class DeepLinkManager {
 //        return segments;
 //    }
 
+    /**
+     *
+     * Function that test if there is already a selected country, and if not validates if theres any from deeplink
+     * @param context
+     * @param intent
+     * @param callback
+     * @return true or false if there is a valid country from deeplink
+     */
+    public static boolean validateCountryDeepLink(Context context,Intent intent,Handler callback ){
+        String selectedCountryCode = ShopPreferences.getShopId(context);
+        Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
+        // Validate saved shop id
+        if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED) {
+            Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
+            return checkDeepLink(context, intent, callback);
+        } else {
+            Print.e(TAG, "DEEP LINK CC IS THE SAME");
+            return false;
+        }
+    }
 
     /**
-     * Load the country and set
+     * validates if the country from the deeplink is a valid one, and set the configurations
      *
-     * @param context The application context
-     * @param countryCode The country code
-     * @author sergiopereira
+     * @param context
+     * @param intent
+     * @param callback
+     * @return true or false if there is a valid country from deeplink
      */
-//    @Deprecated
-//    private static void loadCountryCode(Context context, String countryCode) {
-//        Print.d(TAG, "DEEP LINK URI PATH: " + countryCode);
-//         Get current country code
-//        String selectedCountryCode = ShopPreferences.getShopId(context);
-//         Validate saved shop id
-//        if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode)) {
-//            locateCountryCode(context, countryCode);
-//        } else {
-//            Print.i(TAG, "DEEP LINK CC IS THE SAME");
-//        }
-//    }
+    private static boolean checkDeepLink(Context context, Intent intent, Handler callback){
+        Print.e(TAG, "checkDeepLink:");
+        Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
+        Print.e(TAG, "checkDeepLink:"+mDeepLinkBundle);
+        if(mDeepLinkBundle != null){
+            String countryCode = mDeepLinkBundle.getString(DeepLinkManager.COUNTRY_TAG);
+            Print.e(TAG, "countryCode:"+countryCode);
+            if(!TextUtils.isEmpty(countryCode)){
+                LocationHelper.getInstance().initializeLocationHelper(context, callback);
+                if(LocationHelper.getInstance().isCountryAvailable(countryCode)){
+                    Print.i(TAG, "MATCH COUNTRY FROM DEEPLINK: " + countryCode);
+                    LocationHelper.getInstance().sendInitializeMessage();
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        } else {
+          return false;
+        }
+
+    }
 
     /**
      * Locate the shop id and save it for a respective country code

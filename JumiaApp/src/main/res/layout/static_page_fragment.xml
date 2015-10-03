@@ -13,6 +13,7 @@
             android:orientation="vertical" >
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/terms_title"
                 style="@style/activity_sectionheader_text"
                 android:text="@string/terms_and_conditions" />
 

@@ -79,7 +79,6 @@ import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
@@ -567,32 +566,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean isInitialCountry() {
         return initialCountry;
     }
-
-    /*
-     * ############### NAVIGATION MENU #################
-     */
-
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationMenu(NavigationAction page) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateMenu(page);
-        }
-    }
-    /**
-     * Update the sliding menu
-     */
-    public void updateNavigationCategorySelection(String categoryId) {
-        Print.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateCategorySelected(categoryId);
-        }
-    }
-
 
     /*
      * ############### OPTIONS MENU #################

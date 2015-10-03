@@ -384,7 +384,7 @@
     <string name="country">Country</string>
     <string name="birthday_label">birthday</string>
     <string name="birthday_error">Please choose a valid Birthday.</string>
-    <string name="filter_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%d)</string>
     <string name="clear_all_lowercase_label">Clear All</string>
     <string name="apply_label">Apply</string>
     <string name="see_other_variations">See other variations</string>
@@ -406,7 +406,7 @@
     <string name="products_tip_saved_text">Click to Save products!</string>
     <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
     <string name="warranty">Warranty: %s</string>
-    <string name="other_sellers_starting">Other Sellers starting from:</string>
+    <string name="other_sellers_starting">Other Sellers starting from: %s</string>
     <string name="buy_combo">BUY COMBO</string>
     <string name="total_price_bottom">Total:</string>
     <string name="from_avg_rat">from</string>
@@ -419,4 +419,8 @@
     <string name="average_reviews_header">USER REVIEWS</string>
     <string name="description1">Description</string>
     <string name="rat_rev">Ratings Reviews</string>
+    <string name="fulfilled_by">Fulfilled by %s</string>
+    <string name="qty_placeholder">Qty: %d</string>
+    <string name="shipment" formatted="false">Shipment %d of %d</string>
+    <string name="policy">Policy</string>
 </resources>

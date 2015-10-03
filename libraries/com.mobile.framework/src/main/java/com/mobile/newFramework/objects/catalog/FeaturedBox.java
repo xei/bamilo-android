@@ -122,7 +122,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 
             JSONObject searchTipsObject = data.optJSONObject(RestConstants.JSON_FEATURED_SEARCH_TIPS_TAG);
             if (searchTipsObject != null) {
-                searchTips = searchTipsObject.optString(RestConstants.JSON_TEXT_TAG);
+                searchTips = searchTipsObject.optString(RestConstants.TEXT);
             }
 
             errorMessage = data.getString(RestConstants.JSON_ERROR_MESSAGE_TAG);

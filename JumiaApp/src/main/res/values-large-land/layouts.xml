@@ -12,9 +12,6 @@
 	<!-- SHOPPING CART -->
 	<item name="shopping_basket" 				type="layout">@layout/_def_shopping_basket</item>
 
-    <!-- PDV -->
-    <item name="pdv_fragment_main" 	             type="layout">@layout/_def_pdv_fragment_main</item>
-
     <!-- TABLET SETTINGS -->
     <bool
         name="isTablet"
