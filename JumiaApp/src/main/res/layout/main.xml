@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- COORDINATOR -->
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -39,6 +40,7 @@
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 
+
         </android.support.design.widget.AppBarLayout>
 
         <!-- SCROLLABLE CONTAINER -->
@@ -47,12 +49,12 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".ScrollingActivity"
-            tools:showIn="@layout/activity_scrolling"
             android:clickable="false"
             android:focusable="false"
-            android:focusableInTouchMode="false">
+            android:focusableInTouchMode="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".ScrollingActivity"
+            tools:showIn="@layout/activity_scrolling">
 
             <!-- HEADER TITLE AND TOTAL -->
 
