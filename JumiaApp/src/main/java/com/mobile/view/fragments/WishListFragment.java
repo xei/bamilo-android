@@ -403,16 +403,16 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Update the recently adapter
         updateWishListContainer();
 
-//        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
-//            ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(mClickedPositionToAdd);
-//            // Validate has simple variation selected
-//            ProductSimple simple = product.getSelectedSimple();
-//            // Validate simple variations
-//            if(product.hasSelectedSimpleVariation() && simple != null) {
-//                triggerAddProductToCart(product.getSku(), simple.getSku());
-//                isAddingProductToCart = false;
-//            }
-//        }
+        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
+            ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(mClickedPositionToAdd);
+            // Validate has simple variation selected
+            ProductSimple simple = product.getSelectedSimple();
+            // Validate simple variations
+            if(product.hasSelectedSimpleVariation() && simple != null) {
+                triggerAddProductToCart(product.getSku(), simple.getSku());
+                isAddingProductToCart = false;
+            }
+        }
         
     }
 
