@@ -17,22 +17,24 @@
         android:text="@string/buy_now_button"
         android:textColor="@color/white" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/pdv_button_call"
         android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/black_900"
-        android:scaleType="centerInside"
+        android:paddingLeft="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding"
         android:src="@drawable/ic_call" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/pdv_button_share"
         android:layout_width="@dimen/buy_bar_image_item_width"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/black_900"
-        android:scaleType="centerInside"
+        android:paddingLeft="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding"
         android:src="@drawable/ic_share" />
 
 </LinearLayout>
