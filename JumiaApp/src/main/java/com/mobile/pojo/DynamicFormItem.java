@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -670,7 +671,10 @@ public class DynamicFormItem {
                 if (selectedYear != 0) {
                     GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
                     Date d = new Date(cal.getTimeInMillis());
-                    result = DateFormat.format(DATE_FORMAT, d).toString();
+                //    result = DateFormat.format(DATE_FORMAT, d).toString();
+                    // its necessary because of arabic languages
+                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
+                    result = dateFormat.format(d);
                 } else {
                     result = "";
                 }

@@ -11,10 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
@@ -33,7 +30,7 @@ import java.util.ArrayList;
  * Can be used to add a header and footer view.
  * @author sergiopereira
  */
-public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener {
+public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener, HeaderFooterInterface {
     
     private static final int ITEM_VIEW_TYPE_HEADER = 0;
     
@@ -70,9 +67,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHold
     private String mTitle;
 
     private int level;
-
-
-
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
