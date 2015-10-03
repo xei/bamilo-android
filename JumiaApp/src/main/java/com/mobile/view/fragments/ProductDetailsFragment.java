@@ -29,6 +29,7 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
+import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -67,7 +68,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -1058,6 +1058,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private void triggerRemoveFromWishList(String sku) {
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
+    }
+
+
+    private void triggerGetProductOffers(String sku) {
+        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
     }
 
     /*
