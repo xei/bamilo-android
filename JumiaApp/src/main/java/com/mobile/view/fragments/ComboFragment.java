@@ -60,7 +60,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private Button btBuyCombo;
     private Context context;
     private ProductBundle mBundleWithMultiple;
-//    private boolean isAddingProductToCart = false;
 
     ArrayList<ProductBundle> listBundlesOneSimple;
     ArrayList<ProductBundle> listBundlesMultipleSimple;
@@ -180,7 +179,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      *
      */
 
-    private void addComboToChart()
+    private void addComboToCart()
     {
         //separate teh products into lis with single and list with multiple
         separateProductsBySimpleType();

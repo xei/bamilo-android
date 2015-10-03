@@ -118,6 +118,8 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         setSizeGuide(view, mProduct.getSizeGuideUrl());
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        // Set Max list size
+        setListSize(list, mProduct.getSimples().size());
         // Validate adapter
         DialogListAdapter mAdapter = new DialogListAdapter(mProduct.getSimples());
         // Add adapter
