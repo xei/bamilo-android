@@ -51,7 +51,6 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -141,16 +140,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-    /**
-     * Constructor used only by PDV fragments
-     */
-    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-        this.enabledMenuItems = enabledMenuItems;
-        this.action = action;
-        this.titleResId = titleResId;
-        this.adjustState = adjust_state;
-        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-    }
+//    /**
+//     * Constructor used only by PDV fragments
+//     */
+//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+//        this.enabledMenuItems = enabledMenuItems;
+//        this.action = action;
+//        this.titleResId = titleResId;
+//        this.adjustState = adjust_state;
+//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+//    }
 
     /**
      * Constructor with layout to inflate used only by Checkout fragments
@@ -247,11 +246,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-        // Hide search component for change country
-        if (this.action == NavigationAction.Country) {
-            // Hide search component
-            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-        }
+//        // Hide search component for change country
+//        if (this.action == NavigationAction.Country) {
+//            // Hide search component
+//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
+//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());

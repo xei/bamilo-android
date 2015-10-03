@@ -6,4 +6,3 @@
     android:layout_height="@dimen/home_small_teaser_height"
     android:layout_centerInParent="true"
     android:clipToPadding="false" />
-    <!--app:layout_behavior="@null"-->

@@ -139,7 +139,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Catalog,
                 R.layout.catalog_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);

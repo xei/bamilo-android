@@ -61,7 +61,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      */
     public ProductDetailsInfoFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+                NavigationAction.Product,
                 R.layout.details_info_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);

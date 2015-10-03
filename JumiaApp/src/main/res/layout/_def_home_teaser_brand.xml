@@ -16,8 +16,6 @@
         android:layout_height="@dimen/home_brand_teaser_item_height"
         android:background="@android:color/white"
         android:paddingBottom="1dp"
-        android:paddingTop="1dp"
-        />
-    <!--app:layout_behavior="@null"-->
+        android:paddingTop="1dp" />
 
 </LinearLayout>

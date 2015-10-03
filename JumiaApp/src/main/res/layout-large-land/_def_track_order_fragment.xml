@@ -5,16 +5,16 @@
     android:baselineAligned="false"
     android:orientation="horizontal">
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <include layout="@layout/track_order_form" />
 
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -30,6 +30,6 @@
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginTop="@dimen/rounded_margin_mid"
             android:visibility="gone" />
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
 </LinearLayout>

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -43,8 +40,6 @@ public class MyOrdersFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
         MyOrdersFragment fragment = new MyOrdersFragment();

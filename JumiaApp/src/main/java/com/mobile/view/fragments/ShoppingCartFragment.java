@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;

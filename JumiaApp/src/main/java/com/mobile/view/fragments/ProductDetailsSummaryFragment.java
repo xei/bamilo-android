@@ -21,12 +21,8 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-
-import java.util.EnumSet;
 
 /**
  * Class that represents the fragment that shows the product information, related to description and key features.
@@ -62,11 +58,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsSummaryFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
-                R.layout.product_summary_fragment,
-                R.string.product_desc_summary_title,
-                KeyboardState.NO_ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.product_summary_fragment);
     }
 
     /*

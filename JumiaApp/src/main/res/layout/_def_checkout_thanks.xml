@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_checkout_continue_container"
@@ -75,7 +75,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:id="@id/btn_checkout_continue_container"

@@ -13,7 +13,7 @@
 
     <!-- LEFT CONTAINER -->
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_my_order_button_container"
@@ -41,11 +41,11 @@
                 android:layout_marginTop="@dimen/rounded_margin_small"
                 layout="@layout/shopping_basket_subtotal_element" />
         </LinearLayout>
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
     <!-- RIGHT CONTAINER -->
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_my_order_button_container"
@@ -76,7 +76,7 @@
 
             <include layout="@layout/checkout_my_order_payment_options" />
         </LinearLayout>
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
     <!-- NEXT STEP BUTTON -->
 

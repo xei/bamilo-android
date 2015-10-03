@@ -34,16 +34,6 @@ public class CampaignsFragment extends BaseFragment {
     
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
 
-    /*
-    private ViewPager mCampaignPager;
-
-    private CampaignPagerAdapter mCampaignPagerAdapter;
-
-    private ArrayList<TeaserCampaign> mCampaigns;
-
-    private SlidingTabLayout mCampaignPagerTabStrip;
-    */
-
     /**
      * Constructor via bundle
      * @return CampaignsFragment

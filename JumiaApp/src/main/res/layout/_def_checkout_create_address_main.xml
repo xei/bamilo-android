@@ -5,7 +5,7 @@
 
     <!-- CONTENT -->
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:id="@+id/checkout_address_form_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +30,7 @@
                 layout="@layout/checkout_create_address_billing"
                 android:visibility="gone" />
         </LinearLayout>
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
     <!-- NEXT BUTTON -->
 

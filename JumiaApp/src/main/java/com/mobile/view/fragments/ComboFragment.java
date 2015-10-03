@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
@@ -19,6 +17,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -55,10 +54,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
-    private ComboGridView gridView;
     private ComboGridAdapter adapter;
-    private Button btBuyCombo;
-    private Context context;
     private ProductBundle mBundleWithMultiple;
 
     ArrayList<ProductBundle> listBundlesOneSimple;
@@ -83,8 +79,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     public ComboFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK,MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Combos,
                 R.layout.pdv_combos_page,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -107,9 +104,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
             productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             totalPrice = bundleList.getBundlePriceDouble();
-
         }
-
     }
 
     /*
@@ -120,23 +115,19 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        context = getBaseActivity().getApplicationContext();
         //update total price
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
-
-        gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-
-        adapter = new ComboGridAdapter(context,bundleList.getBundleProducts(),productSku);
+        // Grid view
+        ComboGridView gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
+        adapter = new ComboGridAdapter(getBaseActivity(), bundleList.getBundleProducts(),productSku);
         adapter.setOnViewHolderClickListener(this);
         gridView.setAdapter(adapter);
         gridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
-
         gridView.setHasFixedSize(true);
         gridView.setItemAnimator(new DefaultItemAnimator());
-
-        btBuyCombo = (Button) view.findViewById(R.id.btBuyCombo);
-        btBuyCombo.setOnClickListener(this);
+        // Button
+        view.findViewById(R.id.btBuyCombo).setOnClickListener(this);
     }
 
 

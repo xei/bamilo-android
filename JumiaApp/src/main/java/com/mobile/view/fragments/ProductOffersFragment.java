@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
@@ -89,8 +88,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
                 NavigationAction.Offers,
                 R.layout.product_offers_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.utils.AigScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/window_background_color"
@@ -21,4 +21,4 @@
             layout="@layout/error_button_layout" />
     </LinearLayout>
 
-</com.mobile.utils.AigScrollView>
+</ScrollView>

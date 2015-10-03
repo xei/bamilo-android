@@ -39,10 +39,10 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     /** GOOGLE PLAY SERVICE **/
-    compile 'com.google.android.gms:play-services-analytics:8.1.0'
-    compile 'com.google.android.gms:play-services-location:8.1.0'
-    compile 'com.google.android.gms:play-services-ads:8.1.0'
-    compile 'com.google.android.gms:play-services-wearable:8.1.0'
+    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    compile 'com.google.android.gms:play-services-location:7.5.0'
+    compile 'com.google.android.gms:play-services-ads:7.5.0'
+    compile 'com.google.android.gms:play-services-wearable:7.5.0'
     /** TRACKERS  **/
     compile 'com.newrelic.agent.android:android-agent:5.1.2'
     compile 'com.ad4screen.sdk:A4SSDK:3.1.4'

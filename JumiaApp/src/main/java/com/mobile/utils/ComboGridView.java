@@ -11,24 +11,30 @@ import android.util.AttributeSet;
  */
 public class ComboGridView extends RecyclerView {
 
-    private static final String TAG = ComboGridView.class.getSimpleName();
-
-    private GridLayoutManager mGridLayoutManager;
+    public static final String TAG = ComboGridView.class.getSimpleName();
 
     public ComboGridView(Context context) {
         super(context);
+        init();
     }
 
     public ComboGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public ComboGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
+
+    private void init() {
+        // Disable nested scrolling behaviour
+        this.setNestedScrollingEnabled(false);
     }
 
     public void setGridLayoutManager(int columns) {
-        mGridLayoutManager = new GridLayoutManager(getContext(), columns);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(getContext(), columns);
         mGridLayoutManager.setSmoothScrollbarEnabled(true);
         setLayoutManager(mGridLayoutManager);
     }
@@ -38,13 +44,5 @@ public class ComboGridView extends RecyclerView {
         super.setAdapter(adapter);
 
     }
-
-
-    public void addItemDecoration(int resourceDrawable) {
-    /*    DividerItemDecoration divider = new DividerItemDecoration(getContext().getResources().getDrawable(resourceDrawable));
-        if(divider != null)
-            addItemDecoration(divider);*/
-    }
-
 
 }

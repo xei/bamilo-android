@@ -14,7 +14,7 @@
 
         <!-- CONTENT -->
 
-        <com.mobile.utils.AigScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/checkout_button_container"
@@ -34,7 +34,7 @@
 
                 <include layout="@layout/voucher_insert_layout" />
             </LinearLayout>
-        </com.mobile.utils.AigScrollView>
+        </ScrollView>
 
         <!-- NEXT BUTTON -->
 

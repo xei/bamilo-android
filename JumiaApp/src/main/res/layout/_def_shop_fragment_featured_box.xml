@@ -15,6 +15,5 @@
         style="@style/HorizontalListStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_top_sellers_teaser_item_height" />
-    <!--app:layout_behavior="@null"-->
 
 </LinearLayout>

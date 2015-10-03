@@ -123,7 +123,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     // REMOVED FINAL ATTRIBUTE
     private NavigationAction action;
 
-    protected View contentContainer;
+    //protected View contentContainer;
 
     private Set<MyMenuItem> menuItems;
 
@@ -234,6 +234,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setupContentViews();
         // Update the content view if initial country selection
         updateContentViewsIfInitialCountrySelection();
+        // Set main layout
+        //setAppContentLayout();
         // Set title in AB or TitleBar
         setTitle(titleResId);
         // For tracking
@@ -458,9 +460,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 int pos = tab.getPosition();
                 if (pos == 0 && action != NavigationAction.Home) {
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                } else if (pos == 1 && action != NavigationAction.Saved) {
+                }
+                else if (pos == 1 && action != NavigationAction.Saved) {
                     onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                } else if (pos == 2 && action != NavigationAction.Basket) {
+                }
+                else if (pos == 2 && action != NavigationAction.Basket) {
                     onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
             }
@@ -518,13 +522,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (action != NavigationAction.Basket &&
                 action != NavigationAction.Saved &&
                 action != NavigationAction.Home &&
-                action != NavigationAction.Products &&
+                action != NavigationAction.Catalog &&
                 view != null) {
             TypedValue tv = new TypedValue();
             if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                 int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                params.bottomMargin += actionBarHeight + 5;
+                params.bottomMargin += actionBarHeight + 5; // 5 is little fix
             }
         }
 
@@ -599,7 +603,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void setupContentViews() {
         Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Get the application horizontalListView
-        contentContainer = findViewById(R.id.rocket_app_content);
+        //contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
@@ -819,36 +823,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //setShareIntent(createShareIntent());
     }
 
-
     /**
      * Set the cart menu item
-     * @modified sergiopereira
-     */
-//    private void setActionHome(final Menu menu) {
-//        MenuItem home = menu.findItem(MyMenuItem.HOME.resId);
-//        // Validate country
-//        if (!initialCountry) {
-//            home.setVisible(true);
-//            home.setEnabled(true);
-////            View actionHomeView = MenuItemCompat.getActionView(home);
-//////            mActionCartCount = (TextView) actionHomeView.findViewById(R.id.action_cart_count);
-//////            View actionCartImage = actionHomeView.findViewById(R.id.action_cart_image);
-////            actionHomeView.setOnClickListener(new OnClickListener() {
-////                @Override
-////                public void onClick(View v) {
-////                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
-////                }
-////            });
-////            updateCartInfoInActionBar();
-//        } else {
-//            home.setVisible(false);
-//        }
-//    }
-
-
-    /**
-     * Set the cart menu item
-     * @modified sergiopereira
      */
     private void setActionCart(final Menu menu) {
         MenuItem basket = menu.findItem(MyMenuItem.BASKET.resId);

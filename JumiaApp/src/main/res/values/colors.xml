@@ -84,8 +84,9 @@
     <color name="black_400">#e2e2e2</color>
 
     <!-- ANDROID 5.0: MATERIAL STYLE -->
-    <color name="primary">@color/black_900</color>
-    <color name="primary_dark">@color/grey_dark</color>
+    <color name="appBar">@color/black_900</color>
+    <color name="tabBar">@color/black_900</color>
+    <color name="statusBar">@color/grey_dark</color>
     <color name="accent">@color/color_accent</color>
     <color name="black">@android:color/black</color>
     <color name="white">@android:color/white</color>

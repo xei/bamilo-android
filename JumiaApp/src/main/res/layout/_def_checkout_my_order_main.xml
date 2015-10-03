@@ -5,7 +5,7 @@
 
     <!-- CONTENT -->
 
-    <com.mobile.utils.AigScrollView
+    <ScrollView
         android:id="@+id/checkout_my_order_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -92,7 +92,7 @@
                 android:layout_marginTop="@dimen/rounded_margin_small"
                 layout="@layout/checkout_my_order_payment_options" />
         </LinearLayout>
-    </com.mobile.utils.AigScrollView>
+    </ScrollView>
 
     <!-- NEXT STEP BUTTON -->
 

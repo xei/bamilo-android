@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -27,12 +24,9 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * @author Manuel Silva
@@ -58,8 +52,6 @@ public class TrackOrderFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static TrackOrderFragment getInstance(Bundle bundle) {
         TrackOrderFragment fragment = new TrackOrderFragment();
@@ -71,11 +63,7 @@ public class TrackOrderFragment extends BaseFragment {
      * Empty constructor
      */
     public TrackOrderFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
-                R.layout.track_order_fragment,
-                R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.track_order_fragment);
     }
 
     /*

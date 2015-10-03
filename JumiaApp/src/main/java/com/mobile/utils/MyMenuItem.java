@@ -35,7 +35,6 @@ import com.mobile.view.R;
 public enum MyMenuItem {
 
     /* SHARE(R.id.menu_share), */
-//    HOME(R.id.menu_home),
     BASKET(R.id.menu_basket), 
     SEARCH_VIEW(R.id.menu_search), 
     MY_PROFILE(R.id.menu_myprofile),

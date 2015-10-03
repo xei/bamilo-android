@@ -5,8 +5,9 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ScrollView;
 
-public class AigScrollViewWithHorizontal extends AigScrollView {
+public class AigScrollViewWithHorizontal extends ScrollView {
 	private float xDistance, yDistance, lastX, lastY;
 
 	private Handler mHandler;

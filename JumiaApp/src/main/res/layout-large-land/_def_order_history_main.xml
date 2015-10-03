@@ -75,7 +75,7 @@
             style="@style/divider_horizontal_orange"
             android:layout_below="@+id/products_container_title" />
 
-        <com.mobile.utils.AigScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/products_container_line" >
@@ -167,7 +167,7 @@
                     android:orientation="vertical" >
                 </LinearLayout>
             </RelativeLayout>
-        </com.mobile.utils.AigScrollView>
+        </ScrollView>
         <!--
                      <ListView
             android:id="@+id/orders_products_list"

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandableGridViewComponent;
@@ -51,7 +52,6 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.AigScrollViewWithHorizontal;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -781,7 +781,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickGlobalSellerButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         try {
-            AigScrollViewWithHorizontal scrollView = (AigScrollViewWithHorizontal) getView().findViewById(R.id.product_detail_scrollview);
+            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.product_detail_scrollview);
             scrollView.smoothScrollTo(0, mSellerContainer.getTop());
         } catch (NullPointerException e) {
             Log.i(TAG, "WARNING: NPE ON TRY SCROLL TO SELLER VIEW");

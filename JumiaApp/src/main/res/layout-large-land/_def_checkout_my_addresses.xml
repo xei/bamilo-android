@@ -12,7 +12,7 @@
 
         <!-- CONTENT -->
 
-        <com.mobile.utils.AigScrollView
+        <ScrollView
             android:id="@+id/checkout_addresses_one_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,7 +32,7 @@
 
                 <include layout="@layout/checkout_my_addresses_bottom" />
             </LinearLayout>
-        </com.mobile.utils.AigScrollView>
+        </ScrollView>
 
         <!-- NEXT BUTTON -->
 

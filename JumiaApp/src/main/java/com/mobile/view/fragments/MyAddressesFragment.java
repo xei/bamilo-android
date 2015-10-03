@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -16,7 +17,6 @@ import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.AigScrollView;
 import com.mobile.utils.GenericRadioGroup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -67,7 +67,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     protected View mTopAddContainer;
 
-    protected AigScrollView mMainAigScrollView;
+    protected ScrollView mMainScrollView;
 
     protected Form hiddenForm;
 
@@ -92,7 +92,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get the main scroll view that can be null
-        mMainAigScrollView = (AigScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
+        mMainScrollView = (ScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
         // Get containers
         mTopTitle = (TextView) view.findViewById(R.id.checkout_addresses_default_title);
         mTopRadioGroup = (GenericRadioGroup) view.findViewById(R.id.checkout_addresses_default_container);
@@ -426,7 +426,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     protected void cleanContainers(){
-        if(mMainAigScrollView != null) mMainAigScrollView.fullScroll(AigScrollView.FOCUS_UP);
+        if(mMainScrollView != null) mMainScrollView.fullScroll(ScrollView.FOCUS_UP);
         if(mTopRadioGroup != null) mTopRadioGroup.removeAllViews();
         if(mBottomRadioGroup != null) mBottomRadioGroup.removeAllViews();
     }

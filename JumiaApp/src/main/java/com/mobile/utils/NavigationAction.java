@@ -2,9 +2,6 @@ package com.mobile.utils;
 
 /**
  * Defines the navigation action enum.
- * 
- * @author ManuelSilva
- * 
  */
 public enum NavigationAction {
 
@@ -20,7 +17,7 @@ public enum NavigationAction {
     Saved,
     RecentSearches,
     RecentlyViewed,
-    Products,
+    Catalog,
     Product,
     Country,
     MyOrders,
@@ -30,6 +27,8 @@ public enum NavigationAction {
     ForgotPassword,
     Terms,
     Filters,
+    Combos,
+    Variations,
     Unknown
 
 }
