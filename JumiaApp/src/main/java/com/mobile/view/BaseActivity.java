@@ -26,7 +26,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -38,7 +37,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -82,6 +80,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
@@ -108,7 +107,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -397,16 +396,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction newNavAction, int actionBarTitleResId, int checkoutStep) {
         Print.i(TAG, "ON UPDATE BASE COMPONENTS");
         // Update the app bar layout
-        setAppBarLayout(action);
+        setAppBarLayout(this.action, newNavAction);
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         hideKeyboard();
         invalidateOptionsMenu();
         // Update the sliding menu
-        this.action = action != null ? action : NavigationAction.Unknown;
+        this.action = newNavAction != null ? newNavAction : NavigationAction.Unknown;
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
@@ -445,94 +444,35 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setupTabBarLayout() {
         // Get tab layout
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        TabLayout.Tab tab = mTabLayout.newTab();
-        tab.setCustomView(R.layout.tab_home);
-        mTabLayout.addTab(tab);
-        TabLayout.Tab tab2 = mTabLayout.newTab();
-        tab2.setCustomView(R.layout.tab_saved);
-        mTabLayout.addTab(tab2);
-        TabLayout.Tab tab3 = mTabLayout.newTab();
-        tab3.setCustomView(R.layout.tab_cart);
-        mTabLayout.addTab(tab3);
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int pos = tab.getPosition();
-                if (pos == 0 && action != NavigationAction.Home) {
-                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
-                else if (pos == 1 && action != NavigationAction.Saved) {
-                    onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
-                else if (pos == 2 && action != NavigationAction.Basket) {
-                    onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        updateTabCartInfo();
-
+        TabLayoutUtils.fillTabLayout(mTabLayout, this);
+        TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
 
-    private void setAppBarLayout(NavigationAction action) {
+    private void setAppBarLayout(NavigationAction oldNavAction, NavigationAction newNavAction) {
         try {
-            // Case others
-            if (action != NavigationAction.Basket && action != NavigationAction.Saved && action != NavigationAction.Home) {
+            // Case action without tab layout
+            if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
                 mTabLayout.setVisibility(View.GONE);
+                // Expand the app bar layout
+                mAppBarLayout.setExpanded(true, true);
             }
+            // Case action with tab layout
             else {
                 mTabLayout.setVisibility(View.VISIBLE);
-                // Case Home
-                if (action == NavigationAction.Home) {
-                    mTabLayout.getTabAt(0).select();
-                }
-                // Case Basket
-                else if (action == NavigationAction.Saved) {
-                    mTabLayout.getTabAt(1).select();
-                }
-                // Case Basket
-                else {
-                    mTabLayout.getTabAt(2).select();
+                //noinspection ConstantConditions
+                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
+                // Case from other tab
+                if (TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
+                    // Expand the app bar layout
+                    mAppBarLayout.setExpanded(true, true);
                 }
             }
-            // Expand the app bar layout
-            mAppBarLayout.setExpanded(true, true);
         } catch (NullPointerException e) {
             // ...
         }
     }
 
-    /**
-     * Method used to add a bottom margin with tool bar size.<br>
-     * Because the Coordinator Layout first build the without tool bar size.<br>
-     * And after add the tool bar and translate the view to below.
-     */
-    public void setViewWithoutNestedScrollView(View view, NavigationAction action) {
-        // Case others
-        if (action != NavigationAction.Basket &&
-                action != NavigationAction.Saved &&
-                action != NavigationAction.Home &&
-                action != NavigationAction.Catalog &&
-                view != null) {
-            TypedValue tv = new TypedValue();
-            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-                int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                params.bottomMargin += actionBarHeight + 5; // 5 is little fix
-            }
-        }
 
-    }
 
     /**
      * Set Action bar title
@@ -845,6 +785,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             basket.setVisible(false);
         }
+    }
+
+     /*
+     * ########### TAB LAYOUT LISTENER ###########
+     */
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        TabLayoutUtils.tabSelected(this, tab, action);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        // ...
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+        // ...
     }
     
     
@@ -1254,7 +1213,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                    + JumiaApplication.INSTANCE.getCart().getCartCount());
 //        }
         updateCartInfoInActionBar();
-        updateTabCartInfo();
+        TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
 
     public void updateCartInfoInActionBar() {
@@ -1277,17 +1236,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    private void updateTabCartInfo() {
-        // Update the cart tab
-        try {
-            // Show 0 while the cart is not updated
-            String quantity = JumiaApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount());
-            //noinspection ConstantConditions
-            ((TextView) mTabLayout.getTabAt(2).getCustomView().findViewById(R.id.tab_cart_number_products)).setText(quantity);
-        } catch (NullPointerException e) {
-            // ...
-        }
-    }
+
 
 
     /**

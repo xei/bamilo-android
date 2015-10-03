@@ -141,11 +141,13 @@ public class MyProfileActionProvider extends ActionProvider {
         // Case Home or Cart
         if (action == NavigationAction.Home || action == NavigationAction.Basket || action == NavigationAction.Saved) {
             // Remove home from array
+            if(NavigationAction.Saved == list.get(2)) list.remove(2);
             if(NavigationAction.Home == list.get(0)) list.remove(0);
         }
         // Case others
         else if (NavigationAction.Home != list.get(0)) {
             list.add(0, NavigationAction.Home);
+            list.add(2, NavigationAction.Saved);
         }
 
     }
