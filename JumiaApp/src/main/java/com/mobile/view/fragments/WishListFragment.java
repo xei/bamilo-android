@@ -31,6 +31,7 @@ import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -64,9 +65,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private boolean isErrorOnLoadingMore = false;
 
-    private boolean  isAddingProductToCart = false;
-
-    private int mClickedPositionToAdd = -1;
+    private View mClickedBuyButton;
 
     /**
      * Create and return a new instance.
@@ -141,7 +140,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        isAddingProductToCart = false;
     }
 
     /*
@@ -384,7 +382,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
-            mClickedPositionToAdd = position;
             ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(position);
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
@@ -402,18 +399,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         updateWishListContainer();
-
-        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
-            ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(mClickedPositionToAdd);
-            // Validate has simple variation selected
-            ProductSimple simple = product.getSelectedSimple();
-            // Validate simple variations
-            if(product.hasSelectedSimpleVariation() && simple != null) {
-                triggerAddProductToCart(product.getSku(), simple.getSku());
-                isAddingProductToCart = false;
-            }
+        // Case from buy button
+        if(mClickedBuyButton != null) {
+            onClickAddToCart(mClickedBuyButton);
         }
-        
     }
 
     @Override
@@ -423,8 +412,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     }
 
     @Override
-    public void onDismiss() {
-        isAddingProductToCart = false;
+    public void onDialogListDismiss() {
+        mClickedBuyButton = null;
     }
 
     /**
@@ -462,18 +451,15 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         ProductSimple simple = product.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            isAddingProductToCart = false;
             triggerAddProductToCart(product.getSku(), simple.getSku());
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
-            // TODO: add item to cart after variation dialog
-            isAddingProductToCart = true;
+            mClickedBuyButton = view;
             onClickVariation(view);
         }
         // Case error unexpected
         else {
-            isAddingProductToCart = false;
             showUnexpectedErrorWarning();
         }
     }
@@ -491,7 +477,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     }
 
     protected synchronized void triggerAddProductToCart(String sku, String simpleSku) {
-        isAddingProductToCart = false;
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSku), this);
     }
 
@@ -518,7 +503,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_ADDED_CART);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();

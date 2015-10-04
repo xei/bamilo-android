@@ -34,7 +34,8 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -59,9 +60,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private Button mAddAllToCartButton;
 
-    private boolean isAddingProductToCart = false;
-
-    private int mClickedPositionToAdd = -1;
+    private View mClickedBuyButton;
 
     /**
      * Empty constructor
@@ -126,7 +125,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Get RecentlyViewed
         Print.i(TAG, "LOAD LAST VIEWED ITEMS");
         new GetRecentlyViewedHelper(this);
-        isAddingProductToCart = false;
     }
 
 
@@ -266,8 +264,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             getBaseActivity().warningFactory.hideWarning();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
-            // Saved the product position to be able to add after picking size
-            mClickedPositionToAdd = position;
             ProductMultiple addableToCart = mProducts.get(position);
             showVariantsDialog(addableToCart);
         } catch (NullPointerException e) {
@@ -352,19 +348,16 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             ProductMultiple product = mProducts.get(position);
             // Validate simple variations
             if(product.hasMultiSimpleVariations() && !product.hasSelectedSimpleVariation()) {
+                mClickedBuyButton = view;
                 onClickVariation(view);
-                isAddingProductToCart = true;
             } else {
-                isAddingProductToCart = false;
                 triggerAddProductToCart(product, position);
             }
         } catch (IndexOutOfBoundsException e) {
-            isAddingProductToCart = false;
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
             Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         } catch (NullPointerException e) {
-            isAddingProductToCart = false;
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
         }
@@ -474,6 +467,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 int position = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
                 updateLayoutAfterAction(position);
                 break;
@@ -521,7 +515,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 hideActivityProgress();
-                ToastFactory.ERROR_PRODUCT_OUT_OF_STOCK.show(getBaseActivity());
+                ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
                 break;
             case VALIDATE_PRODUCTS:
                 Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
@@ -578,13 +572,9 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onDialogListItemSelect(int position) {
         // Update the recently adapter
         mAdapter.notifyDataSetChanged();
-        if(isAddingProductToCart && mClickedPositionToAdd != -1) {
-            ProductMultiple product = mProducts.get(mClickedPositionToAdd);
-            // Validate simple variations
-            if(product.hasSelectedSimpleVariation()) {
-                triggerAddProductToCart(product, mClickedPositionToAdd);
-                isAddingProductToCart = false;
-            }
+        // Case from buy button
+        if(mClickedBuyButton != null) {
+            onClickAddToCart(mClickedBuyButton);
         }
     }
 
@@ -595,8 +585,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     }
 
     @Override
-    public void onDismiss() {
-        isAddingProductToCart = false;
+    public void onDialogListDismiss() {
+        mClickedBuyButton = null;
     }
 
 }

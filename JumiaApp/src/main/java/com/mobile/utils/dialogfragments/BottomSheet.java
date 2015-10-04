@@ -42,14 +42,12 @@ public class BottomSheet extends DialogFragment {
     /**
      * Function that sets the size of the list of the bottom sheet, based on orientation and number
      * of items on the list
-     * @param listView
-     * @param itemCount
      */
     protected void setListSize (ListView listView, int itemCount){
         if(getActivity() != null){
             int maxItems = getResources().getInteger(R.integer.dialog_max_item);
 
-            int height = (int) DeviceInfoHelper.getHeight(getActivity()) / 2;
+            int height = DeviceInfoHelper.getHeight(getActivity()) / 2;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
 
             if(itemCount > MAX_ITEM_LANDSCAPE && DeviceInfoHelper.isTabletInLandscape(getActivity())){ // verify table landscape

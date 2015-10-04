@@ -29,7 +29,6 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -140,7 +139,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private View offersContainer;
 
-    boolean isAddingProductToCart = false;
+    boolean isFromBuyButton;
 
     /**
      * Empty constructor
@@ -251,7 +250,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             displayProduct(mProduct);
         }
-        isAddingProductToCart = false;
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
     }
 
@@ -651,7 +649,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             ArrayList<String> images;
 
             if(ShopSelector.isRtl()){
-                images = (ArrayList<String>) mProduct.getImageList().clone();
+                images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
             } else {
                 images = mProduct.getImageList();
@@ -683,17 +681,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             relatedGridView.setOnItemClickListener(this);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Notify user
-     */
-    private void executeAddToShoppingCartCompleted(boolean isBundle) {
-        if (!isBundle) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
-        } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
         }
     }
 
@@ -880,7 +867,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Validate quantity
             if (simple.isOutOfStock()) {
                 ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
-                isAddingProductToCart = false;
             } else {
                 triggerAddItemToCart(mProduct.getSku(), simple.getSku());
                 // Tracking
@@ -889,12 +875,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
+            isFromBuyButton = true;
             onClickSimpleSizesButton();
-            isAddingProductToCart = true;
         }
         // Case error unexpected
         else {
-            isAddingProductToCart = false;
             showUnexpectedErrorWarning();
         }
     }
@@ -1014,13 +999,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             ProductSimple simple = mProduct.getSelectedSimple();
             if (simple != null) {
+                // Set info
                 String text = mProduct.getVariationName() + ": " + simple.getVariationValue();
                 ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
-
-                if(isAddingProductToCart) {
+                // Case from buy button
+                if(isFromBuyButton) {
                     onClickBuyProduct();
                 }
-
             }
         } catch (NullPointerException e) {
             // ...
@@ -1033,6 +1018,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDialogListClickView(View view) {
         onClick(view);
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+        isFromBuyButton = false;
     }
 
     /**
@@ -1067,9 +1057,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
 
-    private void triggerGetProductOffers(String sku) {
-        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
-    }
+//    private void triggerGetProductOffers(String sku) {
+//        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
+//    }
 
     /*
      * ############## RESPONSE ##############
@@ -1100,8 +1090,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                executeAddToShoppingCartCompleted(false);
-                isAddingProductToCart = false;
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -1179,7 +1168,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                isAddingProductToCart = false;
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
@@ -1348,10 +1336,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
 
-    @Override
-    public void onDismiss() {
-        isAddingProductToCart = false;
-    }
 
 
 //    /**
