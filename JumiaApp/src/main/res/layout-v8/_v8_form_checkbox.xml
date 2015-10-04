@@ -7,7 +7,7 @@
     android:layout_marginLeft="@dimen/form_check_padding"
     android:layout_marginRight="@dimen/form_check_padding"
     android:button="@null"
-    android:drawableRight="@drawable/selector_btn_check_holo_orange"
+    style="@style/form_checkbox_style"
     android:ellipsize="end"
     android:gravity="right|center_vertical"
     android:textColor="@color/form_text"
