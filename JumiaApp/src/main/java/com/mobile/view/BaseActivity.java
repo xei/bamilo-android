@@ -453,19 +453,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             // Case action without tab layout
             if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
                 mTabLayout.setVisibility(View.GONE);
-                // Expand the app bar layout
                 mAppBarLayout.setExpanded(true, true);
             }
             // Case action with tab layout
             else {
-                mTabLayout.setVisibility(View.VISIBLE);
-                //noinspection ConstantConditions
-                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
                 // Case from other tab
-                if (TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
-                    // Expand the app bar layout
+                if (!TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
+                    mTabLayout.setVisibility(View.VISIBLE);
                     mAppBarLayout.setExpanded(true, true);
                 }
+                //noinspection ConstantConditions
+                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
             }
         } catch (NullPointerException e) {
             // ...
