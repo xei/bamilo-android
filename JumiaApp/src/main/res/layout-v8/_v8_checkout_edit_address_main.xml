@@ -68,7 +68,7 @@
                     android:text="@string/cancel_label" />
 
                 <com.mobile.components.customfontviews.Button
-                    android:id="@+id/checkout_button_enter"
+                    android:id="@+id/checkout_edit_button_enter"
                     style="@style/button_orange_bottom"
                     android:layout_marginLeft="@dimen/margin_x_small"
                     android:layout_weight="1"

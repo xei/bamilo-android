@@ -24,7 +24,7 @@
         android:focusableInTouchMode="false"
         android:button="@null"
         android:layout_gravity="right"
-        android:drawableRight="@drawable/selector_btn_check_holo_orange"
+        style="@style/form_checkbox_style"
         android:textColor="@color/grey_middle"
         android:gravity="right|center_vertical"
         android:textSize="14sp"
