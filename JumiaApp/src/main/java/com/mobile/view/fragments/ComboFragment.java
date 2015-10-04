@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
@@ -46,25 +44,21 @@ import java.util.List;
  * Created by alexandrapires on 9/11/15.
  * This class represents the page for bundle products in a combo. It allows to add checked combo products to cart at once
  */
-public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener,DialogSimpleListFragment.OnDialogListListener {
+public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
 
 
     private BundleList bundleList;
-    private double totalPrice=0.0;
+    private double totalPrice = 0.0;
     private String productSku;
 
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
-    private ComboGridView gridView;
     private ComboGridAdapter adapter;
-    private Button btBuyCombo;
-    private Context context;
     private ProductBundle mBundleWithMultiple;
 
     ArrayList<ProductBundle> listBundlesOneSimple;
     ArrayList<ProductBundle> listBundlesMultipleSimple;
-    private int countMultipleProcessed=0;
-
+    private int countMultipleProcessed = 0;
 
 
     /**
@@ -82,7 +76,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * Empty constructor
      */
     public ComboFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK,MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.pdv_combos_page,
                 NO_TITLE,
@@ -110,7 +104,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             totalPrice = bundleList.getBundlePriceDouble();
 
         }
-
     }
 
     /*
@@ -121,83 +114,61 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        context = getBaseActivity().getApplicationContext();
         //update total price
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
-
-        gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-
-        adapter = new ComboGridAdapter(context,bundleList.getBundleProducts(),productSku);
+        ComboGridView gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
+        adapter = new ComboGridAdapter(getBaseActivity(), bundleList.getBundleProducts(), productSku);
         adapter.setOnViewHolderClickListener(this);
         gridView.setAdapter(adapter);
         gridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
-
         gridView.setHasFixedSize(true);
         gridView.setItemAnimator(new DefaultItemAnimator());
-
-        btBuyCombo = (Button) view.findViewById(R.id.btBuyCombo);
-        btBuyCombo.setOnClickListener(this);
+        view.findViewById(R.id.btBuyCombo).setOnClickListener(this);
     }
 
 
     /**
      * separates bundle products in two lists: one with one simple variation e others with multiple variations to choose
      * this is needed to add in first the bundles with multiple variations to cart
-     *
      */
-
-    private void separateProductsBySimpleType()
-    {
+    private void separateProductsBySimpleType() {
         listBundlesOneSimple = new ArrayList<>();
         listBundlesMultipleSimple = new ArrayList<>();
         countMultipleProcessed = 0;
 
-
         ArrayList<ProductBundle> listBundles = bundleList.getBundleProducts();
-
-        for(ProductBundle productBundle : listBundles)
-        {
+        for (ProductBundle productBundle : listBundles) {
             //distribute the checked bundles to both lists
-            if(productBundle.isChecked())
-            {
-                if(productBundle.hasOwnSimpleVariation()) {
+            if (productBundle.isChecked()) {
+                if (productBundle.hasOwnSimpleVariation()) {
                     listBundlesOneSimple.add(productBundle);
-                }
-                else if(productBundle.hasMultiSimpleVariations() &&  productBundle.getSimples().size() > 0) {
+                } else if (productBundle.hasMultiSimpleVariations() && productBundle.getSimples().size() > 0) {
                     listBundlesMultipleSimple.add(productBundle);
                 }
-
             }
         }
     }
 
 
-
     /**
      * Add selected combo products to chart
-     *
      */
-
-    private void addComboToChart()
-    {
+    private void addComboToCart() {
         //separate teh products into lis with single and list with multiple
         separateProductsBySimpleType();
-
         //if there is a list of bundles with multiple, show dialog
-        if(CollectionUtils.isNotEmpty(listBundlesMultipleSimple))
-        {
+        if (CollectionUtils.isNotEmpty(listBundlesMultipleSimple)) {
             ProductBundle productBundle = listBundlesMultipleSimple.get(0);
             addToCartWithChoosenSimple(productBundle);
 
-        }else if(CollectionUtils.isNotEmpty(listBundlesOneSimple))   //if there isn't bundles with multiplesimple , just simply add to cart
-        {
-            for(ProductBundle productBundle : this.listBundlesOneSimple)
-            {
+        }
+        //if there isn't bundles with multiplesimple , just simply add to cart
+        else if (CollectionUtils.isNotEmpty(listBundlesOneSimple)) {
+            for (ProductBundle productBundle : this.listBundlesOneSimple) {
                 addToCartWithOnlySimple(productBundle);
             }
         }
-
     }
 
     /**
@@ -205,11 +176,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      *
      * @param productBundle - arguments
      */
-
-
-
-    private void proceedWithAddItemToCart(ProductBundle productBundle,ProductSimple simple)
-    {
+    private void proceedWithAddItemToCart(ProductBundle productBundle, ProductSimple simple) {
         // Validate simple sku
         String simpleSku = simple.getSku();
         // Add one unity to cart
@@ -229,43 +196,30 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
-
     /**
      * add to cart a product with an only simples
      *
      * @param productBundle - arguments
      */
-
-    private void addToCartWithOnlySimple(ProductBundle productBundle)
-    {
+    private void addToCartWithOnlySimple(ProductBundle productBundle) {
         ProductSimple simples = productBundle.getSimples().get(0);
         proceedWithAddItemToCart(productBundle, simples);
-
     }
-
-
 
     /**
      * opens a dialog to choose the simples and add to cart
      *
      * @param productBundle - arguments
      */
-
-    private void addToCartWithChoosenSimple(ProductBundle productBundle)
-    {
+    private void addToCartWithChoosenSimple(ProductBundle productBundle) {
         mBundleWithMultiple = productBundle;
         onClickSimpleVariationsButton(productBundle.getName());
     }
 
 
-
     /**
      * show dialog to choose the variation simples
-     *
-     *
      */
-
-
     private void onClickSimpleVariationsButton(String productName) {
         Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
@@ -274,39 +228,27 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                     productName,
                     mBundleWithMultiple,
                     this);
-
             dialog.show(getFragmentManager(), null);
-
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
 
 
-
-
     /**
      * choose the simple and add to cart
-     *
      */
-
     @Override
     public void onDialogListItemSelect(int position) {
         try {
-
             //get selected simple
             ProductSimple selectedSimple = mBundleWithMultiple.getSimples().get(position);
-
             //update bundle with selected simple in adapter, to update variation label
             mBundleWithMultiple.setSelectedSimplePosition(position);
             adapter.setItemInArray(mBundleWithMultiple);
             adapter.notifyDataSetChanged();
-
             //add to cart with selected simple
             proceedWithAddItemToCart(mBundleWithMultiple, selectedSimple);
-
-
-
         } catch (NullPointerException e) {
             // ...
         }
@@ -317,15 +259,14 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     }
 
-
-
+    @Override
+    public void onDialogListDismiss() {
+    }
 
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {
-
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
     }
-
 
 
     @Override
@@ -334,28 +275,19 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
-
-
-
     /**
      * updates the sombo total price in checking/unchecking bundle
-     *
      */
-
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
-
         //get Selected Item
         ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
         //update total price and select a simple if is checked
-
-        if(!selectedBundle.getSku().equals(productSku)) {
+        if (!selectedBundle.getSku().equals(productSku)) {
             bundleList.updateTotalPriceWhenChecking(position);
             totalPrice = bundleList.getBundlePriceDouble();
-
             mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
         }
-
     }
 
     @Override
@@ -364,9 +296,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
-
-    /**Click events */
-
+    /**
+     * Click events
+     */
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -376,12 +308,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Case sort button
         if (id == R.id.btBuyCombo) {
             Print.i(TAG, "ADD CART CLICKED");
-            addComboToChart();
+            addComboToCart();
         }
     }
-
-
-
 
 
     @Override
@@ -395,26 +324,21 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             return;
 
         super.handleSuccessEvent(bundle);
-        executeAddToShoppingCartCompleted(false);
+        executeAddToShoppingCartCompleted();
 
         countMultipleProcessed++;   //count the added bundle with chosen simples
 
         //add simple if they exists after all added multiple
-        if(countMultipleProcessed == listBundlesMultipleSimple.size() && listBundlesOneSimple.size() > 0)
-        {
-            for(ProductBundle productBundle : this.listBundlesOneSimple)
-            {
+        if (countMultipleProcessed == listBundlesMultipleSimple.size() && listBundlesOneSimple.size() > 0) {
+            for (ProductBundle productBundle : this.listBundlesOneSimple) {
                 addToCartWithOnlySimple(productBundle);
             }
-        }else if(countMultipleProcessed < listBundlesMultipleSimple.size()) //add next multiple
+        } else if (countMultipleProcessed < listBundlesMultipleSimple.size()) //add next multiple
         {
             mBundleWithMultiple = listBundlesMultipleSimple.get(countMultipleProcessed);
             addToCartWithChoosenSimple(mBundleWithMultiple);
         }
     }
-
-
-
 
 
     @Override
@@ -492,13 +416,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
-    private void executeAddToShoppingCartCompleted(boolean isBundle) {
-
-        if (!isBundle) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
-        } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
-        }
+    private void executeAddToShoppingCartCompleted() {
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
     }
 
 
@@ -520,11 +439,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         mDialogAddedToCart.show(getFragmentManager(), null);
     }
-
-
-
-
-
 
 
 }
