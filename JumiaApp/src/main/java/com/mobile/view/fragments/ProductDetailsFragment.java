@@ -29,7 +29,6 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -59,6 +58,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
@@ -79,7 +79,7 @@ import java.util.List;
  * @author Michael Kroez
  * @modified spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, RocketImageLoaderLoadImagesListener, AdapterView.OnItemClickListener, DialogSimpleListFragment.OnDialogListListener {
+public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, RocketImageLoaderLoadImagesListener, AdapterView.OnItemClickListener, OnDialogListListener {
 
     private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
@@ -138,6 +138,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mGlobalButton;
 
     private View offersContainer;
+
+    boolean isFromBuyButton;
 
     /**
      * Empty constructor
@@ -690,17 +692,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Notify user
-     */
-    private void executeAddToShoppingCartCompleted(boolean isBundle) {
-        if (!isBundle) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
-        } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
-        }
-    }
-
-    /**
      * Method used to update the wish list value.
      */
     private void updateWishListValue() {
@@ -891,6 +882,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
+            isFromBuyButton = true;
             onClickSimpleSizesButton();
         }
         // Case error unexpected
@@ -1014,8 +1006,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             ProductSimple simple = mProduct.getSelectedSimple();
             if (simple != null) {
+                // Set info
                 String text = mProduct.getVariationName() + ": " + simple.getVariationValue();
                 ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
+                // Case from buy button
+                if(isFromBuyButton) {
+                    onClickBuyProduct();
+                }
             }
         } catch (NullPointerException e) {
             // ...
@@ -1028,6 +1025,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDialogListClickView(View view) {
         onClick(view);
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+        isFromBuyButton = false;
     }
 
     /**
@@ -1062,9 +1064,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
 
-    private void triggerGetProductOffers(String sku) {
-        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
-    }
+//    private void triggerGetProductOffers(String sku) {
+//        triggerContentEvent(new GetProductOffersHelper(), GetProductOffersHelper.createBundle(sku), this);
+//    }
 
     /*
      * ############## RESPONSE ##############
@@ -1095,7 +1097,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                executeAddToShoppingCartCompleted(false);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
