@@ -18,6 +18,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedItem;
 import com.mobile.newFramework.objects.catalog.FeaturedItemBrand;
 import com.mobile.newFramework.objects.catalog.FeaturedItemProduct;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -56,7 +57,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        int count = 0;
+        int count;
 
         int featureListSize = this.mFeaturedList.size();
         Print.d(TAG, "featureListSize: " + featureListSize);
@@ -167,15 +168,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
 
     /**
      * set View on index <code>index</code> based on ids of layouts
-     * 
-     * @param featuredItem
-     * @param view
-     * @param idRelativeLayout
-     * @param idImage
-     * @param idProgress
-     * @param idName
-     * @param idPrice
-     * @param index
      */
     void setViewForFeaturedItem(FeaturedItem featuredItem, View view, int idRelativeLayout, int idImage, int idProgress, int idName, int idPrice, int index) {
         RelativeLayout mElement = (RelativeLayout) view.findViewById(idRelativeLayout);
@@ -189,17 +181,21 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         if (mElement != null) {
             ElementOnClickListener elementOnClickListener = new ElementOnClickListener(featuredItem);
             mElement.setOnClickListener(elementOnClickListener);
-
             ImageView img = (ImageView) mElement.findViewById(idImage);
             View progress = mElement.findViewById(idProgress);
             TextView name = (TextView) mElement.findViewById(idName);
             // Log.i(TAG, "code1last generating : "+mFeaturedList.get(position).getProductName());
             name.setText(featuredItem.getName());
             if (hasPrice) {
-                TextView price = (TextView) mElement.findViewById(idPrice);
-                price.setText(((FeaturedItemProduct) featuredItem).getPrice());
+                TextView textView = (TextView) mElement.findViewById(idPrice);
+                double price = ((FeaturedItemProduct) featuredItem).getPrice();
+                double special = ((FeaturedItemProduct) featuredItem).getPrice();
+                if(Double.isNaN(special) && special > 0) {
+                    textView.setText(CurrencyFormatter.formatCurrency(special));
+                } else {
+                    textView.setText(CurrencyFormatter.formatCurrency(price));
+                }
             }
-
             // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
             RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
