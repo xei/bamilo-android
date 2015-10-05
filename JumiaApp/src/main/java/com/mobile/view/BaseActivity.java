@@ -478,23 +478,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void setActionTitle(int actionBarTitleResId) {
         // Case hide all
         if (actionBarTitleResId == IntConstants.ACTION_BAR_NO_TITLE) {
-            hideTitle();
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
         }
-        // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_shop_specific) || ShopSelector.isRtlShop()) {
-            // Show the application name in the action bar
-            setActionBarTitle(R.string.app_name);
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            hideTitle();
-        } else {
-            hideTitle();
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+        // Case to set title
+        else {
             setActionBarTitle(actionBarTitleResId);
         }
     }
-    
+
     /*
      * ############## NAVIGATION ##############
      */
@@ -1380,93 +1371,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * (non-Javadoc)
      * 
-     * @see android.app.Activity#setTitle(java.lang.CharSequence)
-     */
-    @Override
-    public void setTitle(CharSequence title) {
-        TextView titleView = (TextView) findViewById(R.id.titleProducts);
-        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-        View headerTitle = findViewById(R.id.header_title);
-        subtitleView.setVisibility(View.GONE);
-        if (headerTitle == null) {
-            return;
-        }
-
-        if (!TextUtils.isEmpty(title)) {
-            titleView.setText(title);
-            headerTitle.setVisibility(View.VISIBLE);
-        } else {
-            headerTitle.setVisibility(View.GONE);
-        }
-    }
-
-//    /**
-//     * Method used to set the number of products
-//     */
-//    public void setTitleAndSubTitle(CharSequence title, CharSequence subtitle) {
-//        TextView titleView = (TextView) findViewById(R.id.titleProducts);
-//        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-//        View headerTitle = findViewById(R.id.header_title);
-//
-//        if (titleView == null) {
-//            return;
-//        }
-//        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
-//            Print.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
-//            // Set text and force measure
-//            subtitleView.setText(subtitle);
-//            // Set title
-//            titleView.setText(title);
-//            // Set visibility
-//            headerTitle.setVisibility(View.VISIBLE);
-//            subtitleView.setVisibility(View.VISIBLE);
-//        } else if (TextUtils.isEmpty(title)) {
-//            headerTitle.setVisibility(View.GONE);
-//        }
-//    }
-
-//    /**
-//     * Method used to set the number of products
-//     */
-//    public void setSubTitle(CharSequence subtitle) {
-//        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
-//        View headerTitle = findViewById(R.id.header_title);
-//
-//        if (subtitleView == null) {
-//            return;
-//        }
-//        if (!TextUtils.isEmpty(subtitle)) {
-//            // Set text and force measure
-//            subtitleView.setText(subtitle);
-//
-//            headerTitle.setVisibility(View.VISIBLE);
-//            subtitleView.setVisibility(View.VISIBLE);
-//        } else if (TextUtils.isEmpty(subtitle)) {
-//            headerTitle.setVisibility(View.GONE);
-//        }
-//    }
-
-    public void hideTitle() {
-        findViewById(R.id.header_title).setVisibility(View.GONE);
-    }
-
-//    /**
-//     * get the category tree title
-//     *
-//     * @return subtitle
-//     */
-//    public String getCategoriesTitle() {
-//        TextView titleView = (TextView) findViewById(R.id.titleProducts);
-//        if (!TextUtils.isEmpty(titleView.getText().toString())) {
-//            return titleView.getText().toString();
-//        } else {
-//            return "";
-//        }
-//    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see android.app.Activity#setTitle(int)
      */
     @Override
@@ -1535,35 +1439,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             baseActivityProgressDialog = null;
         }
     }
-
-//    /**
-//     * Service Stuff
-//     */
-//
-//    public void unbindDrawables(View view) {
-//
-//        try {
-//            if (view.getBackground() != null) {
-//                view.getBackground().setCallback(null);
-//            } else if (view instanceof ViewGroup) {
-//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-//                }
-//                if (view instanceof AdapterView<?>) {
-//                    return;
-//                }
-//                try {
-//                    ((ViewGroup) view).removeAllViews();
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        } catch (RuntimeException e) {
-//            Print.w(TAG, "" + e);
-//        }
-//
-//    }
 
     public void hideKeyboard() {
         Print.i(TAG, "HIDE KEYBOARD");
@@ -1740,11 +1615,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 visibility = View.GONE;
                 updateBaseComponentsInCheckout(visibility);
                 break;
-            case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
-                // Hide title and total
-                hideTitle();
-                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-                break;
+//            case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
+//                // Hide title and total
+//                hideTitle();
+//                findViewById(R.id.totalProducts).setVisibility(View.GONE);
+//                break;
             case ConstantsCheckout.NO_CHECKOUT:
                 visibility = View.GONE;
                 result = false;
@@ -1779,9 +1654,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Set header visibility
         findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
-        // Hide title and prod
-        hideTitle();
-        findViewById(R.id.totalProducts).setVisibility(View.GONE);
     }
 
     /**

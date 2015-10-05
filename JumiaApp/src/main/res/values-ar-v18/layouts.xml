@@ -169,7 +169,6 @@
     <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
-    <item name="header_title"                           type="layout">@layout/_def_header_title</item>
     <item name="dialog_list_content"                    type="layout">@layout/_def_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_def_reviews_fragment_item</item>
     <item name="shopping_basket_item_image"             type="layout">@layout/_def_shopping_basket_item_image</item>
