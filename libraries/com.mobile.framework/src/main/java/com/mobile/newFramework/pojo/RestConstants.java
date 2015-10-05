@@ -441,4 +441,6 @@ public class RestConstants {
     public static final String FULFILLMENT = "fulfillment";
     public static final String CMS_INFO = "cms_info";
 
+
+    public static final String PRICE_RANGE = "price_range";
 }

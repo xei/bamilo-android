@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,8 +12,8 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -188,28 +187,10 @@ public class WishListAdapter extends ArrayAdapter<ProductMultiple> {
         prodItem.brand.setText(product.getBrand());
         // Set name
         prodItem.name.setText(product.getName());
-        // Validate special price
-        if (product.hasDiscount()) {
-            // Set discount
-            prodItem.discount.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getSpecialPrice())));
-            prodItem.percentage.setText(String.format(getContext().getString(R.string.format_discount_percentage), product.getMaxSavingPercentage()));
-            // Set price
-            prodItem.price.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getPrice())));
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            prodItem.price.setSelected(true);
-            prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
-            prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
-            prodItem.discount.setVisibility(View.VISIBLE);
-            prodItem.percentage.setVisibility(View.VISIBLE);
-        } else {
-            // Set price
-            prodItem.discount.setVisibility(View.GONE);
-            prodItem.percentage.setVisibility(View.INVISIBLE);
-            prodItem.price.setText(CurrencyFormatter.formatCurrency(String.valueOf(product.getPrice())));
-            prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
-            prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
-        }
+
+        ProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
+
+        ProductUtils.setDiscountRules(product, prodItem.percentage);
     }
 
 }
