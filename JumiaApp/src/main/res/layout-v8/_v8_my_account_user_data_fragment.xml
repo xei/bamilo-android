@@ -105,6 +105,15 @@
                 android:textColor="@color/red_basic"
                 android:visibility="gone" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/changePasswordLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"/>
+
         </LinearLayout>
 
         <LinearLayout style="@style/button_container" >
