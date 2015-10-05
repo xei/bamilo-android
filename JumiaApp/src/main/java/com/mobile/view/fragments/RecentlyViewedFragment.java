@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
@@ -372,7 +371,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     protected synchronized void triggerAddProductToCart(ProductMultiple product, int position) {
         Print.i(TAG, "ON TRIGGER ADD TO CART: " + position);
-        ProductSimple simple = getSelectedSimple(product);
+        ProductSimple simple = product.getSelectedSimple();
         if(simple == null) {
             showUnexpectedErrorWarning();
             return;
@@ -414,26 +413,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             e.printStackTrace();
         }
     }
-
-    /**
-     * Get selected simple variation
-     */
-    @Nullable
-    private ProductSimple getSelectedSimple(@NonNull ProductMultiple product) {
-        // Case Own simple variation
-        if(product.hasOwnSimpleVariation()) {
-            return  product.getOwnSimpleVariation();
-        }
-        // Case Multi simple variations
-        else if(product.hasMultiSimpleVariations() && product.hasSelectedSimpleVariation()) {
-            return product.getSelectedSimpleVariation();
-        }
-        // Case invalid
-        else {
-            return null;
-        }
-    }
-
 
     /**
      * ######### RESPONSE #########
