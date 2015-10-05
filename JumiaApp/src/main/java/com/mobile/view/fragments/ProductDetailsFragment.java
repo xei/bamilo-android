@@ -140,10 +140,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isFromBuyButton;
 
-    private int DESCRIPTION_PAGE = 0;
-    private int SPECIFICATIONS_PAGE = 1;
-    private int RATINGS_PAGE = 2;
-
     /**
      * Empty constructor
      */
@@ -547,7 +543,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription(DESCRIPTION_PAGE);
+                onClickShowDescription(ProductDetailsInfoFragment.getDescriptionPagePosition());
             }
         });
     }
@@ -580,7 +576,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription(SPECIFICATIONS_PAGE);
+                onClickShowDescription(ProductDetailsInfoFragment.getSpecificationsPagePosition());
             }
         });
     }
@@ -723,7 +719,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickShowDescription(RATINGS_PAGE);//onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(ProductDetailsInfoFragment.getRatingsPagePosition());//onClickRating();
         // Case description
         // TODO
         // Case variation button
