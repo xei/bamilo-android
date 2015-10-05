@@ -101,8 +101,6 @@
     <string name="fallback_welcome">مرحبًا في</string>
     <string name="favourite_add_to_cart">تمت إضافة المنتج إلى عربة التسوق</string>
     <string name="favourite_addalltocart">إضافة كل المنتجات إلى عربة التسوق</string>
-    <string name="favourite_no_favourites">لا يوجد منتجات مفضلة لديك الآن</string>
-    <string name="favourites">منتجاتي المفضلة</string>
     <string name="fgt_pass">هل نسيت كلمة المرور</string>
     <string name="filter_label">الاختيار</string>
     <string name="forgotpass_header">استعادة كلمة المرور</string>
@@ -218,10 +216,8 @@
     <string name="product_variance_choose">برجاء الاختيار</string>
     <string name="product_variance_choose_error">برجاء تحديد إحدى الاختيارات</string>
     <string name="product_variant_placeholder">...</string>
-    <string name="products_added_favourite">تم إضافة المنتج إلى منتجاتي المفضلة</string>
     <string name="products_could_notloaded">لم ينجح تحميل المزيد من المنتجات. برجاء المحاولة مرة أخرى.</string>
     <string name="products_label">المنتجات</string>
-    <string name="products_removed_favourite">تم إزالة المنتج من منتجاتي المفضلة</string>
     <string name="products_sort_bestrated">أفضل تقييم</string>
     <string name="products_sort_brand">الماركة</string>
     <string name="products_sort_name">الاسم</string>
@@ -229,7 +225,6 @@
     <string name="products_sort_popularity">الأكثر شعبية</string>
     <string name="products_sort_pricedown">الأقل سعرًا</string>
     <string name="products_sort_priceup">الأعلى سعرًا</string>
-    <string name="products_tip_favourite_text">انقر على المنتجات المفضلة!</string>
     <string name="products_tip_swipe_text">تحرك إلى اليمين أو اليسار لتغيير الفئة</string>
     <string name="promotion_tip_tap_text">انقر الصندوق بالأعلى لنسخ الكود إلى حافظة البيانات المؤقتة واحفظه لسهولة الوصول عند إنهاء الطلب</string>
     <string name="rating_option_error_message">يجب ملء جميع خيارات التقييمات</string>
@@ -309,7 +304,6 @@
     <string name="teaser_campaign_button_second_line">عروض</string>
     <string name="terms_and_conditions">الشروط والأحكام</string>
     <string name="thank_you_order_title">شكراً !</string>
-    <string name="tip_favourite_text">اضغط لتفضيل هذا المنتج ومعاينة القائمة الكاملة في الملف الخاص بي</string>
     <string name="tip_share_text">اضغط لمشاركة هذا المنتج</string>
     <string name="tip_swipe_text">قم بالتحرك يميناً ويساراً \nلمشاهدة الصور المختلفة</string>
     <string name="tip_tap_text">اضغط لفتح معرض المنتجات</string>
@@ -389,7 +383,7 @@
     <string name="country">الدولة</string>
     <string name="birthday_label">تاريخ الميلاد</string>
     <string name="birthday_error">يُرجى اختيار تاريخ ميلاد صحيح</string>
-    <string name="filter_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%d)</string>
     <string name="clear_all_lowercase_label">مسح الكل</string>
     <string name="apply_label">تطبيق</string>
     <string name="see_other_variations">عرض المقاسات الأخري</string>
@@ -399,11 +393,19 @@
     <string name="more_specifications">المزيد من المواصفات</string>
     <string name="delivery_time1">وقت التوصيل</string>
     <string name="see_other_colors">شاهد الألوان الأخرى</string>
-    <string name="combos">يتم شرائهما معًا</string>
+    <string name="combo">يتم شرائهما معًا</string>
     <string name="may_like">قد يعجبك أيضًا</string>
     <string name="buy_the_look">احصل على هذا المظهر</string>
     <string name="pdv_size">المقاس</string>
     <string name="buy_now_button">شراء الآن</string>
+    <string name="save_no_saved">لم يتم حفظ منتجات في الوقت الحالي</string>
+    <string name="saved">تم الحفظ</string>
+    <string name="products_added_saved">تم إضافة المنتجات للحفظ</string>
+    <string name="products_removed_saved">تم حذف المنتج من قائمة الحفظ</string>
+    <string name="products_tip_saved_text">اضغط لحفظ المنتجات!</string>
+    <string name="tip_saved_text">اضغط لحفظ هذا المنتج وعرض القائمة كاملة على الملف الخاص بي</string>
+    <string name="warranty">الضمان:  %s</string>
+    <string name="other_sellers_starting">العروض الأخري تبدأ من:</string>
     <string name="buy_combo">شراء المجموعة معًا</string>
     <string name="total_price_bottom">المبلغ الكلي:</string>
     <string name="from_avg_rat">من</string>
@@ -416,5 +418,9 @@
     <string name="average_reviews_header">تقييمات المستخدم</string>
     <string name="description1">الوصف</string>
     <string name="rat_rev">تعليقات التقييمات</string>
-    <string name="more_details_global">المزيد من المعلومات الشحن خارج مصر</string>
+    <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
+    <string name="qty_placeholder">الكمية: %d</string>
+    <string name="shipment" formatted="false">شحن %d لـ %d</string>
+    <string name="policy">السياسة</string>
+    <string name="delivery_time_placeholder" formatted="false">وقت التوصيل: %d - %d يوم</string>
 </resources>
