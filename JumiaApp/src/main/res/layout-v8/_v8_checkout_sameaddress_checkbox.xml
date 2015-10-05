@@ -10,7 +10,7 @@
         android:layout_gravity="right|center_vertical"
         android:button="@null"
         android:checked="true"
-
+        android:paddingRight="@dimen/form_check_padding"
         android:gravity="right|center_vertical"
         android:text="@string/billing_same_label" />
 

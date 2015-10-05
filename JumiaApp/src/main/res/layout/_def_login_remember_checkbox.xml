@@ -3,7 +3,11 @@
     android:id="@+id/login_remember_user_email"
     style="@style/form_checkbox_style"
     android:checked="true"
-    android:layout_gravity="left|start|center_vertical"
-    android:paddingStart="@dimen/form_check_padding"
-    android:paddingLeft="@dimen/form_check_padding"
-    android:text="@string/login_remember_user_email" />
+    android:layout_gravity="left|start"
+    android:button="@null"
+    android:background="@null"
+    android:drawableLeft="@drawable/selector_btn_check_holo_green"
+    android:drawableStart="@drawable/selector_btn_check_holo_green"
+    android:drawablePadding="@dimen/form_check_padding"
+    android:text="@string/login_remember_user_email"
+    />
