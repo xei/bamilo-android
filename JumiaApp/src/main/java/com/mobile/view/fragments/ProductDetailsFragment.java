@@ -1236,6 +1236,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 return;
             }
         }
+
+
+
         //load header
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
         //TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.gen_header_text);
@@ -1261,25 +1264,32 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 //        for (ProductBundle item : bundleProducts) {
-        for(int i = 0; i < bundleProducts.size(); i++)
-        {
-            ProductBundle item = bundleProducts.get(i);
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
 
-            fillProductBundleInfo(comboProductItem, item);
-            if(!item.getSku().equals(mProduct.getSku()))
-                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
+        if(mTableBundles != null && mTableBundles.getChildCount() == 0){
 
-            mTableBundles.addView(comboProductItem);
-
-            if (count < bundleProducts.size() - 1)   //add plus separator
+            for(int i = 0; i < bundleProducts.size(); i++)
             {
-                //separator
-                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
-                mTableBundles.addView(imSep);
+                ProductBundle item = bundleProducts.get(i);
+                ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
+
+                fillProductBundleInfo(comboProductItem, item);
+                if(!item.getSku().equals(mProduct.getSku()))
+                    comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
+
+                mTableBundles.addView(comboProductItem);
+
+                if (count < bundleProducts.size() - 1)   //add plus separator
+                {
+                    //separator
+                    ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
+                    mTableBundles.addView(imSep);
+                }
+                count++;
             }
-            count++;
+
         }
+
+
         mComboProductsLayout.setOnClickListener(this);
         mComboProductsLayout.setVisibility(View.VISIBLE);
     }
