@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -34,11 +33,9 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
@@ -46,6 +43,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -124,7 +122,7 @@ public class ReviewWriteFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
                 R.layout.review_write_fragment,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.write_comment,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -149,7 +147,6 @@ public class ReviewWriteFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
 
-        JumiaApplication.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -167,7 +164,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
 
@@ -274,7 +270,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        JumiaApplication.setIsSellerReview(false);
     }
 
     /*
@@ -457,15 +452,13 @@ public class ReviewWriteFragment extends BaseFragment {
             
         } else {
             mainContainer.setVisibility(View.VISIBLE);
-
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
-
+            ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-
             productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-            displayPriceInformation(productPriceNormal, productPriceSpecial);       
+            //displayPriceInformation(productPriceNormal, productPriceSpecial);
         }
     }
     
@@ -502,35 +495,35 @@ public class ReviewWriteFragment extends BaseFragment {
         }
     }
 
-    /**
-     * method to display the header price info
-     * @param productPriceNormal
-     * @param productPriceSpecial
-     */
-    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = String.valueOf(completeProduct.getPrice());
-        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
-        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
-
-        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
-    }
-
-    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
-            String unitPrice, String specialPrice) {
-        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the special price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.GONE);
-        } else {
-            // display special and normal price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.VISIBLE);
-            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-    }
+//    /**
+//     * method to display the header price info
+//     * @param productPriceNormal
+//     * @param productPriceSpecial
+//     */
+//    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
+//        String unitPrice = String.valueOf(completeProduct.getPrice());
+//        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
+//        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
+//        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
+//
+//        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
+//    }
+//
+//    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
+//            String unitPrice, String specialPrice) {
+//        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
+//            // display only the special price
+//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
+//            productPriceNormal.setVisibility(View.GONE);
+//        } else {
+//            // display special and normal price
+//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+//            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
+//            productPriceNormal.setVisibility(View.VISIBLE);
+//            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
+//                    | Paint.STRIKE_THRU_TEXT_FLAG);
+//        }
+//    }
 
 
     /**

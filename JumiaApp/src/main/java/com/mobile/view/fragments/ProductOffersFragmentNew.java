@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -23,7 +20,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -85,7 +81,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
                 R.layout.product_offers_main_new,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.other_sellers,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

@@ -76,11 +76,7 @@
     <item name="shop_fragment_main"                     type="layout">@layout/_def_shop_fragment_main</item>
 
     <!-- PDV -->
-    <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
-    <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
-    <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
-    <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
 
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
@@ -139,6 +135,7 @@
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
+    <item name="dialog_language_list_item"              type="layout">@layout/_def_dialog_language_list_item</item>
 
     <!-- RECENTLY VIEWED -->
     <item name="addabletocart_item"                     type="layout">@layout/_def_addabletocart_item</item>
@@ -166,7 +163,6 @@
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
 
-    <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
     <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>

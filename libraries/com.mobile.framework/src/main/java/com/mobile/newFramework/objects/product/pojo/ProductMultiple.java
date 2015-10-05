@@ -106,11 +106,11 @@ public class ProductMultiple extends ProductRegular {
         mSelectedSimplePosition = simplePosition;
     }
 
-    public ProductSimple getOwnSimpleVariation() {
+    private ProductSimple getOwnSimpleVariation() {
         return mSimples.get(0);
     }
 
-    public ProductSimple getSelectedSimpleVariation() {
+    private ProductSimple getSelectedSimpleVariation() {
         return getSimples().get(mSelectedSimplePosition);
     }
 

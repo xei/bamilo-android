@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="34dp"
-    android:orientation="horizontal"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/color_accent"
     android:gravity="center"
+    android:orientation="horizontal"
     android:shadowColor="@color/black_shadow"
     android:shadowDx="2"
     android:shadowDy="2"
-    android:shadowRadius="2"
-    android:background="@color/color_accent">
+    android:shadowRadius="2">
 
     <ImageView
         android:id="@+id/warning_image"
         android:layout_width="40dp"
         android:layout_height="25dp"
-        android:src="@drawable/ico_notifications_alert"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/ico_notifications_alert" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/warning_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="0dp"
-        android:gravity="center_vertical"
-        android:text="@string/stale_warning"
         android:layout_toEndOf="@id/warning_image"
         android:layout_toRightOf="@id/warning_image"
+        android:gravity="center_vertical"
+        android:text="@string/stale_warning"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/warning_text_size"
-        />
+        android:textSize="@dimen/warning_text_size" />
 </RelativeLayout>

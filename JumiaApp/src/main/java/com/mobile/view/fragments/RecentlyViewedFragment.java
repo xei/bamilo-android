@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
@@ -50,6 +49,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     protected final static String TAG = RecentlyViewedFragment.class.getSimpleName();
 
+    protected final static String RECENT_LIST = "recentlyViewedList";
+
     private Button mClearAllButton;
 
     private RecentlyViewedAdapter mAdapter;
@@ -61,6 +62,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     private Button mAddAllToCartButton;
 
     private View mClickedBuyButton;
+
+    private ArrayList<String> list;
 
     /**
      * Empty constructor
@@ -112,6 +115,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setVisibility(View.GONE);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(RECENT_LIST)) {
+            list = savedInstanceState.getStringArrayList(RECENT_LIST);
+        }
+
     }
 
     @Override
@@ -135,6 +142,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putStringArrayList(RECENT_LIST, list);
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVED INSTANCE");
     }
@@ -372,7 +380,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     protected synchronized void triggerAddProductToCart(ProductMultiple product, int position) {
         Print.i(TAG, "ON TRIGGER ADD TO CART: " + position);
-        ProductSimple simple = getSelectedSimple(product);
+        ProductSimple simple = product.getSelectedSimple();
         if(simple == null) {
             showUnexpectedErrorWarning();
             return;
@@ -416,26 +424,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Get selected simple variation
-     */
-    @Nullable
-    private ProductSimple getSelectedSimple(@NonNull ProductMultiple product) {
-        // Case Own simple variation
-        if(product.hasOwnSimpleVariation()) {
-            return  product.getOwnSimpleVariation();
-        }
-        // Case Multi simple variations
-        else if(product.hasMultiSimpleVariations() && product.hasSelectedSimpleVariation()) {
-            return product.getSelectedSimpleVariation();
-        }
-        // Case invalid
-        else {
-            return null;
-        }
-    }
-
-
-    /**
      * ######### RESPONSE #########
      */
 
@@ -460,7 +448,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
-                ArrayList<String> list = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                list = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 if (!CollectionUtils.isEmpty(list)) {
                     triggerValidateRecentlyViewed(list);
                 } else {
@@ -532,7 +520,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        if (!CollectionUtils.isEmpty(mProducts)) {
+        if (!CollectionUtils.isEmpty(list)) {
             new GetRecentlyViewedHelper(this);
         } else {
             showEmpty();

@@ -86,8 +86,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     public static int sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
 
-    public static final String SELLER_ID = "sellerId";
-
     private ProductComplete mProduct;
 
     private String mCompleteProductSku;
@@ -141,6 +139,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View offersContainer;
 
     boolean isFromBuyButton;
+
+    private int DESCRIPTION_PAGE = 0;
+    private int SPECIFICATIONS_PAGE = 1;
+    private int RATINGS_PAGE = 2;
 
     /**
      * Empty constructor
@@ -545,7 +547,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription();
+                onClickShowDescription(DESCRIPTION_PAGE);
             }
         });
     }
@@ -574,10 +576,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
+        // TODO: Move to onClick
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription();
+                onClickShowDescription(SPECIFICATIONS_PAGE);
             }
         });
     }
@@ -626,8 +629,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON DISPLAY SIZE");
         // Validate simple variations
         if (mProduct.hasMultiSimpleVariations()) {
-            // Simple variation name
-            String text = mProduct.getVariationName() + ": " + mProduct.getVariationsAvailable();
+            // All Simple variations
+            String textVariations = mProduct.getVariationsAvailable();
+            // Get selected variation
+            if(mProduct.hasSelectedSimpleVariation() && mProduct.getSelectedSimple() != null) {
+                textVariations = mProduct.getSelectedSimple().getVariationValue();
+            }
+            // Simple variation name and value
+            String text = mProduct.getVariationName() + ": " + textVariations;
             // Set text
             ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
             // Set listener
@@ -714,7 +723,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(RATINGS_PAGE);//onClickRating();
+        // Case description
+        // TODO
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
@@ -775,6 +786,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
+
     /**
      * checks/ uncheck a bundle item from combo and updates the combo's total price
      */
@@ -815,7 +827,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickRating() {
         Log.i(TAG, "ON CLICK RATING");
         JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
@@ -827,10 +838,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Show the product description
      */
-    private void onClickShowDescription() {
+    private void onClickShowDescription(int position) {
         Log.i(TAG, "ON CLICK TO SHOW DESCRIPTION");
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+        bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
+        bundle.putString(ConstantsIntentExtra.FLAG_1, mProduct.getBrand());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1236,12 +1249,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 return;
             }
         }
+
+
+
         //load header
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
         //TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.gen_header_text);
         //changeFashion: change title if is fashion
 
-        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combo);
+        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combos);
 
         comboHeaderTitle.setText(titleCombo);
 
@@ -1261,25 +1277,32 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 //        for (ProductBundle item : bundleProducts) {
-        for(int i = 0; i < bundleProducts.size(); i++)
-        {
-            ProductBundle item = bundleProducts.get(i);
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
 
-            fillProductBundleInfo(comboProductItem, item);
-            if(!item.getSku().equals(mProduct.getSku()))
-                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
+        if(mTableBundles != null && mTableBundles.getChildCount() == 0){
 
-            mTableBundles.addView(comboProductItem);
-
-            if (count < bundleProducts.size() - 1)   //add plus separator
+            for(int i = 0; i < bundleProducts.size(); i++)
             {
-                //separator
-                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
-                mTableBundles.addView(imSep);
+                ProductBundle item = bundleProducts.get(i);
+                ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
+
+                fillProductBundleInfo(comboProductItem, item);
+                if(!item.getSku().equals(mProduct.getSku()))
+                    comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
+
+                mTableBundles.addView(comboProductItem);
+
+                if (count < bundleProducts.size() - 1)   //add plus separator
+                {
+                    //separator
+                    ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
+                    mTableBundles.addView(imSep);
+                }
+                count++;
             }
-            count++;
+
         }
+
+
         mComboProductsLayout.setOnClickListener(this);
         mComboProductsLayout.setVisibility(View.VISIBLE);
     }
