@@ -152,17 +152,4 @@ public class ProductRegular extends ProductBase {
         return 0;
     }
 
-    @SuppressWarnings("unused")
-    public static final Creator<ProductRegular> CREATOR = new Creator<ProductRegular>() {
-        @Override
-        public ProductRegular createFromParcel(Parcel in) {
-            return new ProductRegular(in);
-        }
-
-        @Override
-        public ProductRegular[] newArray(int size) {
-            return new ProductRegular[size];
-        }
-    };
-
 }

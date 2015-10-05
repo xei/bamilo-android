@@ -171,16 +171,4 @@ public class ProductMultiple extends ProductRegular {
         return 0;
     }
 
-    @SuppressWarnings("unused")
-    public static final Creator<ProductMultiple> CREATOR = new Creator<ProductMultiple>() {
-        @Override
-        public ProductMultiple createFromParcel(Parcel in) {
-            return new ProductMultiple(in);
-        }
-
-        @Override
-        public ProductMultiple[] newArray(int size) {
-            return new ProductMultiple[size];
-        }
-    };
 }

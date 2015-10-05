@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * // TODO USE THE PRODUCT BASE
  *
  */
-public class ProductOffer extends ProductMultiple implements IJSONSerializable, Parcelable{
+public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
     protected static final String TAG = ProductOffer.class.getSimpleName();
 
@@ -131,12 +131,6 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable, 
      */
 
 
-    protected ProductOffer(Parcel in) {
-        maxDeliveryTime = in.readInt();
-        minDeliveryTime = in.readInt();
-        seller = (Seller) in.readValue(Seller.class.getClassLoader());
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -144,23 +138,26 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable, 
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(maxDeliveryTime);
-        dest.writeInt(minDeliveryTime);
-        dest.writeValue(seller);
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.maxDeliveryTime);
+        dest.writeInt(this.minDeliveryTime);
+        dest.writeParcelable(this.seller, 0);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ProductOffer> CREATOR = new Parcelable.Creator<ProductOffer>() {
-        @Override
-        public ProductOffer createFromParcel(Parcel in) {
-            return new ProductOffer(in);
+    protected ProductOffer(Parcel in) {
+        super(in);
+        this.maxDeliveryTime = in.readInt();
+        this.minDeliveryTime = in.readInt();
+        this.seller = in.readParcelable(Seller.class.getClassLoader());
+    }
+
+    public static final Creator<ProductOffer> CREATOR = new Creator<ProductOffer>() {
+        public ProductOffer createFromParcel(Parcel source) {
+            return new ProductOffer(source);
         }
 
-        @Override
         public ProductOffer[] newArray(int size) {
             return new ProductOffer[size];
         }
     };
-
-
 }
