@@ -1,7 +1,6 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,10 +16,10 @@ import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -235,20 +234,10 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHold
      * @param item - the product
      */
     private void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+        
+        ProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Case discount
-        if(item.hasDiscount()) {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-            holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()) + " " + mContext.getString(R.string.off_label));
-            holder.percentage.setVisibility(View.VISIBLE);
-        }
-        // Case normal
-        else {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setText("");
-            holder.percentage.setVisibility(View.GONE);
-        }
+        ProductUtils.setDiscountRules(item, holder.percentage);
     }
     
     /**

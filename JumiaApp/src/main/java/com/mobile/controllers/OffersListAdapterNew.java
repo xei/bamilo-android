@@ -161,7 +161,7 @@ public class OffersListAdapterNew extends BaseAdapter {
 
 
 
-  
+
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
      * 

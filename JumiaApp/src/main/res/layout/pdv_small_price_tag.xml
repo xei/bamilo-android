@@ -36,6 +36,7 @@
         android:layout_toRightOf="@id/pdv_text_price"
         android:layout_toEndOf="@id/pdv_text_price"
         android:visibility="gone"
+        android:layout_centerVertical="true"
         />
 
 </RelativeLayout>
