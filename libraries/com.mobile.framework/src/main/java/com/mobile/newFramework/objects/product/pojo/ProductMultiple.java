@@ -38,6 +38,11 @@ public class ProductMultiple extends ProductRegular {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Base product
         super.initialize(jsonObject);
+
+        return initializeProductMultiple(jsonObject);
+    }
+
+    protected final boolean initializeProductMultiple(JSONObject jsonObject) throws JSONException {
         // Size guide
         mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
         // Get variation name
