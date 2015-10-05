@@ -89,6 +89,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="TextInfo_2" parent="text_base">
+        <item name="android:textSize">10sp</item>
+    </style>
+    
     <style name="TextTimer" parent="TextTitle_2">
         <item name="android:textColor">@color/red_cc0000</item>
     </style>

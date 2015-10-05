@@ -425,4 +425,5 @@
     <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
     <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
+    <string name="product_specifications">Product Specifications</string>
 </resources>

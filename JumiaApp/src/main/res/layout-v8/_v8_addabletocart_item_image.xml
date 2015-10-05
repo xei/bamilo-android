@@ -16,6 +16,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_percentage"
         style="@style/discount_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
         android:layout_marginBottom="@dimen/product_list_item_image_margin" />
 

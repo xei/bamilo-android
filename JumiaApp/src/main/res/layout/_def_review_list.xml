@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/review_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="16dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
+
+    >
+
+<!--
+    <RatingBar
+        android:id="@+id/rating_value"
+        style="@style/starRatingBarSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+        -->
+    <LinearLayout
+        android:id="@+id/ratings_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/date_review"
+        style="@style/TextCaption"
+        android:textColor="@color/black_800"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ratings_container"
+        android:layout_toRightOf="@id/ratings_container"
+        android:text="12-05-1987"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="right|end"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/title_review"
+        style="@style/TextCaption"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratings_container"
+        android:gravity="left|start"
+        android:text="Title" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/posted_by"
+        style="@style/TextCaption"
+        android:textColor="@color/black_800"
+        android:gravity="left|start"
+        android:paddingBottom="@dimen/margin_mid"
+        android:text="@string/posted_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_review"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/user_review"
+        style="@style/TextCaption"
+        android:textColor="@color/black_800"
+        android:layout_below="@id/title_review"
+        android:layout_toEndOf="@id/posted_by"
+        android:layout_toRightOf="@id/posted_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User name" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/textreview"
+        style="@style/TextCaption"
+        android:textColor="@color/black_800"
+        android:layout_below="@id/posted_by"
+        android:layout_marginTop="16dp"
+        android:gravity="left|start"
+        android:maxLines="5"
+        android:singleLine="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
+
+
+
+
+</RelativeLayout>

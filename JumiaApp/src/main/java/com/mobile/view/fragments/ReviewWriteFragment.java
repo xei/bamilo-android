@@ -149,7 +149,6 @@ public class ReviewWriteFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
 
-        JumiaApplication.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -167,7 +166,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
 
@@ -274,7 +272,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        JumiaApplication.setIsSellerReview(false);
     }
 
     /*

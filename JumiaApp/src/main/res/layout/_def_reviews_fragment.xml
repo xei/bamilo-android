@@ -1,131 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.ScrollViewReachable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reviews_scrollview_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="false">
-
-    <RelativeLayout
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:layoutDirection="locale"
+        android:orientation="vertical"
+        >
 
-        <!-- TITLE -->
+        <!-- RATINGS SECTION -->
 
-        <include
-            android:id="@+id/product_info_container"
-            layout="@layout/product_details_fragment_header" />
+        <!--
+        <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
+        -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/ratingsHeader"
+        style="@style/HeaderStyle" />
 
-        <!-- SHADOW -->
+        <include layout="@layout/ratings_board"  android:id="@+id/ratingsBoard" />
 
-        <View
-            android:id="@+id/shadow"
-            style="@style/shadow"
-            android:layout_below="@id/product_info_container"
-            android:visibility="gone" />
+        <!-- USERS SECTION -->
 
-        <!-- PLACE HOLDER IN ORDER TO MATCH THE LANDSCAPE LAYOUT -->
+    <!--
+        <include layout="@layout/header"  android:id="@+id/usersHeader" />
+        -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/usersHeader"
+        style="@style/HeaderStyle" />
 
-        <View
-            android:id="@+id/center_point"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_below="@id/shadow"
-            android:layout_centerInParent="true" />
+    <com.mobile.components.ScrollViewReachable
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/reviews_scrollview_container"
+        android:background="#fafafa"
+        >
 
-        <!-- REVIEWS -->
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/linear_reviews"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/shadow"
-            android:layout_marginBottom="@dimen/rounded_margin_mid"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_marginStart="@dimen/rounded_margin_mid"
-            android:layout_marginTop="@dimen/rounded_margin_small"
-            android:paddingBottom="@dimen/rounded_margin_mid"
-            android:visibility="visible" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@color/transparent"
+            />
 
-            <LinearLayout
-                android:id="@+id/left_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_content"
-                android:orientation="vertical"
-                android:padding="@dimen/rounded_margin_mid" >
+    </com.mobile.components.ScrollViewReachable>
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/write_title"
-                    style="@style/text_normal"
-                    android:layout_width="match_parent"
-                    android:layout_marginEnd="@dimen/rounded_margin_mid"
-                    android:layout_marginLeft="@dimen/rounded_margin_mid"
-                    android:layout_marginRight="@dimen/rounded_margin_mid"
-                    android:layout_marginStart="@dimen/rounded_margin_mid"
-                    android:gravity="center_horizontal"
-                    android:paddingLeft="3dp"
-                    android:paddingStart="3dp"
-                    android:text="@string/rating_question" />
-
-                <com.mobile.components.customfontviews.Button
-                    android:id="@+id/write_btn"
-                    style="@style/button_grey_bottom"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/write_comment" />
+    <!--
+        <com.mobile.components.ScrollViewReachable
+        android:id="@+id/reviews_scrollview_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false" android:background="@color/white_f9f9f9"
+            >
 
                 <LinearLayout
                     android:id="@+id/linear_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    />
 
-                <!-- NO REVIEWS -->
+        </com.mobile.components.ScrollViewReachable>
+        -->
 
-                <LinearLayout
-                    android:id="@+id/reviews_empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/root_empty_container_height"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="-20dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone" >
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:src="@drawable/img_noratings" />
-
-                    <com.mobile.components.customfontviews.TextView
-                        style="@style/text_root"
-                        android:id="@+id/fragment_root_empty_text"
-                        android:layout_width="match_parent"
-                        android:layout_marginEnd="@dimen/margin_mid"
-                        android:layout_marginLeft="@dimen/margin_mid"
-                        android:layout_marginRight="@dimen/margin_mid"
-                        android:layout_marginStart="@dimen/margin_mid"
-                        android:layout_marginTop="@dimen/root_empty_drawable_padding"
-                        android:gravity="center"
-                        android:paddingEnd="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingStart="10dp"
-                        android:singleLine="false"
-                        android:text="@string/reviews_empty" />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            layout="@layout/fragment_loading_more" />
-    </RelativeLayout>
-
-</com.mobile.components.ScrollViewReachable>
+</LinearLayout>

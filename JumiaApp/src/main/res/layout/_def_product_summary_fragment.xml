@@ -3,103 +3,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- TITLE -->
-
-    <include
-        android:id="@+id/product_info_container"
-        layout="@layout/product_details_fragment_header" />
-
-    <!-- SHADOW -->
-
-    <View
-        android:id="@+id/shadow"
-        style="@style/shadow"
-        android:layout_below="@id/product_info_container"
-        android:visibility="gone" />
 
     <!-- SCROLLABLE -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/shadow" >
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="20dp"
+            android:gravity="left|start"
             android:paddingBottom="@dimen/rounded_margin_mid" >
 
-            <!-- FEATURES -->
+            <!-- DESCRIPTION TEXT -->
 
-            <RelativeLayout
-                android:id="@+id/features_container"
-                style="@style/rounded_box"
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="@dimen/rounded_margin_small" >
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_description_text"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingLeft="@dimen/margin_large"
+                android:paddingStart="@dimen/margin_large"
+                android:text="Description"
+                android:singleLine="false"
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/features_color_label"
-                    style="@style/rounded_box_title_grey"
-                    android:text="@string/key_features" />
 
-                <View
-                    android:id="@+id/features_divider"
-                    style="@style/divider_horizontal_orange"
-                    android:layout_below="@id/features_color_label" />
+            />
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/product_features_text"
-                    style="@style/text_normal"
-                    android:layout_width="match_parent"
-                    android:layout_below="@id/features_divider"
-                    android:ellipsize="none"
-                    android:gravity="left|start"
-                    android:lineSpacingMultiplier="1.3"
-                    android:paddingBottom="@dimen/margin_huge"
-                    android:paddingEnd="@dimen/margin_large"
-                    android:paddingLeft="@dimen/margin_large"
-                    android:paddingRight="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
-                    android:paddingTop="@dimen/margin_huge"
-                    android:singleLine="false" />
-            </RelativeLayout>
+            <!-- KEY FEATURES -->
 
-            <!-- DESCRIPTION -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_features_text"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="@dimen/margin_large"
+                android:paddingStart="@dimen/margin_large"
+                android:text="SmallDescription"
+                android:layout_below="@id/product_description_text"
+                android:singleLine="false"
+              />
 
-            <RelativeLayout
-                android:id="@+id/description_container"
-                style="@style/rounded_box"
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="@dimen/rounded_margin_small" >
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/description_color_label"
-                    style="@style/rounded_box_title_grey"
-                    android:text="@string/description" />
 
-                <View
-                    android:id="@+id/description_divider"
-                    style="@style/divider_horizontal_orange"
-                    android:layout_below="@id/description_color_label" />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/product_description_text"
-                    style="@style/text_normal"
-                    android:layout_width="match_parent"
-                    android:layout_below="@id/description_divider"
-                    android:ellipsize="none"
-                    android:gravity="left|start"
-                    android:lineSpacingMultiplier="1.3"
-                    android:paddingBottom="@dimen/margin_huge"
-                    android:paddingEnd="@dimen/margin_large"
-                    android:paddingLeft="@dimen/margin_large"
-                    android:paddingRight="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
-                    android:paddingTop="@dimen/margin_huge"
-                    android:singleLine="false" />
-            </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>

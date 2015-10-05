@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.TextView;
@@ -88,11 +89,12 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductSku = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof ProductComplete){
                 mCompleteProduct = (ProductComplete) parcelableProduct;
+                if(mCompleteProduct != null){
+                    mCompleteProductSku = mCompleteProduct.getSku();
+                }
             }
         }
     }
@@ -168,10 +170,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(outState != null) {
-            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
-        }
+        outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
+
+
     }
     
     /*
@@ -237,20 +239,19 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      */
     private void addSpecTable(ProductSpecification productSpecification){
 
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
-        final LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
+        View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
+        TextView specHeader = (TextView) theInflatedView.findViewById(R.id.HeaderSpecs);
+        LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
 
         HashMap<String,String> specsMap = productSpecification.getSpecifications();
 
         if(specsMap != null && specsMap.size() > 0){
-            specHeader.setText(productSpecification.getTitle());
+            specHeader.setText(productSpecification.getTitle().toUpperCase());
             try {
                 Iterator it = specsMap.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
                     addSpecTableRow(pair, specsList);
-//                    it.remove(); // avoids a ConcurrentModificationException
                 }
 
                 mProductSpecsContainer.addView(theInflatedView);
@@ -266,14 +267,29 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param parent
      */
     private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
-        final TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
-        final TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
+        View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item, parent, false);
+        TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
+        TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
         specKey.setText(pair.getKey().toString());
         specValue.setText(pair.getValue().toString());
+            View separator = createSeparator();
+            parent.addView(theInflatedView);
+            parent.addView(separator);
+    }
 
-        parent.addView(theInflatedView);
+
+    /**
+     * Create a separator line
+     */
+    private View createSeparator()
+    {
+        View view = new View(getBaseActivity().getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        view.setLayoutParams(params);
+        view.setBackgroundColor(getResources().getColor(R.color.black_400));
+        return view;
+
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {

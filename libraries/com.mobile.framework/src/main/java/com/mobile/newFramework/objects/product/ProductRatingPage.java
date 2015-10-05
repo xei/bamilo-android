@@ -33,6 +33,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	private int currentPage;
 	private int totalPages;
 
+	//added
+	private JSONObject byStarsObject;
+	private int mBasedOn;
+
 	public ProductRatingPage() {
 	    productName = "";
 	    productSku = "";
@@ -44,6 +48,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	    average = -1;
 	    sellerUrl = "";
 	    sellerName = "";
+		mBasedOn = 0;
 	}
 
 	/*
@@ -74,9 +79,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		    maxStarSize =  starSizeObject.optInt(RestConstants.JSON_NAME_TAG, 5);
 		}
 
+
 		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.REVIEW_RATING_FIELD);
 
 		if (ratingsObject != null) {
+			mBasedOn = ratingsObject.optInt(RestConstants.JSON_BASED_ON_TAG);
+
             JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.JSON_RATING_TYPE_TAG);
             if (ratingTypes != null && ratingTypes.length() > 0) {
                 for (int i = 0; i < ratingTypes.length(); i++) {
@@ -89,6 +97,11 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
                     this.ratingTypes.add(type);
                 }
             }
+
+			//added by_stars for ratings page
+			byStarsObject = ratingsObject.optJSONObject("by_stars");
+
+
         }
         JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
 		if(reviewsObject != null){
@@ -154,25 +167,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
         return ratingTypes;
     }
 
-    public void setRatingTypes(ArrayList<RatingStar> ratingTypes) {
-        this.ratingTypes = ratingTypes;
-    }
 
-    public int getMinStarSize() {
-        return minStarSize;
-    }
-
-    public void setMinStarSize(int minStarSize) {
-        this.minStarSize = minStarSize;
-    }
-
-    public int getMaxStarSize() {
-        return maxStarSize;
-    }
-
-    public void setMaxStarSize(int maxStarSize) {
-        this.maxStarSize = maxStarSize;
-    }
+	public int getmBasedOn() { return mBasedOn;}
 
     /**
      * field user for seller only
@@ -181,13 +177,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	public int getAverage() {
         return average;
     }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setAverage(int average) {
-        this.average = average;
-    }
+
 
     @Override
 	public int describeContents() {
@@ -198,51 +188,25 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
         return productSku;
     }
 
-    public void setProductSku(String productSku) {
-        this.productSku = productSku;
-    }
-
     public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 
+	/**
+	 * Get number of ratings / star throught star name
+	 * @return
+	 */
+	public String getByStarValue(String name)
+	{
+		String value = "0";
+		if(byStarsObject != null)
+			value = byStarsObject.optString(name);
 
+		return value;
 
+	}
 
-
-    /**
-     * field user for seller only
-     * @return
-     */
-    public String getSellerUrl() {
-        return sellerUrl;
-    }
-
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setSellerUrl(String sellerUrl) {
-        this.sellerUrl = sellerUrl;
-    }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public String getSellerName() {
-        return sellerName;
-    }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
-    }
 
     @Override
 	public void writeToParcel(Parcel dest, int flags) {
