@@ -129,6 +129,8 @@ public class RestConstants {
     public static final String JSON_REVIEW_TAG = "review";
     public static final String JSON_IS_ENABLE_TAG = "is_enable";
     public static final String JSON_REQUIRED_LOGIN_TAG = "required_login";
+    public static final String JSON_BASED_ON_TAG = "based_on";
+    public static final String JSON_TOTAL_STARS_TAG = "total_stars";
 
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";

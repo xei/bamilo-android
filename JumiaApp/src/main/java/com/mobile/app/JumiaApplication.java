@@ -313,40 +313,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * clean and return last saved seller review
-     *
-     * @return last saved review
-     */
-    public static ContentValues getSellerReviewValues() {
-        return JumiaApplication.sellerReviewValues;
-    }
-
-    /**
-     * clean current rating
-     */
-    public static void cleanSellerReviewValues() {
-        JumiaApplication.sellerReviewValues = null;
-    }
-
-    public static void setSellerReviewValues(ContentValues sellerReviewValues) {
-        JumiaApplication.sellerReviewValues = sellerReviewValues;
-    }
-
-    /**
-     * flag to control if it is showing seller review, ou product review
-     */
-    public static void setIsSellerReview(boolean mIsSellerReview) {
-        JumiaApplication.isSellerReview = mIsSellerReview;
-    }
-
-    /**
-     * flag to control if it is showing seller review, ou product review
-     */
-    public static boolean getIsSellerReview() {
-        return JumiaApplication.isSellerReview;
-    }
-
-    /**
      * @return the paymentsInfoList
      */
     public static HashMap<String, PaymentInfo> getPaymentsInfoList() {
