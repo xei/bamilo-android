@@ -2,14 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkbox_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/form_check_padding"
-        android:layout_marginStart="@dimen/form_check_padding"
+        android:layout_gravity="left|start"
+        android:button="@null"
+        android:background="@null"
+        android:drawableLeft="@drawable/selector_btn_check_holo_green"
+        android:drawableStart="@drawable/selector_btn_check_holo_green"
+        android:drawablePadding="@dimen/form_check_padding"
         style="@style/form_checkbox_style"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_form"/>
