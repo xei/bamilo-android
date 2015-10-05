@@ -17,7 +17,7 @@
         android:id="@+id/menu_basket"
         android:title="@string/action_label_basket"
         android:visible="false"
-        app:actionLayout="@layout/action_bar_cart_button"
+        app:actionLayout="@layout/action_bar_cart_item"
         app:showAsAction="always" />
 
     <!-- MY PROFILE PROVIDER -->

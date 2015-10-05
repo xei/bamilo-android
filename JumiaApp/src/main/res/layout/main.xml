@@ -55,15 +55,6 @@
             tools:context=".ScrollingActivity"
             tools:showIn="@layout/activity_scrolling">
 
-            <!-- HEADER TITLE AND TOTAL -->
-
-            <include
-                android:id="@+id/header_title"
-                layout="@layout/header_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
             <!-- NATIVE CHECKOUT HEADER -->
 
             <include
@@ -71,9 +62,7 @@
                 layout="@layout/checkout_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/header_title"
                 android:visibility="gone" />
-
 
             <!-- CONTENT LAYOUT
             <ViewStub
