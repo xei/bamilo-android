@@ -10,18 +10,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
-import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.OfferList;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -65,6 +64,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     private TextView mProductBrand;
 
     private GridView mOffersList;
+
+    private ProductOffer offerAddToCart;
 
     /**
      * Get a new instance of {@link #ProductOffersFragmentNew}.
@@ -395,8 +396,14 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onAddOfferToCart(ProductOffer offer) {
-        // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
+        // Add one unity to cart
+        if(!offer.hasSelectedSimpleVariation()){
+            offerAddToCart = offer;
+            onClickVariation(offer);
+
+        } else {
+            triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
+        }
     }
 
     @Override
@@ -424,10 +431,12 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     }
 
-
     @Override
     public void onDialogListItemSelect(int position) {
-
+        if(offerAddToCart != null){
+            onAddOfferToCart(offerAddToCart);
+            offerAddToCart = null;
+        }
     }
 
     @Override
@@ -437,6 +446,9 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onDialogListDismiss() {
-
+        ListAdapter listAdapter = mOffersList.getAdapter();
+        if(listAdapter instanceof OffersListAdapterNew){
+            ((OffersListAdapterNew) listAdapter).notifyDataSetChanged();
+        }
     }
 }

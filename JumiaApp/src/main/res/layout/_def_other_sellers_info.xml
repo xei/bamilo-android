@@ -31,7 +31,8 @@
         android:layout_width="match_parent"
         android:id="@+id/ratingContainer"
         android:layout_height="wrap_content"
-        android:gravity="left|start" >
+        android:gravity="left|start"
+        android:visibility="gone">
 
         <!-- changeFashion: choose the right rating bar considering vertical type -->
         <RatingBar
@@ -40,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="true"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
 
@@ -84,7 +85,6 @@
     <com.mobile.components.customfontviews.TextView
         style="@style/TextCaption"
         android:textColor="@color/black"
-        android:layout_centerVertical="true"
         android:text="3 - 8 days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

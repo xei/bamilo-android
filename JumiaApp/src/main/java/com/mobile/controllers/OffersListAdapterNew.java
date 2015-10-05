@@ -13,12 +13,14 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Class that deals with offers list presentation
@@ -139,12 +141,12 @@ public class OffersListAdapterNew extends BaseAdapter {
         item.offerPrice.setText(CurrencyFormatter.formatCurrency(productOffer.getFinalPriceString()));
         item.offerProductOwner.setText(productOffer.getSeller().getName());
 
-        int ratingCount = productOffer.getSeller().getRatingCount();
-        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
+//        int ratingCount = productOffer.getSeller().getRatingCount();
+//        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
 
-        item.offerReview.setText(reviewLabel);
-        item.offerRating.setRating(productOffer.getSeller().getRatingValue());
-        item.offerRating.setVisibility(View.VISIBLE);
+//        item.offerReview.setText(reviewLabel);
+//        item.offerRating.setRating(productOffer.getSeller().getRatingValue());
+//        item.offerRating.setVisibility(View.VISIBLE);
 
         if( !(productOffer.getMinDeliveryTime() == 0 && productOffer.getMaxDeliveryTime() == 0) ) {
             item.offerDeliveryTime.setVisibility(View.VISIBLE);
@@ -160,7 +162,13 @@ public class OffersListAdapterNew extends BaseAdapter {
                 offerSelected.onAddOfferToCart(productOffer);
             }
         });
-        if(CollectionUtils.isNotEmpty(productOffer.getSimples())) {
+
+        List<ProductSimple> simples = productOffer.getSimples();
+        if(CollectionUtils.isNotEmpty(simples)) {
+
+            if(productOffer.hasSelectedSimpleVariation()) {
+                item.variations.setText(productOffer.getSimples().get(productOffer.getSelectedSimplePosition()).getVariationValue());
+            }
             item.variations.setVisibility(View.VISIBLE);
             item.variations.setOnClickListener(new OnClickListener() {
                 @Override
