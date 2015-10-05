@@ -1241,7 +1241,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.gen_header_text);
         //changeFashion: change title if is fashion
 
-        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combo);
+        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combos);
 
         comboHeaderTitle.setText(titleCombo);
 
