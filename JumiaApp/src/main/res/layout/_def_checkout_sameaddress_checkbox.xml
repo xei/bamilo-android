@@ -12,8 +12,11 @@
         style="@style/form_checkbox_style"
         android:layout_gravity="left|start|center_vertical"
         android:checked="true"
-        android:paddingLeft="@dimen/form_check_padding"
-        android:paddingStart="@dimen/form_check_padding"
+        android:button="@null"
+        android:background="@null"
+        android:drawableLeft="@drawable/selector_btn_check_holo_green"
+        android:drawableStart="@drawable/selector_btn_check_holo_green"
+        android:drawablePadding="@dimen/form_check_padding"
         android:text="@string/billing_same_label" />
 
 </LinearLayout>
