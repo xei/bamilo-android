@@ -1008,6 +1008,13 @@ public class DynamicFormItem {
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
+
+        //needed: change parent layout to match_parent to be able to align this component to right
+      if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+          LinearLayout.LayoutParams paramsAux = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+          this.dataControl.setLayoutParams(paramsAux);
+      }
+
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
