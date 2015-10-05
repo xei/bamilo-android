@@ -2,17 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="right"
-    >
+    android:orientation="vertical">
 
     <!-- HEADER -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_bundles_title"
         style="@style/HeaderStyle"
-        android:text="@string/combo"
-        />
+        android:text="@string/combos" />
 
     <!-- CONTAINER -->
 

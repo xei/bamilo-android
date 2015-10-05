@@ -106,7 +106,7 @@
     <!-- dimen name="text_description">10sp</dimen -->
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
-    <dimen name="warning_text_size">10sp</dimen>
+    <dimen name="warning_text_size">16sp</dimen>
     <dimen name="text_info">8.67sp</dimen>
 
 
@@ -494,6 +494,7 @@
     <!-- KICKOUT -->
     <dimen name="kickout_box_width">@dimen/wrap_content</dimen>
 
+    <!-- PDV -->
     <integer name="variations_num_columns">1</integer>
 
     <integer name="grid_num_columns">1</integer>
@@ -501,6 +502,10 @@
     <integer name="combos_num_columns">1</integer>
 
     <dimen name="combo_bundle_item_with">90dp</dimen>
+    
+    <dimen name="ratings_average_with">160dp</dimen>
+    <dimen name="specs_column_with">120dp</dimen>
+
 
     <integer name="dialog_max_item">7</integer>
 </resources>

@@ -16,7 +16,7 @@
     <!-- dimen name="text_description">15sp</dimen -->
     <dimen name="text_button">25sp</dimen>
     <dimen name="text_button_item">16sp</dimen>
-    <dimen name="warning_text_size">13sp</dimen>
+    <dimen name="warning_text_size">18sp</dimen>
     <dimen name="text_info">14sp</dimen>
 
     <!-- MAIN LAYOUT -->
@@ -191,6 +191,7 @@
 
     <integer name="combos_num_columns">2</integer>
 
-
+    <dimen name="ratings_average_with">260dp</dimen>
+    <dimen name="specs_column_with">220dp</dimen>
 
 </resources>

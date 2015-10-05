@@ -10,7 +10,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -51,7 +50,7 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Variations,
                 R.layout.product_list_page,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.variations,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

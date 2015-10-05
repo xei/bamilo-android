@@ -469,7 +469,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
 
     private void triggerGetPaginatedWishList(int page) {
-        triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        if(page == IntConstants.FIRST_PAGE) {
+            triggerContentEvent(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        } else {
+            triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        }
     }
 
     private void triggerRemoveFromWishList(String sku) {
