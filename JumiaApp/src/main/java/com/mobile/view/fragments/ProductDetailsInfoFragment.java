@@ -44,29 +44,16 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private String mTitle;
 
-    private static int DESCRIPTION_PAGE = -1;
-    private static int SPECIFICATIONS_PAGE = -1;
-    private static int RATINGS_PAGE = -1;
-
     public static int getDescriptionPagePosition(){
-        if(DESCRIPTION_PAGE == -1){
-            DESCRIPTION_PAGE = ShopSelector.isRtl() ? 2 : 0;
-        }
-        return DESCRIPTION_PAGE;
+        return ShopSelector.isRtl() ? 2 : 0;
     }
 
     public static int getSpecificationsPagePosition(){
-        if(SPECIFICATIONS_PAGE == -1){
-            SPECIFICATIONS_PAGE = 0;
-        }
-        return SPECIFICATIONS_PAGE;
+        return 1;
     }
 
     public static int getRatingsPagePosition(){
-        if(RATINGS_PAGE == -1){
-            RATINGS_PAGE = ShopSelector.isRtl() ? 0 : 2;
-        }
-        return RATINGS_PAGE;
+        return ShopSelector.isRtl() ? 0 : 2;
     }
 
     /**
