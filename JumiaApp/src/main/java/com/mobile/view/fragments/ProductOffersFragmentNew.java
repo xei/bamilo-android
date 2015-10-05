@@ -14,12 +14,14 @@ import android.widget.GridView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
+import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.OfferList;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -32,6 +34,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -43,7 +46,7 @@ import java.util.List;
  * @author Paulo Carvalho
  * @modified sergiopereira
  */
-public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
+public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
 
     private static final String TAG = ProductOffersFragmentNew.class.getSimpleName();
 
@@ -393,9 +396,24 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     @Override
     public void onAddOfferToCart(ProductOffer offer) {
         // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
+        triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
     }
-    
+
+    @Override
+    public void onClickVariation(ProductOffer offer) {
+        Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
+        try {
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
+                    getBaseActivity(),
+                    getString(R.string.product_variance_choose),
+                    offer,
+                    this);
+            dialog.show(getFragmentManager(), null);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+        }
+    }
+
     private void executeAddToShoppingCartCompleted() {
         super.showInfoAddToShoppingCartCompleted();
 
@@ -406,5 +424,19 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     }
 
-    
+
+    @Override
+    public void onDialogListItemSelect(int position) {
+
+    }
+
+    @Override
+    public void onDialogListClickView(View view) {
+
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+
+    }
 }

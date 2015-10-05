@@ -444,7 +444,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onAddOfferToCart(ProductOffer offer) {
         // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
+        triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
     }
     
     private void executeAddToShoppingCartCompleted() {
