@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.cache.WishListCache;
 
 import org.json.JSONException;
@@ -48,8 +49,12 @@ public class ProductRegular extends ProductBase {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        // Optional
+        // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        if(TextUtils.isEmpty(mImageUrl)) {
+            mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
+        }
+        // Is new
         isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG);
         // Wish List flag
         if (jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG)) {

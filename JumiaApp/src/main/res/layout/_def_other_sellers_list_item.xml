@@ -44,8 +44,6 @@
             android:gravity="center_vertical|left|start"
             android:paddingLeft="@dimen/layout_padding"
             android:paddingRight="@dimen/layout_padding"
-            android:paddingStart="@dimen/layout_padding"
-            android:paddingEnd="@dimen/layout_padding"
             android:id="@+id/price"
             >
             <com.mobile.components.customfontviews.TextView
@@ -54,13 +52,14 @@
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price_normal"
                 style="@style/TextBody_3"
                 android:textColor="@color/black_800"
-                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 />

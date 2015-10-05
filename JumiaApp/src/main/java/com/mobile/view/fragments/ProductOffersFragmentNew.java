@@ -447,4 +447,9 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             ((OffersListAdapterNew) listAdapter).notifyDataSetChanged();
         }
     }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        onResume();
+    }
 }
