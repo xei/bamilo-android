@@ -13,7 +13,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.CompleteProductUtils;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -217,23 +217,9 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             // Set name
             prodItem.name.setText(addableToCart.getName());
 
-            CompleteProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
+            ProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
             // Validate special price
-            if (addableToCart.hasDiscount()) {
-                // Set discount
-
-                // TODO placeholder
-                int discountPercentage = addableToCart.getMaxSavingPercentage();
-                prodItem.percentage.setText("-" + discountPercentage + "%");
-                prodItem.percentage.setVisibility(View.VISIBLE);
-
-                prodItem.price.setSelected(true);
-                prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
-            } else {
-                // Set price
-                prodItem.percentage.setVisibility(View.INVISIBLE);
-                }
+            ProductUtils.setDiscountRules(addableToCart, prodItem.percentage);
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility
                 prodItem.deleteButton.setVisibility(View.INVISIBLE);

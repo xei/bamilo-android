@@ -1,7 +1,6 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -206,16 +204,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * @param item - the product
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
-        CompleteProductUtils.setPriceRules(item, holder.price,holder.discount);
+        ProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Case discount
-        if(item.hasDiscount()) {
-            holder.percentage.setText(String.format(mContext.getString(R.string.format_discount_percentage), item.getMaxSavingPercentage()));
-            holder.percentage.setVisibility(View.VISIBLE);
-        }
-        // Case normal
-        else {
-            holder.percentage.setVisibility(View.GONE);
-        }
+        ProductUtils.setDiscountRules(item, holder.percentage);
     }
 
     /**

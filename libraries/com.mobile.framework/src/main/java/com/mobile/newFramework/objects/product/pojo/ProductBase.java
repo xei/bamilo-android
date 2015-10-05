@@ -137,8 +137,4 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     public String getPriceRange() {
         return mPriceRange;
     }
-
-    public void setmPriceRange(String mPriceRange) {
-        this.mPriceRange = mPriceRange;
-    }
 }

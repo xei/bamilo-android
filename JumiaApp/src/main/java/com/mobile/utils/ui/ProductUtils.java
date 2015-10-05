@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.view.View;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
@@ -9,11 +10,11 @@ import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.view.R;
 
+public class ProductUtils {
 
-public class CompleteProductUtils {
-
-    public static void setPriceRules(ProductBase productBase, TextView price, TextView specialPrice){
+    public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         String priceRange = productBase.getPriceRange();
 
         //If ProductMultiple already has simple
@@ -21,17 +22,12 @@ public class CompleteProductUtils {
 
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
 
-        //If Campaign product already has simple
-        }else if(productBase instanceof CampaignItem && ((CampaignItem) productBase).hasSelectedSize()){
-            CampaignItem campaignItem = (CampaignItem) productBase;
-            setPrice(campaignItem.getSizes().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
-
         //If hasn't simple but has range
-        } else if(TextUtils.isNotEmpty(priceRange)){
+        }else if(TextUtils.isNotEmpty(priceRange)){
             specialPrice.setText(CurrencyFormatter.formatCurrencyRange(priceRange));
             price.setText("");
         } else {
-            setPrice(productBase,price,specialPrice);
+            setPrice(productBase, price, specialPrice);
         }
         specialPrice.setVisibility(View.VISIBLE);
     }
@@ -50,9 +46,27 @@ public class CompleteProductUtils {
         }
     }
 
+    public static void setPriceRules(@NonNull CampaignItem campaignItem, @NonNull TextView price, @NonNull TextView specialPrice){
+        if(campaignItem.hasSelectedSize()) {
+            setPrice(campaignItem.getSizes().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
+        } else {
+            setPrice(campaignItem, price, specialPrice);
+        }
+        specialPrice.setVisibility(View.VISIBLE);
+    }
+
     private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
         specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
         price.setText("");
+    }
+
+    public static void setDiscountRules(@NonNull ProductBase productBase, @NonNull TextView percentage){
+        if (productBase.hasDiscount()) {
+            percentage.setText(String.format(percentage.getResources().getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()));
+            percentage.setVisibility(View.VISIBLE);
+        } else {
+            percentage.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

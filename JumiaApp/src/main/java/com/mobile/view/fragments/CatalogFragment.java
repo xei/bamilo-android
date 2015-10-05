@@ -930,7 +930,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get Sort
         mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
-        mQueryValues.put("category","women-s-shoes");
+
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         // Query parameters

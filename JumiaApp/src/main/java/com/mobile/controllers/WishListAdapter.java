@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,9 +12,8 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.CompleteProductUtils;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -190,15 +188,9 @@ public class WishListAdapter extends ArrayAdapter<ProductMultiple> {
         // Set name
         prodItem.name.setText(product.getName());
 
-        CompleteProductUtils.setPriceRules(product,prodItem.price,prodItem.discount);
+        ProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
 
-        // Validate special price
-        if (product.hasDiscount()) {
-            prodItem.percentage.setText(String.format(getContext().getString(R.string.format_discount_percentage), product.getMaxSavingPercentage()));
-            prodItem.percentage.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.percentage.setVisibility(View.INVISIBLE);
-        }
+        ProductUtils.setDiscountRules(product, prodItem.percentage);
     }
 
 }

@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +30,6 @@ import android.widget.ProgressBar;
 import com.mobile.components.HeaderGridView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
-import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -46,7 +44,6 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
@@ -58,9 +55,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.CompleteProductUtils;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -976,7 +972,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            CompleteProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
+            ProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
         }
         
         /**
