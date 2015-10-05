@@ -7,7 +7,7 @@
 
     <!-- SHOPPING CART ITEMS -->
 
-    <android.support.v4.widget.NestedScrollView
+    <com.mobile.components.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_20px"
@@ -49,7 +49,7 @@
                 style="@style/divider_horizontal_orange"
                 android:layout_below="@id/shoppingcart_title" />
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </com.mobile.components.widget.NestedScrollView>
 
     <ScrollView
         android:layout_width="match_parent"

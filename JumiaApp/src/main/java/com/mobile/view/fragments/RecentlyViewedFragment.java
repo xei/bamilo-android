@@ -454,6 +454,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
+        // Validate event
+        super.handleSuccessEvent(bundle);
         // Validate the event type
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
