@@ -24,7 +24,7 @@ public class ProductUtils {
 
         //If hasn't simple but has range
         }else if(TextUtils.isNotEmpty(priceRange)){
-            specialPrice.setText(CurrencyFormatter.formatCurrencyRange(priceRange));
+            specialPrice.setText(CurrencyFormatter.formatCurrencyPattern(priceRange));
             price.setText("");
         } else {
             setPrice(productBase, price, specialPrice);
