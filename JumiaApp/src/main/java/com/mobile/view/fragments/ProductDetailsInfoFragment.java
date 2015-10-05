@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
@@ -16,6 +15,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -41,6 +41,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public static int mPositionToStart = 0;
 
     private int mTabsCount = 3;
+
+    private String mTitle;
 
 
     /**
@@ -86,6 +88,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if(bundle != null) {
             mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
+            mTitle = bundle.getString(ConstantsIntentExtra.FLAG_1);
         }
     }
 
@@ -162,6 +165,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+        // Set action title
+        if (TextUtils.isNotEmpty(mTitle)) {
+            getBaseActivity().setActionBarTitle(mTitle);
+        }
     }
 
     /*

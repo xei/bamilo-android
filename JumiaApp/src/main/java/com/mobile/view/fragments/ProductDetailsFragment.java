@@ -86,8 +86,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     public static int sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
 
-    public static final String SELLER_ID = "sellerId";
-
     private ProductComplete mProduct;
 
     private String mCompleteProductSku;
@@ -631,8 +629,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON DISPLAY SIZE");
         // Validate simple variations
         if (mProduct.hasMultiSimpleVariations()) {
-            // Simple variation name
-            String text = mProduct.getVariationName() + ": " + mProduct.getVariationsAvailable();
+            // All Simple variations
+            String textVariations = mProduct.getVariationsAvailable();
+            // Get selected variation
+            if(mProduct.hasSelectedSimpleVariation() && mProduct.getSelectedSimple() != null) {
+                textVariations = mProduct.getSelectedSimple().getVariationValue();
+            }
+            // Simple variation name and value
+            String text = mProduct.getVariationName() + ": " + textVariations;
             // Set text
             ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
             // Set listener
@@ -839,6 +843,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
+        bundle.putString(ConstantsIntentExtra.FLAG_1, mProduct.getBrand());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
