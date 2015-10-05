@@ -467,7 +467,7 @@
     <style name="button_container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/button_container_height</item>
-        <item name="android:background">@color/background_color</item>
+        <item name="android:background">@color/window_background_color</item>
         <item name="android:gravity">top|center</item>
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
@@ -635,17 +635,17 @@
 
     <!-- CUSTOM TEXT STYLES -->
 
-    <style name="TextTimer" parent="TextTitle_2">
-        <item name="android:textColor">@color/red_cc0000</item>
-    </style>
+    <!--<style name="TextTimer" parent="TextTitle_2">-->
+        <!--<item name="android:textColor">@color/red_cc0000</item>-->
+    <!--</style>-->
 
-    <style name="TextSubHeadOrange" parent="TextSubHead">
-        <item name="android:textColor">@color/orange_f68b1e</item>
-    </style>
+    <!--<style name="TextSubHeadOrange" parent="TextSubHead">-->
+        <!--<item name="android:textColor">@color/orange_f68b1e</item>-->
+    <!--</style>-->
 
-    <style name="TextPriceSubHead" parent="TextSubHead">
-        <item name="android:textColor">@color/red_basic</item>
-    </style>
+    <!--<style name="TextPriceSubHead" parent="TextSubHead">-->
+        <!--<item name="android:textColor">@color/red_basic</item>-->
+    <!--</style>-->
 
     <!-- BASE BUTTONS STYLES -->
 

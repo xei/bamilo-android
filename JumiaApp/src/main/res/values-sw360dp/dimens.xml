@@ -28,7 +28,7 @@
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">48dp</dimen>
-    <dimen name="sliding_tab_inidicator_thickness">2dip</dimen>
+    <dimen name="sliding_tab_inidicator_thickness">1dip</dimen>
     <dimen name="sliding_tab_text_size">16sp</dimen>
 
     <!-- (px/2.8) -->

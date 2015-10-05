@@ -115,7 +115,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you_main,
                 R.string.checkout_label,

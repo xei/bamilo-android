@@ -172,7 +172,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * ########### LAYOUT ###########  
      */
 
-
     /**
      * Method used to switch between the filter fragments
      * @param filterType
@@ -216,49 +215,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();
     }
-
-    /**
-     * Goto back until type
-     * @param type
-     * @author sergiopereira
-     */
-    public void goToBackUntil(FragmentType type){
-        getChildFragmentManager().popBackStackImmediate(type.toString(), 0);
-    }
-    
-    /**
-     * Pop the back stack
-     * @author sergiopereira
-     */
-    public void goToParentCategory(){
-        getChildFragmentManager().popBackStack();
-    }
-    
-    /**
-     * ########### LISTENERS ###########  
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        Print.d(TAG, "ON CLICK");
-        int id = view.getId();
-
-        Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
-//        switch (id) {
-//            // Case unknown
-//            default:
-//                Print.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
-//                getBaseActivity().closeNavigationDrawer();
-//                break;
-//        }
-        // Close
-
-    }
-
 
 
 }

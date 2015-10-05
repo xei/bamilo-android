@@ -78,10 +78,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public WishListFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Favorite,
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Saved,
                 R.layout._def_wishlist_fragment,
-                R.string.saved,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

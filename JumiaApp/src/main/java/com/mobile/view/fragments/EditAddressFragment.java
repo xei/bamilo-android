@@ -245,6 +245,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         spinner.setSelection(getDefaultPosition(formItem, regions.size()));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
+        showFragmentContentContainer(); // Show to trigger
     }
 
     /**

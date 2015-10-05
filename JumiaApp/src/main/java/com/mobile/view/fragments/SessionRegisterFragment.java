@@ -98,7 +98,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * Empty Constructor
      */
     public SessionRegisterFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.register,
                 R.string.register_title,

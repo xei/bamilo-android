@@ -23,8 +23,14 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    useLibrary 'org.apache.http.legacy'
+
+    dexOptions {
+        jumboMode true
+    }
 
     defaultConfig {
         applicationId "com.mobile.view"
@@ -113,7 +119,7 @@ android {
             versionName "2.7"
             versionCode getAppVersionCode(55)
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "pt", "ar"
         }
 
         jumiaPreInstall {
@@ -121,7 +127,7 @@ android {
             versionName "2.7"
             versionCode 55
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "pt", "ar"
             android.sourceSets {
                 jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
             }
@@ -132,7 +138,7 @@ android {
             versionName "2.7"
             versionCode 57
             signingConfig signingConfigs.jumiaMtnngSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "pt", "ar"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
             }
@@ -143,7 +149,7 @@ android {
             versionName "2.7"
             versionCode 11
             signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "pt", "ar"
             android.sourceSets {
                 jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
             }
@@ -179,7 +185,7 @@ android {
             versionName "1.5"
             versionCode getAppVersionCode(10)
             signingConfig signingConfigs.darazSigning
-            resConfigs "en","ur"
+            resConfigs "en", "ur"
         }
 
         darazPreInstall {
@@ -187,7 +193,7 @@ android {
             versionName "1.5"
             versionCode 10
             signingConfig signingConfigs.darazSigning
-            resConfigs "en","ur"
+            resConfigs "en", "ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
             }
