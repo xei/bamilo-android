@@ -66,9 +66,9 @@
     <item name="list_sub_item_1"                        type="layout">@layout/_def_list_sub_item_1</item>
     <item name="list_sub_item_2"                        type="layout">@layout/_def_list_sub_item_2</item>
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
-    <item name="filter_fragment_price"                   type="layout">@layout/_def_filter_fragment_price</item>
+    <item name="filter_fragment_price"                  type="layout">@layout/_def_filter_fragment_price</item>
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
-    <item name="gen_product_list"                      type="layout">@layout/_def_gen_product_list</item>
+    <item name="gen_product_list"                       type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
@@ -80,7 +80,7 @@
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
     
     <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
-    <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
+    <item name="sublist" 	                            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
     <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
@@ -88,7 +88,7 @@
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
-    <item name="pdv_fragment_related_item_price" 	        type="layout">@layout/_def_pdv_fragment_related_item_price</item>
+    <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -162,7 +162,7 @@
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
     <item name="form_checkbox"                          type="layout">@layout/_def_form_checkbox</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
-    <item name="form_spinner_dropdown_item"             type="layout">@layout/_def_form_spinner_dropdown_item</item>
+    <!--<item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>-->
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
 
@@ -195,7 +195,7 @@
     <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
 
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
-    <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
+    <!--<item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>-->
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
     <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
