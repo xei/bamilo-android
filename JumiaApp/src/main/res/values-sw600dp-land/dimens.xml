@@ -91,9 +91,9 @@
 
     <integer name="grid_num_columns">2</integer>
 
-    <dimen name="combo_bundle_item_with">140dp</dimen>
-
     <dimen name="ratings_average_with">260dp</dimen>
     <dimen name="specs_column_with">220dp</dimen>
+
+    <dimen name="combo_bundle_item_with">140dp</dimen>
 
 </resources>
