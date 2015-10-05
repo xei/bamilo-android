@@ -375,22 +375,23 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         int defaultPosition = 0;
-        // Get default position
-        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.REGION).getValue();
-        if ( regionValue != null && Integer.parseInt(regionValue) > 0){
-            int defaultId = Integer.parseInt(regionValue);
-            for (int i = 0; i < regions.size(); i++) {
-                if (regions.get(i).getValue() == defaultId) {
-                    defaultPosition = i;
-                    break;
-                }
-            }
-        }
-
+        // TODO: VALIDATE THIS IS NECESSARY, DEF TO CREATE ???
+//        // Get default position
+//        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.REGION).getValue();
+//        if ( regionValue != null && Integer.parseInt(regionValue) > 0){
+//            int defaultId = Integer.parseInt(regionValue);
+//            for (int i = 0; i < regions.size(); i++) {
+//                if (regions.get(i).getValue() == defaultId) {
+//                    defaultPosition = i;
+//                    break;
+//                }
+//            }
+//        }
         setSavedSelectedRegionPos(spinner, tag, defaultPosition);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
+        showFragmentContentContainer(); // Show to trigger
     }
 
     /**

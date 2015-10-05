@@ -24,6 +24,7 @@ import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -68,10 +69,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * Empty constructor
      */
     public ChooseCountryFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Country,
                 R.layout.change_country,
-                R.string.nav_country,
+                ShopSelector.getShopId() != null ? R.string.nav_country : IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -106,7 +107,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        
         // Validate the current shop
         if(ShopSelector.getShopId() != null) {
             // Get and show new available countries
@@ -118,7 +118,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             showAvailableCountries();
             getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
         }
-        
     }
 
     /*

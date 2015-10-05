@@ -66,8 +66,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * Empty constructor
      */
     public RecentlyViewedFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.RecentlyView,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.RecentlyViewed,
                 R.layout.recentlyviewed,
                 R.string.recently_viewed,
                 KeyboardState.NO_ADJUST_CONTENT);
@@ -454,6 +454,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
+        // Validate event
+        super.handleSuccessEvent(bundle);
         // Validate the event type
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:

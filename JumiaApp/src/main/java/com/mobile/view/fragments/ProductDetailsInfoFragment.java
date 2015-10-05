@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -16,6 +13,7 @@ import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
@@ -59,10 +57,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsInfoFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Product,
                 R.layout.details_info_fragment_main,
-                0,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 

@@ -17,6 +17,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -76,10 +77,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * Empty constructor
      */
     public ComboFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK,MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Combos,
                 R.layout.pdv_combos_page,
-                NO_TITLE,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -102,7 +103,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
             productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             totalPrice = bundleList.getBundlePriceDouble();
-
         }
     }
 

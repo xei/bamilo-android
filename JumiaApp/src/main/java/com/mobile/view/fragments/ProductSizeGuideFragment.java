@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
@@ -58,8 +57,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
                 NavigationAction.Product,
                 R.layout.product_size_guide_main,
                 R.string.size_guide_label,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

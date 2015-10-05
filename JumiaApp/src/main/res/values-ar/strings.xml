@@ -7,7 +7,6 @@
     <string name="action_label_logout">خروج</string>
     <string name="action_label_search_hint">البحث على %s</string>
     <string name="action_label_share">مشاركة</string>
-    <string name="action_label_wishlist">قائمة الرغبات</string>
     <string name="add_address">إضافة عنوان</string>
     <string name="add_to_shopping_cart">الإضافة إلى عربة التسوق</string>
     <string name="added_bundle_to_shop_cart_dialog_text">تم إضافة المنتجات إلى عربة التسوق</string>
