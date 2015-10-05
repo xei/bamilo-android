@@ -67,7 +67,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_main,
                 R.string.checkout_label,

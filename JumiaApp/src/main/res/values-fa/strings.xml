@@ -6,7 +6,6 @@
     <string name="action_label_logout">خروج</string>
     <string name="action_label_search_hint">جستجو در %s</string>
     <string name="action_label_share">به اشتراک بگذارید</string>
-    <string name="action_label_wishlist">فهرست علاقه مندی ها</string>
     <string name="add_address">افزودن نشانی</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه گردیدند</string>

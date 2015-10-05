@@ -7,8 +7,7 @@
 
     <include
         android:id="@+id/catalog_bar_view"
-        layout="@layout/catalog_fragment_tool_bar"
-        />
+        layout="@layout/catalog_fragment_tool_bar" />
 
     <!-- GRID VIEW -->
     <!--android:layout_marginTop="@dimen/catalog_tool_bar_height" +1-->

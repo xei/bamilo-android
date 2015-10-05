@@ -5,6 +5,7 @@
     android:checked="true"    
     android:button="@null"
     android:gravity="right"
+    android:paddingRight="@dimen/form_check_padding"
     android:drawableRight="@drawable/selector_btn_check_holo_green"
     android:text="@string/login_remember_user_email"
     android:singleLine="true" />
