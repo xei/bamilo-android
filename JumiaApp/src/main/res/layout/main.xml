@@ -101,7 +101,7 @@
                 android:id="@+id/warning"
                 layout="@layout/warning"
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
+                android:layout_height="?attr/actionBarSize"
                 android:visibility="gone" />
 
         </RelativeLayout>

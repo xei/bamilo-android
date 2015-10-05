@@ -106,7 +106,7 @@
     <!-- dimen name="text_description">10sp</dimen -->
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
-    <dimen name="warning_text_size">10sp</dimen>
+    <dimen name="warning_text_size">16sp</dimen>
     <dimen name="text_info">8.67sp</dimen>
 
 
