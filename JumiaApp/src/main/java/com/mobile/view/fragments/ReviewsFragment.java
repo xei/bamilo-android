@@ -127,7 +127,7 @@ public class ReviewsFragment extends BaseFragment {
     public ReviewsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
-                R.layout.reviews_fragment_new,
+                R.layout.reviews_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -868,7 +868,6 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void goToReview(ProductReviewComment review, String date) {
 
-
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
         bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
@@ -879,6 +878,7 @@ public class ReviewsFragment extends BaseFragment {
 
     }
 
+
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -887,13 +887,6 @@ public class ReviewsFragment extends BaseFragment {
         // Buy button
         if (id == R.id.lWriteReview) {
             writeReview();
-        } else if (id == R.id.write_btn) {
-            JumiaApplication.cleanRatingReviewValues();
-            JumiaApplication.cleanSellerReviewValues();
-            JumiaApplication.INSTANCE.setFormReviewValues(null);
-            writeReview();
-        } else if (id == R.id.review_container) {
-
         }
 
     }

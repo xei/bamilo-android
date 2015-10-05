@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -20,7 +19,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -38,9 +36,6 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
     private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
-    private TextView mProductName;
-    private TextView mPriceNormal;
-    private TextView mPriceStrike;
     private RelativeLayout mProductFeaturesContainer;
     private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
@@ -64,8 +59,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     public ProductDetailsSummaryFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
-                //      R.layout.product_summary_fragment,
-                R.layout.product_summary_fragment_new,
+                R.layout.product_summary_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -93,10 +87,12 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof ProductComplete){
                 mCompleteProduct = (ProductComplete) parcelableProduct;
+                if(mCompleteProduct != null){
+                    mCompleteProductSku = mCompleteProduct.getSku();
+                }
             }
         }
     }
@@ -171,9 +167,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(outState != null)
-            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
+        outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
+
     }
     
     /*
@@ -212,73 +208,21 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     }
     
     private void getViews(){
-/*        mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
-        mPriceNormal = (TextView) mainView.findViewById(R.id.product_price_special);
-        mPriceStrike = (TextView) mainView.findViewById(R.id.pdv_text_price);
-        mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
-        mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
-        mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
-        */
         mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
         mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
     }
     
     private void displayProductInformation() {
-    //    mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-    //    displayPriceInformation();
         displayFeatures();
         displayDescription();
-   //     showAtLeastOne();
     }
 
-    /**
-     * displays information related to the product price
-     */
-    private void displayPriceInformation() {
-        if (mCompleteProduct.hasDiscount()) {
-            // display special and normal price
-            mPriceNormal.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getSpecialPrice()));
-            mPriceStrike.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getPrice()));
-            mPriceStrike.setVisibility(View.VISIBLE);
-            mPriceStrike.setPaintFlags(mPriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else {
-            // display only the special price
-            mPriceNormal.setText(CurrencyFormatter.formatCurrency(mCompleteProduct.getPrice()));
-            mPriceStrike.setVisibility(View.GONE);
-        }
-    }
 
     /**
      * Displays the features section
      */
     private void displayFeatures() {
         String shortDescription = mCompleteProduct.getShortDescription();
-        // Don't show the features box if there is no content for it
-/*        if (TextUtils.isEmpty(shortDescription)) {
-            Print.i(TAG, "shortDescription : empty");
-            if(mProductFeaturesContainer != null){
-                mProductFeaturesContainer.setVisibility(View.GONE);
-            }
-        } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
-
-            //TODO validate if it's to remove or not
-//        String translatedDescription = shortDescription.replace("\r", "<br>");
-//            Log.d(TAG, "displayFeatures: *" + translatedDescription + "*");
-//
-//        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-//        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-//            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-//            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-//            for (MetricAffectingSpan span : spans) {
-//                htmlText.removeSpan(span);
-//            }
-//        }
-//        mProductFeaturesText.setText(htmlText);
-            mProductFeaturesText.setText(shortDescription);
-   //     }
-   */
         if (TextUtils.isEmpty(shortDescription)) {
             Print.i(TAG, "shortDescription : empty");
             if(mProductFeaturesText != null){
@@ -295,29 +239,6 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      */
     private void displayDescription() {
         String longDescription = mCompleteProduct.getDescription();
-
-
-   /*     if (TextUtils.isEmpty(longDescription)) {
-            Print.i(TAG, "longDescription : empty");
-            if(mProductDescriptionContainer != null){
-                mProductDescriptionContainer.setVisibility(View.GONE);
-            }
-        } else {
-            //TODO validate if it's to remove or not
-//            String translatedDescription = longDescription.replace("\r", "<br>");
-//            Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-//            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-//            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-//                Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-//                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-//                for (MetricAffectingSpan span: spans) {
-//                    htmlText.removeSpan(span);
-//                }
-//            }
-//            mProductDescriptionText.setText(htmlText);
-            mProductDescriptionText.setText(longDescription);
-        }*/
-
         //added apires: set long description
         if (TextUtils.isEmpty(longDescription)) {
             Print.i(TAG, "longDescription : empty");
@@ -330,15 +251,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         }
     }
 
-    /**
-     * show at least a empty box if both fields don't come from the API
-     */
-    private void showAtLeastOne(){
-        if(mProductDescriptionContainer!=null && !mProductDescriptionContainer.isShown() && mProductFeaturesContainer!=null && !mProductFeaturesContainer.isShown()){
-            mProductDescriptionContainer.setVisibility(View.VISIBLE);
-        }
-    }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)

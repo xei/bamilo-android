@@ -42,10 +42,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     public static int mPositionToStart = 0;
 
-//    private int mTabsCount = 2;
-private int mTabsCount = 3;
+    private int mTabsCount = 3;
 
-    private boolean mHasSummary = true;
 
     /**
      * Get instance
@@ -62,8 +60,7 @@ private int mTabsCount = 3;
     public ProductDetailsInfoFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-                //       R.layout.details_info_fragment_main,
-                R.layout.details_info_fragment_main_new,
+                R.layout.details_info_fragment_main,
                 0,
                 KeyboardState.ADJUST_CONTENT);
     }
@@ -89,11 +86,8 @@ private int mTabsCount = 3;
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         Bundle bundle = getArguments();
-        if(bundle != null)
-        {
+        if(bundle != null) {
             mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
-        } else {
-            mPositionToStart = 0;
         }
     }
 
@@ -118,7 +112,6 @@ private int mTabsCount = 3;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
             layout = R.layout.tab_simple_item_new;
         //    layout = R.layout.tab_simple_item;
-
         }
 
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
@@ -138,10 +131,6 @@ private int mTabsCount = 3;
                     mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
                     mProductInfoPager.enableRtl();
                 }
-
-       /*         mPositionToStart = mProductInfoPagerAdapter.getCount();
-            } else {
-                mPositionToStart = 0;*/
             }
             setPagerPosition(mPositionToStart);
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
@@ -223,11 +212,9 @@ private int mTabsCount = 3;
                 ProductComplete completeProduct = (ProductComplete) parcelableProduct;
 
                 if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
-//                    hasSpecification = false;
                     mTabsCount--;
                 }
                 if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
-                    mHasSummary = false;
                     mTabsCount--;
                 }
             }
@@ -265,20 +252,15 @@ private int mTabsCount = 3;
         @Override
         protected Fragment createNewFragment(int position) {
 
-            //changed:
-            Fragment fragment;
-
             if(titlesPageInt.get(position).equals(R.string.description)) {
-                fragment = ProductDetailsSummaryFragment.getInstance(getArguments());
+                return ProductDetailsSummaryFragment.getInstance(getArguments());
             }
             else if (titlesPageInt.get(position).equals(R.string.product_specifications)) {
-                fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
+                return ProductDetailsSpecificationsFragment.getInstance(getArguments());
             }
             else {
-                fragment = ReviewsFragmentNew.getInstance(getArguments()); //added: go to ratings page
+                return ReviewsFragment.getInstance(getArguments()); //added: go to ratings page
             }
-
-            return fragment;
         }
 
         @Override
@@ -289,8 +271,10 @@ private int mTabsCount = 3;
 
     private List<Integer> getFragmentTitleValues(){
         Integer[] titles = {
-                mHasSummary ? R.string.description : R.string.product_specifications,
-                R.string.product_specifications, R.string.rat_rev};
+                R.string.description ,
+                R.string.product_specifications,
+                R.string.rat_rev};
+
 
         return Arrays.asList(titles);
     }

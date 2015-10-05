@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class that represents the response from the get products rating
@@ -36,7 +35,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	//added
 	private JSONObject byStarsObject;
-	private HashMap<String,String> byStars;
 	private int mBasedOn;
 
 	public ProductRatingPage() {
@@ -50,7 +48,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	    average = -1;
 	    sellerUrl = "";
 	    sellerName = "";
-		byStars = new HashMap<>();
 		mBasedOn = 0;
 	}
 
@@ -170,25 +167,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
         return ratingTypes;
     }
 
-    public void setRatingTypes(ArrayList<RatingStar> ratingTypes) {
-        this.ratingTypes = ratingTypes;
-    }
-
-    public int getMinStarSize() {
-        return minStarSize;
-    }
-
-    public void setMinStarSize(int minStarSize) {
-        this.minStarSize = minStarSize;
-    }
-
-    public int getMaxStarSize() {
-        return maxStarSize;
-    }
-
-    public void setMaxStarSize(int maxStarSize) {
-        this.maxStarSize = maxStarSize;
-    }
 
 	public int getmBasedOn() { return mBasedOn;}
 
@@ -199,13 +177,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	public int getAverage() {
         return average;
     }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setAverage(int average) {
-        this.average = average;
-    }
+
 
     @Override
 	public int describeContents() {
@@ -216,16 +188,8 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
         return productSku;
     }
 
-    public void setProductSku(String productSku) {
-        this.productSku = productSku;
-    }
-
     public String getProductName() {
         return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
 
@@ -243,37 +207,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	}
 
-
-
-    /**
-     * field user for seller only
-     * @return
-     */
-    public String getSellerUrl() {
-        return sellerUrl;
-    }
-
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setSellerUrl(String sellerUrl) {
-        this.sellerUrl = sellerUrl;
-    }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public String getSellerName() {
-        return sellerName;
-    }
-    /**
-     * field user for seller only
-     * @return
-     */
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
-    }
 
     @Override
 	public void writeToParcel(Parcel dest, int flags) {

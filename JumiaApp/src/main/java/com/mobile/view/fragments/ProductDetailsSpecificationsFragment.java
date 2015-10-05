@@ -96,11 +96,12 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductSku = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof ProductComplete){
                 mCompleteProduct = (ProductComplete) parcelableProduct;
+                if(mCompleteProduct != null){
+                    mCompleteProductSku = mCompleteProduct.getSku();
+                }
             }
         }
     }
@@ -176,10 +177,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(outState != null) {
-            outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
-        }
+        outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
+
+
     }
     
     /*
@@ -245,11 +246,9 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      */
     private void addSpecTable(ProductSpecification productSpecification){
 
-     //   final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container_new, mProductSpecsContainer, false);
-    //    final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
-        final TextView specHeader = (TextView)(TextView) theInflatedView.findViewById(R.id.HeaderSpecs);
-        final LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
+        View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
+        TextView specHeader = (TextView) theInflatedView.findViewById(R.id.HeaderSpecs);
+        LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
 
         HashMap<String,String> specsMap = productSpecification.getSpecifications();
 
@@ -257,21 +256,9 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             specHeader.setText(productSpecification.getTitle().toUpperCase());
             try {
                 Iterator it = specsMap.entrySet().iterator();
-                int count=0;
-                boolean isLast=false;
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
-
-                    //added: add horizontal separator in all elements except in the last
-                    count++;
-
-                    if(count ==  specsMap.size()-1)
-                    {
-                        isLast=true;
-                    }
-
-                    addSpecTableRow(pair, specsList,isLast);
-
+                    addSpecTableRow(pair, specsList);
                 }
 
                 mProductSpecsContainer.addView(theInflatedView);
@@ -286,30 +273,22 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param pair, key/value of the table
      * @param parent
      */
-    private void addSpecTableRow(Map.Entry pair, final LinearLayout parent,boolean isLast){
-   //     final View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
-        final View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item_new, parent, false);
-        final TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
-        final TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
+    private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
+        View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item, parent, false);
+        TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
+        TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
         specKey.setText(pair.getKey().toString());
         specValue.setText(pair.getValue().toString());
-
-        //added:create separator and add to parent except if is last element
-        if(!isLast) {
             View separator = createSeparator();
             parent.addView(theInflatedView);
             parent.addView(separator);
-        }
-
-
-
     }
 
 
     /**
      * Create a separator line
-     * */
+     */
     private View createSeparator()
     {
         View view = new View(getBaseActivity().getApplicationContext());

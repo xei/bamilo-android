@@ -53,7 +53,7 @@ import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
 import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
-import com.mobile.view.fragments.ReviewsFragmentNew;
+import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
@@ -61,7 +61,7 @@ import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
-import com.mobile.view.fragments.WriteSellerReviewFragment;
+//import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -290,7 +290,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case POPULARITY:
             //    fragment = ReviewsFragment.getInstance(bundle);
-                fragment = ReviewsFragmentNew.getInstance(bundle);
+                fragment = ReviewsFragment.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
                 fragment = ReviewWriteFragment.getInstance(bundle);
@@ -392,9 +392,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-            case WRITE_REVIEW_SELLER:
-                fragment = WriteSellerReviewFragment.getInstance(bundle);
-                break;
+//            case WRITE_REVIEW_SELLER:
+//                fragment = WriteSellerReviewFragment.getInstance(bundle);
+//                break;
             case COMBOPAGE:
                 fragment = ComboFragment.getInstance(bundle);
                 break;

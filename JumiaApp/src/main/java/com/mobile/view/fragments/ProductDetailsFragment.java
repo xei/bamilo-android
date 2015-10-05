@@ -828,7 +828,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickRating() {
         Log.i(TAG, "ON CLICK RATING");
         JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());

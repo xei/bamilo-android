@@ -94,7 +94,6 @@ public class ReviewFragment extends BaseFragment {
 
         //clean form from write Review form
         JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
     
