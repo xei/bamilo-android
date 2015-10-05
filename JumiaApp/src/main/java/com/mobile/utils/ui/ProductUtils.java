@@ -64,7 +64,7 @@ public class ProductUtils {
     public static void setDiscountRules(@NonNull ProductBase productBase, @NonNull TextView percentage){
         if (productBase.hasDiscount()) {
             Resources resources = percentage.getResources();
-            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()) + " " + resources.getString(R.string.off_label));
+            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()));
             percentage.setVisibility(View.VISIBLE);
         } else {
             percentage.setVisibility(View.INVISIBLE);

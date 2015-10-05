@@ -50,13 +50,13 @@
                 android:textColor="@color/black_800"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_marginRight="5dp"
                 />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price"
                 style="@style/TextBody_3"
                 android:textColor="@color/black"
-                android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
