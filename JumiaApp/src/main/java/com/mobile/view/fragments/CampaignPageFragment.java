@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +30,7 @@ import android.widget.ProgressBar;
 import com.mobile.components.HeaderGridView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
-import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -54,8 +53,10 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -317,7 +318,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Load the bitmap
             String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
             RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-                
+
                 @Override
                 public void onLoadedSuccess(String url, Bitmap bitmap) {
                     // Show content
@@ -325,7 +326,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     bannerState = BannerVisibility.VISIBLE;
                     showContent(bannerView);
                 }
-                
+
                 @Override
                 public void onLoadedError() {
                     bannerView.setVisibility(View.GONE);
@@ -334,7 +335,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     // Show content
                     showContent(bannerView);
                 }
-                
+
                 @Override
                 public void onLoadedCancel() {
                     bannerView.setVisibility(View.GONE);
@@ -654,7 +655,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * ########### ADAPTER ###########  
      */    
     
-    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener{
+    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener, DialogCampaignItemSizeListFragment.OnDialogListListener {
         
         // private static final int YELLOW_PERCENTAGE = 34 < X < 64
         
@@ -665,7 +666,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         private LayoutInflater mInflater;
         
         private OnClickListener mOnClickParentListener;
-        
+
         /**
          * A representation of each item on the list
          */
@@ -676,7 +677,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             private ImageView mImage;
             private View progress;
             private View mSizeContainer;
-            private IcsSpinner mSizeSpinner;
+            private Button mSizeSpinner;
             private TextView mPrice;
             private TextView mDiscount;
             private TextView mSave;
@@ -766,7 +767,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 // Get size container
                 item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
                 // Get size spinner
-                item.mSizeSpinner = (IcsSpinner) view.findViewById(R.id.campaign_item_size_spinner);
+                item.mSizeSpinner = (Button) view.findViewById(R.id.campaign_item_size_spinner);
                 // Get price
                 item.mPrice = (TextView) view.findViewById(R.id.campaign_item_price);
                 // Get discount
@@ -971,17 +972,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            if(item.hasDiscount()) {
-                view.mPrice.setVisibility(View.VISIBLE);
-                // Set discount
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-                view.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                // Set discount
-                view.mPrice.setVisibility(View.GONE);
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            }
+            ProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
         }
         
         /**
@@ -1051,7 +1042,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * @param position
          * @author sergiopereira
          */
-        private void setSizeContainer(ItemView view, CampaignItem item, int position){
+        private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
             if(!item.hasUniqueSize() && item.hasSizes()) {
                 // Show container
@@ -1063,7 +1054,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
                 // Apply the adapter to the spinner
-                view.mSizeSpinner.setAdapter(adapter);
+//                view.mSizeSpinner.setAdapter(adapter);
                 
                 // Checks if product has only one size to select (S, M, L - only available L)
                 if(sizes.size() == 1){
@@ -1080,12 +1071,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
                 if(item.hasSelectedSize()) {
-                    view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
+                    view.mSizeSpinner.setText(item.getSizes().get(item.getSelectedSizePosition()).size);
                 }
                 // Force reload content to redraw the default selection value
                 adapter.notifyDataSetChanged();
                 // Apply the select listener
-                view.mSizeSpinner.setOnItemSelectedListener(this);
+                view.mSizeSpinner.setOnClickListener(this);
+
             } else {
                 // Hide the size container
                 view.mSizeContainer.setVisibility(View.GONE);
@@ -1127,7 +1119,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         /**
          * ######### LISTENERS #########
          */
-        
+
         @Override
         public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
@@ -1136,6 +1128,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
             campaignItem.setSelectedSizePosition(position);
             campaignItem.setSelectedSize(size);
+//            this.notifyDataSetChanged();
+            Print.d(TAG, "selected simple");
         }
 
         @Override
@@ -1177,21 +1171,53 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             String position = view.getTag().toString();
             // Get the campaign
             CampaignItem item = getItem(Integer.valueOf(position));
-            // Get selected size
-            CampaignItemSize selectedSize = item.getSelectedSize();
-            // Add new tags
-            view.setTag(PROD, item.getSku());
-            view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
-            view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
-            view.setTag(STOCK, item.hasStock());
-            view.setTag(NAME, item.getName());
-            view.setTag(BRAND, item.getBrand());
-            view.setTag(PRICE, item.getPriceForTracking());
-            view.setTag(DISCOUNT, item.getMaxSavingPercentage());
-            //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
-            // Send to listener
-            if(mOnClickParentListener != null)
-                mOnClickParentListener.onClick(view);
+
+            int id = view.getId();
+            if(id == R.id.campaign_item_size_spinner){
+                showVariantsDialog(item);
+            } else {
+
+                // Get selected size
+                CampaignItemSize selectedSize = item.getSelectedSize();
+                // Add new tags
+                view.setTag(PROD, item.getSku());
+                view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
+                view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
+                view.setTag(STOCK, item.hasStock());
+                view.setTag(NAME, item.getName());
+                view.setTag(BRAND, item.getBrand());
+                view.setTag(PRICE, item.getPriceForTracking());
+                view.setTag(DISCOUNT, item.getMaxSavingPercentage());
+                //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
+                // Send to listener
+                if (mOnClickParentListener != null)
+                    mOnClickParentListener.onClick(view);
+            }
+        }
+
+        protected void showVariantsDialog(CampaignItem item) {
+
+            try {
+                DialogCampaignItemSizeListFragment dialog = DialogCampaignItemSizeListFragment.newInstance(
+                        getBaseActivity(),
+                        getString(R.string.product_variance_choose),
+                        item,
+                        this);
+                dialog.show(getFragmentManager(), null);
+            } catch (NullPointerException e) {
+                Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+            }
+        }
+
+
+        @Override
+        public void onDialogListItemSelect(int position) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDialogListClickView(View view) {
+
         }
     }
     
