@@ -135,6 +135,9 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        // Set Max list size
+        setListSize(list, mItems.size());
+
         // Validate adapter
         if(mAdapter == null) {
             mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
