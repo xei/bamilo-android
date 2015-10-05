@@ -141,7 +141,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isFromBuyButton;
 
-    private int DESCRIPTION_PAGE=0, SPECIFICATIONS_PAGE= 1, RATINGS_PAGE=2;
+    private int DESCRIPTION_PAGE = 0;
+    private int SPECIFICATIONS_PAGE = 1;
+    private int RATINGS_PAGE = 2;
 
     /**
      * Empty constructor

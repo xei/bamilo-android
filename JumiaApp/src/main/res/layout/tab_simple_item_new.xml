@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="48dp"
     style="@style/TextBody_3"
-    android:textColor="@drawable/selector_specs_tab_text"
+    android:textColor="@color/white"
     android:clickable="true"
     android:gravity="center"
     android:paddingLeft="@dimen/margin_midhuge"

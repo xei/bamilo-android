@@ -37,20 +37,17 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * @author sergiopereira
@@ -126,11 +123,7 @@ public class ReviewsFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewsFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
-                R.layout.reviews_fragment,
-                IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.reviews_fragment);
     }
 
     /*
@@ -357,52 +350,6 @@ public class ReviewsFragment extends BaseFragment {
     }
 
 
-
-
-    }
-    
-    private void removeWriteReviewFragment() {
-        if (mWriteReviewFragment != null) {
-           
-            if(mWriteReviewFragment instanceof ReviewWriteNestedFragment)
-                showRatingForm = ((ReviewWriteNestedFragment)mWriteReviewFragment).getIsShowingRatingForm();
-            
-            FragmentManager fm = getChildFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(mWriteReviewFragment);
-            ft.commit();
-        } else if (mSellerWriteReviewFragment != null){
-
-            FragmentManager fm = getChildFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(mSellerWriteReviewFragment);
-            ft.commit();
-
-        }
-    }
-    
-
-    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = String.valueOf(selectedProduct.getPrice());
-        String specialPrice = String.valueOf(selectedProduct.getSpecialPrice());
-        /*--if (specialPrice == null) specialPrice = selectedProduct.getMaxSpecialPrice();*/
-        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
-    }
-
-    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial, String unitPrice, String specialPrice) {
-        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the special price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.GONE);
-        } else {
-            // display special and normal price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.VISIBLE);
-            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-    }
-
     /**
      * This method is invoked when the user wants to create a review.
      */
@@ -431,8 +378,8 @@ public class ReviewsFragment extends BaseFragment {
                 if (!isLoadingMore && pageNumber < totalPages) {
 
                     isLoadingMore = true;
-                    mLoadingLayout = getView().findViewById(R.id.catalog_loading_more);
-                    mLoadingLayout.setVisibility(View.VISIBLE);
+//                    mLoadingLayout = getView().findViewById(R.id.catalog_loading_more);
+//                    mLoadingLayout.setVisibility(View.VISIBLE);
                     getMoreReviews();
                 }
             }
@@ -683,6 +630,15 @@ public class ReviewsFragment extends BaseFragment {
         if (reviews.size() < REVIEWS_PER_PAGE || (reviews.size() > REVIEWS_PER_PAGE && reviews.size() == mProductRatingPage.getCommentsCount())) {
             isLoadingMore = true;
         }
+
+
+        // TRACKER
+        Bundle params = new Bundle();
+        params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
+        params.putFloat(TrackerDelegator.RATING_KEY, (float) selectedProduct.getAvgRating());
+
+        TrackerDelegator.trackViewReview(selectedProduct);
+
 
     }
 

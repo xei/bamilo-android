@@ -7,19 +7,27 @@
 
     <!-- TABS -->
 
-    <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
-        android:id="@+id/product_info_pager_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:background="@color/tabBar"
-        android:layout_gravity="left|start"
-        android:gravity="left|start"
-        app:stsBottomBorderThickness="0dp"
-        app:stsDividerThickness="0dp"
-        app:stsDividerColor="@color/white"
-        app:stsIndicatorColor="@color/color_accent"
-        app:stsIndicatorThickness="0.5dp"
-        android:layoutDirection="ltr"/>
+        android:layout_height="wrap_content">
+
+        <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
+            android:id="@+id/product_info_pager_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/tabBar"
+            android:layout_gravity="left|start"
+            android:gravity="left|start"
+            app:stsBottomBorderThickness="0dp"
+            app:stsDividerThickness="0dp"
+            app:stsDividerColor="@color/white"
+            app:stsIndicatorColor="@color/color_accent"
+            app:stsIndicatorThickness="1dp"
+            android:layoutDirection="ltr"/>
+
+    </RelativeLayout>
+
 
     <!-- CONTENT -->
 

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -19,9 +18,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
@@ -35,8 +31,6 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
     private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
-    private RelativeLayout mProductFeaturesContainer;
-    private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
     private ProductComplete mCompleteProduct;

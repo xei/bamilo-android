@@ -358,7 +358,7 @@ android:id="@+id/top"
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/btWriteReview"
                 style="@style/TextList_2"
-                android:textColor="@color/orange"
+                android:textColor="@color/color_accent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Write a Review"
