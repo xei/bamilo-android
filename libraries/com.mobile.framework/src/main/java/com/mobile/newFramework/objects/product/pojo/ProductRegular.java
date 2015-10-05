@@ -41,6 +41,11 @@ public class ProductRegular extends ProductBase {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
         super.initialize(jsonObject);
+
+        return initializeProductRegular(jsonObject);
+    }
+
+    protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
@@ -151,18 +156,5 @@ public class ProductRegular extends ProductBase {
     public int describeContents() {
         return 0;
     }
-
-    @SuppressWarnings("unused")
-    public static final Creator<ProductRegular> CREATOR = new Creator<ProductRegular>() {
-        @Override
-        public ProductRegular createFromParcel(Parcel in) {
-            return new ProductRegular(in);
-        }
-
-        @Override
-        public ProductRegular[] newArray(int size) {
-            return new ProductRegular[size];
-        }
-    };
 
 }

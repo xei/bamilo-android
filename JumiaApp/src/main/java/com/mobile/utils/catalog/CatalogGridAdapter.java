@@ -375,6 +375,8 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHold
         if(!TextUtils.isEmpty(mBannerImage)){
             // set listener
             holder.itemView.setOnClickListener(this);
+            // just in order to have a position tag in order to not crash on the onCLick
+            holder.itemView.setTag(R.id.position, -1);
             // Set image
             RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
         }

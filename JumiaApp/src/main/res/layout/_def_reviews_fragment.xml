@@ -4,28 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutDirection="locale"
-        android:orientation="vertical"
-        >
-
-        <!-- RATINGS SECTION -->
-
-        <!--
-        <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
-        -->
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/ratingsHeader"
-        style="@style/HeaderStyle" />
-
-        <include layout="@layout/ratings_board"  android:id="@+id/ratingsBoard" />
-
-        <!-- USERS SECTION -->
-
-    <!--
-        <include layout="@layout/header"  android:id="@+id/usersHeader" />
-        -->
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/usersHeader"
-        style="@style/HeaderStyle" />
+        android:orientation="vertical">
 
     <com.mobile.components.ScrollViewReachable
         android:layout_width="match_parent"
@@ -35,13 +14,45 @@
         >
 
         <LinearLayout
-            android:id="@+id/linear_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
-            android:background="@color/transparent"
-            />
+            android:orientation="vertical">
+
+
+            <!-- RATINGS SECTION -->
+
+            <!--
+            <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
+            -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/ratingsHeader"
+                style="@style/HeaderStyle" />
+
+            <include layout="@layout/ratings_board"  android:id="@+id/ratingsBoard" />
+
+            <!-- USERS SECTION -->
+
+            <!--
+                <include layout="@layout/header"  android:id="@+id/usersHeader" />
+                -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/usersHeader"
+                style="@style/HeaderStyle" />
+
+
+            <LinearLayout
+                android:id="@+id/linear_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:background="@color/transparent"
+                />
+
+
+        </LinearLayout>
+
+
 
     </com.mobile.components.ScrollViewReachable>
 

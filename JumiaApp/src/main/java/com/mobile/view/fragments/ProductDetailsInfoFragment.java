@@ -44,6 +44,17 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private String mTitle;
 
+    public static int getDescriptionPagePosition(){
+        return ShopSelector.isRtl() ? 2 : 0;
+    }
+
+    public static int getSpecificationsPagePosition(){
+        return 1;
+    }
+
+    public static int getRatingsPagePosition(){
+        return ShopSelector.isRtl() ? 0 : 2;
+    }
 
     /**
      * Get instance
