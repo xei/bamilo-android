@@ -97,7 +97,7 @@ public class CurrencyFormatter {
             throw new RuntimeException("currency converter not initialized");
         }
         try {
-            return String.format(currencyUnitPattern, formatter.format(value));
+            return formatCurrencyPattern(formatter.format(value));
         } catch (NumberFormatException e) {
             //In case of bad formatting, return the parsed value with no currency sign
             Print.e(TAG, "bad formatting for value = " + value, e);
@@ -119,7 +119,7 @@ public class CurrencyFormatter {
                 NumberFormat format = NumberFormat.getInstance(apiLocale);
                 Number number = format.parse(value);
                 Double valueDouble = number.doubleValue();
-                return String.format(currencyUnitPattern, formatter.format(valueDouble));
+                return formatCurrencyPattern(formatter.format(valueDouble));
             } catch (NumberFormatException e) {
                 //In case of bad formatting, return the parsed value with no currency sign
                 Print.e(TAG, "bad formatting for value = " + value, e);
@@ -202,8 +202,8 @@ public class CurrencyFormatter {
         }
     }
 
-    public static String getCurrencySymbol(){
-        return currencyUnitPattern.replace("%s","");
+    public static String formatCurrencyPattern(String toFormat){
+        return String.format(currencyUnitPattern, toFormat);
     }
     
 }

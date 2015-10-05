@@ -63,6 +63,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -412,15 +413,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
-        if (mProduct.hasDiscount()) {
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getSpecialPrice()));
-            mPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
-            mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            mPriceText.setVisibility(View.VISIBLE);
-            String discount = String.format(getString(R.string.format_discount_percentage), mProduct.getMaxSavingPercentage()) +" "+ getString(R.string.off_label);
-            mDiscountPercentageText.setText(discount);
-            mDiscountPercentageText.setVisibility(View.VISIBLE);
 
+        ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+
+        ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
+
+        if (mProduct.hasDiscount()) {
             if(!mProduct.isFashion()) {
                 mDiscountPercentageText.setEnabled(true);
             }else
@@ -428,10 +426,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(false);
                 mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
             }
-        } else {
-            mSpecialPriceText.setText(CurrencyFormatter.formatCurrency(mProduct.getPrice()));
-            mPriceText.setVisibility(View.GONE);
-            mDiscountPercentageText.setVisibility(View.GONE);
         }
     }
 
@@ -1021,6 +1015,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(isFromBuyButton) {
                     onClickBuyProduct();
                 }
+                ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
             }
         } catch (NullPointerException e) {
             // ...
