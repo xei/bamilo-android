@@ -52,6 +52,7 @@
                         style="@style/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:focusable="false"
                         android:gravity="left|start" />
 
@@ -59,13 +60,11 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientFirstName"
                         style="@style/text_normal"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginStart="5dp"
-                        android:layout_toRightOf="@+id/clientLastName"
-                        android:layout_toEndOf="@+id/clientLastName"
+                        android:layout_toRightOf="@id/clientLastName"
+                        android:layout_toEndOf="@id/clientLastName"
                         android:focusable="false"
                         android:gravity="left|start" />
                 </RelativeLayout>
@@ -78,6 +77,7 @@
                     android:layout_marginLeft="@dimen/rounded_margin_small"
                     android:layout_marginStart="@dimen/rounded_margin_small"
                     android:focusable="false"
+                    android:text="asfas"
                    />
             </RelativeLayout>
         </LinearLayout>

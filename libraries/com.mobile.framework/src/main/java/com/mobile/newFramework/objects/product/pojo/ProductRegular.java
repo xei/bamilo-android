@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.cache.WishListCache;
 
 import org.json.JSONException;
@@ -40,11 +41,20 @@ public class ProductRegular extends ProductBase {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
         super.initialize(jsonObject);
+
+        return initializeProductRegular(jsonObject);
+    }
+
+    protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        // Optional
+        // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        if(TextUtils.isEmpty(mImageUrl)) {
+            mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
+        }
+        // Is new
         isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG);
         // Wish List flag
         if (jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG)) {
@@ -146,18 +156,5 @@ public class ProductRegular extends ProductBase {
     public int describeContents() {
         return 0;
     }
-
-    @SuppressWarnings("unused")
-    public static final Creator<ProductRegular> CREATOR = new Creator<ProductRegular>() {
-        @Override
-        public ProductRegular createFromParcel(Parcel in) {
-            return new ProductRegular(in);
-        }
-
-        @Override
-        public ProductRegular[] newArray(int size) {
-            return new ProductRegular[size];
-        }
-    };
 
 }

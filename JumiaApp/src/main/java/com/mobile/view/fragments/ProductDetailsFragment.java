@@ -140,10 +140,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isFromBuyButton;
 
-    private int DESCRIPTION_PAGE = 0;
-    private int SPECIFICATIONS_PAGE = 1;
-    private int RATINGS_PAGE = 2;
-
     /**
      * Empty constructor
      */
@@ -547,7 +543,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription(DESCRIPTION_PAGE);
+                onClickShowDescription(ProductDetailsInfoFragment.getDescriptionPagePosition());
             }
         });
     }
@@ -580,7 +576,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription(SPECIFICATIONS_PAGE);
+                onClickShowDescription(ProductDetailsInfoFragment.getSpecificationsPagePosition());
             }
         });
     }
@@ -723,7 +719,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickShowDescription(RATINGS_PAGE);//onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(ProductDetailsInfoFragment.getRatingsPagePosition());//onClickRating();
         // Case description
         // TODO
         // Case variation button
@@ -1277,31 +1273,26 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 //        for (ProductBundle item : bundleProducts) {
+        mTableBundles.removeAllViews();
 
-        if(mTableBundles != null && mTableBundles.getChildCount() == 0){
+        for(int i = 0; i < bundleProducts.size(); i++) {
+            ProductBundle item = bundleProducts.get(i);
+            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
 
-            for(int i = 0; i < bundleProducts.size(); i++)
+            fillProductBundleInfo(comboProductItem, item);
+            if (!item.getSku().equals(mProduct.getSku()))
+                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
+
+            mTableBundles.addView(comboProductItem);
+
+            if (count < bundleProducts.size() - 1)   //add plus separator
             {
-                ProductBundle item = bundleProducts.get(i);
-                ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
-
-                fillProductBundleInfo(comboProductItem, item);
-                if(!item.getSku().equals(mProduct.getSku()))
-                    comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem,txTotalPrice,bundleList,i));
-
-                mTableBundles.addView(comboProductItem);
-
-                if (count < bundleProducts.size() - 1)   //add plus separator
-                {
-                    //separator
-                    ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
-                    mTableBundles.addView(imSep);
-                }
-                count++;
+                //separator
+                ViewGroup imSep = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false);
+                mTableBundles.addView(imSep);
             }
-
+            count++;
         }
-
 
         mComboProductsLayout.setOnClickListener(this);
         mComboProductsLayout.setVisibility(View.VISIBLE);

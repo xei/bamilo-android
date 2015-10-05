@@ -39,6 +39,10 @@ public class ProductBase implements Parcelable, IJSONSerializable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        return initializeProductBase(jsonObject);
+    }
+
+    protected final boolean initializeProductBase(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mSku = jsonObject.getString(RestConstants.SKU);
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
@@ -123,16 +127,6 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mMaxSavingPercentage = in.readInt();
         mPriceRange = in.readString();
     }
-
-    public static final Creator<ProductBase> CREATOR = new Creator<ProductBase>() {
-        public ProductBase createFromParcel(Parcel in) {
-            return new ProductBase(in);
-        }
-
-        public ProductBase[] newArray(int size) {
-            return new ProductBase[size];
-        }
-    };
 
     public String getPriceRange() {
         return mPriceRange;

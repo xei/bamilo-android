@@ -204,7 +204,7 @@ public class ReviewsFragment extends BaseFragment {
     /**
      * Fill average rating and total of ratings in ratingsBoard
      */
-    private void FillAverageRatingData(ProductRatingPage productRatingPage) {
+    private void fillAverageRatingData(ProductRatingPage productRatingPage) {
         ArrayList<RatingStar> ratingTypes = productRatingPage.getRatingTypes();
         int basedOn = productRatingPage.getmBasedOn();
 
@@ -342,6 +342,8 @@ public class ReviewsFragment extends BaseFragment {
             if (pageNumber == 1) {
                 triggerReviews(selectedProduct.getSku(), pageNumber);
             } else {
+                setProgressRating(selectedProduct.getTotalRatings());
+                fillAverageRatingData(mProductRatingPage);
                 displayReviews(mProductRatingPage, false);
             }
         } else {
@@ -393,7 +395,7 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void getMoreReviews() {
         if (selectedProduct.getSku() != null) {
-            Print.d(TAG, "getMoreRevies: pageNumber = " + pageNumber);
+            Print.d(TAG, "getMoreReviews: pageNumber = " + pageNumber);
             pageNumber++;
             triggerReviews(selectedProduct.getSku(), pageNumber);
         }
@@ -421,7 +423,7 @@ public class ReviewsFragment extends BaseFragment {
                     totalPages = productRatingPage.getTotalPages();
                 }
                 //fill header after getting RatingPage object
-                FillAverageRatingData(productRatingPage);
+                fillAverageRatingData(productRatingPage);
                 //added: fill progress bars
                 setProgressRating(selectedProduct.getTotalRatings());
                 // Append the new page to the current
