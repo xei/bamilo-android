@@ -49,6 +49,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -997,7 +998,7 @@ public class ReviewsFragment extends BaseFragment {
     private void setHeaderReviews(){
         if(isProductRating){
             productName.setText(selectedProduct.getBrand() + " " + selectedProduct.getName());
-            displayPriceInformation(productPriceNormal, productPriceSpecial);
+            ProductUtils.setPriceRules(selectedProduct, productPriceNormal, productPriceSpecial);
         }
        
     }
@@ -1013,7 +1014,7 @@ public class ReviewsFragment extends BaseFragment {
             productPriceSpecial.setVisibility(View.VISIBLE);
             productPriceNormal.setVisibility(View.VISIBLE);
             productName.setText(selectedProduct.getBrand() + " " + selectedProduct.getName());
-            displayPriceInformation(productPriceNormal, productPriceSpecial);
+            ProductUtils.setPriceRules(selectedProduct, productPriceNormal, productPriceSpecial);
             
             productRatingContainer.setVisibility(View.VISIBLE);
             sellerRatingContainer.setVisibility(View.GONE);
