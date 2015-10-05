@@ -162,7 +162,7 @@
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
     <item name="form_checkbox"                          type="layout">@layout/_def_form_checkbox</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
-    <item name="form_spinner_dropdown_item"             type="layout">@layout/_def_form_spinner_dropdown_item</item>
+    <item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
 
@@ -195,7 +195,7 @@
     <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
 
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
-    <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
+    <item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
     <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
