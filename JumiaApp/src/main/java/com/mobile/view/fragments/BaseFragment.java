@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -45,13 +46,13 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -72,8 +73,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
 
     public static final int NO_INFLATE_LAYOUT = 0;
-
-    public static final int NO_TITLE = 0;
 
     private NavigationAction action;
 
@@ -124,7 +123,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -143,21 +142,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-    /**
-     * Constructor used only by PDV fragments
-     */
-    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-        this.enabledMenuItems = enabledMenuItems;
-        this.action = action;
-        this.titleResId = titleResId;
-        this.adjustState = adjust_state;
-        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-    }
+//    /**
+//     * Constructor used only by PDV fragments
+//     */
+//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+//        this.enabledMenuItems = enabledMenuItems;
+//        this.action = action;
+//        this.titleResId = titleResId;
+//        this.adjustState = adjust_state;
+//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+//    }
 
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -235,8 +234,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-        // Get content layout
-        mContentView = view.findViewById(R.id.content_container);
+//        // Get content layout
+//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -249,16 +248,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-        // Hide search component for change country
-        if (this.action == NavigationAction.Country) {
-            // Hide search component
-            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-        }
+//        // Hide search component for change country
+//        if (this.action == NavigationAction.Country) {
+//            // Hide search component
+//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
+//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
+            // Method used to set a bottom margin
+            TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
+
     }
 
     /**

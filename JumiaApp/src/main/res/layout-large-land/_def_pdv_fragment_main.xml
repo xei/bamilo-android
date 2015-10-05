@@ -33,7 +33,7 @@
         android:id="@+id/pdp_buy_bar"
         layout="@layout/_def_pdv_fragment_buy_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -42,7 +42,7 @@
 
     <!-- RIGHT CONTAINER -->
 
-    <com.mobile.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.AigScrollViewWithHorizontal
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,10 +55,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
-
 
             <!-- PRICE -->
 
@@ -123,6 +121,6 @@
 
         </LinearLayout>
 
-    </com.mobile.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.AigScrollViewWithHorizontal>
 
 </RelativeLayout>

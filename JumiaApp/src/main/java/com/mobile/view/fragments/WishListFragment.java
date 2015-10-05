@@ -31,6 +31,7 @@ import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -64,6 +65,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private boolean isErrorOnLoadingMore = false;
 
+    private View mClickedBuyButton;
+
     /**
      * Create and return a new instance.
      */
@@ -75,10 +78,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public WishListFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Favorite,
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Saved,
                 R.layout._def_wishlist_fragment,
-                R.string.saved,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -396,12 +399,21 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         updateWishListContainer();
+        // Case from buy button
+        if(mClickedBuyButton != null) {
+            onClickAddToCart(mClickedBuyButton);
+        }
     }
 
     @Override
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+        mClickedBuyButton = null;
     }
 
     /**
@@ -443,7 +455,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
-            // TODO: add item to cart after variation dialog
+            mClickedBuyButton = view;
             onClickVariation(view);
         }
         // Case error unexpected
@@ -491,7 +503,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_ADDED_CART);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();

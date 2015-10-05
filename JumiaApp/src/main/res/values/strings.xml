@@ -7,7 +7,6 @@
     <string name="action_label_logout">Logout</string>
     <string name="action_label_search_hint">Search on %s</string>
     <string name="action_label_share">Share It</string>
-    <string name="action_label_wishlist">Wish List</string>
     <string name="add_address">Add Address</string>
     <string name="add_to_shopping_cart">Add to Cart</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Products were added to shopping cart</string>
@@ -423,5 +422,6 @@
     <string name="qty_placeholder">Qty: %d</string>
     <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
+    <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
     <string name="product_specifications">Product Specifications</string>
 </resources>

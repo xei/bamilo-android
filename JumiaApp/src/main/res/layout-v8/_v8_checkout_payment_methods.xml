@@ -13,6 +13,7 @@
         android:text="@string/payment" />
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_payment_methods_title_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

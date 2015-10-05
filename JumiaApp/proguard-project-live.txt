@@ -185,7 +185,7 @@
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
 -keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }  
--keep interface com.mobile.components.ScrollViewEx$** { public *; }
+-keep interface com.mobile.components.ScrollViewReachable$** { public *; }
 -keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
 #### com.mobile.utils
 -keep class com.mobile.utils.MyProfileActionProvider { public *; }

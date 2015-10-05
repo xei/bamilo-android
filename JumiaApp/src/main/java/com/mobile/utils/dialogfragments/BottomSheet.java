@@ -7,7 +7,10 @@ import android.support.v4.app.DialogFragment;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 /**
@@ -15,6 +18,7 @@ import com.mobile.view.R;
  */
 public class BottomSheet extends DialogFragment {
 
+    private static final int MAX_ITEM_LANDSCAPE = 4;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,28 @@ public class BottomSheet extends DialogFragment {
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         return dialog;
+    }
+
+    /**
+     * Function that sets the size of the list of the bottom sheet, based on orientation and number
+     * of items on the list
+     */
+    protected void setListSize (ListView listView, int itemCount){
+        if(getActivity() != null){
+            int maxItems = getResources().getInteger(R.integer.dialog_max_item);
+
+            int height = DeviceInfoHelper.getHeight(getActivity()) / 2;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
+
+            if(itemCount > MAX_ITEM_LANDSCAPE && DeviceInfoHelper.isTabletInLandscape(getActivity())){ // verify table landscape
+                listView.setLayoutParams(params);
+                Print.i("setDialogSize", "LAND > 4: " + height);
+
+            } else if (itemCount > maxItems && !DeviceInfoHelper.isTabletInLandscape(getActivity())) {
+                Print.i("setDialogSize", "PORT MAX ITEM: " + maxItems);
+                listView.setLayoutParams(params);
+            }
+        }
     }
 
 }

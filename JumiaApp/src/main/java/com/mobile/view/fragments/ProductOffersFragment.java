@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
@@ -25,6 +24,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -87,9 +87,8 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
                 R.layout.product_offers_main,
-                NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                IntConstants.ACTION_BAR_NO_TITLE,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*

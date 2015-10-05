@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.utils.AigScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -9,8 +9,7 @@
         android:id="@+id/no_results_search_terms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible" >
+        android:orientation="vertical" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
@@ -144,4 +143,4 @@
             android:textSize="@dimen/text_s" />
     </LinearLayout>
 
-</com.mobile.utils.ScrollViewWithHorizontal>
+</com.mobile.utils.AigScrollViewWithHorizontal>

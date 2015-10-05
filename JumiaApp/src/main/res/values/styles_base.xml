@@ -92,6 +92,18 @@
     <style name="TextInfo_2" parent="text_base">
         <item name="android:textSize">10sp</item>
     </style>
+    
+    <style name="TextTimer" parent="TextTitle_2">
+        <item name="android:textColor">@color/red_cc0000</item>
+    </style>
+
+    <style name="TextSubHeadOrange" parent="TextSubHead">
+        <item name="android:textColor">@color/orange_f68b1e</item>
+    </style>
+
+    <style name="TextPriceSubHead" parent="TextSubHead">
+        <item name="android:textColor">@color/red_basic</item>
+    </style>
 
     <!-- TODO : ADD HERE BASE STYLES -->
 

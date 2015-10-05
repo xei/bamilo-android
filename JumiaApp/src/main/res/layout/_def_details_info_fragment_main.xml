@@ -11,7 +11,7 @@
         android:id="@+id/product_info_pager_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_tabs"
+        android:background="@color/tabBar"
         android:layout_gravity="left|start"
         android:gravity="left|start"
         app:stsBottomBorderThickness="0dp"

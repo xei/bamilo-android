@@ -12,7 +12,7 @@
     <item name="checkout_my_order_products"             type="layout">@layout/_v8_checkout_my_order_products</item>
     <item name="checkout_my_order_shipping_address"     type="layout">@layout/_v8_checkout_my_order_shipping_address</item>
     <item name="checkout_my_order_shipping_method"      type="layout">@layout/_v8_checkout_my_order_shipping_method</item>
-    <item name="checkout_my_order_main"                 type="layout">@layout/_v8_checkout_my_order_main</item>
+    <!--<item name="checkout_my_order_main"                 type="layout">@layout/_v8_checkout_my_order_main</item>-->
     <item name="checkout_summary_list_item"             type="layout">@layout/_v8_checkout_summary_list_item</item>
     <item name="checkout_summary_products"              type="layout">@layout/_v8_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_v8_checkout_summary_shipping_address</item>
@@ -25,12 +25,12 @@
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_v8_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_v8_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_v8_checkout_header</item>
-    <item name="checkout_thanks"                        type="layout">@layout/_v8_checkout_thanks</item>
-    <item name="checkout_create_address_main" 	        type="layout">@layout/_v8_checkout_create_address_main</item>
-    <item name="checkout_edit_address_main" 	        type="layout">@layout/_v8_checkout_edit_address_main</item>
-    <item name="checkout_my_addresses" 			        type="layout">@layout/_v8_checkout_my_addresses</item>
-    <item name="checkout_shipping_main" 		        type="layout">@layout/_v8_checkout_shipping_main</item>
-    <item name="checkout_payment_main" 			        type="layout">@layout/_v8_checkout_payment_main</item>
+    <!--<item name="checkout_thanks"                        type="layout">@layout/_v8_checkout_thanks</item>-->
+    <!--<item name="checkout_create_address_main" 	        type="layout">@layout/_v8_checkout_create_address_main</item>-->
+    <!--<item name="checkout_edit_address_main" 	        type="layout">@layout/_v8_checkout_edit_address_main</item>-->
+    <!--<item name="checkout_my_addresses" 			        type="layout">@layout/_v8_checkout_my_addresses</item>-->
+    <!--<item name="checkout_shipping_main" 		        type="layout">@layout/_v8_checkout_shipping_main</item>-->
+    <!--<item name="checkout_payment_main" 			        type="layout">@layout/_v8_checkout_payment_main</item>-->
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
@@ -57,7 +57,7 @@
     <!-- CATALOG -->
     <item name="catalog_fragment_main"                  type="layout">@layout/_v8_catalog_fragment_main</item>
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
-    <item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
+    <!--<item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>-->
     <item name="catalog_fragment_no_result"             type="layout">@layout/_v8_catalog_fragment_no_result</item>
     <item name="filters_main"                           type="layout">@layout/_v8_filters_main</item>
     <item name="filter_bottom_buttons"                  type="layout">@layout/_v8_filter_bottom_buttons</item>
@@ -81,8 +81,8 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <!-- MY ORDERS -->
-    <item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>
-    <item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>
+    <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
+    <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
 
     <!-- HOME -->
     <item name="home_teaser_campaign"                   type="layout">@layout/_v8_home_teaser_campaign</item>
@@ -182,5 +182,14 @@
     <item name="review_list"                            type="layout">@layout/_v8_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_v8_ratings_board</item>
 
-</resources>
 
+    <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
+
+    <!-- other offers -->
+    <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
+    <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
+
+
+
+</resources>

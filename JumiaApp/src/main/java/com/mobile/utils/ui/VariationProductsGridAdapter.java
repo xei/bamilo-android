@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;

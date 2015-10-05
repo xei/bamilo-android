@@ -995,7 +995,11 @@ public class DynamicFormItem {
         CheckBox mCheckBox = (CheckBox)this.dataControl.findViewById(R.id.checkbox_terms);
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
+
+        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        mCheckBox.setPadding(formPadding, 0, 0, 0);
         mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
+
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
         }
@@ -1112,6 +1116,8 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
+//        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        ((CheckBox) this.dataControl).setPadding(formPadding, 0, 0, 0);
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);

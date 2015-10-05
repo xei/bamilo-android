@@ -87,11 +87,11 @@
     <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
     <item name="pdv_fragment_bundle_item" 	            type="layout">@layout/_def_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
-    <item name="sublist" 	            type="layout">@layout/_def_sublist</item>
+    <item name="sublist" 	                            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
     <item name="bottom_combo" 	                        type="layout">@layout/_def_bottom_combo</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
-    <item name="pdv_fragment_related_item_price" 	        type="layout">@layout/_def_pdv_fragment_related_item_price</item>
+    <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
@@ -211,6 +211,8 @@
     <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
+    <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
 
 </resources>
 

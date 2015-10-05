@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/form_check_padding"
         android:layout_marginStart="@dimen/form_check_padding"
-        android:button="@drawable/selector_btn_check_holo_orange"
+        style="@style/form_checkbox_style"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_form"/>
     
@@ -18,6 +18,7 @@
         android:id="@+id/textview_terms"
         style="@style/text_form"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
         android:textColor="@color/blue_basic"/>
 </LinearLayout>
