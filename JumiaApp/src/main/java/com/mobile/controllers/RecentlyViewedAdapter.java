@@ -220,6 +220,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             ProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
             // Validate special price
             ProductUtils.setDiscountRules(addableToCart, prodItem.percentage);
+
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility
                 prodItem.deleteButton.setVisibility(View.INVISIBLE);

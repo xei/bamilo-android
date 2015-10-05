@@ -77,13 +77,21 @@
             android:text="Price"
             android:textColor="@color/grey_light"/>
     </RelativeLayout>
-    <!-- WARNINGS -->
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_gravity="left|start"
+        android:visibility="gone"
+        android:layout_below="@id/price_container"/>
+
+    <!-- WARNINGS -->
     <RelativeLayout
         android:id="@+id/warning_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/price_container"
+        android:layout_below="@id/item_percentage"
         android:layout_marginEnd="@dimen/rounded_margin_small"
         android:layout_marginRight="@dimen/rounded_margin_small"
         android:layout_toLeftOf="@+id/button_shop"
