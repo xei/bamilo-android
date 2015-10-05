@@ -1277,7 +1277,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
 
 //        for (ProductBundle item : bundleProducts) {
-
+        mTableBundles.removeAllViews();
         if(mTableBundles != null && mTableBundles.getChildCount() == 0){
 
             for(int i = 0; i < bundleProducts.size(); i++)
