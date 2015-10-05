@@ -45,14 +45,15 @@ dependencies {
     compile 'com.google.android.gms:play-services-wearable:7.5.0'
     /** TRACKERS  **/
     compile 'com.newrelic.agent.android:android-agent:5.1.2'
-    compile 'com.ad4screen.sdk:A4SSDK:3.1.4'
+    compile 'com.ad4screen.sdk:A4SSDK:3.1.6.1'
     compile 'com.adjust.sdk:adjust-android:4.0.8'
-    compile 'net.hockeyapp.android:HockeySDK:3.5.0'
+    // https://github.com/bitstadium/HockeySDK-Android
+    compile 'net.hockeyapp.android:HockeySDK:3.6.0'
     /** LOCAL LIBS  **/
     compile 'com.facebook.android:facebook-android-sdk:4.2.0'
     // Adjust the version accordingly
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
-    compile files('libs/A4SSDK-GooglePlayServices-1.5.jar')
+    compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')
