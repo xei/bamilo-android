@@ -15,11 +15,10 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -138,7 +137,7 @@ public class OffersListAdapterNew extends BaseAdapter {
         }
 
         final ProductOffer productOffer = offers.get(position);
-        item.offerPrice.setText(CurrencyFormatter.formatCurrency(productOffer.getFinalPriceString()));
+        ProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
         item.offerProductOwner.setText(productOffer.getSeller().getName());
 
 //        int ratingCount = productOffer.getSeller().getRatingCount();
