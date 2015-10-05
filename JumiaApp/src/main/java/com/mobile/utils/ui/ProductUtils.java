@@ -1,5 +1,6 @@
 package com.mobile.utils.ui;
 
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -29,7 +30,7 @@ public class ProductUtils {
         } else {
             setPrice(productBase, price, specialPrice);
         }
-        specialPrice.setVisibility(View.VISIBLE);
+        specialPrice    .setVisibility(View.VISIBLE);
     }
 
     private static void setPrice(ProductBase productBase, TextView price, TextView specialPrice){
@@ -62,7 +63,8 @@ public class ProductUtils {
 
     public static void setDiscountRules(@NonNull ProductBase productBase, @NonNull TextView percentage){
         if (productBase.hasDiscount()) {
-            percentage.setText(String.format(percentage.getResources().getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()));
+            Resources resources = percentage.getResources();
+            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()) + " " + resources.getString(R.string.off_label));
             percentage.setVisibility(View.VISIBLE);
         } else {
             percentage.setVisibility(View.INVISIBLE);
