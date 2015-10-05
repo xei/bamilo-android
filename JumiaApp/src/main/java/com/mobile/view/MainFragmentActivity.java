@@ -61,7 +61,7 @@ import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
-import com.mobile.view.fragments.WriteSellerReviewFragment;
+//import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -289,6 +289,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
                 break;
             case POPULARITY:
+            //    fragment = ReviewsFragment.getInstance(bundle);
                 fragment = ReviewsFragment.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
@@ -391,9 +392,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-            case WRITE_REVIEW_SELLER:
-                fragment = WriteSellerReviewFragment.getInstance(bundle);
-                break;
+//            case WRITE_REVIEW_SELLER:
+//                fragment = WriteSellerReviewFragment.getInstance(bundle);
+//                break;
             case COMBOPAGE:
                 fragment = ComboFragment.getInstance(bundle);
                 break;

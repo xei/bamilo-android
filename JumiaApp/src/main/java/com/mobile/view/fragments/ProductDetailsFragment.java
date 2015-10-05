@@ -142,6 +142,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isFromBuyButton;
 
+    private int DESCRIPTION_PAGE = 0;
+    private int SPECIFICATIONS_PAGE = 1;
+    private int RATINGS_PAGE = 2;
+
     /**
      * Empty constructor
      */
@@ -545,7 +549,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription();
+                onClickShowDescription(DESCRIPTION_PAGE);
             }
         });
     }
@@ -574,10 +578,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
+        // TODO: Move to onClick
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickShowDescription();
+                onClickShowDescription(SPECIFICATIONS_PAGE);
             }
         });
     }
@@ -714,7 +719,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.pdv_rating_container) onClickRating();
+        if (id == R.id.pdv_rating_container) onClickShowDescription(RATINGS_PAGE);//onClickRating();
+        // Case description
+        // TODO
         // Case variation button
         else if (id == R.id.pdv_variations_container) onClickVariationButton();
         // Case favourite
@@ -775,6 +782,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
+
     /**
      * checks/ uncheck a bundle item from combo and updates the combo's total price
      */
@@ -815,7 +823,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickRating() {
         Log.i(TAG, "ON CLICK RATING");
         JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
@@ -827,10 +834,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Show the product description
      */
-    private void onClickShowDescription() {
+    private void onClickShowDescription(int position) {
         Log.i(TAG, "ON CLICK TO SHOW DESCRIPTION");
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
+        bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

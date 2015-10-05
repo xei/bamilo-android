@@ -71,10 +71,7 @@
     <item name="catalog_fragment_footer"                type="layout">@layout/_v8_catalog_fragment_footer</item>
 
     <!-- PDV -->
-    <item name="product_summary_fragment"               type="layout">@layout/_v8_product_summary_fragment</item>
     <item name="product_specs_fragment"                 type="layout">@layout/_v8_product_specs_fragment</item>
-    <item name="product_specs_container"                type="layout">@layout/_v8_product_specs_container</item>
-    <item name="product_specs_container_item"           type="layout">@layout/_v8_product_specs_container_item</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_v8_product_details_fragment_header</item>
     <item name="pdv_price_tag"                          type="layout">@layout/_v8_pdv_price_tag</item>
     <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
@@ -139,7 +136,6 @@
     <item name="order_history_item"                     type="layout">@layout/_v8_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_v8_rating_bar_component</item>
 
-    <item name="reviews_fragment"                       type="layout">@layout/_v8_reviews_fragment</item>
     <item name="product_item_bundle"                    type="layout">@layout/_v8_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_v8_shopping_basket_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_v8_tip_share_layout</item>
@@ -179,6 +175,12 @@
     <item name="pdv_fragment_bundle_item"                      type="layout">@layout/_v8_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
     <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
+
+    <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
+    <item name="product_summary_fragment"           type="layout">@layout/_v8_product_summary_fragment</item>
+    <item name="product_specs_container_item"       type="layout">@layout/_v8_product_specs_container_item</item>
+    <item name="review_list"                            type="layout">@layout/_v8_review_list</item>
+    <item name="ratings_board"                          type="layout">@layout/_v8_ratings_board</item>
 
 
     <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
