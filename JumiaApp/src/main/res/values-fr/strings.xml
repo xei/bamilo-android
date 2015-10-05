@@ -6,7 +6,6 @@
     <string name="action_label_logout">Se déconnecter</string>
     <string name="action_label_search_hint">Chercher sur %s</string>
     <string name="action_label_share">Partager</string>
-    <string name="action_label_wishlist">Liste d\'envies</string>
     <string name="add_address">Ajouter une adresse</string>
     <string name="add_to_shopping_cart">Acheter</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Les produits ont été ajoutés au panier</string>

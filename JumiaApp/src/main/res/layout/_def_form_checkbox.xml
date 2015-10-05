@@ -2,4 +2,5 @@
 <com.mobile.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/checkbox_form"
     android:paddingStart="@dimen/form_check_padding"
+    android:paddingLeft="@dimen/form_check_padding"
     style="@style/form_checkbox_style" />

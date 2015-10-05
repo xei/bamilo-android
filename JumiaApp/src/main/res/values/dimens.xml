@@ -176,7 +176,7 @@
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">38dp</dimen>
-    <dimen name="sliding_tab_inidicator_thickness">3dip</dimen>
+    <dimen name="sliding_tab_inidicator_thickness">1dip</dimen>
     <dimen name="sliding_tab_text_size">14sp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
@@ -498,11 +498,9 @@
 
     <integer name="grid_num_columns">1</integer>
 
-
-
     <integer name="combos_num_columns">1</integer>
 
     <dimen name="combo_bundle_item_with">90dp</dimen>
 
-
+    <integer name="dialog_max_item">7</integer>
 </resources>

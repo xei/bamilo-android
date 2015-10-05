@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:layoutDirection="ltr"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             style="@style/rounded_box"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid" >
+            android:paddingBottom="@dimen/rounded_margin_mid">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/margin_mid" >
+                android:layout_marginTop="@dimen/margin_mid">
 
                 <RelativeLayout
                     android:id="@+id/name_wrapper"
@@ -41,16 +41,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/rounded_margin_small"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientFirstName"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
                         android:layout_alignParentLeft="true"
+                        android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/clientLastName"
                         android:focusable="false"
-                        android:layout_marginRight="5dp"
                         android:gravity="right"
                         android:text="last" />
 
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
@@ -98,25 +98,25 @@
                 android:id="@+id/passwordErrorHint"
                 style="@style/text_normal"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
                 android:gravity="right"
                 android:singleLine="false"
                 android:textColor="@color/red_basic"
                 android:visibility="gone" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:id="@+id/changePasswordLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"/>
+                android:orientation="horizontal" />
 
         </LinearLayout>
 
-        <LinearLayout style="@style/button_container" >
+        <LinearLayout style="@style/button_container">
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button_save"

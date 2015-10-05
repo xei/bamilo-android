@@ -105,7 +105,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * Empty constructor
      */
     public CheckoutMyOrderFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
                 R.string.checkout_label,

@@ -34,16 +34,6 @@ public class CampaignsFragment extends BaseFragment {
     
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
 
-    /*
-    private ViewPager mCampaignPager;
-
-    private CampaignPagerAdapter mCampaignPagerAdapter;
-
-    private ArrayList<TeaserCampaign> mCampaigns;
-
-    private SlidingTabLayout mCampaignPagerTabStrip;
-    */
-
     /**
      * Constructor via bundle
      * @return CampaignsFragment
@@ -59,7 +49,7 @@ public class CampaignsFragment extends BaseFragment {
      * Empty constructor
      */
     public CampaignsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Unknown,
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -43,8 +40,6 @@ public class MyOrdersFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
         MyOrdersFragment fragment = new MyOrdersFragment();
@@ -56,7 +51,7 @@ public class MyOrdersFragment extends BaseFragment {
      * Empty constructor
      */
     public MyOrdersFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
                 R.layout.myorders_fragment_main,
                 R.string.my_orders_label,
