@@ -922,8 +922,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Get item
                 if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mProduct);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
+                    TrackerDelegator.trackAddToFavorites(mProduct);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);

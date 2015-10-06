@@ -553,15 +553,8 @@ public class Ad4PushTracker {
      */
     public void trackAddToFavorites(String productSKU) {
         if (isEnabled) {
-            // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(WISHLIST_NUMBER, ++wishlistNumber);
-            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
@@ -570,20 +563,11 @@ public class Ad4PushTracker {
 
     /**
      * Track the remove item from favorites.
-     *
-     * @param productSKU
      */
-    public void trackRemoveFromWishlist(String productSKU) {
+    public void trackRemoveFromWishList(String productSKU) {
         if (isEnabled) {
-            // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(WISHLIST_NUMBER, --wishlistNumber);
-            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
@@ -592,11 +576,6 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart from favorites.
-     *
-     * @param sku
-     * @param price
-     * @param name
-     * @param category
      */
     public void trackAddToCartFromFav(String sku, double price, String name, String category) {
         if (isEnabled) {
