@@ -116,7 +116,7 @@ public class AnalyticsGoogle {
 		updateTracker();
 		// Enable Display Advertising features
 		enableAdvertisingCollection(context); 
-		
+
 		Print.i(TAG, "TRACKING SUCCESSFULLY SETUP");
 	}
 	
