@@ -234,7 +234,6 @@ public class ProductComplete extends ProductMultiple {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeList(mImageList);
-        //dest.writeList(mVariations);
         dest.writeString(mDescription);
         dest.writeByte((byte) (hasBundle ? 1 : 0));
         dest.writeParcelable(mSeller, flags);
@@ -244,8 +243,10 @@ public class ProductComplete extends ProductMultiple {
         dest.writeInt(mTotalOffers);
         dest.writeList(mProductSpecs);
         dest.writeList(mProductVariations);
+        dest.writeList(mRelatedProducts);
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
+
     }
 
     private ProductComplete(Parcel in) {
@@ -263,6 +264,8 @@ public class ProductComplete extends ProductMultiple {
         in.readList(mProductSpecs, ProductSpecification.class.getClassLoader());
         mProductVariations = new ArrayList<>();
         in.readList(mProductVariations, Variation.class.getClassLoader());
+        mRelatedProducts = new ArrayList<>();
+        in.readList(mRelatedProducts, ProductRegular.class.getClassLoader());
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
     }
