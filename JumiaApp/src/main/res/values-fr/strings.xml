@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="format_discount_percentage">-%1$s%</string>
+    <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">Mon Compte</string>
     <string name="action_label_add_address">Ajouter une nouvelle adresse</string>
     <string name="action_label_basket">Panier</string>
