@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tabBar"
-        android:paddingTop="6dp"
+        android:paddingTop="7dp"
         app:stsBottomBorderThickness="0dp"
         app:stsIndicatorColor="@color/orange_tab_bar"
         app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness" />
