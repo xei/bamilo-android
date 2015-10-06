@@ -10,7 +10,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
@@ -61,7 +60,6 @@ public class DeepLinkManager {
     private static final String CATALOG_BRAND_TAG = "cb";
     private static final String CART_TAG = "cart";
     private static final String PDV_TAG = "d";
-    private static final String CATEGORY_TAG = "n";
     private static final String SEARCH_TERM_TAG = "s";
     private static final String ORDER_OVERVIEW_TAG = "o";
     private static final String CAMPAIGN_TAG = "camp";
@@ -138,8 +136,6 @@ public class DeepLinkManager {
 
     /**
      * specifies if the deep link is FROM_URI or FROM_GCM
-     * @param host
-     * @return
      */
     private static int validateDeepLinkOrigin(String host){
         // Get deep link origin
@@ -248,19 +244,14 @@ public class DeepLinkManager {
 
     /**
      *  method that adds the Deep link origin to all bundles
-     * @param bundle
-     * @param data
-     * @return
      */
     private static Bundle addOriginGroupType(Uri data, Bundle bundle){
         if(bundle != null && data != null){
             bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
             return bundle;
         } else {
-            Bundle emptyBundle = new Bundle();
-            return emptyBundle;
+            return new Bundle();
         }
-
     }
 
     /**
@@ -277,7 +268,7 @@ public class DeepLinkManager {
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(campaignId.replace("-", " "));
-        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?" + GetCampaignHelper.CAMPAIGN_TAG + "=" + campaignId);
+        campaign.setCampaignId(campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
