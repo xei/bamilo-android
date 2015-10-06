@@ -39,6 +39,7 @@
             android:id="@+id/pickup_station_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
@@ -47,6 +48,7 @@
             android:id="@+id/pickup_station_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
@@ -55,6 +57,7 @@
             android:id="@+id/pickup_station_opening_hours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
@@ -63,6 +66,7 @@
             android:id="@+id/pickup_station_shipping_fee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle"
@@ -72,6 +76,7 @@
             android:id="@+id/pickup_station_shipping_fee_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:gravity="right"
             android:singleLine="false"
             android:textSize="@dimen/text_info"
