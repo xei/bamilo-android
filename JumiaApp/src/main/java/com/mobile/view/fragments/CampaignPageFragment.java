@@ -177,7 +177,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
+        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getCampaignId());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
@@ -508,15 +508,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void triggerGetCampaign(String id){
         Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, mTeaserCampaign.getTargetUrl());
-        bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
-        triggerContentEvent(new GetCampaignHelper(), bundle, this);
+        triggerContentEvent(new GetCampaignHelper(), GetCampaignHelper.createBundle(id), this);
     }
     
     /**
      * Trigger to add item to cart
-     * @param values
      * @author sergiopereira
      */
     private void triggerAddToCart(ContentValues values){
@@ -532,8 +528,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     /**
      * Filter the success response
-     * @param bundle
-     * @return boolean
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
@@ -576,14 +570,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     /**
      * Filter the error response
-     * @param bundle
-     * @return boolean
      */
     @Override
     public void onRequestError(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -704,10 +696,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
         
         /**
-         * 
-         * @param context
-         * @param items
-         * @param parentListener
+         * Constructor
          */
         public CampaignAdapter(Context context, ArrayList<CampaignItem> items, OnClickListener parentListener) {
             super(context, R.layout.campaign_fragment_list_item, items);
@@ -746,9 +735,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Get the recycled view
-         * @param view
-         * @return ItemView
-         * @author sergiopereira
          */
         private ItemView getItemView(View view){
             ItemView item;
@@ -795,9 +781,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
         
         /**
-         * Set the campaign data 
-         * @param view
-         * @param item
+         * Set the campaign data
          * @author sergiopereira
          */
         private void setData(ItemView view, CampaignItem item, int position) {
@@ -921,9 +905,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         /**
          * convert value of time in a two digit <code>String</code>
-         * 
-         * @param number
-         * @return
          */
         private String twoDigitString(int number) {
             if (number == 0) {
@@ -937,13 +918,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         /**
          * Show Timer with text "00:00:00" and disable buttons and redirects to PDV
-         * 
-         * @param timerContainer
-         * @param buttonBuy
-         * @param offerEnded
-         * @param timer
-         * @param name
-         * @param image
          */
         private void showOfferEnded(View timerContainer, View buttonBuy, View offerEnded, TextView timer, View name, View image, View imageContainer) {
             timerContainer.setVisibility(View.VISIBLE);
@@ -964,8 +938,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         /**
          * Set the price and special price view
-         * @param view
-         * @param item
          * @author sergiopereira
          */
         private void setPriceContainer(ItemView view, CampaignItem item){
@@ -977,8 +949,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Set the save value
-         * @param view
-         * @param item
          * @author sergiopereira
          */
         private void setSaveContainer(ItemView view, CampaignItem item){
@@ -1000,8 +970,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Set a view as clickable saving the position
-         * @param view
-         * @param position
          * @author sergiopereira
          */
         private void setClickableView(View view, int position) {
@@ -1012,8 +980,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
  
         /**
          * Hide or show the stock off
-         * @param view
-         * @param item
          * @author ricardosoares
          */
         private void setStockOff(ItemView view, CampaignItem item){
@@ -1037,9 +1003,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Hide or show the size container
-         * @param view
-         * @param item
-         * @param position
          * @author sergiopereira
          */
         private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
@@ -1097,8 +1060,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 
         /**
          * Set the stock bar color
-         * @param view
-         * @param stock
          * @author sergiopereira
          */
         private void setStockBar(ProgressBar view, int stock) {

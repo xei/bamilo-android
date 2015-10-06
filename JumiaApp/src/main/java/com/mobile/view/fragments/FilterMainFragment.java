@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -95,7 +96,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         if(savedInstanceState != null){
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
-            filterSelectionController = new FilterSelectionController(mFilters, (FilterOptionInterface[])savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES));
+            Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
+            filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[])filterOptions) : new FilterSelectionController(mFilters);
 
         } else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);

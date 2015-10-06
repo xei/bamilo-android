@@ -600,9 +600,6 @@ public class Ad4PushTracker {
      */
     public void trackAddToCartFromFav(String sku, double price, String name, String category) {
         if (isEnabled) {
-            // Get the number of favorites
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             // Track add to cart from fav
             Bundle prefs = new Bundle();
             prefs.putString(FAVORITES_TO_CART_SKU, sku);
@@ -655,10 +652,9 @@ public class Ad4PushTracker {
 
     public void trackSearch(String searchTerm) {
         if (isEnabled) {
-            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
             Bundle prefs = new Bundle();
             prefs.putString(LAST_SEARCH, searchTerm);
-            prefs.putString(LAST_SEARCH_DATE, currentDateAndTime);
+            prefs.putString(LAST_SEARCH_DATE, DateTimeUtils.getCurrentDateTime());
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK SEARCH: " + prefs.toString());
         }

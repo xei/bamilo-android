@@ -1,5 +1,6 @@
 package com.mobile.helpers.campaign;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -11,9 +12,6 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Helper used to get a campaign
  * @author sergiopereira
@@ -22,23 +20,9 @@ public class GetCampaignHelper extends SuperBaseHelper {
     
     protected static String TAG = GetCampaignHelper.class.getSimpleName();
 
-    public static final String CAMPAIGN_TAG = "slug";
-
-
     @Override
     public EventType getEventType() {
         return EventType.GET_CAMPAIGN_EVENT;
-    }
-
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        Map<String, String> data = super.getRequestData(args);
-        if(data == null){
-            data = new HashMap<>();
-        }
-        data.put(CAMPAIGN_TAG, args.getString(CAMPAIGN_TAG));
-        return data;
     }
 
     @Override
@@ -53,4 +37,16 @@ public class GetCampaignHelper extends SuperBaseHelper {
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, campaign);
     }
 
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String campaignId) {
+        // Item data
+        ContentValues values = new ContentValues();
+        values.put("campaign_slug", campaignId);
+        // Request data
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
+    }
 }

@@ -27,6 +27,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -452,6 +453,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Case add item to cart
         if (simple != null) {
             triggerAddProductToCart(product.getSku(), simple.getSku());
+            TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
