@@ -922,8 +922,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Get item
                 if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mProduct);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
+                    TrackerDelegator.trackAddToFavorites(mProduct);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1245,9 +1247,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 return;
             }
         }
-
-
-
         //load header
         TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
         //TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.gen_header_text);
@@ -1305,18 +1304,23 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param p    - product bundle
      */
-    private void fillProductBundleInfo(View view, ProductBundle p) {
+    private void fillProductBundleInfo(View view, ProductBundle productBundleItem) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
-        mCheck.setChecked(p.isChecked());
-        RocketImageLoader.instance.loadImage(p.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-        com.mobile.components.customfontviews.TextView mBrand = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_brand);
-        mBrand.setText(p.getBrand());
-        com.mobile.components.customfontviews.TextView mTitle = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_title);
-        mTitle.setText(p.getName());
-        com.mobile.components.customfontviews.TextView mPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.item_price);
-        mPrice.setText(CurrencyFormatter.formatCurrency(p.getPrice()));
+        mCheck.setChecked(productBundleItem.isChecked());
+        RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
+        mBrand.setText(productBundleItem.getBrand());
+        TextView mTitle = (TextView) view.findViewById(R.id.item_title);
+        mTitle.setText(productBundleItem.getName());
+        TextView mPrice = (TextView) view.findViewById(R.id.item_price);
+        if(productBundleItem.hasDiscount()){
+            mPrice.setText(CurrencyFormatter.formatCurrency(productBundleItem.getSpecialPrice()));
+        } else {
+            mPrice.setText(CurrencyFormatter.formatCurrency(productBundleItem.getPrice()));
+        }
+
     }
 
 
