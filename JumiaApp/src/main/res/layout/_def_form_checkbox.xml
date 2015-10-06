@@ -3,9 +3,7 @@
     android:id="@+id/checkbox_form"
     style="@style/form_checkbox_style"
     android:layout_gravity="left|start"
-    android:button="@null"
-    android:background="@null"
-    android:drawableLeft="@drawable/selector_btn_check_holo_green"
-    android:drawableStart="@drawable/selector_btn_check_holo_green"
     android:drawablePadding="@dimen/form_check_padding"
+    android:paddingStart="@dimen/form_check_padding"
+    android:paddingLeft="@dimen/form_check_padding"
     />

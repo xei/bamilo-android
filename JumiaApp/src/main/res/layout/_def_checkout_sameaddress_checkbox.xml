@@ -11,11 +11,8 @@
         android:id="@+id/checkout_address_billing_checkbox"
         style="@style/form_checkbox_style"
         android:layout_gravity="left|start|center_vertical"
-        android:checked="true"
-        android:button="@null"
-        android:background="@null"
-        android:drawableLeft="@drawable/selector_btn_check_holo_green"
-        android:drawableStart="@drawable/selector_btn_check_holo_green"
+        android:paddingStart="@dimen/form_check_padding"
+        android:paddingLeft="@dimen/form_check_padding"
         android:drawablePadding="@dimen/form_check_padding"
         android:text="@string/billing_same_label" />
 

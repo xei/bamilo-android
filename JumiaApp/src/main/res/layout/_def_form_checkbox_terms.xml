@@ -9,16 +9,13 @@
         android:id="@+id/checkbox_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|start"
-        android:button="@null"
-        android:background="@null"
-        android:drawableLeft="@drawable/selector_btn_check_holo_green"
-        android:drawableStart="@drawable/selector_btn_check_holo_green"
+        android:paddingStart="@dimen/form_check_padding"
+        android:paddingLeft="@dimen/form_check_padding"
         android:drawablePadding="@dimen/form_check_padding"
         style="@style/form_checkbox_style"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_form"/>
-    
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/textview_terms"
         style="@style/text_form"
