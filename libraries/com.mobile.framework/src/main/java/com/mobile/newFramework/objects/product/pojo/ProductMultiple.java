@@ -62,6 +62,10 @@ public class ProductMultiple extends ProductRegular {
                 mSimples.add(simple);
             }
         }
+
+        if(hasOwnSimpleVariation()){
+            mSelectedSimplePosition = 0;
+        }
         return true;
     }
 

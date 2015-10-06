@@ -163,7 +163,7 @@ public class OffersListAdapterNew extends BaseAdapter {
         });
 
         List<ProductSimple> simples = productOffer.getSimples();
-        if(CollectionUtils.isNotEmpty(simples)) {
+        if(CollectionUtils.isNotEmpty(simples) && simples.size() > 1) {
 
             if(productOffer.hasSelectedSimpleVariation()) {
                 item.variations.setText(productOffer.getSimples().get(productOffer.getSelectedSimplePosition()).getVariationValue());
