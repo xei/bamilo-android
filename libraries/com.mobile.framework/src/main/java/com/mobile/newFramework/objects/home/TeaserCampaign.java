@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.newFramework.objects.home;
 
 import android.net.Uri;
@@ -47,14 +44,12 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 
 	/**
 	 * Set the campaign title
-	 * @param title
 	 * @author sergiopereira
 	 */
 	public void setTitle(String title) { this.name = title; }
 
 	/**
 	 * Set the campaign url/id
-	 * @param url
 	 * @author sergiopereira
 	 */
 	public void setUrl(String url) {
@@ -139,7 +134,6 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
 	public TeaserCampaign(Parcel in) {
         name = in.readString();
@@ -166,7 +160,7 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
     private void getCampaignKey(){
         if(!TextUtils.isEmpty(url)){
             Uri myUri = Uri.parse(url);
-            campaignId = myUri.getQueryParameter("slug");
+            campaignId = myUri.getQueryParameter("campaign_slug");
         }
     }
 }

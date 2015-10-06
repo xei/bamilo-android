@@ -17,6 +17,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
@@ -429,6 +430,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+        // Update counter for tracking
+        CategoriesTableHelper.updateCategoryCounter(url, title);
+        // Go to bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);

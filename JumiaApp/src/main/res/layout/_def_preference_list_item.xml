@@ -45,7 +45,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
+        android:paddingRight="@dimen/margin_huge"
+        android:paddingEnd="@dimen/margin_huge"
+        />
 
 
 </LinearLayout>

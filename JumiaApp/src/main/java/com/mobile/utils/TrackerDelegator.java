@@ -653,8 +653,22 @@ public class TrackerDelegator {
         }
     }
 
+    public static void trackFavouriteAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
+        bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        trackProductAddedToCart(bundle);
+    }
 
-    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type ) {
+
+    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
@@ -763,11 +777,13 @@ public class TrackerDelegator {
      * Tracking a campaign
      */
     public static void trackGACampaign(Context context, String utm) {
-        Print.i(TAG,"UTM INFO ->"+utm);
-        // GA
-        AnalyticsGoogle.get().setGACampaign(utm);
-        // GTM
-        GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
+        Print.i(TAG, "UTM INFO ->" + utm);
+        if(!TextUtils.isEmpty(utm)) {
+            // GA
+            AnalyticsGoogle.get().setGACampaign(utm);
+            // GTM
+            GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
+        }
     }
 
     /**
@@ -1250,7 +1266,7 @@ public class TrackerDelegator {
             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
 
             // Search
-            if (!TextUtils.isEmpty(searchQuery)) {
+            if (!TextUtils.isEmpty(catalogPage.getSearchTerm())) {
                 TrackerDelegator.trackCatalogSearch(catalogPage);
             }
         }

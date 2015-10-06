@@ -423,4 +423,5 @@
     <string name="shipment" formatted="false">%d کھیپ کے %d</string>
     <string name="policy">پالیسی</string>
     <string name="delivery_time_placeholder" formatted="false">ڈلیوری وقت: %d - %d  دن</string>
+    <string name="product_specifications">ادائیگی کے بعد نردجیکرن</string>
 </resources>
