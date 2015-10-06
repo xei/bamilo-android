@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -26,6 +27,7 @@ import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -242,7 +244,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, regions.size()));
+        spinner.setSelection(getDefaultPosition(formItem, regions));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
         showFragmentContentContainer(); // Show to trigger
@@ -264,7 +266,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, cities.size()));
+        spinner.setSelection(getDefaultPosition(formItem, cities));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
     }
@@ -285,7 +287,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, postalCodes.size()));
+        spinner.setSelection(getDefaultPosition(formItem, postalCodes));
         spinner.setOnItemSelectedListener(this);
         group.addView(spinner);
     }
@@ -294,13 +296,19 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Get the position of the address city
      * @return int the position
      */
-    private int getDefaultPosition(DynamicFormItem formItem, int size){
+    private int getDefaultPosition(DynamicFormItem formItem, ArrayList<? extends FormListItem> regions){
         try {
-            int position = Integer.valueOf(formItem.getEntry().getValue()) - 1;
-            return position > -1 && position < size ? position : 0;
+            int position = Integer.valueOf(formItem.getEntry().getValue());
+            for(int i = 0; i < regions.size(); i++){
+                FormListItem formListItem = regions.get(i);
+                if(formListItem.getValue() == position){
+                    return i;
+                }
+            }
         } catch (NullPointerException | NumberFormatException e) {
-            return 0;
+
         }
+        return 0;
     }
 
     /**
