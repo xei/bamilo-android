@@ -47,6 +47,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    /** SOCIALS **/
+    // https://developers.facebook.com/docs/android
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     /** TRACKERS  **/
     // http://mvnrepository.com/artifact/com.newrelic.agent.android
     compile 'com.newrelic.agent.android:android-agent:5.3.0'
@@ -57,9 +60,6 @@ dependencies {
     // https://github.com/bitstadium/HockeySDK-Android
     compile 'net.hockeyapp.android:HockeySDK:3.6.0'
     /** LOCAL LIBS  **/
-    // https://developers.facebook.com/docs/android
-    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
-    // Adjust the version accordingly
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
     /** TESTS **/

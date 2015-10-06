@@ -66,8 +66,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-//import com.mobile.view.fragments.WriteSellerReviewFragment;
-
 /**
  * @author sergiopereira
  */
