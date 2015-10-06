@@ -9,46 +9,17 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_title"
         style="@style/HeaderStyle"
-        android:text="@string/seller_info" />
-
-    <!--SPACE -->
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:text="@string/seller_info"
+        android:layout_marginBottom="16dp"/>
 
     <!--CONTENT -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
         style="@style/TextBody_1"
         android:layout_marginRight="@dimen/layout_padding"
-        android:textColor="@color/black" />
-
-    <!-- RATING -->
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="@dimen/layout_padding"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/item_margin_top">
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdv_seller_rating_bar_count"
-            style="@style/TextCaption"
-            color="@color/black_800"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid" />
-
-        <RatingBar
-            android:id="@+id/pdv_seller_rating_bar"
-            style="@style/starRatingBarSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isIndicator="true" />
-
-    </LinearLayout>
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"
+        android:textStyle="bold"/>
 
     <!-- DELIVERY TIME -->
 
@@ -56,7 +27,19 @@
         android:id="@+id/pdv_seller_delivery_info"
         style="@style/TextHeader"
         android:layout_marginRight="@dimen/layout_padding"
-        android:paddingBottom="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <!-- WARRANTY: OPTIONAL -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_seller_warranty"
+        style="@style/TextHeader"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:layout_marginBottom="16dp"
+        android:drawableRight="@drawable/ic_warranty"
+        android:drawablePadding="16dp"
         android:textColor="@color/black"
         android:visibility="gone" />
 
@@ -116,33 +99,5 @@
             android:visibility="visible" />
 
     </RelativeLayout>
-
-    <!-- WARRANTY: OPTIONAL -->
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_seller_warranty"
-        style="@style/TextHeader"
-        android:layout_marginRight="@dimen/layout_padding"
-        android:layout_marginTop="16dp"
-        android:drawableRight="@drawable/ic_warranty"
-        android:drawablePadding="16dp"
-        android:textColor="@color/black"
-        android:visibility="gone" />
-
-    <!-- OTHER SELLERS BUTTON: optional -->
-
-    <View
-        android:id="@+id/separator"
-        style="@style/divider_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_seller_button_others"
-        style="@style/SubListItemStyle"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="gone" />
 
 </LinearLayout>

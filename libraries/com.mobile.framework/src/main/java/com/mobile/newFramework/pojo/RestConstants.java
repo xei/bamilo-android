@@ -129,6 +129,8 @@ public class RestConstants {
     public static final String JSON_REVIEW_TAG = "review";
     public static final String JSON_IS_ENABLE_TAG = "is_enable";
     public static final String JSON_REQUIRED_LOGIN_TAG = "required_login";
+    public static final String JSON_BASED_ON_TAG = "based_on";
+    public static final String JSON_TOTAL_STARS_TAG = "total_stars";
 
     public static final String JSON_VARIATIONS_TAG = "variations";
     public static final String JSON_HAS_BUNDLE_TAG = "bundle";
@@ -159,13 +161,15 @@ public class RestConstants {
 
     // Category Tags
     public static final String JSON_CATEGORY_ID_TAG = "id_catalog_category";
-    public static final String JSON_CATEGORY_NAME_TAG = JSON_NAME_TAG;
+    public static final String JSON_CATEGORY_TYPE_TAG = "type";
+    public static final String JSON_CATEGORY_LABEL_TAG = LABEL;
     public static final String JSON_URL_KEY_TAG = "url_key";
     public static final String JSON_CHILDREN_TAG = "children";
     public static final String JSON_API_URL_TAG = "api_url";
     public static final String JSON_CATEGORY_URL_TAG = URL;
-    public static final String JSON_HAS_CHILDREN = "hasChildren";
-
+    public static final String JSON_HAS_CHILDREN = "has_children";
+    public static final String JSON_CATEGORY_VERTICAL = "vertical";
+    
     // ShoppingCart Tags
     public static final String CART = "cart";
     public static final String TOTAL_PRODUCTS = "total_products";
@@ -424,7 +428,6 @@ public class RestConstants {
     public static final String JSON_FILTER_SEPARATOR = "filter_separator";
     public static final String JSON_OPTION_TAG = "option";
 
-
     public static final String TOTAL_PAGES = "total_pages";
     public static final String CURRENT_PAGE = "current_page";
     public static final String PAGE = "page";
@@ -434,7 +437,12 @@ public class RestConstants {
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
     public static final String WISH_LIST_PRODUCTS = "wishlist_products";
+
     public static final String IS_GLOBAL = "is_global";
     public static final String GLOBAL = "global";
+    public static final String FULFILLMENT = "fulfillment";
     public static final String CMS_INFO = "cms_info";
+
+
+    public static final String PRICE_RANGE = "price_range";
 }

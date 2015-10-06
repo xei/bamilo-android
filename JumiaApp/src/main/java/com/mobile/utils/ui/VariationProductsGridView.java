@@ -1,19 +1,17 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+
+import com.mobile.utils.ComboGridView;
 
 /**
  * Created by alexandra pires 31/08/2015.
  * Gridview for variation products in variations page
  */
-public class VariationProductsGridView extends RecyclerView {
+public class VariationProductsGridView extends ComboGridView {
 
-    private static final String TAG = VariationProductsGridView.class.getSimpleName();
-
-    private GridLayoutManager mGridLayoutManager;
+    public static final String TAG = VariationProductsGridView.class.getSimpleName();
 
     public VariationProductsGridView(Context context) {
         super(context);
@@ -26,21 +24,5 @@ public class VariationProductsGridView extends RecyclerView {
     public VariationProductsGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
-    public void setGridLayoutManager(Context context,int columns) {
-
-        mGridLayoutManager = new GridLayoutManager(context, columns);
-        mGridLayoutManager.setSmoothScrollbarEnabled(true);
-        setLayoutManager(mGridLayoutManager);
-    }
-
-
-    @Override
-    public void setAdapter(Adapter adapter) {
-        super.setAdapter(adapter);
-
-    }
-
-
 
 }

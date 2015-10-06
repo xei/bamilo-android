@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/offers_page"
+    >
+
+    <!-- OTHER SELLERS/OFFERS PAGE -->
+
+    <RelativeLayout
+        android:id="@+id/offers_header"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@android:color/white" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/offer_product_name"
+            style="@style/TextList_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_huge"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_alignParentRight="true"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:text="aaaa"
+            />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/offer_product_brand"
+            android:layout_below="@id/offer_product_name"
+            style="@style/TextCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_alignParentRight="true"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:text="aaaa"
+            />
+
+
+
+    </RelativeLayout>
+
+    <View style="@style/divider_horizontal"   android:id="@+id/separator"
+        android:layout_below="@id/offers_header" />
+
+    <GridView
+        android:id="@+id/offers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@color/transparent"
+        android:layout_below="@id/separator"
+        android:numColumns="@integer/grid_num_columns"
+        />
+
+</RelativeLayout>

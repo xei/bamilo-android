@@ -23,6 +23,7 @@ import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
@@ -44,7 +45,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     private ArrayList<String> mImageList;
 
-    //private InfiniteCirclePageIndicator mViewPagerIndicator;
+    private HorizontalScrollView mHorizontalScrollView;
 
     private ViewGroup mThumbnailContainer;
 
@@ -85,7 +86,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 //    }
 
     /**
-     * Constucctor as nested
+     * Constructor as nested
      */
     @SuppressLint("ValidFragment")
     public ProductImageGalleryFragment() { //Boolean isNested) {
@@ -131,10 +132,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON VIEW CREATED");
         // Get pager
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
-        // Circle indicator
-        // mViewPagerIndicator = (InfiniteCirclePageIndicator) getView().findViewById(R.id.view_pager_indicator);
+        // HorizontalScrollView
+        mHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
         // Get thumbnail indicator
         mThumbnailContainer = (ViewGroup) view.findViewById(R.id.pdv_thumbnail_indicator_container);
+        Print.i(TAG,"mHorizontalScrollView:"+mHorizontalScrollView);
         // Set view pager
         createGallery();
     }
@@ -160,6 +162,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Show default
+        onUpdateThumbnailIndicator(ProductDetailsFragment.sSharedSelectedPosition);
         mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition, true);
     }
 
@@ -244,6 +247,15 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         setThumbnailIndicatorForViewPager(size);
         // Set listener
         setOnPageItemClicked();
+
+        if(ShopSelector.isRtl()){
+            // slide the horizontal scroll view to the end to show the first element
+            mHorizontalScrollView.postDelayed(new Runnable() {
+                public void run() {
+                    mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                }
+            }, 100L);
+        }
     }
 
     /**

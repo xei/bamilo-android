@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -8,7 +5,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
@@ -16,8 +12,10 @@ import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -42,9 +40,21 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     public static int mPositionToStart = 0;
 
-    private int mTabsCount = 2;
+    private int mTabsCount = 3;
 
-    private boolean mHasSummary = true;
+    private String mTitle;
+
+    public static int getDescriptionPagePosition(){
+        return ShopSelector.isRtl() ? 2 : 0;
+    }
+
+    public static int getSpecificationsPagePosition(){
+        return 1;
+    }
+
+    public static int getRatingsPagePosition(){
+        return ShopSelector.isRtl() ? 0 : 2;
+    }
 
     /**
      * Get instance
@@ -59,10 +69,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsInfoFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Product,
                 R.layout.details_info_fragment_main,
-                0,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -86,10 +96,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        if(savedInstanceState != null){
-            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
-        } else {
-            mPositionToStart = -1;
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
+            mTitle = bundle.getString(ConstantsIntentExtra.FLAG_1);
         }
     }
 
@@ -109,10 +119,13 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
-        int layout = R.layout.tab_simple_half_item;
+    //    int layout = R.layout.tab_simple_half_item;
+        int layout = R.layout.tab_simple_half_item_new;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-            layout = R.layout.tab_simple_item;
+            layout = R.layout.tab_simple_item_new;
+        //    layout = R.layout.tab_simple_item;
         }
+
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
@@ -124,12 +137,14 @@ public class ProductDetailsInfoFragment extends BaseFragment {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
+            //#RTL
             if(ShopSelector.isRtl()){
-                mProductInfoPager.enableRtl();
-                mPositionToStart = mProductInfoPagerAdapter.getCount();
-            } else {
-                mPositionToStart = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                    mProductInfoPager.enableRtl();
+                }
             }
+            setPagerPosition(mPositionToStart);
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);
@@ -161,6 +176,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+        // Set action title
+        if (TextUtils.isNotEmpty(mTitle)) {
+            getBaseActivity().setActionBarTitle(mTitle);
+        }
     }
 
     /*
@@ -209,11 +228,9 @@ public class ProductDetailsInfoFragment extends BaseFragment {
                 ProductComplete completeProduct = (ProductComplete) parcelableProduct;
 
                 if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
-//                    hasSpecification = false;
                     mTabsCount--;
                 }
                 if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
-                    mHasSummary = false;
                     mTabsCount--;
                 }
             }
@@ -250,9 +267,16 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         @Override
         protected Fragment createNewFragment(int position) {
-            return (titlesPageInt.get(position) == R.string.product_desc_summary_title) ?
-                    ProductDetailsSummaryFragment.getInstance(getArguments()) :
-                    ProductDetailsSpecificationsFragment.getInstance(getArguments());
+
+            if(titlesPageInt.get(position).equals(R.string.description)) {
+                return ProductDetailsSummaryFragment.getInstance(getArguments());
+            }
+            else if (titlesPageInt.get(position).equals(R.string.product_specifications)) {
+                return ProductDetailsSpecificationsFragment.getInstance(getArguments());
+            }
+            else {
+                return ReviewsFragment.getInstance(getArguments()); //added: go to ratings page
+            }
         }
 
         @Override
@@ -263,8 +287,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private List<Integer> getFragmentTitleValues(){
         Integer[] titles = {
-                mHasSummary ? R.string.product_desc_summary_title : R.string.specifications,
-                R.string.specifications};
+                R.string.description ,
+                R.string.product_specifications,
+                R.string.rat_rev};
+
 
         return Arrays.asList(titles);
     }

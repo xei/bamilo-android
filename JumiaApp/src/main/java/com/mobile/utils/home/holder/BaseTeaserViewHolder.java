@@ -1,7 +1,6 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
@@ -11,9 +10,11 @@ import com.mobile.utils.home.TeaserViewFactory;
 /**
  * Class used to represent the base of teasers.
  */
-public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseTeaserViewHolder { //extends RecyclerView.ViewHolder {
 
     protected static final int NO_OFFSET = 0;
+
+    public final View itemView;
 
     protected Context mContext;
 
@@ -30,7 +31,8 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
      * @param onClickListener The click listener
      */
     public BaseTeaserViewHolder(Context context, View itemView, View.OnClickListener onClickListener) {
-        super(itemView);
+        //super(itemView);
+        this.itemView = itemView;
         mContext = context;
         mParentClickListener = onClickListener;
         isRtl = ShopSelector.isRtl();

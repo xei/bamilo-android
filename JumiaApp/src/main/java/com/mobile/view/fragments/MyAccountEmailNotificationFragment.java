@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -243,8 +244,15 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         for (int i = 0; i < newsletterOptions.size(); i++) {
             View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
+            TextView newsletterName = (TextView) view.findViewById(R.id.myaccount_newslleter_option);
+            View lineView = view.findViewById(R.id.newsletter_line);
+            if(i == newsletterOptions.size()-1){
+                lineView.setVisibility(View.GONE);
+            } else {
+                lineView.setVisibility(View.VISIBLE);
+            }
             checkBox.setTag("" + i);
-            checkBox.setText(newsletterOptions.get(i).label);
+            newsletterName.setText(newsletterOptions.get(i).label);
             checkBox.setChecked(newsletterOptions.get(i).isSubscrided);
             checkBox.setOnCheckedChangeListener(this);
             newsletterList.addView(view);

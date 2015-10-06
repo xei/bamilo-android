@@ -70,8 +70,17 @@
             android:layout_alignWithParentIfMissing="true"
             android:gravity="right|center_vertical"
             android:layout_toLeftOf="@id/item_discount"
-            android:text="Price" />
+            android:text="Price"
+            android:textColor="@color/grey_light"/>
     </RelativeLayout>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_below="@id/price_container"/>
 
     <!-- WARNINGS -->
 
@@ -79,7 +88,7 @@
         android:id="@+id/warning_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/price_container"
+        android:layout_below="@+id/item_percentage"
         android:layout_marginLeft="@dimen/rounded_margin_small"
         android:layout_toRightOf="@+id/button_shop" >
 

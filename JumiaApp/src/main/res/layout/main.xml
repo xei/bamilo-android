@@ -1,51 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mobile.components.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-    <RelativeLayout
-        android:id="@+id/main_layout"
+    android:layout_height="match_parent">
+
+    <!-- COORDINATOR -->
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        tools:context=".ScrollingActivity">
 
-        <!-- HEADER TITLE AND TOTAL -->
+        <!-- APP BAR-->
 
-        <include
-            android:id="@+id/header_title"
-            layout="@layout/header_title" />
-
-        <!-- NATIVE CHECKOUT HEADER -->
-
-        <include
-            android:id="@+id/checkout_header"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header_title"
-            layout="@layout/checkout_header"
-            android:visibility="gone" />
+            app:elevation="0dp">
 
-        <!-- CONTENT LAYOUT -->
-        <ViewStub
-            android:id="@+id/stub_app_content"
+            <!-- ACTION BAR -->
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways" />
+
+            <!-- TAB BAR -->
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/tabBar"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <!-- SCROLLABLE CONTAINER -->
+
+        <RelativeLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_below="@id/checkout_header"
-            android:inflatedId="@+id/rocket_app_content"
-            android:layout="@layout/main_fragment_activity_layout"/>
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".ScrollingActivity"
+            tools:showIn="@layout/activity_scrolling">
 
-        <!-- WARNING MESSAGE -->
+            <!-- NATIVE CHECKOUT HEADER -->
 
-        <include
-            android:id="@+id/warning"
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
-            layout="@layout/warning"
-            android:visibility="gone" />
+            <include
+                android:id="@+id/checkout_header"
+                layout="@layout/checkout_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
-    </RelativeLayout>
+            <!-- CONTENT LAYOUT
+            <ViewStub
+                android:id="@+id/stub_app_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/checkout_header"
+                android:inflatedId="@+id/rocket_app_content"
+                android:layout="@layout/main_fragment_activity_layout"/>
+                 -->
+
+            <!-- CONTENT LAYOUT -->
+
+            <FrameLayout
+                android:id="@+id/rocket_app_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/checkout_header" />
+
+            <!-- WARNING MESSAGE -->
+
+            <include
+                android:id="@+id/warning"
+                layout="@layout/warning"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <!-- NAVIGATION -->
 

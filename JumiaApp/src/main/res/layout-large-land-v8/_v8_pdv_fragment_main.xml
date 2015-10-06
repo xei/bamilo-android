@@ -42,7 +42,8 @@
 
     <!-- LEFT CONTAINER -->
 
-    <com.mobile.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.AigScrollViewWithHorizontal
+        android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"
@@ -60,7 +61,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
@@ -70,7 +71,7 @@
 
             <include
                 android:id="@+id/pdv_rating_container"
-                layout="@layout/_def_pdv_fragment_rating" />
+                layout="@layout/pdv_fragment_rating" />
 
             <!-- SPECIFICATIONS -->
             <include
@@ -95,6 +96,12 @@
                 android:id="@+id/pdv_seller_container"
                 layout="@layout/pdv_fragment_seller_info" />
 
+            <!-- OTHER SELLERS -->
+
+            <include
+                android:id="@+id/pdv_other_sellers_button"
+                layout="@layout/sublist" />
+
             <!-- DESCRIPTION -->
 
             <include
@@ -115,6 +122,6 @@
 
         </LinearLayout>
 
-    </com.mobile.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.AigScrollViewWithHorizontal>
 
 </RelativeLayout>

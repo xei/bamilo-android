@@ -30,8 +30,9 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -115,10 +116,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
      * Empty constructor
      */
     public SessionLoginFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                NO_TITLE,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -146,7 +147,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         Bundle arguments = getArguments();
         if (arguments != null) {
             // Initialize SessionLoginFragment with no title
-            super.titleResId = NO_TITLE;
+            super.titleResId = IntConstants.ACTION_BAR_NO_TITLE;
             // Force load form if comes from deep link
             nextFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             String path = arguments.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
@@ -560,7 +561,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
 
-                if (fillEmail && InputType.email.equals(item.getType())) {
+                if (fillEmail && FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -569,7 +570,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
 
-                if (InputType.email.equals(item.getType())) {
+                if (FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }

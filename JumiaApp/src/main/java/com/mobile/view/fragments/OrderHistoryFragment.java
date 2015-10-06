@@ -38,13 +38,10 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -92,8 +89,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     /**
      * Get instance
-     * 
-     * @return
      */
     public static OrderHistoryFragment getInstance() {
         return new OrderHistoryFragment();
@@ -103,11 +98,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * Empty constructor
      */
     public OrderHistoryFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
-                R.layout.order_history_main,
-                R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.order_history_main);
     }
 
     /*
@@ -138,7 +129,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
             
-                Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
+                //Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
         }
         
     }

@@ -185,7 +185,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse<Categories>> callback);
+    void getCategoriesPaginated(Callback<BaseResponse<Categories>> callback);
 
     String getCategoriesPaginated = "getCategoriesPaginated";
 

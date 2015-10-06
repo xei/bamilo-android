@@ -826,8 +826,13 @@ public class AdjustTracker {
                         eventViewWishlist.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
 
                         if (fav.hasSelectedSimpleVariation()) {
-                            eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleVariation().getVariationValue());
-                            eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleVariation().getVariationValue());
+                            try {
+                                //noinspection ConstantConditions
+                                eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
+                                eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
+                            } catch (NullPointerException e) {
+                                // ...
+                            }
                         }
 
                         eventViewWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/layout_padding"
+    android:clickable="true"
+    android:background="@drawable/border"
+    >
+
+    <!-- IMAGE -->
+    <include
+        android:id="@+id/item_image_loadable"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        layout="@layout/image_loadable"
+        android:layout_alignParentRight="true"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/item_image_loadable"
+        android:gravity="center_vertical|right"
+        android:layout_marginRight="@dimen/layout_padding"
+
+        >
+
+        <!-- BRAND -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/TextCaption"
+            android:textColor="@color/black_800"
+            android:lines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+        <!-- TITLE -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_title"
+            style="@style/TextList_1"
+            android:textColor="@color/black"
+            android:lines="1"
+            android:text="Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <!-- PRICE -->
+
+        <include layout="@layout/pdv_small_price_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- VARIATION -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/choosen_variation"
+            style="@style/TextCaption"
+            android:textColor="@color/black_800"
+            android:lines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="variation"
+            android:visibility="gone"
+            />
+
+        <!-- RATING -->
+        <include layout="@layout/pdv_rating_small"   android:id="@+id/rating"   android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- CHECKBOX -->
+        <com.mobile.components.customfontviews.CheckBox
+            android:id="@+id/item_check"
+            style="@style/form_checkbox_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:checked="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="false"
+            />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

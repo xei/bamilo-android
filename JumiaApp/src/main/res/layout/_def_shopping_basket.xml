@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.components.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             style="@style/rounded_box"
-            android:layout_marginBottom="0dp" >
+            android:layout_marginBottom="0dp">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/shoppingcart_title"
@@ -33,8 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/shoppingcart_title"
-                android:orientation="vertical" >
-            </LinearLayout>
+                android:orientation="vertical"/>
 
             <View
                 style="@style/divider_horizontal_orange"
@@ -44,6 +43,7 @@
         <include layout="@layout/voucher_insert_layout" />
 
         <include
+            layout="@layout/shopping_basket_subtotal_element"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/rounded_margin_small"
@@ -51,14 +51,13 @@
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_marginStart="@dimen/rounded_margin_mid"
-            android:layout_marginTop="@dimen/rounded_margin_small"
-            layout="@layout/shopping_basket_subtotal_element" />
+            android:layout_marginTop="@dimen/rounded_margin_small" />
 
         <LinearLayout
             android:id="@+id/shopping_basket_buttons_container"
             style="@style/button_container"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_button"
@@ -74,4 +73,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</com.mobile.components.widget.NestedScrollView>

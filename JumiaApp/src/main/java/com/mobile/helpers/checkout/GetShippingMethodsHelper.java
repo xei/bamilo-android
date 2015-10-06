@@ -39,6 +39,7 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
         form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
         bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
+        bundle.putParcelableArrayList(Constants.BUNDLE_FORM_DATA_KEY, shippingMethodsForm.getFulfillmentList());
     }
 
 }

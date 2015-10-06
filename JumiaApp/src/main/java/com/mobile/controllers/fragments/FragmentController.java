@@ -592,6 +592,15 @@ public class FragmentController {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    public static void addChildFragment(Fragment parent, int container, Fragment fragment, String tag) {
+        // Child Fragment manger
+        FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
+        // Replace
+        fragmentTransaction.replace(container, fragment, tag);
+        // Commit
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
     /**
      * Remove a child fragment from parent fragment using ChildFragmentManager.
      */

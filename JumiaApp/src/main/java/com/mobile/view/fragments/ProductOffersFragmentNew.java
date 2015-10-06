@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -10,9 +7,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentType;
@@ -32,6 +29,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -43,7 +41,7 @@ import java.util.List;
  * @author Paulo Carvalho
  * @modified sergiopereira
  */
-public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
+public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
 
     private static final String TAG = ProductOffersFragmentNew.class.getSimpleName();
 
@@ -63,6 +61,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     private GridView mOffersList;
 
+    private ProductOffer offerAddToCart;
+
     /**
      * Get a new instance of {@link #ProductOffersFragmentNew}.
      * @param bundle The arguments
@@ -80,10 +80,9 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     public ProductOffersFragmentNew() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
-                R.layout.product_offers_main_new,   //new layout
-                NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                R.layout.product_offers_main_new,
+                R.string.other_sellers,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -393,10 +392,31 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onAddOfferToCart(ProductOffer offer) {
-        // Add one unity to cart 
-        triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getFinalPrice());
+        // Add one unity to cart
+        if(!offer.hasSelectedSimpleVariation()){
+            offerAddToCart = offer;
+            onClickVariation(offer);
+
+        } else {
+            triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
+        }
     }
-    
+
+    @Override
+    public void onClickVariation(ProductOffer offer) {
+        Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
+        try {
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
+                    getBaseActivity(),
+                    getString(R.string.product_variance_choose),
+                    offer,
+                    this);
+            dialog.show(getFragmentManager(), null);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+        }
+    }
+
     private void executeAddToShoppingCartCompleted() {
         super.showInfoAddToShoppingCartCompleted();
 
@@ -407,5 +427,29 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     }
 
-    
+    @Override
+    public void onDialogListItemSelect(int position) {
+        if(offerAddToCart != null){
+            onAddOfferToCart(offerAddToCart);
+            offerAddToCart = null;
+        }
+    }
+
+    @Override
+    public void onDialogListClickView(View view) {
+
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+        ListAdapter listAdapter = mOffersList.getAdapter();
+        if(listAdapter instanceof OffersListAdapterNew){
+            ((OffersListAdapterNew) listAdapter).notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        onResume();
+    }
 }

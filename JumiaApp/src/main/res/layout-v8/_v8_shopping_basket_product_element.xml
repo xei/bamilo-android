@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@android:color/white" >
+    android:layout_height="100dp">
 
     <View
         android:id="@+id/top_spacer"
@@ -67,6 +66,16 @@
         android:text="Price"
         android:textColor="@color/grey_middlelight" />
 
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        android:layout_below="@id/item_discount"/>
+
     <!-- VARIATION -->
 
     <com.mobile.components.customfontviews.TextView
@@ -75,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/item_discount"
+        android:layout_below="@id/item_percentage"
         android:visibility="gone" />
 
     <com.mobile.components.customfontviews.Button
@@ -88,7 +97,8 @@
         android:gravity="bottom|center_horizontal|left"
         android:text="Press"
         android:textSize="@dimen/text_s"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textColor="@color/black"/>
 
     <View
         android:id="@id/bottom_spacer"

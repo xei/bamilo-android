@@ -21,11 +21,4 @@
         android:layout_marginTop="@dimen/margin_small"
         android:src="@drawable/selector_is_new" />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_percentage"
-        style="@style/discount_percentage"
-        android:layout_gravity="bottom|left"
-        android:layout_marginBottom="@dimen/product_list_item_image_margin"
-        android:visibility="gone" />
-
 </FrameLayout>

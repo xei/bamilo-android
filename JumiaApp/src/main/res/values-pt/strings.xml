@@ -6,7 +6,6 @@
     <string name="action_label_logout">Sair</string>
     <string name="action_label_search_hint">Procurar na %s</string>
     <string name="action_label_share">Compartilhar</string>
-    <string name="action_label_wishlist">Lista de Desejos</string>
     <string name="add_address">Adicionar Morada</string>
     <string name="add_to_shopping_cart">Adicionar</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Os artigos foram adicionados ao carrinho</string>

@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical">
 
     <View
         style="@style/line_grey_style"
+        android:id="@+id/newsletter_line"
+        android:layout_below="@+id/myaccount_newsletter_checkbox"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid" />
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/myaccount_newsletter_checkbox"
-        style="@style/text_normal"
+        style="@style/form_checkbox_style"
         android:layout_width="match_parent"
-        android:gravity="center_vertical|right"
-        android:layout_gravity="center_vertical|right"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="left"
         android:background="@drawable/selector_listitem_rounded_margin_highlight"
         android:button="@null"
-        android:drawableLeft="@drawable/selector_btn_check_holo_orange"
-        android:padding="@dimen/rounded_margin_mid"
-        android:text="Newslewttwer" />
+        android:drawableLeft="@drawable/selector_btn_check_holo_green"
+        android:padding="@dimen/rounded_margin_mid" />
 
-</LinearLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/myaccount_newslleter_option"
+        style="@style/text_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:padding="@dimen/rounded_margin_mid" />
+
+</RelativeLayout>

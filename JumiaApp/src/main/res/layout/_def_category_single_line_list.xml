@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_normal"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/item_height_normal"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/category_single_icon"
+        android:layout_width="@dimen/margin_50px"
+        android:layout_height="@dimen/margin_50px"
+        android:layout_marginEnd="@dimen/margin_30px"
+        android:layout_marginRight="@dimen/margin_30px"
+        android:layout_marginLeft="@dimen/margin_30px"
+        android:layout_marginStart="@dimen/margin_30px"
+        android:visibility="invisible" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/category_single_text"
+        style="@style/TextList_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_30px"
+        android:layout_marginRight="@dimen/margin_30px"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/category_single_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_60px"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:background="@drawable/selector_category_button" />
+
+</LinearLayout>

@@ -39,7 +39,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mId;
     private String mKey;
     private String mName;
-    private InputType mInputType;
+    private FormInputType mInputType;
     private String mLabel;
     private String mLinkText;
     private String mFormat;
@@ -69,7 +69,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public FormField(Form parent) {
         this.mId = "defaultId";
         this.mName = "defaultName";
-        this.mInputType = InputType.text;
+        this.mInputType = FormInputType.text;
         this.mLabel = "default";
         this.mValidation = new FieldValidation();
         this.mValue = "";
@@ -99,51 +99,51 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             switch (formFieldString) {
                 case "string":
                 case "text":
-                    mInputType = InputType.text;
+                    mInputType = FormInputType.text;
                     break;
                 case "email":
-                    mInputType = InputType.email;
+                    mInputType = FormInputType.email;
                     break;
                 case "date":
-                    mInputType = InputType.date;
+                    mInputType = FormInputType.date;
                     break;
                 case "integer":
                 case "number":
-                    mInputType = InputType.number;
+                    mInputType = FormInputType.number;
                     break;
                 case "related_number":
-                    mInputType = InputType.relatedNumber;
+                    mInputType = FormInputType.relatedNumber;
                     break;
                 case "password":
-                    mInputType = InputType.password;
+                    mInputType = FormInputType.password;
                     break;
                 case "radio":
-                    mInputType = InputType.radioGroup;
+                    mInputType = FormInputType.radioGroup;
                     break;
                 case "list":
                 case "select":
-                    mInputType = InputType.list;
+                    mInputType = FormInputType.list;
                     break;
                 case "array":
                 case "rating":
-                    mInputType = InputType.rating;
+                    mInputType = FormInputType.rating;
                     break;
                 case "boolean":
                 case "checkbox":
                 case "multi_checkbox":
-                    mInputType = InputType.checkBox;
+                    mInputType = FormInputType.checkBox;
                     break;
                 case "":
-                    mInputType = InputType.meta;
+                    mInputType = FormInputType.meta;
                     break;
                 case "hidden":
-                    mInputType = InputType.hide;
+                    mInputType = FormInputType.hide;
                     break;
                 case "checkbox_link":
-                    mInputType = InputType.checkBoxLink;
+                    mInputType = FormInputType.checkBoxLink;
                     break;
                 case "errorMessage":
-                    mInputType = InputType.errorMessage;
+                    mInputType = FormInputType.errorMessage;
                     break;
                 default:
                     return false;
@@ -275,7 +275,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
              * ########### PAYMENT METHODS ###########
              */
 
-            if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != InputType.errorMessage){
+            if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != FormInputType.errorMessage){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
                 dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
@@ -403,7 +403,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
-    public InputType getInputType() {
+    public FormInputType getInputType() {
         return mInputType;
     }
 
@@ -553,7 +553,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mId = in.readString();
         mKey = in.readString();
         mName = in.readString();
-        mInputType = (InputType) in.readValue(InputType.class.getClassLoader());
+        mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
         mLabel = in.readString();
         mLinkText = in.readString();
         mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());

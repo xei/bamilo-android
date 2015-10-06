@@ -30,7 +30,7 @@ import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.Errors;
@@ -98,7 +98,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * Empty Constructor
      */
     public SessionRegisterFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.register,
                 R.string.register_title,
@@ -273,19 +273,8 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 Print.d(TAG, "registerButton onClick");
-
-//                if (serverForm != null && !serverForm.checkRequired()) {
-//                    registerRequiredText.setVisibility(View.VISIBLE);
-//                    // Tracking signup failed
-//                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-//                    return;
-//                } else {
-//                    registerRequiredText.setVisibility(View.GONE);
-//                }
-
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
-
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
@@ -390,7 +379,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         while (iter.hasNext()) {
             DynamicFormItem item = iter.next();
-            if (item.getType() == InputType.password) {
+            if (item.getType() == FormInputType.password) {
                 if (old.equals("")) {
                     old = item.getValue();
                 } else {
