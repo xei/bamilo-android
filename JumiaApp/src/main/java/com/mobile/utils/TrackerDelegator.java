@@ -796,29 +796,10 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getCampaignId() : "n.a.");
     }
 
-
-    /**
-     * Track when the user views the favorites page (with the products)
-     */
-    public static void trackViewFavorites(Bundle args) {
-        Bundle bundle = new Bundle();
-        Customer customer = args.getParcelable(CUSTOMER_KEY);
-
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-        bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        if (null != customer) {
-            bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        }
-        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
-        bundle.putParcelableArrayList(AdjustTracker.FAVORITES, args.getParcelableArrayList(FAVOURITES_KEY));
-
-        AdjustTracker.get().trackEvent(sContext, TrackingEvent.VIEW_WISHLIST, bundle);
-    }
-
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(ProductComplete completeProduct) {
+    public static void trackAddToFavorites(ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         String productBrand = completeProduct.getBrand();
         double productPrice = completeProduct.getPriceForTracking();
@@ -829,7 +810,6 @@ public class TrackerDelegator {
 
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-
 
         Ad4PushTracker.get().trackAddToFavorites(productSku);
         // GA
@@ -859,7 +839,7 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(ProductComplete completeProduct) {
+    public static void trackRemoveFromFavorites(ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         double price = completeProduct.getPriceForTracking();
         double averageRatingTotal = completeProduct.getAvgRating();
@@ -867,7 +847,7 @@ public class TrackerDelegator {
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
 
-        Ad4PushTracker.get().trackRemoveFromWishlist(productSku);
+        Ad4PushTracker.get().trackRemoveFromWishList(productSku);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
 

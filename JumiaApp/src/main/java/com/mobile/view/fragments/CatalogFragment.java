@@ -627,8 +627,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (JumiaApplication.isCustomerLoggedIn()) {
             if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
+                TrackerDelegator.trackRemoveFromFavorites(mWishListItemClicked);
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
+                TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
             }
         } else {
             // Goto login
