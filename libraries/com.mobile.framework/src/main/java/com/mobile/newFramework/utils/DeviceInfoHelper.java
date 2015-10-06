@@ -353,6 +353,7 @@ public class DeviceInfoHelper {
         void highVersionCallback();
         void lowerVersionCallback();
     }
+
     /**
      * Execute callbacks based on version code of device.
      *
@@ -367,6 +368,22 @@ public class DeviceInfoHelper {
                 iDeviceVersionBasedCode.lowerVersionCallback();
             }
         }
+    }
+
+    /**
+     * Execute callback excluding version.
+     *
+     * @param version
+     * @param runnable
+     */
+    public static void executeCodeExcludingVersion(int version, Runnable runnable){
+        if(runnable != null && android.os.Build.VERSION.SDK_INT != version){
+            runnable.run();
+        }
+    }
+
+    public static void executeCodeExcludingJellyBeanMr2Version(Runnable run){
+        executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
     }
 
     /**
