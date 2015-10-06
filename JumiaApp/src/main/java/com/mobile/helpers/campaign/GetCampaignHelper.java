@@ -20,8 +20,6 @@ public class GetCampaignHelper extends SuperBaseHelper {
     
     protected static String TAG = GetCampaignHelper.class.getSimpleName();
 
-    private static final String CAMPAIGN_TAG = "slug";
-
     @Override
     public EventType getEventType() {
         return EventType.GET_CAMPAIGN_EVENT;
@@ -45,7 +43,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
     public static Bundle createBundle(String campaignId) {
         // Item data
         ContentValues values = new ContentValues();
-        values.put(CAMPAIGN_TAG, campaignId);
+        values.put("campaign_slug", campaignId);
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
