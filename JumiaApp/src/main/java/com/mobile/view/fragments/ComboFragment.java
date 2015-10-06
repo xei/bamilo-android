@@ -366,7 +366,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                     HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
                     if (errorMessages != null) {
-                        int titleRes = R.string.error_add_to_cart_failed;
                         int msgRes = -1;
 
                         String message = null;
@@ -391,7 +390,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
                         FragmentManager fm = getFragmentManager();
                         dialog = DialogGenericFragment.newInstance(true, false,
-                                getString(titleRes),
+                                mBundleWithMultiple.getName(),
                                 message,
                                 getString(R.string.ok_label), "", new View.OnClickListener() {
 
