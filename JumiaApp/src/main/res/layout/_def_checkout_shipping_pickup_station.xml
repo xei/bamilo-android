@@ -70,6 +70,7 @@
             android:id="@+id/pickup_station_shipping_fee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left|start"
             android:textColor="@color/black"
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle"
