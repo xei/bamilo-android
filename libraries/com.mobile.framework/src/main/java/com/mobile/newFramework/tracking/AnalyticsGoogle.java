@@ -56,13 +56,19 @@ public class AnalyticsGoogle {
 	
 	private boolean isEnabled;
 
-	private String mGACampaign;
+	private String mUtmCampaign = DONT_SEND;
+
+	private String mUtmMedium = DONT_SEND;
+
+	private String mUtmSource = DONT_SEND;
 
 	private Bundle mCustomData;
 
 	private static boolean isCheckoutStarted = false;
 
 	private static final long NO_VALUE = -1;
+
+	private static final String DONT_SEND = "dontSendParameter";
 
 	/**
 	 * Startup GA
@@ -184,11 +190,14 @@ public class AnalyticsGoogle {
 	private void trackPage(String path) {
 		Print.i(TAG, "TRACK PAGE: " + path);
 		mTracker.setScreenName(path);
-		mTracker.send(new HitBuilders.AppViewBuilder()
-		.setCampaignParamsFromUrl(getGACampaign())
-		.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-		.build());
+
+		HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+
+		trackGACampaign();
+
+		mTracker.send(builder.build());
 	}
 
 	/**
@@ -206,13 +215,13 @@ public class AnalyticsGoogle {
 				.setCategory(category)
 				.setAction(action)
 				.setLabel(label)
-				.setCampaignParamsFromUrl(getGACampaign())
 				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
 				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
 		// Only set Value if is a valid Value
 		if(value != NO_VALUE){
 			builder.setValue(value);
 		}
+		trackGACampaign();
 
 		mTracker.send(builder.build());
 	}
@@ -226,14 +235,17 @@ public class AnalyticsGoogle {
 	 */
 	private void trackShare(String category, String action, String target) {
 		Print.i(TAG, "TRACK SHARE: category->" + category + " action->" + action + " target->" + target);
-		mTracker.send(new HitBuilders.SocialBuilder()
-		.setNetwork(category)
-        .setAction(action)
-        .setTarget(target)
-        .setCampaignParamsFromUrl(getGACampaign())
-        .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-        .build());
+
+		HitBuilders.SocialBuilder builder = new HitBuilders.SocialBuilder()
+				.setNetwork(category)
+				.setAction(action)
+				.setTarget(target)
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+
+		trackGACampaign();
+
+		mTracker.send(builder.build());
 	}
 	
 	/**
@@ -246,15 +258,17 @@ public class AnalyticsGoogle {
 	 */
 	private void trackTiming(String category, String name, long milliSeconds, String label) {
 		Print.i(TAG, "TRACK TIMING: category->" + category + " name->" + name + " ms->" + milliSeconds + " label->" + label);
-		mTracker.send(new HitBuilders.TimingBuilder()
-		.setCategory(category)
-        .setValue(milliSeconds)
-        .setVariable(name)
-        .setLabel(label)
-        .setCampaignParamsFromUrl(getGACampaign())
-        .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-        .build());
+
+		HitBuilders.TimingBuilder builder = new HitBuilders.TimingBuilder()
+				.setCategory(category)
+				.setValue(milliSeconds)
+				.setVariable(name)
+				.setLabel(label)
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+		trackGACampaign();
+
+		mTracker.send(builder.build());
 	}
 	
 	/**
@@ -266,14 +280,17 @@ public class AnalyticsGoogle {
 	 */
 	private void trackTransaction(String order, long revenue, String currencyCode) {
 		Print.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + revenue + " currency->" + currencyCode);
-		mTracker.send(new HitBuilders.TransactionBuilder()
-		.setTransactionId(order)
-		.setRevenue(revenue)
-		.setCurrencyCode(currencyCode)
-		.setCampaignParamsFromUrl(getGACampaign())
-		.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-		.build());
+
+		HitBuilders.TransactionBuilder builder = new HitBuilders.TransactionBuilder()
+				.setTransactionId(order)
+				.setRevenue(revenue)
+				.setCurrencyCode(currencyCode)
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+
+		trackGACampaign();
+
+		mTracker.send(builder.build());
 	}
 	
 	/**
@@ -289,36 +306,39 @@ public class AnalyticsGoogle {
 	 */
 	private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
 		Print.i(TAG, "TRACK TRANSACTION ITEM: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
-		mTracker.send(new HitBuilders.ItemBuilder()
-		.setTransactionId(order)
-	    .setName(name)
-	    .setSku(sku)
-	    .setCategory(category)
-	    .setPrice(price)
-	    .setQuantity(quantity)
-	    .setCurrencyCode(currencyCode)
-	    .setCampaignParamsFromUrl(getGACampaign())
-	    .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
-		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
-	    .build());
+
+		HitBuilders.ItemBuilder builder = new HitBuilders.ItemBuilder()
+				.setTransactionId(order)
+				.setName(name)
+				.setSku(sku)
+				.setCategory(category)
+				.setPrice(price)
+				.setQuantity(quantity)
+				.setCurrencyCode(currencyCode)
+				.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+				.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+
+		trackGACampaign();
+
+		mTracker.send(builder.build());
 	}
 	
-//	/**
-//	 * Build and send a GA campaign.
-//	 * @author sergiopereira
-//	 */
-//	protected void trackGACampaign() {
-//		// Track
-//		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
-//		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
-//		// mTracker.send(new HitBuilders.AppViewBuilder()
-//		// .setCampaignParamsFromUrl(utmURI)
-//		// .build());
-//
-//		//mTracker.set("&cn", campaign);
-//		//mTracker.set("&cs", "push");
-//		//mTracker.set("&cm", "referrer");
-//	}
+	/**
+	 * Build and send a GA campaign.
+	 * @author sergiopereira
+	 */
+	protected void trackGACampaign() {
+		//setting as empty string or a null object, will show on GA has "not set"
+		if(!mUtmCampaign.equals(DONT_SEND)){
+			mTracker.set("&cn", mUtmCampaign);
+		}
+		if(!mUtmSource.equals(DONT_SEND)){
+			mTracker.set("&cs", mUtmSource);
+		}
+		if(!mUtmMedium.equals(DONT_SEND)){
+			mTracker.set("&cm", mUtmMedium);
+		}
+	}
 	
 	/**
 	 * Enable Display Advertising features.
@@ -616,43 +636,38 @@ public class AnalyticsGoogle {
 	public void setGACampaign(String campaignString) {
 		// Validation
 		if (!isEnabled) return;
-		// Data
+		// Clean data before every campaign tracking
+		mUtmCampaign = "";
+		mUtmMedium = "";
+		mUtmSource = "";
+
 		if (!TextUtils.isEmpty(campaignString)) {
 			// Track
-			if(campaignString.contains("utm_campaign") && campaignString.contains("utm_source") && campaignString.contains("utm_medium")){
-				mGACampaign = campaignString;
+			if (campaignString.contains("utm_campaign=")) {
+				mUtmCampaign = getUtmParameter(campaignString, "utm_campaign=");
 			} else {
-				String utmCampaign = "";
-				String utmMedium = "";
-				String utmSource = "";
-
-				if(campaignString.contains("utm_campaign=")){
-					utmCampaign = "utm_campaign="+getUtmParameter(campaignString, "utm_campaign=")+"&";
-				}
-
-				if(campaignString.contains("utm_source=")){
-					utmSource = "utm_source="+getUtmParameter(campaignString, "utm_source=");
-				} else {
-					if(!TextUtils.isEmpty(utmCampaign))
-						utmSource = "utm_source=push";
-				}
-
-				if(campaignString.contains("utm_medium=")){
-					utmMedium ="utm_medium="+getUtmParameter(campaignString, "utm_medium=");
-					if(!TextUtils.isEmpty(utmSource))
-						utmMedium = "&"+utmMedium;
-				} else {
-					if(!TextUtils.isEmpty(utmCampaign))
-						utmMedium = "&utm_medium=referrer";
-				}
-				mGACampaign = utmCampaign + utmSource + utmMedium;
-				Print.i(TAG,"TRACK CAMPAIGN: campaign->:"+mGACampaign);
+				mUtmCampaign = "";
 			}
-		} else {
-			// Case it does not comes any UTM info
-			mGACampaign = campaignString;
+
+			if (campaignString.contains("utm_source=")) {
+				mUtmSource = getUtmParameter(campaignString, "utm_source=");
+			} else {
+				if (!TextUtils.isEmpty(mUtmCampaign)) {
+					mUtmSource = "push";
+				}
+
+			}
+
+			if (campaignString.contains("utm_medium=")) {
+				mUtmMedium = getUtmParameter(campaignString, "utm_medium=");
+			} else {
+				if (!TextUtils.isEmpty(mUtmCampaign)) {
+					mUtmMedium = "referrer";
+				}
+			}
 		}
 	}
+
 
 	/**
 	 * Functions that receives s string and looks for the value of a specific parameter
@@ -678,15 +693,7 @@ public class AnalyticsGoogle {
 			return "";
 		}
 	}
-	
-	/**
-	 * Build and send a GA campaign.
-     *
-	 * @author sergiopereira
-	 */
-	private String getGACampaign() {
-		return !TextUtils.isEmpty(mGACampaign) ? mGACampaign : "";
-	}
+
 
 	/**
 	 * Save the custom data.
@@ -698,8 +705,6 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
 		// Set device info
 		mCustomData = data;
-		//mTracker.set("&cd1", ""+info.getBoolean(Constants.INFO_PRE_INSTALL, false));
-		//mTracker.set("&cd2", info.getString(Constants.INFO_SIM_OPERATOR));
 	}
 	
 	/**
