@@ -128,6 +128,16 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mPriceRange = in.readString();
     }
 
+    public static final Creator<ProductBase> CREATOR = new Creator<ProductBase>() {
+        public ProductBase createFromParcel(Parcel in) {
+            return new ProductBase(in);
+        }
+
+        public ProductBase[] newArray(int size) {
+            return new ProductBase[size];
+        }
+    };
+
     public String getPriceRange() {
         return mPriceRange;
     }

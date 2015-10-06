@@ -6,54 +6,54 @@ android {
     buildToolsVersion '23.0.1'
 
     defaultConfig {
-        applicationId "com.jumia.android"
+        applicationId 'com.jumia.android'
         minSdkVersion 20
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
 
     publishNonDefault true
 
     signingConfigs {
         releaseJumiaSigning {
-            storeFile file("../JumiaApp/keystores/jumia.keystore")
-            storePassword "jumia123"
-            keyAlias "jumia"
-            keyPassword "jumia123"
+            storeFile file('../JumiaApp/keystores/jumia.keystore')
+            storePassword 'jumia123'
+            keyAlias 'jumia'
+            keyPassword 'jumia123'
         }
 
         releaseDarazSigning {
-            storeFile file("../JumiaApp/keystores/daraz_android.keystore")
-            storePassword "darazandroid"
-            keyAlias "daraz_android"
-            keyPassword "darazandroid"
+            storeFile file('../JumiaApp/keystores/daraz_android.keystore')
+            storePassword 'darazandroid'
+            keyAlias 'daraz_android'
+            keyPassword 'darazandroid'
         }
 
         releaseShopSigning {
-            storeFile file("../JumiaApp/keystores/shop_android.keystore")
-            storePassword "shopandroid"
-            keyAlias "shop_android"
-            keyPassword "shopandroid"
+            storeFile file('../JumiaApp/keystores/shop_android.keystore')
+            storePassword 'shopandroid'
+            keyAlias 'shop_android'
+            keyPassword 'shopandroid'
         }
 
         releaseBamiloSigning {
-            storeFile file("../JumiaApp/keystores/bamilo_android.keystore")
-            storePassword "bamiloandroid"
-            keyAlias "bamilo_android"
-            keyPassword "bamiloandroid"
+            storeFile file('../JumiaApp/keystores/bamilo_android.keystore')
+            storePassword 'bamiloandroid'
+            keyAlias 'bamilo_android'
+            keyPassword 'bamiloandroid'
         }
     }
 
     buildTypes {
 
         debug {
-            applicationIdSuffix ".dev"
+            applicationIdSuffix '.dev'
             debuggable true
         }
 
         live {
-            applicationIdSuffix ".live"
+            applicationIdSuffix '.live'
             debuggable true
             minifyEnabled true
             shrinkResources true
@@ -71,33 +71,33 @@ android {
     productFlavors {
 
         jumia {
-            applicationId "com.jumia.android"
+            applicationId 'com.jumia.android'
             signingConfig signingConfigs.releaseJumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs 'en', 'fr', 'pt'
         }
 
         shop {
-            applicationId "com.shop.android"
+            applicationId 'com.shop.android'
             signingConfig signingConfigs.releaseShopSigning
-            resConfigs "en"
+            resConfigs 'en'
         }
 
         daraz {
-            applicationId "com.daraz.android"
+            applicationId 'com.daraz.android'
             signingConfig signingConfigs.releaseDarazSigning
-            resConfigs "en"
+            resConfigs 'en'
         }
 
         bamilo {
-            applicationId "com.bamilo.android"
+            applicationId 'com.bamilo.android'
             signingConfig signingConfigs.releaseBamiloSigning
-            resConfigs "en"
+            resConfigs 'en'
         }
 
         mtn {
-            applicationId "com.jumia.mtnng"
+            applicationId 'com.jumia.mtnng'
             signingConfig signingConfigs.releaseJumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs 'en', 'fr', 'pt'
         }
     }
 
@@ -118,31 +118,31 @@ dependencies {
 /** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
 android.applicationVariants.all { variant ->
 
-//    println "WEAR Application ID: ${variant.mergedFlavor.applicationId}"
-//    println "****************************"
-//    println "variant: ${variant.name}"
-//    println "flavor: ${variant.flavorName}"
-//    println "buildType: ${variant.buildType.name}"
-//    println "applicationId: ${variant.applicationId}"
-//    println "productFlavors[0]: ${variant.productFlavors[0].name}"
-////    println "productFlavors[1]: ${variant.productFlavors[1].name}"
-//    println "****************************"
+//    println 'WEAR Application ID: ${variant.mergedFlavor.applicationId}'
+//    println '****************************'
+//    println 'variant: ${variant.name}'
+//    println 'flavor: ${variant.flavorName}'
+//    println 'buildType: ${variant.buildType.name}'
+//    println 'applicationId: ${variant.applicationId}'
+//    println 'productFlavors[0]: ${variant.productFlavors[0].name}'
+////    println 'productFlavors[1]: ${variant.productFlavors[1].name}'
+//    println '****************************'
 
 
     /**
-     * Set application id with "com." + venture + "blackberry" or "android"(when not in debug build type)  + "dev" when in debug build type
+     * Set application id with 'com.' + venture + 'blackberry' or 'android'(when not in debug build type)  + 'dev' when in debug build type
      */
 //    def String venture = variant.productFlavors[0].name
 //
 //    if (variant.buildType.name == android.buildTypes.debug.name) {
-//        variant.mergedFlavor.applicationId = "com." + venture + "." + "android" + "." + "dev"
-//        println "Application ID: ${variant.mergedFlavor.applicationId}"
-//    } else if (venture =="mtn"){
+//        variant.mergedFlavor.applicationId = 'com.' + venture + '.' + 'android' + '.' + 'dev'
+//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
+//    } else if (venture =='mtn'){
 //        //MTN -> com.jumia.mtn
-//        variant.mergedFlavor.applicationId = "com." + "jumia." + venture
-//        println "Application ID: ${variant.mergedFlavor.applicationId}"
+//        variant.mergedFlavor.applicationId = 'com.' + 'jumia.' + venture
+//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
 //    } else {
-//        variant.mergedFlavor.applicationId = "com." + venture + ".android"
-//        println "Application ID: ${variant.mergedFlavor.applicationId}"
+//        variant.mergedFlavor.applicationId = 'com.' + venture + '.android'
+//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
 //    }
 }

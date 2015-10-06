@@ -407,6 +407,9 @@ public class ReviewsFragment extends BaseFragment {
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
+            if(eventType == EventType.GET_PRODUCT_REVIEWS){
+                pageNumber--;
+            }
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
@@ -456,6 +459,10 @@ public class ReviewsFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
+        if(eventType == EventType.GET_PRODUCT_REVIEWS){
+            pageNumber--;
+        }
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -471,7 +478,7 @@ public class ReviewsFragment extends BaseFragment {
             case GET_PRODUCT_REVIEWS:
                 ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
-                // Valdiate current rating page
+                // Validate current rating page
                 if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
                 // Append the new page to the current
                 displayReviews(productRatingPage, true);
@@ -556,8 +563,8 @@ public class ReviewsFragment extends BaseFragment {
                 gridElement.setOrientation(LinearLayout.HORIZONTAL);
                 LayoutParams gridParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, numColumns);
                 //#RTL
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+                if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     gridElement.setLayoutDirection(LayoutDirection.LOCALE);
                 }
                 gridElement.setLayoutParams(gridParams);

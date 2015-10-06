@@ -229,7 +229,7 @@ public class HockeyStartup {
         @Nullable
         @Override
         public ActionMode onWindowStartingActionMode(Callback callback, int type) {
-            return null;
+            return sActivity.onWindowStartingActionMode(callback, type);
         }
 
         @Override
@@ -254,7 +254,7 @@ public class HockeyStartup {
 
         @Override
         public boolean onSearchRequested(SearchEvent searchEvent) {
-            return false;
+            return sActivity.onSearchRequested(searchEvent);
         }
 
         @Override

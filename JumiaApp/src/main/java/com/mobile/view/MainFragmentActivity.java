@@ -61,7 +61,6 @@ import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
-//import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

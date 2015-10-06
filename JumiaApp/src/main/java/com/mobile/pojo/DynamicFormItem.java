@@ -1117,7 +1117,6 @@ public class DynamicFormItem {
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.addRule(RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
-
         this.dataControl.setLayoutParams(params);
         this.dataControl.setContentDescription(this.entry.getKey());
         this.dataControl.setFocusable(false);
