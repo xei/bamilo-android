@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
@@ -57,8 +58,17 @@ public class ProductUtils {
     }
 
     private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
-        specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
-        price.setText("");
+
+        if (campaignItemSize.hasDiscount()) {
+            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.specialPrice));
+            price.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
+            price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        // Case normal
+        else {
+            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
+            price.setText("");
+        }
     }
 
     public static void setDiscountRules(@NonNull ProductBase productBase, @NonNull TextView percentage){

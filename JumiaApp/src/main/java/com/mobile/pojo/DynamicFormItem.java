@@ -1117,7 +1117,7 @@ public class DynamicFormItem {
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
 //        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        ((CheckBox) this.dataControl).setPadding(formPadding, 0, 0, 0);
+        this.dataControl.setPadding(formPadding, 0, 0, 0);
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);

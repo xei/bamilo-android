@@ -27,6 +27,10 @@ public class CampaignItemSize implements IJSONSerializable, Parcelable {
         initialize(jsonObject);
     }
 
+    public boolean hasDiscount() {
+        return specialPrice > 0 && specialPrice != Double.NaN;
+    }
+
     /*
      * (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)

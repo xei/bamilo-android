@@ -22,7 +22,8 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -44,17 +45,9 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private String mTitle;
 
-    public static int getDescriptionPagePosition(){
-        return ShopSelector.isRtl() ? 2 : 0;
-    }
+    private boolean mHasSpecs = true;
 
-    public static int getSpecificationsPagePosition(){
-        return 1;
-    }
-
-    public static int getRatingsPagePosition(){
-        return ShopSelector.isRtl() ? 0 : 2;
-    }
+    private boolean mHasDesc = true;
 
     /**
      * Get instance
@@ -132,7 +125,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
         if (mProductInfoPagerAdapter != null && mProductInfoPagerAdapter.getCount() > 0) {
             // Show the pre selection
-            mProductInfoPager.setCurrentItem(mPositionToStart, true);
+            mProductInfoPager.setCurrentItem(getFragmentPosition(mPositionToStart), true);
         } else {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
@@ -144,10 +137,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
                     mProductInfoPager.enableRtl();
                 }
             }
-            setPagerPosition(mPositionToStart);
+            setPagerPosition(getFragmentPosition(mPositionToStart));
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
             // Show the pre selection
-            mProductInfoPager.setCurrentItem(mPositionToStart, true);
+            mProductInfoPager.setCurrentItem(getFragmentPosition(mPositionToStart), true);
         }
     }
 
@@ -228,9 +221,11 @@ public class ProductDetailsInfoFragment extends BaseFragment {
                 ProductComplete completeProduct = (ProductComplete) parcelableProduct;
 
                 if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
+                    mHasSpecs = false;
                     mTabsCount--;
                 }
                 if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
+                    mHasDesc = false;
                     mTabsCount--;
                 }
             }
@@ -268,10 +263,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         @Override
         protected Fragment createNewFragment(int position) {
 
-            if(titlesPageInt.get(position).equals(R.string.description)) {
+            if(titlesPageInt.get(position).equals(R.string.description) && mHasDesc) {
                 return ProductDetailsSummaryFragment.getInstance(getArguments());
             }
-            else if (titlesPageInt.get(position).equals(R.string.product_specifications)) {
+            else if (titlesPageInt.get(position).equals(R.string.product_specifications) && mHasSpecs) {
                 return ProductDetailsSpecificationsFragment.getInstance(getArguments());
             }
             else {
@@ -285,14 +280,34 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         }
     }
 
+    /**
+     * gets the fragment position based on the id of the title
+     * @param fragmentTitle
+     * @return
+     */
+    public int getFragmentPosition(int fragmentTitle){
+        List<Integer> titles = getFragmentTitleValues();
+        if(ShopSelector.isRtl()){
+            Collections.reverse(titles);
+        }
+        if(titles.contains(fragmentTitle)){
+            return titles.indexOf(fragmentTitle);
+        } else {
+            return 0;
+        }
+    }
+
     private List<Integer> getFragmentTitleValues(){
-        Integer[] titles = {
-                R.string.description ,
-                R.string.product_specifications,
-                R.string.rat_rev};
 
-
-        return Arrays.asList(titles);
+        ArrayList<Integer> titles = new ArrayList<>();
+        if(mHasDesc){
+            titles.add(R.string.description);
+        }
+        if(mHasSpecs){
+            titles.add(R.string.product_specifications);
+        }
+        titles.add(R.string.rat_rev);
+        return titles;
     }
 
     @Override

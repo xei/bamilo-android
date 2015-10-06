@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -381,18 +382,28 @@ public class FragmentController {
      * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
-    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, Boolean animationIn) {
+    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, final Boolean animationIn) {
         Print.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
-        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+        final FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
 
-        // Case ANIMATION_IN
-        if(animationIn) {
-            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        }
-        // Case ANIMATION_OUT
-        else {
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        }
+        /**
+         * FIXME: Excluded piece of code due to crash on API = 18.
+         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+         */
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
+            @Override
+            public void run() {
+                // Case ANIMATION_IN
+                if (animationIn) {
+                    fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
+                }
+                // Case ANIMATION_OUT
+                else {
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                }
+            }
+        });
+
 
         /**
          * Case isn't add to back stack

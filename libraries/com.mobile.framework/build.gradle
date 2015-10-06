@@ -34,26 +34,32 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:cardview-v7:23.0.1'
-    // compile 'com.google.android.support:wearable:1.3.0'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.nineoldandroids:library:2.4.0'
+    // https://github.com/mcxiaoke/android-volley
+    compile 'com.mcxiaoke.volley:library:1.0.19'
     /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
+    compile 'com.squareup.okio:okio:1.6.0'
     /** GOOGLE PLAY SERVICE **/
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.google.android.gms:play-services-location:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    /** SOCIALS **/
+    // https://developers.facebook.com/docs/android
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     /** TRACKERS  **/
-    compile 'com.newrelic.agent.android:android-agent:5.1.2'
-    compile 'com.ad4screen.sdk:A4SSDK:3.2.0.1'                                  // https://bintray.com/accengage/maven/A4SSDK/
-    compile 'com.adjust.sdk:adjust-android:4.0.8'                               // https://github.com/adjust/android_sdk
-    compile 'net.hockeyapp.android:HockeySDK:3.6.0'                             // https://github.com/bitstadium/HockeySDK-Android
+    // http://mvnrepository.com/artifact/com.newrelic.agent.android
+    compile 'com.newrelic.agent.android:android-agent:5.3.0'
+    // https://bintray.com/accengage/maven/A4SSDK/
+    compile 'com.ad4screen.sdk:A4SSDK:3.2.0.1'
+    // https://github.com/adjust/android_sdk
+    compile 'com.adjust.sdk:adjust-android:4.1.2'
+    // https://github.com/bitstadium/HockeySDK-Android
+    compile 'net.hockeyapp.android:HockeySDK:3.6.0'
     /** LOCAL LIBS  **/
-    compile 'com.facebook.android:facebook-android-sdk:4.2.0'
-    // Adjust the version accordingly
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
     /** TESTS **/
