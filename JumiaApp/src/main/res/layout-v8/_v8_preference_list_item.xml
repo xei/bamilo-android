@@ -25,6 +25,8 @@
         android:id="@+android:id/widget_frame"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:paddingLeft="@dimen/margin_huge"
         android:gravity="center_vertical"
         android:orientation="vertical" />
         
