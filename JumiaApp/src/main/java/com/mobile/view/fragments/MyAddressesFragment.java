@@ -564,6 +564,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+        } else {
+            super.showUnexpectedErrorWarning();
         }
     }
 
