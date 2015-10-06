@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
-import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
@@ -385,14 +384,14 @@ public class FragmentController {
         Print.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
 
-        // Case ANIMATION_IN
-        if(animationIn) {
-            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        }
-        // Case ANIMATION_OUT
-        else {
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        }
+//        // Case ANIMATION_IN
+//        if(animationIn) {
+//            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
+//        }
+//        // Case ANIMATION_OUT
+//        else {
+//            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+//        }
 
         /**
          * Case isn't add to back stack

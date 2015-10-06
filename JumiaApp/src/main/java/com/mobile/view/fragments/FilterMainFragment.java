@@ -175,9 +175,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        // Animations
-        if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+//        // Animations
+//        if (animated)
+//            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         // Replace
         fragmentTransaction.replace(container, fragment);
         // Back stack

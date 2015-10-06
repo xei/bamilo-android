@@ -324,9 +324,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Fragment tag
         String tag = filterType != null ? filterType.toString() : null;
-        // Animations
-        if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+//        // Animations
+//        if (animated)
+//            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         // Replace
         fragmentTransaction.replace(container, fragment, tag);
         // Back stack
