@@ -9,8 +9,9 @@
         style="@style/form_checkbox_style"
         android:layout_gravity="right|center_vertical"
         android:button="@null"
+        android:drawableRight="@drawable/selector_btn_check_holo_green"
+        android:drawablePadding="@dimen/form_check_padding"
         android:checked="true"
-
         android:gravity="right|center_vertical"
         android:text="@string/billing_same_label" />
 

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mobile.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/checkbox_form"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="right|center_vertical"
-    android:layout_marginLeft="@dimen/form_check_padding"
-    android:layout_marginRight="@dimen/form_check_padding"
-    android:button="@null"
     style="@style/form_checkbox_style"
-    android:ellipsize="end"
+    android:button="@null"
     android:gravity="right|center_vertical"
+    android:paddingRight="@dimen/form_check_padding"
     android:textColor="@color/form_text"
-    android:textSize="@dimen/text_form" />
+    android:drawableRight="@drawable/selector_btn_check_holo_green"
+    android:drawablePadding="@dimen/form_check_padding"
+    android:textSize="@dimen/text_form"
+    android:singleLine="true"
+    />

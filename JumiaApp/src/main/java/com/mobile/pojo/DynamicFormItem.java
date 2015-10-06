@@ -996,8 +996,8 @@ public class DynamicFormItem {
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
 
-        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        mCheckBox.setPadding(formPadding, 0, 0, 0);
+    //    int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+    //    mCheckBox.setPadding(formPadding, 0, 0, 0);
         mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
 
         if (this.entry.getValue().equals("1")) {
@@ -1008,6 +1008,13 @@ public class DynamicFormItem {
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
+
+        //needed: change parent layout to match_parent to be able to align this component to right
+      if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+          LinearLayout.LayoutParams paramsAux = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+          this.dataControl.setLayoutParams(paramsAux);
+      }
+
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
@@ -1116,8 +1123,8 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-//        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        this.dataControl.setPadding(formPadding, 0, 0, 0);
+   //     formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+  //      ((CheckBox) this.dataControl).setPadding(formPadding, 0, 0, 0);
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
