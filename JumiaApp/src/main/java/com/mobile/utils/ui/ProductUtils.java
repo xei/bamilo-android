@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;

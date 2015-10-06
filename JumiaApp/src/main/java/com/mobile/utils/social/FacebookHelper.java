@@ -93,7 +93,7 @@ public class FacebookHelper {
         // Set the UI control
         button.setFragment(fragment);
         // Set the Facebook Login (from app or from dialog)
-        button.setLoginBehavior(LoginBehavior.SSO_WITH_FALLBACK);
+        button.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
         // Set Facebook permissions
         button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE));
 //        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE, FB_PERMISSION_FRIENDS));

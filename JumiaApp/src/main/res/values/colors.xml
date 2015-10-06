@@ -46,7 +46,7 @@
     <color name="orange_tab_bar">@color/orange_f68b1e</color>
     <color name="grey_tab_background">#ebebeb</color>
     <color name="text_root">#e0e0e0</color>
-    
+
     <!-- WIZARDS -->
     <color name="wizard_text_color">#c3c3c3</color>
     <color name="wizard_text_shadow">#000000</color>
