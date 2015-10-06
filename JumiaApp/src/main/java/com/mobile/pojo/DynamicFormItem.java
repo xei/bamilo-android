@@ -1242,20 +1242,22 @@ public class DynamicFormItem {
         dataContainer.addView(this.dataControl);
         String entryLabel = this.entry.getLabel(), entryKey = this.entry.getKey(); //dialogTitle = entryLabel,
 
-        if (entryKey.equals("birthday")) {
-            Print.i("ENTERED BIRTHDAY", " HERE ");
-            String text = context.getString(R.string.register_birthday);
-            ((Button) this.dataControl).setHint(text);
-            ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
-            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
-            this.dataControl.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
-            //dialogTitle = context.getString(R.string.register_dialog_birthday);
+        Print.i("ENTERED BIRTHDAY", " HERE ");
+        String text = context.getString(R.string.register_birthday);
+        ((Button) this.dataControl).setHint(text);
+        ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+        ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+        this.dataControl.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
 
-        }else if(null != entryLabel && entryLabel.length() > 0){    //other date fields
-
-            ((Button) this.dataControl).setText(entryLabel);
-            ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
-            //add mandatory control
+        // Is required
+        if (entry.getValidation() != null && entry.getValidation().isRequired()) {
+            this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+            //#RTL
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            ((ViewGroup) this.control).addView(this.errorControl);
+            // Add *
             params.rightMargin = MANDATORYSIGNALMARGIN;
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
