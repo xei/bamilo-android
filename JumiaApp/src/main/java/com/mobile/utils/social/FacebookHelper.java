@@ -1,5 +1,6 @@
 package com.mobile.utils.social;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -36,8 +37,6 @@ public class FacebookHelper {
 
     private static final String FB_PERMISSION_PUB_PROFILE = "public_profile";
 
-    private static final String FB_PERMISSION_FRIENDS = "user_friends";
-
     public final static String FACEBOOK_EMAIL_TAG = "email";
 
     public final static String FACEBOOK_FIRST_NAME_TAG = "first_name";
@@ -50,8 +49,6 @@ public class FacebookHelper {
      * Method used to show or hide Facebook views using a flag.<br>
      * Hide view case Build.VERSION
      * Case the Frament implements the OnClickView is defined to the callback for click listener.
-     * @param fragment
-     * @param views
      * @author sergiopereira
      */
     public static void showOrHideFacebookButton(Fragment fragment, View... views) {
@@ -68,8 +65,6 @@ public class FacebookHelper {
 
     /**
      * Show Facebook views and associate buttons to fragment.
-     * @param fragment
-     * @param views
      * @author sergiopereira
      */
     private static void showFacebookViews(Fragment fragment, View... views) {
@@ -85,31 +80,29 @@ public class FacebookHelper {
 
     /**
      * Set the Facebook button
-     * @param button
-     * @param fragment
      * @author sergiopereira
      */
     private static void setFacebookLogin(LoginButton button, Fragment fragment) {
         // Set the UI control
         button.setFragment(fragment);
         // Set the Facebook Login (from app or from dialog)
-        button.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
+        button.setLoginBehavior(LoginBehavior.SSO_WITH_FALLBACK);
         // Set Facebook permissions
         button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE));
-//        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE, FB_PERMISSION_FRIENDS));
         // Set click listener
         if(fragment instanceof View.OnClickListener) button.setOnClickListener((View.OnClickListener) fragment);
     }
 
     /**
      * Log the hash key for Facebook dashboard
-     * @param context
      * @author sergiopereira
      */
+    @SuppressWarnings("unused")
+    @SuppressLint("PackageManagerGetSignatures")
     public static void logHashKey(Context context) {
         try {
             String name = context.getApplicationInfo().packageName;
-            PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
+             PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
             Print.i("Facebook", "Package name: " + name);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
