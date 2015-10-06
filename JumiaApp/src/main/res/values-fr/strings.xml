@@ -313,7 +313,7 @@
     <string name="track_your_order_tip">Recherche votre numéro de commande</string>
     <string name="try_again">Réessayer</string>
     <string name="try_again_retry">Réessayer</string>
-    <string name="upgrade_forced_text">Nous avons trouvé une erreur que nous devons réparer pour améliorer votre expérience de shopping ! Vous aurez besoin de mettre à jour l\'application avant de continuer. </string>
+    <string name="upgrade_forced_text">Nous avons trouvé une erreur que nous devons réparer pour améliorer votre expérience de shopping %s! Vous aurez besoin de mettre à jour l\'application avant de continuer. </string>
     <string name="upgrade_forced_title">Mise à jour nécessaire</string>
     <string name="upgrade_optional_text">Des mises à jour sont disponibles pour un shopping encore plus simple sur %s! Mettez à jour votre application ici!</string>
     <string name="upgrade_optional_title">Mise à jour disponible</string>
@@ -337,7 +337,7 @@
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
     <!-- Version v2.4 -->
-    <string name="install_jumia_android">Installez l\'application Jumia Android en un instant</string>
+    <string name="install_jumia_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>
@@ -404,7 +404,7 @@
     <string name="products_tip_saved_text">J\'ajoute à ma liste d\'envies</string>
     <string name="tip_saved_text">J\'ajoute à ma liste d\'envies et je l\'ouvre dans Mon Profil</string>
     <string name="warranty">Durée de garantie: %s</string>
-    <string name="other_sellers_starting">Disponible chez d\'autres vendeurs, à partir de:</string>
+    <string name="other_sellers_starting">Disponible chez d\'autres vendeurs, à partir de: %s</string>
     <string name="buy_combo">Produits fréquemment achetés ensemble</string>
     <string name="total_price_bottom">Total:</string>
     <string name="from_avg_rat">de</string>

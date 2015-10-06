@@ -405,7 +405,7 @@
     <string name="products_tip_saved_text">اضغط لحفظ المنتجات!</string>
     <string name="tip_saved_text">اضغط لحفظ هذا المنتج وعرض القائمة كاملة على الملف الخاص بي</string>
     <string name="warranty">الضمان:  %s</string>
-    <string name="other_sellers_starting">العروض الأخري تبدأ من:</string>
+    <string name="other_sellers_starting">العروض الأخري تبدأ من: %s</string>
     <string name="buy_combo">شراء المجموعة معًا</string>
     <string name="total_price_bottom">المبلغ الكلي:</string>
     <string name="from_avg_rat">من</string>

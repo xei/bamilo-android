@@ -405,7 +405,7 @@
     <string name="products_tip_saved_text">آشْیاں محفوظ کرنے کے لیے کِلک کریں</string>
     <string name="tip_saved_text">آشْیاں محفوظ کرنے اور مائی پروفائل میں فہرست دیکھنے کے لیے کِلک کریں</string>
     <string name="warranty">وارنٹی: %s</string>
-    <string name="other_sellers_starting">دوسرے بیچنے والوں کی مسابقتی قیمت</string>
+    <string name="other_sellers_starting">دوسرے بیچنے والوں کی مسابقتی قیمت: %s</string>
     <string name="buy_combo">کومبو خریدیں</string>
     <string name="total_price_bottom">کُل:</string>
     <string name="from_avg_rat">سے</string>
