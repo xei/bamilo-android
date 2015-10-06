@@ -247,7 +247,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
-//        String level = CustomerPreferences.getCatalogLayout(getBaseActivity());
         mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
         if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
             mNumberOfColumns = getResources().getInteger(R.integer.catalog_grid_num_columns);
