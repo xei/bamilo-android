@@ -808,7 +808,7 @@ public class Ad4PushTracker {
                 prefs.putString(MOST_VIEWED_BRAND, brand);
                 mA4S.updateDeviceInfo(prefs);
                 Print.i(TAG, "TRACK TOP BRAND: " + prefs.toString());
-            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
+            } catch (IllegalStateException | InterruptedException | UnsupportedEncodingException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
