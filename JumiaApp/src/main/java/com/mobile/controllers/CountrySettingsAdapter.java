@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 import com.mobile.view.fragments.MyAccountFragment;
@@ -60,13 +61,15 @@ public class CountrySettingsAdapter extends BaseAdapter{
         TextView country = (TextView) view.findViewById(R.id.option_name);
         TextView info = (TextView) view.findViewById(R.id.option_info);
 
-        if(position == 0){
+        if(position == MyAccountFragment.POSITION_COUNTRY){
             country.setText(R.string.country);
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
             view.setEnabled(false);
-//            view.setOnClickListener(null);
+            if(ShopSelector.isSingleShopCountry()) {
+                view.setOnClickListener(null);
+            }
         } else {
             country.setText(R.string.language);
             info.setText(countryObject.languages.getSelectedLanguage().getLangName());
