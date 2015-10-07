@@ -422,4 +422,5 @@
     <string name="shipment" formatted="false">Colis %d sur %d</string>
     <string name="policy">Politique</string>
     <string name="delivery_time_placeholder" formatted="false">Temps de livraison : %d à %d jours</string>
+    <string name="product_specifications">Caractéristiques</string>
 </resources>

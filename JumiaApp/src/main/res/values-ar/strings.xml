@@ -423,4 +423,5 @@
     <string name="shipment" formatted="false">شحن %d لـ %d</string>
     <string name="policy">السياسة</string>
     <string name="delivery_time_placeholder" formatted="false">وقت التوصيل: %d - %d يوم</string>
+    <string name="product_specifications">المواصفات</string>
 </resources>
