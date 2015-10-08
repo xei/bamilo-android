@@ -37,6 +37,7 @@ import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -402,8 +403,8 @@ public class ReviewsFragment extends BaseFragment {
 
     }
 
-    protected void onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected void onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -416,7 +417,7 @@ public class ReviewsFragment extends BaseFragment {
 
         switch (eventType) {
             case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
 
                 // Validate the current rating page
                 if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
@@ -434,12 +435,12 @@ public class ReviewsFragment extends BaseFragment {
                 showFragmentContentContainer();
                 break;
             case GET_PRODUCT_DETAIL:
-                if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
                     Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                     getActivity().onBackPressed();
                     return;
                 } else {
-                    selectedProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                    selectedProduct = (ProductComplete) baseResponse.getMetadata().getData();
                     setAppContentLayout();
                     // Waiting for the fragment comunication
                     new Handler().postDelayed(new Runnable() {
@@ -455,9 +456,9 @@ public class ReviewsFragment extends BaseFragment {
         }
     }
 
-    protected void onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+    protected void onErrorEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         if(eventType == EventType.GET_PRODUCT_REVIEWS){
             pageNumber--;
@@ -469,14 +470,14 @@ public class ReviewsFragment extends BaseFragment {
             return;
         }
         // Generic errors
-        if (super.handleErrorEvent(bundle)) return;
+        if (super.handleErrorEvent(baseResponse)) return;
 
         // Hide Loading from triggers
         showFragmentContentContainer();
 
         switch (eventType) {
             case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
 
                 // Validate current rating page
                 if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
@@ -842,13 +843,13 @@ public class ReviewsFragment extends BaseFragment {
     IResponseCallback mCallBack = new IResponseCallback() {
 
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 

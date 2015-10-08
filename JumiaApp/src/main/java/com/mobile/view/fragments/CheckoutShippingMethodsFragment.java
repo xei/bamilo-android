@@ -374,7 +374,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         // Form
         ShippingMethodFormBuilder form = shippingMethodsForm.getFormBuilder();
         loadForm(form);
-        ArrayList<Fulfillment> fulfillmentList = bundle.getParcelableArrayList(Constants.BUNDLE_FORM_DATA_KEY);
+        ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getFulfillmentList();
         loadFulfillment(fulfillmentList);
 
 

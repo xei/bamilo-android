@@ -992,7 +992,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         // Get the catalog
-        CatalogPage catalogPage = (CatalogPage) baseResponse.getMetadata().getData();
+        CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog

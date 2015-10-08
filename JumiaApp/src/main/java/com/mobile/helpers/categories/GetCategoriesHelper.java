@@ -32,12 +32,5 @@ public class GetCategoriesHelper extends SuperBaseHelper {
     public EventType getEventType() {
         return EventType.GET_CATEGORIES_EVENT;
     }
-
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        Categories categories = (Categories) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
-    }
     
 }

@@ -576,7 +576,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
             showOrderSummary();
             showFragmentContentContainer();
             break;

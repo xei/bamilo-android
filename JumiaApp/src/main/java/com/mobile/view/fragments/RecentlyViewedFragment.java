@@ -445,7 +445,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             return;
         }
         // Validate event
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         // Validate the event type
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
