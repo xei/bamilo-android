@@ -2,7 +2,7 @@ require 'nokogiri'
 
 res_path = "../src/main/res"
 
-res_configs = ["fr", "pt", "my", "fa-rIR"]
+res_configs = ["fr", "pt", "my", "ar"]
 str_filename = "strings.xml"
 files_translated_path = res_configs.map { |config| res_path + "/values-" + config + "/" + str_filename }
 
@@ -30,6 +30,7 @@ files_translated_path.each do |file_translated_path|
 		str_name = str_translated.attribute("name").text
 		str_base = doc_base.search("//string[@name=\"#{str_name}\"]")
 
+		check_placeholder_count(str_name, str_base, str_translated, "%d")
 		check_placeholder_count(str_name, str_base, str_translated, "%s")
 		check_placeholder_count(str_name, str_base, str_translated, "%1$s")
 		check_placeholder_count(str_name, str_base, str_translated, "%2$s")

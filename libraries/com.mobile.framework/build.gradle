@@ -29,6 +29,7 @@ sourceSets {
 }
 
 dependencies {
+    // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
     /** REMOTE MAVEN LIBS  **/
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:appcompat-v7:23.0.1'
