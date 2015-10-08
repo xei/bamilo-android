@@ -26,11 +26,10 @@ public class Errors implements Parcelable {
 	public final static String CODE_LOGIN_FAILED = "CUSTOMER_LOGIN_FAILED";
 	public final static String CODE_LOGIN_CHECK_PASSWORD = "CUSTOMER_LOGIN_CHECK_EMAIL_PASSWORD";
 	public final static String CODE_LOGOUT_FAILED = "CUSTOMER_LOGOUT_FAILED";
-	public final static String CODE_LOGOUT_NOTLOGGED_IN = "CUSTOMER_NOT_LOGGED_IN";
+	public final static String CODE_CUSTOMER_NOT_LOGGED_IN = "CUSTOMER_NOT_LOGGED_IN";
 	public final static String CODE_REGISTER_CUSTOMEREXISTS = "CUSTOMER_CREATE_FAILED_EXISTS";
 	public final static String CODE_FORGOTPW_NOSUCH_CUSTOMER = "CUSTOMER_SET_PASSWORD_RESTORE_DATA_FAILURE";
 	public final static String CODE_ORDER_PRODUCT_SOLD_OUT = "ORDER_PRODUCT_SOLD_OUT";
-	public final static String CODE_CUSTOMER_NOT_LOGGED_ID = "CUSTOMER_NOT_LOGGED_IN";
 	public final static String CODE_FORM_VALIDATION_FAILED = "FORM_VALIDATION_FAILED";
 	public final static String CODE_PRODUCT_ADD_OVERQUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
 	public final static String CODE_ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
@@ -139,10 +138,8 @@ public class Errors implements Parcelable {
 		}
 
 		errorMessages = extractErrorMessagesOnly(fullErrorMessages);
-		if (errorMessages.isEmpty())
-			return false;
+		return !errorMessages.isEmpty();
 
-		return true;
 	}
 
 	private static ArrayList<String> extractErrorMessagesOnly(ArrayList<HashMap<String, String>> errorMessages) {
@@ -165,10 +162,8 @@ public class Errors implements Parcelable {
 		HashMap<String, HashMap<String, String>> fullValidateMessages = parseObjectWithObject(validateObject);
 
 		validateMessages = extractValidateMessagesOnly(fullValidateMessages);
-		if (validateMessages.isEmpty())
-			return false;
+		return !validateMessages.isEmpty();
 
-		return true;
 	}
 	
 	private static boolean parseValidateObjectWithObjectWithArray(JSONObject messagesObject) {
@@ -179,10 +174,8 @@ public class Errors implements Parcelable {
 		HashMap<String, ArrayList<String>> fullValidateMessages = parseObjectWithArray(validateObject);
 		
 		validateMessages = extractValidateMessageOnly(fullValidateMessages);
-		if ( validateMessages.isEmpty())
-			return false;
-		
-		return true;
+		return !validateMessages.isEmpty();
+
 	}
 	
 

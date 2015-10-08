@@ -68,10 +68,11 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
 	public static final String KEY_SELECTED_COUNTRY_NO_DECIMALS = "selected_country_no_decimals";
-	public static final String KEY_SELECTED_COUNTRY_THOUSANDS_SEP = "selected_country_thousands_sep";
-	public static final String KEY_SELECTED_COUNTRY_DECIMALS_SEP = "selected_country_decimals_sep";
+	public static final String KEY_SELECTED_COUNTRY_THOUSANDS_STEP = "selected_country_thousands_sep";
+	public static final String KEY_SELECTED_COUNTRY_DECIMALS_STEP = "selected_country_decimals_sep";
 	public static final String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
 	public static final String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
+	public static final String KEY_SELECTED_COUNTRY_LANGUAGES = "selected_country_languages";
 	public static final String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
 	public static final String KEY_SELECTED_COUNTRY_GTM_ID = "selected_country_gtm_id";
 	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
@@ -86,7 +87,7 @@ public class Darwin {
 	public static final String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
 
 	public static final String KEY_COUNTRY_USER_AGENT_AUTH_KEY = "user_agent_authentication";
-	
+
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton

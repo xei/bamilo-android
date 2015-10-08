@@ -22,7 +22,6 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CategoriesCollectionFragment;
 import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
@@ -32,9 +31,9 @@ import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
-import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
-import com.mobile.view.fragments.FavouritesFragment;
+import com.mobile.view.fragments.ComboFragment;
+import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
@@ -48,7 +47,7 @@ import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
-import com.mobile.view.fragments.ProductOffersFragment;
+import com.mobile.view.fragments.ProductOffersFragmentNew;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
 import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
@@ -58,9 +57,10 @@ import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
-import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
-import com.mobile.view.fragments.WriteSellerReviewFragment;
+import com.mobile.view.fragments.StaticPageFragment;
+import com.mobile.view.fragments.VariationsFragment;
+import com.mobile.view.fragments.WishListFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -268,9 +268,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 }
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
-            case CATEGORIES:
-                fragment = CategoriesCollectionFragment.getInstance(bundle);
-                break;
             case CATALOG:
                 if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
@@ -291,6 +288,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
                 break;
             case POPULARITY:
+            //    fragment = ReviewsFragment.getInstance(bundle);
                 fragment = ReviewsFragment.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
@@ -302,17 +300,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case SHOPPING_CART:
                 fragment = ShoppingCartFragment.getInstance(bundle);
                 break;
-            case CHECKOUT_BASKET:
-                fragment = CheckoutWebFragment.getInstance();
-                break;
             case REGISTER:
                 fragment = SessionRegisterFragment.getInstance(bundle);
                 break;
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case TERMS:
-                fragment = SessionTermsFragment.getInstance(bundle);
+            case STATIC_PAGE:
+                fragment = StaticPageFragment.getInstance(bundle);
                 break;
             case MY_ACCOUNT:
                 removeEntries = true;
@@ -366,9 +361,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case EMAIL_NOTIFICATION:
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
-            case FAVORITE_LIST:
+            case WISH_LIST:
                 removeEntries = true;
-                fragment = FavouritesFragment.getInstance();
+                fragment = WishListFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
@@ -381,7 +376,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductSizeGuideFragment.newInstance(bundle);
                 break;
             case PRODUCT_OFFERS:
-                fragment = ProductOffersFragment.newInstance(bundle);
+              //  fragment = ProductOffersFragment.newInstance(bundle);
+                fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
                 fragment = MyAccountMyAddressesFragment.newInstance();
@@ -395,13 +391,23 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-            case WRITE_REVIEW_SELLER:
-                fragment = WriteSellerReviewFragment.getInstance(bundle);
+//            case WRITE_REVIEW_SELLER:
+//                fragment = WriteSellerReviewFragment.getInstance(bundle);
+//                break;
+            case COMBOPAGE:
+                fragment = ComboFragment.getInstance(bundle);
+                break;
+            case FILTERS:
+                fragment = FilterMainFragment.getInstance(bundle);
+                break;
+            case VARIATIONS:
+                fragment = VariationsFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
+
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {

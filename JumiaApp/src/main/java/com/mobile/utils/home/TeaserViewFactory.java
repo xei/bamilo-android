@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
@@ -95,6 +96,10 @@ public class TeaserViewFactory {
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
+
+            if(teaser instanceof TeaserTopSellerObject){
+                view.setTag(R.id.target_sku, ((TeaserTopSellerObject) teaser).getSku());
+            }
             view.setOnClickListener(listener);
         }
     }

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,11 +25,11 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     private boolean forceHttps;
     private boolean isLive;
     private String userAgentToAccessDevServers;
-
+    private Languages languages;
     /**
      * Empty Constructor
      */
-    public CountryObject(){
+    public CountryObject() {
         this.setCountryName("");
         this.setCountryUrl("");
         this.setCountryFlag("");
@@ -46,7 +47,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
                 "\niso: " + iso +
                 "\nhttps: " + forceHttps +
                 "\nlive: " + isLive
-        ;
+                ;
     }
 
     /**
@@ -54,7 +55,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
      */
 
 	/*
-	 * (non-Javadoc)
+     * (non-Javadoc)
 	 *
 	 * @see android.os.Parcelable#describeContents()
 	 */
@@ -86,7 +87,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         url = in.readString();
         flag = in.readString();
         iso = in.readString();
-        in.readBooleanArray(new boolean[] {forceHttps, isLive});
+        in.readBooleanArray(new boolean[]{forceHttps, isLive});
         userAgentToAccessDevServers = in.readString();
     }
 
@@ -102,8 +103,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_name
-     *            the country_name to set
+     * @param country_name the country_name to set
      */
     public void setCountryName(String country_name) {
         this.name = country_name;
@@ -117,8 +117,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_url
-     *            the country_url to set
+     * @param country_url the country_url to set
      */
     public void setCountryUrl(String country_url) {
         this.url = country_url;
@@ -132,8 +131,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_flag
-     *            the country_flag to set
+     * @param country_flag the country_flag to set
      */
     public void setCountryFlag(String country_flag) {
         this.flag = country_flag;
@@ -147,8 +145,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_iso
-     *            the country_iso to set
+     * @param country_iso the country_iso to set
      */
     public void setCountryIso(String country_iso) {
         this.iso = country_iso;
@@ -162,8 +159,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_force_https
-     *            the country_force_https to set
+     * @param country_force_https the country_force_https to set
      */
     public void setCountryForceHttps(boolean country_force_https) {
         this.forceHttps = country_force_https;
@@ -177,8 +173,7 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @param country_is_live
-     *            the country_is_live to set
+     * @param country_is_live the country_is_live to set
      */
     public void setCountryIsLive(boolean country_is_live) {
         this.isLive = country_is_live;
@@ -201,8 +196,8 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-        if(url != null ){
+        url = jsonObject.optString(RestConstants.URL);
+        if (url != null) {
             // This is necessary otherwise Uri.Builder will encode the authority
             url = url.replace("/mobapi/", "");
         }
@@ -212,6 +207,12 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
         // Used only for access dev servers
         userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
+        try {
+            languages = new Languages(jsonObject);
+        }catch (JSONException ex){
+            Print.e(ex.getMessage());
+        }
+
         return true;
     }
 
@@ -223,6 +224,14 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     @Override
     public RequiredJson getRequiredJson() {
         return null;
+    }
+
+    public Languages getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
     }
 }
 

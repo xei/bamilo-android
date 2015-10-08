@@ -33,7 +33,7 @@ public class ExternalOrder implements Parcelable {
         value = result.optDouble(RestConstants.JSON_GRAND_TOTAL_TAG);
         valueConverted = result.optDouble(RestConstants.JSON_GRAND_TOTAL_CONVERTED_TAG);
         coupon = result.optString(RestConstants.JSON_ORDER_COUPON_CODE_TAG);
-        items = PurchaseItem.parseItems(result.optJSONArray(RestConstants.JSON_PRODUCTS_TAG));
+        items = PurchaseItem.parseItems(result.optJSONArray(RestConstants.PRODUCTS));
         getSkusAndAverage();
     }
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+    <!-- SCROLLABLE -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:gravity="right|end"
+            android:paddingBottom="@dimen/rounded_margin_mid" >
+
+            <!-- DESCRIPTION TEXT -->
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_description_text"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingRight="@dimen/margin_large"
+                android:paddingEnd="@dimen/margin_large"
+                android:text="Description"
+                android:singleLine="false"
+
+
+            />
+
+            <!-- KEY FEATURES -->
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_features_text"
+                style="@style/TextBody_3"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingLeft="@dimen/margin_large"
+                android:paddingStart="@dimen/margin_large"
+                android:text="SmallDescription"
+                android:layout_below="@id/product_description_text"
+                android:singleLine="false"
+              />
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

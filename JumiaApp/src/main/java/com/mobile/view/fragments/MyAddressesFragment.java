@@ -47,11 +47,11 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     private static final String ISNT_SAME_ADDRESS = "0";
 
-    protected static final String BILLING_ID_TAG = "billingAddressId";
+    protected static final String BILLING_ID_TAG = "billing";
 
-    protected static final String SHIPPING_ID_TAG = "shippingAddressId";
+    protected static final String SHIPPING_ID_TAG = "shipping";
 
-    protected static final String IS_SAME_TAG = "shippingAddressDifferent";
+    protected static final String IS_SAME_TAG = "equal";
 
     protected GenericRadioGroup mTopRadioGroup;
 
@@ -207,8 +207,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Process the click on check box.
-     * @param view
-     * @author sergiopereira
      */
     protected void onClickCheckBox(final CheckBox view){
         Print.d(TAG, "SAME ADDRESS CLICK: " + view.isChecked());
@@ -245,8 +243,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Process the click on delete button.
-     * @param view
-     * @author sergiopereira
      */
     private void onClickDeleteAddressButton(View view){
         String addressId = view.getTag().toString();
@@ -256,8 +252,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     /**
      * Process the click on edit button.</br>
      * Gets the address id from view tag.
-     * @param view
-     * @author sergiopereira
      */
     protected abstract void onClickEditAddressButton(View view);
 
@@ -314,9 +308,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Submit the current values using the form
-     * @param shippingAddressId
-     * @param billingAddressId
-     * @param isDifferent
      */
     protected abstract void submitForm(String shippingAddressId, String billingAddressId, String isDifferent);
 
@@ -337,7 +328,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Switch focus between radio group
-     * @param parent
      * @author sergiopereira
      */
     private void switchBetweenRadioGroups(GenericRadioGroup parent){
@@ -355,7 +345,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Show my addresses
-     * @param isSameAddress
      * @author sergiopereira
      */
     protected void showAddresses(boolean isSameAddress) {
@@ -378,7 +367,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             mTopRadioGroup.setCheckedItem(0);
             addAddress(mTopRadioGroup, addresses.getShippingAddress());
             // Set the check box checked
-            mIsSameCheckBox.setChecked(isSameAddress);
+            mIsSameCheckBox.setChecked(true);
             // Hide add button
             mTopAddContainer.setVisibility(View.GONE);
             // Set bottom container
@@ -404,7 +393,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
             addAddresses(mTopRadioGroup, addresses.getAddresses());
             // Set the check box checked
-            mIsSameCheckBox.setChecked(isSameAddress);
+            mIsSameCheckBox.setChecked(false);
             // Show add button
             mTopAddContainer.setVisibility(View.VISIBLE);
             // Set bottom container
@@ -444,8 +433,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Add addresses to the radio group
-     * @param container the radio group
-     * @param addresses
      * @author sergiopereira
      */
     private void addAddresses(GenericRadioGroup container, HashMap<String, Address> addresses) {
@@ -457,8 +444,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Add the current address to the radio group
-     * @param container
-     * @param address
      * @author sergiopereira
      */
     private void addAddress(GenericRadioGroup container, Address address){
@@ -555,7 +540,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     /**
      * Dialog used to show an error
-     * @param errors
      */
     protected void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
@@ -580,6 +564,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+        } else {
+            super.showUnexpectedErrorWarning();
         }
     }
 

@@ -3,11 +3,12 @@ package com.mobile.newFramework.objects.catalog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.R;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -21,13 +22,9 @@ import java.util.ArrayList;
  * Class used to represent a catalog page.<br>
  * @author sergiopereira
  */
-public class CatalogPage implements IJSONSerializable, Parcelable {
+public class CatalogPage implements IJSONSerializable, Parcelable{
 
-    private static final String TAG = CatalogPage.class.getSimpleName();
-
-    public static final int MAX_ITEMS_PER_PAGE = 24;
-
-    public static final int FIRST_PAGE = 1;
+    protected static final String TAG = CatalogPage.class.getSimpleName();
 
     private String mId;
 
@@ -35,17 +32,17 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private int mTotal;
 
-    private int mPage = 1;
+    private int mPage = IntConstants.FIRST_PAGE;
 
-    private int mMaxPages = 1;
+    private int mMaxPages = IntConstants.FIRST_PAGE;
 
-    private ArrayList<Product> mProducts;
-
-    private ArrayList<CatalogFilter> mFilters;
+    private ArrayList<ProductRegular> mProducts;
 
     private Banner mCatalogBanner;
+
     private String mSearchTerm;
 
+    private ArrayList<CatalogFilter> filters;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -58,7 +55,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         //...
     }
 
-    public CatalogPage(JSONObject metadataObject) throws JSONException{
+    public CatalogPage(JSONObject metadataObject) throws JSONException {
         this();
         initialize(metadataObject);
     }
@@ -72,12 +69,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-//        Log.d(TAG, "FILTER: PRODUCT PAGE");
         // Get data
-        mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
-        mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
+        mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
+        mName = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
-        mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
+        mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products
@@ -85,12 +81,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
         for (int i = 0; i < productObjectArray.length(); ++i) {
             JSONObject productObject = productObjectArray.getJSONObject(i);
-            Product product = new Product();
+            ProductRegular product = new ProductRegular();
             product.initialize(productObject);
             mProducts.add(product);
         }
         // Get filters
-        mFilters = new ArrayList<>();
 
         // Get category filter
         /*
@@ -104,6 +99,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         }*/
 
         // Get the other filters
+        /* TODO: uncomment to support filters
         if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
             JSONArray jsonArray = metadataObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -114,7 +110,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 // save filter
                 mFilters.add(catalogFilter);
             }
-        }
+        }*/
+
+        filters = new CatalogFilters(metadataObject);
 
         //Get Banner
         if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
@@ -129,43 +127,43 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
 
 
-    /**
-     * Parse the JSON for categories, supported parent and leaf structure
-     * @param categoriesArray - the json array
-     * @throws JSONException
-     */
-    @SuppressWarnings("unused")
-    private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
-//        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
-        JSONArray categoryArray = null;
-        // Get the first position
-        JSONObject parentObject = categoriesArray.optJSONObject(0);
-        JSONArray leafObject = categoriesArray.optJSONArray(0);
-        // IS PARENT    - If first item is a JSON object
-        if(parentObject != null) {
-//            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
-            categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
-        }
-        // IS LEAF      - If first item is a JSON array
-        else if(leafObject != null) {
-//            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
-            categoryArray = leafObject;
-        }
-        // Create category option and save it
-        ArrayList<CatalogFilterOption> options = new ArrayList<>();
-        if(categoryArray != null) {
-//            Log.d(TAG, "PARSE ADD TO CATALOG");
-            for (int i = 0; i < categoryArray.length(); ++i) {
-                JSONObject json = categoryArray.optJSONObject(i);
-                if(json != null) {
-                    CategoryFilterOption opt = new CategoryFilterOption(json);
-                    options.add(opt);
-                }
-            }
-        }
-        // Create the category filter and save it
-        mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
-    }
+//    /**
+//     * Parse the JSON for categories, supported parent and leaf structure
+//     * @param categoriesArray - the json array
+//     * @throws JSONException
+//     */
+//    @SuppressWarnings("unused")
+//    private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
+////        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
+//        JSONArray categoryArray = null;
+//        // Get the first position
+//        JSONObject parentObject = categoriesArray.optJSONObject(0);
+//        JSONArray leafObject = categoriesArray.optJSONArray(0);
+//        // IS PARENT    - If first item is a JSON object
+//        if(parentObject != null) {
+////            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
+//            categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+//        }
+//        // IS LEAF      - If first item is a JSON array
+//        else if(leafObject != null) {
+////            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
+//            categoryArray = leafObject;
+//        }
+//        // Create category option and save it
+//        ArrayList<CatalogFilterOption> options = new ArrayList<>();
+//        if(categoryArray != null) {
+////            Log.d(TAG, "PARSE ADD TO CATALOG");
+//            for (int i = 0; i < categoryArray.length(); ++i) {
+//                JSONObject json = categoryArray.optJSONObject(i);
+//                if(json != null) {
+//                    CategoryFilterOption opt = new CategoryFilterOption(json);
+//                    options.add(opt);
+//                }
+//            }
+//        }
+//        // Create the category filter and save it
+//        mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
+//    }
 
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
@@ -183,9 +181,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return number or pages
      */
     private int calcMaxPages() {
-        int i = (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
-//        Log.i(TAG, "MAX PAGES: " + i);
-        return i;
+        return (mTotal / IntConstants.MAX_ITEMS_PER_PAGE) + ((mTotal % IntConstants.MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
@@ -217,7 +213,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Update the max pages that application can request
         mMaxPages = calcMaxPages();
         // Case replace data
-        if(mPage == FIRST_PAGE) mProducts = catalog.getProducts();
+        if(mPage == IntConstants.FIRST_PAGE) mProducts = catalog.getProducts();
         // Case append data
         else CollectionUtils.addAll(mProducts, catalog.getProducts());
     }
@@ -226,7 +222,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * Get products
      * @return a list of products
      */
-    public ArrayList<Product> getProducts() {
+    public ArrayList<ProductRegular> getProducts() {
         return mProducts;
     }
 
@@ -257,14 +253,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return the filters
      */
     public ArrayList<CatalogFilter> getFilters() {
-        return mFilters;
+        return filters;
     }
 
     /**
      * @return the filters
      */
     public boolean hasFilters() {
-        return CollectionUtils.isNotEmpty(mFilters);
+        return CollectionUtils.isNotEmpty(filters);
     }
 
     /**
@@ -283,7 +279,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mName;
     }
 
-    public Banner getmCatalogBanner() {
+    public Banner getCatalogBanner() {
         return mCatalogBanner;
     }
 
@@ -303,16 +299,31 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mId;
     }
 
-    /**
-     * Set search term
-     */
-    public void setSearchTerm(String searchTerm){
-        mSearchTerm = searchTerm;
-    }
-
     /*
      * ############### Parcelable ###############
      */
+
+    protected CatalogPage(Parcel in) {
+        mId = in.readString();
+        mName = in.readString();
+        mTotal = in.readInt();
+        mPage = in.readInt();
+        mMaxPages = in.readInt();
+        if (in.readByte() == 0x01) {
+            mProducts = new ArrayList<ProductRegular>();
+            in.readList(mProducts, ProductRegular.class.getClassLoader());
+        } else {
+            mProducts = null;
+        }
+        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
+        mSearchTerm = in.readString();
+        if (in.readByte() == 0x01) {
+            filters = new ArrayList<CatalogFilter>();
+            in.readList(filters, CatalogFilter.class.getClassLoader());
+        } else {
+            filters = null;
+        }
+    }
 
     @Override
     public int describeContents() {
@@ -332,51 +343,27 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mProducts);
         }
-        if (mFilters == null) {
+        dest.writeValue(mCatalogBanner);
+        dest.writeString(mSearchTerm);
+        if (filters == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mFilters);
+            dest.writeList(filters);
         }
-        dest.writeValue(mCatalogBanner);
-        dest.writeString(mSearchTerm);
-
     }
 
-    /**
-     * Parcel constructor
-     */
-    private CatalogPage(Parcel in){
-        mId = in.readString();
-        mName = in.readString();
-        mTotal = in.readInt();
-        mPage = in.readInt();
-        mMaxPages = in.readInt();
-        if (in.readByte() == 0x01) {
-            mProducts = new ArrayList<>();
-            in.readList(mProducts, Product.class.getClassLoader());
-        } else {
-            mProducts = null;
-        }
-        if (in.readByte() == 0x01) {
-            mFilters = new ArrayList<>();
-            in.readList(mFilters, CatalogFilter.class.getClassLoader());
-        } else {
-            mFilters = null;
-        }
-        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
-        mSearchTerm = in.readString();
-    }
-
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
+        @Override
         public CatalogPage createFromParcel(Parcel in) {
             return new CatalogPage(in);
         }
 
+        @Override
         public CatalogPage[] newArray(int size) {
             return new CatalogPage[size];
         }
     };
-
 
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/grid_row_style"
+    android:layout_height="@dimen/catalog_grid_item_height">
+
+    <include
+        android:id="@+id/image_loadable"
+        layout="@layout/image_loadable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/catalog_grid_item_image_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/margin_30px" />
+
+    <ImageView
+        android:id="@+id/image_is_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/selector_is_new" />
+
+    <ImageView
+        android:id="@+id/image_is_favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="false"
+        android:padding="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/catalog_item_vertical_padding"
+        android:src="@drawable/selector_favorite" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/discount_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_loadable"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/rounded_margin_mid"
+        android:gravity="center" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_brand"
+        style="@style/TextCaption"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/image_loadable"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/rounded_margin_mid"
+        android:gravity="right"
+        android:text="BRAND"
+        android:textColor="@color/black_800" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_name"
+        style="@style/TextBody_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_brand"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:gravity="right"
+        android:text="Name"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_discount"
+        style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/item_brand"
+        android:layout_below="@id/item_name"
+        android:layout_marginLeft="4dp"
+        android:text="Discount"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_regprice"
+        style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_name"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_toLeftOf="@id/item_discount"
+        android:text="Price"
+        android:textColor="@color/grey_light" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/HorizontalListDivider"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/vdivider"
+        style="@style/VerticalListDivider"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
+</RelativeLayout>

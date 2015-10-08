@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- CATALOG TOOL BAR -->
+
+    <include
+        android:id="@+id/catalog_bar_view"
+        layout="@layout/catalog_fragment_tool_bar" />
+
+    <!-- LOADING MORE -->
+
+    <include
+        android:id="@+id/catalog_loading_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/fragment_loading_more" />
+
+    <!-- GRID VIEW -->
+
+    <com.mobile.utils.catalog.HeaderFooterGridView
+        android:id="@+id/catalog_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/catalog_loading_more"
+        android:background="@color/white"
+        android:clipToPadding="false"
+        android:layout_marginTop="@dimen/catalog_tool_bar_height" />
+
+    <!-- FLOAT BUTTON -->
+
+    <ImageView
+        android:id="@+id/catalog_button_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/margin_30px"
+        android:background="@drawable/selector_btn_toplist"
+        android:visibility="invisible" />
+
+    <!-- NO RESULTS VIEW -->
+
+    <ViewStub
+        android:id="@+id/catalog_no_result_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/catalog_no_result_stub_inflate"
+        android:layout="@layout/catalog_fragment_no_result" />
+
+    <!-- WIZARD CONTAINER -->
+
+    <ViewStub
+        android:id="@+id/catalog_wizard_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/catalog_wizard_stub_inflate"
+        android:layout="@layout/catalog_fragment_wizard" />
+
+</RelativeLayout>

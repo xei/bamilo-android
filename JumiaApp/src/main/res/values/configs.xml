@@ -4,7 +4,7 @@
     <!-- APP -->
     <bool name="is_to_show_dev_env">false</bool>
     <bool name="rtl_enabled">false</bool>
-    
+
 	<!-- CHECK VERSION -->
     <item name="check_version_enabled" type="bool">true</item>
 
@@ -15,8 +15,6 @@
     <string name="global_server_shop_name">@string/jumia_global_shopname</string>
     <string name="global_server_host">@string/jumia_global_server</string>
     <string name="global_server_restbase_path">@string/jumia_global_restbase_path</string>
-    <string name="global_server_user">@string/jumia_global_user</string>
-    <string name="global_server_password">@string/jumia_global_password</string>
     <string name="global_server_api_version">@string/jumia_global_api_version</string>
 
     <!-- USER PREFERENCES -->

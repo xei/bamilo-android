@@ -1,15 +1,12 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class AigGetCategoryPaginatedTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "http://www.jumia.com.ng/mobapi/v1.7/catalog/categories/";
+        return AigMobApiNigeriaTestSuite.HOST+"/catalog/categories/";
     }
 
     @Override

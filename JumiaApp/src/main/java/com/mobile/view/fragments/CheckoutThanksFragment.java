@@ -29,7 +29,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -113,7 +113,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        prepareLayout();
+        prepareLayout(view);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     /**
      * Show content
      */
-    private void prepareLayout() {
+    private void prepareLayout(View view) {
         
         // String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null) {
@@ -169,16 +169,16 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
         
         // Clean cart and payment
-        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
+        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Order number
-        TextView tV = (TextView) getView().findViewById(R.id.order_number_id);
+        TextView tV = (TextView) view.findViewById(R.id.order_number_id);
         tV.setText(order_number);
         tV.setOnClickListener(this);
         // Continue button
-        getView().findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
+        view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(order_number);
     }
@@ -224,7 +224,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             params.putDouble(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getPriceForTracking());
             params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
-            params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
+            params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(JumiaApplication.INSTANCE.getCart().getCouponDiscount()));
             params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
                         
@@ -233,7 +233,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 params.putString(TrackerDelegator.TAX_KEY, orderTax);
                 params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentMethod);
             }
-            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
+            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.getCart().getAttributeSetIdList());
         }
 
         triggerClearCart();
@@ -407,7 +407,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Get user id
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
-        // Tracking 
+        // Tracking
         TrackerDelegator.trackCheckoutContinueShopping(userId);
         // Goto home
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

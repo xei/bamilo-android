@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">My Account</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
     <string name="action_label_logout">Logout</string>
     <string name="action_label_search_hint">Search on %s</string>
     <string name="action_label_share">Share It</string>
-    <string name="action_label_wishlist">Wish List</string>
     <string name="add_address">Add Address</string>
     <string name="add_to_shopping_cart">Add to Cart</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Products were added to shopping cart</string>
@@ -101,8 +101,6 @@
     <string name="fallback_welcome">WELCOME TO</string>
     <string name="favourite_add_to_cart">Item Added to Cart</string>
     <string name="favourite_addalltocart">Add All Items to Cart</string>
-    <string name="favourite_no_favourites">You have no favourite items at the moment</string>
-    <string name="favourites">My Favourites</string>
     <string name="fgt_pass">Forgot Password?</string>
     <string name="filter_label">Filter</string>
     <string name="forgotpass_header">Password Recovery</string>
@@ -214,14 +212,12 @@
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
     <string name="product_sort_button">Sort</string>
-    <string name="product_specifications">Specifications</string>
+    <string name="specifications">Specifications</string>
     <string name="product_variance_choose">Please choose</string>
     <string name="product_variance_choose_error">Please choose one of several</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">Item added to My Favourites</string>
     <string name="products_could_notloaded">Loading more products failed. Please try again.</string>
     <string name="products_label">Products</string>
-    <string name="products_removed_favourite">Item removed from My Favourites</string>
     <string name="products_sort_bestrated">Best Rating</string>
     <string name="products_sort_brand">Brand</string>
     <string name="products_sort_name">Name</string>
@@ -229,7 +225,6 @@
     <string name="products_sort_popularity">Popularity</string>
     <string name="products_sort_pricedown">Price down</string>
     <string name="products_sort_priceup">Price up</string>
-    <string name="products_tip_favourite_text">Click to Favourite products!</string>
     <string name="products_tip_swipe_text">Swipe left or right to change the sort type</string>
     <string name="promotion_tip_tap_text">Tap the box above to copy the code to the clipboard and keep it handy for checkout</string>
     <string name="rating_option_error_message">All ratings options must be filled</string>
@@ -309,7 +304,6 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="thank_you_order_title">Thank You!</string>
-    <string name="tip_favourite_text">Click to favourite this product and view the full list in My Profile</string>
     <string name="tip_share_text">Click to share this product</string>
     <string name="tip_swipe_text">Swipe left or right to\nview different images</string>
     <string name="tip_tap_text">Tap to open the product gallery</string>
@@ -379,4 +373,57 @@
     <!-- NEW 2.6 -->
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
     <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
+    <!-- NEW 2.7 -->
+    <string name="review_plural">%d review</string>
+    <string name="reviews_plural">%d reviews</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="language">Language</string>
+    <string name="country">Country</string>
+    <string name="birthday_label">birthday</string>
+    <string name="birthday_error">Please choose a valid Birthday.</string>
+    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="clear_all_lowercase_label">Clear All</string>
+    <string name="apply_label">Apply</string>
+    <string name="see_other_variations">See other variations</string>
+    <string name="variations">Variations</string>
+    <string name="be_first_rate">be the first to rate</string>
+    <string name="seller_info">SELLER INFORMATION</string>
+    <string name="read_more">Read More</string>
+    <string name="more_specifications">More Specifications</string>
+    <string name="delivery_time1">Delivery time</string>
+    <string name="see_other_colors">See other colors</string>
+    <string name="combos_label">Combos</string>
+    <string name="combos">COMBOS</string>
+    <string name="may_like">YOU MAY ALSO LIKE</string>
+    <string name="buy_the_look">BUY THE LOOK</string>
+    <string name="pdv_size">Size</string>
+    <string name="buy_now_button">BUY NOW</string>
+    <string name="save_no_saved">You have no saved items at the moment</string>
+    <string name="saved">Saved</string>
+    <string name="products_added_saved">Item added to Saved</string>
+    <string name="products_removed_saved">Item removed from Saved</string>
+    <string name="products_tip_saved_text">Click to Save products!</string>
+    <string name="tip_saved_text">Click to save this product and view the full list in My Profile</string>
+    <string name="warranty">Warranty: %s</string>
+    <string name="other_sellers_starting">Other Sellers starting from: %s</string>
+    <string name="buy_combo">BUY COMBO</string>
+    <string name="total_price_bottom">Total:</string>
+    <string name="from_avg_rat">from</string>
+    <string name="from_avg_cus">customers</string>
+    <string name="average_rating">Average</string>
+    <string name="average_rating_used_prod">Have you used this product?</string>
+    <string name="average_rate_now">Rate it now</string>
+    <string name="average_rating_write_review">Write a review</string>
+    <string name="average_raings_header">RATINGS</string>
+    <string name="average_reviews_header">USER REVIEWS</string>
+    <string name="description1">Description</string>
+    <string name="rat_rev">Ratings Reviews</string>
+    <string name="fulfilled_by">Fulfilled by %s</string>
+    <string name="qty_placeholder">Qty: %d</string>
+    <string name="shipment" formatted="false">Shipment %d of %d</string>
+    <string name="policy">Policy</string>
+    <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
+    <string name="product_specifications">Product Specifications</string>
 </resources>

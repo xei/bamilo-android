@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.product.LastViewedAddableToCart;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -20,7 +19,7 @@ public class GetRecentlyViewedHelper {
 
     public static String TAG = GetRecentlyViewedHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.GET_RECENLTLY_VIEWED_LIST;
+    private static final EventType EVENT_TYPE = EventType.GET_RECENTLY_VIEWED_LIST;
 
     /**
      * 
@@ -37,10 +36,10 @@ public class GetRecentlyViewedHelper {
      */
     private void getRecentlyViewedList(IResponseCallback requester) {
         Print.d(TAG, "ON GET FAVOURITE LIST");
-        ArrayList<LastViewedAddableToCart> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
+        ArrayList<String> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, listLastViewed);
+        bundle.putStringArrayList(Constants.BUNDLE_RESPONSE_KEY, listLastViewed);
         requester.onRequestComplete(bundle);
     }
 }

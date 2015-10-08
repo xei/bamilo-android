@@ -30,8 +30,9 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -115,10 +116,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
      * Empty constructor
      */
     public SessionLoginFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                NO_TITLE,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -146,7 +147,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         Bundle arguments = getArguments();
         if (arguments != null) {
             // Initialize SessionLoginFragment with no title
-            super.titleResId = NO_TITLE;
+            super.titleResId = IntConstants.ACTION_BAR_NO_TITLE;
             // Force load form if comes from deep link
             nextFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             String path = arguments.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
@@ -215,7 +216,11 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             triggerAutoLogin();
         } else if (formResponse != null) {
             Print.d(TAG, "FORM ISN'T NULL");
-            loadForm(formResponse);
+            if (facebookLoginClicked) {
+                facebookLoginClicked = false;
+            } else {
+                loadForm(formResponse);
+            }
             cameFromRegister = false;
         } else {
             Print.d(TAG, "FORM IS NULL");
@@ -472,7 +477,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         // Get Customer
         baseActivity.hideKeyboard();
         // NullPointerException on orientation change
-        if (baseActivity != null && !cameFromRegister) {
+        if (!cameFromRegister) {
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
 
@@ -489,7 +494,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
         cameFromRegister = false;
         // Validate the next step
-        if (nextFragmentType != null && baseActivity != null) {
+        if (nextFragmentType != null) {
             Print.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             Bundle oldArgs = getArguments();
@@ -518,7 +523,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific) ||
                     getResources().getBoolean(R.bool.is_shop_specific) ||
-                    ShopSelector.isRtl() ){
+                    ShopSelector.isRtlShop() ){
                 getBaseActivity().hideActionBarTitle();
                 getBaseActivity().setTitle(R.string.login_label);
             } else {
@@ -556,7 +561,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
 
-                if (fillEmail && InputType.email.equals(item.getType())) {
+                if (fillEmail && FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -565,7 +570,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
 
-                if (InputType.email.equals(item.getType())) {
+                if (FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -723,10 +728,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         wasAutoLogin = false;
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values,saveCredentials), mCallBack);
     }
 
     private void triggerLoginForm() {
@@ -748,7 +750,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         super.onClick(view);
         int id = view.getId();
         // Case FB button 
-        if(id == R.id.login_facebook_button) showFragmentLoading();
+        if(id == R.id.login_facebook_button) {
+            facebookLoginClicked = true;
+            showFragmentLoading();
+        }
         // Case sign in button
         else if (id == R.id.middle_login_button_signin) {
             // Log.d(TAG, "CLICKED ON SIGNIN");
@@ -762,7 +767,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         else if (id == R.id.middle_login_link_fgtpassword) {
             getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
-        // Case redister
+        // Case register
         else if (id == R.id.middle_login_link_register) {
             cameFromRegister = true;
             getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

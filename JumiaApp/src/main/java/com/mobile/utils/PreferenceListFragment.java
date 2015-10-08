@@ -1,5 +1,6 @@
 package com.mobile.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +51,8 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     };
     private ListView lv;
     private int xmlId;
-    
+
+    @SuppressLint("ValidFragment")
     public PreferenceListFragment(int xmlId){
         this.xmlId = xmlId;
     }

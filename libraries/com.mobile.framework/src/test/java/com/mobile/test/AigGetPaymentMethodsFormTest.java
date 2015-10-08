@@ -1,15 +1,11 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
+import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +24,7 @@ public class AigGetPaymentMethodsFormTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/forms/paymentmethod/";
+        return AigMobApiNigeriaTestSuite.HOST+"/forms/paymentmethod/";
     }
 
     @Override
@@ -42,7 +38,7 @@ public class AigGetPaymentMethodsFormTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        SuperGetPaymentMethodsForm form = (SuperGetPaymentMethodsForm) response.getMetadata().getData();
+        CheckoutFormPayment form = (CheckoutFormPayment) response.getMetadata().getData();
         assertNotNull("Form is null", form);
 
         //assertFalse("Success is false", response.hadSuccess());

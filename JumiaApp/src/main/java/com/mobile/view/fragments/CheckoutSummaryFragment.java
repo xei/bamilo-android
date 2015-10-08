@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -24,9 +21,9 @@ import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -38,12 +35,11 @@ import com.mobile.view.R;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Class used to show the order summary in the checkout process
+ *
  * @author sergiopereira
- * 
  */
 public class CheckoutSummaryFragment extends BaseFragment implements IResponseCallback {
 
@@ -52,12 +48,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     private ViewGroup mProductList;
 
     private TextView mSubTotal;
-    
-    private TextView mExtraCosts;
-    
-    private LinearLayout mExtraCostsContainer;
 
-    private ShoppingCart mCart;
+    private TextView mExtraCosts;
+
+    private LinearLayout mExtraCostsContainer;
 
     private TextView mShippingFeeValue;
 
@@ -69,7 +63,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private ViewGroup mTotalView;
 
-    private OrderSummary mOrderSummary;
+    private PurchaseEntity mOrderSummary;
 
     private ViewGroup mShippingAddressList;
 
@@ -85,9 +79,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     /**
      * Get instance
+     *
      * @return CheckoutSummaryFragment
      */
-    public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
+    public static CheckoutSummaryFragment getInstance(int checkoutStep, PurchaseEntity orderSummary) {
         //if (mOrderSummaryFragment == null) 
         CheckoutSummaryFragment sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
@@ -136,7 +131,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        
         // Products
         mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
@@ -158,16 +152,18 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Total
         mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
-        // Get cart
-        mCart = JumiaApplication.INSTANCE.getCart();
-        if (mCart == null){
-            triggerGetShoppingCart();
-        } else{
+        // Get saved order summary
+        Bundle  args = savedInstanceState;
+        if(args != null && args.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
+            mOrderSummary = args.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
+            // Show order summary
             showOrderSummary();
+        } else {
+            triggerGetShoppingCart();
         }
 
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -236,82 +232,67 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     /**
      * Show the order summary
+     *
      * @author sergiopereira
      */
     private void showOrderSummary() {
-        
         // Validate current cart
-        if(mCart != null && mCart.getCartItems().size() == 0) {
+        if (mOrderSummary == null || mOrderSummary.getCartItems().size() == 0) {
             showNoItems();
+            Print.w(TAG, "ORDER SUMMARY IS NULL");
             return;
         }
 
-        // Validate order summary
-        if(mOrderSummary == null){
-            Print.w(TAG, "ORDER SUMMARY IS NULL");
-        } else {
-            Print.d(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
-        }
+        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
-        case ConstantsCheckout.CHECKOUT_PAYMENT:
-            // Validate shipping method
-            if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) {
-                showShippingMethod(mOrderSummary.getShippingMethod());
-            }
-            // Shipping fees
-            if(mOrderSummary != null) {
-                if(!mCart.hasSumCosts()){
-                    mCart.setShippingValue(mOrderSummary.getShippingAmount());
+            case ConstantsCheckout.CHECKOUT_PAYMENT:
+                // Validate shipping method
+                if (mOrderSummary.hasShippingMethod()) {
+                    showShippingMethod(mOrderSummary.getShippingMethod());
                 }
-                ShoppingCartUtils.setShippingRule(mCart, mShippingFeeView, mShippingFeeValue, mExtraCostsContainer,mExtraCosts);
-            }
-            // continue
-        case ConstantsCheckout.CHECKOUT_SHIPPING:
-            // Validate shipping address
-            if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) {
-                showShippingAddress(mOrderSummary.getShippingAddress());
-            }
-            // Validate total
-            if(mOrderSummary != null){
+                // Shipping fees
+                ShoppingCartUtils.setShippingRule(mOrderSummary, mShippingFeeView, mShippingFeeValue, mExtraCostsContainer, mExtraCosts);
+                // continue
+            case ConstantsCheckout.CHECKOUT_SHIPPING:
+                // Validate shipping address
+                if (mOrderSummary.hasShippingAddress()) {
+                    showShippingAddress(mOrderSummary.getShippingAddress());
+                }
+                // Validate total
                 showTotal(mOrderSummary.getTotal());
-            }
-            // continue
-        case ConstantsCheckout.CHECKOUT_BILLING:
-            // Voucher
-            if(mOrderSummary != null){
+                // continue
+            case ConstantsCheckout.CHECKOUT_BILLING:
+                // Voucher
                 showVoucher();
-            }
-            
-        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-        default:
-            // Show cart
-            showCart();
-            if(mCart != null){
-                CheckoutStepManager.showPriceRules(getBaseActivity(),(LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container), mCart.getPriceRules());
-            }
-            break;
+                // continue
+            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+            default:
+                // Show cart
+                showCart();
+                CheckoutStepManager.showPriceRules(getBaseActivity(), (LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container), mOrderSummary.getPriceRules());
+                break;
         }
-        
+
     }
-    
+
     /**
      * Show the current cart
+     *
      * @author sergiopereira
      */
     private void showCart() {
         // Show all items
-        Map<String, ShoppingCartItem> mShopMapItems = mCart.getCartItems();
-        ArrayList<ShoppingCartItem> mShopList = new ArrayList<>(mShopMapItems.values());
+        ArrayList<PurchaseCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
         mProductList.removeAllViews();
-        for (ShoppingCartItem item : mShopList) {
+        for (PurchaseCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());            
+            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
             // Price
             String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
+            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
             ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
@@ -322,7 +303,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     !variation.equalsIgnoreCase(".")) {
                 ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
                 cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
-            } 
+            }
             // Buttons
             View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
             // deleteButton.setVisibility(View.VISIBLE);
@@ -332,19 +313,20 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             mProductList.addView(cartItemView);
         }
         // Sub total
-        mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
-        
-        if(!mCart.hasSumCosts() && mCart.getExtraCosts() != 0d){
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getTotal()));
+
+        if (!mOrderSummary.hasSumCosts() && mOrderSummary.getExtraCosts() != 0d) {
             // Fix NAFAMZ-7848
-            mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(mCart.getExtraCosts()).toString()));
+            mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(mOrderSummary.getExtraCosts()).toString()));
             mExtraCostsContainer.setVisibility(View.VISIBLE);
         } else {
             mExtraCostsContainer.setVisibility(View.GONE);
         }
     }
-    
+
     /**
      * Show the current shipping address
+     *
      * @author sergiopereira
      */
     private void showShippingAddress(Address shippingAddress) {
@@ -356,28 +338,29 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
-        if(!TextUtils.isEmpty(shippingAddress.getRegion())) {
+        if (!TextUtils.isEmpty(shippingAddress.getRegion())) {
             regionString.append(shippingAddress.getRegion()).append(" ");
         }
         regionString.append(shippingAddress.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
 
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+shippingAddress.getPhone());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText("" + shippingAddress.getPhone());
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
         mShippingAddressList.addView(shippingAddressView);
         mShippingAddressView.setVisibility(View.VISIBLE);
     }
-    
+
     /**
      * Show the current shipping method
+     *
      * @author sergiopereira
      */
     private void showShippingMethod(String method) {
         mShippingMethodText.setText(method);
         mShippingMethodView.setVisibility(View.VISIBLE);
     }
-    
+
 //    /**
 //     * Show the shipping fee
 //     *
@@ -394,30 +377,33 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 //
 //        mShippingFeeView.setVisibility(View.VISIBLE);
 //    }
-    
+
     /**
      * Show voucher
+     *
      * @author sergiopereira
      */
     private void showVoucher() {
-        Print.d(TAG, "ORDER VOUCHER: " + mOrderSummary.getDiscountCouponValue());
-        if(mOrderSummary.hasCouponDiscount()) {
-            mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getDiscountCouponValue()));
+        Print.d(TAG, "ORDER VOUCHER: " + mOrderSummary.getCouponDiscount());
+        if (mOrderSummary.hasCouponDiscount()) {
+            mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getCouponDiscount()));
             mVoucherView.setVisibility(View.VISIBLE);
         }
     }
-    
+
     /**
      * Show the current total
+     *
      * @author sergiopereira
      */
-    private void showTotal(String total) {
+    private void showTotal(double total) {
         mTotal.setText(CurrencyFormatter.formatCurrency(total));
         mTotalView.setVisibility(View.VISIBLE);
     }
-    
+
     /**
      * Show dialog to exit from checkout process
+     *
      * @author sergiopereira
      */
     public void showNoItems() {
@@ -441,7 +427,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         dialog.setCancelable(false);
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
-    
+
 
     /**
      * ############# CLICK LISTENER #############
@@ -467,7 +453,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -477,14 +463,15 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         super.onClickRetryButton(view);
         onClickRetryButton();
     }
-    
+
     /**
      * Process the click on retry button.
+     *
      * @author paulo
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -494,38 +481,41 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     /**
      * Process the click on edit cart
+     *
      * @author sergiopereira
      */
     private void onClickEditProdButton() {
         Print.i(TAG, "ON CLICK: EDIT PROD");
-        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHOPPING_CART.toString())) {
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHOPPING_CART.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
+
     /**
      * Process the click on edit address
+     *
      * @author sergiopereira
      */
     private void onClickEditAddessButton() {
         Print.i(TAG, "ON CLICK: EDIT ADDRESS");
-        if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
+
     /**
      * Process the click on edit method
      */
     private void onClickEditMethodButton() {
         Print.i(TAG, "ON CLICK: EDIT METHOD");
-        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
     /**
      * Process the click on delete item on cart
+     *
      * @author sergiopereira
      */
     private void onClickRemoveItemButton(View view) {
@@ -552,57 +542,53 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         Print.i(TAG, "TRIGGER: GET SHOPPING CART");
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
-    
+
     /**
      * Trigger to remove an item from the shopping cart
-     * @author sergiopereira
-     * @param sku
      */
-    private void triggerRemoveItem(String sku){
+    private void triggerRemoveItem(String sku) {
         ContentValues values = new ContentValues();
-        values.put("sku", sku);
+        values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), bundle, this);
     }
-    
+
     /**
      * ############# RESPONSE #############
      */
 
     /**
      * Process the success response
-     * @param bundle
-     * @return
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
             showFragmentContentContainer();
             break;
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-            mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            showOrderSummary();
-            hideActivityProgress();
-            showFragmentContentContainer();
-            break;
-        default:
-            Print.d(TAG, "RECEIVED UNKNOWN EVENT");
-            break;
+            case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+                Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
+                mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                showOrderSummary();
+                hideActivityProgress();
+                showFragmentContentContainer();
+                break;
+            default:
+                Print.d(TAG, "RECEIVED UNKNOWN EVENT");
+                break;
         }
 
         return true;
@@ -610,44 +596,40 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     /**
      * Process the error response
-     * @param bundle
-     * @return
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        
-        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         // Generic error
         if (super.handleErrorEvent(bundle)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-            Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            break;
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            hideActivityProgress();
-            Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-            break;
-        default:
-            Print.d(TAG, "RECEIVED UNKNOWN EVENT");
-            break;
+//        case GET_SHOPPING_CART_ITEMS_EVENT:
+//            Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
+//            break;
+            case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+                hideActivityProgress();
+                Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
+                break;
+            default:
+                Print.d(TAG, "RECEIVED UNKNOWN EVENT");
+                break;
         }
 
         return false;
     }
-
 
 
     /**
@@ -670,6 +652,16 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE");
+        if (mOrderSummary != null) {
+            outState.putParcelable(ConstantsIntentExtra.ORDER_SUMMARY, mOrderSummary);
+        }
+
     }
 
 }

@@ -1,17 +1,14 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -23,11 +20,13 @@ import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
+import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -35,6 +34,7 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,17 +45,11 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     private static final String TAG = MyAccountUserDataFragment.class.getSimpleName();
 
-    private final static int PASSWORD_MIN_LENGTH = 6;
-
     private TextView firstNameText;
 
     private TextView lastNameText;
 
     private TextView emailText;
-
-    private EditText newPasswordText;
-
-    private EditText newPassword2Text;
 
     private DynamicForm dynamicForm;
 
@@ -63,8 +57,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static MyAccountUserDataFragment getInstance() {
         return new MyAccountUserDataFragment();
@@ -219,23 +211,38 @@ public class MyAccountUserDataFragment extends BaseFragment {
      * This method changes the user's password.
      */
     public void changePassword() {
-
-        String newPassword = newPasswordText.getText().toString();
-        if (newPassword.length() < PASSWORD_MIN_LENGTH) {
-            displayErrorHint(getString(R.string.password_new_mincharacters));
-            return;
-        }
-
-        String newPassword2 = newPassword2Text.getText().toString();
-        if (!newPassword.equals(newPassword2)) {
+        if(!checkPasswords()){
             displayErrorHint(getString(R.string.form_passwordsnomatch));
-            return;
+        } else if (!dynamicForm.validate()) {
+            displayErrorHint(getString(R.string.password_new_mincharacters));
+        } else {
+            triggerChangePass(dynamicForm.save());
+            displayErrorHint(null);
         }
-
-        triggerChangePass(dynamicForm.save());
-        //
-        displayErrorHint(null);
     }
+
+    /**
+     * This method checks if both passwords inserted match
+     *
+     * @return true if yes false if not
+     */
+    private boolean checkPasswords() {
+        boolean result = true;
+        Iterator<DynamicFormItem> iterator = dynamicForm.getIterator();
+        String old = "";
+        while (iterator.hasNext()) {
+            DynamicFormItem item = iterator.next();
+            if (item.getType() == FormInputType.password) {
+                if (TextUtils.isEmpty(old)) {
+                    old = item.getValue();
+                } else {
+                    result &= old.equals(item.getValue());
+                }
+            }
+        }
+        return result;
+    }
+
 
     private void displayErrorHint(String hint) {
         if (hint != null) {
@@ -248,18 +255,17 @@ public class MyAccountUserDataFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.d(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return false;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
         switch (eventType) {
-        case GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT:
+        case GET_CHANGE_PASSWORD_FORM_EVENT:
             onSuccessGetChangePasswordFormEvent(bundle);
             return true;
         case CHANGE_PASSWORD_EVENT:
@@ -276,9 +282,9 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     protected boolean onErrorEvent(Bundle bundle) {
         Print.i(TAG, "ON ERROR EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate fragment visibility
-
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return false;
         }
@@ -286,11 +292,11 @@ public class MyAccountUserDataFragment extends BaseFragment {
         if (super.handleErrorEvent(bundle)) {
             return true;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         switch (eventType) {
-            case GET_CHANGE_PASSWORD_FORM_FALLBACK_EVENT:
+            case GET_CHANGE_PASSWORD_FORM_EVENT:
                 onErrorGetChangePasswordFormEvent(bundle);
                 return true;
         case CHANGE_PASSWORD_EVENT:
@@ -331,8 +337,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
         Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
         ((ViewGroup)getView().findViewById(R.id.changePasswordLayout)).addView(dynamicForm.getContainer());
-        newPasswordText = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD_ID).getEditControl();
-        newPassword2Text = (EditText)dynamicForm.getItemByKey(GetChangePasswordFormHelper.PASSWORD2_ID).getEditControl();
     }
 
     @Override

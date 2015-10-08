@@ -3,14 +3,14 @@ package com.mobile.utils.ui;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import java.math.BigDecimal;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- *
+ * <p/>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  *
@@ -22,30 +22,23 @@ public class ShoppingCartUtils {
 
     /**
      * Set shipping and extra costs by rule on shopping cart object
-     *
-     * @param shoppingCart
-     * @param shippingContainer
-     * @param shippingValueTextView
-     * @param extraCostsContainer
-     * @param extraCostsTextView
-     *
      */
-    public static void setShippingRule(ShoppingCart shoppingCart,
+    public static void setShippingRule(PurchaseEntity purchaseEntity,
                                        View shippingContainer,
                                        TextView shippingValueTextView,
                                        View extraCostsContainer,
-                                       TextView extraCostsTextView){
-        if (!shoppingCart.hasSumCosts()) {
-            double extraCosts = shoppingCart.getExtraCosts();
-            double shippingFee = shoppingCart.getShippingValue();
+                                       TextView extraCostsTextView) {
+        if (!purchaseEntity.hasSumCosts()) {
+            double extraCosts = purchaseEntity.getExtraCosts();
+            double shippingFee = purchaseEntity.getShippingValue();
 
-            if(shippingFee != 0d) {
+            if (shippingFee != 0d) {
                 shippingContainer.setVisibility(View.VISIBLE);
                 shippingValueTextView.setText(CurrencyFormatter.formatCurrency(new BigDecimal(shippingFee).toString()));
             } else {
                 shippingContainer.setVisibility(View.GONE);
             }
-            if(extraCosts != 0d){
+            if (extraCosts != 0d) {
                 extraCostsContainer.setVisibility(View.VISIBLE);
                 extraCostsTextView.setText(CurrencyFormatter.formatCurrency(new BigDecimal(extraCosts).toString()));
             } else {
@@ -53,8 +46,8 @@ public class ShoppingCartUtils {
             }
 
         } else {
-            double sumCostsValue = Double.parseDouble(shoppingCart.getSumCostsValue());
-            if(sumCostsValue != 0d){
+            double sumCostsValue = purchaseEntity.getSumCostsValue();
+            if (sumCostsValue != 0d) {
                 shippingContainer.setVisibility(View.VISIBLE);
                 shippingValueTextView.setText(CurrencyFormatter.formatCurrency(new BigDecimal(sumCostsValue).toString()));
             } else {

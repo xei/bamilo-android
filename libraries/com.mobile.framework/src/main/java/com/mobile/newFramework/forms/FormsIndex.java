@@ -30,7 +30,8 @@ public class FormsIndex extends HashMap<String, FormData> implements IJSONSerial
                 JSONObject formDataObject = dataArray.getJSONObject(i);
                 FormData formData = new FormData();
                 formData.initialize(formDataObject);
-                put(formData.getAction(), formData);
+           //     put(formData.getAction(), formData);
+                put(formData.getType(), formData);  //type instead of action: mobapi 1.8
             }
         } catch (JSONException e) {
             e.printStackTrace();

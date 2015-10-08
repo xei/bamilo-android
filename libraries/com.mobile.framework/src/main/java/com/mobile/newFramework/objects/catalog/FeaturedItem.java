@@ -20,23 +20,14 @@ import org.json.JSONObject;
  */
 public class FeaturedItem implements IJSONSerializable, Parcelable {
 
-    private String id;
     private String url;
     private String name;
     protected String imageUrl;
 
     public FeaturedItem() {
-        this.id = "";
         this.url = "";
         this.name = "";
         this.imageUrl = "";
-    }
-
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
     }
 
     /**
@@ -67,25 +58,14 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        id = jsonObject.optString(RestConstants.JSON_ID_TAG);
-
-        url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-
+        url = jsonObject.optString(RestConstants.URL);
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-
+        imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         // concat brand and name instead of using only name
         String brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(brand)) {
             name = brand + " " + name;
         }
-
-        if (name.trim().equals("") || url.trim().equals("")) {
-//            Log.d("Featured Items", "Item name = " + name + "\r\nItem url = " + url);
-            return false;
-        }
-
-        imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-
         return true;
     }
 
@@ -99,7 +79,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put(RestConstants.JSON_URL_TAG, url);
+            jsonObject.put(RestConstants.URL, url);
             jsonObject.put(RestConstants.JSON_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_IMAGE_TAG, imageUrl);
 
@@ -121,7 +101,6 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 	 */
 
     protected FeaturedItem(Parcel in) {
-        id = in.readString();
         url = in.readString();
         name = in.readString();
         imageUrl = in.readString();
@@ -134,7 +113,6 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
         dest.writeString(url);
         dest.writeString(name);
         dest.writeString(imageUrl);

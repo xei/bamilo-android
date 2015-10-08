@@ -15,19 +15,15 @@ public interface IFormField {
 
     String getName();
 
-    InputType getInputType();
+    FormInputType getInputType();
 
     String getLabel();
 
     String getLinkText();
 
+    String getFormat();
+
     Map<String, String> getDataSet();
-
-    ArrayList<RelatedFieldOption> getRelatedFieldOptions();
-
-    int getPreSelectedRelatedOptionPosition();
-
-    String getRelatedFieldKey();
 
     void setOnDataSetReceived(OnDataSetReceived listener);
 
@@ -39,12 +35,18 @@ public interface IFormField {
 
     Map<String, IFormField> getSubFormFields();
 
-    void setSubFormFields(Map<String, IFormField> formFields);
-
     Map<String, String> getDataCalls();
 
-    String getScenario();
-
     Map<String, String> getDateSetRating();
+
+    IFormField getRelatedField();
+
+    IFormField getParentField();
+
+    void setParentField(IFormField formField);
+
+    ArrayList<IFormField> getOptions();
+
+    boolean isDefaultSelection();
 
 }

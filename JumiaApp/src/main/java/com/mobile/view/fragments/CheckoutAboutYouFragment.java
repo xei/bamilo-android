@@ -28,12 +28,12 @@ import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.helpers.session.GetSignUpFormHelper;
-import com.mobile.helpers.session.SetSignupHelper;
+import com.mobile.helpers.session.SetSignUpHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.forms.FormInputType;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -102,13 +102,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     private int retryForms = 0;
 
-    private FacebookTextView mLoginFacebookButton;
-
-    private FacebookTextView mSignUpFacebookButton;
-
-    private View mFacebookLoginDivider;
-
-    private View mFacebookSignUpDivider;
     /**
      * Get the instance of CheckoutAboutYouFragment
      *
@@ -122,7 +115,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you_main,
                 R.string.checkout_label,
@@ -152,12 +145,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON CREATE");
         // Retain the fragment
         setRetainInstance(true);
-
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
-
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
     }
 
     /*
@@ -192,10 +180,10 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         // Sign button
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
         // FACEBOOK
-        mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
-        mSignUpFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
-        mFacebookLoginDivider = view.findViewById(R.id.checkout_login_form_divider_facebook);
-        mFacebookSignUpDivider = view.findViewById(R.id.checkout_signup_form_divider_facebook);
+        FacebookTextView mLoginFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
+        FacebookTextView mSignUpFacebookButton = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
+        View mFacebookLoginDivider = view.findViewById(R.id.checkout_login_form_divider_facebook);
+        View mFacebookSignUpDivider = view.findViewById(R.id.checkout_signup_form_divider_facebook);
         // Set Facebook
         FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, mFacebookLoginDivider, mSignUpFacebookButton, mFacebookSignUpDivider);
         // Callback registration
@@ -316,11 +304,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             savedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
-    }
-
-
-    private void showRetryLayout() {
-        showFragmentErrorRetry();
     }
 
     /**
@@ -474,7 +457,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param form The login form
      */
     private boolean loadForm(Form form) {
-        Print.i(TAG, "LOAD FORM: " + form.name);
+        Print.i(TAG, "LOAD FORM");
         loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
@@ -492,7 +475,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
 
-                if (fillEmail && InputType.email.equals(item.getType())) {
+                if (fillEmail && FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -501,12 +484,13 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
 
-                if (InputType.email.equals(item.getType())) {
+                if (FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
         }
         loginFormContainer.refreshDrawableState();
+        // Show container
         showFragmentContentContainer();
         Print.i(TAG, "code1 loading form completed : " + loginForm.getControlsCount());
 
@@ -520,13 +504,13 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @param form The sign up form
      */
     private boolean loadSignUpForm(Form form) {
-        Print.i(TAG, "LOAD SIGN UP FORM: " + form.name);
+        Print.i(TAG, "LOAD SIGN UP FORM");
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
         signupFormContainer.refreshDrawableState();
         // Show order summary only with cart info
-        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, null);
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, JumiaApplication.INSTANCE.getCart());
         // Show container
         showFragmentContentContainer();
         return true;
@@ -603,9 +587,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     /**
      * Trigger used to login an user
-     *
-     * @param values
-     * @param saveCredentials
      */
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER: LOGIN");
@@ -617,31 +598,22 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     /**
      * Trigger used to sign up an user
-     *
-     * @param values
-     * @param saveCredentials
      */
     private void triggerSignup(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER: SIGN UP " + values.toString());
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEvent(new SetSignupHelper(), bundle, this);
+        triggerContentEvent(new SetSignUpHelper(), bundle, this);
     }
 
     /**
      * Trigger used to perform a login/signup from Facebook
-     *
-     * @param values
-     * @param saveCredentials
      */
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER: FACEBOOK LOGIN");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, saveCredentials);
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, this);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values, saveCredentials), this);
     }
 
     /**
@@ -706,7 +678,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         // Get next step
         if (mNextFragment == null || mNextFragment == FragmentType.UNKNOWN) {
             Print.w(TAG, "NEXT STEP IS NULL");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
+            super.showFragmentErrorRetry();
         } else {
             Print.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Clean stack for new native checkout on the back stack (auto login)
@@ -736,10 +708,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      */
 
     /**
-     * Filter the response bundle
-     *
-     * @param bundle
-     * @return true/false
+     * Filter the success response bundle
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         Print.d(TAG, "ON SUCCESS EVENT");
@@ -845,8 +814,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     }
 
     /**
-     * @param bundle
-     * @return
+     * Filter the error response bundle
      */
     protected boolean onErrorEvent(Bundle bundle) {
 
@@ -889,9 +857,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             case LOGIN_EVENT:
                 // Clear credentials case auto login failed
                 clearCredentials();
-                // Validate type
-                String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
-                TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
+                TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, GTMValues.EMAILAUTH);
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
 
                     if (onAutoLogin) {
@@ -971,10 +937,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     /**
      * Method used to track the login success
-     *
-     * @param customer
-     * @param isFacebookLogin
-     * @author sergiopereira
      */
     private void trackLoginSuccess(Customer customer, boolean isFacebookLogin) {
         Bundle params = new Bundle();
@@ -987,14 +949,11 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     /**
      * Tracking the Checkout started
-     *
-     * @param customerId
-     * @author sergiopereira
      */
     private void trackCheckoutStarted(String customerId) {
         try {
-            ShoppingCart cart = JumiaApplication.INSTANCE.getCart();
-            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking());
+            PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking(), cart.getAttributeSetIdList());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -1006,8 +965,6 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
 
     /**
      * Dialog used to show an error
-     *
-     * @param errors
      */
     private boolean showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
         Print.d(TAG, "SHOW ERROR DIALOG");

@@ -28,8 +28,9 @@ public class ConstantsIntentExtra {
 
     // ########### Products ###########
     public static final String CONTENT_URL = mPackage + "ContentUrl";
-    public static final String PRODUCT_URL = mPackage + "ProductUrl";
+    public static final String PRODUCT_SKU = mPackage + "ProductSku";
     public static final String IS_ZOOM_AVAILABLE = mPackage + "ZoomAvailable";
+    public static final String INFINITE_SLIDE_SHOW = mPackage + "InfiniteScroll";
     public static final String SHOW_HORIZONTAL_LIST_VIEW = mPackage + "ShowHorizontalListView";
     public static final String SHOW_RELATED_ITEMS = mPackage + "ShowRelatedItems";
     public static final String IS_RELATED_ITEM = mPackage + "RelatedItem";
@@ -38,6 +39,7 @@ public class ConstantsIntentExtra {
     public static final String IMAGE_LIST = mPackage + "ProductImages";
     public static final String PRODUCT = mPackage + "Product";
     public static final String PRODUCT_GALLERY_POS = mPackage + "ProductPosition";
+    public static final String PRODUCT_BRAND = mPackage + "brand";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
@@ -69,6 +71,7 @@ public class ConstantsIntentExtra {
 
     // ########### Catalog ##############
     public static final String CATALOG_PAGE = mPackage + "catalogPage";
+    public static final String CATALOG_QUERY_VALUES = mPackage + "queryValues";
     public static final String CATALOG_FILTER_VALUES = mPackage + "catalogFilter";
     public static final String CATALOG_FILTER_BRAND = mPackage + "catalogBrand";
     public static final String CATALOG_SORT = mPackage + "catalogSort";
@@ -101,12 +104,16 @@ public class ConstantsIntentExtra {
     // ########### MY ORDER ##############
     public static final String MY_ORDER_POS = "position";
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
+    public static final String ORDER_SUMMARY = mPackage + "OrderSummary";
 
     // ############ BANNER TRACKING ###############
     public static final String BANNER_TRACKING_TYPE = "bannerGroupType";
 
     // ########### MY ORDER ##############
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
+
+    public static final String DATA = mPackage + "data";
+    public static final String FLAG_1 = mPackage + "flag1";
 
 
 }

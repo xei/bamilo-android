@@ -6,7 +6,6 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -15,7 +14,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -37,8 +35,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
 
-    private OrderSummary orderSummary;
-
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -53,7 +49,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
      * @author sergiopereira
      */
     public CheckoutCreateAddressFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
@@ -63,11 +59,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
-
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
     }
 
     @Override
@@ -93,7 +85,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
     }
 
     @Override
@@ -137,19 +129,19 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
         super.onGetCreateAddressFormErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetRegionsErrorEvent(Bundle bundle) {
         super.onGetRegionsErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
     protected void onGetCitiesErrorEvent(Bundle bundle) {
         super.onGetCitiesErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     @Override
@@ -157,15 +149,14 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.onCreateAddressErrorEvent(bundle);
         //GTM
         TrackerDelegator.trackAddAddress(false);
-
+        // Error
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
-            showFragmentContentContainer();
         } else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CREATE_ADDRESS_EVENT" + errorCode);
+            super.showUnexpectedErrorWarning();
         }
+        showFragmentContentContainer();
     }
 }

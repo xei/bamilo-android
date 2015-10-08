@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.LayoutDirection;
 import android.view.Gravity;
 import android.view.View;
@@ -37,8 +39,8 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.FieldValidation;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.forms.InputType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -46,13 +48,11 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
-import com.mobile.utils.dialogfragments.DialogDatePickerFragment;
-import com.mobile.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
+import com.mobile.utils.datepicker.DatePickerDialog;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -85,9 +86,12 @@ import java.util.regex.Pattern;
 public class DynamicFormItem {
     private final static String TAG = DynamicFormItem.class.getSimpleName();
 
+    public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
+
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;
+    private static String DATE_FORMAT = "dd-MM-yyyy";
 
     private Context context;
     private DynamicForm parent;
@@ -102,7 +106,10 @@ public class DynamicFormItem {
     //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
     //private TextWatcher textWatcher;
-    private DialogDatePickerFragment dialogDate;
+    private DatePickerDialog dialogDate;
+    private int selectedYear;
+    private int selectedMonthOfYear;
+    private int selectedDayOfMoth;
     private int errorColor;
     //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
@@ -114,7 +121,6 @@ public class DynamicFormItem {
      * @param context The context where this control is to be inserted. If the FormItem type date should
      *                be used, an activity needs to be given, as the date type wants to open a dialog.
      * @param entry   The entry that corresponds to this control on the form return by the framework
-     * @return
      */
     public DynamicFormItem(DynamicForm parent, Context context, IFormField entry) {
         this.context = context;
@@ -216,7 +222,7 @@ public class DynamicFormItem {
      *
      * @return the type of the user control represented
      */
-    public InputType getType() {
+    public FormInputType getType() {
         return this.entry.getInputType();
     }
 
@@ -249,11 +255,8 @@ public class DynamicFormItem {
                 case checkBox:
                     buildCheckBoxInflated(params, controlWidth);
                     break;
-                case checkBoxList:
+                case checkBoxLink:
                     buildCheckBoxForTerms(params, controlWidth);
-                    break;
-                case radioRelated:
-                    buildRelatedRadioGroup();
                     break;
                 case radioGroup:
                     buildRadioGroup(params, controlWidth);
@@ -261,21 +264,18 @@ public class DynamicFormItem {
                 case list:
                     buildList(params, controlWidth);
                     break;
-                case metadate:
+                case metadata:
                 case date:
-                    buildDate(params, controlWidth);
+                    buildDate(controlWidth);
                     break;
                 case number:
-                    boolean datePart = isDatePart();
-                    controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : context.getResources().getDimensionPixelSize(R.dimen.form_date_width);
-                    params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    if (datePart) {
-                        params.setMargins(0, 0, (int) (10 * scale), 0);
-                    }
                 case email:
                 case text:
                 case password:
-                    buildText(params, controlWidth);
+                    buildEditableText(params, controlWidth);
+                    break;
+                case relatedNumber:
+                    buildRelatedNumber(params, controlWidth);
                     break;
                 case hide:
                     buildHide(params, controlWidth);
@@ -283,11 +283,55 @@ public class DynamicFormItem {
                 case rating:
                     buildRatingOptionsTerms(params, controlWidth);
                     break;
+                case errorMessage:
+                    buildText(params, controlWidth);
+                    break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
                     break;
             }
         }
+    }
+
+    /**
+     * Create a related number composed by a text and radio group.
+     */
+    private void buildRelatedNumber(RelativeLayout.LayoutParams params, int controlWidth) {
+        // Create container
+        LinearLayout container = new LinearLayout(this.context);
+        container.setOrientation(LinearLayout.VERTICAL);
+        this.control = container;
+        // Create text field
+        buildEditableText(params, controlWidth);
+        // Create radio group
+        buildRelatedRadioGroup(container, entry.getRelatedField());
+    }
+
+
+    /**
+     * Create an horizontal radio group
+     */
+    private void buildRelatedRadioGroup(ViewGroup container, final IFormField entry) {
+        // Create radio group
+        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
+        radioGroup.setTag(RELATED_RADIO_GROUP_TAG);
+        // Set check listener
+        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                IFormField parent = entry.getParentField();
+                FieldValidation validation = entry.getOptions().get(checkedId).getValidation();
+                if(parent != null && validation != null) {
+                    validation.isRequired = parent.getValidation().isRequired;
+                    parent.setValidation(validation);
+                    Print.i(TAG, "RELATED FIELD APPLY VALIDATION: " + validation.regex);
+                }
+            }
+        });
+        // Set options
+        radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0);
+        // Add group to container
+        container.addView(radioGroup);
     }
 
     /**
@@ -338,37 +382,38 @@ public class DynamicFormItem {
 
                 }
                 break;
-            case metadate:
+            case metadata:
             case date:
-                dialogDate.setDate((String) value);
+                String date = (String) value;
+                setDialogDate(date);
                 break;
             case email:
             case text:
             case password:
+            case relatedNumber:
             case number:
                 String text = null == value ? "" : (String) value;
                 ((EditText) this.dataControl).setText(text);
-                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
-                try {
-                    //#RTL
-                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                // TODO: VALIDATE IF THIS IS NECESSARY
+//                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
+//                try {
+//                    //#RTL
+//                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+//                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
                 this.errorControl.setVisibility(View.GONE);
                 this.dataControl.setContentDescription(this.entry.getId());
-
                 if (text.length() == 0) {
-                    this.mandatoryControl
-                            .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                                    : View.GONE);
+                    this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
                 } else {
                     this.mandatoryControl.setVisibility(View.GONE);
                 }
-
                 break;
             case hide:
                 String text1 = (null == value) ? "" : (String) value;
@@ -428,7 +473,7 @@ public class DynamicFormItem {
                 ((CheckBox) this.dataControl).setChecked(checked);
 
                 break;
-            case checkBoxList:
+            case checkBoxLink:
                 boolean checkedList = inStat.getBoolean(getKey());
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
 
@@ -445,20 +490,16 @@ public class DynamicFormItem {
 
                 break;
 
-            case metadate:
+            case metadata:
             case date:
                 String date = inStat.getString(getKey());
-                this.dialogDate.setDate(date);
-                GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(),
-                        this.dialogDate.getMonth(), this.dialogDate.getDay());
-                Date d = new Date(cal.getTimeInMillis());
-                String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) this.dataControl).setText(dateFormated);
-                this.mandatoryControl.setVisibility(View.GONE);
+                ((Button) this.dataControl).setText(date);
+                setDialogDate(date);
                 break;
             case email:
             case text:
             case password:
+            case relatedNumber:
             case number:
                 String text = inStat.getString(getKey());
 
@@ -512,7 +553,7 @@ public class DynamicFormItem {
                 ((CheckBox) this.dataControl).setChecked(checked);
 
                 break;
-            case checkBoxList:
+            case checkBoxLink:
                 boolean checkedList = inStat.getAsBoolean(getName());
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
 
@@ -529,20 +570,16 @@ public class DynamicFormItem {
 
                 break;
 
-            case metadate:
+            case metadata:
             case date:
-                String date = inStat.getAsString(getName());
-                this.dialogDate.setDate(date);
-                GregorianCalendar cal = new GregorianCalendar(this.dialogDate.getYear(),
-                        this.dialogDate.getMonth(), this.dialogDate.getDay());
-                Date d = new Date(cal.getTimeInMillis());
-                String dateFormated = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) this.dataControl).setText(dateFormated);
-                this.mandatoryControl.setVisibility(View.GONE);
-                break;
+                String date = inStat.getAsString(getKey());
+                ((Button) this.dataControl).setText(date);
+                setDialogDate(date);
+            break;
             case email:
             case text:
             case password:
+            case relatedNumber:
             case number:
                 String text = inStat.getAsString(getName());
 
@@ -579,8 +616,6 @@ public class DynamicFormItem {
 
     /**
      * fill rating bar with saved values
-     *
-     * @param inStat
      */
     private void loadRatingState(ContentValues inStat) {
         Iterator it = this.entry.getDateSetRating().entrySet().iterator();
@@ -604,12 +639,8 @@ public class DynamicFormItem {
             case checkBox:
                 result = ((CheckBox) this.dataControl).isChecked() ? "1" : "0";
                 break;
-            case checkBoxList:
+            case checkBoxLink:
                 result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked() ? "1" : "0";
-                break;
-            case radioRelated:
-                int selectedIndex = ((RadioGroupLayout) this.dataControl).getSelectedIndex();
-                result = entry.getRelatedFieldOptions().get(selectedIndex).getValue();
                 break;
             case radioGroup:
                 String value;
@@ -634,14 +665,25 @@ public class DynamicFormItem {
                     }
                 }
                 break;
-            case metadate:
+            case metadata:
             case date:
-                result = dialogDate.getDate();
+                // Case selected a date
+                if (selectedYear != 0) {
+                    GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
+                    Date d = new Date(cal.getTimeInMillis());
+                //    result = DateFormat.format(DATE_FORMAT, d).toString();
+                    // its necessary because of arabic languages
+                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
+                    result = dateFormat.format(d);
+                } else {
+                    result = "";
+                }
                 break;
             case hide:
             case email:
             case text:
             case password:
+            case relatedNumber:
             case number:
                 result = ((EditText) this.dataControl).getText().toString();
                 break;
@@ -666,7 +708,7 @@ public class DynamicFormItem {
             case checkBox:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl).isChecked());
                 break;
-            case checkBoxList:
+            case checkBoxLink:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
                 break;
             case radioGroup:
@@ -676,9 +718,11 @@ public class DynamicFormItem {
                     outState.putInt(getKey(), ((RadioGroupLayout) this.dataControl).getSelectedIndex());
                 }
                 break;
-            case metadate:
+            case metadata:
             case date:
-                outState.putString(getKey(), dialogDate.getDate());
+                if (this.dataControl instanceof Button) {
+                    outState.putString(getKey(), ((Button) this.dataControl).getText().toString());
+                }
                 break;
             case hide:
             case email:
@@ -709,25 +753,14 @@ public class DynamicFormItem {
                     if (this.entry.getValidation().isRequired())
                         result = ((CheckBox) this.dataControl).isChecked();
                     break;
-                case checkBoxList:
+                case checkBoxLink:
                     result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
                     break;
-                case radioRelated:
                 case radioGroup:
                     boolean valid;
                     if (this.dataControl instanceof IcsSpinner) {
                         valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
                     } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                        /*-
-                        if (childDynamicForm != null && childDynamicForm.size() > 0) {
-                            for (int i = 0; i < childDynamicForm.size(); i++) {
-                                if (!childDynamicForm.get(i).validate()) {
-                                    valid = false;
-                                    break;
-                                }
-                            }
-                        }
-                        */
                         Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
@@ -754,22 +787,21 @@ public class DynamicFormItem {
                         setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel());
                     }
                     break;
-                case metadate:
+                case metadata:
                 case date:
-                    result = dialogDate.isSetOnce();
+                    if (this.entry.getValidation().isRequired()) {
+                        if (TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
+                            result = false;
+                        }
+                    }
                     break;
                 case email:
                 case text:
                 case password:
-                case number: {
-                    // Get value
-                    String value = ((EditText) this.dataControl).getText().toString();
-                    // TODO: REMOVE THIS APPROACH TO SET THE RELATED regex (TEMPORARY SOLUTION)
-                    String regex = (String) this.dataControl.getTag(R.id.regex);
-                    // Validate the value
-                    result = validateStringToPattern(value, regex);
+                case relatedNumber:
+                case number:
+                    result = validateStringToPattern(((EditText) this.dataControl).getText().toString());
                     break;
-                }
                 case hide:
                     break;
                 case rating:
@@ -784,7 +816,8 @@ public class DynamicFormItem {
         return result;
     }
 
-    private boolean validateStringToPattern(String value, String regexFromRelatedField) {
+
+    private boolean validateStringToPattern(String text) {
         boolean result;
 
         // SHOP: added empty space to prevent string from being cutted on burmese
@@ -792,25 +825,28 @@ public class DynamicFormItem {
         if (context != null && context.getResources().getBoolean(R.bool.is_shop_specific))
             space = " ";
 
-        if (value.length() == 0) {
+        // Case empty
+        if (TextUtils.isEmpty(text)) {
             result = !this.entry.getValidation().isRequired();
             setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel() + space);
-        } else {
-            if (this.entry.getValidation().min > 0 && value.length() < this.entry.getValidation().min) {
-                setErrorText(this.entry.getLabel() + " " + context.getResources().getString(R.string.form_texttoshort) + space);
-                result = false;
-            } else if (this.entry.getValidation().max > 0 && value.length() > this.entry.getValidation().max) {
-                setErrorText(this.entry.getLabel() + " " + context.getResources().getString(R.string.form_texttolong) + space);
-                result = false;
-            } else {
-                // TODO: REMOVE THIS regexFromRelatedField (TEMPORARY SOLUTION)
-                String regex = !TextUtils.isEmpty(regexFromRelatedField) ? regexFromRelatedField : this.entry.getValidation().regex;
-                //Log.i(TAG, "RADIO RELATED: " + this.entry.getKey() + " regex validate " + regex);
-                Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-                setErrorText("The " + this.entry.getLabel() + " " + context.getString(R.string.dynamic_errortext) + space);
-                Matcher matcher = pattern.matcher(value);
-                result = matcher.find();
-            }
+        }
+        // Case too short
+        else if (this.entry.getValidation().min > 0 && text.length() < this.entry.getValidation().min) {
+            setErrorText(this.entry.getLabel() + " " + context.getResources().getString(R.string.form_texttoshort) + space);
+            result = false;
+        }
+        // Case too long
+        else if (this.entry.getValidation().max > 0 && text.length() > this.entry.getValidation().max) {
+            setErrorText(this.entry.getLabel() + " " + context.getResources().getString(R.string.form_texttolong) + space);
+            result = false;
+        }
+        // Case no match regex
+        else {
+            String regex = this.entry.getValidation().regex;
+            Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            setErrorText("The " + this.entry.getLabel() + " " + context.getString(R.string.dynamic_errortext) + space);
+            Matcher matcher = pattern.matcher(text);
+            result = matcher.find();
         }
         return result;
     }
@@ -840,7 +876,7 @@ public class DynamicFormItem {
                 if (this.entry.getValidation().isRequired())
                     result = ((CheckBox) this.dataControl).isChecked();
                 break;
-            case checkBoxList:
+            case checkBoxLink:
 
                 if (!((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked())
                     result = !this.entry.getValidation().isRequired();
@@ -858,33 +894,25 @@ public class DynamicFormItem {
                     valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                 }
 
-                if (!valid) {
-                    result = !this.entry.getValidation().isRequired();
-                } else {
-                    result = valid;
-                }
+                result = (!valid) ? !this.entry.getValidation().isRequired() : valid;
                 break;
 
-            case metadate:
+            case metadata:
             case date:
-
-                valid = dialogDate.isSetOnce();
-
-                if (!valid)
-                    result = !this.entry.getValidation().isRequired();
-                else
-                    result = valid;
-                break;
+                if (this.entry.getValidation().isRequired()) {
+                    if (com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) this.dataControl).getText().toString())) {
+                        result = false;
+                    }
+                }
+            break;
             case email:
             case text:
             case password:
+            case relatedNumber:
             case number:
-                String value = ((EditText) this.dataControl).getText().toString();
-
-                if (value.length() == 0) {
+                if (((EditText) this.dataControl).getText().length() == 0) {
                     result = !this.entry.getValidation().isRequired();
                 }
-
                 break;
             case hide:
                 break;
@@ -912,7 +940,7 @@ public class DynamicFormItem {
         Iterator it = this.entry.getDateSetRating().entrySet().iterator();
         int count = 1;
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
+            it.next();
 
             float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
 
@@ -952,12 +980,9 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxForTerms(RelativeLayout.LayoutParams params, int controlWidth) {
-
         this.control.setLayoutParams(params);
-
         // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
@@ -970,8 +995,11 @@ public class DynamicFormItem {
         CheckBox mCheckBox = (CheckBox)this.dataControl.findViewById(R.id.checkbox_terms);
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
-        mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry
-                .getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
+
+    //    int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+    //    mCheckBox.setPadding(formPadding, 0, 0, 0);
+        mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
+
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
         }
@@ -981,10 +1009,15 @@ public class DynamicFormItem {
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
 
+        //needed: change parent layout to match_parent to be able to align this component to right
+      if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+          LinearLayout.LayoutParams paramsAux = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+          this.dataControl.setLayoutParams(paramsAux);
+      }
+
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
-
             //mandatory control
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -1000,7 +1033,7 @@ public class DynamicFormItem {
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
             this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1036,9 +1069,7 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
         this.control.setLayoutParams(params);
         //#RTL
         if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -1069,7 +1100,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setId(parent.getNextId());
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1092,7 +1123,10 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-        if (this.entry.getValue().equals("1")) {
+   //     formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+  //      ((CheckBox) this.dataControl).setPadding(formPadding, 0, 0, 0);
+        // Set default value
+        if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
 
@@ -1118,7 +1152,7 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
+        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().getFields().get(0).getPaymentMethodsField() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
         } else {
@@ -1137,29 +1171,20 @@ public class DynamicFormItem {
         }
     }
 
-    /**
-     * Build a related RadioGroup that applies a new validation for respective related form field.
-     * TODO: This is a temporary solution
-     */
-    private void buildRelatedRadioGroup() {
-        createRelatedRadioGroup();
-    }
 
     private void buildList(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
-        // data controls
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
-
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
         createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
     }
 
-    private void buildDate(RelativeLayout.LayoutParams params, int controlWidth) {
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+    private void buildDate(int controlWidth) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.topMargin = 6;
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
@@ -1175,11 +1200,13 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
+
+        //mobapi 1.8 change: entry.getValidation().isRequired() throws exception because date is a metafield without subfields, birthday is not mandatory
+  /*      params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1206,40 +1233,112 @@ public class DynamicFormItem {
         if (this.entry.getKey().equals("birthday"))
             dialogTitle = context.getString(R.string.register_dialog_birthday);
         else
-            dialogTitle = this.entry.getLabel();
+            dialogTitle = this.entry.getLabel();*/
 
-        OnDatePickerDialogListener pickerListener = new OnDatePickerDialogListener() {
+        //changed mobapi 1.8:
+        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(this.entry.getFormat())){
+            DATE_FORMAT = this.entry.getFormat();
+        }
+        dataContainer.addView(this.dataControl);
+        String entryLabel = this.entry.getLabel(), entryKey = this.entry.getKey(); //dialogTitle = entryLabel,
+
+        Print.i("ENTERED BIRTHDAY", " HERE ");
+        String text = context.getString(R.string.register_birthday);
+        ((Button) this.dataControl).setHint(text);
+        ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
+        ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
+        this.dataControl.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
+
+        // Is required
+        if (entry.getValidation() != null && entry.getValidation().isRequired()) {
+            this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+            //#RTL
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            ((ViewGroup) this.control).addView(this.errorControl);
+            // Add *
+            params.rightMargin = MANDATORYSIGNALMARGIN;
+            this.mandatoryControl = new TextView(this.context);
+            this.mandatoryControl.setLayoutParams(params);
+            this.mandatoryControl.setText("*");
+            this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
+            this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+            this.mandatoryControl.setVisibility(View.VISIBLE);
+            dataContainer.addView(this.mandatoryControl);
+        }
+
+        final DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
-            public void onDatePickerDialogSelect(int year, int month, int day) {
-                Print.i(TAG, "code1date : year : " + year);
-                GregorianCalendar cal = new GregorianCalendar(year, month, day);
-                Date d = new Date(cal.getTimeInMillis());
-                String date = DateFormat.getDateInstance(DateFormat.LONG).format(d);
-                ((Button) DynamicFormItem.this.dataControl).setText(date);
-                Print.i(TAG, "code1date : date : " + date);
-                DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+            public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+                selectedYear = year;
+                selectedMonthOfYear = monthOfYear;
+                selectedDayOfMoth = dayOfMonth;
+                Calendar currentCalendar = Calendar.getInstance();
+                GregorianCalendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                Print.i(TAG, "selected Date : year: " + year +" month: "+ monthOfYear +" day: "+ dayOfMonth);
+
+                int controlValue =  cal.compareTo(currentCalendar);
+                Print.i(TAG, "controlValue:" +controlValue);
+                if(controlValue == 0 || controlValue == 1){
+                    Toast.makeText(context, context.getString(R.string.birthday_error),Toast.LENGTH_SHORT).show();
+                } else {
+                    Date d = new Date(cal.getTimeInMillis());
+                    String date = DateFormat.format(DATE_FORMAT, d).toString();
+                    ((Button) DynamicFormItem.this.dataControl).setText(date);
+                    Print.i(TAG, "code1date : date : " + date);
+                    if(mandatoryControl != null)    //change
+                        DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+
+                    dialogDate.dismiss();
+                }
+
             }
+
         };
 
-        this.dialogDate = DialogDatePickerFragment.newInstance((BaseActivity) context,
-                pickerListener, String.valueOf(dataControl.getId()), dialogTitle, 0, 0, 0);
+        Calendar c = Calendar.getInstance();
+        this.dialogDate = DatePickerDialog.newInstance(pickerListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        this.dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+
         this.dataControl.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (!dialogDate.isVisible())
+                if (!dialogDate.isVisible()) {
+                    Calendar c = Calendar.getInstance();
+                    if(com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) DynamicFormItem.this.dataControl).getText().toString())){
+                        dialogDate.setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                        dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+                    } else {
+                        dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
+                        setDialogDate(((Button) DynamicFormItem.this.dataControl).getText().toString());
+                    }
                     dialogDate.show(((BaseActivity) context).getSupportFragmentManager(), null);
+                }
             }
         });
 
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
+
     private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
+        this.control.setPadding(0, 10, 0, 10);
+        ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
 
+        TextView textView = (TextView)View.inflate(this.context, R.layout.text_view_info, null);
+        textView.setText(entry.getValue());
+        ((ViewGroup) this.control).addView(textView);
+    }
+
+    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
+        this.control.setLayoutParams(params);
+        // Create text
         ViewGroup dataContainer = createTextDataContainer(controlWidth);
+
         int dataControlId = dataContainer.getId();
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
@@ -1385,7 +1484,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1461,10 +1560,6 @@ public class DynamicFormItem {
 
     /**
      * Create an horizontal radio group
-     *
-     * @param MANDATORYSIGNALSIZE
-     * @param params
-     * @param dataContainer
      */
     private void createRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
         //Preselection
@@ -1509,7 +1604,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1521,50 +1616,14 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
+
         radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
 
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
     /**
-     * Generates a related RadioGroup that applies a new validation for respective related form field.
-     * TODO: This is a temporary solution
-     */
-    private void createRelatedRadioGroup() {
-        Print.i(TAG, "CREATE RELATED RADIO GROUP");
-        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
-        radioGroup.setItems(this.entry.getRelatedFieldOptions(), RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
-        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                for (int i = 0; i < group.getChildCount(); i++) {
-                    View view = group.getChildAt(i);
-                    if (view.getId() == checkedId) {
-                        DynamicFormItem related = parent.getItemByKey(entry.getRelatedFieldKey());
-                        if (related != null) {
-                            // TODO: UPDATE THIS FORM FIELD (TEMPORARY SOLUTION)
-                            related.dataControl.setTag(R.id.regex, entry.getRelatedFieldOptions().get(i).getRules().regex);
-                            //Log.i(TAG, "RADIO RELATED: " + related.entry.getKey() + " new regex " + related.entry.getValidation().regex);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
-        // Set selected as default
-        radioGroup.setSelection(entry.getPreSelectedRelatedOptionPosition());
-        // Add group
-        this.dataControl = radioGroup;
-        this.dataControl.setId(parent.getNextId());
-        ((ViewGroup) this.control).addView(dataControl);
-    }
-
-    /**
      * Generates a Vertical RadioGroup
-     *
-     * @param MANDATORYSIGNALSIZE - tells if is optional or mandatory
-     * @param params
-     * @param dataContainer
      */
     private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
@@ -1583,11 +1642,11 @@ public class DynamicFormItem {
                     foundDefaultSelect = true;
                 }
             }
-            if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
-                HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
+            if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
                     Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
-                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).fields.size() > 0 || paymentMethodsField.get(key).subForms.size() > 0)) {
+                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubForms().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
                 }
@@ -1611,7 +1670,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
@@ -1648,9 +1707,6 @@ public class DynamicFormItem {
 
     /**
      * Function responsible for constructing the ratings form layout
-     *
-     * @param params
-     * @param controlWidth
      */
     private void buildRatingOptionsTerms(RelativeLayout.LayoutParams params, int controlWidth) {
         LinearLayout linearLayout = new LinearLayout(context);
@@ -1694,7 +1750,7 @@ public class DynamicFormItem {
          * because that option is only available on the  write product review screen and not on write seller review screen.
          */
 
-        if (!JumiaApplication.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
+        if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
             addCustomRatingCheckbox(linearLayout, params, controlWidth);
         }
         this.dataControl = linearLayout;
@@ -1713,10 +1769,6 @@ public class DynamicFormItem {
 
     /**
      * function that adds a checkbox to the rating layout, checkbox that control the swithcing of forms
-     *
-     * @param linearLayout
-     * @param params
-     * @param controlWidth
      */
     private void addCustomRatingCheckbox(LinearLayout linearLayout, RelativeLayout.LayoutParams params, int controlWidth) {
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
@@ -1749,8 +1801,8 @@ public class DynamicFormItem {
 
     @SuppressLint("SimpleDateFormat")
     public void addSubFormFieldValues(ContentValues model) {
-        if (this.entry.getInputType() == InputType.metadate) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (this.entry.getInputType() == FormInputType.metadata) {
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             String dateString = this.getValue();
             Date date;
             try {
@@ -1767,10 +1819,10 @@ public class DynamicFormItem {
             int month = cal.get(Calendar.MONTH) + 1;
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-            Map<String, IFormField> subFields = this.entry.getSubFormFields();
-            model.put(subFields.get("year").getName(), String.valueOf(year));
-            model.put(subFields.get("month").getName(), String.valueOf(month));
-            model.put(subFields.get("day").getName(), String.valueOf(day));
+//            model.put(this.entry.getId(), String.valueOf(day)+"-"+ String.valueOf(month)+"-"+String.valueOf(year));
+            model.put(this.entry.getId(), dateString);
+            Print.d(TAG, "setDate: " + this.entry.getId() + "->" + String.valueOf(day) + "-" + String.valueOf(month) + "-" + String.valueOf(year));
+
         }
     }
 
@@ -1842,62 +1894,38 @@ public class DynamicFormItem {
     }
 
     private View createTextDataControl() {
-
+        // Create text with style
         EditText textDataControl = (EditText) View.inflate(this.context, R.layout.form_edittext, null);
-
+        // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             textDataControl.setHint(this.entry.getLabel());
         }
+        // Set filters
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
             textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
         }
-
-        //#RTL
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
-        // specifics
-        if (this.entry.getInputType() == InputType.number) {
-            int inputType = android.text.InputType.TYPE_CLASS_NUMBER;
-            if (this.entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) {
-                inputType = android.text.InputType.TYPE_CLASS_PHONE;
-            }
-            textDataControl.setInputType(inputType);
-        } else if (this.entry.getInputType() == InputType.password) {
-            int inputType = android.text.InputType.TYPE_CLASS_TEXT
-                    | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
-            textDataControl.setInputType(inputType);
-            //#RTL
-            if (ShopSelector.isRtl()) {
-                textDataControl.setGravity(Gravity.RIGHT);
-                if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    textDataControl.setGravity(Gravity.END);
-                }
-            }
-
-
-            textDataControl.setTextAppearance(context, R.style.form_edittext_style);
-        } else if (this.entry.getInputType() == InputType.email) {
-            int inputType = android.text.InputType.TYPE_CLASS_TEXT
-                    | android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                    | android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
-            textDataControl.setInputType(inputType);
-            //#RTL
-            if (ShopSelector.isRtl())
-                textDataControl.setGravity(Gravity.RIGHT);
-
-            textDataControl.setTextAppearance(context, R.style.form_edittext_style);
-        } else {
-            int inputType = android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
-            textDataControl.setInputType(inputType);
-            //#RTL
-            if (ShopSelector.isRtl())
-                textDataControl.setGravity(Gravity.RIGHT);
-
-            textDataControl.setTextAppearance(context, R.style.form_edittext_style);
+        // Set default value
+        if (!TextUtils.isEmpty(this.entry.getValue())) {
+            textDataControl.setText(this.entry.getValue());
         }
-
-        HoloFontLoader.apply(textDataControl, HoloFontLoader.ROBOTO_REGULAR);
-
+        // Set input type
+        switch (this.entry.getInputType()) {
+            case relatedNumber:
+            case number:
+                int inputTypeNumber = this.entry.getKey().contains(RestConstants.PHONE) ? InputType.TYPE_CLASS_PHONE : InputType.TYPE_CLASS_NUMBER;
+                textDataControl.setInputType(inputTypeNumber);
+                break;
+            case password:
+                textDataControl.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                break;
+            case email:
+                int inputTypeEmail = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
+                textDataControl.setInputType(inputTypeEmail);
+                break;
+            default:
+                textDataControl.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                break;
+        }
         return textDataControl;
     }
 
@@ -1934,7 +1962,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
@@ -1954,22 +1982,6 @@ public class DynamicFormItem {
         return dataContainer;
     }
 
-//    /**
-//     * @return the childDynamicForm
-//     */
-//    public ArrayList<DynamicForm> getChildDynamicForm() {
-//        if (childDynamicForm == null) {
-//            childDynamicForm = new ArrayList<>();
-//        }
-//        return childDynamicForm;
-//    }
-//
-//    /**
-//     * @param childDynamicForm the childDynamicForm to set
-//     */
-//    public void setChildDynamicForm(ArrayList<DynamicForm> childDynamicForm) {
-//        this.childDynamicForm = childDynamicForm;
-//    }
 
     /**
      * Determines if this field is a part of a date
@@ -1989,7 +2001,7 @@ public class DynamicFormItem {
      * @return True, if the type of the field is <code>meta<code>
      */
     public boolean isMeta() {
-        return InputType.meta.equals(this.entry.getInputType());
+        return FormInputType.meta.equals(this.entry.getInputType());
     }
 
     /**
@@ -2017,4 +2029,29 @@ public class DynamicFormItem {
         return hasRules;
     }
 
+    /**
+     * Function that sets date on the date dialog picker
+     * @param date
+     */
+    private void setDialogDate(String date){
+
+        if(dialogDate != null){
+            int dayMonth;
+            int monthYear;
+            int year;
+
+            if (date != null && date.length() > 0 && date.split("-").length > 1) {
+                dayMonth = Integer.parseInt(date.split("-")[2]);
+                monthYear = Integer.parseInt(date.split("-")[1]);
+                year = Integer.parseInt(date.split("-")[0]);
+            } else {
+                Calendar c = Calendar.getInstance();
+                year = c.get(Calendar.YEAR);
+                monthYear = c.get(Calendar.MONTH);
+                dayMonth = c.get(Calendar.DAY_OF_MONTH);
+            }
+            dialogDate.setDate(dayMonth, monthYear - 1, year);
+        }
+
+    }
 }

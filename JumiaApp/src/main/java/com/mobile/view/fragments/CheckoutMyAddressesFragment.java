@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -22,7 +21,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
@@ -58,7 +57,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * Empty constructor
      */
     public CheckoutMyAddressesFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
@@ -85,13 +84,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        setRetainInstance(true);
-        // Get arguments
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ADDRESSES);
         // Tracking checkout step
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
     }
     
     /*
@@ -175,12 +169,11 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     protected void onGetBillingFormEventErrorEvent() {
         Print.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     /**
      * Show form.
-     * @param bundle
      */
     protected void onGetBillingFormEventSuccessEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
@@ -189,7 +182,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         this.addresses = addresses;
         // Validate response
         if(!isValidateResponse()){
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
+            super.showFragmentErrorRetry();
             return;
         }
         // Show addresses using saved value, if is the same address for Bill and Ship
@@ -199,26 +192,26 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
         }
         // Get order summary
-        OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        PurchaseEntity orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
 
     }
 
     protected void onSetBillingAddressErrorEvent(Bundle bundle) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-        showFragmentContentContainer();
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors, R.string.add_address);
             setDefaultChecked(Boolean.parseBoolean(sameAddress));
-        }else{
-            Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_BILLING_ADDRESS_EVENT: ");
+        } else{
+            Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode);
+            super.showUnexpectedErrorWarning();
         }
+        showFragmentContentContainer();
     }
 
     protected void onSetBillingAddressSuccessEvent(Bundle bundle) {
@@ -241,7 +234,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Trigger to set the billing form
-     * @param contentValues
      */
     private void triggerSetBilling(ContentValues contentValues) {
         Print.d(TAG, "TRIGGER SET BILLING");
@@ -374,7 +366,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Validate selected address
         if(selectedAddress != null){
             Bundle bundle = new Bundle();
-            bundle.putParcelable(EditAddressFragment.SELECTED_ADDRESS, selectedAddress);
+            bundle.putInt(EditAddressFragment.SELECTED_ADDRESS, selectedAddress.getId());
             getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
@@ -386,7 +378,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
         // Create content values from form
         ContentValues contentValues = new ContentValues();
-        for (FormField field : hiddenForm.fields) {
+        for (FormField field : hiddenForm.getFields()) {
             if (field.getKey().contains(BILLING_ID_TAG)) contentValues.put(field.getName(), billingAddressId);
             else if (field.getKey().contains(SHIPPING_ID_TAG)) contentValues.put(field.getName(), shippingAddressId);
             else if (field.getKey().contains(IS_SAME_TAG)) contentValues.put(field.getName(), isDifferent);

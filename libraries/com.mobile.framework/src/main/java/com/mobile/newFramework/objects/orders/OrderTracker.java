@@ -1,10 +1,10 @@
 /**
  * @author Manuel Silva
- * 
+ *
  * @version 1.1
- * 
+ *
  * 2013/10/22
- * 
+ *
  * Copyright (c) Rocket Internet All Rights Reserved
  */
 package com.mobile.newFramework.objects.orders;
@@ -16,17 +16,17 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Class that represents an Order Tracked
- * 
+ *
  * @author manuelsilva
- * 
+ *
  */
 public class OrderTracker implements IJSONSerializable, Parcelable {
 
@@ -104,16 +104,14 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 
 		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
         creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-        payment_method = jsonObject.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+        payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		JSONObject items = jsonObject.optJSONObject(RestConstants.JSON_ORDER_ITEM_COLLECTION_TAG);
+		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
 
-		Iterator<?> keys = items.keys();
-
-		while(keys.hasNext()){
+		for(int i = 0 ; i<items.length();i++){
 			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
 			try {
-				mOrderTrackerItem.initialize(items.getJSONObject((String) keys.next()));
+				mOrderTrackerItem.initialize(items.getJSONObject(i));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -202,5 +200,5 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
             return new OrderTracker[size];
         }
     };
-    
+
 }

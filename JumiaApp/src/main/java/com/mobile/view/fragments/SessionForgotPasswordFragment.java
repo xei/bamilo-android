@@ -62,13 +62,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.ForgotPassword,
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
                 KeyboardState.ADJUST_CONTENT);
-
-        this.setRetainInstance(true);
     }
 
     /*

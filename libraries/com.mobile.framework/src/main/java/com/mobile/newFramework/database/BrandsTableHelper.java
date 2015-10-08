@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.utils.output.Print;
@@ -67,7 +68,6 @@ public class BrandsTableHelper extends BaseTable {
     public static void updateBrandCounter(String brandName) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         try {
-
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
                     .append(" where ").append(Columns.NAME).append(" = '").append(brandName).append("'").toString();
@@ -92,7 +92,7 @@ public class BrandsTableHelper extends BaseTable {
             // Execute
             db.execSQL(insertOrReplace);
             Print.i(TAG, "ON INCREASE COUNTER: " + brandName);
-        } catch (SQLException e) {
+        } catch (IllegalStateException | SQLiteException e) {
             Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
         } finally {
             db.close();
@@ -105,7 +105,7 @@ public class BrandsTableHelper extends BaseTable {
      * @return Brand
      * @throws InterruptedException
      */
-    public synchronized static String getTopBrand() throws InterruptedException {
+    public synchronized static String getTopBrand() throws InterruptedException, IllegalStateException {
 
         //DarwinDatabaseSemaphore.getInstance().getLock();
 

@@ -1,11 +1,15 @@
 package com.mobile.newFramework.objects.configs;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Class used to handle country configs.
@@ -13,7 +17,7 @@ import org.json.JSONObject;
  * @author ricardosoares
  * @modified sergiopereira
  */
-public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSerializable {
+public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     private static final String TAG = CountryConfigs.class.getSimpleName();
 
@@ -31,8 +35,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
     private int mNoDecimals;
     private String mThousandsSep;
     private String mDecimalsSep;
-    private String mLangCode;
-    private String mLangName;
     private String mGaId;
     private String mGTMId;
     private String mPhoneNumber;
@@ -42,6 +44,7 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
     private boolean isRatingLoginRequired;
     private boolean isReviewLoginRequired;
     private boolean isFacebookAvailable;
+    private Languages languages;
 
     /**
      * Empty constructor
@@ -53,8 +56,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         mNoDecimals = 0;
         mThousandsSep = null;
         mDecimalsSep = null;
-        mLangCode = null;
-        mLangName = null;
         mGaId = null;
         mGTMId = null;
         mPhoneNumber = null;
@@ -86,8 +87,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
                 "\nno_decimals: " + mNoDecimals +
                 "\nthousands_sep: " + mThousandsSep +
                 "\ndecimals_sep: " + mDecimalsSep +
-                "\nlanguages_code: " + mLangCode +
-                "\nlanguages_name: " + mLangName +
                 "\ngtm_android: " + mGTMId +
                 "\nga_android_id: " + mGaId +
                 "\nphone_number: " + mPhoneNumber +
@@ -115,15 +114,6 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         mNoDecimals = jsonObject.getInt(RestConstants.JSON_COUNTRY_NO_DECIMALS);
         mThousandsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_THOUSANDS_SEP);
         mDecimalsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_DECIMALS_SEP);
-        // Get languages
-        JSONArray languages = jsonObject.getJSONArray(RestConstants.JSON_COUNTRY_LANGUAGES);
-        for (int i = 0; i < languages.length(); i++) {
-            if (languages.getJSONObject(i).getBoolean(RestConstants.JSON_COUNTRY_LANG_DEFAULT)) {
-                mLangCode = languages.getJSONObject(i).getString(RestConstants.JSON_CODE_TAG);
-                mLangName = languages.getJSONObject(i).getString(RestConstants.JSON_NAME_TAG);
-                break;
-            }
-        }
         // Get GA id
         mGaId = jsonObject.getString(RestConstants.JSON_COUNTRY_GA_ID);
         // Get GTM id
@@ -146,6 +136,7 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
             isReviewEnable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
             isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
         }
+        languages = new Languages(jsonObject);
         return true;
     }
 
@@ -184,12 +175,60 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         return mDecimalsSep;
     }
 
-    public String getLangCode() {
-        return mLangCode;
+    public void setCurrencyIso(String mCurrencyIso) {
+        this.mCurrencyIso = mCurrencyIso;
     }
 
-    public String getLangName() {
-        return mLangName;
+    public void setCurrencySymbol(String mCurrencySymbol) {
+        this.mCurrencySymbol = mCurrencySymbol;
+    }
+
+    public void setNoDecimals(int mNoDecimals) {
+        this.mNoDecimals = mNoDecimals;
+    }
+
+    public void setThousandsSep(String mThousandsSep) {
+        this.mThousandsSep = mThousandsSep;
+    }
+
+    public void setDecimalsSep(String mDecimalsSep) {
+        this.mDecimalsSep = mDecimalsSep;
+    }
+
+    public void setGaId(String mGaId) {
+        this.mGaId = mGaId;
+    }
+
+    public void setGTMId(String mGTMId) {
+        this.mGTMId = mGTMId;
+    }
+
+    public void setPhoneNumber(String mPhoneNumber) {
+        this.mPhoneNumber = mPhoneNumber;
+    }
+
+    public void setCsEmail(String mCsEmail) {
+        this.mCsEmail = mCsEmail;
+    }
+
+    public void setIsRatingEnable(boolean isRatingEnable) {
+        this.isRatingEnable = isRatingEnable;
+    }
+
+    public void setIsReviewEnable(boolean isReviewEnable) {
+        this.isReviewEnable = isReviewEnable;
+    }
+
+    public void setIsRatingLoginRequired(boolean isRatingLoginRequired) {
+        this.isRatingLoginRequired = isRatingLoginRequired;
+    }
+
+    public void setIsFacebookAvailable(boolean isFacebookAvailable) {
+        this.isFacebookAvailable = isFacebookAvailable;
+    }
+
+    public void setIsReviewLoginRequired(boolean isReviewLoginRequired) {
+        this.isReviewLoginRequired = isReviewLoginRequired;
     }
 
     public String getGaId() {
@@ -228,76 +267,66 @@ public class CountryConfigs implements com.mobile.newFramework.objects.IJSONSeri
         return isFacebookAvailable;
     }
 
-//    /**
-//     * Function used to get the shop country code.
-//     *
-//     * @param context The application context
-//     */
-//    public static String getCountryPhoneNumber(Context context) {
-//        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
-//        Log.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
-//        return mPhone2Call;
-//    }
-//
-//    /**
-//     * Get the value for Facebook.
-//     *
-//     * @param context The application context
-//     * @return true or false
-//     */
-//    public static boolean checkCountryRequirements(Context context) {
-//        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        return sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE);
-//    }
-//
-//
-//        /**
-//     * Write object variables to preferences
-//     *
-//     * @param context The application context
-//     * @author ricardosoares
-//     */
-//    public void writePreferences(Context context) {
-//        // Get shared prefs
-//        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        Editor mEditor = sharedPrefs.edit();
-//        // Currency info
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, mCurrencyIso);
-//        if (!TextUtils.isEmpty(mCurrencyPosition) && mCurrencyPosition.equals(CURRENCY_LEFT_POSITION)) {
-//            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, STRING_START_PLACEHOLDER + mCurrencySymbol);
-//            // #RTL
-//            if (context.getResources().getBoolean(R.bool.is_bamilo_specific) && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-//                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, mCurrencySymbol + STRING_END_PLACEHOLDER);
-//            }
-//        } else {
-//            mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, mCurrencySymbol + STRING_END_PLACEHOLDER);
-//        }
-//        // Price info
-//        mEditor.putInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, mNoDecimals);
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_SEP, mThousandsSep);
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_SEP, mDecimalsSep);
-//        // Languages
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, mLangCode);
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, mLangName);
-//        // GA
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, mGaId);
-//        // GTM
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, mGTMId);
-//        // Phone number
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, mPhoneNumber);
-//        // Email
-//        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, mCsEmail);
-//        // Facebook
-//        mEditor.putBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, isFacebookAvailable);
-//        // Rating
-//        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, isRatingEnable);
-//        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, isRatingLoginRequired);
-//        // Review
-//        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, isReviewEnable);
-//        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, isReviewLoginRequired);
-//        // Flag
-//        mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
-//        mEditor.apply();
-//    }
+    protected CountryConfigs(Parcel in) {
+        mCurrencyIso = in.readString();
+        mCurrencySymbol = in.readString();
+        mCurrencyPosition = in.readString();
+        mNoDecimals = in.readInt();
+        mThousandsSep = in.readString();
+        mDecimalsSep = in.readString();
+        mGaId = in.readString();
+        mGTMId = in.readString();
+        mPhoneNumber = in.readString();
+        mCsEmail = in.readString();
+        isRatingEnable = in.readByte() != 0x00;
+        isReviewEnable = in.readByte() != 0x00;
+        isRatingLoginRequired = in.readByte() != 0x00;
+        isReviewLoginRequired = in.readByte() != 0x00;
+        isFacebookAvailable = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mCurrencyIso);
+        dest.writeString(mCurrencySymbol);
+        dest.writeString(mCurrencyPosition);
+        dest.writeInt(mNoDecimals);
+        dest.writeString(mThousandsSep);
+        dest.writeString(mDecimalsSep);
+        dest.writeString(mGaId);
+        dest.writeString(mGTMId);
+        dest.writeString(mPhoneNumber);
+        dest.writeString(mCsEmail);
+        dest.writeByte((byte) (isRatingEnable ? 0x01 : 0x00));
+        dest.writeByte((byte) (isReviewEnable ? 0x01 : 0x00));
+        dest.writeByte((byte) (isRatingLoginRequired ? 0x01 : 0x00));
+        dest.writeByte((byte) (isReviewLoginRequired ? 0x01 : 0x00));
+        dest.writeByte((byte) (isFacebookAvailable ? 0x01 : 0x00));
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<CountryConfigs> CREATOR = new Parcelable.Creator<CountryConfigs>() {
+        @Override
+        public CountryConfigs createFromParcel(Parcel in) {
+            return new CountryConfigs(in);
+        }
+
+        @Override
+        public CountryConfigs[] newArray(int size) {
+            return new CountryConfigs[size];
+        }
+    };
+
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
+    }
+
+    public Languages getLanguages() {
+        return languages;
+    }
 }

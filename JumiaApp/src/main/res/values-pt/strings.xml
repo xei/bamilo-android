@@ -6,7 +6,6 @@
     <string name="action_label_logout">Sair</string>
     <string name="action_label_search_hint">Procurar na %s</string>
     <string name="action_label_share">Compartilhar</string>
-    <string name="action_label_wishlist">Lista de Desejos</string>
     <string name="add_address">Adicionar Morada</string>
     <string name="add_to_shopping_cart">Adicionar</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Os artigos foram adicionados ao carrinho</string>
@@ -101,8 +100,8 @@
     <string name="fallback_welcome">BEM VINDOS A</string>
     <string name="favourite_add_to_cart">Artigo Adicionado ao Carrinho</string>
     <string name="favourite_addalltocart">Adicionar Todos os Artigos ao Carrinho</string>
-    <string name="favourite_no_favourites">Não existem artigos favoritos no momento.</string>
-    <string name="favourites">Meus Favoritos</string>
+    <string name="save_no_saved">Não existem artigos favoritos no momento.</string>
+    <string name="saved">Meus Favoritos</string>
     <string name="fgt_pass">Esqueceu a Senha?</string>
     <string name="filter_label">Filtrar</string>
     <string name="forgotpass_header">Recuperação de Senha</string>
@@ -214,14 +213,14 @@
     <string name="product_outof_stock">O artigo está esgotado</string>
     <string name="product_sold_by">Vendido por:</string>
     <string name="product_sort_button">Ordenar</string>
-    <string name="product_specifications">Especificações</string>
+    <string name="specifications">Especificações</string>
     <string name="product_variance_choose">Por favor, selecione</string>
     <string name="product_variance_choose_error">Por favor, selecione entre vários</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">Artigo adicionado aos Meus Favoritos</string>
+    <string name="products_added_saved">Artigo adicionado aos Meus Favoritos</string>
     <string name="products_could_notloaded">O carregamento de mais produtos falhou. Por favor, tente novamente.</string>
     <string name="products_label">Produtos</string>
-    <string name="products_removed_favourite">Artigo removido dos Meus Favoritos</string>
+    <string name="products_removed_saved">Artigo removido dos Meus Favoritos</string>
     <string name="products_sort_bestrated">Melhor Avaliação</string>
     <string name="products_sort_brand">Marca</string>
     <string name="products_sort_name">Nome</string>
@@ -229,7 +228,7 @@
     <string name="products_sort_popularity">Popularidade</string>
     <string name="products_sort_pricedown">Preço baixo</string>
     <string name="products_sort_priceup">Preço alto</string>
-    <string name="products_tip_favourite_text">Clique para adicionar produtos aos Favoritos!</string>
+    <string name="products_tip_saved_text">Clique para adicionar produtos aos Favoritos!</string>
     <string name="products_tip_swipe_text">Deslize para a esquerda ou direita para alterar o tipo de ordenação</string>
     <string name="promotion_tip_tap_text">Toque na caixa acima para copiar o código para a área de transferência e guardá-lo para o check-out</string>
     <string name="rating_option_error_message">Todas as opções de avaliação devem ser preenchidas</string>
@@ -309,7 +308,7 @@
     <string name="teaser_campaign_button_second_line">OFERTAS</string>
     <string name="terms_and_conditions">Termos e Condições</string>
     <string name="thank_you_order_title">Obrigado!</string>
-    <string name="tip_favourite_text">Clique para adicionar este produto aos favoritos e ver a lista completa no seu perfil</string>
+    <string name="tip_saved_text">Clique para adicionar este produto aos favoritos e ver a lista completa no seu perfil</string>
     <string name="tip_share_text">Clique para compartilhar este produto</string>
     <string name="tip_swipe_text">Deslize para a esquerda ou para a direita para\nver imagens diferentes</string>
     <string name="tip_tap_text">Toque para abrir a galeria de imagens do produto</string>

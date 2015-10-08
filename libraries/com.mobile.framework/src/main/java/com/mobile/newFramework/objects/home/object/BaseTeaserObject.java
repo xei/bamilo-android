@@ -107,7 +107,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         // Get sub title
         mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
         // Get url
-        mUrl = jsonObject.getString(RestConstants.JSON_URL_TAG);
+        mUrl = jsonObject.getString(RestConstants.URL);
         // Get target type
         mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
         // Get timer in seconds and convert to millis

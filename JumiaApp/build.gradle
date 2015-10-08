@@ -23,12 +23,18 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    useLibrary 'org.apache.http.legacy'
+
+    dexOptions {
+        jumboMode true
+    }
 
     defaultConfig {
         applicationId "com.mobile.view"
-        minSdkVersion 9
+        minSdkVersion 12
         targetSdkVersion 22
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
@@ -54,13 +60,6 @@ android {
             storePassword "jumiamtnng"
             keyAlias "jumia_mtnng"
             keyPassword "jumiamtnng"
-        }
-
-        jumiaNokiaxSigning {
-            storeFile file("keystores/jumia_nokiax.keystore")
-            storePassword "jumianokiax"
-            keyAlias "jumia_nokiax"
-            keyPassword "jumianokiax"
         }
 
         darazSigning {
@@ -117,62 +116,40 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.6.2"
-            versionCode getAppVersionCode(54)
+            versionName "2.7"
+            versionCode getAppVersionCode(55)
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "ar"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.6.2"
-            versionCode 54
+            versionName "2.7"
+            versionCode 55
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
             }
         }
 
-        jumiaSamsung {
-            applicationId "com.jumia.android"
-            versionName "2.6.2"
-            versionCode 54
-            signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
-            android.sourceSets {
-                jumiaSamsung.res.srcDirs = ['src/jumia/res', 'src/jumiaSamsung/res']
-            }
-        }
-
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.6.2"
-            versionCode 54
+            versionName "2.7"
+            versionCode 57
             signingConfig signingConfigs.jumiaMtnngSigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
             }
         }
 
-        jumiaNokiaX {
-            applicationId "com.jumia.nokiax"
-            versionName "2.6.2"
-            versionCode 14
-            signingConfig signingConfigs.jumiaNokiaxSigning
-            resConfigs "en", "fr", "pt"
-            android.sourceSets {
-                jumiaNokiaX.res.srcDirs = ['src/jumia/res', 'src/jumiaNokiaX/res']
-            }
-        }
-
         jumiaBlackberry {
             applicationId "com.jumia.blackberry"
-            versionName "2.6.2"
-            versionCode 10
+            versionName "2.7"
+            versionCode 11
             signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "pt"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
             }
@@ -183,18 +160,18 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.4.1"
-            versionCode getAppVersionCode(8)
+            versionName "1.5"
+            versionCode getAppVersionCode(9)
             signingConfig signingConfigs.shopSigning
-            resConfigs "en"
+            resConfigs "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.4.1"
-            versionCode 8
+            versionName "1.5"
+            versionCode 9
             signingConfig signingConfigs.shopSigning
-            resConfigs "en"
+            resConfigs "my"
             android.sourceSets {
                 shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
             }
@@ -205,18 +182,18 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.4.1"
-            versionCode getAppVersionCode(9)
+            versionName "1.5"
+            versionCode getAppVersionCode(10)
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.4.1"
-            versionCode 9
+            versionName "1.5"
+            versionCode 10
             signingConfig signingConfigs.darazSigning
-            resConfigs "en"
+            resConfigs "en", "ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
             }
@@ -227,10 +204,10 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(11)
+            versionName "1.7"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.bamiloSigning
-            resConfigs "en"
+            resConfigs "fa-rIR"
         }
 
     }
@@ -238,6 +215,7 @@ android {
     lintOptions {
         disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
+        disable 'ExtraTranslation','MissingTranslation'
     }
 
 }
@@ -249,7 +227,6 @@ dependencies {
     /** Android wear releases **/
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')

@@ -24,12 +24,13 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.Errors;
@@ -97,7 +98,7 @@ public class SessionRegisterFragment extends BaseFragment {
      * Empty Constructor
      */
     public SessionRegisterFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.register,
                 R.string.register_title,
@@ -272,19 +273,8 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 Print.d(TAG, "registerButton onClick");
-
-//                if (serverForm != null && !serverForm.checkRequired()) {
-//                    registerRequiredText.setVisibility(View.VISIBLE);
-//                    // Tracking signup failed
-//                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-//                    return;
-//                } else {
-//                    registerRequiredText.setVisibility(View.GONE);
-//                }
-
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
-
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
@@ -389,7 +379,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         while (iter.hasNext()) {
             DynamicFormItem item = iter.next();
-            if (item.getType() == InputType.password) {
+            if (item.getType() == FormInputType.password) {
                 if (old.equals("")) {
                     old = item.getValue();
                 } else {
@@ -539,7 +529,7 @@ public class SessionRegisterFragment extends BaseFragment {
             return result;
         }
 
-        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).newsletterOptions;
+        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).getNewsletterOptions();
 
         if (newsletterSubscribe.getEditControl() != null && ((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) {
             DynamicFormItem genderForm = serverForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
@@ -569,7 +559,10 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 saveFormState();
-                getBaseActivity().onSwitchFragment(FragmentType.TERMS, null, FragmentController.ADD_TO_BACK_STACK);
+                Bundle bundle = new Bundle();
+                bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
+                bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
+                getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });

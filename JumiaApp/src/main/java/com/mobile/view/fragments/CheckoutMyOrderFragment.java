@@ -2,12 +2,12 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.JumiaApplication;
@@ -23,9 +23,8 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -48,6 +47,7 @@ import java.util.List;
 
 /**
  * Class used to shoe the order
+ *
  * @author sergiopereira
  */
 public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCallback {
@@ -57,8 +57,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private ViewGroup mProductsContainer;
 
     private TextView mTotalValue;
-
-    private ShoppingCart cart;
 
     private TextView mShipFeeValue;
 
@@ -76,30 +74,25 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     private TextView mPaymentName;
 
-    private Address shippingAddress;
-
-    private Address billingAddress;
-
     private TextView mProductsNum;
 
     private TextView mSubTotal;
-    
+
     private TextView mExtraCosts;
-    
+
     private RelativeLayout mExtraCostsContainer;
-    
-    private OrderSummary mOrderFinish;
-
-    private String shipMethod;
-
-    private String payMethod;
 
     private TextView mCoupon;
 
     private ViewGroup mShipFeeView;
-    
+
+    private ViewGroup mPriceRulesContainer;
+
+    private PurchaseEntity mOrderFinish;
+
     /**
      * Get CheckoutMyOrderFragment instance
+     *
      * @return CheckoutMyOrderFragment
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
@@ -112,7 +105,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * Empty constructor
      */
     public CheckoutMyOrderFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
                 R.string.checkout_label,
@@ -142,15 +135,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
-        if(arguments != null) {
-            // Save order
+        if (arguments != null) {
             mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         }
         // Track
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
-        TrackerDelegator.trackCheckoutStep(params);
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ORDER);
     }
 
     /*
@@ -190,8 +179,17 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
-        // Get my Order
-        showMyOrder();
+        // Price rules
+        mPriceRulesContainer = (ViewGroup) view.findViewById(R.id.price_rules_container);
+
+        // Validate order
+        if (mOrderFinish != null) {
+            showMyOrder();
+        } else {
+            Print.w(TAG, "WARNING: ORDER IS NULL - SHOWS UNEXPECTED ERROR");
+            super.showFragmentErrorRetry();
+        }
+
     }
 
     /*
@@ -224,10 +222,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     }
 
     /*
-         * (non-Javadoc)
-         *
-         * @see android.support.v4.app.Fragment#onPause()
-         */
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.Fragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -269,154 +267,147 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     /**
      * Show the order content
+     *
      * @author sergiopereira
      */
     private void showMyOrder() {
-        // Validate order
-        if(mOrderFinish == null) {
-            Print.w(TAG, "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "WARNING: ORDER IS NULL - GOTO WEB CHECKOUT");
-            return;
-        }
         // Get cart
-        cart = mOrderFinish.getCart();
-        if(cart != null) showProducts();
-        // Get shipping address
-        shippingAddress = mOrderFinish.getShippingAddress();
-        if(shippingAddress != null) showShippingAddress();
-        // Get billing address
-        billingAddress = mOrderFinish.getBillingAddress();
-        if(billingAddress != null) showBillingAddress();
+        showProducts();
+        // Get addresses
+        showOrderAddresses();
         // Get shipping method
-        shipMethod = mOrderFinish.getShippingMethodLabel();
-        if(shipMethod != null) showShippingMethod();
+        showShippingMethod();
         // Get payment options
-        payMethod = mOrderFinish.getPaymentMethodLabel();
-        if(payMethod != null) showPaymentOptions();
+        showPaymentOptions();
         // Show container
         showFragmentContentContainer();
     }
-    
+
     /**
      * Show products on order
+     *
      * @author sergiopereira
      */
-    private void showProducts(){
+    private void showProducts() {
         boolean first = true;
         // Show products
-        for (ShoppingCartItem item : cart.getCartItems().values()) {
+        for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView,  null, R.drawable.no_image_small);
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + ": " + item.getQuantity());
             // Price
             String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  
+            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
-            String variation = item.getVariation(); 
-            if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
-                 !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
+            String variation = item.getVariation();
+            if (variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") &&
+                    !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 prodInflateView.findViewById(R.id.my_order_item_variation).setVisibility(View.VISIBLE);
-            } 
+            }
             // // Hide first divider
             if (first) {
                 first = false;
                 prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
             }
-            
+
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
         // Show sub total
         showSubTotal();
     }
-    
-    
+
+
     /**
      * Show the sub total container
+     *
      * @author sergiopereira
      */
     private void showSubTotal() {
-        int size = cart.getCartCount();
+        int size = mOrderFinish.getCartCount();
         mProductsNum.setText(getResources().getQuantityString(R.plurals.numberOfItems, size, size));
         // Set cart value
-        mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotal()));
         // Set costs
-        ShoppingCartUtils.setShippingRule(cart, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
+        ShoppingCartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
         // Voucher
-        if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));
-        else mVoucherView.setVisibility(View.GONE);
+        if (mOrderFinish.hasCouponDiscount()) {
+            mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
+        } else {
+            mVoucherView.setVisibility(View.GONE);
+        }
         // Total
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
-
-
-        LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
-        CheckoutStepManager.showPriceRules(getBaseActivity(),priceRulesContainer,cart.getPriceRules());
+        // Show price rules
+        CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRulesContainer, mOrderFinish.getPriceRules());
     }
-    
+
     /**
      * Show shipping address
+     *
      * @author sergiopereira
      */
-    private void showShippingAddress() {
-        Print.d(TAG, "SHOW SHIPPING ADDRESS: " + shippingAddress.getAddress());
-        View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressContainer, false);
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(shippingAddress.getCity());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+shippingAddress.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
-        mShippingAddressContainer.addView(shippingAddressView);
-    }
-    
-    /**
-     * Show billing address
-     * @author sergiopereira
-     */
-    private void showBillingAddress() {
-        // Validate address
-        if(shippingAddress.getId() != billingAddress.getId()){
-            // Hide text is the same
-            mBillingAddressIsSame.setVisibility(View.GONE);
-            // Show address
-            View billingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mBillingAddressContainer, false);
-            ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_name)).setText(billingAddress.getFirstName() + " " + billingAddress.getLastName());
-            ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_street)).setText(billingAddress.getAddress());
-            ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_region)).setText(billingAddress.getCity());
-            ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(billingAddress.getPostcode());
-            ((TextView) billingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+billingAddress.getPhone());
-            billingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
-            mBillingAddressContainer.addView(billingAddressView);
-        } else {
+    private void showOrderAddresses() {
+        // Show shipping address
+        if (mOrderFinish.hasShippingAddress()) {
+            addAddressView(mShippingAddressContainer, mOrderFinish.getShippingAddress());
+        }
+        // Show same addresses
+        if (mOrderFinish.hasSameAddresses()) {
             mBillingAddressContainer.setVisibility(View.GONE);
         }
+        // Show billing address
+        else if (mOrderFinish.hasBillingAddress()) {
+            mBillingAddressIsSame.setVisibility(View.GONE);
+            addAddressView(mBillingAddressContainer, mOrderFinish.getBillingAddress());
+        }
     }
-    
+
+    /**
+     * Add address to view group.
+     */
+    private void addAddressView(ViewGroup container, Address address) {
+        View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(address.getFirstName() + " " + address.getLastName());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
+        container.addView(shippingAddressView);
+    }
+
     /**
      * Show shipping method
+     *
      * @author sergiopereira
      */
     private void showShippingMethod() {
-        mShippingMethodName.setText(shipMethod);
+        if (!TextUtils.isEmpty(mOrderFinish.getShippingMethod())) {
+            mShippingMethodName.setText(mOrderFinish.getShippingMethod());
+        }
     }
-    
+
     /**
      * Show payment options
+     *
      * @author sergiopereira
      */
     private void showPaymentOptions() {
         // Payment name
-        mPaymentName.setText(payMethod);
+        if (!TextUtils.isEmpty(mOrderFinish.getPaymentMethod())) {
+            mPaymentName.setText(mOrderFinish.getPaymentMethod());
+        }
         // Coupon
-        if(mOrderFinish.hasCouponCode()){
-            mCoupon.setText(getString(R.string.my_order_coupon_label) + "\n" + mOrderFinish.getDiscountCouponCode());
+        if (mOrderFinish.hasCouponDiscount()) {
+            mCoupon.setText(getString(R.string.my_order_coupon_label) + "\n" + mOrderFinish.getCouponCode());
             mCoupon.setVisibility(View.VISIBLE);
         }
     }
@@ -446,7 +437,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
-   
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -456,14 +447,15 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         super.onClickRetryButton(view);
         onClickRetryButton();
     }
-    
+
     /**
      * Process the click on retry button.
+     *
      * @author paulo
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -473,36 +465,38 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     /**
      * Process the click on next step button
+     *
      * @author sergiopereira
      */
     private void onClickNextStepButton() {
         Print.i(TAG, "ON CLICK: NextStep");
-        // this validation is trigger when the user back presses from an externa payment
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null ){
-            if(JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL){
+        // this validation is trigger when the user back presses from an external payment
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
+            if (JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL) {
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, "" + mOrderFinish.getVatValue());
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getValueForTracking());
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
+                bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getPriceForTracking());
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
         } else {
-            triggerCheckoutFinish();    
+            triggerCheckoutFinish();
         }
-    }    
-    
+    }
+
     /**
      * Process the click on the edit address button
+     *
      * @author sergiopereira
      */
     private void onClickEditAddressesButton() {
         Print.i(TAG, "ON CLICK: EditAddresses");
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
+            if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
                 FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
@@ -510,40 +504,42 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     }
 
     /**
-     *
      * Process the click on the edit shipping method button
+     *
      * @author sergiopereira
      */
     private void onClickEditShippingMethodButton() {
         Print.i(TAG, "ON CLICK: EditShippingMethod");
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
+            if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
                 FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         }
     }
-    
+
     /**
      * Process the click on the edit payment method button
+     *
      * @author sergiopereira
      */
     private void onClickEditPaymentOptionsButton() {
         Print.i(TAG, "ON CLICK: EditPaymentOptions");
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
+            if (!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
                 FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         }
     }
-    
+
     /**
      * ############# REQUESTS #############
      */
-    
+
     /**
      * Trigger ti finish the checkout process
+     *
      * @author sergiopereira
      */
     private void triggerCheckoutFinish() {
@@ -552,15 +548,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         bundle.putString(CheckoutFinishHelper.USER_AGENT, getUserAgentAsExtraData());
         triggerContentEvent(new CheckoutFinishHelper(), bundle, this);
     }
-    
+
     /**
      * Creates a custom user agent just in case the http user agent be empty.
+     *
      * @return Stirng
      * @author sergiopereira
      */
-    private String getUserAgentAsExtraData(){
-        //String device = (getResources().getBoolean(R.bool.isTablet)) ? "tablet" : "mobile";
-        //return "app=android&customer_device=" + device;
+    private String getUserAgentAsExtraData() {
         return getResources().getBoolean(R.bool.isTablet) ? "tablet" : "mobile";
     }
 
@@ -578,19 +573,21 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      */
     /**
      * Process the success event
+     *
      * @param bundle The success response
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
         Print.i(TAG, "ON SUCCESS EVENT");
-        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
+
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
@@ -602,10 +599,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 } else {
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
+                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, "" + mOrderFinish.getVatValue());
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                    bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getValueForTracking());
+                    bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getPriceForTracking());
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
                 getBaseActivity().updateCartInfo();
@@ -617,53 +614,57 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     /**
      * Process the error event
+     *
      * @param bundle The error response
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        
+
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
+
         // Generic error
         if (super.handleErrorEvent(bundle)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+
+
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case CHECKOUT_FINISH_EVENT:
                 Print.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
+                boolean hasErrorMessage = false;
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    showErrorDialog(errors);
-                    showFragmentContentContainer();
-                } else {
-                    Print.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
-                    super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode.name());
+                    hasErrorMessage = showErrorDialog(errors);
                 }
+                if (!hasErrorMessage) {
+                    Print.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode);
+                    super.showUnexpectedErrorWarning();
+                }
+                showFragmentContentContainer();
                 break;
             default:
                 break;
         }
     }
-    
+
     /**
      * ########### DIALOGS ###########  
-     */    
+     */
     /**
      * Dialog used to show an error
-     * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors) {
+    private boolean showErrorDialog(HashMap<String, List<String>> errors) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> temp = null;
         if (errors != null) {
@@ -671,9 +672,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         }
         final List<String> errorMessages = temp;
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            if (getBaseActivity() != null) {
-                showFragmentContentContainer();
-            }
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
@@ -685,24 +683,16 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dismissDialogFragment();
-                                gotoWebCheckout(errorMessages.get(0));
+                                showFragmentErrorRetry();
                             }
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            return true;
         } else {
             Print.w(TAG, "ERROR ON FINISH CHECKOUT");
-            gotoWebCheckout("ERROR ON FINISH CHECKOUT");
+            return false;
         }
-    }
-    
-    /**
-     * Redirect for web checkout
-     * @author sergiopereira
-     */
-    private void gotoWebCheckout(String error){
-        Print.w(TAG, "GO TO WEBCKECOUT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), error);
     }
 
     /*
@@ -717,7 +707,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.confirm_order_loosing_order_title),
                     getString(R.string.confirm_order_loosing_order) + " \n" + JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
-                    getString(R.string.ok_label), 
+                    getString(R.string.ok_label),
                     getString(R.string.cancel_label),
                     new OnClickListener() {
                         @Override

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+    android:background="@color/white" >
+
+            <!-- RANGE VALUES -->
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/dialog_filter_range_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:gravity="left|start"
+                android:layout_gravity="left|start"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="30dp"
+                android:singleLine="true"/>
+
+            <!-- RANGE BAR -->
+
+            <FrameLayout
+                android:id="@+id/dialog_filter_range_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="48dp"/>
+
+            <!-- CHECK DISCOUNT -->
+
+            <com.mobile.components.customfontviews.CheckBox
+                android:id="@+id/dialog_filter_check_discount"
+                style="@style/checkbox_base"          
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto_regular"
+                android:text="@string/string_with_discount_only"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_l"
+                android:paddingStart="12dp"
+                android:visibility="gone" />
+</LinearLayout>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/login_remember_user_email"
-    style="@style/form_checkbox_style"
-    android:checked="true"
-    android:text="@string/login_remember_user_email" />

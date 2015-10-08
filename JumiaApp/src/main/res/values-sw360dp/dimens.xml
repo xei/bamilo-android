@@ -23,12 +23,12 @@
     <dimen name="teaser_banners_group_height">140dp</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
-    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">48dp</dimen>
-    <dimen name="sliding_tab_inidicator_thickness">2dip</dimen>
+    <dimen name="sliding_tab_inidicator_thickness">1dip</dimen>
     <dimen name="sliding_tab_text_size">16sp</dimen>
 
     <!-- (px/2.8) -->

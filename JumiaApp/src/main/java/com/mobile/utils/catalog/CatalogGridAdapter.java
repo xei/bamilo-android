@@ -1,8 +1,7 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteException;
-import android.graphics.Paint;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,22 +10,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
-import com.mobile.newFramework.database.FavouriteTableHelper;
-import com.mobile.newFramework.objects.catalog.CatalogPage;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.catalog.Banner;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.ProductListViewHolder;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -36,15 +29,17 @@ import java.util.ArrayList;
  * Can be used to add a header and footer view.
  * @author sergiopereira
  */
-public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.ProductViewHolder> implements OnClickListener {
+public class CatalogGridAdapter extends RecyclerView.Adapter<ProductListViewHolder> implements OnClickListener, HeaderFooterInterface {
     
     private static final int ITEM_VIEW_TYPE_HEADER = 0;
     
-    private static final int ITEM_VIEW_TYPE_LIST = 1;
+    public static final int ITEM_VIEW_TYPE_LIST = 1;
     
-    private static final int ITEM_VIEW_TYPE_GRID = 2;
+    public static final int ITEM_VIEW_TYPE_GRID = 2;
+
+    public static final int ITEM_VIEW_TYPE_SINGLE = 3;
     
-    private static final int ITEM_VIEW_TYPE_FOOTER = 3;
+    private static final int ITEM_VIEW_TYPE_FOOTER = 4;
 
     private static final int HEADER_POSITION = 0;
 
@@ -52,9 +47,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private boolean isToShowFooter;
 
-    private boolean isShowingGridLayout;
+    private boolean isTabletInLandscape;
 
-    private ArrayList<Product> mDataSet;
+    private ArrayList<ProductRegular> mDataSet;
     
     private Context mContext;
     
@@ -62,67 +57,26 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private OnViewHolderClickListener mOnViewHolderClicked;
 
-    private String mBannerImage = "";
+    private String mBannerImage;
 
-    private String mUrl = "";
+    private String mUrl;
 
-    private String mTargetType = "";
+    private String mTargetType;
 
-    private String mTitle = "";
+    private String mTitle;
 
-    private OnHeaderClickListener mOnHeaderClicked;
-    /**
-     * Provide a reference to the views for each data item.<br>
-     * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
-     * @author sergiopereira
-     *
-     */
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        // Data
-        public TextView name;
-        public TextView brand;
-        public ImageView image;
-        public View progress;
-        public RatingBar rating;
-        public TextView discount;
-        public TextView price;
-        public TextView percentage;
-        public TextView reviews;
-        public ImageView recent;
-        public ImageView favourite;
-        public ImageView headerImage;
-        
-        /**
-         * Constructor 
-         * @param view -  the view holder
-         */
-        public ProductViewHolder(View view) {
-            super(view);
-            name = (TextView) view.findViewById(R.id.item_name);
-            brand = (TextView) view.findViewById(R.id.item_brand);
-            image = (ImageView) view.findViewById(R.id.image_view);
-            progress = view.findViewById(R.id.image_loading_progress);
-            rating = (RatingBar) view.findViewById(R.id.item_rating);
-            price = (TextView) view.findViewById(R.id.item_regprice);
-            discount = (TextView) view.findViewById(R.id.item_discount);
-            percentage = (TextView) view.findViewById(R.id.discount_percentage);
-            reviews = (TextView) view.findViewById(R.id.item_reviews);
-            brand = (TextView) view.findViewById(R.id.item_brand);
-            recent = (ImageView) view.findViewById(R.id.image_is_new);
-            favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
-            headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
-        }
-    }
+    private int level;
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
      * @param context - the application context
      * @param data - the array lisl
      */
-    public CatalogGridAdapter(Context context, ArrayList<Product> data) {
+    public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
         mContext = context;
         mDataSet = data;
-        isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
+        level = Integer.parseInt(CustomerPreferences.getCatalogLayout(mContext));
+        isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
     }
 
     /*
@@ -130,14 +84,15 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = R.layout.catalog_item_list_rounded;
+    public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int layout = R.layout.catalog_item_single;
         if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_catalog_fragment_header;
-        else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.catalog_item_list_rounded;
-        else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
-        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout._def_catalog_fragment_footer;
+        else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.gen_product_list;
+        else if (viewType == ITEM_VIEW_TYPE_SINGLE) layout = R.layout.catalog_item_single;
+        else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid;
+        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout.catalog_fragment_footer;
         // Create a new view
-        return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
+        return new ProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
     
     /*
@@ -151,7 +106,17 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Case footer
         if(isFooter(position)) return ITEM_VIEW_TYPE_FOOTER;
         // Case item
-        return isShowingGridLayout ? ITEM_VIEW_TYPE_GRID : ITEM_VIEW_TYPE_LIST;
+        switch (level){
+            case ITEM_VIEW_TYPE_GRID:
+                return ITEM_VIEW_TYPE_GRID;
+            case ITEM_VIEW_TYPE_LIST:
+                return ITEM_VIEW_TYPE_LIST;
+            case ITEM_VIEW_TYPE_SINGLE:
+                return ITEM_VIEW_TYPE_SINGLE;
+            default:
+                return ITEM_VIEW_TYPE_LIST;
+        }
+
     }
 
     /*
@@ -178,7 +143,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
       * @see android.support.v7.widget.RecyclerView.Adapter#onViewDetachedFromWindow(android.support.v7.widget.RecyclerView.ViewHolder)
       */
     @Override
-    public void onViewDetachedFromWindow(ProductViewHolder holder) {
+    public void onViewDetachedFromWindow(ProductListViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         // Cancel the animation for detached views
         holder.itemView.clearAnimation();
@@ -189,7 +154,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
      */
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(ProductListViewHolder holder, int position) {
         // Set animation
         setAnimation(holder, position);
         // Case header
@@ -204,15 +169,15 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get real position
         position = getRealPosition(position);
         // Get item
-        Product item = mDataSet.get(position);
+        ProductRegular item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
         holder.brand.setText(item.getBrand());
         // Set is new image
-        holder.recent.setSelected(item.getAttributes().isNew());
+        holder.recent.setSelected(item.isNew());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getFirstImageURL(), holder.image, holder.progress, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
         setFavourite(holder, item, position);
         // Set rating and reviews
@@ -222,6 +187,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
+        // Set vertical divider
+        if(level == ITEM_VIEW_TYPE_GRID) {
+            holder.verticalDivider.setVisibility(View.VISIBLE);
+        } else if (isTabletInLandscape) {
+            holder.verticalDivider.setVisibility(View.VISIBLE);
+        } else {
+            holder.verticalDivider.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -247,21 +220,12 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * Set the favourite view.
      * @param holder - the view holder
      * @param item - the product
-     * @param position - the current position
      */
-    private void setFavourite(ProductViewHolder holder, Product item, int position) {
-        // TODO: REMOVE THIS PLEASE :)
-        boolean isFavourite = false;
-        try {
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
-        } catch (InterruptedException | SQLiteException | IllegalMonitorStateException e) {
-            e.printStackTrace();
-        }
+    private void setFavourite(ProductListViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
-        holder.favourite.setSelected(isFavourite);
+        holder.favourite.setSelected(item.isWishList());
         holder.favourite.setOnClickListener(this);
-        item.getAttributes().setFavourite(isFavourite);
     }
     
     /**
@@ -269,21 +233,11 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setProductPrice(ProductViewHolder holder, Product item) {
+    private void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+        
+        ProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Case discount
-        if(item.hasDiscountPercentage()) {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-            holder.price.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.percentage.setText("-" + item.getMaxSavingPercentage().intValue() + "%");
-            holder.percentage.setVisibility(View.VISIBLE);
-        }
-        // Case normal
-        else {
-            holder.discount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-            holder.price.setText("");
-            holder.percentage.setVisibility(View.GONE);
-        }
+        ProductUtils.setDiscountRules(item, holder.percentage);
     }
     
     /**
@@ -291,15 +245,16 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param item - the product
      */
-    private void setSpecificViewForListLayout(ProductViewHolder holder, Product item) {
+    private void setSpecificViewForListLayout(ProductListViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
             // Show rating
-            if (item.getRating() != null && item.getRating() > 0) {
-                holder.rating.setRating(item.getRating().floatValue());
+            if (item.getAvgRating() > 0) {
+                holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
-                int count = item.getReviews();
-                String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
+                int count = item.getTotalRatings();
+//                String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
+                String string = "("+count+")";
                 holder.reviews.setText(string);
             }
             // Hide rating
@@ -315,7 +270,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param holder - the view holder
      * @param position - the current position
      */
-    private void setAnimation(ProductViewHolder holder, int position) {
+    private void setAnimation(ProductListViewHolder holder, int position) {
         if(position > mLastPosition) {
             //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.entry_up_from_bottom);
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_fade_in);
@@ -327,39 +282,39 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
 
     /**
-     * Set the flag used to switch between list or grid layout
-     * @param isShowingGridLayout - the flag
+     * Set the new level used to switch catalog views
+     * @param level - the flag
      */
-    public void updateLayout(boolean isShowingGridLayout){
-        this.isShowingGridLayout = isShowingGridLayout;
+    public void updateLayout(int level){
+        this.level = level;
         notifyDataSetChanged();
     }
     
-    /**
-     * Append the new data to the current data.
-     * @param newDataSet - the new data
-     */
-    public void updateData(ArrayList<Product> newDataSet){
-        CollectionUtils.addAll(mDataSet, newDataSet);
-        notifyDataSetChanged();
-    }
-    
-    /**
-     * Replace the current data and update the adapter.
-     * @param newDataSet - the new data
-     */
-    public void replaceData(ArrayList<Product> newDataSet){
-        mDataSet = newDataSet;
-
-        notifyDataSetChanged();
-    }
+//    /**
+//     * Append the new data to the current data.
+//     * @param newDataSet - the new data
+//     */
+//    public void updateData(ArrayList<Product> newDataSet){
+//        CollectionUtils.addAll(mDataSet, newDataSet);
+//        notifyDataSetChanged();
+//    }
+//
+//    /**
+//     * Replace the current data and update the adapter.
+//     * @param newDataSet - the new data
+//     */
+//    public void replaceData(ArrayList<Product> newDataSet){
+//        mDataSet = newDataSet;
+//
+//        notifyDataSetChanged();
+//    }
 
     /**
      * Get the product from the current data.
      * @param position - the respective product position
      * @return Product or null
      */
-    public Product getItem(int position) {
+    public ProductRegular getItem(int position) {
         return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
     }
     
@@ -371,101 +326,57 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         this.mOnViewHolderClicked = listener;
     }
 
-    /**
-     * Set the listener the header.
-     * @param listener - the listener
-     */
-    public void setOnHeaderClickListener(OnHeaderClickListener listener) {
-        this.mOnHeaderClicked = listener;
-    }
-
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
     public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Case favourite
-        if(id == R.id.image_is_favourite){
-            onClickFavouriteButton(view);
-        }
-        // Header Click
-        else if(id == R.id.catalog_header_image_frame){
-            if(mOnHeaderClicked != null){
-                mOnHeaderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
-            }
-        }
         // Case other sent to listener
-        else if(mOnViewHolderClicked != null){
-            try{
-                mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
-            } catch (ClassCastException e){
-                e.printStackTrace();
+        if (mOnViewHolderClicked != null) {
+            // Get view id
+            int id = view.getId();
+            // position
+            int position = (Integer) view.getTag(R.id.position);
+            // Case favourite
+            if (id == R.id.image_is_favourite) {
+                mOnViewHolderClicked.onWishListClick(view, this, position);
             }
-
-        }
-
-    }
-    
-    /**
-     * Process the click on the favourite button
-     * @param view - the view holder
-     */
-    private void onClickFavouriteButton(View view) {
-        // Get id
-        int position = (Integer) view.getTag(R.id.position);
-        // Get item
-        Product product = mDataSet.get(position);
-        // Remove from favorite
-        if(product.getAttributes().isFavourite()) {
-            // Remove from table and notify user
-            FavouriteTableHelper.removeFavouriteProduct(product.getSKU());
-            product.getAttributes().setFavourite(false);
-            view.setSelected(false);
-            TrackerDelegator.trackRemoveFromFavorites(product.getSKU(), product.getPriceForTracking(),product.getRating());
-            ToastFactory.REMOVED_FAVOURITE.show(mContext);
-        }
-        // Remove to favorite 
-        else {
-          FavouriteTableHelper.insertPartialFavouriteProduct(product);
-          product.getAttributes().setFavourite(true);
-          view.setSelected(true);
-          TrackerDelegator.trackAddToFavorites(product.getSKU(),product.getBrand(),product.getPriceForTracking(), product.getRating(),product.getMaxSavingPercentage(), true, null);
-          ToastFactory.ADDED_FAVOURITE.show(mContext);            
+            // Case header
+            else if (id == R.id.catalog_header_image_frame) {
+                mOnViewHolderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
+            }
+            // Case item
+            else {
+                mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
         }
     }
 
     /**
      * store info related to catalog header, and show it
-     * @param catalogPage
      */
-    public void setHeader(CatalogPage catalogPage){
-        if(mContext != null){
-            if(!DeviceInfoHelper.isTabletInLandscape(mContext)){
-                mBannerImage = catalogPage.getmCatalogBanner().getPhoneImage();
-            } else {
-                mBannerImage = catalogPage.getmCatalogBanner().getTabletImage();
-            }
-            mUrl = catalogPage.getmCatalogBanner().getUrl();
-            mTitle = catalogPage.getmCatalogBanner().getTitle();
-            mTargetType = catalogPage.getmCatalogBanner().getTargetType();
-            showHeaderView();
-        } else {
+    public void setHeader(@Nullable Banner banner){
+        if(banner == null) {
             hideHeaderView();
+        } else {
+            mBannerImage = !isTabletInLandscape ? banner.getPhoneImage() : banner.getTabletImage();
+            mUrl = banner.getUrl();
+            mTitle = banner.getTitle();
+            mTargetType = banner.getTargetType();
+            showHeaderView();
         }
-
     }
 
     /**
      * set header image and and listener
-     * @param holder
      */
-    private void setHeaderImage(ProductViewHolder holder){
+    private void setHeaderImage(ProductListViewHolder holder) {
         if(!TextUtils.isEmpty(mBannerImage)){
             // set listener
             holder.itemView.setOnClickListener(this);
+            // just in order to have a position tag in order to not crash on the onCLick
+            holder.itemView.setTag(R.id.position, -1);
             // Set image
             RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
         }

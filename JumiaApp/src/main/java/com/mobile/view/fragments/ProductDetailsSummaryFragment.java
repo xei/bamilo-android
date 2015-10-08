@@ -1,13 +1,12 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.graphics.Paint;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -15,17 +14,12 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-
-import java.util.EnumSet;
 
 /**
  * Class that represents the fragment that shows the product information, related to description and key features.
@@ -37,21 +31,14 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
 
     private static final String TAG = ProductDetailsSummaryFragment.class.getSimpleName();
 
-    private TextView mProductName;
-    private TextView mProductPriceSpecial;
-    private TextView mProductPriceNormal;
-    private RelativeLayout mProductFeaturesContainer;
-    private RelativeLayout mProductDescriptionContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
-    private CompleteProduct mCompleteProduct;
+    private ProductComplete mCompleteProduct;
     private View mainView;
-    private String mCompleteProductUrl;
+    private String mCompleteProductSku;
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ProductDetailsSummaryFragment getInstance(Bundle bundle) {
         ProductDetailsSummaryFragment fragment = new ProductDetailsSummaryFragment();
@@ -63,11 +50,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsSummaryFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
-                R.layout.product_summary_fragment,
-                NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.product_summary_fragment);
     }
 
     /*
@@ -93,11 +76,12 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct) parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                mCompleteProduct = (ProductComplete) parcelableProduct;
+                if(mCompleteProduct != null){
+                    mCompleteProductSku = mCompleteProduct.getSku();
+                }
             }
         }
     }
@@ -112,7 +96,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
         }
         // Load views
         mainView = view;
@@ -147,9 +131,11 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         if (mCompleteProduct != null && mainView != null) {
             getViews();
             displayProductInformation();
-        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+        } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
+            ContentValues values = new ContentValues();
+            values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -170,9 +156,9 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(outState != null)
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
+
     }
     
     /*
@@ -211,82 +197,29 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
     }
     
     private void getViews(){
-        mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
-        mProductPriceSpecial = (TextView) mainView.findViewById(R.id.product_price_special);
-        mProductPriceNormal = (TextView) mainView.findViewById(R.id.product_price_normal);
-        mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
-        mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
-        mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
         mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
+        mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
     }
     
     private void displayProductInformation() {
-        mProductName.setText(mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
-        displayPriceInformation();
         displayFeatures();
         displayDescription();
-        showAtLeastOne();
     }
 
-    /**
-     * displays information related to the product price
-     */
-    private void displayPriceInformation() {
-        String unitPrice = mCompleteProduct.getPrice();
-        /*--if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();*/
-        String specialPrice = mCompleteProduct.getSpecialPrice();
-        /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
-
-        displayPriceInfo(unitPrice, specialPrice);
-    }
-    
-    private void displayPriceInfo(String unitPrice, String specialPrice) {
-        /*-if (specialPrice == null && unitPrice == null) {
-            mProductPriceNormal.setVisibility(View.GONE);
-            mProductPriceSpecial.setVisibility(View.GONE);
-        } else*/
-        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the special price
-            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            mProductPriceNormal.setVisibility(View.GONE);
-        } else {
-            // display special and normal price
-            mProductPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-            mProductPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            mProductPriceNormal.setVisibility(View.VISIBLE);
-            mProductPriceNormal.setPaintFlags(mProductPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-    }
 
     /**
      * Displays the features section
      */
     private void displayFeatures() {
         String shortDescription = mCompleteProduct.getShortDescription();
-        // Don't show the features box if there is no content for it
         if (TextUtils.isEmpty(shortDescription)) {
             Print.i(TAG, "shortDescription : empty");
-            if(mProductFeaturesContainer != null){
-                mProductFeaturesContainer.setVisibility(View.GONE);
+            if(mProductFeaturesText != null){
+                mProductFeaturesText.setVisibility(View.GONE);
             }
         } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
-
-            //TODO validate if it's to remove or not
-//        String translatedDescription = shortDescription.replace("\r", "<br>");
-//            Log.d(TAG, "displayFeatures: *" + translatedDescription + "*");
-//
-//        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-//        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-//            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-//            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-//            for (MetricAffectingSpan span : spans) {
-//                htmlText.removeSpan(span);
-//            }
-//        }
-//        mProductFeaturesText.setText(htmlText);
             mProductFeaturesText.setText(shortDescription);
+
         }
     }
 
@@ -295,39 +228,19 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
      */
     private void displayDescription() {
         String longDescription = mCompleteProduct.getDescription();
-
-
+        //added apires: set long description
         if (TextUtils.isEmpty(longDescription)) {
             Print.i(TAG, "longDescription : empty");
-            if(mProductDescriptionContainer != null){
-                mProductDescriptionContainer.setVisibility(View.GONE);
+            if(mProductDescriptionText != null){
+                mProductDescriptionText.setVisibility(View.GONE);
             }
         } else {
             //TODO validate if it's to remove or not
-//            String translatedDescription = longDescription.replace("\r", "<br>");
-//            Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-//            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-//            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-//                Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-//                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-//                for (MetricAffectingSpan span: spans) {
-//                    htmlText.removeSpan(span);
-//                }
-//            }
-//            mProductDescriptionText.setText(htmlText);
             mProductDescriptionText.setText(longDescription);
         }
     }
 
-    /**
-     * show at least a empty box if both fields don't come from the API
-     */
-    private void showAtLeastOne(){
-        if(mProductDescriptionContainer!=null && !mProductDescriptionContainer.isShown() && mProductFeaturesContainer!=null && !mProductFeaturesContainer.isShown()){
-            mProductDescriptionContainer.setVisibility(View.VISIBLE);
-        }
-    }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -368,8 +281,8 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
@@ -408,7 +321,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment {
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 

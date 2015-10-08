@@ -132,7 +132,7 @@ public class ErrorLayoutFactory {
     private void buildNoFavouritesLayout(){
         new Builder()
                 .setImage(R.drawable.img_nofavourites)
-                .setPrincipalMessage(R.string.favourite_no_favourites)
+                .setPrincipalMessage(R.string.save_no_saved)
     //                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)

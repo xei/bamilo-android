@@ -25,8 +25,8 @@ public class ShippingMethodOption {
 
     public void initialize(String key, JSONObject jsonObject) {
         this.shippingMethod = key;
-        this.label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
-        this.deliveryTime = jsonObject.optString(RestConstants.JSON_DELIVERY_TIME);
+        this.label = jsonObject.optString(RestConstants.LABEL);
+        this.deliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
         this.shippingFee = jsonObject.optLong(RestConstants.JSON_SHIPPING_FEE_TAG);
     }
 

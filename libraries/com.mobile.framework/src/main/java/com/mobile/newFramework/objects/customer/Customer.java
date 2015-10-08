@@ -6,13 +6,14 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 
 /**
  * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste
@@ -24,85 +25,59 @@ public class Customer implements IJSONSerializable, Parcelable {
     private static final java.lang.String TAG = Customer.class.getSimpleName();
 
     private String id;
-    private CustomerPrefix prefix;
     private String firstName;
-    private String middleName;
     private String lastName;
     private String email;
-    private CustomerGender gender;
-    private String password;
-    private String createdAt;
+    private String gender;
+    private String birthday;
     private boolean guest;
-    private String mBirthday;
-    private ArrayList<String> addresses;
+    private HashSet<String> mWishListCache;
 
     /**
      * Customer empty constructor
      */
     public Customer() {
-        id = "-1";
-        firstName = "";
-        middleName = "";
-        lastName = "";
-        email = "";
-        gender = CustomerGender.Gender;
-        password = "";
-        setCreatedAt("");
-        this.addresses = null;
-        guest = false;
-        mBirthday = "";
+        // ...
     }
 
-    public Customer(JSONObject jsonObject) {
-        initialize(jsonObject);
-    }
-
-    /**
-     * @param id             of the customer.
-     * @param firstName      of the customer
-     * @param middleName     of the customer.
-     * @param lastName       of the customer.
-     * @param email          of the customer.
-     * @param password       of the customer.
-     * @param gender         of the customer.
-     * @param birthday       of the customer.
-     * @param customerPrefix of the customer.
+    /* (non-Javadoc)
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
-    public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender,
-                    CustomerPrefix customerPrefix, String createdAt, ArrayList<String> addresses, String birthday) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.email = email;
-        this.gender = gender;
-        this.password = password;
-        this.prefix = customerPrefix;
-        this.createdAt = createdAt;
-        this.addresses = addresses;
-        this.guest = false;
-        this.mBirthday = birthday;
+    @Override
+    public boolean initialize(JSONObject jsonObject) {
+        try {
+            // Entity
+            jsonObject = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
+            // Data
+            id = jsonObject.getString(RestConstants.ID);
+            firstName = jsonObject.getString(RestConstants.FIRST_NAME);
+            lastName = jsonObject.getString(RestConstants.LAST_NAME);
+            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
+            gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
+            birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
+            // Get wish list products
+            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
+            if (jsonArray != null && jsonArray.length() > 0) {
+                mWishListCache = new HashSet<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.optJSONObject(i);
+                    String sku = item.optString(RestConstants.SKU);
+                    if (TextUtils.isNotEmpty(sku)) {
+                        mWishListCache.add(sku);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            Print.e(TAG, "ERROR: JSE ON PARSING CUSTOMER", e);
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Get user birthday.
-     *
-     * @return String or null
-     * @author sergiopereira
-     */
-    public String getBirthday() {
-        return mBirthday;
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
     }
-
-//    /**
-//     * Set user birthday.
-//     *
-//     * @param birthday
-//     * @author sergiopereira
-//     */
-//    public void setBirthday(String birthday) {
-//        this.mBirthday = birthday;
-//    }
 
     /**
      * gets the customer's id
@@ -132,15 +107,6 @@ public class Customer implements IJSONSerializable, Parcelable {
         return firstName;
     }
 
-//    /**
-//     * gets the customer middle name
-//     *
-//     * @return the middle name
-//     */
-//    public String getMiddleName() {
-//        return middleName;
-//    }
-
     /**
      * gets the customer last name
      *
@@ -164,40 +130,9 @@ public class Customer implements IJSONSerializable, Parcelable {
      *
      * @return the customer gender
      */
-    public CustomerGender getGender() {
+    public String getGender() {
         return gender;
     }
-
-    /**
-     * gets the customer password
-     *
-     * @return the customer password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-
-//    /**
-//     * @param firstName the firstName to set
-//     */
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    /**
-//     * @param middleName the middleName to set
-//     */
-//    public void setMiddleName(String middleName) {
-//        this.middleName = middleName;
-//    }
-//
-//    /**
-//     * @param lastName the lastName to set
-//     */
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
 
     /**
      * @param email the email to set
@@ -206,98 +141,9 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.email = email;
     }
 
-    /**
-     * @param gender the gender to set
-     */
-    public void setGender(CustomerGender gender) {
-        this.gender = gender;
+    public String getBirthday() {
+        return birthday;
     }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-//    /**
-//     * @return the prefix
-//     */
-//    public CustomerPrefix getPrefix() {
-//        return prefix;
-//    }
-//
-//    /**
-//     * @param prefix the prefix to set
-//     */
-//    public void setPrefix(CustomerPrefix prefix) {
-//        this.prefix = prefix;
-//    }
-
-    /**
-     * @return The User Account creation date.
-     */
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    /**
-     * @param created_at - The User Account creation date.
-     */
-    public void setCreatedAt(String created_at) {
-        this.createdAt = created_at;
-    }
-
-    /**
-     * @return the addresses
-     */
-//	public ArrayList<String> getAddresses() {
-//		return addresses;
-//	}
-
-    /**
-     * @param addresses the addresses to set
-     */
-    public void setAddresses(ArrayList<String> addresses) {
-        this.addresses = addresses;
-    }
-
-//    /**
-//     * Method that validate if user has addresses
-//     *
-//     * @return true/false
-//     */
-//    public boolean hasAddresses() {
-//        return this.addresses != null && this.addresses.size() > 0;
-//    }
-
-//    /**
-//     * Get newsletter subscriptions
-//     * @return a list of {@link CustomerNewsletterSubscription}
-//     * @author sergiopereira
-//     */
-//    public ArrayList<CustomerNewsletterSubscription> getNewsletterSubscriptions(){
-//        return mNewsletterSubscriptions;
-//    }
-//
-//    /**
-//     * Save newsletter subscriptions
-//     * @param subscriptions list of {@link CustomerNewsletterSubscription}
-//     * @author sergiopereira
-//     */
-//    public void setNewsletterSubscriptions(ArrayList<CustomerNewsletterSubscription> subscriptions){
-//        this.mNewsletterSubscriptions = subscriptions;
-//    }
-//
-//    /**
-//     * Validate if exist newsletter subscription
-//     * @return boolean
-//     * @author sergiopereira
-//     */
-//    public boolean hasNewsletterSubscriptions(){
-//        return mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0;
-//    }
-
 
     /**
      * @return the guest
@@ -313,56 +159,11 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.guest = guest;
     }
 
-    /* (non-Javadoc)
-     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+    /**
+     * Wish list for cache.
      */
-    @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-
-            // Case: METADATA:DATA:USER
-            if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-            }
-            // Case: METADATA:USER
-            if (jsonObject.has(RestConstants.JSON_USER_TAG)) {
-                jsonObject = jsonObject.getJSONObject(RestConstants.JSON_USER_TAG);
-            }
-
-            id = jsonObject.getString(RestConstants.JSON_ID_CUSTOMER_TAG);
-            firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
-            lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
-            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
-            createdAt = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
-            mBirthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
-
-            String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
-            if (genderString == null) {
-                gender = CustomerGender.UNKNOWN;
-            } else if (genderString.equals("male")) {
-                gender = CustomerGender.Male;
-            } else if (genderString.equals("female")) {
-                gender = CustomerGender.Female;
-            } else {
-                gender = CustomerGender.Gender;
-            }
-
-            // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
-            JSONObject addressesJson = jsonObject.optJSONObject(RestConstants.JSON_CUSTOMER_ADDRESS_COLLECTION_TAG);
-            if (addressesJson != null && addressesJson.length() > 0) {
-                addresses = new ArrayList<>();
-                Iterator<?> iterator = addressesJson.keys();
-                while (iterator.hasNext()) {
-                    String key = (String) iterator.next();
-                    addresses.add(key);
-                }
-            }
-
-        } catch (JSONException e) {
-            Print.e(TAG, "Error parsing the jsonobject to customer", e);
-            return false;
-        }
-        return true;
+    public HashSet<String> getWishListCache() {
+        return mWishListCache;
     }
 
     /* (non-Javadoc)
@@ -372,23 +173,17 @@ public class Customer implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_ID_CUSTOMER_TAG, id);
-            jsonObject.put(RestConstants.JSON_FIRST_NAME_TAG, firstName);
-            jsonObject.put(RestConstants.JSON_LAST_NAME_TAG, lastName);
+            jsonObject.put(RestConstants.ID, id);
+            jsonObject.put(RestConstants.FIRST_NAME, firstName);
+            jsonObject.put(RestConstants.LAST_NAME, lastName);
             jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
-            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender == CustomerGender.Male ? "male" : "female");
+            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
         return jsonObject;
     }
-
-    @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
-    }
-
 
     /**
      * ########### Parcelable ###########
@@ -413,15 +208,11 @@ public class Customer implements IJSONSerializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(firstName);
-        dest.writeString(middleName);
         dest.writeString(lastName);
         dest.writeString(email);
-        dest.writeValue(gender);
-        dest.writeString(password);
-        dest.writeValue(prefix);
-        dest.writeString(createdAt);
+        dest.writeString(gender);
+        dest.writeString(birthday);
         dest.writeBooleanArray(new boolean[]{guest});
-        dest.writeString(mBirthday);
     }
 
     /**
@@ -430,15 +221,11 @@ public class Customer implements IJSONSerializable, Parcelable {
     private Customer(Parcel in) {
         this.id = in.readString();
         this.firstName = in.readString();
-        this.middleName = in.readString();
         this.lastName = in.readString();
         this.email = in.readString();
-        this.gender = (CustomerGender) in.readValue(CustomerGender.class.getClassLoader());
-        this.password = in.readString();
-        this.prefix = (CustomerPrefix) in.readValue(CustomerPrefix.class.getClassLoader());
-        this.createdAt = in.readString();
+        this.gender = in.readString();
+        this.birthday = in.readString();
         in.readBooleanArray(new boolean[]{guest});
-        mBirthday = in.readString();
     }
 
 

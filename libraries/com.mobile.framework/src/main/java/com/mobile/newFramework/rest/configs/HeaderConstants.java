@@ -40,6 +40,7 @@ public class HeaderConstants {
     public static final String PROXY_AUTHENTICATE = "Proxy-Authenticate";
     public static final String AUTHORIZATION = "Authorization";
     public static final String USER_AGENT = "User-Agent";
+    public static final String USER_LANGUAGE = "User-Language";
 
     public HeaderConstants() {
     }

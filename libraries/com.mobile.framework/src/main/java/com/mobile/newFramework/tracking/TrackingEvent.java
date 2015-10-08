@@ -46,7 +46,9 @@ public enum TrackingEvent {
 	// ### ACTION BAR EVENTS
 	
 	AB_MENU_SIGN_IN(R.string.goverflowmenu, R.string.gsignin),
-	
+
+	AB_MENU_HOME(R.string.goverflowmenu, R.string.ghomepage),
+
 	AB_MENU_FAVORITE(R.string.goverflowmenu, R.string.gfavourites),
 	
 	AB_MENU_RECENT_SEARCHES(R.string.goverflowmenu, R.string.grecentsearches),
@@ -150,6 +152,10 @@ public enum TrackingEvent {
 	SHOPS_WEEK_BANNER_CLICK(R.string.gshopweekbanner, R.string.gPurchase),
 
 	FEATURE_BANNER_CLICK(R.string.gfeaturebanner, R.string.gPurchase),
+
+	TOP_SELLER_BANNER_CLICK(R.string.gtopsellerbanner, R.string.gPurchase),
+
+	UNKNOWN_BANNER_CLICK(R.string.gunknown, R.string.gunknown),
 
 	HOME_BANNER_CLICK(-1, R.string.gBannerClick);
 	

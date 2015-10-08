@@ -10,16 +10,12 @@ import android.view.ViewStub;
 import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.orders.OrderSummary;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -34,55 +30,12 @@ public class CheckoutStepManager {
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
 
     public final static String ADDRESSES_STEP = "createAddress";
-    public final static String BILLING_STEP = "billing";
+    public final static String BILLING_STEP = "addresses";
     public final static String SHIPPING_STEP = "shippingMethod";
     public final static String PAYMENT_STEP = "paymentMethod";
     public final static String ORDER_STEP = "finish";
 
     public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
-
-    /**
-     * Method used to get the next step value from JSON and return a fragment type
-     * @param jsonObject The json response to get the next step
-     * @return {@link FragmentType}
-     */
-    public static FragmentType getNextCheckoutFragment(JSONObject jsonObject){
-        try {
-
-            // Get the next step from json
-            String nextStep = getNextCheckoutStep(jsonObject);
-
-            // Validate value
-            if(nextStep != null) return getNextFragment(nextStep);
-            else return FragmentType.UNKNOWN;
-
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: JSON OBJECT IS NULL");
-            return FragmentType.UNKNOWN;
-        }
-    }
-
-    public static String getNextCheckoutStep(JSONObject jsonObject){
-        String nextStep = null;
-
-        if(jsonObject.has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)){
-            // From native checkout tag
-            JSONObject checkoutJson = jsonObject.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
-            nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-        } else if(jsonObject.has(RestConstants.JSON_NEXT_STEP_TAG)){
-            // From next step tag
-            nextStep = jsonObject.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-        } else if (jsonObject.has(RestConstants.JSON_DATA_TAG) &&
-                jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG) != null &&
-                jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG).has(RestConstants.JSON_NATIVE_CHECKOUT_TAG)) {
-            // From data and native checkout tag
-            JSONObject dataJson = jsonObject.optJSONObject(RestConstants.JSON_DATA_TAG);
-            JSONObject checkoutJson = dataJson.optJSONObject(RestConstants.JSON_NATIVE_CHECKOUT_TAG);
-            nextStep = checkoutJson.optString(RestConstants.JSON_NEXT_STEP_TAG, null);
-        }
-
-        return nextStep;
-    }
 
     /**
      * Method used to get the Fragment type from a constant 
@@ -161,17 +114,10 @@ public class CheckoutStepManager {
      * Method used for showing checkout total at checkout steps.
      *
      * @param viewStub ViewStub or View with TextView (checkout_total_label).
-     * @param orderSummary OrderSummary to get total
-     * @param cart Cart in case orderSummary is null
+     * @param purchaseEntity OrderSummary to get total
      */
-    public static void showCheckoutTotal(View viewStub, OrderSummary orderSummary, ShoppingCart cart){
-        String value = null;
-        if(orderSummary != null){
-            value = orderSummary.getTotal();
-        } else if(cart != null){
-            value = cart.getCartValue();
-        }
-
+    public static void showCheckoutTotal(View viewStub, PurchaseEntity purchaseEntity){
+        String value = "" + purchaseEntity.getTotal();
         if(!TextUtils.isEmpty(value) && viewStub != null){
             if(viewStub instanceof ViewStub){
                 viewStub = ((ViewStub) viewStub).inflate();

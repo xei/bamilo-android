@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -17,8 +16,10 @@ import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.orders.OrderSummary;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -26,8 +27,10 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.FulfillmentUiBuilder;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -41,6 +44,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private static final String SELECTION_STATE = "selection";
 
     private static final String SUB_SELECTION_STATE = "sub_selection";
+
+    private ViewGroup mShippingContainer;
 
     private ViewGroup mShippingMethodsContainer;
 
@@ -62,7 +67,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_main,
                 R.string.checkout_label,
@@ -97,12 +102,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        
-        Bundle params = new Bundle();        
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
-        
-        TrackerDelegator.trackCheckoutStep(params);
+
+        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
     /*
@@ -114,6 +115,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get containers
+        mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_container);
         mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
@@ -221,11 +223,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         mFormResponse.generateForm(getBaseActivity(), mShippingMethodsContainer);
         //mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
-        
+//        mShippingContainer.addView(FulfillmentUiBuilder.getView(this.getActivity(),));
         // Set the saved selection
         if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
         
         showFragmentContentContainer();
+    }
+
+
+    private void loadFulfillment(ArrayList<Fulfillment> fulfillmentList) {
+        if(CollectionUtils.isNotEmpty(fulfillmentList)){
+            FulfillmentUiBuilder.addToView(this.getActivity(), mShippingContainer, fulfillmentList);
+        }
     }
     
     /**
@@ -355,14 +364,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSuccessGetShippingMethods(Bundle bundle){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         // Get order summary
-        OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        PurchaseEntity orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
         // Form
         ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         loadForm(form);
+        ArrayList<Fulfillment> fulfillmentList = bundle.getParcelableArrayList(Constants.BUNDLE_FORM_DATA_KEY);
+        loadFulfillment(fulfillmentList);
+
+
 
         //Total price
-        CheckoutStepManager.showCheckoutTotal((ViewStub) getView().findViewById(R.id.total_view_stub), orderSummary, JumiaApplication.INSTANCE.getCart());
+        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
     }
 
     public void onSuccessSetShippingMethods(Bundle bundle){
@@ -375,13 +388,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onErrorGetShippingMethods(){
         Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_SHIPPING_METHODS_EVENT");
+        super.showFragmentErrorRetry();
+
     }
 
     public void onErrorSetShippingMethods(){
         Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED SET_SHIPPING_METHOD_EVENT");
-
+        super.showUnexpectedErrorWarning();
     }
 
     /**

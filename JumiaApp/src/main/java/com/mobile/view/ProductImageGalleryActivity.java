@@ -5,22 +5,22 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
+import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.JumiaViewPagerWithZoom;
-import com.mobile.view.fragments.ProductImageGalleryFragment;
+import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.util.ArrayList;
 
 /**
  * Activity to show the the product images gallery.
+ *
+ *  TODO: THIS MUST USE THE GALLERY FRAGMENT
  *
  * Created by Paulo Carvalho on 4/13/15.
  */
@@ -32,11 +32,9 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
 
     private GalleryPagerAdapter galleryAdapter;
 
-    private  int mSharedSelectedPosition = 0;
-
     private ArrayList<String> mImagesList;
 
-    private InfiniteCirclePageIndicator mViewPagerIndicator;
+ //   private InfiniteCirclePageIndicator mViewPagerIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +52,10 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         Intent intent = getIntent();
         if(intent != null) {
             mImagesList = intent.getStringArrayListExtra(ConstantsIntentExtra.IMAGE_LIST);
-            mSharedSelectedPosition = intent.getIntExtra(ConstantsIntentExtra.PRODUCT_GALLERY_POS, 0);
         }
         // Restore state after rotation
         if (savedInstanceState != null) {
             mImagesList = savedInstanceState.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
-            mSharedSelectedPosition = savedInstanceState.getInt(ConstantsIntentExtra.PRODUCT_GALLERY_POS, 0);
         }
         setContent();
     }
@@ -68,10 +64,11 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      * set activity content
      */
     private void setContent(){
-
         mViewPager = (JumiaViewPagerWithZoom) findViewById(R.id.viewpager);
-        mViewPagerIndicator = (InfiniteCirclePageIndicator) findViewById(R.id.view_pager_indicator);
+        // mViewPagerIndicator = (InfiniteCirclePageIndicator) findViewById(R.id.view_pager_indicator);
         View closeView = findViewById(R.id.gallery_button_close);
+        // Get thumbnail indicator
+        findViewById(R.id.pdv_thumbnail_indicator_container).setVisibility(View.GONE);
         // Set view pager
         createGallery();
         // Set close button
@@ -93,7 +90,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     protected void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if(mViewPager != null) mViewPager.setCurrentItem(mSharedSelectedPosition);
+        if(mViewPager != null) mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition);
     }
 
     /*
@@ -105,8 +102,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        mSharedSelectedPosition = getViewPagerPosition();
-        ProductImageGalleryFragment.sSharedSelectedPosition = mSharedSelectedPosition;
+        ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
     /*
@@ -164,29 +160,29 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Add infinite adapter to pager
         mViewPager.setAdapter(infinitePagerAdapter);
         // Add pager to indicator
-        setIndicatorForViewPager(size);
+        //setIndicatorForViewPager(size);
 
     }
 
-    /**
-     * Set the pager indicator validating the size.<br>
-     * @param size
-     * @author ricardo
-     * @modified sergiopereira
-     */
-    private void setIndicatorForViewPager(int size) {
-        // Validate the current size
-        if (size > 1) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
-            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_78px));
-            mViewPagerIndicator.requestLayout();
-
-            mViewPagerIndicator.setVisibility(View.VISIBLE);
-        } else {
-            mViewPagerIndicator.setVisibility(View.INVISIBLE);
-        }
-        mViewPagerIndicator.setViewPager(mViewPager);
-    }
+//    /**
+//     * Set the pager indicator validating the size.<br>
+//     * @param size
+//     * @author ricardo
+//     * @modified sergiopereira
+//     */
+//    private void setIndicatorForViewPager(int size) {
+//        // Validate the current size
+//       if (size > 1) {
+//            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
+//            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_78px));
+//            mViewPagerIndicator.requestLayout();
+//
+//            mViewPagerIndicator.setVisibility(View.VISIBLE);
+//        } else {
+//            mViewPagerIndicator.setVisibility(View.INVISIBLE);
+//        }
+//        mViewPagerIndicator.setViewPager(mViewPager);
+//    }
 
     /*
  * (non-Javadoc)
@@ -198,7 +194,6 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE");
         outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mImagesList);
-        outState.putInt(ConstantsIntentExtra.PRODUCT_GALLERY_POS, mSharedSelectedPosition);
     }
 
     @Override
@@ -217,8 +212,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      */
     private void onClickCloseButton() {
         Print.i(TAG, "ON CLICK CLOSE BUTTON");
-        mSharedSelectedPosition = getViewPagerPosition();
-        ProductImageGalleryFragment.sSharedSelectedPosition = mSharedSelectedPosition;
+        ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
         finish();
     }
 

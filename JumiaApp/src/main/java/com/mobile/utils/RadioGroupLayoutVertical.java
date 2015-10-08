@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,7 +18,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -151,13 +149,13 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 mTextView.setText(paymentText);
                 mTextView.setVisibility(View.VISIBLE);
             }
-            
-            ArrayList<String> paymentImages = paymentsInfoList.get(mItems.get(idx)).getImages();
-            if(paymentImages != null && paymentImages.size() > 0){
-                ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                
-                RocketImageLoader.instance.loadImage(paymentImages.get(0), mImageView);
-            }
+
+            // Show image
+//            ArrayList<String> paymentImages = paymentsInfoList.get(mItems.get(idx)).getImages();
+//            if(paymentImages != null && paymentImages.size() > 0){
+//                ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
+//                RocketImageLoader.instance.loadImage(paymentImages.get(0), mImageView);
+//            }
         }
 
         final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
@@ -253,12 +251,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public String getErrorMessage() {
-        String result = mContext.getString(R.string.register_required_text);
-
-        result = generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0)
-                .getMessage();
-
-        return result;
+        return generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0).getMessage();
     }
 
     public ContentValues getSubFieldParameters() {

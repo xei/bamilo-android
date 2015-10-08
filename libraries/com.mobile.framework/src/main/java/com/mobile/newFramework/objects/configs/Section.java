@@ -114,7 +114,7 @@ public class Section implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(RestConstants.JSON_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_URL_TAG, url);
+            jsonObject.put(RestConstants.URL, url);
         } catch (JSONException e) {
             e.printStackTrace();
         }

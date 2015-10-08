@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.LastViewed;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsListAdapter.ViewHolder> {
     
-    private ArrayList<LastViewed> mDataset;
+    private ArrayList<ProductRegular> mDataset;
     private OnClickListener mParentClickListener;
 
     /**
@@ -42,8 +42,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         private View mContainer;
         
         /**
-         * Constructor 
-         * @param view
+         * Constructor
          */
         public ViewHolder(View view) {
             super(view);
@@ -58,11 +57,9 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param relatedItemsList
-     * @param parentClickListener
      * @author sergiopereira
      */
-    public RelatedItemsListAdapter(ArrayList<LastViewed> relatedItemsList, OnClickListener parentClickListener) {
+    public RelatedItemsListAdapter(ArrayList<ProductRegular> relatedItemsList, OnClickListener parentClickListener) {
         mDataset = relatedItemsList;
         mParentClickListener = parentClickListener;
     }
@@ -85,7 +82,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Replace the contents of a view (invoked by the layout manager)
         // Get item
-        LastViewed item = mDataset.get(position);
+        ProductRegular item = mDataset.get(position);
         // Set brand
         holder.mBrand.setText(item.getBrand());
         // Set title
@@ -93,13 +90,13 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
-        if(item.getSpecialPriceDouble() != 0d){
+        if(item.hasDiscount()){
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
         } else {
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
         }
         // Set listener and tags
-        holder.mContainer.setTag(item.getUrl());
+        holder.mContainer.setTag(R.id.target_sku, item.getSku());
         holder.mContainer.setOnClickListener(mParentClickListener);
     }
 

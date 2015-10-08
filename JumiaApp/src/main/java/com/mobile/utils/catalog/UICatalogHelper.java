@@ -1,18 +1,12 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.mobile.controllers.TipsPagerAdapter;
-import com.mobile.utils.TipsOnPageChangeListener;
-import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import com.mobile.view.fragments.BaseFragment;
 
 import de.akquinet.android.androlog.Log;
 
@@ -27,11 +21,8 @@ public class UICatalogHelper {
     /**
      * Set the catalog title
      */
-    public static void setCatalogTitle(BaseActivity baseActivity, String name, int value) {
-        // Get string from plurals
-        String subTitle = baseActivity.getResources().getQuantityString(R.plurals.numberOfItems, value, value);
-        // Set title with sub title
-        baseActivity.setTitleAndSubTitle(name, "(" + subTitle + ")");
+    public static void setCatalogTitle(BaseActivity baseActivity, String name) {
+        baseActivity.setActionBarTitle(name);
     }
 
 
@@ -89,29 +80,29 @@ public class UICatalogHelper {
     }
 
 
-    /**
-     * Show tips if is the first time the user uses the app.
-     */
-    public static void isToShowWizard(BaseFragment fragment, ViewStub stub, View.OnClickListener listener) {
-        try {
-            if (WizardPreferences.isFirstTime(fragment.getActivity(), WizardPreferences.WizardType.CATALOG)) {
-                Log.i(TAG, "SHOW WIZARD");
-                // Inflate view in stub
-                stub.setVisibility(View.VISIBLE);
-                // Get view
-                View view = fragment.getView();
-                // Get view and set wizard
-                ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
-                int[] tipsPages = { R.layout.catalog_fragment_wizard_favourite};
-                TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(fragment.getActivity(), fragment.getActivity().getLayoutInflater(), view, tipsPages);
-                viewPagerTips.setAdapter(mTipsPagerAdapter);
-                viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));
-                viewPagerTips.setCurrentItem(0);
-                view.findViewById(R.id.catalog_wizard_button_ok).setOnClickListener(listener);
-            }
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SHOW WIZARD" , e);
-            stub.setVisibility(View.GONE);
-        }
-    }
+//    /**
+//     * Show tips if is the first time the user uses the app.
+//     */
+//    public static void isToShowWizard(BaseFragment fragment, ViewStub stub, View.OnClickListener listener) {
+//        try {
+//            if (WizardPreferences.isFirstTime(fragment.getActivity(), WizardPreferences.WizardType.CATALOG)) {
+//                Log.i(TAG, "SHOW WIZARD");
+//                // Inflate view in stub
+//                stub.setVisibility(View.VISIBLE);
+//                // Get view
+//                View view = fragment.getView();
+//                // Get view and set wizard
+//                ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
+//                int[] tipsPages = { R.layout.catalog_fragment_wizard_favourite};
+//                TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(fragment.getActivity(), fragment.getActivity().getLayoutInflater(), view, tipsPages);
+//                viewPagerTips.setAdapter(mTipsPagerAdapter);
+//                viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));
+//                viewPagerTips.setCurrentItem(0);
+//                view.findViewById(R.id.catalog_wizard_button_ok).setOnClickListener(listener);
+//            }
+//        } catch (NullPointerException e) {
+//            Log.w(TAG, "WARNING: NPE ON SHOW WIZARD" , e);
+//            stub.setVisibility(View.GONE);
+//        }
+//    }
 }

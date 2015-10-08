@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,29 +27,18 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     public static final String TAG = HomePageObject.class.getSimpleName();
 
-    private String mName;
-
     private ArrayList<BaseTeaserGroupType> mTeasers;
 
     /**
      * Empty constructor
      */
     public HomePageObject() {
-        //...
+        super();
     }
 
     /*
      * ########## GETTERS ##########
      */
-
-    /**
-     * Get the name.
-     *
-     * @return The name
-     */
-    public String getName() {
-        return mName;
-    }
 
     /**
      * Get the list of group of teasers.
@@ -80,8 +70,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get name
-        mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
         // Get teaser
         JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         int size = data.length();
@@ -93,7 +81,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
                 // Get teaser group
                 JSONObject json = data.getJSONObject(i);
                 // Get group type
-                String type = json.getString(RestConstants.JSON_TYPE_TAG);
+                String type = json.getString(RestConstants.TYPE);
                 // Parse and create group
                 BaseTeaserGroupType group = createTeaserGroupType(type, json);
                 // Save into an hash map
@@ -140,17 +128,16 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         TeaserGroupType type = TeaserGroupType.byString(groupType);
         // Validate group type
         try {
-            if( type != TeaserGroupType.UNKNOWN) {
+            if (type != TeaserGroupType.UNKNOWN) {
                 teaserGroup = new BaseTeaserGroupType(type, json);
             } else {
-                //Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
+                Print.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS");
             }
         } catch (JSONException e) {
-            //Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
+            Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
-        // Discard groups with items
+        // Discard groups without items
         if (teaserGroup != null && !teaserGroup.hasData()) {
-            //Log.w(TAG, "WARNING: DISCARDED GROUP EMPTY: " + groupType);
             teaserGroup = null;
         }
         // Return the group or null
@@ -168,7 +155,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
         if (mTeasers == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -178,7 +164,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     }
 
     private HomePageObject(Parcel in) {
-        mName = in.readString();
         if (in.readByte() == 0x01) {
             mTeasers = new ArrayList<>();
             in.readList(mTeasers, BaseTeaserGroupType.class.getClassLoader());

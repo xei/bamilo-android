@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_300"
+    android:orientation="vertical">
+
+    <!-- HEADER -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_bundles_title"
+        style="@style/HeaderStyle"
+        android:text="@string/combos" />
+
+    <!-- CONTAINER -->
+
+    <include
+        android:id="@+id/ComboSection"
+        layout="@layout/_def_pdv_fragment_combo_item" />
+
+</LinearLayout>

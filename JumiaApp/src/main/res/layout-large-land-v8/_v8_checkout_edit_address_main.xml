@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="false" >
+    
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+    <!-- EDIT ADDRESS -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_main_container" >
+
+        <!-- CONTENT -->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/checkout_my_order_buttons"
+            android:layout_alignParentTop="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <!-- FORM -->
+
+                <include layout="@layout/checkout_edit_address_form" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- BUTTONS -->
+
+        <LinearLayout
+            android:id="@id/checkout_my_order_buttons"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_edit_address_required_text"
+                style="@style/text_header"
+                android:layout_margin="@dimen/rounded_margin_mid"
+                android:text="@string/register_required_text"
+                android:textColor="@color/red_basic"
+                android:visibility="gone" />
+
+            <LinearLayout
+                style="@style/button_container"
+                android:orientation="horizontal" >
+
+                <com.mobile.components.customfontviews.Button
+                    android:id="@+id/checkout_edit_button_cancel"
+                    style="@style/button_grey_bottom"
+                    android:layout_marginRight="@dimen/margin_x_small"
+                    android:layout_weight="1"
+                    android:text="@string/cancel_label" />
+
+                <com.mobile.components.customfontviews.Button
+                    android:id="@+id/checkout_edit_button_enter"
+                    style="@style/button_orange_bottom"
+                    android:layout_marginLeft="@dimen/margin_x_small"
+                    android:layout_weight="1"
+                    android:text="@string/save_changes_label" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

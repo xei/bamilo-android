@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,21 +16,32 @@ import org.json.JSONObject;
  *
  * @author Andre Lopes
  *
+ * // TODO Update this class to use the ProductBase class
+ *
  */
 public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
 
-    private String price;
+    private String sku;
+    private double price;
+    private double mSpecialPrice;
 
     /**
      * simple FeaturedProduct constructor.
      */
     public FeaturedItemProduct() {
         super();
-        this.price = "";
     }
 
-    public String getPrice() {
+    public double getSpecialPrice() {
+        return mSpecialPrice;
+    }
+
+    public double getPrice() {
         return price;
+    }
+
+    public String getSku() {
+        return sku;
     }
 
     /*
@@ -47,26 +57,9 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
             if (!super.initialize(jsonObject)) {
                 return false;
             }
-
-			/*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-
-			double priceDouble = -1;
-			try {
-				priceDouble = Double.parseDouble(priceString);
-				price = CurrencyFormatter.formatCurrency(priceDouble);
-			} catch (NumberFormatException e) {
-				price = priceString;
-				e.printStackTrace();
-			}*/
-            // Fix NAFAMZ-7848
-            // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
-            if (CurrencyFormatter.isNumber(priceJSON)) {
-                price = priceJSON;
-            } else {
-                throw new JSONException("Price is not a number!");
-            }
-
+            sku = jsonObject.getString(RestConstants.SKU);
+            price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+            mSpecialPrice = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
             // get url from first image which has url
             JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_TAG);
             if (imageArray != null) {
@@ -78,7 +71,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                     while (!isImageUrlDefined && index < imageArraySize) {
                         JSONObject imageObject = imageArray.getJSONObject(index);
                         if (imageObject != null) {
-                            imageUrl = imageObject.optString(RestConstants.JSON_URL_TAG);
+                            imageUrl = imageObject.optString(RestConstants.URL);
                             isImageUrlDefined = true;
                         }
                         index++;
@@ -121,12 +114,16 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(price);
+        dest.writeDouble(price);
+        dest.writeDouble(mSpecialPrice);
+        dest.writeString(sku);
     }
 
     private FeaturedItemProduct(Parcel in) {
         super(in);
-        price = in.readString();
+        price = in.readDouble();
+        mSpecialPrice = in.readDouble();
+        sku = in.readString();
     }
 
     public static final Parcelable.Creator<FeaturedItemProduct> CREATOR = new Parcelable.Creator<FeaturedItemProduct>() {

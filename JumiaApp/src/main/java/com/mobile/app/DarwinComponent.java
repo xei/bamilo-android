@@ -13,6 +13,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;
 
@@ -56,8 +57,9 @@ public class DarwinComponent extends ApplicationComponent {
         boolean countriesConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
         boolean countryConfigsAvailable = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         boolean isChangeShop = sharedPrefs.getBoolean(Darwin.KEY_COUNTRY_CHANGED, false);
+        boolean hasLanguages = CountryPersistentConfigs.hasLanguages(sharedPrefs);
         
-        Print.i(TAG, "DarwinComponent shopId :  " + shopId + " countriesConfigs : " + countriesConfigs + " " + isChangeShop);
+        Print.i(TAG, "DarwinComponent shopId :  " + shopId + " countriesConfigs : " + countriesConfigs + " isChangeShop : " + isChangeShop + " countryConfigsAvailable : " + countryConfigsAvailable);
         
         if (shopId == null && countriesConfigs && !isChangeShop) {
             Print.i(TAG, "DarwinComponent AUTO_COUNTRY_SELECTION");
@@ -73,7 +75,7 @@ public class DarwinComponent extends ApplicationComponent {
             return ErrorCode.UNKNOWN_ERROR;
         }
         
-        if(!countryConfigsAvailable){
+        if(!countryConfigsAvailable || !hasLanguages){
             Print.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
             
             if(Darwin.initialize(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), null)) {

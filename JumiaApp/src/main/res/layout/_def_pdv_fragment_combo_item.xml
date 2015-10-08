@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comboGlobal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/layout_padding"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <!-- ITEM COMBO CONTENT: 1 BUNDLE = 1 COMBO -->
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/pdv_bundles_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
+
+
+
+    <!-- SEPARATOR -->
+
+    <include
+        layout="@layout/pdv_fragment_combo_item_price" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black_300" />
+
+</LinearLayout>

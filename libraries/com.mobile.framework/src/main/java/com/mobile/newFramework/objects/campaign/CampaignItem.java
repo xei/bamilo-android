@@ -6,10 +6,11 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.product.BaseProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -19,17 +20,11 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class CampaignItem extends BaseProduct implements IJSONSerializable {
+public class CampaignItem extends ProductRegular implements IJSONSerializable {
 
     private double mSavePrice;
 
-    private String mImage;
-
-    private ArrayList<String> mImages;
-
     private int mStockPercentage;
-
-    private double mMaxSavingPercentage;
 
     private boolean hasUniqueSize;
 
@@ -48,15 +43,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
         super();
     }
 
-    /**
-     * Constructor
-     *
-     * @param jsonObject
-     */
-    public CampaignItem(JSONObject jsonObject) {
-        initialize(jsonObject);
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -65,30 +51,15 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-//        Log.i(TAG, "ON INITIALIZE");
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+
+        super.initialize(jsonObject);
+
         mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG, 0d);
-        specialPriceDouble = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG, 0d);
-        specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
-        priceDouble = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG, 0d);
-        priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
-        sku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
-        brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG, 0);
-        mMaxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0d);
+
         hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
         mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
-
-        // Save images
-        JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
-        if (imagesA != null && imagesA.length() > 0) {
-            mImage = imagesA.optString(0);
-            mImages = new ArrayList<>();
-            for (int i = 0; i < imagesA.length(); i++) {
-                mImages.add(imagesA.optString(i));
-            }
-        }
 
         // Save sizes
         JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
@@ -111,7 +82,7 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
      */
     @Override
     public String toString() {
-        return brand + " " + name + " " + sku + " " + mImage;
+        return mBrand + " " + mName + " " + mSku + " " + mImageUrl;
     }
 
     /*
@@ -140,31 +111,10 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
     }
 
     /**
-     * @return the mImage
-     */
-    public String getImage() {
-        return mImage;
-    }
-
-    /**
-     * @return the mImages
-     */
-    public ArrayList<String> getImages() {
-        return mImages;
-    }
-
-    /**
      * @return the mStockPercentage
      */
     public int getStockPercentage() {
         return mStockPercentage;
-    }
-
-    /**
-     * @return the mMaxSavingPercentage
-     */
-    public double getMaxSavingPercentage() {
-        return mMaxSavingPercentage;
     }
 
     /**
@@ -193,18 +143,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
      */
     public int getRemainingTime() {
         return mRemainingTime;
-    }
-
-    /**
-     * Return the paid price for tracking.
-     *
-     * @return double
-     * @author sergiopereira
-     */
-    public double getPriceForTracking() {
-//        Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-//        Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
-        return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
     }
 
 	/*
@@ -241,61 +179,6 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
 	/*
 	 * ########### Setters ###########
 	 */
-    /**
-     * @param mSavePrice
-     *            the mSavePrice to set
-     */
-    public void setSavePrice(Double mSavePrice) {
-        this.mSavePrice = mSavePrice;
-    }
-
-    /**
-     * @param mImage
-     *            the mImage to set
-     */
-    public void setImage(String mImage) {
-        this.mImage = mImage;
-    }
-
-    /**
-     * @param mImages
-     *            the mImages to set
-     */
-    public void setImages(ArrayList<String> mImages) {
-        this.mImages = mImages;
-    }
-
-    /**
-     * @param mStockPercentage
-     *            the mStockPercentage to set
-     */
-    public void setStockPercentage(int mStockPercentage) {
-        this.mStockPercentage = mStockPercentage;
-    }
-
-    /**
-     * @param mMaxSavingPercentage
-     *            the mMaxSavingPercentage to set
-     */
-    public void setMaxSavingPercentage(double mMaxSavingPercentage) {
-        this.mMaxSavingPercentage = mMaxSavingPercentage;
-    }
-
-    /**
-     * @param hasUniqueSize
-     *            the hasUniqueSize to set
-     */
-    public void setHasUniqueSize(boolean hasUniqueSize) {
-        this.hasUniqueSize = hasUniqueSize;
-    }
-
-    /**
-     * @param mSizes
-     *            the mSizes to set
-     */
-    public void setSizes(ArrayList<CampaignItemSize> mSizes) {
-        this.mSizes = mSizes;
-    }
 
     /**
      * @param mSelectedSize
@@ -314,92 +197,58 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable {
     }
 
     /**
-     * @param mRemainingTime
-     *            the mRemainingTime to set
-     */
-    public void setRemainingTime(int mRemainingTime) {
-        this.mRemainingTime = mRemainingTime;
-    }
-
-    /**
      * ########### Parcelable ###########
      */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.os.Parcelable#describeContents()
-	 */
+
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeDouble(mSavePrice);
-        dest.writeDouble(priceDouble);
-        dest.writeDouble(specialPriceDouble);
-        dest.writeString(sku);
-        dest.writeString(brand);
-        dest.writeString(name);
-        dest.writeString(mImage);
-        dest.writeList(mImages);
         dest.writeInt(mStockPercentage);
-        dest.writeDouble(mMaxSavingPercentage);
-        dest.writeBooleanArray(new boolean[] { hasUniqueSize });
-        dest.writeList(mSizes);
-        dest.writeParcelable(mSelectedSize, 0);
-        dest.writeInt(mSelectedSizePosition);
+        dest.writeByte((byte) (hasUniqueSize ? 0x01 : 0x00));
         dest.writeInt(mRemainingTime);
-        dest.writeDouble(priceConverted);
-        dest.writeDouble(specialPriceConverted);
+        if (mSizes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mSizes);
+        }
+        dest.writeValue(mSelectedSize);
+        dest.writeInt(mSelectedSizePosition);
     }
 
-    /**
-     * Parcel constructor
-     *
-     * @param in
-     */
-    public CampaignItem(Parcel in) {
+    protected CampaignItem(Parcel in) {
+        super(in);
         mSavePrice = in.readDouble();
-        specialPriceDouble = in.readDouble();
-        priceDouble = in.readDouble();
-        sku = in.readString();
-        brand = in.readString();
-        name = in.readString();
-        mImage = in.readString();
-        mImages = new ArrayList<>();
-        in.readList(mImages, String.class.getClassLoader());
         mStockPercentage = in.readInt();
-        mMaxSavingPercentage = in.readDouble();
-        boolean[] bolArray = new boolean[1];
-        in.readBooleanArray(bolArray);
-        hasUniqueSize = bolArray[0];
-        mSizes = new ArrayList<>();
-        in.readList(mSizes, CampaignItemSize.class.getClassLoader());
-        mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
-        mSelectedSizePosition = in.readInt();
+        hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
-        priceConverted = in.readDouble();
-        specialPriceConverted = in.readDouble();
+        if (in.readByte() == 0x01) {
+            mSizes = new ArrayList<CampaignItemSize>();
+            in.readList(mSizes, CampaignItemSize.class.getClassLoader());
+        } else {
+            mSizes = null;
+        }
+        mSelectedSize = (CampaignItemSize) in.readValue(CampaignItemSize.class.getClassLoader());
+        mSelectedSizePosition = in.readInt();
     }
 
-    /**
-     * Create parcelable
-     */
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<CampaignItem> CREATOR = new Parcelable.Creator<CampaignItem>() {
+        @Override
         public CampaignItem createFromParcel(Parcel in) {
             return new CampaignItem(in);
         }
 
+        @Override
         public CampaignItem[] newArray(int size) {
             return new CampaignItem[size];
         }
     };
-
 }

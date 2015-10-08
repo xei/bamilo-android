@@ -37,6 +37,8 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     protected boolean isNetworkFacebookError = false;
 
+    protected boolean facebookLoginClicked = false;
+
     public CallbackManager callbackManager;
 
     /**
@@ -69,27 +71,33 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        Log.e("facebookCallback", "facebookCallback");
+        Log.e("facebookCallback", "onSuccess");
         if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
             Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
         }
         onFacebookSuccessLogin();
     }
+
     @Override
     public void onCancel() {
         Log.e("facebookCallback","onCancel");
+        facebookLoginClicked = false;
         FacebookHelper.facebookLogout();
         showFragmentContentContainer();
+        checkNetworkStatus();
     }
 
     @Override
     public void onError(FacebookException e) {
         Log.e("facebookCallback","onError");
+        facebookLoginClicked = false;
         e.printStackTrace();
         FacebookHelper.facebookLogout();
-        if(!NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext())){
-            isNetworkFacebookError = true;
-        }
+        checkNetworkStatus();
+    }
+
+    protected void checkNetworkStatus(){
+        isNetworkFacebookError = !NetworkConnectivity.isConnected(getBaseActivity().getApplicationContext());
     }
 
     /**

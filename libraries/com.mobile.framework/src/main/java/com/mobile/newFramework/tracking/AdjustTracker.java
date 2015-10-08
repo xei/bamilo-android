@@ -26,14 +26,14 @@ import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
-import com.mobile.newFramework.objects.product.AddableToCart;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.Product;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.utils.Constants;
@@ -347,7 +347,7 @@ public class AdjustTracker {
                     eventPDVScreen.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }   
-            CompleteProduct prod = bundle.getParcelable(PRODUCT);
+            ProductComplete prod = bundle.getParcelable(PRODUCT);
 //            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
             eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, prod.getSku());
@@ -367,10 +367,10 @@ public class AdjustTracker {
             eventPDVScreenFB.addPartnerParameter(AdjustKeys.BRAND, prod.getBrand());
             eventPDVScreenFB.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(prod.getPriceForTracking()));
             eventPDVScreenFB.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(prod.getPriceForTracking()));
-            if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
-                eventPDVScreenFB.addCallbackParameter(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
-                eventPDVScreenFB.addPartnerParameter(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
-            }
+//            if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
+//                eventPDVScreenFB.addCallbackParameter(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
+//                eventPDVScreenFB.addPartnerParameter(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
+//            }
             if (bundle.containsKey(AdjustTracker.PRODUCT_SIZE) && !TextUtils.isEmpty(bundle.getString(AdjustTracker.PRODUCT_SIZE))){
                 eventPDVScreenFB.addCallbackParameter(AdjustKeys.SIZE, bundle.getString(AdjustTracker.PRODUCT_SIZE));
                 eventPDVScreenFB.addPartnerParameter(AdjustKeys.SIZE, bundle.getString(AdjustTracker.PRODUCT_SIZE));
@@ -395,7 +395,7 @@ public class AdjustTracker {
                     eventCatalogSorted.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }
-            ArrayList<Product> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
+            ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
             sbSkus = new StringBuilder();
             if (skus.size() > 0) {
@@ -403,9 +403,8 @@ public class AdjustTracker {
                 final int skusLimit = 3;
                 int skusCount = 0;
                 
-                for (Product sku : skus) {
-//                    sku = "\""+sku+"\"";
-                    sbSkus.append(sku.getSKU()).append(",");
+                for (ProductRegular sku : skus) {
+                    sbSkus.append(sku.getSku()).append(",");
                     skusCount++;
                     if (skusLimit <= skusCount) {
                         break;
@@ -453,14 +452,12 @@ public class AdjustTracker {
 
             }   
   
-            ShoppingCart cart = bundle.getParcelable(CART);
-            ShoppingCartItem item;
+            PurchaseEntity cart = bundle.getParcelable(CART);
             JSONObject json;
             
             int productCount = 0;
             String countString = "";
-            for (String key : cart.getCartItems().keySet()) {
-                item = cart.getCartItems().get(key);
+            for (PurchaseCartItem item : cart.getCartItems()) {
                 AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
                 json = new JSONObject();
                 try {
@@ -798,17 +795,17 @@ public class AdjustTracker {
                 AdjustEvent eventViewWishlist = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist));
                 eventViewWishlist = getFBBaseParameters(eventViewWishlist, bundle);
 
-                ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
+                ArrayList<ProductMultiple> favourites = bundle.getParcelableArrayList(FAVORITES);
 
                 Double WishlistTotal = 0.0;
 
                 if (null != favourites) {
 
-                    for (AddableToCart fav : favourites) {
+                    for (ProductMultiple fav : favourites) {
                         WishlistTotal += fav.getPriceForTracking();
                     }
 
-                    for (AddableToCart fav : favourites) {
+                    for (ProductMultiple fav : favourites) {
 
                         eventViewWishlist.addCallbackParameter(AdjustKeys.BRAND, fav.getBrand());
                         eventViewWishlist.addPartnerParameter(AdjustKeys.BRAND, fav.getBrand());
@@ -827,10 +824,17 @@ public class AdjustTracker {
                         eventViewWishlist.addPartnerParameter(AdjustKeys.QUANTITY, "1");
                         eventViewWishlist.addCallbackParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
                         eventViewWishlist.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-                        if (fav.hasSimples() && AddableToCart.NO_SIMPLE_SELECTED != fav.getSelectedSimple()) {
-                            eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
-                            eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
+
+                        if (fav.hasSelectedSimpleVariation()) {
+                            try {
+                                //noinspection ConstantConditions
+                                eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
+                                eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
+                            } catch (NullPointerException e) {
+                                // ...
+                            }
                         }
+
                         eventViewWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
                         eventViewWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
                         Adjust.trackEvent(eventViewWishlist);
@@ -935,14 +939,7 @@ public class AdjustTracker {
     }
     
     private String getGender(Customer customer){
-        String gender = "";
-        if (customer.getGender() != CustomerGender.Female && customer.getGender() != CustomerGender.Male) {
-            gender = CustomerGender.UNKNOWN.name();
-        } else {
-            gender = customer.getGender().name();
-        }
-        
-        return gender;        
+        return customer != null ? customer.getGender() : "n.a";
     }
 
     private String getAppVersion() {

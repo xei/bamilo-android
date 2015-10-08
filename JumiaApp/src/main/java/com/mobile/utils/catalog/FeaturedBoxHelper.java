@@ -21,6 +21,7 @@ import de.akquinet.android.androlog.Log;
 /**
  * Class used to show the featured box.
  * @author sergiopereira
+ *
  */
 public class FeaturedBoxHelper {
     
@@ -32,8 +33,6 @@ public class FeaturedBoxHelper {
 
     /**
      * Show the featured response.
-     * @param fragment
-     * @param featuredBox
      * @return true or false - Case NPE returns false
      * @author sergiopereira 
      */
@@ -64,8 +63,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Show the error message.
-     * @param view
-     * @param featuredBox
      */
     private static void showErrorMessage(View view, FeaturedBox featuredBox) {
         String message = featuredBox.getErrorMessage();
@@ -77,8 +74,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Shoe the tips.
-     * @param view
-     * @param featuredBox
      */
     private static void showTips(View view, FeaturedBox featuredBox) {
         String searchTips = featuredBox.getSearchTips();
@@ -92,10 +87,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Show view pager with products.
-     * @param context
-     * @param view
-     * @param featuredBox
-     * @param partialSize
      */
     private static void showFeaturedProductBox(Context context, View view, FeaturedBox featuredBox, int partialSize) {
         // Feature box products: title
@@ -113,10 +104,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Show view pager with brands.
-     * @param context
-     * @param view
-     * @param featuredBox
-     * @param partialSize
      */
     private static void showFeaturedBrandBox(Context context, View view, FeaturedBox featuredBox, int partialSize) {
         // Feature box brands: title
@@ -134,8 +121,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Show the notice message
-     * @param view
-     * @param featuredBox
      */
     private static void showNoticeMessage(View view, FeaturedBox featuredBox) {
         String noticeMessage = featuredBox.getNoticeMessage();
@@ -146,8 +131,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Fill adapter with featured products
-     * 
-     * @param featuredProducts
      */
     private static void generateFeaturedProductsLayout(Context context, View view, ArrayList<FeaturedItem> featuredProducts, int partialSize) {
         View mLoadingFeaturedProducts = view.findViewById(R.id.loading_featured_products);
@@ -163,8 +146,6 @@ public class FeaturedBoxHelper {
     
     /**
      * Fill adapter with featured brands
-     * 
-     * @param featuredBrandsList
      */
     private static void generateFeaturedBrandsLayout(Context context, View view, ArrayList<FeaturedItem> featuredBrandsList, int partialSize) {
         View mLoadingFeaturedBrands = view.findViewById(R.id.loading_featured_brands);

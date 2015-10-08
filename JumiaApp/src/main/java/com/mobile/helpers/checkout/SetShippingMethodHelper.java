@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
+import com.mobile.newFramework.objects.checkout.SetShippingMethod;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -46,7 +46,7 @@ public class SetShippingMethodHelper extends SuperBaseHelper {
     @Override
     public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
         super.createSuccessBundleParams(baseResponse, bundle);
-        SuperSetShippingMethod shipping = (SuperSetShippingMethod) baseResponse.getMetadata().getData();
+        SetShippingMethod shipping = (SetShippingMethod) baseResponse.getMetadata().getData();
         bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, shipping.getOrderSummary());
         // Get next step
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(shipping.getNextStep()));

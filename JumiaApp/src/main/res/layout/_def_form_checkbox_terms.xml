@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkbox_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/form_check_padding"
-        android:layout_marginStart="@dimen/form_check_padding"
-        android:button="@drawable/selector_btn_check_holo_orange"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        android:paddingStart="@dimen/form_check_padding"
+        android:paddingLeft="@dimen/form_check_padding"
+        android:drawablePadding="@dimen/form_check_padding"
+        style="@style/form_checkbox_style"
         android:textColor="@color/grey_middle"
-        android:textSize="14sp"/>
-    
+        android:textSize="@dimen/text_form"/>
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/textview_terms"
+        style="@style/text_form"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
         android:textColor="@color/blue_basic"/>
 </LinearLayout>

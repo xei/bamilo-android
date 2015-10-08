@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- SEARCH VIEW -->
     <item
@@ -10,15 +10,15 @@
         android:visible="false"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:queryHint="@string/action_label_search_hint"
-        app:showAsAction="always|collapseActionView"/>
+        app:showAsAction="always|collapseActionView" />
 
     <!-- CART -->
     <item
         android:id="@+id/menu_basket"
         android:title="@string/action_label_basket"
         android:visible="false"
-        app:actionLayout="@layout/action_bar_cart_button"
-        app:showAsAction="always"/>
+        app:actionLayout="@layout/action_bar_cart_item"
+        app:showAsAction="always" />
 
     <!-- MY PROFILE PROVIDER -->
     <item
@@ -27,7 +27,7 @@
         android:title="@string/my_profile"
         android:visible="false"
         app:actionProviderClass="com.mobile.utils.MyProfileActionProvider"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <!--
     SHARE VIEW

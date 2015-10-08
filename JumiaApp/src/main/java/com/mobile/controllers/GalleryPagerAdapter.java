@@ -153,7 +153,6 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 ImageView mCurrentPhotoView = (ImageView) primaryView.findViewById(R.id.image_view);
                 PhotoViewAttacher mAttacher = new PhotoViewAttacher(mCurrentPhotoView);
                 mAttacher.setScaleType(ScaleType.FIT_CENTER);
-                mAttacher = null;
             } catch (IllegalStateException | NullPointerException e) {
                 Print.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
             }

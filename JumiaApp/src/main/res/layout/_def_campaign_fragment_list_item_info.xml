@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/campaign_info_background"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_large"
+    android:layoutDirection="locale">
+
+    <!-- INFO -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginStart="@dimen/margin_mid"
+        android:layout_weight="1"
+        android:gravity="start|left|center_vertical" >
+
+        <!-- DISCOUNT -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_discount"
+            style="@style/product_price_current_single_item"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:ellipsize="marquee"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:fontFamily="roboto_bold"
+            android:gravity="start|left|bottom"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="@dimen/text_s" />
+
+        <!-- PRICE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_price"
+            style="@style/product_price_old_single_item"
+            android:layout_alignBottom="@id/campaign_item_discount"
+            android:layout_alignTop="@id/campaign_item_discount"
+            android:layout_toRightOf="@id/campaign_item_discount"
+            android:layout_toEndOf="@id/campaign_item_discount"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/grey_middlelight"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- SAVE VALUE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_save_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/campaign_item_discount"
+            android:layout_marginTop="@dimen/margin_mid"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:singleLine="true"
+            android:text="@string/campaign_save"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- STOCK BAR -->
+
+        <ProgressBar
+            android:id="@+id/campaign_item_stock_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/campaign_item_save_value"
+            android:layout_marginTop="@dimen/margin_mid"
+            android:background="@color/grey_campaign_bar"
+            android:clickable="false"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@android:color/transparent" />
+
+        <!-- STOCK LABEL -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_stock_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/campaign_item_stock_bar"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:fontFamily="roboto_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/campaign_ramaining_stock"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <!-- STOCK VALUE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_stock_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/campaign_item_stock_label"
+            android:layout_toRightOf="@id/campaign_item_stock_label"
+            android:layout_toEndOf="@id/campaign_item_stock_label"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <!-- BUTTON -->
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/campaign_item_button_buy"
+        style="@style/button_orange_style"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_big_height"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/margin_veryhuge"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_marginStart="@dimen/margin_veryhuge"
+        android:layout_weight="1"
+        android:background="@drawable/btn_campaign_orange"
+        android:fontFamily="roboto_bold"
+        android:text="@string/buy_now" />
+
+</LinearLayout>

@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
     android:paddingRight="@dimen/margin_mid"
-    android:background="@drawable/selector_listitem_highlight" >
+    android:background="@drawable/selector_list_item_highlight" >
 
     <include
         android:id="@+id/item_image_loadable"

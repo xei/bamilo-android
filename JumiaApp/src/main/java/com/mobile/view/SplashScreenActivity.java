@@ -26,7 +26,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetApiInfoHelper;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
@@ -42,6 +42,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
@@ -115,6 +116,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
+        // Check DeepLink
+//        checkDeepLink();
     }
 
     /*
@@ -397,7 +400,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+                // Validate if there is any country from deeplink when starting the app from clean slate
+                if(!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(), initializationHandler)){
+                    LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+                }
             } else {
                 onRequestError(bundle);
             }
@@ -436,7 +442,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountriesConfigsError() {
         Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper(), null, this);
+        JumiaApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
     }
 
     /**

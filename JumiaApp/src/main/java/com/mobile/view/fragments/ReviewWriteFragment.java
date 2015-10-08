@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -33,11 +32,10 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.product.CompleteProduct;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
@@ -45,6 +43,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -75,7 +74,7 @@ public class ReviewWriteFragment extends BaseFragment {
     
     private static final String RATINGS = "ratings";
 
-    private CompleteProduct completeProduct;
+    private ProductComplete completeProduct;
 
     private LinearLayout ratingContainer;
 
@@ -83,7 +82,7 @@ public class ReviewWriteFragment extends BaseFragment {
 
     private boolean isExecutingSendReview = false;
 
-    private String mCompleteProductUrl = "";
+    private String mCompleteProductSku = "";
     
     private View mainContainer;
 
@@ -123,7 +122,7 @@ public class ReviewWriteFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
                 R.layout.review_write_fragment,
-                NO_TITLE,
+                R.string.write_comment,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -148,7 +147,6 @@ public class ReviewWriteFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
 
-        JumiaApplication.setIsSellerReview(false);
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
@@ -166,7 +164,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
 
@@ -208,11 +205,10 @@ public class ReviewWriteFragment extends BaseFragment {
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                completeProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                completeProduct = (ProductComplete)parcelableProduct;
             }
 
         }
@@ -231,14 +227,16 @@ public class ReviewWriteFragment extends BaseFragment {
         }
         setRatingReviewFlag();
             // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
+            if (mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
+                String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
+                mCompleteProductSku = sku != null ? sku : "";
             }
             
             if (completeProduct == null) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 /* Commented due to unnecessary data being fetched
@@ -272,7 +270,6 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        JumiaApplication.setIsSellerReview(false);
     }
 
     /*
@@ -324,9 +321,11 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     private void setRatingLayout(Form form) {
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -441,9 +440,11 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setGenericLayout(){
         
         if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductSku.equalsIgnoreCase("")) {
+                ContentValues values = new ContentValues();
+                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
                 showRetryLayout();
@@ -451,15 +452,13 @@ public class ReviewWriteFragment extends BaseFragment {
             
         } else {
             mainContainer.setVisibility(View.VISIBLE);
-
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-
+            TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
+            ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-
             productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-            displayPriceInformation(productPriceNormal, productPriceSpecial);       
+            //displayPriceInformation(productPriceNormal, productPriceSpecial);
         }
     }
     
@@ -479,58 +478,52 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     private void loadReviewAndRatingFormValues() {
         
-        ContentValues savedRatingReviewValues = new ContentValues();
+        ContentValues savedRatingReviewValues = formValues == null ? JumiaApplication.getRatingReviewValues() : formValues;
         
-        if(formValues == null){
-            savedRatingReviewValues = JumiaApplication.getRatingReviewValues();
-        } else {
-            savedRatingReviewValues = formValues;
-        }
-        
-            // Validate values
-            if(savedRatingReviewValues != null && dynamicRatingForm != null) {
-                // Get dynamic form and update
-                Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
-                while (iter.hasNext()) {
-                    DynamicFormItem item = iter.next();
-                    try {
-                        item.loadState(savedRatingReviewValues);
-                    } catch (NullPointerException e) {
-                        Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
-                    }
+        // Validate values
+        if(savedRatingReviewValues != null && dynamicRatingForm != null) {
+            // Get dynamic form and update
+            Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
+            while (iter.hasNext()) {
+                DynamicFormItem item = iter.next();
+                try {
+                    item.loadState(savedRatingReviewValues);
+                } catch (NullPointerException e) {
+                    Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                 }
             }
-    }
-
-    /**
-     * method to display the header price info
-     * @param productPriceNormal
-     * @param productPriceSpecial
-     */
-    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-        String unitPrice = completeProduct.getPrice();
-        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-        String specialPrice = completeProduct.getSpecialPrice();
-        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
-
-        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
-    }
-
-    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
-            String unitPrice, String specialPrice) {
-        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the special price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.GONE);
-        } else {
-            // display special and normal price
-            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-            productPriceNormal.setVisibility(View.VISIBLE);
-            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
+
+//    /**
+//     * method to display the header price info
+//     * @param productPriceNormal
+//     * @param productPriceSpecial
+//     */
+//    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
+//        String unitPrice = String.valueOf(completeProduct.getPrice());
+//        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
+//        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
+//        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
+//
+//        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
+//    }
+//
+//    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
+//            String unitPrice, String specialPrice) {
+//        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
+//            // display only the special price
+//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
+//            productPriceNormal.setVisibility(View.GONE);
+//        } else {
+//            // display special and normal price
+//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
+//            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
+//            productPriceNormal.setVisibility(View.VISIBLE);
+//            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
+//                    | Paint.STRIKE_THRU_TEXT_FLAG);
+//        }
+//    }
 
 
     /**
@@ -631,9 +624,9 @@ public class ReviewWriteFragment extends BaseFragment {
             showFragmentContentContainer();
             return true;
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             Print.d(TAG, "GOT GET_PRODUCT_EVENT");
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
@@ -705,7 +698,7 @@ public class ReviewWriteFragment extends BaseFragment {
             return false;
             
             
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
@@ -798,26 +791,22 @@ public class ReviewWriteFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(ratingForm.action, dynamicRatingForm);
+                    executeSendReview(ratingForm.getAction(), dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
                     Bundle bundle = getArguments();
                     bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
+                    bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(reviewForm.action, dynamicRatingForm);
+                    executeSendReview(reviewForm.getAction(), dynamicRatingForm);
                 }
             }
         }

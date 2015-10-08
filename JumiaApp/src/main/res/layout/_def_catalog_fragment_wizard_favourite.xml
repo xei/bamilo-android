@@ -22,7 +22,7 @@
         android:fontFamily="roboto_light"
         android:gravity="center"
         android:shadowColor="#000000"
-        android:text="@string/products_tip_favourite_text"
+        android:text="@string/products_tip_saved_text"
         android:textColor="#c3c3c3"
         android:textSize="@dimen/text_xl" />
 

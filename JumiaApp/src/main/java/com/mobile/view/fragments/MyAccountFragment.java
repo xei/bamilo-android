@@ -14,6 +14,8 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.AppSharingAdapter;
+import com.mobile.controllers.ChooseLanguageController;
+import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -21,6 +23,7 @@ import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -44,10 +47,16 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public final static int POSITION_EMAIL = 2;
     
     public final static int POSITION_SHARE_APP = 0;
+
+    public final static int POSITION_COUNTRY = 0;
+
+    public final static int POSITION_LANGUAGE = 1;
     
     private ListView optionsList;
     
     private ListView appSharingList;
+
+    private ListView chooseLanguageList;
 
     private MyAccountPushPreferences mPreferencesFragment;
 
@@ -64,7 +73,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * Empty constructor
      */
     public MyAccountFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_fragment,
                 R.string.account_name,
@@ -104,6 +113,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         showMyAccount(view);
         showPreferences();
         showAppSharing(view);
+        showChooseLanguage(view);
     }
 
     /*
@@ -202,7 +212,15 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         appSharingList.setAdapter(new AppSharingAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array)));
         appSharingList.setOnItemClickListener(this);
     }
-    
+
+    private void showChooseLanguage(View view) {
+        chooseLanguageList = (ListView)view.findViewById(R.id.language_list);
+        CountrySettingsAdapter.CountryLanguageInformation countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
+        chooseLanguageList.setTag(R.string.choose_language, countryInformation);
+        chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), countryInformation));
+        chooseLanguageList.setOnItemClickListener(this);
+    }
+
     /*
      * (non-Javadoc)
      * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
@@ -213,9 +231,25 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             handleOnOptionsListItemClick(position);
         } else if(parent == this.appSharingList){
             handleOnAppSharingListItemClick(position);
+        } else if(parent == this.chooseLanguageList){
+            handleOnChooseLanguageItemClick(parent, position);
         }
     }
-    
+
+    private void handleOnChooseLanguageItemClick(AdapterView<?> parent, int position) {
+        if(position == POSITION_COUNTRY){
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        } else if(position == POSITION_LANGUAGE){
+            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.choose_language);
+            ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
+                @Override
+                public void run() {
+                    getBaseActivity().restartAppFlow();
+                }
+            });
+        }
+    }
+
     /**
      *  Handles the item click of childs of options list.
      */

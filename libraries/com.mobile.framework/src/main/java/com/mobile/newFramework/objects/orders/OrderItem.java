@@ -125,7 +125,7 @@ public class OrderItem implements IJSONSerializable, Parcelable {
 	    mProductQuantity = jsonObject.optInt(RestConstants.JSON_QUANTITY_TAG);
 	    mProductUnitPrice = jsonObject.optDouble(RestConstants.JSON_ORDER_UNIT_PRICE_TAG);
 	    mProductSku = jsonObject.optString(RestConstants.JSON_ORDER_CONF_SKU_TAG);
-	    mProductSimpleSku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
+	    mProductSimpleSku = jsonObject.optString(RestConstants.SKU);
 	    mProductTotal = jsonObject.optDouble(RestConstants.JSON_ORDER_TOTAL_TAG);
 	    mProductName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 

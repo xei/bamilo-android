@@ -31,6 +31,16 @@
         holo:calendarViewShown="false"
         holo:spinnersShown="true" /> -->
 
+    <!-- added mobapi 1.8: native datepicker -->
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:datePickerMode="spinner"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="@dimen/item_height_normal" >

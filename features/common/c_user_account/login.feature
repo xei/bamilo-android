@@ -1,4 +1,4 @@
-@login @Calabash_Tests @f_pre_1.9
+@login @Calabash_Tests @f_pre_1.9  @f_2.7
 Feature: Login feature
 	
 Background:
@@ -28,6 +28,7 @@ Scenario: Try to login with wrong username
 * I should wait and see login screen
 * I enter a wrong username
 * I enter the password
+* I swipe down moving with 2 steps
 * I press Login Button
 * I wait for 4 seconds
 * I should see the login error message
@@ -44,6 +45,7 @@ Scenario: Try to login with wrong pasword
 * I should wait and see login screen
 * I enter a valid username
 * I enter the wrong password
+* I swipe down moving with 2 steps
 * I press Login Button
 * I wait for 4 seconds
 * I should see the login error message
@@ -61,6 +63,7 @@ Scenario: Login successful
 * I wait for 1 seconds
 * I enter the password
 * I wait for 2 seconds
+* I swipe down moving with 2 steps
 * I press Login Button
 * I wait to see the home
 * I wait for the overflow button

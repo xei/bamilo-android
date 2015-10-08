@@ -1,8 +1,8 @@
 package com.mobile.newFramework.rest;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
-import com.mobile.newFramework.rest.configs.AigAuthenticator;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
@@ -151,8 +151,6 @@ public class AigHttpClient extends OkClient {
     private static OkHttpClient newOkHttpClient(Context context) {
         // HTTP CLIENT
         OkHttpClient okHttpClient = new OkHttpClient();
-        // AUTHENTICATION
-        okHttpClient.setAuthenticator(new AigAuthenticator());
         // COOKIES
         setCookies(okHttpClient, context);
         // CACHE
@@ -175,8 +173,7 @@ public class AigHttpClient extends OkClient {
     private static void setCache(OkHttpClient okHttpClient, Context context) {
         if (context != null) {
             // CACHE
-            File cacheDir = context.getCacheDir();
-            Cache cache = new Cache(cacheDir, AigConfigurations.CACHE_MAX_SIZE);
+            Cache cache = new Cache(getCache(context), AigConfigurations.CACHE_MAX_SIZE);
             okHttpClient.setCache(cache);
         }
     }
@@ -242,6 +239,19 @@ public class AigHttpClient extends OkClient {
             Print.d(TAG, "######################################################\n");
             return response;
         }
+    }
+
+    public static void clearCache(Context context) throws IOException {
+        Print.d(TAG, "Clearing cache");
+        if(context != null) {
+            Cache cache = new Cache(getCache(context), AigConfigurations.CACHE_MAX_SIZE);
+            cache.delete();
+        }
+
+    }
+
+    private static File getCache(@NonNull Context context){
+        return new File(context.getFilesDir().toString() + "/retrofitCache");
     }
 
 }

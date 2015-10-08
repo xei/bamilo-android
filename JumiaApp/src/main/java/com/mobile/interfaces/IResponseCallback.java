@@ -1,4 +1,5 @@
 package com.mobile.interfaces;
+
 import android.os.Bundle;
 
 /**
@@ -10,15 +11,11 @@ import android.os.Bundle;
 public interface IResponseCallback {
     /**
      * Handles the success request
-     *
-     * @param bundle
      */
     void onRequestComplete(Bundle bundle);
 
     /**
      * Handles the error request
-     *
-     * @param bundle
      */
     void onRequestError(Bundle bundle);
 }

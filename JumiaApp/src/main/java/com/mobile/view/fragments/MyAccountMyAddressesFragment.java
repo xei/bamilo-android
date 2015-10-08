@@ -14,6 +14,7 @@ import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -112,7 +113,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         // Validate selected address
         if(selectedAddress != null){
             Bundle bundle = new Bundle();
-            bundle.putParcelable(EditAddressFragment.SELECTED_ADDRESS, selectedAddress);
+            bundle.putInt(EditAddressFragment.SELECTED_ADDRESS, selectedAddress.getId());
             getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
@@ -121,10 +122,6 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     /**
      * Submit the current values using the form
-     *
-     * @param shippingAddressId
-     * @param billingAddressId
-     * @param isDifferent
      * @author ricardosoares
      */
     protected void submitForm(String shippingAddressId, String billingAddressId, String isDifferent){
@@ -136,6 +133,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             // Create content values from form
             ContentValues shippingContentValues = new ContentValues();
             shippingContentValues.put(SetDefaultShippingAddressHelper.ID, shippingAddressId);
+            shippingContentValues.put(SetDefaultShippingAddressHelper.TYPE, RestConstants.SHIPPING);
             triggerSetDefaultShippingAddress(shippingContentValues);
         } else {
             isSetShippingComplete = true;
@@ -146,6 +144,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             // Create content values from form
             ContentValues billingContentValues = new ContentValues();
             billingContentValues.put(SetDefaultBillingAddressHelper.ID, billingAddressId);
+            billingContentValues.put(SetDefaultBillingAddressHelper.TYPE, RestConstants.BILLING);
             triggerSetDefaultBillingAddress(billingContentValues);
         } else {
             isSetBillingComplete = true;

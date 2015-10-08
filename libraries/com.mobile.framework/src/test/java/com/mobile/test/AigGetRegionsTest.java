@@ -1,15 +1,12 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class AigGetRegionsTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://www.jumia.com.ng/mobapi/v1.7/customer/address/regions/";
+        return AigMobApiNigeriaTestSuite.HOST+"/customer/getaddressregions/";
     }
 
     @Override
@@ -45,10 +42,10 @@ public class AigGetRegionsTest extends AigTestCase {
         AddressRegions addressRegions = (AddressRegions) response.getMetadata().getData();
 
         assertNotNull("Regions is null",addressRegions);
-        for (AddressRegion region : addressRegions){
+        for (FormListItem region : addressRegions){
             assertNotNull("Regions is null", region);
-            assertNotNull("Regions ID is null", region.getId());
-            assertNotNull("Regions Name is null", region.getName());
+            assertNotNull("Regions ID is null", region.getValue());
+            assertNotNull("Regions Name is null", region.getLabel());
         }
         //assertFalse("Success is false", response.hadSuccess());
         //Assert.fail("Success is false");

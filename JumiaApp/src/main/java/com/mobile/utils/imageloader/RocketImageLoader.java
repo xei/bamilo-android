@@ -264,9 +264,16 @@ public class RocketImageLoader {
                                     progressView.setVisibility(View.GONE);
                                 }
 
-                                Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
-                                imageView.setImageBitmap(response.getBitmap());
-                                imageView.startAnimation(animation);
+                                // Animation
+                                Boolean noAnimate = (Boolean) imageView.getTag(R.id.no_animate);
+                                if (noAnimate == null || noAnimate) {
+                                    imageView.setImageBitmap(response.getBitmap());
+                                } else {
+                                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
+                                    imageView.setImageBitmap(response.getBitmap());
+                                    imageView.startAnimation(animation);
+                                }
+
                                 
                                 if (listener != null) {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());
@@ -448,12 +455,18 @@ public class RocketImageLoader {
     }
     
     public interface RocketImageLoaderLoadImagesListener{
-        public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls);
+        void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls);
     }
     
     public class ImageHolder{
         public String url;
         public Bitmap bitmap;
+
+        //added apires
+        public Bitmap getBitmap()
+        {
+            return bitmap;
+        }
     }
     
     public void loadImages(final ArrayList<String> urls, final RocketImageLoaderLoadImagesListener rocketImageLoaderLoadImagesListener){
@@ -494,4 +507,6 @@ public class RocketImageLoader {
             RocketImageLoader.getInstance().preload(str, rocketImageLoaderListener);
         }
     }
+
+
 }

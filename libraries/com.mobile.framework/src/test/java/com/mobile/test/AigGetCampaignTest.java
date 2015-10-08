@@ -1,11 +1,7 @@
 package com.mobile.test;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -34,7 +30,7 @@ public class AigGetCampaignTest extends AigTestCase {
     @Override
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
-        data.put("campaign_slug", "deals-of-the-day");
+        data.put("slug", "deals-of-the-day");
         return data;
     }
 

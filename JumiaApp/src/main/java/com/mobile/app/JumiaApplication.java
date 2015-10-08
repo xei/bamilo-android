@@ -19,7 +19,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.forms.PaymentMethodForm;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -33,13 +33,15 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
+import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +71,7 @@ public class JumiaApplication extends A4SApplication {
      * Cart
      */
     private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<>();
-    private ShoppingCart cart;
+    private PurchaseEntity cart;
 
     /**
      * Forms
@@ -86,13 +88,6 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-//    /**
-//     * The md5 registry
-//     */
-//    boolean resendInitializationSignal = false;
-//    private Handler resendHandler;
-//    private Message resendMsg;
-
     /**
      * Payment methods Info
      */
@@ -104,7 +99,7 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-    private HashMap<String, TeaserGroupType> bannerSkus = new HashMap<>();
+    private HashMap<String, String> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -139,21 +134,13 @@ public class JumiaApplication extends A4SApplication {
          */
         Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if (!TextUtils.isEmpty(currencyCode)) {
-            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
-        }
-
-        /**
-         * When app try recover from background
-         */
-        if(!TextUtils.isEmpty(SHOP_ID)) {
+        if(!TextUtils.isEmpty(SHOP_ID) && !TextUtils.isEmpty(currencyCode)) {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
         // Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -192,25 +179,6 @@ public class JumiaApplication extends A4SApplication {
         msg.obj = bundle;
         // Send result message
         initializationHandler.sendMessage(msg);
-
-//        if (eventType == EventType.INITIALIZE || errorType == ErrorCode.NO_COUNTRIES_CONFIGS || errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
-//
-////            //&& ServiceSingleton.getInstance().getService() == null) {
-////
-////            Print.d(TAG, "ON HANDLE WITH ERROR");
-////            resendInitializationSignal = true;
-////            resendHandler = initializationHandler;
-////            resendMsg = msg;
-////
-////            doBindService();
-//
-//            initializationHandler.sendMessage(msg);
-//
-//
-//        } else {
-//            Print.d(TAG, "ON INIT HANDLE");
-//            initializationHandler.sendMessage(msg);
-//        }
     }
 
     /*
@@ -259,14 +227,14 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the cart
      */
-    public ShoppingCart getCart() {
+    public PurchaseEntity getCart() {
         return this.cart;
     }
 
     /**
      * @param cart the cart to set
      */
-    public void setCart(ShoppingCart cart) {
+    public void setCart(PurchaseEntity cart) {
         this.cart = cart;
     }
 
@@ -291,27 +259,11 @@ public class JumiaApplication extends A4SApplication {
         this.formDataRegistry = formDataRegistry;
     }
 
-//    public void doBindService() {
-//
-//        if (resendInitializationSignal) {
-//            resendHandler.sendMessage(resendMsg);
-//            resendInitializationSignal = false;
-//        }
-//
-//        if (!mIsBound) {
-//            /**
-//             * Establish a connection with the service. We use an explicit class
-//             * name because we want a specific service implementation that we
-//             * know will be running in our own process (and thus won't be
-//             * supporting component replacement by other applications).
-//             */
-//            bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-//        }
-//    }
-
     /**
      * @return the loggedIn
+     * @deprecated This flag is not persisted on rotation.
      */
+    @Deprecated
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -320,53 +272,17 @@ public class JumiaApplication extends A4SApplication {
      * @param loggedIn
      *            the loggedIn to set
      */
+    @Deprecated
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
 
-
-//    public void setResendHandler(Handler mHandler) {
-//        resendInitializationSignal = true;
-//        resendMsg = new Message();
-//        resendHandler = mHandler;
-//    }
-
-//    /**
-//     * Service Stuff
-//     */
-//
-//    public ServiceConnection mConnection = new ServiceConnection() {
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//            Log.i(TAG, "onServiceDisconnected");
-//            mIsBound = false;
-//        }
-//
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            // This is called when the connection with the service has been
-//            // established, giving us the service object we can use to
-//            // interact with the service. We are communicating with our
-//            // service through an IDL interface, so get a client-side
-//            // representation of that from the raw service object.
-//            Log.i(TAG, "onServiceConnected");
-//            mIsBound = true;
-//            ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-//
-//            if (resendInitializationSignal) {
-//                resendHandler.sendMessage(resendMsg);
-//                resendInitializationSignal = false;
-//            }
-//
-//            if (resendMenuHandler != null) {
-//                resendMenuHandler.sendEmptyMessage(0);
-//                resendMenuHandler = null;
-//            }
-//            // Register the fragment callback
-//            registerCallBackIsWaiting();
-//        }
-//    };
+    /**
+     * Validate if customer is logged in (not null).
+     */
+    public static boolean isCustomerLoggedIn() {
+        return CUSTOMER != null;
+    }
 
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
@@ -394,40 +310,6 @@ public class JumiaApplication extends A4SApplication {
 
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
         JumiaApplication.ratingReviewValues = ratingReviewValues;
-    }
-
-    /**
-     * clean and return last saved seller review
-     *
-     * @return last saved review
-     */
-    public static ContentValues getSellerReviewValues() {
-        return JumiaApplication.sellerReviewValues;
-    }
-
-    /**
-     * clean current rating
-     */
-    public static void cleanSellerReviewValues() {
-        JumiaApplication.sellerReviewValues = null;
-    }
-
-    public static void setSellerReviewValues(ContentValues sellerReviewValues) {
-        JumiaApplication.sellerReviewValues = sellerReviewValues;
-    }
-
-    /**
-     * flag to control if it is showing seller review, ou product review
-     */
-    public static void setIsSellerReview(boolean mIsSellerReview) {
-        JumiaApplication.isSellerReview = mIsSellerReview;
-    }
-
-    /**
-     * flag to control if it is showing seller review, ou product review
-     */
-    public static boolean getIsSellerReview() {
-        return JumiaApplication.isSellerReview;
     }
 
     /**
@@ -463,11 +345,9 @@ public class JumiaApplication extends A4SApplication {
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
+        cleanAllPreviousLanguageValues();
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());
-        registerForm = null;
-        paymentMethodForm = null;
-        registerSavedInstanceState = null;
         CUSTOMER = null;
         getCustomerUtils().save();
         mCustomerUtils = null;
@@ -478,13 +358,25 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
-        mSellerReviewForm = null;
         isSellerReview = false;
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
+        WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
+    }
+
+    public void cleanAllPreviousLanguageValues(){
+        try {
+            AigHttpClient.clearCache(this);
+        } catch (IOException e) {
+            Print.e(TAG, "Error clearing requests cache", e);
+        }
+        registerForm = null;
+        paymentMethodForm = null;
+        registerSavedInstanceState = null;
+        mSellerReviewForm = null;
     }
 
     /**
@@ -494,13 +386,14 @@ public class JumiaApplication extends A4SApplication {
         if(bannerSkus == null){
             bannerSkus = new HashMap<>();
         }
+        String category = getString(TrackerDelegator.getCategoryFromTeaserGroupType(groupType)) +"_"+groupType.getTrackingPosition();
 
         if(!TextUtils.isEmpty(sku)){
             if(bannerSkus.size() == 0){
-                bannerSkus.put(sku, groupType);
+                bannerSkus.put(sku, category);
             } else {
                 if(!bannerSkus.containsKey(sku)){
-                    bannerSkus.put(sku, groupType);
+                    bannerSkus.put(sku, category);
                 }
             }
         }
@@ -511,7 +404,7 @@ public class JumiaApplication extends A4SApplication {
      *
      * @return list of skus
      */
-    public HashMap<String,TeaserGroupType> getBannerFlowSkus() {
+    public HashMap<String,String> getBannerFlowSkus() {
         if(bannerSkus == null){
             bannerSkus = new HashMap<>();
         }

@@ -2,12 +2,11 @@ package com.mobile.newFramework.forms;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,13 +24,14 @@ import org.json.JSONObject;
  * Copyright (c) Rocket Internet All Rights Reserved
  */
 public class FieldValidation implements IJSONSerializable, Parcelable {
-    private static final String TAG = FieldValidation.class.getName();
+
+    public static final String TAG = FieldValidation.class.getSimpleName();
 
     public static int MIN_CHARACTERS = 0;
     public static int MAX_CHARACTERS = 40;
     public static String DEFAULT_REGEX = "[0-9a-zA-Z-]*";
 
-    public boolean required;
+    public boolean isRequired;
     public int min;
     public int max;
     public String regex;
@@ -41,7 +41,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
      * FormValidation empty constructor.
      */
     public FieldValidation() {
-        required = false;
+        isRequired = false;
         min = MIN_CHARACTERS;
         max = MAX_CHARACTERS;
         regex = DEFAULT_REGEX;
@@ -53,67 +53,24 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        // Validate json
-        if (jsonObject == null) {
-            return false;
+    public boolean initialize(@NonNull JSONObject jsonObject) {
+        // Get required
+        JSONObject required = jsonObject.optJSONObject(RestConstants.JSON_REQUIRED_TAG);
+        // Get message
+        if (required != null) {
+            isRequired = true;
+            message = required.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG);
         }
-
-        //
-        required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
-        Print.i(TAG, "code1message :  jsonObject : " + jsonObject.toString() + " required : " + required);
-        if (!required) {
-            JSONObject mJSONObject = null;
-
-            try {
-                mJSONObject = jsonObject.getJSONObject(RestConstants.JSON_REQUIRED_TAG);
-            } catch (JSONException e) {
-                Print.w(TAG, "WARNING:  No value for required");
-            }
-
-            if (mJSONObject != null) {
-                required = mJSONObject.optBoolean(RestConstants.JSON_REQUIRED_VALUE_TAG, false);
-                Print.i(TAG, "code1message : " + required);
-                message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG, "");
-                Print.i(TAG, "code1message : " + message);
-
-                // TODO : If contains message is required
-                if (message != null && !message.equals("")) required = true;
-            }
-
-        }
-
+        // Get range
         min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
         max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
-        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG);
-
-        // CASE "match: {pattern: "/^[0-9]+$/u" }"
-        if (TextUtils.isEmpty(regex)) {
-            //this extra parsing option exists because
-            JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
-            if (null != matchObject) {
-                regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
-                // TODO: Remove this hack after API fix
-                regex = regex.replace("$/u", "$/");
-            } else {
-                regex = DEFAULT_REGEX;
-            }
-            //Log.i(TAG, "RADIO RELATED: set regex" + regex + " " + jsonObject.toString());
+        // Get regex
+        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
+        // Get match
+        JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
+        if (matchObject != null) {
+            regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
         }
-
-
-        if (regex.substring(0, 2).equals("a/")) {
-            regex = regex.substring(2);
-        }
-
-        if (regex.substring(0, 1).equals("/")) {
-            regex = regex.substring(1);
-        }
-
-        if (regex.charAt(regex.length() - 1) == '/') {
-            regex = regex.substring(0, regex.length() - 1);
-        }
-
         return true;
     }
 
@@ -121,7 +78,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
      * @return if the field is required.
      */
     public boolean isRequired() {
-        return required;
+        return isRequired;
     }
 
     /**
@@ -139,13 +96,11 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     @Override
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
-
         try {
-            jsonObject.put(RestConstants.JSON_REQUIRED_TAG, required);
+            jsonObject.put(RestConstants.JSON_REQUIRED_TAG, isRequired);
             jsonObject.put(RestConstants.JSON_MIN_TAG, min);
             jsonObject.put(RestConstants.JSON_MAX_TAG, max);
             jsonObject.put(RestConstants.JSON_REGEX_TAG, regex);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -169,7 +124,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         dest.writeInt(MIN_CHARACTERS);
         dest.writeInt(MAX_CHARACTERS);
         dest.writeString(DEFAULT_REGEX);
-        dest.writeBooleanArray(new boolean[]{required});
+        dest.writeBooleanArray(new boolean[]{isRequired});
         dest.writeInt(min);
         dest.writeInt(max);
         dest.writeString(regex);
@@ -178,14 +133,12 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
 
     /**
      * Parcel constructor
-     * @param in
      */
     private FieldValidation(Parcel in) {
-
         MIN_CHARACTERS = in.readInt();
         MAX_CHARACTERS = in.readInt();
         DEFAULT_REGEX = in.readString();
-        in.readBooleanArray(new boolean[]{required});
+        in.readBooleanArray(new boolean[]{isRequired});
         min = in.readInt();
         max = in.readInt();
         regex = in.readString();

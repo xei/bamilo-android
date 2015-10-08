@@ -2,9 +2,7 @@ package com.mobile.utils.dialogfragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -16,8 +14,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
@@ -31,7 +27,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  *
  */
-public class DialogListFragment extends DialogFragment implements OnItemClickListener, OnClickListener {
+public class DialogListFragment extends BottomSheet implements OnItemClickListener, OnClickListener {
 	
     private final static String TAG = DialogListFragment.class.getSimpleName();
 	
@@ -117,7 +113,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
 	    dialogListFragment.mInitialPosition = initialPosition;
-	    return dialogListFragment;   
+	    return dialogListFragment;
 	}
     
     /**
@@ -145,7 +141,21 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         dialogListFragment.mSizeGuideUrl = sizeGuideUrl; 
         return dialogListFragment;   
     }
-	
+
+    public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, DialogListAdapter dialogListAdapter, int initialPosition) {
+        Print.d(TAG, "NEW INSTANCE");
+        DialogListFragment dialogListFragment = new DialogListFragment();
+        dialogListFragment.mActivity = fragment.getActivity();
+        dialogListFragment.mSelectListener = listener;
+        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
+        //dialogListFragment.mId = id;
+        dialogListFragment.mTitle = title;
+        dialogListFragment.mAdapter = dialogListAdapter;
+        dialogListFragment.mItems = dialogListAdapter.getItems();
+        dialogListFragment.mInitialPosition = initialPosition;
+        return dialogListFragment;
+    }
+
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
@@ -153,7 +163,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
+//	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
         // R.style.Theme_Jumia_Dialog_NoTitle
 	}
 	
@@ -187,8 +197,12 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         setSizeGuide(view);
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        // Set Max list size
+        setListSize(list, mItems.size());
         // Validate adapter
-        mAdapter = new DialogListAdapter();
+        if(mAdapter == null) {
+            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
+        }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);
         list.setAdapter(mAdapter);
@@ -313,109 +327,5 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
             }, DELAY_DISMISS);
         }
     }
-
-    /*
-     * ########### ADAPTER ###########
-     */
-
-	/**
-	 * 
-	 */
-	private class DialogListAdapter extends BaseAdapter {
-
-		private int mCheckedPosition = NO_INITIAL_POSITION;
-		
-		private LayoutInflater mInflater;
-		
-		/**
-		 * Constructor
-		 */
-		public DialogListAdapter() {
-		    mInflater = LayoutInflater.from(mActivity);
-        }
-		
-		/*
-		 * (non-Javadoc)
-		 * @see android.widget.BaseAdapter#hasStableIds()
-		 */
-		@Override
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see android.widget.Adapter#getCount()
-		 */
-		@Override
-		public int getCount() {
-		    return mItems == null ? 0 : mItems.size();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see android.widget.Adapter#getItem(int)
-		 */
-		@Override
-		public Object getItem(int position) {
-			return mItems.get(position);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see android.widget.Adapter#getItemId(int)
-		 */
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-		 */
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View view;
-			if (convertView == null) {
-				view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
-			} else {
-				view = convertView;
-			}
-			TextView textView = (TextView) view.findViewById(R.id.item_text);
-			TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
-			if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
-                view.setEnabled(false);
-			    textView.setVisibility(View.GONE);
-			    textViewUnAvailable.setVisibility(View.VISIBLE);
-			    textViewUnAvailable.setText(mItems.get(position));
-			} else {
-                view.setEnabled(true);
-			    textViewUnAvailable.setVisibility(View.GONE);
-			    textView.setVisibility(View.VISIBLE);
-	            textView.setText(mItems.get(position));
-			}
-			CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
-			checkBox.setChecked(position == mCheckedPosition);
-
-			return view;
-		}
-
-		public void setCheckedPosition(int position) {
-			mCheckedPosition = position;
-		}
-		
-		  /**
-	     * #FIX: java.lang.IllegalArgumentException: The observer is null.
-	     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
-	     */
-	    @Override
-	    public void unregisterDataSetObserver(DataSetObserver observer) {
-	        if(observer !=null){
-	            super.unregisterDataSetObserver(observer);    
-	        }
-	    }
-
-	}
 
 }

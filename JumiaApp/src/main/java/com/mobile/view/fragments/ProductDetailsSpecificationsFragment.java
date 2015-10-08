@@ -1,12 +1,14 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.TextView;
@@ -15,20 +17,17 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.ProductDetailsSpecification;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductSpecification;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,17 +44,14 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     private static final String TAG = ProductDetailsSpecificationsFragment.class.getSimpleName();
 
     private LinearLayout mProductSpecsContainer;
-    private CompleteProduct mCompleteProduct;
+    private ProductComplete mCompleteProduct;
     private View mainView;
-    private String mCompleteProductUrl;
-    private ArrayList<ProductDetailsSpecification> mProductSpecifications;
+    private String mCompleteProductSku;
+    private ArrayList<ProductSpecification> mProductSpecifications;
     private LayoutInflater inflater;
-    private static final String SPECIFICATION = "specification";
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static ProductDetailsSpecificationsFragment getInstance(Bundle bundle) {
         ProductDetailsSpecificationsFragment fragment = new ProductDetailsSpecificationsFragment();
@@ -67,11 +63,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsSpecificationsFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
-                R.layout.product_specs_fragment,
-                NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.product_specs_fragment);
     }
 
     /*
@@ -97,11 +89,12 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
-            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct)parcelableProduct;
+            if(parcelableProduct instanceof ProductComplete){
+                mCompleteProduct = (ProductComplete) parcelableProduct;
+                if(mCompleteProduct != null){
+                    mCompleteProductSku = mCompleteProduct.getSku();
+                }
             }
         }
     }
@@ -116,8 +109,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
-            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
-//            mProductSpecifications = savedInstanceState.getParcelableArrayList(SPECIFICATION);
+            mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
         }
         // Load views
         mainView = view;
@@ -153,9 +145,11 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         if (mCompleteProduct != null && mainView != null) {
             getViews();
             displaySpecification();
-        } else if (!TextUtils.isEmpty(mCompleteProductUrl)) {
+        } else if (!TextUtils.isEmpty(mCompleteProductSku)) {
+            ContentValues values = new ContentValues();
+            values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
             showFragmentErrorRetry();
@@ -176,11 +170,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(outState != null) {
-            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-//            outState.putParcelableArrayList(SPECIFICATION, mProductSpecifications);
-        }
+        outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
+
+
     }
     
     /*
@@ -235,7 +228,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             if(mProductSpecsContainer != null){
                 mProductSpecsContainer.removeAllViews();
             }
-            for (ProductDetailsSpecification productSpecification : mProductSpecifications) {
+            for (ProductSpecification productSpecification : mProductSpecifications) {
                 addSpecTable(productSpecification);
             }
         }
@@ -243,24 +236,22 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
 
     /**
      * Add specification table to the specification list
-     * @param productSpecification
      */
-    private void addSpecTable(ProductDetailsSpecification productSpecification){
+    private void addSpecTable(ProductSpecification productSpecification){
 
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);
-        final LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
+        View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
+        TextView specHeader = (TextView) theInflatedView.findViewById(R.id.HeaderSpecs);
+        LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
 
         HashMap<String,String> specsMap = productSpecification.getSpecifications();
 
         if(specsMap != null && specsMap.size() > 0){
-            specHeader.setText(productSpecification.getTitle());
+            specHeader.setText(productSpecification.getTitle().toUpperCase());
             try {
                 Iterator it = specsMap.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
                     addSpecTableRow(pair, specsList);
-//                    it.remove(); // avoids a ConcurrentModificationException
                 }
 
                 mProductSpecsContainer.addView(theInflatedView);
@@ -276,14 +267,29 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param parent
      */
     private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        final View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
-        final TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
-        final TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
+        View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item, parent, false);
+        TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
+        TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
         specKey.setText(pair.getKey().toString());
         specValue.setText(pair.getValue().toString());
+            View separator = createSeparator();
+            parent.addView(theInflatedView);
+            parent.addView(separator);
+    }
 
-        parent.addView(theInflatedView);
+
+    /**
+     * Create a separator line
+     */
+    private View createSeparator()
+    {
+        View view = new View(getBaseActivity().getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        view.setLayoutParams(params);
+        view.setBackgroundColor(getResources().getColor(R.color.black_400));
+        return view;
+
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -314,8 +320,8 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+        case GET_PRODUCT_DETAIL:
+            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
@@ -354,7 +360,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 
-        case GET_PRODUCT_EVENT:
+        case GET_PRODUCT_DETAIL:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ################# GENERIC COMPONENTS STYLES ################# -->
+
+    <!-- Header -->
+    <style name="HeaderStyle" parent="@style/TextHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">left|start|bottom</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:background">@color/black_300</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Single line item -->
+    <style name="SingleLineStyle" parent="@style/TextList_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Sub list item -->
+    <style name="SubListItemStyle" parent="@style/TextCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Multi line -->
+    <style name="MultiLineStyle" parent="@style/TextCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="WishListButtonStyle" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">@dimen/rounded_margin_mid</item>
+        <item name="android:src">@drawable/selector_favorite</item>
+    </style>
+
+    <!-- PDV -->
+
+    <style name="PdvPriceTagStyle" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">left|start|center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="PdvBadgeStyle" parent="@style/TextBadge">
+        <item name="android:background">@drawable/selector_badge_price</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_accent</item>
+    </style>
+
+    <style name="PDVSlideShowStyle" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">342dp</item>
+    </style>
+
+    <!-- FORM TODO : UPDATE v2.8 -->
+
+    <style name="form_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/form_text</item>
+        <item name="android:textSize">@dimen/text_form</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="form_edittext_style" parent="form_style">
+        <item name="android:layout_height">@dimen/form_item_height</item>
+        <item name="android:background">@drawable/selector_edittext_bottomline</item>
+        <item name="android:textColorHint">@color/form_text_hint</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
+        <item name="android:textCursorDrawable" targetApi="12">@null</item>
+        <item name="android:inputType">text</item>
+        <item name="android:fontFamily">roboto_regular</item>
+    </style>
+
+    <style name="FormButtonSpinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/form_text</item>
+        <item name="android:background">@drawable/spinner_background_holo_orange</item>
+        <item name="android:textSize">@dimen/text_form</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">left|start|bottom</item>
+    </style>
+
+    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
+
+
+</resources>

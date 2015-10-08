@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,9 +30,9 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
-import com.mobile.newFramework.objects.orders.OrderSummary;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
@@ -41,19 +42,17 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -74,8 +73,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
 
     public static final int NO_INFLATE_LAYOUT = 0;
-
-    public static final int NO_TITLE = 0;
 
     private NavigationAction action;
 
@@ -126,7 +123,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -145,21 +142,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-    /**
-     * Constructor used only by PDV fragments
-     */
-    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-        this.enabledMenuItems = enabledMenuItems;
-        this.action = action;
-        this.titleResId = titleResId;
-        this.adjustState = adjust_state;
-        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-    }
+//    /**
+//     * Constructor used only by PDV fragments
+//     */
+//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+//        this.enabledMenuItems = enabledMenuItems;
+//        this.action = action;
+//        this.titleResId = titleResId;
+//        this.adjustState = adjust_state;
+//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+//    }
 
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -237,8 +234,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-        // Get content layout
-        mContentView = view.findViewById(R.id.content_container);
+//        // Get content layout
+//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -251,16 +248,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-        // Hide search component for change country
-        if (this.action == NavigationAction.Country) {
-            // Hide search component
-            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-        }
+//        // Hide search component for change country
+//        if (this.action == NavigationAction.Country) {
+//            // Hide search component
+//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
+//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
+            // Method used to set a bottom margin
+            TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
+
     }
 
     /**
@@ -268,7 +268,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *
      * @author sergiopereira
      */
-    public void showOrderSummaryIfPresent(int checkoutStep, OrderSummary orderSummary) {
+    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
         // Get order summary
         if (isOrderSummaryPresent) {
             Print.i(TAG, "ORDER SUMMARY IS PRESENT");
@@ -315,9 +315,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-            if(action != null){
-                getBaseActivity().updateNavigationMenu(action);
-            }
+//            if(action != null){
+//                getBaseActivity().updateNavigationMenu(action);
+//            }
         }
     }
 
@@ -527,24 +527,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Method used to redirect the native checkout to the old checkout method
-     */
-    public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
-        Print.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        // Tracking
-        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
-        // Warning user
-        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
-        // Remove native checkout
-        getBaseActivity().removeAllNativeCheckoutFromBackStack();
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
      * Set screen response to keyboard request
      *
      * @param newAdjustState
@@ -686,6 +668,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
+    public void showInfoAddToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        }
+    }
+
+    public void showInfoAddToShoppingCartFailed() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+        }
+    }
+
     /**
      * Set the inflated stub
      * @param stub The view stub
@@ -737,7 +731,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(ShopSelector.isRtl()){
+                if(ShopSelector.isRtlShop()){
                     inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -786,7 +780,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateMaintenance(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (ShopSelector.isRtl()) {
+        if (ShopSelector.isRtlShop()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
@@ -964,8 +958,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
-        return false;
 
+        /**
+         * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
+         * // CODE_CUSTOMER_NOT_LOGGED_IN should be an ErrorCode
+         * // CASE REQUEST_ERROR && CUSTOMER_NOT_LOGGED_IN
+         */
+
+        return false;
     }
 
     protected void clearCredentials() {
@@ -1109,10 +1109,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Process the product click
      * @author sergiopereira
      */
-    protected void onClickProduct(String targetUrl, Bundle bundle) {
+    protected void onClickProduct(String sku, Bundle bundle) {
         Print.i(TAG, "ON CLICK PRODUCT");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+        if (sku != null) {
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1162,5 +1162,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         campaigns.add(campaign);
         return campaigns;
     }
+
+
+
 
 }

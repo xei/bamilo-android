@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading_bar"
+    style="@style/rounded_box"
+    android:layout_width="@dimen/loading_width"
+    android:layout_height="@dimen/loading_height"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <com.mobile.components.loading.LoadingBarView
+        android:id="@+id/fragment_root_loading_gif"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="@dimen/loading_gif_layout"
+        android:layout_height="@dimen/loading_gif_layout"
+        app:gifResource="@drawable/loading_bar_big" />
+
+    <View
+        style="@style/divider_horizontal_orange"
+        android:layout_marginBottom="@dimen/margin_30px"
+        android:layout_marginLeft="@dimen/margin_20px"
+        android:layout_marginRight="@dimen/margin_20px" />
+
+    <com.mobile.components.customfontviews.TextView
+        style="@style/text_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loading_message" />
+
+</LinearLayout>

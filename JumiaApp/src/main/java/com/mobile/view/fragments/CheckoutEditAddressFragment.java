@@ -33,8 +33,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     private static final String TAG = CheckoutEditAddressFragment.class.getSimpleName();
 
     /**
-     * 
-     * @return
+     * Constructor
      */
     public static CheckoutEditAddressFragment getInstance(Bundle bundle) {
         CheckoutEditAddressFragment fragment = new CheckoutEditAddressFragment();
@@ -46,7 +45,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
      * Empty constructor
      */
     public CheckoutEditAddressFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
@@ -56,11 +55,6 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get arguments
-        Bundle arguments = getArguments();
-        if(arguments != null) {
-            mCurrentAddress = arguments.getParcelable(EditAddressFragment.SELECTED_ADDRESS);
-        }
     }
 
     @Override
@@ -81,10 +75,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             triggerEditAddressForm();
         }
     }
+
     @Override
     protected void loadEditAddressForm(Form form) {
         super.loadEditAddressForm(form);
-
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
     }
@@ -102,17 +96,17 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
         super.onGetEditAddressFormErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetRegionsErrorEvent(Bundle bundle){
         super.onGetRegionsErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_REGIONS_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
         super.onGetCitiesErrorEvent(bundle);
-        super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
+        super.showFragmentErrorRetry();
     }
 
     protected void onEditAddressErrorEvent(Bundle bundle){
@@ -122,10 +116,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
             @SuppressWarnings("unchecked")
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             showErrorDialog(errors);
-            showFragmentContentContainer();
         } else {
-            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
-            super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
+            super.showUnexpectedErrorWarning();
         }
+        showFragmentContentContainer();
     }
 }

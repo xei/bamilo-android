@@ -3,38 +3,38 @@ package com.mobile.newFramework.rest.interfaces;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.addresses.AddressCities;
+import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.campaign.Campaign;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.checkout.CheckoutFinish;
+import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
+import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
+import com.mobile.newFramework.objects.checkout.CheckoutFormShipping;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
-import com.mobile.newFramework.objects.checkout.SuperCheckoutFinish;
-import com.mobile.newFramework.objects.checkout.SuperGetBillingForm;
-import com.mobile.newFramework.objects.checkout.SuperGetPaymentMethodsForm;
-import com.mobile.newFramework.objects.checkout.SuperGetShippingMethodsForm;
-import com.mobile.newFramework.objects.checkout.SuperNativeCheckoutAvailability;
-import com.mobile.newFramework.objects.checkout.SuperSetBillingAddress;
-import com.mobile.newFramework.objects.checkout.SuperSetPaymentMethod;
-import com.mobile.newFramework.objects.checkout.SuperSetShippingMethod;
+import com.mobile.newFramework.objects.checkout.SetBillingAddress;
+import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
+import com.mobile.newFramework.objects.checkout.SetShippingMethod;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.HomePageObject;
+import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderTracker;
-import com.mobile.newFramework.objects.orders.SuperOrder;
-import com.mobile.newFramework.objects.product.CompleteProduct;
-import com.mobile.newFramework.objects.product.ProductBundle;
-import com.mobile.newFramework.objects.product.ProductOffers;
+import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
-import com.mobile.newFramework.objects.product.SuperValidProducts;
+import com.mobile.newFramework.objects.product.ValidProductList;
+import com.mobile.newFramework.objects.product.WishList;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
-import com.mobile.newFramework.objects.voucher.Voucher;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.lang.reflect.Method;
@@ -145,8 +145,9 @@ public interface AigApiInterface {
 
     String getCreateAddressForm = "getCreateAddressForm";
 
-    @GET("/")
-    void getEditAddressForm(Callback<BaseResponse<Form>> callback);
+    @FormUrlEncoded
+    @POST("/")
+    void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
 
     String getEditAddressForm = "getEditAddressForm";
 
@@ -156,20 +157,14 @@ public interface AigApiInterface {
     String getNewsletterForm = "getNewsletterForm";
 
     @GET("/")
-    void getShippingMethodsForm(Callback<BaseResponse<SuperGetShippingMethodsForm>> callback);
+    void getShippingMethodsForm(Callback<BaseResponse<CheckoutFormShipping>> callback);
 
     String getShippingMethodsForm = "getShippingMethodsForm";
 
     @GET("/")
-    void getPaymentMethodsForm(Callback<BaseResponse<SuperGetPaymentMethodsForm>> callback);
+    void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
 
     String getPaymentMethodsForm = "getPaymentMethodsForm";
-
-    @GET("/")
-    void getBillingForm(Callback<BaseResponse<BaseResponse>> callback);
-
-    String getBillingForm = "getBillingForm";
-
 
     /*
      * ## CATALOG
@@ -181,7 +176,7 @@ public interface AigApiInterface {
     String getCatalogFiltered = "getCatalogFiltered";
 
     @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String searchSku = "searchSku";
 
@@ -190,7 +185,7 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getCategoriesPaginated(@QueryMap Map<String, String> data, Callback<BaseResponse<Categories>> callback);
+    void getCategoriesPaginated(Callback<BaseResponse<Categories>> callback);
 
     String getCategoriesPaginated = "getCategoriesPaginated";
 
@@ -226,28 +221,23 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void searchProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<CompleteProduct>> callback);
-
-    String searchProductDetail = "searchProductDetail";
-
-    @GET("/")
-    void getProductDetail(Callback<BaseResponse<CompleteProduct>> callback);
+    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
 
     String getProductDetail = "getProductDetail";
 
     @GET("/")
-    void getProductBundle(Callback<BaseResponse<ProductBundle>> callback);
+    void getProductBundle(Callback<BaseResponse<BundleList>> callback);
 
     String getProductBundle = "getProductBundle";
 
     @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductOffers>> callback);
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
 
     String getProductOffers = "getProductOffers";
 
     @FormUrlEncoded
     @POST("/")
-    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperValidProducts>> callback);
+    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
 
     String validateProducts = "validateProducts";
 
@@ -265,43 +255,43 @@ public interface AigApiInterface {
      */
 
     @GET("/")
-    void getShoppingCart(Callback<BaseResponse<ShoppingCart>> callback);
+    void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
 
     String getShoppingCart = "getShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addItemShoppingCart = "addItemShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addBundleShoppingCart = "addBundleShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String updateQuantityShoppingCart = "updateQuantityShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeAllShoppingCart = "removeAllShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<ShoppingCart>> callback);
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeItemShoppingCart = "removeItemShoppingCart";
 
@@ -311,12 +301,12 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<Voucher>> callback);
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String addVoucher = "addVoucher";
 
     @GET("/")
-    void removeVoucher( Callback<BaseResponse<ShoppingCart>> callback);
+    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeVoucher = "removeVoucher";
 
@@ -407,13 +397,13 @@ public interface AigApiInterface {
     String setDefaultBillingAddress = "setDefaultBillingAddress";
 
     @GET("/")
-    void getBillingAddressForm(Callback<BaseResponse<SuperGetBillingForm>> callback);
+    void getBillingAddressForm(Callback<BaseResponse<CheckoutFormBilling>> callback);
 
     String getBillingAddressForm = "getBillingAddressForm";
 
     @FormUrlEncoded
     @POST("/")
-    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetBillingAddress>> callback);
+    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
 
     String setBillingAddress = "setBillingAddress";
 
@@ -426,6 +416,11 @@ public interface AigApiInterface {
     void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
 
     String getCities = "getCities";
+
+    @GET("/")
+    void getPostalCodes(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressPostalCodes>> callback);
+
+    String getPostalCodes = "getPostalCodes";
 
     /*
      * ## RATINGS/REVIEWS
@@ -461,7 +456,7 @@ public interface AigApiInterface {
     String trackOrder = "trackOrder";
 
     @GET("/")
-    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<SuperOrder>> callback);
+    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<MyOrder>> callback);
 
     String getOrdersList = "getOrdersList";
 
@@ -469,31 +464,40 @@ public interface AigApiInterface {
     * ## CHECKOUT
     */
 
-    @GET("/")
-    void getNativeCheckoutAvailable(Callback<BaseResponse<SuperNativeCheckoutAvailability>> callback);
-
-    String getNativeCheckoutAvailable = "getNativeCheckoutAvailable";
-
     @FormUrlEncoded
     @POST("/")
-    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetShippingMethod>> callback);
+    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetShippingMethod>> callback);
 
     String setShippingMethod = "setShippingMethod";
 
     @FormUrlEncoded
     @POST("/")
-    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperSetPaymentMethod>> callback);
+    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetPaymentMethod>> callback);
 
     String setPaymentMethod = "setPaymentMethod";
 
     @FormUrlEncoded
     @POST("/")
-    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<SuperCheckoutFinish>> callback);
+    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
 
     String checkoutFinish = "checkoutFinish";
 
     @GET("/")
     void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
-
     String getChangePasswordForm = "getChangePasswordForm";
+
+    @GET("/")
+    void getWishList(@QueryMap Map<String, String> data, Callback<BaseResponse<WishList>> callback);
+    String getWishList = "getWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String addToWishList = "addToWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeFromWishList = "removeFromWishList";
+
 }

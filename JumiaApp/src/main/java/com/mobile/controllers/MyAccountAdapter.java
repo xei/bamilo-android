@@ -68,10 +68,11 @@ public class MyAccountAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
         View view = null;
-        if (convertView != null)
+        if (convertView != null) {
             view = convertView;
-        else
+        } else {
             view = mInflater.inflate(R.layout.my_account_list_item, parent, false);
+        }
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);

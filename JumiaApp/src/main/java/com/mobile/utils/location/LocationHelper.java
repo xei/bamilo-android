@@ -14,8 +14,10 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
+import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -68,9 +70,9 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     public void autoCountrySelection(Context context, Handler callback){
-    	this.context = context;
-    	this.callback = callback;
-    	
+
+        initializeLocationHelper(context, callback);
+
     	// From device
         TelephonyManager deviceManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         // From network
@@ -92,7 +94,7 @@ public class LocationHelper implements LocationListener {
     /**
      * ################## REQUESTS ################## 
      */
-    
+
     /**
      * Get the country code from Network configurations
      * @param deviceManager
@@ -129,7 +131,7 @@ public class LocationHelper implements LocationListener {
     
     
     /**
-     * Get the country code from the last known loaction using the GeoCoder api.
+     * Get the country code from the last known location using the GeoCoder api.
      * @param locationManager
      * @return true or false
      * @author sergiopereira
@@ -236,7 +238,7 @@ public class LocationHelper implements LocationListener {
         @Override
         public void run() {
             Print.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
-            // Valdiate flag
+            // Validate flag
             if(!locationReceived) {
                 // Remove the listener previously added
                 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -255,10 +257,10 @@ public class LocationHelper implements LocationListener {
      * @param countryCode
      * @return true or false
      */
-    private boolean isCountryAvailable(String countryCode) {
+    public boolean isCountryAvailable(String countryCode) {
         // Filter country code 
         if(countryCode == null || countryCode.length() != 2) return NO_SELECTED;
-        
+
         // Valdiate countries available
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -266,10 +268,12 @@ public class LocationHelper implements LocationListener {
         // Get the supported countries
         if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
             for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
-                String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
+                CountryObject countryObject =JumiaApplication.INSTANCE.countriesAvailable.get(i);
+                String supportedCountry = countryObject.getCountryIso();
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (supportedCountry.equalsIgnoreCase(countryCode.toLowerCase())){
                     Print.d(TAG, "MATCH: SHOP ID " + i);
+                    ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
                     return SELECTED;
                 }
@@ -301,6 +305,7 @@ public class LocationHelper implements LocationListener {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
+//        String geoCountry = "CM";
         if(isCountryAvailable(geoCountry)) {
         	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
@@ -396,8 +401,17 @@ public class LocationHelper implements LocationListener {
      * Send the INITIALIZE message to JumiaApplication
      * @author sergiopereira
      */
-    private void sendInitializeMessage(){
+    public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
         JumiaApplication.INSTANCE.init(callback);
+    }
+
+    /**
+     * set location helper context and callback
+     * @param ctx
+     */
+    public void initializeLocationHelper (Context ctx, Handler callback){
+        this.context = ctx;
+        this.callback = callback;
     }
 }

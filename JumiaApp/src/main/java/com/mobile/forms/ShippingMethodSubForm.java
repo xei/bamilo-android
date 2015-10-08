@@ -64,14 +64,16 @@ public class ShippingMethodSubForm { //implements Parcelable {
         // Show PUS options 
         final HashMap<String, ArrayList<PickUpStationObject>> pickupStationByRegion = new HashMap<>();
         ArrayList<String> mSpinnerOptions = new ArrayList<>();
-        for(int i = 0; i< this.shippingMethodSubFormHolder.options.size(); i++){
-            if(!mSpinnerOptions.contains(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName())){
-                mSpinnerOptions.add(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName());
+        for(int j = 0; j< this.shippingMethodSubFormHolder.options.size(); j++) {
+            for (int i = 0; i < this.shippingMethodSubFormHolder.options.get(j).getRegions().size(); i++) {
+                if (!mSpinnerOptions.contains(this.shippingMethodSubFormHolder.options.get(j).getRegions().get(i).getName())) {
+                    mSpinnerOptions.add(this.shippingMethodSubFormHolder.options.get(j).getRegions().get(i).getName());
+                }
+                if (!pickupStationByRegion.containsKey(this.shippingMethodSubFormHolder.options.get(j).getRegions().get(i).getName())) {
+                    pickupStationByRegion.put(this.shippingMethodSubFormHolder.options.get(j).getRegions().get(i).getName(), new ArrayList<PickUpStationObject>());
+                }
+                pickupStationByRegion.get(this.shippingMethodSubFormHolder.options.get(j).getRegions().get(i).getName()).add(this.shippingMethodSubFormHolder.options.get(j));
             }
-            if(!pickupStationByRegion.containsKey(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName())){
-                pickupStationByRegion.put(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName(), new ArrayList<PickUpStationObject>());
-            } 
-            pickupStationByRegion.get(this.shippingMethodSubFormHolder.options.get(i).getRegions().get(0).getName()).add(this.shippingMethodSubFormHolder.options.get(i));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(mSpinnerOptions));
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);

@@ -1,14 +1,12 @@
 package com.mobile.test.suites;
 
 import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.test.AigChangePasswordFormTest;
 import com.mobile.test.AigForgotPasswordTest;
 import com.mobile.test.AigGetAddressesListTest;
 import com.mobile.test.AigGetApiInformationTest;
 import com.mobile.test.AigGetAvailableCountriesTest;
-import com.mobile.test.AigGetBillingAddressFormTest;
 import com.mobile.test.AigGetCampaignTest;
 import com.mobile.test.AigGetCatalogFilteredTest;
 import com.mobile.test.AigGetCategoriesPaginatedTest;
@@ -21,12 +19,9 @@ import com.mobile.test.AigGetEditAddressFormTest;
 import com.mobile.test.AigGetForgotPasswordFormTest;
 import com.mobile.test.AigGetFormsIndexTest;
 import com.mobile.test.AigGetHomePageTest;
-import com.mobile.test.AigGetImageResolutionsTest;
 import com.mobile.test.AigGetLoginFormTest;
-import com.mobile.test.AigGetNativeCheckoutAvailabilityTest;
 import com.mobile.test.AigGetNewsletterFormTest;
 import com.mobile.test.AigGetOrdersListTest;
-import com.mobile.test.AigGetPaymentMethodsFormTest;
 import com.mobile.test.AigGetProductBundleTest;
 import com.mobile.test.AigGetProductDetailTest;
 import com.mobile.test.AigGetProductOffersTest;
@@ -36,7 +31,6 @@ import com.mobile.test.AigGetRegisterFormTest;
 import com.mobile.test.AigGetReviewFormTest;
 import com.mobile.test.AigGetReviewsTest;
 import com.mobile.test.AigGetSellerReviewFormTest;
-import com.mobile.test.AigGetShippingMethodsFormTest;
 import com.mobile.test.AigGetShopInShopTest;
 import com.mobile.test.AigGetShoppingCartTest;
 import com.mobile.test.AigGetSignUpFormTest;
@@ -78,7 +72,6 @@ import org.junit.runners.Suite;
         AigGetFormsIndexTest.class,
         AigGetHomePageTest.class,
        // AigGetImageResolutionsTest.class, TODO Response is not being parsed
-        AigGetNativeCheckoutAvailabilityTest.class,
         AigGetNewsletterFormTest.class,
         AigGetProductBundleTest.class,
         AigGetProductDetailTest.class,
@@ -98,14 +91,12 @@ import org.junit.runners.Suite;
 public class AigMobApiNigeriaTestSuite {
 
     public static final String TAG = AigMobApiNigeriaTestSuite.class.getSimpleName();
-        public static String HOST = "https://alice-staging.jumia.com.ng/mobapi/v1.7";
+        public static String HOST = "https://integration-mobile-www.jumia.com.ng/mobapi/v1.8";
 
         @BeforeClass
     public static void setUp() {
         Print.initializeTestingMode();
         //AigRestContract.initializeTestingMode();
-        AigRestContract.AUTHENTICATION_USER = "rocket";
-        AigRestContract.AUTHENTICATION_PASS = "z7euN7qfRD769BP";
         AigHttpClient.initializeTestingMode();
         Print.i(TAG, "SETUP");
     }

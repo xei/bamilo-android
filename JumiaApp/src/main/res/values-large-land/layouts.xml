@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ########################## DEF LANDSCAPE ########################## -->
     
@@ -12,9 +12,10 @@
 	<!-- SHOPPING CART -->
 	<item name="shopping_basket" 				type="layout">@layout/_def_shopping_basket</item>
 
-    <!-- PDV -->
-    <item name="product_details_fragment_main"  type="layout">@layout/_def_product_details_fragment_main</item>
+    <!-- TABLET SETTINGS -->
+    <bool
+        name="isTablet"
+        tools:ignore="ExtraText">true</bool>
 
-    <!-- MY ORDERS -->
-    <item name="track_order_fragment"           type="layout">@layout/_def_track_order_fragment</item>
+    <string name="orientation">unspecified</string>
 </resources>

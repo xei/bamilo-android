@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -31,12 +28,12 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
 import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
-import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.ShoppingCart;
-import com.mobile.newFramework.objects.cart.ShoppingCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -68,7 +65,7 @@ import java.util.Map;
 
 /**
  * @author sergiopereira
- * 
+ *
  */
 public class ShoppingCartFragment extends BaseFragment implements IResponseCallback {
 
@@ -78,7 +75,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     private long mBeginRequestMillis;
 
-    private List<ShoppingCartItem> items;
+    private List<PurchaseCartItem> items;
 
     private LinearLayout lView;
 
@@ -129,18 +126,18 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public long quantity;
         public String image;
         public Double discount_value;
-        public long stock;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
         public String variation;
         public String productUrl;
         public int maxQuantity;
+        public String productSku;
     }
 
     /**
      * Get instance
-     * 
+     *
      * @return ShoppingCartFragment
      */
     public static ShoppingCartFragment getInstance(Bundle bundle) {
@@ -153,10 +150,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
-                R.string.cart_label,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -200,7 +197,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mBeginRequestMillis = System.currentTimeMillis();
         // Case deep link
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
-        // Case normal
+            // Case normal
         else triggerGetShoppingCart();
         // Track page
         TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
@@ -249,7 +246,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Trigger to get cart items validating FavouritesFragment state is completed
-     * 
+     *
      * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
@@ -259,7 +256,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Get items from string
-     * 
+     *
      * @author sergiopereira
      */
     private void addItemsToCart(String items) {
@@ -267,11 +264,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
         HashMap<String, String> productBySku = new HashMap<>();
-        for (String sku : itemsToCart) {
-            productBySku.put(sku, sku.split("-")[0]);
+        for (String simpleSku : itemsToCart) {
+            // sku -> simple sku
+            productBySku.put(simpleSku.split("-")[0], simpleSku);
         }
         // Case valid deep link
-        if (productBySku.size() != 0) {
+        if (!productBySku.isEmpty()) {
             triggerAddAllItems(productBySku);
         }
         // Case invalid deep link
@@ -283,7 +281,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      *
      */
-    private void triggerRemoveItem(ShoppingCartItem item) {
+    private void triggerRemoveItem(PurchaseCartItem item) {
 
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
@@ -311,13 +309,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         } else {
             triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), bundle, this);
         }
-    }
-
-    /**
-     * Trigger to get if is native checkout is available.
-     */
-    private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventNoLoading(new GetNativeCheckoutAvailableHelper(), null, this);
     }
 
     /**
@@ -364,23 +355,24 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    if (items != null && items.size() > 0) {
-                        checkMinOrderAmount();
-                    } else {
-                        String title = getString(R.string.shoppingcart_alert_header);
-                        String message = getString(R.string.shoppingcart_alert_message_no_items);
-                        String buttonText = getString(R.string.ok_label);
-                        messageDialog = DialogGenericFragment.newInstance(true, false,
-                                title, message, buttonText, null, new OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        messageDialog.dismissAllowingStateLoss();
-                                    }
-                                });
-                        messageDialog.show(getActivity().getSupportFragmentManager(), null);
-                    }
-                    break;
+                    case MotionEvent.ACTION_UP:
+                        if (items != null && items.size() > 0) {
+                            TrackerDelegator.trackCheckout(items);
+                            getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, null, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            String title = getString(R.string.shoppingcart_alert_header);
+                            String message = getString(R.string.shoppingcart_alert_message_no_items);
+                            String buttonText = getString(R.string.ok_label);
+                            messageDialog = DialogGenericFragment.newInstance(true, false,
+                                    title, message, buttonText, null, new OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            messageDialog.dismissAllowingStateLoss();
+                                        }
+                                    });
+                            messageDialog.show(getActivity().getSupportFragmentManager(), null);
+                        }
+                        break;
                 }
                 return false;
             }
@@ -423,6 +415,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     protected boolean onSuccessEvent(Bundle bundle) {
 
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -438,90 +431,83 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
-        case ADD_VOUCHER:
-            couponButton.setText(getString(R.string.voucher_remove));
-            voucherError.setVisibility(View.GONE);
-            hideActivityProgress();
-            removeVoucher = true;
-            triggerGetShoppingCart();
-            return true;
-        case REMOVE_VOUCHER:
-            couponButton.setText(getString(R.string.voucher_use));
-            voucherError.setVisibility(View.GONE);
-            hideActivityProgress();
-            triggerGetShoppingCart();
-            removeVoucher = false;
-            return true;
-        case NATIVE_CHECKOUT_AVAILABLE:
-            boolean isAvailable = bundle.getBoolean(Constants.BUNDLE_RESPONSE_KEY);
-            if (isAvailable) {
-                Print.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
-                Bundle mBundle = new Bundle();
-                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                Print.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
-                goToWebCheckout();
-            }
-            return true;
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
-            params = new Bundle();
-            params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
-            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            params.putDouble(TrackerDelegator.PRICE_KEY, itemRemoved_price_tracking);
-            params.putLong(TrackerDelegator.QUANTITY_KEY, itemRemoved_quantity);
-            params.putDouble(TrackerDelegator.RATING_KEY, itemRemoved_rating);
-            params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
-            TrackerDelegator.trackProductRemoveFromCart(params);
-            TrackerDelegator.trackLoadTiming(params);
-            if (!isRemovingAllItems) {
-                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            case ADD_VOUCHER:
+                PurchaseEntity addVoucherPurchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                couponButton.setText(getString(R.string.voucher_remove));
+                voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
-            }
-            return true;
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            hideActivityProgress();
-            //showFragmentContentContainer();
-            params = new Bundle();
-            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            TrackerDelegator.trackLoadTiming(params);
-            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
-            return true;
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-            ShoppingCart shoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            //showFragmentContentContainer();
-            params = new Bundle();
-            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                removeVoucher = true;
+                displayShoppingCart(addVoucherPurchaseEntity);
+                return true;
+            case REMOVE_VOUCHER:
+                PurchaseEntity removeVoucherPurchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                couponButton.setText(getString(R.string.voucher_use));
+                voucherError.setVisibility(View.GONE);
+                hideActivityProgress();
+                removeVoucher = false;
+                displayShoppingCart(removeVoucherPurchaseEntity);
+                return true;
+            case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+                Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
+                params = new Bundle();
+                params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                params.putDouble(TrackerDelegator.PRICE_KEY, itemRemoved_price_tracking);
+                params.putLong(TrackerDelegator.QUANTITY_KEY, itemRemoved_quantity);
+                params.putDouble(TrackerDelegator.RATING_KEY, itemRemoved_rating);
+                params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
+                TrackerDelegator.trackProductRemoveFromCart(params);
+                TrackerDelegator.trackLoadTiming(params);
+                if (!isRemovingAllItems) {
+                    displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                    hideActivityProgress();
+                }
+                return true;
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+                hideActivityProgress();
+                //showFragmentContentContainer();
+                params = new Bundle();
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                TrackerDelegator.trackLoadTiming(params);
+                displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                return true;
+            case GET_SHOPPING_CART_ITEMS_EVENT:
+                //alexandrapires: loading dismiss
+                hideActivityProgress();
+                PurchaseEntity purchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                //showFragmentContentContainer();
+                params = new Bundle();
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
 
-            TrackerDelegator.trackLoadTiming(params);
+                TrackerDelegator.trackLoadTiming(params);
 
-            params.clear();
-            params.putParcelable(AdjustTracker.CART, shoppingCart);
-            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
-            TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
+                params.clear();
+                params.putParcelable(AdjustTracker.CART, purchaseEntity);
+                TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
+                TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
 
-            // verify if "Call to Order" was used
-            if (isCallInProgress) {
-                isCallInProgress = false;
-                askToRemoveProductsAfterOrder(shoppingCart);
-            } else {
-                displayShoppingCart(shoppingCart);
-            }
+                // verify if "Call to Order" was used
+                if (isCallInProgress) {
+                    isCallInProgress = false;
+                    askToRemoveProductsAfterOrder(purchaseEntity);
+                } else {
+                    displayShoppingCart(purchaseEntity);
+                }
 
-            return true;
-        case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            onAddItemsToShoppingCartRequestSuccess(bundle);
-            break;
-        default:
-            //showFragmentContentContainer();
-            params = new Bundle();
-            params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            TrackerDelegator.trackLoadTiming(params);
-            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                return true;
+            case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
+                onAddItemsToShoppingCartRequestSuccess(bundle);
+                break;
+            default:
+                //showFragmentContentContainer();
+                params = new Bundle();
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+                TrackerDelegator.trackLoadTiming(params);
+                displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
         return true;
     }
@@ -534,7 +520,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
         Toast.makeText(getBaseActivity(), getString(R.string.some_products_not_added), Toast.LENGTH_LONG).show();
-        
+
     }
 
     /**
@@ -544,25 +530,25 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
             ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            
             if (notAdded != null && !notAdded.isEmpty()) {
                 Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
             }
         }
 
         getBaseActivity().updateCartInfo();
-        if(JumiaApplication.INSTANCE.getCart() != null)
+        if (JumiaApplication.INSTANCE.getCart() != null) {
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+        }
     }
-    
+
     /**
      * Present a dialog to remove all items from cart <br>
      * (Expectly used after user clicks "Call to Order")
      */
-    private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
+    private void askToRemoveProductsAfterOrder(final PurchaseEntity purchaseEntity) {
         // Dismiss any existing dialogs
         dismissDialogFragment();
-        
+
         dialog = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.shoppingcart_dialog_title),
                 getString(R.string.shoppingcart_remove_products),
@@ -575,21 +561,21 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         // Case remove
                         if (id == R.id.button1) {
                             isRemovingAllItems = true;
-                            List<ShoppingCartItem> items = new ArrayList<>(shoppingCart.getCartItems().values());
-                            for (ShoppingCartItem item : items) {
+                            List<PurchaseCartItem> items = new ArrayList<>(purchaseEntity.getCartItems());
+                            for (PurchaseCartItem item : items) {
                                 mBeginRequestMillis = System.currentTimeMillis();
                                 triggerRemoveItem(item);
                             }
                             showNoItems();
                             // Update global cart with an empty Cart
-                            ShoppingCart cart = new ShoppingCart();
+                            PurchaseEntity cart = new PurchaseEntity();
                             JumiaApplication.INSTANCE.setCart(cart);
                             // Update cart
                             getBaseActivity().updateCartInfo();
                         }
                         // Case continue
                         else if (id == R.id.button2) {
-                            displayShoppingCart(shoppingCart);
+                            displayShoppingCart(purchaseEntity);
                         }
                         dismissDialogFragment();
                     }
@@ -617,31 +603,27 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-        case NATIVE_CHECKOUT_AVAILABLE:
-            Print.d(TAG, "ON ERROR EVENT: NATIVE_CHECKOUT_AVAILABLE");
-            goToWebCheckout();
-            break;
-        case ADD_VOUCHER:
-        case REMOVE_VOUCHER:
-            voucherCode.setText("");
-            voucherError.setVisibility(View.VISIBLE);
-            // voucherDivider.setBackgroundColor(R.color.red_middle);
-            // hideActivityProgress();
-            break;
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            break;
-        case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            onAddItemsToShoppingCartRequestError();
-            break;
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            if (items.size() == 0) {
-                showNoItems();
-            } else {
-                hideNoItems();
-            }
-            break;
-        default:
-            break;
+            case ADD_VOUCHER:
+            case REMOVE_VOUCHER:
+                voucherCode.setText("");
+                voucherError.setVisibility(View.VISIBLE);
+                // voucherDivider.setBackgroundColor(R.color.red_middle);
+                // hideActivityProgress();
+                break;
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+                break;
+            case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
+                onAddItemsToShoppingCartRequestError();
+                break;
+            case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+                if (items.size() == 0) {
+                    showNoItems();
+                } else {
+                    hideNoItems();
+                }
+                break;
+            default:
+                break;
         }
 
         mBeginRequestMillis = System.currentTimeMillis();
@@ -651,14 +633,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /*
 
      */
-    private void displayShoppingCart(ShoppingCart cart) {
+    private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
         if(cart == null){
             showNoItems();
             return;
         }
 
-        items = new ArrayList<>(cart.getCartItems().values());
+        items = cart.getCartItems();
         if (items.size() == 0) {
             showNoItems();
         } else if(getView() == null) {
@@ -682,19 +664,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
 
             // Set voucher
-            String couponDiscount = cart.getCouponDiscount();
-            String couponCope = cart.getCouponCode();
-            if (!TextUtils.isEmpty(couponDiscount)) {
-                double couponDiscountValue = Double.parseDouble(couponDiscount);
-                if (couponDiscountValue > 0) {
-                    // Fix NAFAMZ-7848
+            if (cart.hasCouponDiscount()) {
+                double couponDiscountValue = cart.getCouponDiscount();
+                if (couponDiscountValue >= 0) {
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
-
-                    if (!TextUtils.isEmpty(couponCope)) {
-                        // Change Coupon
-                        changeVoucher(couponCope);
-                    }
+                    // Change Coupon
+                    changeVoucher(cart.getCouponCode());
                 } else {
                     voucherContainer.setVisibility(View.GONE);
                     // Clean Voucher
@@ -706,12 +682,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 removeVoucher();
             }
 
-            // Only convert value if it is a number
-            if (CurrencyFormatter.isNumber(cart.getSubTotal())) {
-                priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-            } else {
-                priceTotal.setText(cart.getSubTotal());
-            }
+            // Price
+            priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
 
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
@@ -732,8 +704,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             BigDecimal unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
+
+            // TODO Validate this method
             for (int i = 0; i < items.size(); i++) {
-                ShoppingCartItem item = items.get(i);
+                PurchaseCartItem item = items.get(i);
                 CartItemValues values = new CartItemValues();
                 values.is_checked = false;
                 values.product_name = item.getName();
@@ -743,11 +717,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.image = item.getImageUrl();
                 values.price_disc = CurrencyFormatter.formatCurrency(item.getSpecialPrice());
                 values.discount_value = (double) Math.round(item.getSavingPercentage());
-                values.stock = item.getStock();
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
+                values.productSku = item.getConfigSKU();
                 values.productUrl = item.getProductUrl();
                 values.maxQuantity = item.getMaxQuantity();
 
@@ -808,19 +782,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Set the total value
      * @author sergiopereira
      */
-    private void setTotal(ShoppingCart cart) {
+    private void setTotal(PurchaseEntity cart) {
         Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
         // Set value
-        cartValue = cart.getCartValue();
-        if (!TextUtils.isEmpty(cartValue) && !cartValue.equals("null")) {
-            totalValue.setText(CurrencyFormatter.formatCurrency(cartValue));
-            totalMain.setVisibility(View.VISIBLE);
-        } else {
-            Print.w(TAG, "CART VALUES IS EMPTY");
-        }
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        totalMain.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -841,7 +810,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#finalize()
          */
         @Override
@@ -863,7 +832,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
+        View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;
@@ -929,9 +898,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        long actualMaxQuantity = prodItem.itemValues.stock < prodItem.itemValues.maxQuantity ? prodItem.itemValues.stock : prodItem.itemValues.maxQuantity;
         prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        if(actualMaxQuantity > 1) {
+        if(prodItem.itemValues.maxQuantity > 1) {
             prodItem.quantityBtn.setEnabled(true);
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
 
@@ -946,12 +914,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
 
         // Save the position to process the click on item
-        view.setTag(R.id.target_url, item.productUrl);
+        view.setTag(R.id.target_sku, item.productSku);
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    goToProductDetails((String) v.getTag(R.id.target_url));
+                    goToProductDetails((String) v.getTag(R.id.target_sku));
                 } catch (NullPointerException e) {
                     Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
@@ -979,31 +947,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Function to redirect to the selected product details.
      */
-    private void goToProductDetails(String productUrl) {
-        // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
-        if (TextUtils.isEmpty(productUrl))
-            return;
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private void goToWebCheckout() {
-        Print.d(TAG, "GOTO WEB CHECKOUT");
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private void checkMinOrderAmount() {
-        TrackerDelegator.trackCheckout(items);
-        String restbase = getResources().getString(R.string.global_server_api_version);
-        if (restbase.contains("mobapi/v1")) {
-            triggerIsNativeCheckoutAvailable();
-        } else {
-            goToWebCheckout();
+    private void goToProductDetails(String sku) {
+        if (!TextUtils.isEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1026,10 +976,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<>();
-        long stock = items.get(position).getStock();
-        int maxQuantity = items.get(position).getMaxQuantity();
-        long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
-        for (int i = 1; i <= actualMaxQuantity; i++) {
+        for (int i = 1; i <= items.get(position).getMaxQuantity(); i++) {
             quantities.add(String.valueOf(i));
         }
         final long crrQuantity = items.get(position).getQuantity();
@@ -1063,7 +1010,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         changeItemQuantityInShoppingCart(items);
     }
 
-    private void trackAddToCartGTM(ShoppingCartItem item, int quantity) {
+    private void trackAddToCartGTM(PurchaseCartItem item, int quantity) {
         try {
             double prods = item.getQuantity();
             Bundle params = new Bundle();
@@ -1075,7 +1022,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
             params.putDouble(TrackerDelegator.RATING_KEY, -1d);
             params.putString(TrackerDelegator.NAME_KEY, item.getName());
-
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategoriesIds());
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
 
             if (quantity > prods) {
@@ -1097,10 +1044,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     }
 
-    private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items) {
+    private void changeItemQuantityInShoppingCart(List<PurchaseCartItem> items) {
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
-        for (ShoppingCartItem item : items) {
+        for (PurchaseCartItem item : items) {
             values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
@@ -1141,7 +1088,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         });
     }
 
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -1161,5 +1108,5 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
-    
+
 }

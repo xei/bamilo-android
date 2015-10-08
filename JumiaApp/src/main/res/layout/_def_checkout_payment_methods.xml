@@ -13,6 +13,7 @@
         android:text="@string/payment" />
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_payment_methods_title_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -21,7 +22,7 @@
         android:layout_marginRight="33dp"
         android:layout_marginEnd="33dp"
         android:text="*"
-        android:textColor="@color/orange_ffa200"
+        android:textColor="@color/color_accent"
         android:textSize="@dimen/text_title" />
 
     <!-- DIVIDER -->
