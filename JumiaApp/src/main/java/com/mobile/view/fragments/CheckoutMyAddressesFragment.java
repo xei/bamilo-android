@@ -61,7 +61,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      * Empty constructor
      */
     public CheckoutMyAddressesFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,

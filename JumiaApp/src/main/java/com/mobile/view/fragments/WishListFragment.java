@@ -1,21 +1,23 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.GridView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.WishListAdapter;
+import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -26,9 +28,12 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -38,7 +43,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class WishListFragment extends BaseFragment implements IResponseCallback, AbsListView.OnScrollListener, DialogSimpleListFragment.OnDialogListListener {
+public class WishListFragment extends BaseFragment implements IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
 
     private static final String TAG = WishListFragment.class.getSimpleName();
 
@@ -48,7 +53,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     public static boolean sForceReloadWishListFromNetwork;
 
-    private GridView mListView;
+    private HeaderFooterGridView mListView;
 
     private View mLoadingMore;
 
@@ -62,6 +67,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private boolean isErrorOnLoadingMore = false;
 
+    private View mClickedBuyButton;
+
     /**
      * Create and return a new instance.
      */
@@ -73,10 +80,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public WishListFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Favorite,
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Saved,
                 R.layout._def_wishlist_fragment,
-                R.string.saved,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -107,10 +114,12 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Loading more view
         mLoadingMore = view.findViewById(R.id.wish_list_loading_more);
         // List view
-        mListView = (GridView) view.findViewById(R.id.wish_list_grid);
-        mListView.setOnScrollListener(this);
+        mListView = (HeaderFooterGridView) view.findViewById(R.id.wish_list_grid);
+        mListView.addOnScrollListener(onScrollListener);
         // Columns
         mNumberOfColumns = getResources().getInteger(R.integer.favourite_num_columns);
+        mListView.setHasFixedSize(true);
+        mListView.setGridLayoutManager(mNumberOfColumns);
     }
 
     /*
@@ -243,7 +252,27 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), wishList.getProducts(), this);
+        WishListGridAdapter listAdapter = new WishListGridAdapter(this.getActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                WishListFragment.this.onItemClick(view);
+            }
+
+            @Override
+            public void onClickDeleteItem(View view) {
+                WishListFragment.this.onClickDeleteItem(view);
+            }
+
+            @Override
+            public void onClickAddToCart(View view) {
+                WishListFragment.this.onClickAddToCart(view);
+            }
+
+            @Override
+            public void onClickVariation(View view) {
+                WishListFragment.this.onClickVariation(view);
+            }
+        });
         mListView.setAdapter(listAdapter);
         showFragmentContentContainer();
     }
@@ -253,7 +282,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     protected void updateWishListContainer() {
         // Update content
-        WishListAdapter adapter = (WishListAdapter) mListView.getAdapter();
+        WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
         adapter.notifyDataSetChanged();
         //if (adapter != null) {
         //    adapter.notifyDataSetChanged();
@@ -268,10 +297,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     private void removeSelectedPosition() {
         try {
-            ProductMultiple item = ((WishListAdapter) mListView.getAdapter()).getItem(mSelectedPositionToDelete);
-            ((WishListAdapter) mListView.getAdapter()).remove(item);
+            WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
+            ProductMultiple item = adapter.getItem(mSelectedPositionToDelete);
+            adapter.remove(item);
             // Case empty
-            if(mListView.getAdapter().isEmpty()) {
+            if(adapter.isEmpty()) {
                 mWishList = null;
                 showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
             }
@@ -354,7 +384,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
-            ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(position);
+            ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(position);
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
                     getString(R.string.product_variance_choose),
@@ -370,13 +400,22 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onDialogListItemSelect(int position) {
         Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
-        ((WishListAdapter) mListView.getAdapter()).notifyDataSetChanged();
+        updateWishListContainer();
+        // Case from buy button
+        if(mClickedBuyButton != null) {
+            onClickAddToCart(mClickedBuyButton);
+        }
     }
 
     @Override
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDialogListDismiss() {
+        mClickedBuyButton = null;
     }
 
     /**
@@ -409,16 +448,17 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Get position
         int position = (int) view.getTag(R.id.target_position);
         // Get item
-        ProductMultiple product = ((WishListAdapter) mListView.getAdapter()).getItem(position);
+        ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(position);
         // Validate has simple variation selected
         ProductSimple simple = product.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
             triggerAddProductToCart(product.getSku(), simple.getSku());
+            TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
-            // TODO: add item to cart after variation dialog
+            mClickedBuyButton = view;
             onClickVariation(view);
         }
         // Case error unexpected
@@ -432,7 +472,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
 
     private void triggerGetPaginatedWishList(int page) {
-        triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        if(page == IntConstants.FIRST_PAGE) {
+            triggerContentEvent(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        } else {
+            triggerContentEventNoLoading(new GetWishListHelper(), GetWishListHelper.createBundle(page), this);
+        }
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -466,7 +510,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_ADDED_CART);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
@@ -526,25 +570,33 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ######## SCROLL STATE ########
      */
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // ...
-    }
+    private OnScrollListener onScrollListener = new OnScrollListener() {
 
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        // Force scroll to up until one row to disable error flag
-        boolean isScrollingUp = totalItemCount != 0 && firstVisibleItem + visibleItemCount <= totalItemCount - mNumberOfColumns;
-        if(isErrorOnLoadingMore && isScrollingUp) {
-            isErrorOnLoadingMore = false;
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            // ...
         }
-        // Bottom reached
-        boolean isBottomReached = totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount;
-        // Case bottom reached and has more pages loading the next page
-        if (!isErrorOnLoadingMore && !isLoadingMoreData && isBottomReached && mWishList != null && mWishList.hasMorePages()) {
-            Log.i(TAG, "LOAD MORE DATA");
-            setLoadingMore(true);
-            triggerGetPaginatedWishList(mWishList.getPage() + 1);
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+            int totalItemCount = manager.getItemCount();
+            int visibleItemCount = manager.findLastCompletelyVisibleItemPosition();
+            int firstVisibleItem = manager.findFirstVisibleItemPosition();
+
+            // Force scroll to up until one row to disable error flag
+            boolean isScrollingUp = totalItemCount != 0 && firstVisibleItem + visibleItemCount <= totalItemCount - mNumberOfColumns;
+            if (isErrorOnLoadingMore && isScrollingUp) {
+                isErrorOnLoadingMore = false;
+            }
+            // Bottom reached
+            boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
+            // Case bottom reached and has more pages loading the next page
+            if (!isErrorOnLoadingMore && !isLoadingMoreData && isBottomReached && mWishList != null && mWishList.hasMorePages()) {
+                Log.i(TAG, "LOAD MORE DATA");
+                setLoadingMore(true);
+                triggerGetPaginatedWishList(mWishList.getPage() + 1);
+            }
         }
-    }
+    };
 }

@@ -1,20 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PDVSlideShowStyle"
-    android:layout_marginBottom="0dp"
-    android:layout_marginTop="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- GLOBAL SELLER -->
+
+    <ImageButton
+        android:id="@+id/pdv_button_global_seller"
+        style="@style/PDVGlobalSellerButtonStyle"
+        android:contentDescription="@string/gpdv"
+        android:visibility="gone"/>
+
+    <!-- TITLE NORMAL -->
+
+    <include
+        android:id="@+id/pdv_title_container"
+        layout="@layout/_def_pdv_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/pdv_button_global_seller"
+        android:layout_toLeftOf="@id/pdv_button_global_seller" />
 
     <!-- IMAGE -->
 
     <FrameLayout
         android:id="@+id/pdv_slide_show_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        style="@style/PDVSlideShowStyle"
+        android:layout_below="@id/pdv_title_container"
+        android:layout_marginTop="16dp" />
 
     <!-- FAVOURITE -->
 
-    <ImageView
+    <ImageButton
         android:id="@+id/pdv_button_wish_list"
-        style="@style/PDVWishListButtonStyle" />
+        style="@style/PDVWishListButtonStyle"
+        android:layout_alignParentTop="false"
+        android:layout_alignTop="@id/pdv_slide_show_container"
+        android:contentDescription="@string/gpdv" />
+
+    <!-- TITLE: FASHION -->
+
+    <include
+        android:id="@+id/pdv_title_fashion_container"
+        layout="@layout/_def_pdv_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdv_slide_show_container" />
 
 </RelativeLayout>

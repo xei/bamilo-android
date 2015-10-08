@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- BUTTON BAR -->
-
-    <include
-        android:id="@+id/pdp_buy_bar"
-        layout="@layout/pdv_fragment_buy_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!-- SCROLL CONTAINER -->
 
-    <com.mobile.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.AigScrollViewWithHorizontal
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/pdp_buy_bar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
@@ -28,21 +20,10 @@
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
-            <!--TITLE-->
 
-            <include
-                android:id="@+id/pdv_title_container"
-                layout="@layout/_def_pdv_fragment_title" />
-
-            <!-- IMAGE CONTAINER -->
+            <!--PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
 
             <include layout="@layout/_def_pdv_fragment_image" />
-
-            <!--TITLE-->
-
-            <include
-                android:id="@+id/pdv_title_fashion_container"
-                layout="@layout/_def_pdv_fragment_title" />
 
             <!-- SEPARATOR -->
 
@@ -50,7 +31,7 @@
 
             <!-- PRICE -->
 
-            <include layout="@layout/_def_pdv_price_tag" />
+            <include layout="@layout/pdv_price_tag" />
 
             <!-- SEPARATOR -->
 
@@ -83,7 +64,13 @@
 
             <include
                 android:id="@+id/pdv_seller_container"
-                layout="@layout/_def_pdv_fragment_seller_info" />
+                layout="@layout/pdv_fragment_seller_info" />
+
+            <!-- OTHER SELLERS -->
+
+            <include
+                android:id="@+id/pdv_other_sellers_button"
+                layout="@layout/sublist" />
 
             <!-- DESCRIPTION -->
 
@@ -105,6 +92,10 @@
 
         </LinearLayout>
 
-    </com.mobile.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.AigScrollViewWithHorizontal>
 
-</RelativeLayout>
+    <!-- BUTTON BAR -->
+
+    <include layout="@layout/pdv_fragment_buy_bar" />
+
+</LinearLayout>

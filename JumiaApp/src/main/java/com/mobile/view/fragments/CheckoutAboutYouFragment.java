@@ -33,7 +33,7 @@ import com.mobile.helpers.session.SetSignUpHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -119,7 +119,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * Empty constructor
      */
     public CheckoutAboutYouFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you_main,
                 R.string.checkout_label,
@@ -479,7 +479,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 DynamicFormItem item = iter.next();
                 item.loadState(savedInstanceState);
 
-                if (fillEmail && InputType.email.equals(item.getType())) {
+                if (fillEmail && FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }
@@ -488,7 +488,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
 
-                if (InputType.email.equals(item.getType())) {
+                if (FormInputType.email.equals(item.getType())) {
                     ((EditText) item.getEditControl()).setText(rememberedEmail);
                 }
             }

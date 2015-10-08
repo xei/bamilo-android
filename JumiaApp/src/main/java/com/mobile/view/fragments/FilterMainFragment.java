@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -75,7 +77,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Filters,
                 R.layout.filters_main,
-                NO_TITLE,
+                R.string.filter_label,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -94,7 +96,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         if(savedInstanceState != null){
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
-            filterSelectionController = new FilterSelectionController(mFilters, (FilterOptionInterface[])savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES));
+            Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
+            filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[])filterOptions) : new FilterSelectionController(mFilters);
 
         } else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
@@ -173,11 +176,22 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    public void fragmentChildManagerTransition(int container, Fragment fragment, boolean animated, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        // Animations
-        if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+    public void fragmentChildManagerTransition(int container, Fragment fragment, final boolean animated, boolean addToBackStack) {
+        final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+
+        /**
+         * FIXME: Excluded piece of code due to crash on API = 18.
+         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+         */
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
+            @Override
+            public void run() {
+                // Animations
+                if (animated)
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+
         // Replace
         fragmentTransaction.replace(container, fragment);
         // Back stack
@@ -266,7 +280,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             if(filter.hasAppliedFilters()) {
                 filterTitleTextView.setTypeface(null, Typeface.BOLD);
                 if(!(filter instanceof CatalogPriceFilter)){
-                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.filter_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
+                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
                     filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {

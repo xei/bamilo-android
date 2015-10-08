@@ -39,6 +39,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -48,9 +49,9 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogGridAdapter;
-import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.UICatalogHelper;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
@@ -82,7 +83,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int EMPTY_CATALOG = 0;
 
-    private CatalogGridView mGridView;
+    private HeaderFooterGridView mGridView;
 
     private TextView mSortButton;
 
@@ -139,10 +140,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Empty constructor
      */
     public CatalogFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Catalog,
                 R.layout.catalog_fragment_main,
-                NO_TITLE,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -182,13 +183,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (!TextUtils.isEmpty(mCompleteUrl)) {
                 mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
                 Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
-                builder.clearQuery();
-                mCompleteUrl = builder.toString();
+                removeParametersFromQuery(builder);
             }
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
-                mQueryValues.put(GetCatalogPageHelper.QUERY, arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                if(arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null){
+                    mQueryValues.put(GetCatalogPageHelper.QUERY, arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                }
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
@@ -209,6 +211,35 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
+    /**
+     * Function that removes the parameters from the url in order to have the complete url without parameteres
+     * @param builder
+     */
+    private void removeParametersFromQuery(final Uri.Builder builder){
+
+        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+            @Override
+            public void highVersionCallback() {
+                builder.clearQuery();
+                mCompleteUrl = builder.toString();
+            }
+
+            @Override
+            public void lowerVersionCallback() {
+                if (builder.toString().contains("?")) {
+                    // only retains the substring from the beginning to the character '?'
+                    mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
+                } else {
+                    // does nothing, because url complete does not have any extra parameters
+                    mCompleteUrl = builder.toString();
+                }
+            }
+        });
+
+    }
+
+
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -218,7 +249,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
-//        String level = CustomerPreferences.getCatalogLayout(getBaseActivity());
         mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
         if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
             mNumberOfColumns = getResources().getInteger(R.integer.catalog_grid_num_columns);
@@ -242,7 +272,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get wizard
         mWizardStub = (ViewStub) view.findViewById(R.id.catalog_wizard_stub);
         // Get grid view
-        mGridView = (CatalogGridView) view.findViewById(R.id.catalog_grid_view);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.catalog_grid_view);
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
@@ -277,10 +307,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-        // Navigation
-        if (!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null) {
-            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
-        }
     }
 
     /*
@@ -402,10 +428,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set the filter button selected or not
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
-        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
-        // Add listener
-        adapter.setOnViewHolderClickListener(this);
-        mGridView.setAdapter(adapter);
+        setCatalogAdapter(catalogPage);
         // Validate loading more view 
         isLoadingMoreData = false;
         // Validate if user can load more pages
@@ -418,8 +441,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
@@ -442,9 +464,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
         if (adapter == null) {
             // Create adapter new data
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Set filter button
             UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
             // Set sort button
@@ -459,9 +479,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter applied/clean replace the current data
         else {
-            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
-            adapter.setOnViewHolderClickListener(this);
-            mGridView.setAdapter(adapter);
+            setCatalogAdapter(mCatalogPage);
             // Hide the goto top button
             UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
@@ -482,8 +500,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        // Validate if is to show wizard
-        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
+//        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+
     }
 
     /**
@@ -609,8 +628,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (JumiaApplication.isCustomerLoggedIn()) {
             if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
+                TrackerDelegator.trackRemoveFromFavorites(mWishListItemClicked);
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
+                TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
             }
         } else {
             // Goto login
@@ -1129,10 +1150,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @return
      */
     private boolean validateURL() {
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl)) {
-            return true;
-        }
-        return false;
+        return !mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl);
     }
 
     /**
@@ -1181,4 +1199,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         return false;
     }
+
+    private void setCatalogAdapter(CatalogPage catalogPage){
+        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
+        // Add listener
+        adapter.setOnViewHolderClickListener(this);
+        mGridView.setAdapter(adapter);
+    }
+
 }

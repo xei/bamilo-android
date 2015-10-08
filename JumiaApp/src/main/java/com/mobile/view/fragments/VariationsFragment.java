@@ -13,7 +13,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.VariationProductsGridAdapter;
 import com.mobile.utils.ui.VariationProductsGridView;
 import com.mobile.view.R;
@@ -26,11 +26,10 @@ import java.util.EnumSet;
  */
 public class VariationsFragment extends BaseFragment implements OnViewHolderClickListener {
 
+    protected static final String TAG = VariationsFragment.class.getSimpleName();
+
     private ProductComplete mProductComplete;
 
-    private VariationProductsGridView mGridVariations;
-
-    private VariationProductsGridAdapter mAdapter;
 
     /**
      * Create and return a new instance.
@@ -48,10 +47,10 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
      * Empty constructor
      */
     public VariationsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                R.layout.product_list_page,   //new layout here
-                NO_TITLE,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Variations,
+                R.layout.product_list_page,
+                R.string.variations,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -79,15 +78,12 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
-        mGridVariations = (VariationProductsGridView) view.findViewById(R.id.gridVariations);
-        mAdapter = new VariationProductsGridAdapter(getBaseActivity().getApplicationContext(),mProductComplete.getProductVariations());
+        VariationProductsGridView mGridVariations = (VariationProductsGridView) view.findViewById(R.id.gridVariations);
+        VariationProductsGridAdapter mAdapter = new VariationProductsGridAdapter(getBaseActivity().getApplicationContext(),mProductComplete.getProductVariations());
         mAdapter.setOnViewHolderClickListener(this);
-
         mGridVariations.setAdapter(mAdapter);
-        mGridVariations.setGridLayoutManager(getBaseActivity().getApplicationContext(), getResources().getInteger(R.integer.variations_num_columns));
+        mGridVariations.setGridLayoutManager(getResources().getInteger(R.integer.variations_num_columns));
         mGridVariations.setHasFixedSize(true);
-
     }
 
 
@@ -113,7 +109,7 @@ public class VariationsFragment extends BaseFragment implements OnViewHolderClic
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastFactory.ERROR_OCCURRED.show(getBaseActivity());
+            ToastManager.show(getBaseActivity(), ToastManager.ERROR_OCCURRED);
         }
     }
 

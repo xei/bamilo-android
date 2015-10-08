@@ -22,7 +22,21 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
             JSONObject categoryObject = categoriesArray.getJSONObject(i);
             Category category = new Category();
             category.initialize(categoryObject);
-            this.add(category);
+            // Remove first childs level, and put it at the same level of the parent, following it
+            if(category.hasChildren()){
+                ArrayList<Category> childs = category.getChildren();
+                // Mark the parent category has a section
+                category.markAsSection();
+                category.setChildren(null);
+                // Add first level category
+                this.add(category);
+                // Append all sub categories to the first level
+                this.addAll(childs);
+            } else {
+                category.markAsSection();
+                this.add(category);
+            }
+
         }
         return true;
     }

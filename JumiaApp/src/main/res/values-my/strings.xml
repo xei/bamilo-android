@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">ကြ်ႏု္ပ္၏ အေကာင့္</string>
     <string name="action_label_add_address">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
     <string name="action_label_basket">ျခင္းေတာင္း</string>
     <string name="action_label_logout">Logout</string>
     <string name="action_label_search_hint">ရွာေဖြမည္ %s</string>
     <string name="action_label_share">ေ၀မွ်ရန္</string>
-    <string name="action_label_wishlist">ရရွိလိုေသာ ပစၥည္းစာရင္း</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
     <string name="add_to_shopping_cart">၀ယ္ယူမည္</string>
     <string name="added_bundle_to_shop_cart_dialog_text">ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းသို႔ ထည္႔ၿပီးပါၿပီ</string>
@@ -24,11 +24,11 @@
     <string name="billing_same_label">တူညီေသာလိပ္စာျဖင့္ ေငြေပးေခ်ရန္</string>
     <string name="billing_shipping_label">သယ္ယူပို႔ေဆာင္ရန္လိပ္စာ</string>
     <string name="brands_label">တံဆိပ္မ်ား</string>
-    <string name="bundle_title">မၾကာခဏ အတူတြဲဖက္၀ယ္ယူေလ့ရွိေသာ</string>
+    <string name="bundle_title">တြဲဖက္၀ယ္ယူၾကေသာပစၥည္းမ်ား</string>
     <string name="bundle_total_price">စုစုေပါင္းတန္ဖိုး:</string>
     <string name="buy_now">ယခု၀ယ္ယူရန္</string>
     <string name="call_to_order">စံုစမ္းရန္</string>
-    <string name="campaign_choose_size">သင္၏ဆိုဒ္နံပါတ္ေရြးခ်ယ္ပါ</string>
+    <string name="campaign_choose_size">ဆိုဒ္ (သို႕) အေရာင္ကို ေရြးပါ</string>
     <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string>
     <string name="campaign_save">သင္ သက္သာၿပီး</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
@@ -49,7 +49,7 @@
     <string name="checkout_header_step_1">သင့္အေၾကာင္း</string>
     <string name="checkout_header_step_2">လိပ္စာ</string>
     <string name="checkout_header_step_3">သယ္ယူပို႔ေဆာင္မႈ</string>
-    <string name="checkout_header_step_4">ေငြေပးေခ်မႈ &#160;</string>
+    <string name="checkout_header_step_4">ေငြေပးေခ်မႈ  </string>
     <string name="checkout_label">ေအာ္ဒါလုပ္ငန္းစဥ္</string>
     <string name="clear_all_uppercase_label">အားလံုးရွင္းလင္းရန္</string>
     <string name="clear_uppercase_label">ရွင္းလင္းၿပီးပါၿပီ</string>
@@ -83,7 +83,7 @@
     <string name="error_tracking_order_text">ရွာေဖြေနေသာေအာ္ဒါ ID ရွာမေတြ႔ပါ။ ေက်းဇူးျပဳ၍ ေအာ္ဒါIDအား ျပန္စစ္ေဆးၿပီး ထပ္မံႀကိဳးစားပါ။</string>
     <string name="exit_press_back_again">App မွ ထြက္လိုပါက " ေနာက္သို႔" ခလုတ္အားထပ္ႏွိပ္ပါ။</string>
     <string name="extra_costs">အပိုကုန္က်စရိတ္ :</string>
-    <string name="extra_costs_label">အပိုကုန္က်စရိတ္ &#160;</string>
+    <string name="extra_costs_label">အပိုကုန္က်စရိတ္  </string>
     <string name="fallback_audio">အသံပိုင္းဆိုင္ရာပစၥည္းမ်ား ႏွင္႔ ဗီဒီယို</string>
     <string name="fallback_best">အေကာင္းဆံုး အြန္လိုင္းေရွာ့ပင္းအေတြ႕အႀကံဳ</string>
     <string name="fallback_books">စာအုပ္မ်ား</string>
@@ -95,14 +95,12 @@
     <string name="fallback_health">အလွအပ ႏွင့္ က်န္းမာေရး</string>
     <string name="fallback_home_office">အိမ္သံုး၊ရုံးသံုး ပစၥည္းမ်ား</string>
     <string name="fallback_maintenance">ထိန္းသိမ္းေစာင့္ေရွာက္မႈ</string>
-    <string name="fallback_maintenance_text">&#8230; သည္ ယခုလက္ရွိတြင္ ျပဳျပင္မႈမ်ား ျပဳလုပ္ေနပါသည္။</string>
+    <string name="fallback_maintenance_text">… သည္ ယခုလက္ရွိတြင္ ျပဳျပင္မႈမ်ား ျပဳလုပ္ေနပါသည္။</string>
     <string name="fallback_maintenance_text_bottom">အခ်ိန္တိုအတြင္းၿပီးစီးရန္ ၾကိဳးစားေနပါသည္။ ေနာက္ထပ္ႀကိဳးစားၾကည္႔ပါ။</string>
     <string name="fallback_mobile">မိုဘိုင္းလ္ဖုန္းမ်ား</string>
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
     <string name="favourite_add_to_cart">ေစ်း၀ယ္လွည္းသို႔ ထည္႔ထားေသာ ပစၥည္း</string>
     <string name="favourite_addalltocart">ပစၥည္းအားလံုး ေစ်း၀ယ္လွည္းသို႔ ထည္႔သြင္းမည္</string>
-    <string name="save_no_saved">သင့္အၾကိဳက္ပစၥည္းမ်ားမရွိေသးပါ။</string>
-    <string name="saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးမ်ား</string>
     <string name="fgt_pass">Password ေမ့သြားပါသလား?</string>
     <string name="filter_label">စစ္ထုတ္ရန္</string>
     <string name="forgotpass_header">Password ျပန္လည္ရယူရန္</string>
@@ -127,10 +125,10 @@
     <string name="internet_no_connection_details_label">အင္တာနက္ဆက္သြယ္မႈတြင္ တစ္စံုတရာမွားယြင္းေနပါသည္..ေက်းဇူးျပဳ၍ ျပန္လည္ႀကိဳးစားပါ!</string>
     <string name="invalid_product">မရရွိႏိုင္ေသာ ကုန္ပစၥည္း</string>
     <string name="loading_message">Loading &#8230;</string>
-    <string name="loading_more">အျခားပစၥည္းမ်ားအား Loading &#8230; ပဳလုပ္ေနပါသည္။ &#160;</string>
+    <string name="loading_more">အျခားပစၥည္းမ်ား ၾကည္႕ရန္ ေခတၱေစာင့္ဆုိင္းပါ။</string>
     <string name="login_label">Login</string>
     <string name="login_remember_user_email">ကြ်ႏု္ပ္၏အီးေမးလ္အား မွတ္သားထားရန္</string>
-    <string name="login_sectiontitle">သက္ေသခံလက္မွတ္မ်ား</string>
+    <string name="login_sectiontitle">၀ယ္သူတစ္ေယာက္အျဖစ္ စာရင္းေပးသြင္းႏုိင္ပါသည္</string>
     <string name="logout_text_question">ထြက္ရန္ ေသခ်ာပါသလား</string>
     <string name="logout_title">Logout Confirmation</string>
     <string name="menu_label_uppercase">MENU</string>
@@ -152,10 +150,10 @@
     <string name="my_order_ship_fee_label">သယ္ယူပို႔ေဆာင္ေရးကုန္က်စရိတ္</string>
     <string name="my_order_total_label">စုစုေပါင္း</string>
     <string name="my_order_tracking_label">ေအာ္ဒါေျခရာခံျခင္း</string>
-    <string name="my_order_voucher_label">ေဘာက္ခ်ာ &#160;</string>
+    <string name="my_order_voucher_label">ေဘာက္ခ်ာ  </string>
     <string name="my_orders_label">ကြ်ႏု္ပ္၏ေအာ္ဒါမ်ား</string>
     <string name="my_profile">ကြ်ႏု္ပ္၏ Profile</string>
-    <string name="myaccount_email_notifications">Email Notifications</string>
+    <string name="myaccount_email_notifications">အီးေမးလ္သို႕အေၾကာင္းၾကားစာမ်ား ပို႕ေပးျခင္း</string>
     <string name="myaccount_userdata">သံုးစြဲသူအခ်က္အလက္</string>
     <string name="name">အမည္</string>
     <string name="nav_country">ႏိုင္ငံေရြးခ်ယ္ပါ</string>
@@ -176,7 +174,7 @@
     <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Password ေျပာင္းလဲၿပီး အီးေမးလ္အား စီမံခန္႔ခြဲရန္</string>
-    <string name="option3_description">Subscribe or Unsubscribe</string>
+    <string name="option3_description">ရယူလိုသည္ (သို႕) မရယူလိုပါ</string>
     <string name="or_text">သုိ႔မဟုတ္</string>
     <string name="order_no_items">သင္၏လွည္းအတြင္းဘာမွမရွိပါ</string>
     <string name="order_status_label">ေအာ္ဒါအေျခအေန</string>
@@ -203,7 +201,7 @@
     <string name="shipping_fee_info">\"အား စုစုေပါင္းပမာဏသို႕ထည္႕သြင္းျပီးပါျပီ\"</string>
     <string name="shipping_time">&lt;b>သယ္ယူပို႔ေဆာင္ခ်ိန္:&lt;/b> %s</string>
     <string name="pinch_to_zoom_label">Pinch to zoom</string>
-    <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ &#160;</string>
+    <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ  </string>
     <string name="poll_question_label">Poll Question</string>
     <string name="posted_by">မွတင္သည္။</string>
     <string name="product_could_not_retrieved">ကုန္ပစၥည္းအခ်က္အလက္ျပန္လည္မရယူႏိုင္ပါ!</string>
@@ -212,29 +210,26 @@
     <string name="product_details_title">ကုန္ပစၥည္းအခ်က္အလက္မ်ား</string>
     <string name="product_offer_from_title">မွ ကမ္းလွမ္းခ်က္မ်ား</string>
     <string name="product_outof_stock">လက္က်န္ကုန္ပစၥည္းမရွိေတာ့ပါ</string>
-    <string name="product_sold_by">: မွ ေရာင္းခ်ပါသည္</string>
+    <string name="product_sold_by">ေရာင္းခ်သူ:</string>
     <string name="product_sort_button">အမ်ိဳးအစားခြဲျခားရန္</string>
-    <string name="specifications">သီးျခားသတ္မွတ္ခ်က္</string>
+    <string name="specifications">အေသးစိတ္အခ်က္အလက္မ်ား</string>
     <string name="product_variance_choose">ေက်းဇူးျပဳ၍ ေရြးခ်ယ္ပါ</string>
     <string name="product_variance_choose_error">ေက်းဇူးျပဳ၍ တစ္ခုေရြးခ်ယ္ပါ</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔သြင္းၿပီးပါၿပီ&#160;</string>
     <string name="products_could_notloaded">ပစၥည္းမ်ား Loading ျပဳလုပ္၍မရပါ။ ေက်းဇူးျပဳ၍ ထပ္မံႀကိဳးစားပါ။</string>
     <string name="products_label">ကုန္ပစၥည္းမ်ား</string>
-    <string name="products_removed_saved">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းမွ ဖယ္ရွားၿပီးပါၿပီ&#160;</string>
-    <string name="products_sort_bestrated">အေကာင္းဆံုးအမွတ္ေပးခ်က္&#160;</string>
-    <string name="products_sort_brand">Brand&#160;</string>
-    <string name="products_sort_name">အမည္&#160;</string>
-    <string name="products_sort_newin">အသစ္ျဖစ္ပါသည္&#160;</string>
-    <string name="products_sort_popularity">လူႀကိဳက္မ်ားေက်ာ္ၾကားမႈ&#160;</string>
-    <string name="products_sort_pricedown">ေစ်းႏႈန္းအက်&#160;</string>
-    <string name="products_sort_priceup">ေစ်းႏႈန္းအတက္&#160;</string>
-    <string name="products_tip_saved_text">အႀကိဳက္ဆံုးကုန္ပစၥည္းမ်ားကို ကလစ္ႏွိပ္လိုက္ပါ!</string>
+    <string name="products_sort_bestrated">အေကာင္းဆံုးအမွတ္ေပးခ်က္ </string>
+    <string name="products_sort_brand">အမွတ္တံဆိပ္</string>
+    <string name="products_sort_name">ကုန္ပစၥည္းအမည္</string>
+    <string name="products_sort_newin">ေနာက္ဆံုးေပၚမ်ား</string>
+    <string name="products_sort_popularity">လူၾကိဳက္မ်ားမွဳ</string>
+    <string name="products_sort_pricedown">အနည္းဆံုးေစ်း</string>
+    <string name="products_sort_priceup">အမ််ားဆံုးေစ်း</string>
     <string name="products_tip_swipe_text">အမ်ိဳးအစားခြဲျခားပံုေျပာင္းရန္ဘယ္ညာ တစ္ဘက္ဘက္သို႔ေရႊ႕ပါ</string>
     <string name="promotion_tip_tap_text">ကုဒ္အားclipboardသို႕ ေကာ္ပီကူးရန္ အေပၚရွိအကြက္ကို ႏွိပ္ျပီး လြယ္ကူစြာ ေငြေပးေခ်ပါ။</string>
     <string name="rating_option_error_message">အဆင့္သတ္မွတ္ေပးျခင္းမ်ားအားလံုး ျဖည္႔ေပးရပါမည္။</string>
     <string name="rating_quality">အရည္အေသြး</string>
-    <string name="rating_question">ဤပစၥည္းအသံုးျပဳၿပီးပါက ယခုအမွတ္ေပးႏိုင္ပါသည္!</string>
+    <string name="rating_question">၀ယ္ယူသံုးစြဲဖူးလွ်င္မွတ္ခ်က္ ေရးသားႏုိင္ပါသည္!</string>
     <string name="recent_searches">မၾကာခင္ကရွာထားသည္မ်ား</string>
     <string name="recently_viewed">မၾကာခင္ကၾကည္႔ရႈထားသည္မ်ား</string>
     <string name="recentlyview_clear_viewed">ၾကည္႔ရႈထားသည္မ်ားအားရွင္းလင္းရန္</string>
@@ -252,10 +247,10 @@
     <string name="registration_text">စာရင္းသြင္းရန္</string>
     <string name="related_items">ဆက္စပ္ကုန္ပစၥည္းမ်ား</string>
     <string name="retype_new_password_hint">Password အတည္ျပဳ ရန္</string>
-    <string name="review">သံုးသပ္ခ်က္ &#160;</string>
-    <string name="review_this_seller">ဤေရာင္းခ်သူအား ယခု ျပန္လည္သံုးသပ္ရန္!</string>
-    <string name="reviews">သံုးသပ္ခ်က္မ်ား &#160;</string>
-    <string name="reviews_empty">ဤပစၥည္းအား အမွတ္ေပးျခင္း မရွိေသးပါ</string>
+    <string name="review">သံုးသပ္ခ်က္  </string>
+    <string name="review_this_seller">ဤေရာင္းခ်သူအား မွတ္ခ်က္ေပးရန္!</string>
+    <string name="reviews">သံုးသပ္ခ်က္မ်ား  </string>
+    <string name="reviews_empty">ဤပစၥည္းအား အမွတ္ေပးထားျခင္း မရွိေသးပါ</string>
     <string name="reviews_empty_seller">ဤေရာင္းသူကို အမွတ္ေပးထားျခင္း မရွိေသးပါ!</string>
     <string name="same_product_from_other_sellers">အျခားေရာင္းခ်သူမ်ားထံမွ တူညီေသာကုန္ပစၥည္း</string>
     <string name="save_changes_label">ေျပာင္းလဲမႈမ်ားအားသိမ္းဆည္းမည္</string>
@@ -293,7 +288,7 @@
     <string name="some_products_not_added">အခ်ိဳ႕ ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္းသို႔ မထည္႔ရေသးပါ</string>
     <string name="splash_slogan">ျမန္မာႏိုင္ငံ၏ အႀကီးဆံုးအြန္လုိင္းေရွာ့ပင္း ၀န္ေဆာင္မႈ</string>
     <string name="splash_slogan_daraz">အြန္လုုိင္ ေစ်းဝယ္ရာတြင္ လုုိအပ္လာမည့္ အေကာင္းဆုုံးေသာေနရာတစ္ခုု !</string>
-    <string name="splash_slogan_powered_by"/>
+    <string name="splash_slogan_powered_by">splash_slogan_powered_by</string>
     <string name="stale_warning">Lost Connection</string>
     <string name="string_appearance">အသြင္အျပင္</string>
     <string name="string_price">ေစ်းႏႈန္း</string>
@@ -309,7 +304,6 @@
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="terms_and_conditions">စည္းမ်ဥ္းစည္းကမ္းမ်ား</string>
     <string name="thank_you_order_title">ေက်းဇူးတင္ပါသည္!</string>
-    <string name="tip_saved_text">ဤပစၥည္းအား အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔ရန္ကလစ္ႏွိပ္ၿပီး My profile တြင္စာရင္းအားျပန္ၾကည္႕ပါ။</string>
     <string name="tip_share_text">ဤပစၥည္းအေၾကာင္း ေ၀မွ်ရန္ ကလစ္ႏွိပ္ပါ။</string>
     <string name="tip_swipe_text">အျခားရုပ္ပံုမ်ားၾကည္႔ရႈရန္ ဘယ္ညာတစ္ဘက္ဘက္သို႔ ေရႊ႕ပါ</string>
     <string name="tip_tap_text">ကုန္ပစၥည္းျပခန္းသို႔၀င္ရန္ ႏွိပ္ပါ။</string>
@@ -332,7 +326,7 @@
     <string name="voucher_error_message">ေက်းဇူးျပဳ ၍ မွန္ကန္ေသာကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_message_hint">ဤေနရာတြင္သင္၏ကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_remove">ဖယ္ရွားရန္</string>
-    <string name="voucher_use">အသံုးျပဳရန္ &#160;</string>
+    <string name="voucher_use">အသံုးျပဳရန္  </string>
     <string name="wizard_navigation">သင္အႀကိဳက္ဆံုးက႑သုိ႔ အျမန္ေရာက္ရွိရန္</string>
     <string name="write_comment">သံုးသပ္ခ်က္ေရးရန္</string>
     <string name="write_full_review">သံုးသပ္ခ်က္အျပည္႔အစံု ေရးသားရန္</string>
@@ -346,9 +340,9 @@
     <!-- Version v2.4 -->
     <string name="install_jumia_android">%s Android App ကို ယခု install လုပ္မည္</string>
     <string name="share_the_app">App ကို မွ်ေ၀မည္</string>
-    <string name="can_share_app_with_friends">သင္၏ သူငယ္ခ်င္းမ်ားကို app မွ်ေ၀ႏုိင္ပါသည္</string>
-    <string name="app_social">App_ဆိုရွယ္</string>
-    <string name="sort_by">ျဖင့္ စီမည္</string>
+    <string name="can_share_app_with_friends">သူငယ္ခ်င္းမ်ားကို ေဒါင္းလုတ္ယူရန္ လင့္ခ္ မွ်ေ၀ႏုိင္ပါသည္</string>
+    <string name="app_social">App မွ်ေ၀ရန္</string>
+    <string name="sort_by">ၾကည္႕လုိသည္ကို ေရြးပါ</string>
     <!-- PLURALS -->
     <string name="plurals_rating">သုံးသပ္ခ်က္ %d ခု</string>
     <string name="plurals_ratings">သံုးသပ္ခ်က္ %d ခု</string>
@@ -361,7 +355,7 @@
     <string name="string_more_choices">အျခား ေရြးစရာမ်ား</string>
     <string name="string_vat_included">(အခြန္ ပါ၀င္ျပီး)</string>
     <string name="addresses_saved_message">သင္၏ လိပ္စာ ဆက္တင္မ်ား သိမ္းဆည္းျပီးပါျပီ</string>
-    <string name="dialog_to_product">ပစစည္း၏ အေသးစိတ္အားၾကည့္ရႈရန္။</string>
+    <string name="dialog_to_product">ကုန္ပစၥည္းအားျပန္ၾကည္႕ရန္</string>
     <string name="address_creation_failed_title">လိပ္စာျပဳလုုပ္ရာတြင္ မေအာင္ျမင္ပါ</string>
     <string name="address_creation_failed_main">ေက်းဇူျပဳရ်္ ပုုံစံတြင္ေပးထားေသာ လုုိအပ္ခ်က္မ်ားအားမွန္ကန္စြာျဖည့္စြတ္ပါ။</string>
     <!-- NEW 2.5 -->
@@ -370,13 +364,63 @@
     <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
     <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
     <string name="top_sellers">အေရာင္းရဆံုး ပစၥည္းမ်ား</string>
-    <string name="product_desc_summary_title">အႏွစ္ခ်ဳပ္</string>
-    <string name="description">ေဖာ္ျပခ်က္</string>
-    <string name="key_features">အဓိက အေၾကာင္းအရာမ်ား</string>
+    <string name="product_desc_summary_title">ကုန္ပစၥည္းအေၾကာင္း</string>
+    <string name="description">ကုန္ပစၥည္းအေၾကာင္း</string>
+    <string name="key_features">အခ်က္အလက္မ်ား</string>
     <string name="kickout_page_title">ကြ်ဳန္တို႕၏ အထူးအစီအစဥ္ ေအာင္ျမင္စြာ ျပီးဆံုးပါျပီ!</string>
     <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
     <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
     <!-- NEW 2.6 -->
     <string name="facebook_permission">ဆက္လက္လုပ္ေဆာင္ရန္ Email ေပးပို႕ျခင္းကို ခြင့္ျပဳေပးပါ</string>
     <string name="com_facebook_loginview_log_in_button_long">Facebook ျဖင့္ ၀င္မည္</string>
+    <!-- NEW 2.7 -->
+    <string name="review_plural">သံုးသပ္ခ်က္ %d ခု</string>
+    <string name="reviews_plural">သံုးသပ္ခ်က္ %d ခု</string>
+    <string name="open">ဖြင့္ရန္</string>
+    <string name="close">ပိတ္ရန္</string>
+    <string name="choose_language">ဘာသာစကား ေရြးခ်ယ္ပါ</string>
+    <string name="language">ဘာသာစကား</string>
+    <string name="country">ႏိုင္ငံ</string>
+    <string name="birthday_label">ေမြးရက္</string>
+    <string name="birthday_error">မွန္ကန္ေသာေမြးေန႕ေမြးရက္ကိုသာ ေရြးခ်ယ္ပါ</string>
+    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="clear_all_lowercase_label">အားလံုးပယ္ဖ်က္ရန္</string>
+    <string name="apply_label">အတည္ျပဳရန္</string>
+    <string name="see_other_variations">အျခားအမ်ိဳးကြဲမ်ားကိုၾကည္႕ရန္</string>
+    <string name="be_first_rate">ဤပစၥည္းအေၾကာင္းသံုးသပ္ခ်က္ေရးေပးပါ</string>
+    <string name="seller_info">ေရာင္းခ်သူအခ်က္အလက္</string>
+    <string name="read_more">အေသးစိတ္ၾကည္႕ရန္</string>
+    <string name="more_specifications">အျခားအခ်က္အလက္မ်ား</string>
+    <string name="delivery_time1">ပစၥည္းပို႕ခ်ိန္</string>
+    <string name="see_other_colors">အျခားအေရာင္မ်ားၾကည္႕ရန္</string>
+    <string name="combo">တန္မွတန္ ပစၥည္းစံုတြဲမ်ား</string>
+    <string name="may_like">တြဲဖက္ပစၥည္းမ်ား</string>
+    <string name="buy_the_look">အလန္းစားစတိုင္ကို ဖန္တီးဖို႕</string>
+    <string name="pdv_size">ဆိုဒ္/အေရာင္</string>
+    <string name="buy_now_button">၀ယ္ယူမည္</string>
+    <string name="save_no_saved">သိမ္းဆည္းထားေသာပစၥည္းမ်ားမရွိေသးပါ</string>
+    <string name="saved">သိမ္းဆည္းျပီးပါျပီ</string>
+    <string name="products_added_saved">ပစၥည္းအားသိမ္းဆည္းျပီးပါျပီ</string>
+    <string name="products_removed_saved">သိမ္းဆည္းထားေသာစာရင္းအားပယ္ဖ်က္ျပီးပါျပီ</string>
+    <string name="products_tip_saved_text">ဤပစၥည္းအားသိမ္းဆည္းရန္ကလစ္ႏွိပ္ပါ</string>
+    <string name="tip_saved_text">ဤပစၥည္းအားသိမ္းဆည္းျပီး ပရိုဖုိင္သို႕သြားရန္ ကလစ္ႏွိပ္ပါ</string>
+    <string name="warranty">အာမခံ: %s</string>
+    <string name="other_sellers_starting">အျခားေရာင္းခ်သူမ်ားထံမွ:</string>
+    <string name="buy_combo">ပစၥည္းစံုတြဲမ်ားၾကည္႕ရွဳ၀ယ္ယူရန္</string>
+    <string name="total_price_bottom">စုစုေပါင္း:</string>
+    <string name="from_avg_rat">မွ</string>
+    <string name="from_avg_cus">ေစ်း၀ယ္သူမ်ား</string>
+    <string name="average_rating">ပ်မ္းမွ်</string>
+    <string name="average_rating_used_prod">ဤပစၥည္းအား၀ယ္ယူသံုးစြဲဖူးပါသလား?</string>
+    <string name="average_rate_now">အမွတ္ေပးရန္</string>
+    <string name="average_rating_write_review">သံုးသပ္ခ်က္ေရးသားရန္</string>
+    <string name="average_raings_header">အမွတ္မ်ား</string>
+    <string name="average_reviews_header">သံုးသပ္ခ်က္မ်ား</string>
+    <string name="description1">ကုန္ပစၥည္းအေၾကာင္း</string>
+    <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
+    <string name="fulfilled_by">Fulfilled by%s</string>
+    <string name="qty_placeholder">Qty: %d</string>
+    <string name="shipment" formatted="false">Shipment %d of %d</string>
+    <string name="policy">Policy</string>
+    <string name="delivery_time_placeholder" formatted="false">Delivery time %d - %d days</string>
 </resources>

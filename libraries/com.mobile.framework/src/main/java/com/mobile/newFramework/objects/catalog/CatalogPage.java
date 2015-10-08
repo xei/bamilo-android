@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Class used to represent a catalog page.<br>
  * @author sergiopereira
  */
-public class CatalogPage implements IJSONSerializable, Parcelable {
+public class CatalogPage implements IJSONSerializable, Parcelable{
 
     protected static final String TAG = CatalogPage.class.getSimpleName();
 
@@ -55,7 +55,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         //...
     }
 
-    public CatalogPage(JSONObject metadataObject) throws JSONException{
+    public CatalogPage(JSONObject metadataObject) throws JSONException {
         this();
         initialize(metadataObject);
     }
@@ -303,6 +303,28 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * ############### Parcelable ###############
      */
 
+    protected CatalogPage(Parcel in) {
+        mId = in.readString();
+        mName = in.readString();
+        mTotal = in.readInt();
+        mPage = in.readInt();
+        mMaxPages = in.readInt();
+        if (in.readByte() == 0x01) {
+            mProducts = new ArrayList<ProductRegular>();
+            in.readList(mProducts, ProductRegular.class.getClassLoader());
+        } else {
+            mProducts = null;
+        }
+        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
+        mSearchTerm = in.readString();
+        if (in.readByte() == 0x01) {
+            filters = new ArrayList<CatalogFilter>();
+            in.readList(filters, CatalogFilter.class.getClassLoader());
+        } else {
+            filters = null;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -321,51 +343,27 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mProducts);
         }
+        dest.writeValue(mCatalogBanner);
+        dest.writeString(mSearchTerm);
         if (filters == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(filters);
         }
-        dest.writeValue(mCatalogBanner);
-        dest.writeString(mSearchTerm);
-
     }
 
-    /**
-     * Parcel constructor
-     */
-    private CatalogPage(Parcel in){
-        mId = in.readString();
-        mName = in.readString();
-        mTotal = in.readInt();
-        mPage = in.readInt();
-        mMaxPages = in.readInt();
-        if (in.readByte() == 0x01) {
-            mProducts = new ArrayList<>();
-            in.readList(mProducts, ProductRegular.class.getClassLoader());
-        } else {
-            mProducts = null;
-        }
-        if (in.readByte() == 0x01) {
-            filters = new ArrayList<>();
-            in.readList(filters, CatalogFilter.class.getClassLoader());
-        } else {
-            filters = null;
-        }
-        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
-        mSearchTerm = in.readString();
-    }
-
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
+        @Override
         public CatalogPage createFromParcel(Parcel in) {
             return new CatalogPage(in);
         }
 
+        @Override
         public CatalogPage[] newArray(int size) {
             return new CatalogPage[size];
         }
     };
-
 
 }

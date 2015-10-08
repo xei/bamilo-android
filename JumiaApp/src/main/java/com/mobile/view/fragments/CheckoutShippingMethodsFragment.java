@@ -19,7 +19,9 @@ import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -27,8 +29,10 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.FulfillmentUiBuilder;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -42,6 +46,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private static final String SELECTION_STATE = "selection";
 
     private static final String SUB_SELECTION_STATE = "sub_selection";
+
+    private ViewGroup mShippingContainer;
 
     private ViewGroup mShippingMethodsContainer;
 
@@ -63,7 +69,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_main,
                 R.string.checkout_label,
@@ -111,6 +117,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get containers
+        mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_container);
         mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
@@ -218,11 +225,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         mFormResponse.generateForm(getBaseActivity(), mShippingMethodsContainer);
         //mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
-        
+//        mShippingContainer.addView(FulfillmentUiBuilder.getView(this.getActivity(),));
         // Set the saved selection
         if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
         
         showFragmentContentContainer();
+    }
+
+
+    private void loadFulfillment(ArrayList<Fulfillment> fulfillmentList) {
+        if(CollectionUtils.isNotEmpty(fulfillmentList)){
+            FulfillmentUiBuilder.addToView(this.getActivity(), mShippingContainer, fulfillmentList);
+        }
     }
     
     /**
@@ -360,6 +374,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         // Form
         ShippingMethodFormBuilder form = shippingMethodsForm.getFormBuilder();
         loadForm(form);
+        ArrayList<Fulfillment> fulfillmentList = bundle.getParcelableArrayList(Constants.BUNDLE_FORM_DATA_KEY);
+        loadFulfillment(fulfillmentList);
+
+
 
         //Total price
         CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);

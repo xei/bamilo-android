@@ -71,9 +71,9 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     public void autoCountrySelection(Context context, Handler callback){
-    	this.context = context;
-    	this.callback = callback;
-    	
+
+        initializeLocationHelper(context, callback);
+
     	// From device
         TelephonyManager deviceManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         // From network
@@ -95,7 +95,7 @@ public class LocationHelper implements LocationListener {
     /**
      * ################## REQUESTS ################## 
      */
-    
+
     /**
      * Get the country code from Network configurations
      * @param deviceManager
@@ -258,10 +258,10 @@ public class LocationHelper implements LocationListener {
      * @param countryCode
      * @return true or false
      */
-    private boolean isCountryAvailable(String countryCode) {
+    public boolean isCountryAvailable(String countryCode) {
         // Filter country code 
         if(countryCode == null || countryCode.length() != 2) return NO_SELECTED;
-        
+
         // Valdiate countries available
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -402,8 +402,17 @@ public class LocationHelper implements LocationListener {
      * Send the INITIALIZE message to JumiaApplication
      * @author sergiopereira
      */
-    private void sendInitializeMessage(){
+    public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
         JumiaApplication.INSTANCE.init(callback);
+    }
+
+    /**
+     * set location helper context and callback
+     * @param ctx
+     */
+    public void initializeLocationHelper (Context ctx, Handler callback){
+        this.context = ctx;
+        this.callback = callback;
     }
 }

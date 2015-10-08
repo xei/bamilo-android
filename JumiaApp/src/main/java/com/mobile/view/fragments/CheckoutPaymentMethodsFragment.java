@@ -101,7 +101,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * Empty constructor
      */
     public CheckoutPaymentMethodsFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_payment_main,
                 R.string.checkout_label,

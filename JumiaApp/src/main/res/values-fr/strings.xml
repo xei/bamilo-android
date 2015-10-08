@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">Mon Compte</string>
     <string name="action_label_add_address">Ajouter une nouvelle adresse</string>
     <string name="action_label_basket">Panier</string>
     <string name="action_label_logout">Se déconnecter</string>
     <string name="action_label_search_hint">Chercher sur %s</string>
     <string name="action_label_share">Partager</string>
-    <string name="action_label_wishlist">Liste d\'envies</string>
     <string name="add_address">Ajouter une adresse</string>
     <string name="add_to_shopping_cart">Acheter</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Les produits ont été ajoutés au panier</string>
@@ -38,7 +38,7 @@
     <string name="cancel_label">Annuler</string>
     <string name="cart_label">Panier</string>
     <string name="catalog_edit_filters">Modifier les filtres</string>
-    <string name="catalog_no_results">Aucun résultat correspondant à vos critères.\n Vous pouvez réessayer avec des filtres moins spécifiques.</string>
+    <string name="catalog_no_results">Aucun résultat correspondant à vos critères. Vous pouvez réessayer avec des filtres moins spécifiques\n</string>
     <string name="categories_label">Catégories</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="categories_name_all">Tout pour</string>
@@ -80,7 +80,7 @@
     <string name="error_register_alreadyexists">Cet email existe déjà. Veuillez SVP en choisir un autre.</string>
     <string name="error_register_title">L\'inscription a échoué</string>
     <string name="error_signup_title">La création de compte a échoué</string>
-    <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché.\n S\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
+    <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché. S\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="extra_costs">Frais Supplémentaires:</string>
     <string name="extra_costs_label">Frais Supplémentaires</string>
@@ -96,13 +96,11 @@
     <string name="fallback_home_office">Maison &amp; Jardin</string>
     <string name="fallback_maintenance">MAINTENANCE</string>
     <string name="fallback_maintenance_text">est actuellement en maintenance.</string>
-    <string name="fallback_maintenance_text_bottom">Nous allons essayer d\'être bref, réessayer dans quelques secondes</string>
+    <string name="fallback_maintenance_text_bottom">Nous allons essayer d’être bref, réessayer dans quelques secondes</string>
     <string name="fallback_mobile">Téléphonie</string>
     <string name="fallback_welcome">BIENVENUE</string>
     <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
     <string name="favourite_addalltocart">Ajouter tous les produits au panier</string>
-    <string name="save_no_saved">Vous n\'avez pas de favoris pour le moment</string>
-    <string name="saved">Mes Favoris</string>
     <string name="fgt_pass">Mot de passe oublié ?</string>
     <string name="filter_label">Filtre</string>
     <string name="forgotpass_header">Récupération de mot de passe</string>
@@ -180,7 +178,7 @@
     <string name="or_text">OU</string>
     <string name="order_no_items">Vous n\'avez pas d\'articles dans le panier</string>
     <string name="order_status_label">Statut de la Commande</string>
-    <string name="order_success">Votre commande a été enregistré avec succès,\n sous le numéro suivant:</string>
+    <string name="order_success">Votre commande a été enregistré avec succès,sous le numéro suivant:</string>
     <string name="order_summary_label">Résumé de la commande</string>
     <string name="order_summary_shipping_fee_label">Frais de livraison:</string>
     <string name="order_summary_shipping_method">Mode de livraison</string>
@@ -188,7 +186,7 @@
     <string name="order_summary_total_label">Total:</string>
     <string name="order_track_link">statut de votre commande</string>
     <string name="order_track_products">Produits:</string>
-    <string name="order_track_success">Vous pouvez suivre le statut de votre commande \n en allant dans la rubrique dédiée dans l\'application</string>
+    <string name="order_track_success">Vous pouvez suivre le statut de votre commande en allant dans la rubrique dédiée dans l\'application</string>
     <string name="other_sellers">Autres Vendeurs</string>
     <string name="password_changed">Le mot de passe a été modifié avec succès</string>
     <string name="password_new_mincharacters">Le nouveau mot de passe doit comprendre au moins 6 caractères.</string>
@@ -218,10 +216,8 @@
     <string name="product_variance_choose">Choisissez</string>
     <string name="product_variance_choose_error">Choisissez parmi</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_saved">Produit ajouté aux Favoris</string>
     <string name="products_could_notloaded">Chargement des produits échoués. S\'il vous plaît essayer de nouveau.</string>
     <string name="products_label">Produits</string>
-    <string name="products_removed_saved">Produit supprimé de Mes Favoris</string>
     <string name="products_sort_bestrated">Mieux Notés</string>
     <string name="products_sort_brand">Marque</string>
     <string name="products_sort_name">Nom</string>
@@ -229,7 +225,6 @@
     <string name="products_sort_popularity">Popularité</string>
     <string name="products_sort_pricedown">Prix décroissant</string>
     <string name="products_sort_priceup">Prix croissant</string>
-    <string name="products_tip_saved_text">Cliquez pour ajouter aux Favoris!</string>
     <string name="products_tip_swipe_text">Balayer à gauche ou à droite pour changer de classement</string>
     <string name="promotion_tip_tap_text">Cliquez sur la case ci-dessus pour copier le code dans le presse-papier et gardez le ainsi à portée de main pour le paiement final</string>
     <string name="rating_option_error_message">Toutes les options de notation doivent être remplies</string>
@@ -290,7 +285,7 @@
     <string name="signup_label">Créer un compte</string>
     <string name="size_guide_label">Guide de taille</string>
     <string name="size_label">Taille</string>
-    <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier.</string>
+    <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier</string>
     <string name="splash_slogan">La boutique en ligne N°1 en Afrique</string>
     <string name="splash_slogan_daraz">La seule destination de shopping en ligne</string>
     <string name="stale_warning">Connexion perdue</string>
@@ -308,7 +303,6 @@
     <string name="teaser_campaign_button_second_line">OFFRES</string>
     <string name="terms_and_conditions">Termes et conditions</string>
     <string name="thank_you_order_title">Merci!</string>
-    <string name="tip_saved_text">Cliquez pour ajouter ce produit aux Favoris, et voir la liste complète dans Mon Profil</string>
     <string name="tip_share_text">Cliquez pour Partager ce Produit</string>
     <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour observer les différentes images</string>
     <string name="tip_tap_text">Cliquez pour voir l\'ensemble \n des images produit</string>
@@ -378,4 +372,55 @@
     <!-- NEW 2.6 -->
     <string name="facebook_permission">Une autorisation mail est obligatoire. Merci de la valider</string>
     <string name="com_facebook_loginview_log_in_button_long">se connecter avec Facebook</string>
+    <!-- NEW 2.7 -->
+    <string name="review_plural">%d commentaire</string>
+    <string name="reviews_plural">%d commentaires</string>
+    <string name="open">ouvrir</string>
+    <string name="close">fermé</string>
+    <string name="choose_language">choix de langue</string>
+    <string name="language">langue</string>
+    <string name="country">Pays</string>
+    <string name="birthday_label">anniversaire</string>
+    <string name="birthday_error">Choisissez votre date de naissance</string>
+    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="clear_all_lowercase_label">Tout effacer</string>
+    <string name="apply_label">Utiliser</string>
+    <string name="see_other_variations">Voir les autres modèles</string>
+    <string name="be_first_rate">Soyez le premier à noter</string>
+    <string name="seller_info">Informations sur le vendeur</string>
+    <string name="read_more">Lire plus</string>
+    <string name="more_specifications">Plus de détails</string>
+    <string name="delivery_time1">Délai de livraison</string>
+    <string name="see_other_colors">Voir les autres couleurs</string>
+    <string name="combo">Produits fréquemment achetés ensemble</string>
+    <string name="may_like">Vous aimerez aussi</string>
+    <string name="buy_the_look">Acheter le Look</string>
+    <string name="pdv_size">taille</string>
+    <string name="buy_now_button">Acheter</string>
+    <string name="save_no_saved">Votre panier est vide pour le moment</string>
+    <string name="saved">Sauvegardé</string>
+    <string name="products_added_saved">Article ajouté avec succès à votre liste d\'envies</string>
+    <string name="products_removed_saved">Article retiré de votre liste d\'envies</string>
+    <string name="products_tip_saved_text">J\'ajoute à ma liste d\'envies</string>
+    <string name="tip_saved_text">J\'ajoute à ma liste d\'envies et je l\'ouvre dans Mon Profil</string>
+    <string name="warranty">Durée de garantie: %s</string>
+    <string name="other_sellers_starting">Disponible chez d\'autres vendeurs, à partir de: %s</string>
+    <string name="buy_combo">Produits fréquemment achetés ensemble</string>
+    <string name="total_price_bottom">Total:</string>
+    <string name="from_avg_rat">de</string>
+    <string name="from_avg_cus">clients</string>
+    <string name="average_rating">moyenne</string>
+    <string name="average_rating_used_prod">Avez vous utilisez ce produit?</string>
+    <string name="average_rate_now">Notez le maintenant</string>
+    <string name="average_rating_write_review">Donnez votre avis</string>
+    <string name="average_raings_header">Notes</string>
+    <string name="average_reviews_header">Avis des utilisateurs</string>
+    <string name="description1">description</string>
+    <string name="rat_rev">Notes</string>
+    <string name="fulfilled_by">Expédié par %s</string>
+    <string name="qty_placeholder">Qté: %d</string>
+    <string name="shipment" formatted="false">Colis %d sur %d</string>
+    <string name="policy">Politique</string>
+    <string name="delivery_time_placeholder" formatted="false">Temps de livraison : %d à %d jours</string>
+    <string name="product_specifications">Caractéristiques</string>
 </resources>

@@ -25,6 +25,7 @@ import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
@@ -96,10 +97,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * Empty constructor.
      */
     public InnerShopFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Unknown,
                 R.layout.shop_fragment_main,
-                NO_TITLE,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 

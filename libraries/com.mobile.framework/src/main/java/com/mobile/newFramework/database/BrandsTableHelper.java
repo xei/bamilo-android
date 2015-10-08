@@ -105,7 +105,7 @@ public class BrandsTableHelper extends BaseTable {
      * @return Brand
      * @throws InterruptedException
      */
-    public synchronized static String getTopBrand() throws InterruptedException {
+    public synchronized static String getTopBrand() throws InterruptedException, IllegalStateException {
 
         //DarwinDatabaseSemaphore.getInstance().getLock();
 

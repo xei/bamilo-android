@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.utils.AigScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    android:paddingBottom="?attr/actionBarSize">
 
     <LinearLayout
         android:id="@+id/no_results_search_terms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
@@ -38,7 +38,7 @@
             android:paddingBottom="@dimen/margin_huge"
             android:paddingLeft="@dimen/margin_midhuge"
             android:paddingRight="@dimen/margin_midhuge"
-            android:paddingTop="@dimen/margin_huge" >
+            android:paddingTop="@dimen/margin_huge">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_title"
@@ -65,7 +65,7 @@
             android:id="@+id/featured_products"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/teaser_recently_viewed_height"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/featured_products_title"
@@ -85,7 +85,7 @@
                 android:id="@+id/loading_featured_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" >
+                android:layout_centerInParent="true">
 
                 <include layout="@layout/loading_bar_simple" />
             </RelativeLayout>
@@ -97,7 +97,7 @@
             android:id="@+id/featured_brands"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/no_results_brands_height"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/featured_brands_title"
@@ -117,7 +117,7 @@
                 android:id="@+id/loading_featured_brands"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" >
+                android:layout_centerInParent="true">
 
                 <include layout="@layout/loading_bar_simple" />
             </RelativeLayout>
@@ -137,4 +137,4 @@
             android:visibility="visible" />
     </LinearLayout>
 
-</com.mobile.utils.ScrollViewWithHorizontal>
+</com.mobile.utils.AigScrollViewWithHorizontal>

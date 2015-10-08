@@ -22,7 +22,6 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CategoriesCollectionFragment;
 import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
@@ -58,11 +57,10 @@ import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
-import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
-import com.mobile.view.fragments.WriteSellerReviewFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -270,9 +268,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 }
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
-            case CATEGORIES:
-                fragment = CategoriesCollectionFragment.getInstance(bundle);
-                break;
             case CATALOG:
                 if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
@@ -293,6 +288,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
                 break;
             case POPULARITY:
+            //    fragment = ReviewsFragment.getInstance(bundle);
                 fragment = ReviewsFragment.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
@@ -310,8 +306,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case TERMS:
-                fragment = SessionTermsFragment.getInstance(bundle);
+            case STATIC_PAGE:
+                fragment = StaticPageFragment.getInstance(bundle);
                 break;
             case MY_ACCOUNT:
                 removeEntries = true;
@@ -395,9 +391,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-            case WRITE_REVIEW_SELLER:
-                fragment = WriteSellerReviewFragment.getInstance(bundle);
-                break;
+//            case WRITE_REVIEW_SELLER:
+//                fragment = WriteSellerReviewFragment.getInstance(bundle);
+//                break;
             case COMBOPAGE:
                 fragment = ComboFragment.getInstance(bundle);
                 break;

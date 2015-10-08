@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             style="@style/rounded_box"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid" >
+            android:paddingBottom="@dimen/rounded_margin_mid">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
@@ -36,7 +36,7 @@
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/margin_mid" >
+                android:layout_marginTop="@dimen/margin_mid">
 
                 <RelativeLayout
                     android:id="@+id/name_wrapper"
@@ -45,13 +45,14 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/rounded_margin_small"
                     android:layout_marginStart="@dimen/rounded_margin_small"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientLastName"
                         style="@style/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:focusable="false"
                         android:gravity="left|start" />
 
@@ -59,10 +60,11 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientFirstName"
                         style="@style/text_normal"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@+id/clientLastName"
+                        android:layout_marginStart="5dp"
+                        android:layout_toRightOf="@id/clientLastName"
+                        android:layout_toEndOf="@id/clientLastName"
                         android:focusable="false"
                         android:gravity="left|start" />
                 </RelativeLayout>
@@ -70,12 +72,13 @@
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/clientEmail"
                     style="@style/text_normal"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_below="@id/name_wrapper"
                     android:layout_marginLeft="@dimen/rounded_margin_small"
                     android:layout_marginStart="@dimen/rounded_margin_small"
                     android:focusable="false"
-                    android:gravity="left|start" />
+                    android:text="asfas"
+                   />
             </RelativeLayout>
         </LinearLayout>
 
@@ -86,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
@@ -100,31 +103,31 @@
             <View style="@style/divider_horizontal_orange" />
 
             <com.mobile.components.customfontviews.TextView
-            android:id="@+id/passwordErrorHint"
-            style="@style/text_normal"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginStart="@dimen/rounded_margin_mid"
-            android:layout_marginTop="@dimen/margin_mid"
-            android:gravity="left|start"
-            android:singleLine="false"
-            android:textColor="@color/red_basic"
-            android:visibility="gone" />
+                android:id="@+id/passwordErrorHint"
+                style="@style/text_normal"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginStart="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:gravity="left|start"
+                android:singleLine="false"
+                android:textColor="@color/red_basic"
+                android:visibility="gone" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:id="@+id/changePasswordLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"/>
+                android:orientation="horizontal" />
 
         </LinearLayout>
 
         <LinearLayout
             style="@style/button_container"
-            android:layoutDirection="locale" >
+            android:layoutDirection="locale">
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button_cancel"

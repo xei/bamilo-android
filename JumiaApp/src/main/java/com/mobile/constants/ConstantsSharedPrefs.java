@@ -34,6 +34,6 @@ public class ConstantsSharedPrefs {
 
     public static String KEY_REMEMBERED_EMAIL = "remembered_email";
     
-    public static String KEY_CATALOG_VIEW = "catalog_columns";
+    public static String KEY_CATALOG_VIEW = "catalog_layout_columns";
 
 }

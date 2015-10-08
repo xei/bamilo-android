@@ -3,5 +3,8 @@
     android:id="@+id/login_remember_user_email"
     style="@style/form_checkbox_style"
     android:layoutDirection="rtl"
-    android:checked="true"    
+    android:checked="true"
+    android:background="#f00"
+    android:paddingLeft="@dimen/form_check_padding"
+    android:paddingStart="@dimen/form_check_padding"
     android:text="@string/login_remember_user_email" />

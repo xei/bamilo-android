@@ -38,6 +38,11 @@ public class ProductMultiple extends ProductRegular {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Base product
         super.initialize(jsonObject);
+
+        return initializeProductMultiple(jsonObject);
+    }
+
+    protected final boolean initializeProductMultiple(JSONObject jsonObject) throws JSONException {
         // Size guide
         mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
         // Get variation name
@@ -56,6 +61,10 @@ public class ProductMultiple extends ProductRegular {
                 simple.initialize(simpleObject);
                 mSimples.add(simple);
             }
+        }
+
+        if(hasOwnSimpleVariation()){
+            mSelectedSimplePosition = 0;
         }
         return true;
     }
@@ -101,11 +110,11 @@ public class ProductMultiple extends ProductRegular {
         mSelectedSimplePosition = simplePosition;
     }
 
-    public ProductSimple getOwnSimpleVariation() {
+    private ProductSimple getOwnSimpleVariation() {
         return mSimples.get(0);
     }
 
-    public ProductSimple getSelectedSimpleVariation() {
+    private ProductSimple getSelectedSimpleVariation() {
         return getSimples().get(mSelectedSimplePosition);
     }
 
@@ -178,4 +187,5 @@ public class ProductMultiple extends ProductRegular {
             return new ProductMultiple[size];
         }
     };
+
 }

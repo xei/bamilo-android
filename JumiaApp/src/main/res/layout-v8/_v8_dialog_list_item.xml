@@ -20,7 +20,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/dialog_list_margin_horizontal"
@@ -32,7 +32,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/dialog_list_margin_horizontal"

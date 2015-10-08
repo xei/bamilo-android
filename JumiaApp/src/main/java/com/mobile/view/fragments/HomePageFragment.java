@@ -5,26 +5,26 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -58,7 +58,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     private HomePageObject mHomePage;
 
-    private ScrollView mScrollView;
+    private NestedScrollView mScrollView;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
@@ -84,10 +84,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Empty constructor
      */
     public HomePageFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home,
                 R.layout.home_fragment_main,
-                R.string.home_label,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
         // Init position
         HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
@@ -133,7 +133,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
-        mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
+        mScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
         // Validate shared prefs
@@ -292,7 +292,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             mContainer.addView(viewHolder.itemView);
         }
         // Restore the scroll state
-        restoreScrollState();
+        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }
@@ -317,7 +317,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             }
         }
         // Restore the scroll state
-        restoreScrollState();
+        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }
@@ -336,29 +336,29 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         return false;
     }
 
-    /**
-     * Restore the saved scroll position
-     * @author sergiopereira
-     */
-    private void restoreScrollState() {
-        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-        // Has saved position
-        if (mScrollSavedPosition != null) {
-            // Wait until my scrollView is ready and scroll to saved position
-            try {
-                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @SuppressWarnings("deprecation")
-                    @Override
-                    public void onGlobalLayout() {
-                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
-                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    }
-                });
-            } catch (NullPointerException | IllegalStateException e) {
-                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
-            }
-        }
-    }
+//    /**
+//     * Restore the saved scroll position
+//     * @author sergiopereira
+//     */
+//    private void restoreScrollState() {
+//        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
+//        // Has saved position
+//        if (mScrollSavedPosition != null) {
+//            // Wait until my scrollView is ready and scroll to saved position
+//            try {
+//                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @SuppressWarnings("deprecation")
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+//                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                    }
+//                });
+//            } catch (NullPointerException | IllegalStateException e) {
+//                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
+//            }
+//        }
+//    }
 
     /*
      * ########### LISTENERS ###########
@@ -431,6 +431,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+        // Update counter for tracking
+        CategoriesTableHelper.updateCategoryCounter(url, title);
+        // Go to bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);

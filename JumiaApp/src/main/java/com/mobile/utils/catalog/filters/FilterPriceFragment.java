@@ -44,8 +44,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     private CatalogPriceFilter mFilter;
 
-    private String currencySymbol;
-
     /**
      *
      * @param bundle
@@ -124,8 +122,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
-
-        currencySymbol = CurrencyFormatter.getCurrencySymbol();
 
         // Set current range
         setIntervalText(mCurrMinValue, mCurrMaxValue);
@@ -252,6 +248,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     }
 
     protected void setIntervalText(int minValue, int maxValue){
-        mRangeValues.setText( currencySymbol + " " + minValue + " - " + maxValue );
+        mRangeValues.setText( CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
     }
 }

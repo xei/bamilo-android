@@ -653,8 +653,22 @@ public class TrackerDelegator {
         }
     }
 
+    public static void trackFavouriteAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
+        bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        trackProductAddedToCart(bundle);
+    }
 
-    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type ) {
+
+    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
@@ -763,11 +777,13 @@ public class TrackerDelegator {
      * Tracking a campaign
      */
     public static void trackGACampaign(Context context, String utm) {
-        Print.i(TAG,"UTM INFO ->"+utm);
-        // GA
-        AnalyticsGoogle.get().setGACampaign(utm);
-        // GTM
-        GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
+        Print.i(TAG, "UTM INFO ->" + utm);
+        if(!TextUtils.isEmpty(utm)) {
+            // GA
+            AnalyticsGoogle.get().setGACampaign(utm);
+            // GTM
+            GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
+        }
     }
 
     /**
@@ -780,29 +796,10 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getCampaignId() : "n.a.");
     }
 
-
-    /**
-     * Track when the user views the favorites page (with the products)
-     */
-    public static void trackViewFavorites(Bundle args) {
-        Bundle bundle = new Bundle();
-        Customer customer = args.getParcelable(CUSTOMER_KEY);
-
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-        bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        if (null != customer) {
-            bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        }
-        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
-        bundle.putParcelableArrayList(AdjustTracker.FAVORITES, args.getParcelableArrayList(FAVOURITES_KEY));
-
-        AdjustTracker.get().trackEvent(sContext, TrackingEvent.VIEW_WISHLIST, bundle);
-    }
-
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(ProductComplete completeProduct) {
+    public static void trackAddToFavorites(ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         String productBrand = completeProduct.getBrand();
         double productPrice = completeProduct.getPriceForTracking();
@@ -813,7 +810,6 @@ public class TrackerDelegator {
 
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-
 
         Ad4PushTracker.get().trackAddToFavorites(productSku);
         // GA
@@ -843,7 +839,7 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(ProductComplete completeProduct) {
+    public static void trackRemoveFromFavorites(ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         double price = completeProduct.getPriceForTracking();
         double averageRatingTotal = completeProduct.getAvgRating();
@@ -851,7 +847,7 @@ public class TrackerDelegator {
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
 
-        Ad4PushTracker.get().trackRemoveFromWishlist(productSku);
+        Ad4PushTracker.get().trackRemoveFromWishList(productSku);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
 
@@ -1250,7 +1246,7 @@ public class TrackerDelegator {
             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
 
             // Search
-            if (!TextUtils.isEmpty(searchQuery)) {
+            if (!TextUtils.isEmpty(catalogPage.getSearchTerm())) {
                 TrackerDelegator.trackCatalogSearch(catalogPage);
             }
         }

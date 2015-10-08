@@ -57,8 +57,8 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      * Empty constructor
      */
     public RecentSearchFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.RecentSearch,
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.RecentSearches,
                 R.layout.recentsearches,
                 R.string.recent_searches,
                 KeyboardState.ADJUST_CONTENT);

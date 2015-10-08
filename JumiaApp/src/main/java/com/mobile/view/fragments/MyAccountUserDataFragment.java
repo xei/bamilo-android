@@ -20,7 +20,7 @@ import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.InputType;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
@@ -234,7 +234,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
         String old = "";
         while (iterator.hasNext()) {
             DynamicFormItem item = iterator.next();
-            if (item.getType() == InputType.password) {
+            if (item.getType() == FormInputType.password) {
                 if (TextUtils.isEmpty(old)) {
                     old = item.getValue();
                 } else {

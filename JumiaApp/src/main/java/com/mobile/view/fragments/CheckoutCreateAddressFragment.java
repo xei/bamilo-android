@@ -51,7 +51,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
      * @author sergiopereira
      */
     public CheckoutCreateAddressFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,

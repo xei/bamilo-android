@@ -4,8 +4,7 @@
     android:layout_height="48dp"
     android:minHeight="48dp"
     android:background="@color/grey_dividerlight"
-    android:paddingLeft="@dimen/dimen_48px"
-    android:paddingStart="@dimen/margin_large"
+    android:paddingRight="@dimen/margin_large"
     android:gravity="center_vertical|right"
     android:orientation="horizontal"
     >
@@ -17,8 +16,7 @@
         android:fontFamily="roboto_regular"
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:singleLine="true"
+        android:textSize="12sp"
         android:visibility="gone"
         />
 

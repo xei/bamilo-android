@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/black_300"
     android:layout_height="match_parent">
 
     <!-- CATALOG TOOL BAR -->
@@ -9,13 +10,13 @@
         layout="@layout/catalog_fragment_tool_bar" />
 
     <!-- GRID VIEW -->
-
-    <com.mobile.utils.catalog.CatalogGridView
+    <!--android:layout_marginTop="@dimen/catalog_tool_bar_height" +1-->
+    <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/catalog_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/catalog_loading_more"
-        android:layout_marginTop="@dimen/catalog_tool_bar_height"
+        android:layout_marginTop="@dimen/catalog_tool_bar_margin"
         android:background="@color/white"
         android:clipToPadding="false"
         android:scrollbars="vertical" />

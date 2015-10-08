@@ -47,4 +47,7 @@
     <!-- DATE PICKER -->
     <item name="orange_dialog" type="color" />
 
+    <!-- IMAGE LOADER -->
+    <item type="id" name="no_animate"/>
+
 </resources>

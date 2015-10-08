@@ -34,7 +34,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 	public boolean initialize(String sku, JSONObject jsonObject) {
 		this.sku = sku;
 		try {
-			link = jsonObject.getString(RestConstants.JSON_LINK_TAG);
+			link = jsonObject.getString(RestConstants.LINK);
 			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 
 			//added new tags
@@ -61,7 +61,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 		try {
-			link = jsonObject.optString(RestConstants.JSON_LINK_TAG);
+			link = jsonObject.optString(RestConstants.LINK);
 			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
 
 			//added new tags
@@ -84,7 +84,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put(RestConstants.SKU, sku);
-			jsonObject.put(RestConstants.JSON_LINK_TAG, link);
+			jsonObject.put(RestConstants.LINK, link);
 			jsonObject.put(RestConstants.JSON_IMAGE_TAG, image);
 
 			//added

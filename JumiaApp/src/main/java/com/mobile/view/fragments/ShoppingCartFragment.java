@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -36,6 +33,7 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -153,10 +151,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
-                R.string.cart_label,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -837,7 +835,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
+        View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;
