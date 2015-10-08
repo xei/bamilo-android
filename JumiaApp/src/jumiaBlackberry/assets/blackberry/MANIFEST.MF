@@ -4,13 +4,13 @@ Archive-Created-By: blackberry-apkpackager version 2.0.3
 Package-Author: Jumia
 Package-Name: com.jumia.blackberry
 Package-Description: com.jumia.blackberry
-Package-Version: 1.0.7.0
+Package-Version: 2.0.0.0
 Package-Type: application
 Package-Architecture: armle-v7
 
 Application-Name: Jumia
 Application-Description: Jumia
-Application-Version: 1.0.7.0
+Application-Version: 2.0.0.0
 Application-Requires-System: Tablet OS/10.0.0.0
 
 Entry-Point-Name: Jumia
