@@ -313,7 +313,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
              */
             Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-            editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, JumiaApplication.INSTANCE.countriesAvailable.get(position).getUserAgentToAccessDevServers());
             editor.apply();
             // Clean memory
             JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
