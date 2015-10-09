@@ -25,11 +25,13 @@ import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
@@ -958,8 +960,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
@@ -980,7 +982,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 break;
             case GET_PRODUCTS_EVENT:
             default:
-                onRequestCatalogSuccess(bundle);
+                onRequestCatalogSuccess(baseResponse);
                 break;
         }
     }
@@ -988,9 +990,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the catalog success response.
      */
-    private void onRequestCatalogSuccess(Bundle bundle) {
+    private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         // Get the catalog
-        CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
@@ -1013,10 +1015,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR");
         // Get error code
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -1029,13 +1031,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 // Hide dialog progress
                 hideActivityProgress();
                 // Validate error
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     showUnexpectedErrorWarning();
                 }
                 break;
             case GET_PRODUCTS_EVENT:
             default:
-                onRequestCatalogError(bundle);
+                onRequestCatalogError(baseResponse);
                 break;
         }
     }
@@ -1043,15 +1045,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the catalog error response.
      */
-    private void onRequestCatalogError(Bundle bundle) {
+    private void onRequestCatalogError(BaseResponse baseResponse) {
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
+        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         // Case error on load more data
         if (isLoadingMoreData) {
             Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
-            onLoadingMoreRequestError(bundle);
+            onLoadingMoreRequestError(baseResponse);
         }
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
@@ -1059,10 +1061,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFilterNoResult();
         }
         // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == IntConstants.FEATURE_BOX_TYPE) {
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && catalog.getFeaturedBox() != null) {
             Print.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
-            FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
+            FeaturedBox featuredBox = catalog.getFeaturedBox();
             // Show no result layout
             showFeaturedBoxNoResult(featuredBox);
         }
@@ -1076,7 +1078,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFilterUnexpectedError();
         }
         // Case No Network
-        else if (super.handleErrorEvent(bundle)) {
+        else if (super.handleErrorEvent(baseResponse)) {
             Print.i(TAG, "HANDLE BASE FRAGMENT");
         }
         // Case unexpected error
@@ -1090,16 +1092,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @param bundle - the request bundle
      */
-    private void onLoadingMoreRequestError(Bundle bundle) {
+    private void onLoadingMoreRequestError(BaseResponse baseResponse) {
         // Mark error on loading more
         mErrorLoading = true;
         // Scroll to hide the loading view
         mGridView.stopScroll();
         mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
         // Show respective warning indicating to use the warning bar
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+        baseResponse.setEventTask(EventTask.SMALL_TASK);
         // Case super not handle the error show unexpected error
-        if (!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
+        if (!super.handleErrorEvent(baseResponse)) showUnexpectedErrorWarning();
     }
 
     @Override

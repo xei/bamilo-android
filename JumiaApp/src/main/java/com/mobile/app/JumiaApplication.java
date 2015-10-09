@@ -24,8 +24,10 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
+import com.mobile.newFramework.rest.errors.JumiaError;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.ApptimizeTracking;
@@ -171,12 +173,13 @@ public class JumiaApplication extends A4SApplication {
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Print.d(TAG, "ON HANDLE");
         // isInitializing = false;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
-        msg.obj = bundle;
+        msg.obj = new BaseResponse<>(eventType, errorType);
         // Send result message
         initializationHandler.sendMessage(msg);
     }

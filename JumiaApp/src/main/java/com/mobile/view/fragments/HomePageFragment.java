@@ -25,6 +25,7 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -550,18 +551,18 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
-                HomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                HomePageObject homePage = (HomePageObject) baseResponse.getMetadata().getData();
                 if (homePage != null && homePage.hasTeasers()) {
                     Print.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
                     // Save home page
@@ -586,7 +587,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR RESPONSE");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -594,9 +595,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             return;
         }
         // Check base errors
-        if (super.handleErrorEvent(bundle)) return;
+        if (super.handleErrorEvent(baseResponse)) return;
         // Check home types
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");

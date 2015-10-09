@@ -33,6 +33,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
@@ -53,9 +54,11 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -834,13 +837,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle success response
-     * @param bundle The success bundle
+     * @param baseResponse The success response
      * @return intercept or not
      */
-    public boolean handleSuccessEvent(Bundle bundle) {
+    public boolean handleSuccessEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -864,17 +867,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle error response.
-     * @param bundle The error bundle
+     * @param baseResponse The error bundle
      * @return intercept or not
      */
     @SuppressWarnings("unchecked")
-    public boolean handleErrorEvent(final Bundle bundle) {
+    public boolean handleErrorEvent(final BaseResponse baseResponse) {
         Print.i(TAG, "ON HANDLE ERROR EVENT");
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        EventTask eventTask = baseResponse.getEventTask();
 
-        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
+        if (!baseResponse.isPrioritary()) {
             return false;
         }
 
@@ -915,7 +918,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     showFragmentMaintenance();
                     return true;
                 case REQUEST_ERROR:
-                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                     List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                     String dialogMsg = "";
                     if (validateMessages == null || validateMessages.isEmpty()) {

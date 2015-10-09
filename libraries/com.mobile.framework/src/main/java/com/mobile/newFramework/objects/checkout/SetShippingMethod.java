@@ -23,13 +23,22 @@ public class SetShippingMethod extends CheckoutStepObject implements Parcelable 
         super();
     }
 
+    public SetShippingMethod(PurchaseEntity orderSummary) {
+        this.orderSummary = orderSummary;
+    }
+
+    public SetShippingMethod(SetShippingMethod checkoutStepObject) {
+        super(checkoutStepObject);
+        this.orderSummary = checkoutStepObject.orderSummary;
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
-     */
+         * (non-Javadoc)
+         *
+         * @see
+         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+         * )
+         */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get and set next step

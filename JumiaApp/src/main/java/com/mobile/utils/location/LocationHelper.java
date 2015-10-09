@@ -18,6 +18,7 @@ import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -389,11 +390,11 @@ public class LocationHelper implements LocationListener {
      */
     private void sendUserInteractionMessage(EventType eventType, ErrorCode errorType){
         Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         Message msg = new Message();
-        msg.obj = bundle;
+        msg.obj = new BaseResponse<>(eventType,errorType);
         callback.sendMessage(msg);
     }
     

@@ -33,6 +33,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -55,6 +56,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -437,18 +439,18 @@ public class SessionRegisterFragment extends BaseFragment {
      * #### EVENTS ####
      */
 
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
         if (getBaseActivity() != null) {
-            super.handleSuccessEvent(bundle);
+            super.handleSuccessEvent(baseResponse);
         } else {
             return true;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
             
@@ -460,7 +462,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
             showFragmentContentContainer();
             // Get Register Completed Event
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer = (Customer)baseResponse.getMetadata().getData();
             JumiaApplication.CUSTOMER = customer;
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
@@ -479,7 +481,7 @@ public class SessionRegisterFragment extends BaseFragment {
             return false;
         case GET_REGISTRATION_FORM_EVENT:
             showFragmentContentContainer();
-            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = (Form)baseResponse.getMetadata().getData();
             Print.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
             if (null != form) {
                 JumiaApplication.INSTANCE.registerForm = form;
@@ -592,7 +594,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
         
         if (isOnStoppingProcess) {
@@ -600,16 +602,16 @@ public class SessionRegisterFragment extends BaseFragment {
             return true;
         }
 
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return true;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
             TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                 // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
@@ -698,13 +700,13 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     IResponseCallback mCallBack = new IResponseCallback() {
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 

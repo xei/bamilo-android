@@ -44,6 +44,7 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
@@ -528,10 +529,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     /**
      * Filter the success response
+     * @param baseResponse
+     * @return boolean
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
@@ -541,13 +544,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
 
         // Update cart info
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
-            mCampaign = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCampaign = (Campaign)baseResponse.getMetadata().getData();
             /*--
              * Don't apply Timer if there are no products with remainingTime defined
              */
@@ -570,12 +573,14 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     /**
      * Filter the error response
+     * @param baseResponse
+     * @return boolean
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+    public void onRequestError(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -603,7 +608,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         */
         
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(baseResponse)) return;
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:

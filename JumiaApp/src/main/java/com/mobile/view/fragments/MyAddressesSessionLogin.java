@@ -5,7 +5,10 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.NextStepStruct;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -42,17 +45,18 @@ public class MyAddressesSessionLogin extends SessionLoginFragment {
     }
 
     @Override
-    protected void onLoginSuccessEvent(Bundle bundle) {
+    protected void onLoginSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
 
         BaseActivity baseActivity = getBaseActivity();
         JumiaApplication.INSTANCE.setLoggedIn(true);
         // Get Customer
         baseActivity.hideKeyboard();
+        NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getMetadata().getData();
 
         // NullPointerException on orientation change
         if (baseActivity != null && !cameFromRegister) {
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer = ((CheckoutStepLogin)nextStepStruct.getCheckoutStepObject()).getCustomer();
             JumiaApplication.CUSTOMER = customer;
 
             Bundle params = new Bundle();
@@ -69,8 +73,8 @@ public class MyAddressesSessionLogin extends SessionLoginFragment {
 
         cameFromRegister = false;
         // Validate the next step
-        if(bundle.containsKey(Constants.BUNDLE_NEXT_STEP_KEY) && bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY) instanceof FragmentType){
-            FragmentType fragmentType = (FragmentType)bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+        FragmentType fragmentType = nextStepStruct.getFragmentType();
+        if(fragmentType != null){
             FragmentController.getInstance().popLastEntry(FragmentType.MY_ADDRESSES_LOGIN.toString());
             Bundle args = new Bundle();
             args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
