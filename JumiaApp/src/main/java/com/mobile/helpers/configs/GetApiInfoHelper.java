@@ -4,8 +4,6 @@
  */
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.CategoriesTableHelper;
@@ -19,7 +17,6 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -43,7 +40,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
 
     @Override
-    public void onRequest(RequestBundle requestBundle) {;
+    public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getApiInformation);
     }
 
@@ -53,12 +50,12 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         // Get api info
-        ApiInformation apiInformation = (ApiInformation) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, apiInformation.getVersionInfo());
+        ApiInformationStruct apiInformation = new ApiInformationStruct((ApiInformation) baseResponse.getMetadata().getData());
+        baseResponse.getMetadata().setData(apiInformation);
 
         //TODO move to observable
         // Save mob api version
@@ -74,8 +71,9 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
-            clearOutDatedMainSections(outDatedSections, bundle);
+            clearOutDatedMainSections(outDatedSections, apiInformation);
         }
+
     }
 
 
@@ -136,9 +134,9 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     /**
      * Clears the database of outdated sections
-     * @param bundle 
+     * @param apiInformationStruct
      */
-    private void clearOutDatedMainSections(List<Section> sections, Bundle bundle) {
+    private void clearOutDatedMainSections(List<Section> sections, ApiInformationStruct apiInformationStruct) {
         Print.d(TAG, "ON CLEAR OUT DATED SECTIONS");
         // Update each outdated section
         for (Section section : sections) {
@@ -178,7 +176,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                     break;
                 // Case country configs
                 case Section.SECTION_NAME_CONFIGURATIONS:
-                    bundle.putBoolean(Section.SECTION_NAME_CONFIGURATIONS, true);
+                    apiInformationStruct.setSectionNameConfigurations(true);
                     break;
             }
         }
@@ -291,4 +289,24 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 //    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
 //        return parseResponseErrorBundle(bundle);
 //    }
+
+    public class ApiInformationStruct extends ApiInformation {
+        private boolean sectionNameConfigurations;
+
+        public ApiInformationStruct(){
+        }
+
+        public ApiInformationStruct(ApiInformation apiInformation){
+            super(apiInformation);
+        }
+
+
+        public boolean isSectionNameConfigurations() {
+            return sectionNameConfigurations;
+        }
+
+        public void setSectionNameConfigurations(boolean sectionNameConfigurations) {
+            this.sectionNameConfigurations = sectionNameConfigurations;
+        }
+    }
 }

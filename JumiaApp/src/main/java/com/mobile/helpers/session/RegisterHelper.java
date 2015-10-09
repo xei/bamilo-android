@@ -58,15 +58,16 @@ public class RegisterHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+
+        //TODO move to observable
         Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
         mContentValues.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
         Print.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
         // Save customer
         JumiaApplication.CUSTOMER = ((Customer) baseResponse.getMetadata().getData());
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
     }
 
 }

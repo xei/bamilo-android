@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -72,23 +71,10 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         catalog.getCatalogPage().setPage(mCurrentPage);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getCatalogPage());
-    }
-
-    @Override
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createErrorBundleParams(baseResponse, bundle);
-        //TODO move to observable
-        // Validate Featured Box
-        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
-        if(baseResponse.getError().getErrorCode() == ErrorCode.REQUEST_ERROR && catalog != null){
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, catalog.getFeaturedBox());
-            bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, IntConstants.FEATURE_BOX_TYPE);
-        }
     }
 
 }

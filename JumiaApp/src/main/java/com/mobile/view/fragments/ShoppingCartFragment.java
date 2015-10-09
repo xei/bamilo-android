@@ -34,6 +34,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -413,7 +414,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      *
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
 
 
         // Validate fragment visibility
@@ -425,14 +426,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Bundle params;
 
         // Update cart info
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
             case ADD_VOUCHER:
-                PurchaseEntity addVoucherPurchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                PurchaseEntity addVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
                 couponButton.setText(getString(R.string.voucher_remove));
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
@@ -440,7 +441,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 displayShoppingCart(addVoucherPurchaseEntity);
                 return true;
             case REMOVE_VOUCHER:
-                PurchaseEntity removeVoucherPurchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                PurchaseEntity removeVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
                 couponButton.setText(getString(R.string.voucher_use));
                 voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
@@ -460,7 +461,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 TrackerDelegator.trackProductRemoveFromCart(params);
                 TrackerDelegator.trackLoadTiming(params);
                 if (!isRemovingAllItems) {
-                    displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                    displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                     hideActivityProgress();
                 }
                 return true;
@@ -471,12 +472,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 TrackerDelegator.trackLoadTiming(params);
-                displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 return true;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 //alexandrapires: loading dismiss
                 hideActivityProgress();
-                PurchaseEntity purchaseEntity = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
                 //showFragmentContentContainer();
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -499,7 +500,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
                 return true;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-                onAddItemsToShoppingCartRequestSuccess(bundle);
+                onAddItemsToShoppingCartRequestSuccess(baseResponse);
                 break;
             default:
                 //showFragmentContentContainer();
@@ -507,7 +508,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 TrackerDelegator.trackLoadTiming(params);
-                displayShoppingCart((PurchaseEntity) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
         }
         return true;
     }
@@ -526,11 +527,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      *
      */
-    private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
+    private void onAddItemsToShoppingCartRequestSuccess(BaseResponse baseResponse){
         hideActivityProgress();
-        if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
-            ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            if (notAdded != null && !notAdded.isEmpty()) {
+        ShoppingCartAddMultipleItemsHelper.AddMultipleStruct addMultipleStruct = (ShoppingCartAddMultipleItemsHelper.AddMultipleStruct) baseResponse.getMetadata().getData();
+
+        if (addMultipleStruct.getErrorMessages() != null) {
+            ArrayList<String> notAdded = addMultipleStruct.getErrorMessages();
+            if (!notAdded.isEmpty()) {
                 Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
             }
         }
@@ -586,7 +589,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      *
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -597,11 +600,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
 
         // Validate generic errors
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
@@ -1100,13 +1103,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
 }

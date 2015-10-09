@@ -9,7 +9,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -61,15 +60,17 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createErrorBundleParams(baseResponse, bundle);
-        handleError(baseResponse, bundle);
+    public void postError(BaseResponse baseResponse) {
+        super.postError(baseResponse);
+        AddMultipleStruct addMultipleStruct = new AddMultipleStruct();
+        handleError(baseResponse, addMultipleStruct);
+        baseResponse.getMetadata().setData(addMultipleStruct);
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
+    public void postSuccess(BaseResponse baseResponse) {
         //TODO move to observable
-        super.createSuccessBundleParams(baseResponse, bundle);
+        super.postSuccess(baseResponse);
         JumiaApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
@@ -77,8 +78,11 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-        handleSuccess(baseResponse, bundle);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+        AddMultipleStruct addMultipleStruct = new AddMultipleStruct();
+        addMultipleStruct.setPurchaseEntity(cart);
+        handleSuccess(baseResponse, addMultipleStruct);
+        baseResponse.getMetadata().setData(addMultipleStruct);
     }
 
     private Map<String, String> createValues(HashMap<String, String> values) {
@@ -94,19 +98,19 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
 
     //@Override
-    protected void handleSuccess(BaseResponse baseResponse, Bundle bundle) {
+    protected void handleSuccess(BaseResponse baseResponse, AddMultipleStruct struct) {
         Map<String, String> successMessages = baseResponse.getSuccessMessages();
         if (successMessages != null && !successMessages.isEmpty()) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, checkAddedProducts(successMessages));
+            struct.setSuccessMessages(checkAddedProducts(successMessages));
         }
-        handleError(baseResponse, bundle);
+        handleError(baseResponse, struct);
     }
 
     //@Override
-    protected void handleError(BaseResponse baseResponse, Bundle bundle) {
+    protected void handleError(BaseResponse baseResponse, AddMultipleStruct struct) {
         Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         if (errorMessages != null && !errorMessages.isEmpty()) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, checkNotAddedProducts(errorMessages));
+            struct.setErrorMessages(checkNotAddedProducts(errorMessages));
         }
     }
 
@@ -140,6 +144,37 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
             }
         }
         return notAdded;
+    }
+
+    public class AddMultipleStruct {
+        private PurchaseEntity purchaseEntity;
+        private ArrayList<String> successMessages;
+        private ArrayList<String> errorMessages;
+
+
+        public PurchaseEntity getPurchaseEntity() {
+            return purchaseEntity;
+        }
+
+        void setPurchaseEntity(PurchaseEntity purchaseEntity) {
+            this.purchaseEntity = purchaseEntity;
+        }
+
+        public ArrayList<String> getSuccessMessages() {
+            return successMessages;
+        }
+
+        void setSuccessMessages(ArrayList<String> successMessages) {
+            this.successMessages = successMessages;
+        }
+
+        public ArrayList<String> getErrorMessages() {
+            return errorMessages;
+        }
+
+        void setErrorMessages(ArrayList<String> errorMessages) {
+            this.errorMessages = errorMessages;
+        }
     }
 
 }

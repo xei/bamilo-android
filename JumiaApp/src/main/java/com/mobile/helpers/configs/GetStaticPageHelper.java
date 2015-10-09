@@ -41,13 +41,6 @@ public class GetStaticPageHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        StaticTermsConditions termsConditions = (StaticTermsConditions) baseResponse.getMetadata().getData();
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, termsConditions.getHtml());
-    }
-
     public static Bundle createBundle(String staticPage) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.JSON_KEY_TAG, staticPage);
