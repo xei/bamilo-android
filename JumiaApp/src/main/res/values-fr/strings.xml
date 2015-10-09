@@ -336,13 +336,11 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
-    <!-- Version v2.4 -->
     <string name="install_jumia_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>
     <string name="sort_by">Trier par</string>
-    <!-- PLURALS -->
     <string name="plurals_rating">%d évaluation</string>
     <string name="plurals_ratings">%d évaluations</string>
     <string name="plurals_item">%d article</string>
@@ -357,7 +355,6 @@
     <string name="dialog_to_product">Détails du produit</string>
     <string name="address_creation_failed_title">La création d\'adresse a échoué</string>
     <string name="address_creation_failed_main">Veuillez remplir correctement tous les champs du formulaire.</string>
-    <!-- NEW 2.5 -->
     <string name="see_more_offers">Voir plus d\'offres</string>
     <string name="shops_of_the_week">Boutiques de la semaine</string>
     <string name="featured_stores">Boutiques en vedette</string>
@@ -369,10 +366,8 @@
     <string name="kickout_page_title">Notre campagne était un grand succès!</string>
     <string name="kickout_page_text1">Le magasin est actuellement plein, on ne peut pas accueillir de nouveaux clients pour le moment.</string>
     <string name="kickout_page_text2">Nous voulons vous offrir la meilleure expérience de shopping possible, alors nous aimerions vous demander de réessayer plus tard.</string>
-    <!-- NEW 2.6 -->
     <string name="facebook_permission">Une autorisation mail est obligatoire. Merci de la valider</string>
     <string name="com_facebook_loginview_log_in_button_long">se connecter avec Facebook</string>
-    <!-- NEW 2.7 -->
     <string name="review_plural">%d commentaire</string>
     <string name="reviews_plural">%d commentaires</string>
     <string name="open">ouvrir</string>

@@ -251,6 +251,13 @@ android.applicationVariants.all { variant ->
 }
 
 /**
+ * Validate all translations
+ */
+task translationsValidation {
+    executeWaitAndPrintCmd(['ruby', 'JumiaApp/scripts/validate_str_placeholders.rb'])
+}
+
+/**
  *  PMD static analysis
  */
 task pmd(type: Pmd) {
@@ -289,7 +296,6 @@ task findbugs(type: FindBugs) {
  * @return
  */
 def executeWaitAndPrintCmd(List cmd) {
-
     println cmd
     def proc = cmd.execute()
     proc.waitFor()
