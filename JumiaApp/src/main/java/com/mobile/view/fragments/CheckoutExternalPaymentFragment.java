@@ -28,6 +28,7 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -148,13 +149,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     IResponseCallback mCallback = new IResponseCallback() {
 
         @Override
-        public void onRequestError(Bundle bundle) {
-            CheckoutExternalPaymentFragment.super.handleErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            CheckoutExternalPaymentFragment.super.handleErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
 
         }
     };
@@ -566,11 +567,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                customer = (Customer)baseResponse.getMetadata().getData();
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:

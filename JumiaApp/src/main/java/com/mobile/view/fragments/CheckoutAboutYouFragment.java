@@ -21,6 +21,7 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.account.GetCustomerHelper;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
@@ -34,7 +35,9 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -58,6 +61,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 //import com.mobile.utils.social.FacebookHelper;
 
@@ -710,7 +714,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     /**
      * Filter the success response bundle
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT");
 
         if (isOnStoppingProcess) {
@@ -718,7 +722,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
@@ -728,8 +732,9 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 break;
             case SET_SIGNUP_EVENT:
                 cameFromSignUp = true;
-                mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-                Customer tempCustomer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+                mNextFragment = nextStepStruct.getFragmentType();
+                Customer tempCustomer = ((CheckoutStepLogin)nextStepStruct.getCheckoutStepObject()).getCustomer();
 
                 if (null != tempCustomer) {
                     TrackerDelegator.storeFirstCustomer(tempCustomer);
@@ -743,11 +748,12 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             case FACEBOOK_LOGIN_EVENT:
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
+                nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
                 // Get customer
-                Customer customerFb = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customerFb = ((CheckoutStepLogin)nextStepStruct.getCheckoutStepObject()).getCustomer();
                 JumiaApplication.CUSTOMER = customerFb;
                 // Get next step
-                mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+                mNextFragment = nextStepStruct.getFragmentType();
                 // Tracking login via facebook
                 trackLoginSuccess(customerFb, true);
                 trackCheckoutStarted(customerFb.getIdAsString());
@@ -761,10 +767,11 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
             case LOGIN_EVENT:
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
+                nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
                 // Get customer
-                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = ((CheckoutStepLogin)nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Get next step
-                mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+                mNextFragment = nextStepStruct.getFragmentType();
                 // Persist user email or empty that value after successful login
                 CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
                 // Tracking login
@@ -784,12 +791,12 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 break;
             case GET_SIGNUP_FORM_EVENT:
                 // Save and load form
-                Form signupForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form signupForm = (Form)baseResponse.getMetadata().getData();
                 loadSignUpForm(signupForm);
                 this.signupFormResponse = signupForm;
                 break;
             case GET_LOGIN_FORM_EVENT:
-                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = (Form)baseResponse.getMetadata().getData();
                 // Validate form
                 if (form == null) {
                     showLoginFormErrorDialog();
@@ -816,7 +823,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     /**
      * Filter the error response bundle
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
 
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -824,13 +831,13 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
@@ -849,7 +856,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 // Track
                 TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, GTMValues.FACEBOOK);
                 // Show alert
-                HashMap<String, List<String>> fErrors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                Map<String, List<String>> fErrors = baseResponse.getErrorMessages();
                 showErrorDialog(fErrors, R.string.error_login_title);
                 // Show container
                 showFragmentContentContainer();
@@ -868,7 +875,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                     } else {
                         // Show error
                         @SuppressWarnings("unchecked")
-                        HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                        Map<String, List<String>> errors = baseResponse.getErrorMessages();
                         showErrorDialog(errors, R.string.error_login_title);
                         showFragmentContentContainer();
                     }
@@ -881,7 +888,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
                 TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
                     // Show dialog or toast
                     if (!showErrorDialog(errors, R.string.error_signup_title)) {
                         Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
@@ -918,8 +925,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -927,8 +934,8 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /*
@@ -966,7 +973,7 @@ public class CheckoutAboutYouFragment extends BaseExternalLoginFragment implemen
     /**
      * Dialog used to show an error
      */
-    private boolean showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
+    private boolean showErrorDialog(Map<String, List<String>> errors, int titleId) {
         Print.d(TAG, "SHOW ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {

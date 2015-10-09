@@ -22,6 +22,7 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginFormHelper;
@@ -30,8 +31,10 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormData;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -60,6 +63,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -376,22 +380,22 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
      */
     IResponseCallback mCallBack = new IResponseCallback() {
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 
     /**
      * 
-     * @param bundle
+     * @param baseResponse
      * @return
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -401,12 +405,12 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
         BaseActivity baseActivity = getBaseActivity();
         if (baseActivity != null) {
-            super.handleSuccessEvent(bundle);
+            super.handleSuccessEvent(baseResponse);
         } else {
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         switch (eventType) {
         case INIT_FORMS:
@@ -418,7 +422,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             // Get Customer
             baseActivity.hideKeyboard();
             // NullPointerException on orientation change
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer =((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
             JumiaApplication.CUSTOMER = customer;
 
             Bundle params = new Bundle();
@@ -442,10 +446,10 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             ToastFactory.SUCCESS_LOGIN.show(baseActivity);
             return true;
         case LOGIN_EVENT:
-            onLoginSuccessEvent(bundle);
+            onLoginSuccessEvent(baseResponse);
             return true;
         case GET_LOGIN_FORM_EVENT:
-            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = (Form) baseResponse.getMetadata().getData();
             if (form == null) {
                 dialog = DialogGenericFragment.createServerErrorDialog(baseActivity,
                         new OnClickListener() {
@@ -469,7 +473,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         return true;
     }
 
-    protected void onLoginSuccessEvent(Bundle bundle){
+    protected void onLoginSuccessEvent(BaseResponse baseResponse){
         Print.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
 
         BaseActivity baseActivity = getBaseActivity();
@@ -478,7 +482,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         baseActivity.hideKeyboard();
         // NullPointerException on orientation change
         if (!cameFromRegister) {
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
             JumiaApplication.CUSTOMER = customer;
 
             Bundle params = new Bundle();
@@ -579,19 +583,19 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
         showFragmentContentContainer();
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
 
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {
@@ -616,7 +620,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
                     }
                 } else {
                     Print.d(TAG, "SHOW DIALOG");
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
                     List<String> errorMessages = null;
                     if (errors != null) {
                         errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
@@ -650,7 +654,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
             
             TrackerDelegator.trackLoginFailed(wasAutoLogin, GTMValues.LOGIN, GTMValues.FACEBOOK);
             
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Map<String, List<String>> errors = baseResponse.getErrorMessages();
             List<String> errorMessages = null;
             if (errors != null) {
                 Print.i(TAG, "ERRORS: " + errors.toString());

@@ -8,8 +8,11 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -166,29 +169,28 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        Print.w(TAG, "ON SUCCESS REQUEST COMPLETE");
+    public void onRequestComplete(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
         if (getBaseActivity() != null) {
-            super.handleSuccessEvent(bundle);
+            super.handleSuccessEvent(baseResponse);
         } else {
             return;
         }
         showFragmentContentContainer();
-        textView.setText(bundle.getString(Constants.BUNDLE_RESPONSE_KEY));
+        textView.setText(((StaticTermsConditions)baseResponse.getMetadata().getData()).getHtml());
     }
 
     @Override
-    public void onRequestError(Bundle bundle) {
-        Print.w(TAG, "ON ERROR REQUEST COMPLETE");
+    public void onRequestError(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        if(!super.handleErrorEvent(bundle)){
+        if(!super.handleErrorEvent(baseResponse)){
             showContinueShopping();
         }
     }

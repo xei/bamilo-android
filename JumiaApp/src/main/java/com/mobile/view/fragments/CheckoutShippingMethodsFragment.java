@@ -13,10 +13,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.ShippingMethodFormBuilder;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -300,7 +302,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Process the success response
      * @return boolean
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -308,15 +310,15 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
             return true;
         }
         
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
-            onSuccessGetShippingMethods(bundle);
+            onSuccessGetShippingMethods(baseResponse);
             break;
         case SET_SHIPPING_METHOD_EVENT:
-            onSuccessSetShippingMethods(bundle);
+            onSuccessSetShippingMethods(baseResponse);
             break;
         default:
             break;
@@ -329,7 +331,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Process the error response
      * @return boolean
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -338,12 +340,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         }
         
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
         
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
@@ -361,15 +363,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         return false;
     }
 
-    public void onSuccessGetShippingMethods(Bundle bundle){
+    public void onSuccessGetShippingMethods(BaseResponse baseResponse){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
+
+        GetShippingMethodsHelper.ShippingMethodFormStruct shippingMethodsForm = (GetShippingMethodsHelper.ShippingMethodFormStruct)baseResponse.getMetadata().getData();
+
         // Get order summary
-        PurchaseEntity orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
         // Form
-        ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        ShippingMethodFormBuilder form = shippingMethodsForm.getFormBuilder();
         loadForm(form);
-        ArrayList<Fulfillment> fulfillmentList = bundle.getParcelableArrayList(Constants.BUNDLE_FORM_DATA_KEY);
+        ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getFulfillmentList();
         loadFulfillment(fulfillmentList);
 
 
@@ -378,12 +383,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
     }
 
-    public void onSuccessSetShippingMethods(Bundle bundle){
+    public void onSuccessSetShippingMethods(BaseResponse baseResponse){
         Print.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
         // Get next step
-        FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+        NextStepStruct methodStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+        FragmentType nextFragment = methodStruct.getFragmentType();
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
-        getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
     public void onErrorGetShippingMethods(){
@@ -429,8 +435,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
      
     /*
@@ -438,8 +444,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
     
 }

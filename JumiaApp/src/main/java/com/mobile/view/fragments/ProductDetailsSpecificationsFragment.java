@@ -19,6 +19,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSpecification;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -295,17 +296,17 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
     IResponseCallback responseCallback = new IResponseCallback() {
 
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 
-    public void onSuccessEvent(Bundle bundle) {
+    public void onSuccessEvent(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -316,17 +317,17 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         if (getBaseActivity() == null)
             return;
 
-        super.handleSuccessEvent(bundle);
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        super.handleSuccessEvent(baseResponse);
+        EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_DETAIL:
-            if (((ProductComplete) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+            if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mCompleteProduct = (ProductComplete) baseResponse.getMetadata().getData();
                 getViews();
                 displaySpecification();
                 // Waiting for the fragment comunication
@@ -344,7 +345,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         }
     }
 
-    public void onErrorEvent(Bundle bundle) {
+    public void onErrorEvent(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -352,11 +353,11 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             return;
         }
 
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
 

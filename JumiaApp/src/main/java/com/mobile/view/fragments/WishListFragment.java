@@ -21,6 +21,7 @@ import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -494,9 +495,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "ON SUCCESS");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -505,7 +506,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Hide progress
         hideActivityProgress();
         // Validate event
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -520,7 +521,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
-                WishList wishList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                WishList wishList = (WishList) baseResponse.getMetadata().getData();
                 showContent(wishList);
                 break;
         }
@@ -531,9 +532,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "ON REQUEST ERROR");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -544,19 +545,19 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     showUnexpectedErrorWarning();
                 }
                 break;
             case GET_WISH_LIST:
             default:
                 // Validate error
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     showContinueShopping();
                 }
                 isErrorOnLoadingMore = isLoadingMoreData;

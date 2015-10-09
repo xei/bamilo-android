@@ -5,16 +5,15 @@ package com.mobile.helpers.address;
 
 import android.os.Bundle;
 
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.utils.CheckoutStepManager;
 
 /**
  * Helper used to create an address 
@@ -53,9 +52,11 @@ public class CreateAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getMetadata().getData();
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(checkoutStep.getNextStep()));
+        NextStepStruct nextStepStruct = new NextStepStruct(checkoutStep);
+        baseResponse.getMetadata().setData(nextStepStruct);
     }
+
 }

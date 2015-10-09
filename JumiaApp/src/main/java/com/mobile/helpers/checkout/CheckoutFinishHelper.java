@@ -12,7 +12,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
@@ -61,11 +60,11 @@ public class CheckoutFinishHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         CheckoutFinish checkoutFinish = (CheckoutFinish)baseResponse.getMetadata().getData();
-        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
-        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
+//        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
+//        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
 
         // TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(checkoutFinish.getPaymentMethodForm());

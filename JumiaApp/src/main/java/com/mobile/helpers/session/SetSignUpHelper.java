@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -17,7 +18,6 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.CheckoutStepManager;
 
 import java.util.Map;
 
@@ -61,8 +61,8 @@ public class SetSignUpHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         // Save credentials
         if (saveCredentials) {
             Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
@@ -78,9 +78,10 @@ public class SetSignUpHelper extends SuperBaseHelper {
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
-        //
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, JumiaApplication.CUSTOMER);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(loginCustomer.getNextStep()));
+
+        NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
+        baseResponse.getMetadata().setData(nextStepStruct);
+
         // Save new wish list
         WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
     }

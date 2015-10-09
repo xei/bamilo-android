@@ -337,13 +337,11 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
-    <!-- Version v2.4 -->
     <string name="install_jumia_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>
     <string name="sort_by">Sort by</string>
-    <!-- PLURALS -->
     <string name="plurals_rating">%d rating</string>
     <string name="plurals_ratings">%d ratings</string>
     <string name="plurals_item">%d item</string>
@@ -358,7 +356,6 @@
     <string name="dialog_to_product">To Product Details</string>
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
-    <!-- NEW 2.5 -->
     <string name="see_more_offers">SEE MORE OFFERS</string>
     <string name="shops_of_the_week">Shops of the week</string>
     <string name="featured_stores">Featured Stores</string>
@@ -370,10 +367,8 @@
     <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
-    <!-- NEW 2.6 -->
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
     <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
-    <!-- NEW 2.7 -->
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
     <string name="open">open</string>
@@ -426,4 +421,5 @@
     <string name="policy">Policy</string>
     <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
     <string name="product_specifications">Product Specifications</string>
+    <!-- NEW 2.8 -->
 </resources>

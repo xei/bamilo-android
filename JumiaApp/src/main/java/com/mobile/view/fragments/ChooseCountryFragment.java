@@ -22,8 +22,10 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -375,7 +377,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -383,13 +385,13 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             return;
         }
         // Get event type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate event type
         switch (eventType) {
             case GET_GLOBAL_CONFIGURATIONS:
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
-                JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries)baseResponse.getMetadata().getData();
                 // Show countries
                 showAvailableCountries();
                 showFragmentContentContainer();
@@ -405,18 +407,18 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type and error type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
-        if(super.handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(baseResponse)) return;
         
         // Validate event type
         switch (eventType) {

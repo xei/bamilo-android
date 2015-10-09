@@ -54,11 +54,12 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         AddressPostalCodes postalCodes = (AddressPostalCodes) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, postalCodes);
-        bundle.putString(CUSTOM_TAG, customTag);
+        AddressPostalCodesStruct addressPostalCodes = new AddressPostalCodesStruct(postalCodes);
+        addressPostalCodes.setCustomTag(customTag);
+        baseResponse.getMetadata().setData(addressPostalCodes);
     }
 
     public static Bundle createBundle(String url, int city, String tag) {
@@ -67,6 +68,21 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
         bundle.putString(GetPostalCodeHelper.CITY_ID_TAG, String.valueOf(city));
         bundle.putString(GetPostalCodeHelper.CUSTOM_TAG, tag);
         return bundle;
+    }
+
+    public class AddressPostalCodesStruct extends AddressPostalCodes{
+        private String customTag;
+        public AddressPostalCodesStruct(AddressPostalCodes addressPostalCodes){
+            super(addressPostalCodes);
+        }
+
+        public String getCustomTag() {
+            return customTag;
+        }
+
+        void setCustomTag(String customTag) {
+            this.customTag = customTag;
+        }
     }
 
 }

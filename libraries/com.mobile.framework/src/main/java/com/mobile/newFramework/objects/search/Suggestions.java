@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,6 +20,18 @@ import java.util.ArrayList;
 public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializable {
 
 	public final static String TAG = Suggestions.class.getSimpleName();
+
+	public Suggestions(){}
+
+	public Suggestions(List<Suggestion> suggestions){
+		for(Suggestion suggestion : suggestions){
+			add(suggestion);
+		}
+	}
+
+	public Suggestions(Suggestions suggestions){
+		this((List)suggestions);
+	}
 
 	@Override
 	public RequiredJson getRequiredJson() {
