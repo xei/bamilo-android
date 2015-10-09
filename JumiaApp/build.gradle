@@ -116,16 +116,16 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.7"
-            versionCode getAppVersionCode(55)
+            versionName "2.8"
+            versionCode getAppVersionCode(56)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.7"
-            versionCode 55
+            versionName "2.8"
+            versionCode 56
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -135,8 +135,8 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.7"
-            versionCode 57
+            versionName "2.8"
+            versionCode 58
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -146,8 +146,8 @@ android {
 
         jumiaBlackberry {
             applicationId "com.jumia.blackberry"
-            versionName "2.7"
-            versionCode 11
+            versionName "2.8"
+            versionCode 12
             signingConfig signingConfigs.jumiaBlackberrySigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -160,16 +160,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.5"
-            versionCode getAppVersionCode(9)
+            versionName "1.6"
+            versionCode getAppVersionCode(10)
             signingConfig signingConfigs.shopSigning
             resConfigs "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.5"
-            versionCode 9
+            versionName "1.6"
+            versionCode 10
             signingConfig signingConfigs.shopSigning
             resConfigs "my"
             android.sourceSets {
@@ -182,16 +182,16 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.5"
-            versionCode getAppVersionCode(10)
+            versionName "1.6"
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.5"
-            versionCode 10
+            versionName "1.6"
+            versionCode 11
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -204,10 +204,10 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.7"
-            versionCode getAppVersionCode(12)
+            versionName "1.8"
+            versionCode getAppVersionCode(13)
             signingConfig signingConfigs.bamiloSigning
-            resConfigs "fa-rIR"
+            resConfigs "fa"
         }
 
     }
