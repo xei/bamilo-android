@@ -101,7 +101,8 @@ public class DeviceInfoHelper {
 		for (String folder : paths) 
 			if (existSpecificFile(folder + "/" + app.packageName + "-1.apk")
 					|| existSpecificFile(folder + "/" + app.packageName + ".apk")
-					|| existSpecificFile(folder + "/Jumia-release.apk"))
+					|| existSpecificFile(folder + "/JumiaApp-jumia-release.apk")
+                    || existSpecificFile(folder + "/JumiaApp-daraz-release.apk"))
 				return true;
         
     	/**
@@ -159,7 +160,8 @@ public class DeviceInfoHelper {
     private static boolean createPreInstallFile(Context context) {
 		try {
     		File file = new File(context.getFilesDir(), PRE_INSTALL_FILE);
-    		file.createNewFile();
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
     		Print.i(TAG, "CREATE PRE INSTALLED: YES IN " + file.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();

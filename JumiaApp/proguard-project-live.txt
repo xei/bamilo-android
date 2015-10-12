@@ -156,7 +156,11 @@
 # Allow obfuscation of android.support.v7.internal.view.menu.**
 # to avoid problem on Samsung 4.2.2 devices with appcompat v21
 # see https://code.google.com/p/android/issues/detail?id=78377
--keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
+#-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
+
+# see http://stackoverflow.com/questions/24809580/noclassdeffounderror-android-support-v7-internal-view-menu-menubuilder/
+-keep class !android.support.v7.internal.view.menu.*MenuBuilder*, android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
 #############################################################################
 
 ## BEGIN VOLLEY #############################################################
@@ -185,7 +189,7 @@
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
 -keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }  
--keep interface com.mobile.components.ScrollViewReachable$** { public *; }
+-keep interface com.mobile.components.ScrollViewEx$** { public *; }
 -keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
 #### com.mobile.utils
 -keep class com.mobile.utils.MyProfileActionProvider { public *; }
