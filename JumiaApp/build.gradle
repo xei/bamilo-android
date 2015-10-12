@@ -34,8 +34,8 @@ android {
 
     defaultConfig {
         applicationId "com.mobile.view"
-        minSdkVersion 12
-        targetSdkVersion 22
+        minSdkVersion 15
+        targetSdkVersion 23
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
