@@ -253,7 +253,7 @@ android.applicationVariants.all { variant ->
 /**
  * Validate all translations
  */
-task translationsValidation {
+task translationsValidation << {
     executeWaitAndPrintCmd(['ruby', 'JumiaApp/scripts/validate_str_placeholders.rb'])
 }
 
