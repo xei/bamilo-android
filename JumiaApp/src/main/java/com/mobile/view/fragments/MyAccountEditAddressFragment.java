@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -15,6 +16,7 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -84,26 +86,26 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         triggerInitForm();
     }
 
-    protected void onGetEditAddressFormErrorEvent(Bundle bundle){
-        super.onGetEditAddressFormErrorEvent(bundle);
+    protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
+        super.onGetEditAddressFormErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onGetRegionsErrorEvent(Bundle bundle){
-        super.onGetRegionsErrorEvent(bundle);
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse){
+        super.onGetRegionsErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onGetCitiesErrorEvent(Bundle bundle){
-        super.onGetCitiesErrorEvent(bundle);
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse){
+        super.onGetCitiesErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onEditAddressErrorEvent(Bundle bundle){
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+    protected void onEditAddressErrorEvent(BaseResponse baseResponse){
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Map<String, List<String>> errors = baseResponse.getErrorMessages();
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {

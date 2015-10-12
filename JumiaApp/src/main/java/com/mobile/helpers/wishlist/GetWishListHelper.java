@@ -37,17 +37,11 @@ public class GetWishListHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        WishList wishList = (WishList) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, wishList);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+        
         // Save new wish list
-        WishListCache.set(wishList.getWishListCache());
-    }
-
-    @Override
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createErrorBundleParams(baseResponse, bundle);
+        WishListCache.set(((WishList) baseResponse.getMetadata().getData()).getWishListCache());
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.mobile.interfaces;
 
-import android.os.Bundle;
+import com.mobile.newFramework.pojo.BaseResponse;
 
 /**
  * Callback for the response
@@ -12,10 +12,10 @@ public interface IResponseCallback {
     /**
      * Handles the success request
      */
-    void onRequestComplete(Bundle bundle);
+    void onRequestComplete(BaseResponse baseResponse);
 
     /**
      * Handles the error request
      */
-    void onRequestError(Bundle bundle);
+    void onRequestError(BaseResponse baseResponse);
 }

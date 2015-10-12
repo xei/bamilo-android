@@ -337,13 +337,11 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">သင္၏ေစ်း၀ယ္လွည္း</string>
     <string name="your_order">သင္၏ေအာ္ဒါ</string>
-    <!-- Version v2.4 -->
     <string name="install_jumia_android">%s Android App ကို ယခု install လုပ္မည္</string>
     <string name="share_the_app">App ကို မွ်ေ၀မည္</string>
     <string name="can_share_app_with_friends">သူငယ္ခ်င္းမ်ားကို ေဒါင္းလုတ္ယူရန္ လင့္ခ္ မွ်ေ၀ႏုိင္ပါသည္</string>
     <string name="app_social">App မွ်ေ၀ရန္</string>
     <string name="sort_by">ၾကည္႕လုိသည္ကို ေရြးပါ</string>
-    <!-- PLURALS -->
     <string name="plurals_rating">သုံးသပ္ခ်က္ %d ခု</string>
     <string name="plurals_ratings">သံုးသပ္ခ်က္ %d ခု</string>
     <string name="plurals_item">ပစၥည္း %d ခု</string>
@@ -358,7 +356,6 @@
     <string name="dialog_to_product">ကုန္ပစၥည္းအားျပန္ၾကည္႕ရန္</string>
     <string name="address_creation_failed_title">လိပ္စာျပဳလုုပ္ရာတြင္ မေအာင္ျမင္ပါ</string>
     <string name="address_creation_failed_main">ေက်းဇူျပဳရ်္ ပုုံစံတြင္ေပးထားေသာ လုုိအပ္ခ်က္မ်ားအားမွန္ကန္စြာျဖည့္စြတ္ပါ။</string>
-    <!-- NEW 2.5 -->
     <string name="see_more_offers">အျခား အစီအစဥ္မ်ားကို ၾကည္႕ရွဳရန္</string>
     <string name="shops_of_the_week">လူၾကိဳက္အမ်ားဆံုး တံဆိပ္မ်ား</string>
     <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
@@ -370,10 +367,8 @@
     <string name="kickout_page_title">ကြ်ဳန္တို႕၏ အထူးအစီအစဥ္ ေအာင္ျမင္စြာ ျပီးဆံုးပါျပီ!</string>
     <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
     <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
-    <!-- NEW 2.6 -->
     <string name="facebook_permission">ဆက္လက္လုပ္ေဆာင္ရန္ Email ေပးပို႕ျခင္းကို ခြင့္ျပဳေပးပါ</string>
     <string name="com_facebook_loginview_log_in_button_long">Facebook ျဖင့္ ၀င္မည္</string>
-    <!-- NEW 2.7 -->
     <string name="review_plural">သံုးသပ္ခ်က္ %d ခု</string>
     <string name="reviews_plural">သံုးသပ္ခ်က္ %d ခု</string>
     <string name="open">ဖြင့္ရန္</string>
@@ -423,4 +418,5 @@
     <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
     <string name="delivery_time_placeholder" formatted="false">Delivery time %d - %d days</string>
+    <string name="product_specifications">သီးျခားသတ္မွတ္ခ်က္</string>
 </resources>

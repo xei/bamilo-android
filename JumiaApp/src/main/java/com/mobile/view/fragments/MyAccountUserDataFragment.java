@@ -21,6 +21,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -36,6 +37,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -254,8 +256,8 @@ public class MyAccountUserDataFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
@@ -266,7 +268,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
         switch (eventType) {
         case GET_CHANGE_PASSWORD_FORM_EVENT:
-            onSuccessGetChangePasswordFormEvent(bundle);
+            onSuccessGetChangePasswordFormEvent(baseResponse);
             return true;
         case CHANGE_PASSWORD_EVENT:
             Print.d(TAG, "changePasswordEvent: Password changed with success");
@@ -280,29 +282,29 @@ public class MyAccountUserDataFragment extends BaseFragment {
         }
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return false;
         }
 
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return true;
         }
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
-                onErrorGetChangePasswordFormEvent(bundle);
+                onErrorGetChangePasswordFormEvent(baseResponse);
                 return true;
         case CHANGE_PASSWORD_EVENT:
             Print.d(TAG, "changePasswordEvent: Password changed was not successful");
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                 if (errorMessages == null) {
                     return false;
                 }
@@ -329,12 +331,12 @@ public class MyAccountUserDataFragment extends BaseFragment {
         }
     }
 
-    protected void onErrorGetChangePasswordFormEvent(Bundle bundle) {
+    protected void onErrorGetChangePasswordFormEvent(BaseResponse baseResponse) {
         showFragmentErrorRetry();
     }
 
-    protected void onSuccessGetChangePasswordFormEvent(Bundle bundle) {
-        Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+    protected void onSuccessGetChangePasswordFormEvent(BaseResponse baseResponse) {
+        Form form = (Form)baseResponse.getMetadata().getData();
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),form);
         ((ViewGroup)getView().findViewById(R.id.changePasswordLayout)).addView(dynamicForm.getContainer());
     }
@@ -401,13 +403,13 @@ public class MyAccountUserDataFragment extends BaseFragment {
     IResponseCallback mCallBack = new IResponseCallback() {
 
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
 }

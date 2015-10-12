@@ -1,14 +1,9 @@
 package com.mobile.helpers.products;
 
-import android.os.Bundle;
-
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.ProductRatingPage;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -40,12 +35,5 @@ public class GetReviewsHelper extends SuperBaseHelper {
     public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
    }
-
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productRatingPage);
-    }
 
 }

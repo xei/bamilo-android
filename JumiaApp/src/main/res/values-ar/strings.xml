@@ -337,13 +337,11 @@
     <string name="yes_label">نعم</string>
     <string name="your_cart">عربة التسوق الخاصة بك</string>
     <string name="your_order">الطلب الخاص بك</string>
-    <!-- Version v2.4 -->
     <string name="install_jumia_android">تحميل تطبيق %s للأندرويد في لحظة واحدة</string>
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="can_share_app_with_friends">يمكنك الآن مشاركة التطبيق مع أصدقائك</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
     <string name="sort_by">الترتيب حسب</string>
-    <!-- PLURALS -->
     <string name="plurals_rating">تقييم ‪%d‪</string>
     <string name="plurals_ratings">تقييمات ‪%d‪</string>
     <string name="plurals_item">منتج ‪%d‪</string>
@@ -358,7 +356,6 @@
     <string name="dialog_to_product">إلى تفاصيل المنتج</string>
     <string name="address_creation_failed_title">لم ينجح إنشاء العنوان</string>
     <string name="address_creation_failed_main">برجاء ملء البيانات بشكل صحيح.</string>
-    <!-- NEW 2.5 -->
     <string name="see_more_offers">شاهد المزيد من العروض</string>
     <string name="shops_of_the_week">متاجر الأسبوع</string>
     <string name="featured_stores">المتاجر المميزة</string>
@@ -370,10 +367,8 @@
     <string name="kickout_page_title">نجحت الحملة الخاصة بنا!</string>
     <string name="kickout_page_text1">نعتذر عن امتلاء  المتجر حاليًا، لا يمكننا استقبال عملاء جدد في الوقت الحالي.</string>
     <string name="kickout_page_text2">نريد أن نوفر لك أفضل تجربة تسوق إلكترونى، لذلك يُرجى المحاولة مرة أخرى لاحقاً.</string>
-    <!-- NEW 2.6 -->
     <string name="facebook_permission">إذن الوصول إلى البريد الإلكتروني الخاص بك إلزامي، يُرجى السماح بذلك.</string>
     <string name="com_facebook_loginview_log_in_button_long">تسجيل الدخول من خلال فيسبوك</string>
-    <!-- NEW 2.7 -->
     <string name="review_plural">%d تعليق</string>
     <string name="reviews_plural">تعليقات %d</string>
     <string name="open">فتح</string>

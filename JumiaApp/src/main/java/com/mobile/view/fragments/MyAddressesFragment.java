@@ -15,6 +15,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
@@ -513,8 +514,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -522,17 +523,17 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /**
      * ############# RESPONSE #############
      */
 
-    protected abstract boolean onErrorEvent(Bundle bundle);
+    protected abstract boolean onErrorEvent(BaseResponse baseResponse);
 
-    protected abstract boolean onSuccessEvent(Bundle bundle);
+    protected abstract boolean onSuccessEvent(BaseResponse baseResponse);
 
     /**
      * ########### DIALOGS ###########
@@ -541,7 +542,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     /**
      * Dialog used to show an error
      */
-    protected void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
+    protected void showErrorDialog(Map<String, List<String>> errors, int titleId) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {

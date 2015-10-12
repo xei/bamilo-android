@@ -24,6 +24,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -467,10 +468,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Handles the success request
      *
-     * @param bundle The response
+     * @param baseResponse The response
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS");
         // Validate fragment state
         if (isOnStoppingProcess) {
@@ -478,7 +479,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             return;
         }
         // Get static page
-        StaticPage mShopPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        StaticPage mShopPage = (StaticPage) baseResponse.getMetadata().getData();
         //  Case valid success response
         if (mShopPage != null) {
             onLoadShopData(mShopPage);
@@ -492,10 +493,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Handles the error request
      *
-     * @param bundle The response
+     * @param baseResponse The response
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR");
         // Validate fragment state
         if (isOnStoppingProcess) {
@@ -503,7 +504,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             return;
         }
         // Case network errors
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.i(TAG, "RECEIVED NETWORK ERROR!");
         }
         // Case other errors

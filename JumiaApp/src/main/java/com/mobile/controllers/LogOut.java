@@ -7,6 +7,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
@@ -39,7 +40,7 @@ public class LogOut {
     /**
      * Performs the Logout
      * 
-     * @param activity
+     * @param activityRef
      *            The activity where the logout is called from
      *            
      * TODO: Improve this method, if is being discarded the server response why we perform a request...
@@ -55,7 +56,7 @@ public class LogOut {
         JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
 
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
                     cleanData(baseActivity);
@@ -63,7 +64,7 @@ public class LogOut {
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
                     cleanData(baseActivity);

@@ -19,6 +19,7 @@ import com.mobile.helpers.checkout.GetTrackOrderHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
@@ -243,13 +244,13 @@ public class TrackOrderFragment extends BaseFragment {
             args.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
                 @Override
-                public void onRequestError(Bundle bundle) {
-                    onErrorEvent(bundle);
+                public void onRequestError(BaseResponse baseResponse) {
+                    onErrorEvent(baseResponse);
                 }
                 
                 @Override
-                public void onRequestComplete(Bundle bundle) {
-                    onSuccessEvent(bundle);
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    onSuccessEvent(baseResponse);
                 }
             });
         } else {
@@ -365,19 +366,19 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.VISIBLE);
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         Print.d(TAG, "ON SUCCESS EVENT");
-        mOrderTracker = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        mOrderTracker = (OrderTracker) baseResponse.getMetadata().getData();
         showFragmentContentContainer();
         processSuccess();
         return true;
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
@@ -387,7 +388,7 @@ public class TrackOrderFragment extends BaseFragment {
         if(TextUtils.isEmpty(order_number))
             processError();
 
-        super.handleErrorEvent(bundle);
+        super.handleErrorEvent(baseResponse);
         
         return true;
     }

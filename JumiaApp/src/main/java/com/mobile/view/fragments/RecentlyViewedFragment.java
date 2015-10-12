@@ -18,8 +18,10 @@ import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -433,22 +435,22 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON RESPONSE COMPLETE " + getId());
         // Get event type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate the current state
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
         // Validate event
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         // Validate the event type
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
-                list = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                list = (ArrayList<String>)baseResponse.getMetadata().getData();
                 if (!CollectionUtils.isEmpty(list)) {
                     triggerValidateRecentlyViewed(list);
                 } else {
@@ -458,11 +460,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
-                int position = bundle.getInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, -1);
+                int position = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;
             case VALIDATE_PRODUCTS:
-                mProducts = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                mProducts = (ValidProductList) baseResponse.getMetadata().getData();
                 if (!CollectionUtils.isEmpty(mProducts)) {
                     showContent();
                 } else {
@@ -481,17 +483,17 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR RESPONSE");
         // Get type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate the current state
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
         // Validate common errors
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             hideActivityProgress();
             return;

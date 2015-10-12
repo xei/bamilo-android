@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,13 +51,16 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -86,6 +90,7 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -1076,13 +1081,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 new IResponseCallback() {
 
                     @Override
-                    public void onRequestError(Bundle bundle) {
-                        processErrorSearchEvent(bundle);
+                    public void onRequestError(BaseResponse baseResponse) {
+                        processErrorSearchEvent(baseResponse);
                     }
 
                     @Override
-                    public void onRequestComplete(Bundle bundle) {
-                        processSuccessSearchEvent(bundle);
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        processSuccessSearchEvent(baseResponse);
                     }
                 });
     }
@@ -1093,12 +1098,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     /**
      * Process the search error event
+     *
+     * @param baseResponse
      * @author sergiopereira
      */
-    private void processErrorSearchEvent(Bundle bundle) {
+    private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
+
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
+        String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
@@ -1135,15 +1145,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     /**
      * Process success search event
+     *
+     * @param baseResponse
      * @author sergiopereira
      */
-    private void processSuccessSearchEvent(Bundle bundle) {
+    private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        List<Suggestion> sug = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+
+//        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
         // Get query
-        String requestQuery = bundle.getString(GetSearchSuggestionsHelper.SEACH_PARAM);
-        Print.d(TAG, "RECEIVED SEARCH EVENT: " + sug + " " + requestQuery);
+        String requestQuery = suggestionsStruct.getSearchParam();
+        Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
 
         // Validate current objects
         if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
@@ -1169,7 +1183,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
         mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
         mSearchAutoComplete.showDropDown();
     }
@@ -1797,13 +1811,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
         JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: CART");
                 //...
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: CART");
                 updateCartInfo();
             }
@@ -1820,19 +1834,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
             @Override
-            public void onRequestError(Bundle bundle) {
+            public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
-            public void onRequestComplete(Bundle bundle) {
+            public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
                 boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);

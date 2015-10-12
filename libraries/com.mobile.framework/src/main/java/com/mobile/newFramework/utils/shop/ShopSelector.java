@@ -51,6 +51,8 @@ public final class ShopSelector {
 
 	private static boolean isLayoutRtl;
 
+	private static boolean isSingleShopCountry;
+
 	/**
 	 * Hidden default constructor for utility class.
 	 */
@@ -75,9 +77,8 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
-		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
+
+		initShopDynamics(context.getResources());
 
 		// Trackers
 		AdjustTracker.startup(context);
@@ -96,9 +97,8 @@ public final class ShopSelector {
 		// Rest client
         AigRestContract.init(context);
 		AigHttpClient.getInstance(context);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
-		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
+
+		initShopDynamics(context.getResources());
 	}
 
 	/**
@@ -109,9 +109,8 @@ public final class ShopSelector {
 		// Rest client
 		AigRestContract.init(context, requestHost, basePath);
 		AigHttpClient.getInstance(context);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
-		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
+
+		initShopDynamics(context.getResources());
 	}
 
 	/**
@@ -131,9 +130,8 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
-		isLayoutRtl = context.getResources().getBoolean(R.bool.is_layout_rtl);
+
+		initShopDynamics(context.getResources());
 	}
 	
 	/**
@@ -166,6 +164,12 @@ public final class ShopSelector {
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}
 
+	private static void initShopDynamics(Resources resources){
+		isRtlShop = resources.getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = resources.getBoolean(R.bool.is_layout_rtl);
+		isSingleShopCountry = resources.getBoolean(R.bool.is_single_shop_country);
+	}
+
 	public static boolean isRtl() {
 		return isLayoutRtl;
 	}
@@ -190,4 +194,7 @@ public final class ShopSelector {
 		return countryCode;
 	}
 
+	public static boolean isSingleShopCountry() {
+		return isSingleShopCountry;
+	}
 }
