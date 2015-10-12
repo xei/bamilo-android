@@ -31,6 +31,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -395,6 +396,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         private static final String SUCCESS_URL_TAG = "checkout/success";
         private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
+        private long beginTransaction;
 
         @SuppressWarnings("deprecation")
         @Override
@@ -485,9 +487,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 return;
             }
 
+            beginTransaction = System.currentTimeMillis();
+
             showFragmentLoading();
 
-            if (url.contains("checkout/success")) {
+            if (url.contains(SUCCESS_URL_TAG)) {
                 view.getSettings().setBlockNetworkImage(true);
                 if (Build.VERSION.SDK_INT >= 8) {
                     view.getSettings().setBlockNetworkLoads(true);
@@ -515,7 +519,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
                 handler.proceed();
             } else {
-                onReceivedError(view, error.getPrimaryError(), error.toString(), view.getUrl());
+                String url = view.getUrl();
+                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0);
+                onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
 
