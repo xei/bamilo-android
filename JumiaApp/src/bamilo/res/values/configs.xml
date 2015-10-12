@@ -2,7 +2,6 @@
 <resources>
     
 	<!-- APP -->
-	<bool name="is_to_show_dev_env">true</bool>
 	<item name="is_bamilo_specific" type="bool">true</item>
 	<bool name="is_force_http">true</bool>
     <bool name="rtl_enabled">true</bool>
