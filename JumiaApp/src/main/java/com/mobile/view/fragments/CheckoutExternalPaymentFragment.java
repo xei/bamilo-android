@@ -35,6 +35,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -193,10 +194,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
-        // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
@@ -280,11 +277,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
+//            paymentUrl = "https://tv.eurosport.pt/";
         } else {
             super.showFragmentErrorRetry();
             return;
@@ -516,7 +511,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } else {
                 Toast.makeText(getActivity(), "An SSL error occurred: " + error, Toast.LENGTH_LONG).show();
             }
-            handler.proceed();
+
+            if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
+                handler.proceed();
+            } else {
+                onReceivedError(view, error.getPrimaryError(), error.toString(), view.getUrl());
+                handler.cancel();
+            }
+
         }
     }
 
