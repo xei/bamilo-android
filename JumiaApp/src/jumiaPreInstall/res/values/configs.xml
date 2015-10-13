@@ -16,10 +16,11 @@
     <!-- ############### ADJUST ################# -->
     <!-- ######################################## -->
 
-    <!-- GH Tigo:       f7juys -->
-    <!-- NG Injoo:      6ohr47 -->
-    <!-- NG Tigo:       mkcqip -->
-    <!-- NG Infinix:    qwj7o2 -->
+    <!-- GH Tigo: f7juys -->
+    <!-- NG Tigo: mkcqip -->
+
+    <!-- NG Infinix: qwj7o2 -->
+    <!-- NG Injoo: 4jxw1w -->
 
     <string name="adjust_default_tracker">qwj7o2</string>
 
