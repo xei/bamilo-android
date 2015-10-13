@@ -15,7 +15,7 @@ Scenario: Login with facebook (the user must already be sing in to his facebook 
 * I should wait and see login screen
 * I press Facebook Login Button
 * I wait for 10 seconds
-#* I wait to see the home
-#* I wait for the overflow button
-#* I wait for 2 seconds
-#* I should see sign out button
+* I wait to see the home
+* I wait for the overflow button
+* I wait for 2 seconds
+* I should see sign out button

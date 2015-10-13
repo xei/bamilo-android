@@ -2,9 +2,9 @@ package com.mobile.newFramework.rest.cookies;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.security.Base64;
 

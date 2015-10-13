@@ -296,8 +296,8 @@ Then /^I press Proceed to Checkout$/ do
 end
 
 Then /^I press Next$/ do
-  wait_for_elements_exist(["* {text CONTAINS '"+@next.to_s+"'}"],:timeout => 40)
-  touch("* {text CONTAINS '"+@next.to_s+"'}")
+  wait_for_elements_exist(["* marked:'Next'"],:timeout => 40)
+  touch("* marked:'Next'")
 end
 
 Then /^I press Cash on Delivery$/ do
@@ -481,8 +481,9 @@ end
 Then /^I press grid item number (\d+)$/ do |number|
   #touch("* {text CONTAINS '"+@currency+"'}")
   #tap_when_element_exists("android.widget.GridView index:1")
-  wait_for_elements_exist(["GridView"],:timeout => 40)
-  touch("GridView")
+  #wait_for_elements_exist(["GridView"],:timeout => 40)
+  #touch("GridView")
+  touch("* marked:'item_brand' index:#{number.to_i-1}")
 end
 
 Then /^I press Add new address$/ do
@@ -546,4 +547,62 @@ end
 Then /^I press Facebook Login Button$/ do
   wait_for_elements_exist(["* marked:'"+@facebook_text_view.to_s+"'"],:timeout => 30)
   tap_when_element_exists("* marked:'"+@facebook_text_view.to_s+"'")
+  enter_text("* marked:'Web View' css:'input' index:0", 'mobile.ptc@africainternetgroup.com')
+  enter_text("* marked:'Web View' css:'input' index:1", 'rockformobile2')
+  #touch("* marked:'Web View' css:'BUTTON'")
+  press_user_action_button
+  touch("* marked:'Web View' css:'BUTTON' index:1")
+end
+
+Then /^I enter My Addresses$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@myaddresses.to_s+"'}"],:timeout => 40)
+  touch("* {text CONTAINS '"+@myaddresses.to_s+"'}")
+end
+
+Then /^I press Add New Address$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@newaddress.to_s+"'}"],:timeout => 40)
+  touch("* {text CONTAINS '"+@newaddress.to_s+"'}")
+end
+
+Then /^I select size$/ do
+    if query("TextView id:'"+@size_item.to_s+"'") != []
+      touch("TextView id:'"+@size_item.to_s+"' index:0")
+    end
+end
+
+Then /I touch the first Teaser$/ do
+  wait_for_elements_exist(["* marked:'home_teaser_campaign_title'"],:timeout => 40)
+  touch("* marked:'home_teaser_campaign_title' index:0")
+end
+
+Then /I touch the Buy Now in Campaign$/ do
+  wait_poll(:until_exists => "* marked:'"+@buy_now_campaign.to_s+"'", :timeout => 20) do
+     step "I swipe up moving with 2 steps"
+  end
+  touch("* marked:'"+@buy_now_campaign.to_s+"' index:0")
+end
+
+Then /^*I press Edit Address Icon$/ do
+  wait_for_elements_exist(["* marked:'checkout_address_item_btn_edit'"],:timeout => 40)
+  touch("* marked:'checkout_address_item_btn_edit' index:0")
+end
+
+Then /^I press Save Changes$/ do
+  wait_for_elements_exist(["* marked:'"+@save_changes.to_s+"'"],:timeout => 20)
+  touch("* marked:'"+@save_changes.to_s+"'")
+end
+
+Then /^I press Use$/ do
+  wait_for_elements_exist(["* marked:'"+@voucher_btn.to_s+"'"],:timeout => 20)
+  touch("* marked:'"+@voucher_btn.to_s+"'")
+end
+
+Then /^I press Remove/ do
+  wait_for_elements_exist(["* marked:'"+@voucher_btn.to_s+"'"],:timeout => 20)
+  touch("* marked:'"+@voucher_btn.to_s+"'")
+end
+
+Then /^I press New Address/ do
+  wait_for_elements_exist(["* marked:'checkout_addresses_other_add'"],:timeout => 20)
+  touch("* marked:'checkout_addresses_other_add'")
 end
