@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -193,10 +192,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
-        // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
@@ -212,9 +207,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -226,9 +218,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -280,9 +269,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         } else {
@@ -375,17 +361,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private String prepareCookie(HttpCookie cookie) {
-        String transDomain = cookie.getDomain();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            if (cookie.getDomain().startsWith(".")) {
-                transDomain = transDomain.substring(1);
-                Print.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
-                        + transDomain);
-            } else {
-                Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-            }
-        }
-        return transDomain;
+        return cookie.getDomain();
     }
 
     private void trackPurchase(final JSONObject result) {
@@ -494,9 +470,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
             if (url.contains("checkout/success")) {
                 view.getSettings().setBlockNetworkImage(true);
-                if (Build.VERSION.SDK_INT >= 8) {
-                    view.getSettings().setBlockNetworkLoads(true);
-                }
+                view.getSettings().setBlockNetworkLoads(true);
+
                 view.getSettings().setLoadsImagesAutomatically(false);
             }
         }

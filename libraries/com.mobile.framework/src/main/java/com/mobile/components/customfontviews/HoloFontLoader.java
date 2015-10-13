@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -462,11 +461,8 @@ public class HoloFontLoader {
                     try {
                         final Context context = getContext();
                         final PackageInfo ai = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                            sApplicationInstallDate = Math.max(ai.lastUpdateTime, ai.firstInstallTime);
-                        } else {
-                            sApplicationInstallDate = new File(ai.applicationInfo.sourceDir).lastModified();
-                        }
+                        sApplicationInstallDate = Math.max(ai.lastUpdateTime, ai.firstInstallTime);
+
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                         sApplicationInstallDate = System.currentTimeMillis();

@@ -49,21 +49,7 @@ public class UIUtils {
      * @param alpha The alpha view
      */
     public static void setAlpha(final View view, final float alpha) {
-        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-
-            @Override
-            public void highVersionCallback() {
-                view.setAlpha(alpha);
-            }
-
-            @Override
-            public void lowerVersionCallback() {
-                final AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
-                animation.setDuration(0);
-                animation.setFillAfter(true);
-                view.startAnimation(animation);
-            }
-        });
+        view.setAlpha(alpha);
     }
     
     /**

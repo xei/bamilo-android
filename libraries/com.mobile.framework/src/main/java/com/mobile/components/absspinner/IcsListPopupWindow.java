@@ -7,10 +7,8 @@ import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -88,12 +86,8 @@ public class IcsListPopupWindow {
 
     public IcsListPopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            Context wrapped = new ContextThemeWrapper(context, defStyleRes);
-            mPopup = new PopupWindowCompat(wrapped, attrs, defStyleAttr);
-        } else {
-            mPopup = new PopupWindowCompat(context, attrs, defStyleAttr, defStyleRes);
-        }
+
+        mPopup = new PopupWindowCompat(context, attrs, defStyleAttr, defStyleRes);
         mPopup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
     }
 
