@@ -210,9 +210,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -224,9 +221,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -335,20 +329,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         isRequestedPage = true;
     }
 
-//    private void setProxy() {
-////        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-////            ProxyConfiguration conf = null;
-////            try {
-////                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
-////            } catch (Exception e) {
-////                Log.e(TAG, "ProxyConfigurationException:", e);
-////            }
-////            if (conf != null && conf.getProxyType() != Type.DIRECT) {
-////                ProxyUtils.setWebViewProxy(getActivity(), conf);
-////            }
-////        }
-//    }
-
     private void prepareCookieStore() {
         // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
@@ -372,15 +352,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private String prepareCookie(HttpCookie cookie) {
         String transDomain = cookie.getDomain();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            if (cookie.getDomain().startsWith(".")) {
-                transDomain = transDomain.substring(1);
-                Print.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
-                        + transDomain);
-            } else {
-                Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-            }
-        }
+
+        Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
+
         return transDomain;
     }
 
@@ -493,9 +467,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
             if (url.contains(SUCCESS_URL_TAG)) {
                 view.getSettings().setBlockNetworkImage(true);
-                if (Build.VERSION.SDK_INT >= 8) {
-                    view.getSettings().setBlockNetworkLoads(true);
-                }
+
+                view.getSettings().setBlockNetworkLoads(true);
+
                 view.getSettings().setLoadsImagesAutomatically(false);
             }
         }
