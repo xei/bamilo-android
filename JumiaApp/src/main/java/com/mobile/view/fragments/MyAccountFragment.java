@@ -114,6 +114,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         showPreferences();
         showAppSharing(view);
         showChooseLanguage(view);
+        showMoreInfo(view);
     }
 
     /*
@@ -221,6 +222,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         chooseLanguageList.setOnItemClickListener(this);
     }
 
+    private void showMoreInfo(View view) {
+        View container = view.findViewById(R.id.more_info_container);
+        container.setOnClickListener(this);
+    }
+
     /*
      * (non-Javadoc)
      * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
@@ -233,6 +239,18 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             handleOnAppSharingListItemClick(position);
         } else if(parent == this.chooseLanguageList){
             handleOnChooseLanguageItemClick(parent, position);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        // Get view id
+        int id = view.getId();
+        // Buy button
+        if(id == R.id.more_info_container){
+            processOnClickMoreInfo();
+        } else{
+            super.onClick(view);
         }
     }
 
@@ -294,7 +312,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         default:
             break;
         }
-        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
+        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
     }
 
     /**
@@ -315,6 +333,10 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    private void processOnClickMoreInfo() {
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MORE_INFO, null, FragmentController.ADD_TO_BACK_STACK);
     }
     
 }
