@@ -51,12 +51,11 @@
             android:textColor="@color/color_accent" />
 
         <ImageView
-            android:id="@+id/imArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_gravity="right|end"
-            android:src="@drawable/ic_arrow_combo_inv" />
+            android:src="@drawable/ic_arrow_combo" />
 
     </RelativeLayout>
 
