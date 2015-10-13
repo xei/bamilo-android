@@ -407,7 +407,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog was recover
         else {
             onRecoverCatalogContainer(mCatalogPage);
-            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
         }
     }
 
@@ -1000,7 +1000,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
             }
         }
         // Case invalid success response
@@ -1090,7 +1090,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the error code
      *
-     * @param bundle - the request bundle
      */
     private void onLoadingMoreRequestError(BaseResponse baseResponse) {
         // Mark error on loading more
