@@ -500,4 +500,6 @@ public interface AigApiInterface {
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
 
+    void getFaqTerms(Callback<BaseResponse<Void>> callback);
+    String getFaqTerms = "getFaqTerms";
 }
