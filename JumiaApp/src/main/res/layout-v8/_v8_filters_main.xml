@@ -22,16 +22,11 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/filter_title"
             style="@style/HeaderStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="TITLE"
 
             />
 
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black_400"
-            />
+        <View style="@style/HorizontalListDivider" />
 
         <FrameLayout
             android:id="@+id/dialog_filter_container"
@@ -41,9 +36,7 @@
 
         </LinearLayout>
 
-        <View android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/black_400"/>
+        <View style="@style/VerticalListDivider" />
 
         <ListView
             android:id="@+id/filters_key"
