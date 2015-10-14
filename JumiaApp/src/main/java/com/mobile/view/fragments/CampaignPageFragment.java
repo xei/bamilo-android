@@ -58,7 +58,6 @@ import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -844,7 +843,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     offerEnded.setVisibility(View.INVISIBLE);
 
                     // Set full opacity to image
-                    UIUtils.setAlpha(image, 1F);
+                    image.setAlpha(1F);
                 // show "Offer Ended" and disable product
                 } else {
                     Print.d(TAG, "Product expired!");
@@ -857,7 +856,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 offerEnded.setVisibility(View.INVISIBLE);
 
                 // Set full opacity to image
-                UIUtils.setAlpha(image, 1F);
+                image.setAlpha(1F);
             }
         }
 
@@ -938,7 +937,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             imageContainer.setOnClickListener(null);
 
             // Set product image as defocused
-            UIUtils.setAlpha(image, 0.5F);
+            image.setAlpha(0.5F);
         }
 
         /**

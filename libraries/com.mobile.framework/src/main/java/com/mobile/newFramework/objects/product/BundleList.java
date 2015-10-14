@@ -9,7 +9,6 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,34 +21,24 @@ import java.util.ArrayList;
  * Class that manages the full representation of a given product bundle.
  *
  * @author Paulo Carvalho
- *
  */
 public class BundleList implements IJSONSerializable, Parcelable {
 
     protected static final String TAG = BundleList.class.getSimpleName();
 
-    private String bundleName;
-    private String bundleId;
-    private String bundlePrice;
-    private double bundlePriceDouble;
-    private double bundlePriceConverted;
-    private int bundleLeaderPos;
-    private ArrayList<ProductBundle> bundleProducts;
-    private ProductBundle selectedBundle;
-    private int selectedBundlePosition = -1;
+    private String mId;
+    private double mPrice;
+    private double mPriceConverted;
+    private int mLeaderPosition;
+    private ArrayList<ProductBundle> mProducts;
+
 
     /**
      * Complete product bundle empty constructor.
      */
     @SuppressWarnings("unused")
     public BundleList() {
-        bundleName = "";
-        bundleId = "";
-        bundlePrice = "";
-        bundlePriceDouble = 0.0;
-        bundlePriceConverted = 0.0;
-        bundleLeaderPos = 0;
-        bundleProducts = new ArrayList<>();
+        // ...
     }
 
     /*
@@ -60,29 +49,19 @@ public class BundleList implements IJSONSerializable, Parcelable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            bundleId = jsonObject.getString(RestConstants.JSON_BUNDLE_ID);
-            bundleName = jsonObject.getString(RestConstants.JSON_BUNDLE_NAME);
-            String priceJSON = jsonObject.getString(RestConstants.JSON_BUNDLE_PRICE);
-            if (!CurrencyFormatter.isNumber(priceJSON)) {
-                throw new JSONException("Price is not a number!");
+    public boolean initialize(JSONObject jsonObject) throws JSONException{
+        mId = jsonObject.getString(RestConstants.JSON_BUNDLE_ID);
+        mPrice = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE);
+        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
+        mLeaderPosition = jsonObject.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
+        JSONArray bundleProductsArray = jsonObject.optJSONArray(RestConstants.JSON_BUNDLE_PRODUCTS);
+        if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
+            mProducts = new ArrayList<>();
+            for (int i = 0; i < bundleProductsArray.length(); i++) {
+                JSONObject productJson = bundleProductsArray.getJSONObject(i);
+                ProductBundle bundleProduct = new ProductBundle(productJson);
+                mProducts.add(bundleProduct);
             }
-            bundlePriceDouble = Double.parseDouble(priceJSON);
-            bundlePrice = priceJSON;
-            bundlePriceConverted = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
-            bundleLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
-            JSONArray bundleProductsArray = jsonObject.optJSONArray(RestConstants.JSON_BUNDLE_PRODUCTS);
-            if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
-                for (int i = 0; i < bundleProductsArray.length(); i++) {
-                    JSONObject productJson = bundleProductsArray.getJSONObject(i);
-                    ProductBundle bundleProduct = new ProductBundle(productJson);
-                    bundleProducts.add(bundleProduct);
-                }
-            }
-
-        } catch (JSONException e) {
-            return false;
         }
         return true;
     }
@@ -103,11 +82,36 @@ public class BundleList implements IJSONSerializable, Parcelable {
     }
 
     public String getBundleId() {
-        return bundleId;
+        return mId;
     }
 
-    public ArrayList<ProductBundle> getBundleProducts() {
-        return bundleProducts;
+    public ArrayList<ProductBundle> getProducts() {
+        return mProducts;
+    }
+
+
+    public double getPrice() {
+        return mPrice;
+    }
+
+    /**
+     * Change a bundle product state and update total combo's price when checking/unchecking a bundle product
+     */
+    public void updateTotalPriceWhenChecking(int bundlePosition) {
+        if (CollectionUtils.isNotEmpty(mProducts)) {
+            //get selected bundle
+            ProductBundle productBundle = mProducts.get(bundlePosition);
+            //change for the oposite state
+            productBundle.setChecked(!productBundle.isChecked());
+            //update total price
+            if (productBundle.isChecked()) {
+                mPrice += productBundle.hasDiscount() ? productBundle.getSpecialPrice() : productBundle.getPrice();
+            } else {
+                mPrice -= productBundle.hasDiscount() ? productBundle.getSpecialPrice() : productBundle.getPrice();
+            }
+            //update item in bundle array
+            mProducts.set(bundlePosition, productBundle);
+        }
     }
 
     /*
@@ -115,17 +119,15 @@ public class BundleList implements IJSONSerializable, Parcelable {
      */
 
     protected BundleList(Parcel in) {
-        bundleName = in.readString();
-        bundleId = in.readString();
-        bundlePrice = in.readString();
-        bundlePriceDouble = in.readDouble();
-        bundlePriceConverted = in.readDouble();
-        bundleLeaderPos = in.readInt();
+        mId = in.readString();
+        mPrice = in.readDouble();
+        mPriceConverted = in.readDouble();
+        mLeaderPosition = in.readInt();
         if (in.readByte() == 0x01) {
-            bundleProducts = new ArrayList<>();
-            in.readList(bundleProducts, ProductBundle.class.getClassLoader());
+            mProducts = new ArrayList<>();
+            in.readList(mProducts, ProductBundle.class.getClassLoader());
         } else {
-            bundleProducts = null;
+            mProducts = null;
         }
     }
 
@@ -136,17 +138,15 @@ public class BundleList implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(bundleName);
-        dest.writeString(bundleId);
-        dest.writeString(bundlePrice);
-        dest.writeDouble(bundlePriceDouble);
-        dest.writeDouble(bundlePriceConverted);
-        dest.writeInt(bundleLeaderPos);
-        if (bundleProducts == null) {
+        dest.writeString(mId);
+        dest.writeDouble(mPrice);
+        dest.writeDouble(mPriceConverted);
+        dest.writeInt(mLeaderPosition);
+        if (mProducts == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(bundleProducts);
+            dest.writeList(mProducts);
         }
     }
 
@@ -162,65 +162,5 @@ public class BundleList implements IJSONSerializable, Parcelable {
             return new BundleList[size];
         }
     };
-
-
-    public double getBundlePriceDouble()
-    {
-        return bundlePriceDouble;
-    }
-
-    public void setBundlePriceDouble(double bundlePriceDouble)
-    {
-        this.bundlePriceDouble= bundlePriceDouble;
-    }
-
-
-
-    /**
-     * Change a bundle product state and update total combo's price when checking/unchecking a bundle product
-     * */
-    public void updateTotalPriceWhenChecking(int bundlePosition)
-    {
-        if(CollectionUtils.isNotEmpty(bundleProducts))
-        {
-            //get selected bundle
-            ProductBundle productBundle = bundleProducts.get(bundlePosition);
-            //change for the oposite state
-            productBundle.setChecked(!productBundle.isChecked());
-            //update total price
-            if(productBundle.isChecked())
-            {
-                if(productBundle.hasDiscount())
-                    bundlePriceDouble += productBundle.getSpecialPrice();
-                else
-                    bundlePriceDouble += productBundle.getPrice();
-
-            }else
-            {
-                if(productBundle.hasDiscount())
-                    bundlePriceDouble -= productBundle.getSpecialPrice();
-                else
-                    bundlePriceDouble -= productBundle.getPrice();
-            }
-
-            //update item in bundle array
-            bundleProducts.set(bundlePosition,productBundle);
-
-
-        }
-    }
-
-    public ProductBundle getSelectedBundle(int bundlePosition)
-    {
-        if(CollectionUtils.isNotEmpty(bundleProducts))
-        {
-            return bundleProducts.get(bundlePosition);
-        }
-
-        return null;
-    }
-
-
-    public void setSelectedBundlePosition(int bundlePosition) { this.selectedBundlePosition = bundlePosition; }
 
 }

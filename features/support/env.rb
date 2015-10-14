@@ -97,7 +97,16 @@ def initvars
   # country change
   @dialog_text = "dialog_text"
   @tips_got_it = "tips_got_it_img"
-  
+
+#Create Address
+  @myaddresses = "My Addresses"
+  @newaddress = "Add new address"
+  @otheradsresses ="Other Addresses"
+  @error_first_name ="Please fill in the First name"
+  @error_last_name ="Please fill in the Last name"
+  @error_address ="Please fill in the Address"
+  @phone_nr="912345678"
+
   #initializes the country variables
   case $country.to_s
     ##### Kenya  ############################################ KE ##############################################################################
@@ -107,7 +116,7 @@ def initvars
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "adddddf" 
-    @search_p= "nikon" 
+    @search_p= "Nikon"
     @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
@@ -1377,9 +1386,17 @@ def initvars
     ##### Staging Nigeria ########################################### STG NG ##############################################################################
     when "stg_ng"
         @venture_name= "Staging Nigeria"
+        #@venture_name= "Integration Nigeria (Mobile)"
 
         @username="testjumia+mobile1441103649946@jumia.com"
         @password="123456"
+
+
+        @tips_got_it = "Got it"
+
+        @buy_now_campaign ="Buy Now"
+
+        @save_changes="Save Changes"
 
         @sign_in="Sign In"
         @wrong_username="faketester@tester.tt"
@@ -1389,8 +1406,8 @@ def initvars
         @search="Search"
         @myaccount="My Account"
         @myinfo="User Data"
-        @categories="CATEGORIES"
-        @categoryfashion="Computing"
+        @categories="Categories"
+        @categoryfashion="FASHION"
         @choose_country="Choose Country"
         @order_status="Order Status"
 
@@ -1423,7 +1440,7 @@ def initvars
         @pass_rec_sent="Email sent"
 
         #cart
-        @item_was_added="was added to shopping cart"
+        @item_was_added="Item was added to cart"
         @no_items="You have no items in the cart"
         @got_it="Got it"
         @clear_cart_message="This clears the cart"
@@ -1519,6 +1536,8 @@ def initvars
 
         @add_new_address = "Add new address"
         @size= "Size"
+        @edited_address_msg = "Edited address successfully"
+
         @call_to_order = "Call to order"
         @add_all_items_to_cart = "Add All Items to Cart"
         @continue_shopping = "Continue Shopping"
@@ -1530,5 +1549,176 @@ def initvars
 
         # shopping cart
         #@items_count = "items_count"
+
+        ##### Staging Nigeria ########################################### STG GH ##############################################################################
+            when "stg_gh"
+                @venture_name= "Staging Ghana"
+
+                @username="testjumia+mobile1441340516506@jumia.com"
+                @password="123456"
+
+                @tips_got_it = "Got it"
+
+                @size_item ="item_text"
+                @shipping ="Shipping"
+
+                @voucher="qa_cuc_1bhDQ1"
+                @invalid_voucher="invalid"
+                @invalid_voucher_msg="Please input a valid Coupon Code"
+                @voucher_btn="voucher_btn"
+                @voucher_label="Voucher"
+
+                @search_input="search_src_text"
+
+                @sign_in="Sign In"
+                @wrong_username="faketester@tester.tt"
+                @invalidsearch= "adddddf"
+                @search_p= "Nikon"
+                @search_word="samsung"
+                @search="Search"
+                @myaccount="My Account"
+                @myinfo="User Data"
+                @categories="Categories"
+                @categoryfashion="FASHION"
+                @choose_country="Choose Country"
+                @order_status="Order Status"
+
+                @newsletter_receive="Newsletter"
+
+                @checkoutNext="Next"
+                @checkout1="TestPayment"
+                @checkout3="Confirm Order"
+
+                @emailerrormessage="Please fill in the E-Mail";
+                @passerrormessage="Please fill in the Password";
+
+                @loginerror="Login failed"
+                @signout="Sign Out"
+                @mandatory="Please fill in the required(*) fields"
+                @sameemail="This email already exists."
+                @searchdefault="Please enter a term for suggestions!"
+                @nosuggest="No suggestions for your search term!"
+
+                @addtocart="Add to Cart"
+                @home="Home"
+                @home_c="HOME"
+                @new_pass_short="The new password has to have at least 6 characters"
+
+                #password recovery
+                @forgot_password="Forgot Password?"
+                @password_recovery="Password Recovery"
+                @pass_rec_empty_email="Please fill in the E-Mail"
+                @pass_rec_failed="Password recovery failed"
+                @pass_rec_sent="Email sent"
+
+                #cart
+                @item_was_added="Item was added to cart"
+                @no_items="You have no items in the cart"
+                @got_it="Got it"
+                @clear_cart_message="This clears the cart"
+
+                #catalog
+                @currency= "₦"
+                @loading_items="Loading more items"
+                @popularity="POPULARITY"
+                @price_up="PRICE UP"
+                @price_down="PRICE DOWN"
+                @name="NAME"
+                @brand="BRAND"
+
+                #product detail
+                @first_tip="Swipe left or right to"
+                @second_tip="Tap to open the product gallery"
+                @specification="Specification"
+                @please_choose="Please choose"
+                @search_v="sandal"
+                @product_features="Product Features"
+                @product_description="Product Description"
+                @write_review="Write a Review"
+                @posted_by="posted by"
+                @write_review="Write a Review"
+                @send_review="Send Review"
+                @to_reviews="To reviews"
+                @messaging="Messaging"
+
+                #cart
+                @delete="Delete"
+
+                #native checkout
+                @cod="Cash On Delivery"
+                @proceed_to_checkout="Proceed to Checkout"
+                @next="Next"
+                @confirm_order="Confirm Order"
+
+                @popular_categories="Popular"
+                @filter="Filter"
+                @filter_brand="Brand"
+                @filter_size="Size"
+                @filter_color_family="Color family"
+                @filter_price="Price"
+
+                @done="Done"
+                @clear_all="CLEAR ALL"
+                @new_in="NEW IN"
+                @best_rating="BEST RATING"
+                @back="Please press back again if you wish to leave the app"
+                @search_r="samsung"
+
+                @valid_order="304442242"
+                @no_track_results="No results found"
+
+                @related_items="Related Items"
+
+                @newsletter_checkbox="Newsletter"
+
+                @email_notifications="Email Notifications"
+
+                @login="Login"
+
+                @newsletter="Newsletters"
+                @newsletter_male="Male"
+                @newsletter_female="Newsletter Female"
+
+                @register="Register"
+
+                @notification_newsletter_changes="Your email notifications settings have been saved"
+
+                @no_result_found="Unfortunately there was no match found"
+                @search_tips="Search Tips"
+
+                @newsletter_subscription="Newsletter Subscription"
+
+                @invalid_email_message="Invalid email address"
+
+                @save="Save"
+                @settings = "Settings"
+                @myprofile = "My Profile"
+                @my_favourites = "My Favourites"
+                @recente_searches = "Recent Searches"
+                @recently_viewed = "Recently Viewed"
+                @menu = "MENU"
+                @item_added = "Item added"
+                @item_removed = "Item removed"
+                @shopping_cart = "Shopping Cart"
+                @my_cart = "My Cart"
+                @back_button= "BACK"
+                @track_my_order = "My Orders"
+                @number_items="Items"
+                @remember_my_email= "Remember my email"
+
+                @add_new_address = "Add new address"
+                @size= "Size"
+                @call_to_order = "Call to order"
+                @add_all_items_to_cart = "Add All Items to Cart"
+                @continue_shopping = "Continue Shopping"
+                @signup = "Signup"
+                @female = "female"
+
+                @my_order_history = "MY ORDER HISTORY"
+                @my_order_history_2 = "My Order History"
+
+                # shopping cart
+                #@items_count = "items_count"
+                @phone_nr="9123456780"
   end
 end

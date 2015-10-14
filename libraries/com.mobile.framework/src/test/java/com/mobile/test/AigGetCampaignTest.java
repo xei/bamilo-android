@@ -30,7 +30,7 @@ public class AigGetCampaignTest extends AigTestCase {
     @Override
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
-        data.put("slug", "deals-of-the-day");
+        data.put("campaign_slug", "deals-of-the-day");
         return data;
     }
 

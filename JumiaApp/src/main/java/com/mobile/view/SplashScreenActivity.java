@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -291,10 +290,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
-        if (Build.VERSION.SDK_INT >= 9) {
-            devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-            devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
-        }
+        devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+        devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
+
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);

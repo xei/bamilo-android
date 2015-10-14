@@ -73,6 +73,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
+    private  TextView mTxFilterTitle;
+
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Filters,
@@ -114,6 +116,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
+        mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
 
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
 
@@ -171,6 +174,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         if (currentFragment != null) {
             currentFilterPosition = position;
             filterSelectionController.addToInitialValues(position);
+            mTxFilterTitle.setText(catalogFilter.getName());
             ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
             fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true, true);
         }
