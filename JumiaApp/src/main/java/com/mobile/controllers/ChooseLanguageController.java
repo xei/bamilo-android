@@ -11,6 +11,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
 import com.mobile.utils.dialogfragments.DialogListFragment;
@@ -33,10 +34,6 @@ public class ChooseLanguageController {
 
     /**
      * Loads Language chooser dialog.
-     *
-     * @param fragment
-     * @param languages
-     * @param runnable
      */
     public static void loadLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
         DialogLanguagesListAdapter languagesListAdapter = new DialogLanguagesListAdapter(fragment.getActivity(), languages);
@@ -63,10 +60,6 @@ public class ChooseLanguageController {
 
     /**
      * Loads chooser dialog in case languages have more than one element.
-     *
-     * @param fragment
-     * @param languages
-     * @param runnable
      * @return True if dialog is loaded correctly. False otherwise.
      */
     public static boolean chooseLanguageDialog(final Fragment fragment, final Languages languages, final Runnable runnable){
@@ -79,31 +72,28 @@ public class ChooseLanguageController {
 
     /**
      * Get languages from preferences. If user does not have any yet, default from countryObject is returned.
-     *
-     * @param context
-     * @param countryObject
      * @return The current user preferences.
      */
-    public static Languages getCurrentLanguages(Context context, CountryObject countryObject){
+    public static Languages getCurrentLanguages(Context context, CountryObject country){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-
         Languages languages = null;
-        if(countryObject.getCountryIso().toLowerCase().equals(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, ""))) {
+        // Get saved country info
+        String countryIso = settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, "");
+        String countryUrl = settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, "");
+        // Get current country info
+        String iso = country.getCountryIso();
+        String url = country.getCountryUrl();
+        // Get languages
+        if(iso.toLowerCase().equals(countryIso) && TextUtils.equals(countryUrl, url)) {
             languages = CountryPersistentConfigs.getLanguages(settings);
         }
-
-        if(languages == null){
-            languages = countryObject.getLanguages();
-        }
-        return languages;
+        // Return languages
+        return languages != null ? languages : country.getLanguages();
     }
 
     /**
      * Set selected language based on current device's language. If there isn't any language matching,
      * default is selected.
-     *
-     * @param languages
-     * @param countryCode
      */
     public static void setLanguageBasedOnDevice(Languages languages, String countryCode){
         if(!languages.setSelected(Locale.getDefault().getLanguage()+"_"+countryCode)){
