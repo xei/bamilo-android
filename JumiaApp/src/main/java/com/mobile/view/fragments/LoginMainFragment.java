@@ -68,9 +68,9 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionLoginFragment extends BaseExternalLoginFragment  {
+public class LoginMainFragment extends BaseExternalLoginFragment  {
 
-    private static final String TAG = SessionLoginFragment.class.getSimpleName();
+    private static final String TAG = LoginMainFragment.class.getSimpleName();
 
     private final static String FORM_ITEM_EMAIL = "email";
 
@@ -100,11 +100,11 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
 
 
     /**
-     * 
+     *
      * @return
      */
-    public static SessionLoginFragment getInstance(Bundle bundle) {
-        SessionLoginFragment fragment = new SessionLoginFragment();
+    public static LoginMainFragment getInstance(Bundle bundle) {
+        LoginMainFragment fragment = new LoginMainFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -112,7 +112,7 @@ public class SessionLoginFragment extends BaseExternalLoginFragment  {
     /**
      * Empty constructor
      */
-    public SessionLoginFragment() {
+    public LoginMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,

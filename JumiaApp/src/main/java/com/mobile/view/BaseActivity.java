@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -90,9 +89,7 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -261,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.FragmentActivity#onStart()
+     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
      */
     @Override
     protected void onStart() {

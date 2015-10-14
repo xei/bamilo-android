@@ -22,15 +22,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_button_buy"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/color_accent"
-        android:clickable="true"
-        android:gravity="center"
-        android:paddingLeft="@dimen/layout_marginLeft"
-        android:paddingRight="@dimen/layout_marginLeft"
-        android:text="@string/buy_now_button"
-        android:textColor="@color/white" />
+        style="@style/AigButton.Active"
+        android:text="@string/buy_now_button" />
 
 </LinearLayout>

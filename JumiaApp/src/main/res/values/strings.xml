@@ -422,4 +422,6 @@
     <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
     <string name="product_specifications">Product Specifications</string>
     <!-- NEW 2.8 -->
+    <string name="continue_label">Continue</string>
+
 </resources>

@@ -110,6 +110,36 @@
         <item name="android:gravity">left|start|bottom</item>
     </style>
 
+    <!-- BUTTONS -->
+
+    <style name="AigButton" parent="TextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="AigButton.Active" >
+        <item name="android:background">@color/color_accent</item>
+    </style>
+
+    <style name="AigButton.GooglePlus" >
+        <item name="android:background">@color/red_dd4b39</item>
+    </style>
+
+    <style name="AigButton.Facebook" >
+        <item name="android:background">@color/blue_205081</item>
+        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:paddingTop">17dp</item>
+        <item name="android:paddingBottom">17dp</item>
+        <item name="android:text">CONTINUE WITH FACEBOOK</item>
+    </style>
+
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
 

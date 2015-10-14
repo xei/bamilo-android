@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -53,12 +50,12 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Class used to manage the register form
  * @author sergiopereira
  * 
  */
@@ -73,8 +70,6 @@ public class SessionRegisterFragment extends BaseFragment {
     private TextView loginText;
 
     private CheckBox checkTerms;
-
-    private TextView linkText;
 
     private TextView mandatory;
 
@@ -555,8 +550,7 @@ public class SessionRegisterFragment extends BaseFragment {
 
         mandatory = (TextView) termsLink.getMandatoryControl();
 
-        linkText = (TextView) termsLink.getEditControl().findViewWithTag(
-                RestConstants.JSON_TERMS_TAG);
+        TextView linkText = (TextView) termsLink.getEditControl().findViewWithTag(RestConstants.JSON_TERMS_TAG);
         linkText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
