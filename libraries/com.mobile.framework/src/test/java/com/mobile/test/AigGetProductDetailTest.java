@@ -24,13 +24,13 @@ public class AigGetProductDetailTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"/hero-3-tripod-mounts-black-205562.html";
+        return AigMobApiNigeriaTestSuite.HOST+"/catalog/detail/";
     }
 
     @Override
     public Map<String, String> getData() {
-        HashMap<String, String> data = null;
-
+        HashMap<String, String> data = new HashMap<>();
+        data.put("sku", "SA948ELAB541NGAMZ");
         return data;
     }
 

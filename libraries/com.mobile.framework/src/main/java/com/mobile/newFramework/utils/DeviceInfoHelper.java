@@ -95,13 +95,17 @@ public class DeviceInfoHelper {
     	 * Use a list of base paths to find the pre installed apk.<br>
     	 * - /system/app/com.mobile.jumia.dev-1.apk
     	 * @author sergiopereira
+         * TODO: Improve this method to get apk file name
     	 */
         // Validate specific folders
 		String[] paths = context.getResources().getStringArray(R.array.pre_install_folders);
 		for (String folder : paths) 
 			if (existSpecificFile(folder + "/" + app.packageName + "-1.apk")
 					|| existSpecificFile(folder + "/" + app.packageName + ".apk")
-					|| existSpecificFile(folder + "/Jumia-release.apk"))
+                    || existSpecificFile(folder + "/JumiaApp-jumia-release.apk")
+                    || existSpecificFile(folder + "/JumiaApp-daraz-release.apk")
+                    || existSpecificFile(folder + "/JumiaApp-bamilo-release.apk")
+                    || existSpecificFile(folder + "/JumiaApp-shop-release.apk"))
 				return true;
         
     	/**
@@ -159,6 +163,7 @@ public class DeviceInfoHelper {
     private static boolean createPreInstallFile(Context context) {
 		try {
     		File file = new File(context.getFilesDir(), PRE_INSTALL_FILE);
+            //noinspection ResultOfMethodCallIgnored
     		file.createNewFile();
     		Print.i(TAG, "CREATE PRE INSTALLED: YES IN " + file.getAbsolutePath());
 		} catch (IOException e) {
@@ -282,16 +287,10 @@ public class DeviceInfoHelper {
         Point size = new Point();
         int width;
         int height;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
-        } else {
-            width = display.getWidth();
-            height = display.getHeight();
-            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM: " + width + " " + height);
-        }
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+        Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
         // Create
         Message msg = new Message();
         msg.arg1 = width;
@@ -391,30 +390,12 @@ public class DeviceInfoHelper {
      *
      * @param iDeviceVersionBasedCode
      */
-    public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+    public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
     }
 
-    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
-    }
-
-    /**
-     * Execute callbacks based on HoneyComb version.
-     *
-     * @param iDeviceVersionBasedCode
-     */
-    public static void executeCodeBasedOnHoneyCombVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
-        executeCodeBasedOnVersion(Build.VERSION_CODES.HONEYCOMB, iDeviceVersionBasedCode);
-    }
-
-    /**
-     * Execute callbacks based on Ice Cream Sandwich version.
-     *
-     * @param iDeviceVersionBasedCode
-     */
-    public static void executeCodeBasedOnIceCreamSandwichVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
-        executeCodeBasedOnVersion(Build.VERSION_CODES.ICE_CREAM_SANDWICH, iDeviceVersionBasedCode);
     }
 
 }

@@ -696,3 +696,73 @@ Then /^I should see my order history$/ do
   wait_for_elements_exist(["* {text CONTAINS '"+@my_order_history_2.to_s+"'}"],:timeout => 20)
   assert_text(@my_order_history_2.to_s)
 end
+
+Then /^I should see other addresses$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@otheradsresses.to_s+"'}"],:timeout => 20)
+  assert_text(@otheradsresses.to_s)
+end
+
+Then /^I should see the mandatory First Name error message$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@error_first_name.to_s+"'}"],:timeout => 20)
+  assert_text(@error_first_name.to_s)
+end
+
+Then /^I should see the mandatory Last Name error message$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@error_last_name.to_s+"'}"],:timeout => 20)
+  assert_text(@error_last_name.to_s)
+end
+
+Then /^I should see the mandatory Address error message$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@error_address.to_s+"'}"],:timeout => 20)
+  assert_text(@error_address.to_s)
+end
+
+Then /^I should see the Categories$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@categories.to_s+"'}"],:timeout => 20)
+  assert_text(@categories.to_s)
+end
+
+Then /^I should see the no items message$/ do
+  wait_for_elements_do_not_exist(["* marked:'"+@dialog_text.to_s+"'"],:timeout => 15)
+  #assert_text(@no_items.to_s)
+end
+
+Then /^I should see the Address$/ do
+  wait_for_elements_exist(["* marked:'test tester'"],:timeout => 15)
+  #assert_text(@no_items.to_s)
+end
+
+Then /^I should see the Shipping Label$/ do
+  wait_for_elements_exist(["* marked:'"+@shipping.to_s+"'"],:timeout => 15)
+  #assert_text(@no_items.to_s)
+end
+
+Then /^I wait to see the Teaser$/ do
+  wait_for_elements_exist(["* marked:'home_teaser_campaign_title'"],:timeout => 40)
+end
+
+Then /^I should see the Address Edited Message$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@edited_address_msg.to_s+"'}"],:timeout => 20)
+  assert_text(@edited_address_msg.to_s)
+end
+
+Then /^I (should not|should) see the Voucher Label$/ do |item|
+ case item.to_s
+    when "should"
+      wait_for_elements_exist(["* {text CONTAINS '"+@voucher_label.to_s+"'}"],:timeout => 20)
+      assert_text(@voucher_label.to_s)
+    when "should not"
+      wait_for_elements_do_not_exist(["* {text CONTAINS '"+@voucher_label.to_s+"'}"],:timeout => 20)
+      assert_text(@voucher_label.to_s,false)
+    end
+end
+
+Then /^I should see Invalid Voucher Message$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@invalid_voucher_msg.to_s+"'}"],:timeout => 20)
+  assert_text(@invalid_voucher_msg.to_s)
+end
+
+Then /^I should see the product with query$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@search_p.to_s+"'}"],:timeout => 20)
+  assert_text(@search_p.to_s)
+end

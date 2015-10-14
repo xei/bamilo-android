@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -352,11 +351,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private String prepareCookie(HttpCookie cookie) {
-        String transDomain = cookie.getDomain();
-
-        Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-
-        return transDomain;
+        return cookie.getDomain();
     }
 
     private void trackPurchase(final JSONObject result) {
@@ -470,7 +465,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
             if (url.contains(SUCCESS_URL_TAG)) {
                 view.getSettings().setBlockNetworkImage(true);
-
+                
                 view.getSettings().setBlockNetworkLoads(true);
 
                 view.getSettings().setLoadsImagesAutomatically(false);

@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         applicationId "com.mobile.view"
-        minSdkVersion 12
+        minSdkVersion 15
         targetSdkVersion 22
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
@@ -268,7 +268,6 @@ task pmd(type: Pmd) {
     //ruleSets = ["java-basic", "java-strings", "java-braces"]
     ruleSetFiles = files("pmd-ruleset.xml")
     ruleSets = []
-
 }
 
 /**

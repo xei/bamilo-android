@@ -17,12 +17,9 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -38,31 +35,25 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 /**
- * Created by alexandrapires on 9/11/15.
  * This class represents the page for bundle products in a combo. It allows to add checked combo products to cart at once
+ * @author alexandrapires
  */
 public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
 
-
     private BundleList bundleList;
-    private double totalPrice = 0.0;
     private String productSku;
-
     private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
     private ComboGridAdapter adapter;
     private ProductBundle mBundleWithMultiple;
-
-    ArrayList<ProductBundle> listBundlesOneSimple;
-    ArrayList<ProductBundle> listBundlesMultipleSimple;
+    private ArrayList<ProductBundle> listBundlesOneSimple;
+    private ArrayList<ProductBundle> listBundlesMultipleSimple;
     private int countMultipleProcessed = 0;
-
 
     /**
      * Create and return a new instance.
@@ -79,7 +70,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * Empty constructor
      */
     public ComboFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK,MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Combos,
                 R.layout.pdv_combos_page,
                 R.string.combos_label,
@@ -92,25 +83,24 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onCreate(android.os.Bundle)
+     * @see com.mobile.view.fragments.BaseFragment#onCreate(Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Get data from arguments (Home/Categories/Deep link)
+        // Get data from arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments.toString());
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
             productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
-            totalPrice = bundleList.getBundlePriceDouble();
         }
     }
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -118,9 +108,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         Print.i(TAG, "ON VIEW CREATED");
         //update total price
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
-        mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
+        mTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         ComboGridView gridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-        adapter = new ComboGridAdapter(getBaseActivity(), bundleList.getBundleProducts(), productSku);
+        adapter = new ComboGridAdapter(getBaseActivity(), bundleList.getProducts(), productSku);
         adapter.setOnViewHolderClickListener(this);
         gridView.setAdapter(adapter);
         gridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
@@ -139,7 +129,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         listBundlesMultipleSimple = new ArrayList<>();
         countMultipleProcessed = 0;
 
-        ArrayList<ProductBundle> listBundles = bundleList.getBundleProducts();
+        ArrayList<ProductBundle> listBundles = bundleList.getProducts();
         for (ProductBundle productBundle : listBundles) {
             //distribute the checked bundles to both lists
             if (productBundle.isChecked()) {
@@ -162,7 +152,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         //if there is a list of bundles with multiple, show dialog
         if (CollectionUtils.isNotEmpty(listBundlesMultipleSimple)) {
             ProductBundle productBundle = listBundlesMultipleSimple.get(0);
-            addToCartWithChoosenSimple(productBundle);
+            addToCartWithSelectedSimple(productBundle);
 
         }
         //if there isn't bundles with multiplesimple , just simply add to cart
@@ -184,17 +174,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Add one unity to cart
         triggerAddItemToCart(productBundle.getSku(), simpleSku);
         // Tracking
-        android.os.Bundle bundle = new android.os.Bundle();
-        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
-        bundle.putDouble(TrackerDelegator.PRICE_KEY, productBundle.getPriceForTracking());
-        bundle.putString(TrackerDelegator.NAME_KEY, productBundle.getName());
-        bundle.putString(TrackerDelegator.BRAND_KEY, productBundle.getBrand());
-        bundle.putDouble(TrackerDelegator.RATING_KEY, productBundle.getAvgRating());
-        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, productBundle.getMaxSavingPercentage());
-        bundle.putString(TrackerDelegator.CATEGORY_KEY, productBundle.getCategories());
-        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        TrackerDelegator.trackProductAddedToCart(bundle);
+        TrackerDelegator.trackProductAddedToCart(productBundle, simpleSku, mGroupType);
     }
 
 
@@ -213,7 +193,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      *
      * @param productBundle - arguments
      */
-    private void addToCartWithChoosenSimple(ProductBundle productBundle) {
+    private void addToCartWithSelectedSimple(ProductBundle productBundle) {
         mBundleWithMultiple = productBundle;
         onClickSimpleVariationsButton(productBundle.getName());
     }
@@ -278,7 +258,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
     /**
-     * updates the sombo total price in checking/unchecking bundle
+     * updates the combo total price in checking/unchecking bundle
      */
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
@@ -287,8 +267,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         //update total price and select a simple if is checked
         if (!selectedBundle.getSku().equals(productSku)) {
             bundleList.updateTotalPriceWhenChecking(position);
-            totalPrice = bundleList.getBundlePriceDouble();
-            mTotalPrice.setText(CurrencyFormatter.formatCurrency(totalPrice));
+            mTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         }
     }
 
@@ -338,7 +317,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         } else if (countMultipleProcessed < listBundlesMultipleSimple.size()) //add next multiple
         {
             mBundleWithMultiple = listBundlesMultipleSimple.get(countMultipleProcessed);
-            addToCartWithChoosenSimple(mBundleWithMultiple);
+            addToCartWithSelectedSimple(mBundleWithMultiple);
         }
     }
 
@@ -424,9 +403,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private void addToShoppingCartFailed() {
         mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
-                getResources().getString(R.string.error_add_to_shopping_cart), getResources()
-                        .getString(R.string.ok_label), "", new View.OnClickListener() {
-
+                getResources().getString(R.string.error_add_to_shopping_cart),
+                getResources().getString(R.string.ok_label),
+                "",
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int id = v.getId();

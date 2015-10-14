@@ -36,7 +36,6 @@
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
     <string name="adjust_app_token">5ktqpxh59vp4</string>
-    <item name="adjust_is_production_env" type="bool">false</item>
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
