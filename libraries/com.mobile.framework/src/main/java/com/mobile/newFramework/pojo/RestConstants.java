@@ -445,4 +445,8 @@ public class RestConstants {
 
 
     public static final String PRICE_RANGE = "price_range";
+
+    public static final String TARGET = "target";
+
+    public static final String MOBILE_ABOUT = "mobile_about_cms";
 }

@@ -33,7 +33,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TargetHelper;
+import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
@@ -379,7 +379,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Target
         String target = targetHelper.getTarget();
         // Link
-        String url = targetHelper.getValue();
+        String url = targetHelper.getTargetValue();
 
         // Validate deep link
         if (TextUtils.isNotEmpty(target) && TextUtils.isNotEmpty(url)) {
