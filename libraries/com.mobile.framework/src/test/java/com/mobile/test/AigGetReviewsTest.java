@@ -26,7 +26,7 @@ public class AigGetReviewsTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"/galaxy-note-4-charcoal-black-138645.html";
+        return AigMobApiNigeriaTestSuite.HOST+"/catalog/detail/";
     }
 
     @Override
@@ -34,6 +34,8 @@ public class AigGetReviewsTest extends AigTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("per_page", "18");
         data.put("page", "1");
+        data.put("sku", "SA948ELAB541NGAMZ");
+        data.put("rating", "1");
         return data;
     }
 
