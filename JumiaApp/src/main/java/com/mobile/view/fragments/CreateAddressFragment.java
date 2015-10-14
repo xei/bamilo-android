@@ -24,6 +24,7 @@ import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
@@ -92,7 +93,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
-    protected Form mFormResponse;
+  //  protected Form mFormResponse;
+    protected Form mFormShipping;
+    protected Form mFormBilling;
     protected ViewGroup mBillingIncludeContainer;
     protected ViewGroup mBillingFormContainer;
     protected DynamicForm billingFormGenerator;
@@ -275,18 +278,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON DESTROY");
         regions = null;
         oneAddressCreated = false;
+        mFormShipping = null;
+        mFormBilling = null;
     }
 
 
     /**
      * Load the dynamic form
      */
-    protected void loadCreateAddressForm(Form form) {
+    protected void loadCreateAddressForm(Form mFormShipping,Form mFormBilling) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if(shippingFormGenerator == null){
             Print.i(TAG,"null");
-            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
@@ -294,7 +299,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         // Billing form
         if(billingFormGenerator == null){
-            billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+            billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormBilling);
             mBillingFormContainer.removeAllViews();
             mBillingFormContainer.addView(billingFormGenerator.getContainer());
             mBillingFormContainer.refreshDrawableState();
@@ -307,7 +312,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         hideSomeFields(billingFormGenerator, true);
         // Validate Regions
         if (regions == null) {
-            FormField field = form.getFieldKeyMap().get(RestConstants.REGION);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
             String url = field.getDataCalls().get(RestConstants.API_CALL);
             triggerGetRegions(url);
         } else {
@@ -704,7 +709,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
                 // Get url
@@ -728,7 +733,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else if (object instanceof AddressCity){
 
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
                 // Get url
@@ -932,10 +937,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-        Form form = (Form)baseResponse.getMetadata().getData();
-        mFormResponse = form;
+
+        AddressForms form = (AddressForms)baseResponse.getMetadata().getData();
+        mFormShipping = form.getShippingForm();
+        mFormBilling = form.getBillingForm();
         // Load form, get regions
-        loadCreateAddressForm(form);
+        loadCreateAddressForm(mFormShipping,mFormBilling);
     }
 
     protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
@@ -963,7 +970,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
 
-        FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
+        FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
         if(field == null){
             // Show
             showFragmentContentContainer();
