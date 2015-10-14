@@ -11,15 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:orientation="vertical"
+        >
+
+        <!-- TITLE -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/filter_title"
+            style="@style/HeaderStyle"
+            android:text="TITLE"
+
+            />
+
+        <View style="@style/HorizontalListDivider" />
+
         <FrameLayout
             android:id="@+id/dialog_filter_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.4" />
+           />
 
-        <View android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/black_400"/>
+        </LinearLayout>
+
+        <View style="@style/VerticalListDivider" />
 
         <ListView
             android:id="@+id/filters_key"
