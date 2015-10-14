@@ -173,6 +173,7 @@ public class CurrencyFormatter {
      * @return NumberFormat
      * @author GuilhermeSilva
      */
+    @Deprecated
 	private static NumberFormat createNumberFormatter() {
 		//Log.d( TAG, "createNumberFormatter for android 2.x");
 		NumberFormat formatter;

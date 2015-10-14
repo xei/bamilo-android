@@ -225,7 +225,6 @@ public class HeaderGridView extends GridView {
      */
 	private int getNumColumnsCompat() {
         mNumColumns = getNumColumnsV11();
-		//Log.i(TAG, "ON GET NUMBER OF COLUMNS: " + mNumColumns);
 		return mNumColumns;
 	}
 
