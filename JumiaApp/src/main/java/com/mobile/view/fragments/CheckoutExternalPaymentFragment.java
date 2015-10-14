@@ -41,6 +41,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 import com.newrelic.agent.android.util.NetworkFailure;
 
@@ -275,7 +276,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         webview.clearView();
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
-//            paymentUrl = "https://tv.eurosport.pt/";
         } else {
             super.showFragmentErrorRetry();
             return;
@@ -488,9 +488,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                Toast.makeText(getActivity(), "The host name does not match the certificate: " + error, Toast.LENGTH_LONG).show();
+                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
             } else {
-                Toast.makeText(getActivity(), "An SSL error occurred: " + error, Toast.LENGTH_LONG).show();
+                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
             }
 
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
