@@ -231,7 +231,7 @@ public class WarningFactory {
 
         Builder setBackground(int drawable){
             mWarningBar.setBackgroundResource(drawable);
-            UIUtils.setAlpha(mWarningBar, 0.95f);
+            mWarningBar.setAlpha(0.95f);
             return this;
         }
 

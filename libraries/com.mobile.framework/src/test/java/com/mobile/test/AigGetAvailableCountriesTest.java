@@ -24,7 +24,8 @@ public class AigGetAvailableCountriesTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return "https://integration-mobile-www.jumia.com/mobapi/availablecountries/";
+        //return "https://jumia.com/mobapi/availablecountries/";
+        return "http://shareptcmobile.eu.pn/jtmobapi/";
     }
 
     @Override

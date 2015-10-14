@@ -389,13 +389,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     @SuppressWarnings("deprecation")
     private void onClickOrderNumber(View v){
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipMan.setText(((TextView) v).getText());
-        } else {
-            ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
-        }
+        ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
+
         Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard),Toast.LENGTH_SHORT).show();
     }
     

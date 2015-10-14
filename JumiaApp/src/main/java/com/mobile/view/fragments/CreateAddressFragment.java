@@ -26,7 +26,6 @@ import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
-import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
@@ -285,15 +284,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void loadCreateAddressForm(Form form) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
-        shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        mShippingFormContainer.removeAllViews();
-        mShippingFormContainer.addView(shippingFormGenerator.getContainer());
-        mShippingFormContainer.refreshDrawableState();
+        if(shippingFormGenerator == null){
+            Print.i(TAG,"null");
+            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+            mShippingFormContainer.removeAllViews();
+            mShippingFormContainer.addView(shippingFormGenerator.getContainer());
+            mShippingFormContainer.refreshDrawableState();
+        }
+
         // Billing form
-        billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        mBillingFormContainer.removeAllViews();
-        mBillingFormContainer.addView(billingFormGenerator.getContainer());
-        mBillingFormContainer.refreshDrawableState();
+        if(billingFormGenerator == null){
+            billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+            mBillingFormContainer.removeAllViews();
+            mBillingFormContainer.addView(billingFormGenerator.getContainer());
+            mBillingFormContainer.refreshDrawableState();
+        }
+
         // Define if CITY is a List or Text
         isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.CITY).getEditControl() instanceof EditText);
         // Hide unused fields form

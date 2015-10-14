@@ -287,16 +287,10 @@ public class DeviceInfoHelper {
         Point size = new Point();
         int width;
         int height;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
-        } else {
-            width = display.getWidth();
-            height = display.getHeight();
-            Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM: " + width + " " + height);
-        }
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+        Print.i(TAG, "GET WINDOW MEASURES FROM SYSTEM >= HONEYCOMB: " + width + " " + height);
         // Create
         Message msg = new Message();
         msg.arg1 = width;
@@ -402,24 +396,6 @@ public class DeviceInfoHelper {
 
     public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
-    }
-
-    /**
-     * Execute callbacks based on HoneyComb version.
-     *
-     * @param iDeviceVersionBasedCode
-     */
-    public static void executeCodeBasedOnHoneyCombVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
-        executeCodeBasedOnVersion(Build.VERSION_CODES.HONEYCOMB, iDeviceVersionBasedCode);
-    }
-
-    /**
-     * Execute callbacks based on Ice Cream Sandwich version.
-     *
-     * @param iDeviceVersionBasedCode
-     */
-    public static void executeCodeBasedOnIceCreamSandwichVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
-        executeCodeBasedOnVersion(Build.VERSION_CODES.ICE_CREAM_SANDWICH, iDeviceVersionBasedCode);
     }
 
 }
