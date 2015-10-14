@@ -410,6 +410,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } else if (url.equals(failedPageRequest)) {
                 Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
+                getBaseActivity().removeAllNativeCheckoutFromBackStack();
+                showContinueShopping();
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
                 isRequestedPage = false;
