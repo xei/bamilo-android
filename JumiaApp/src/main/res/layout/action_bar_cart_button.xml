@@ -13,13 +13,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/action_cart_count"
-        android:layout_width="wrap_content"
+        android:layout_width="13dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/action_cart_image"
         android:layout_alignTop="@id/action_cart_image"
         android:ellipsize="end"
-        android:gravity="right"
-        android:paddingRight="3.5dp"
+        android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="9sp"

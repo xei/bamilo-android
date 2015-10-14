@@ -30,7 +30,7 @@ public class AigSearchSkuTest extends AigTestCase {
     @Override
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
-        data.put("sku", "AP044ELABRH2NGAMZ");
+        data.put("sku", "SA948ELAB541NGAMZ");
         return data;
     }
 
