@@ -150,10 +150,9 @@ public class DayPickerView extends ListView implements OnScrollListener, OnDateC
         setOnScrollListener(this);
         setFadingEdgeLength(0);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Make the scrolling behavior nicer
-            setFriction(ViewConfiguration.getScrollFriction() * mFriction);
-        }
+        // Make the scrolling behavior nicer
+        setFriction(ViewConfiguration.getScrollFriction() * mFriction);
+
     }
 
     /**
@@ -223,11 +222,7 @@ public class DayPickerView extends ListView implements OnScrollListener, OnDateC
             setMonthDisplayed(mTempDay);
             mPreviousScrollState = OnScrollListener.SCROLL_STATE_FLING;
             if (animate) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    smoothScrollToPositionFromTop(position, LIST_TOP_OFFSET, GOTO_SCROLL_DURATION);
-                } else {
-                    postSetSelection(position);
-                }
+                smoothScrollToPositionFromTop(position, LIST_TOP_OFFSET, GOTO_SCROLL_DURATION);
                 return true;
             } else {
                 postSetSelection(position);
@@ -333,19 +328,12 @@ public class DayPickerView extends ListView implements OnScrollListener, OnDateC
                 final int bottom = child.getBottom();
                 final int midpoint = getHeight() / 2;
                 if (scroll && top < LIST_TOP_OFFSET) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-                        if (bottom > midpoint) {
-                            smoothScrollBy(top, GOTO_SCROLL_DURATION);
-                        } else {
-                            smoothScrollBy(bottom, GOTO_SCROLL_DURATION);
-                        }
+                    if (bottom > midpoint) {
+                        smoothScrollBy(top, GOTO_SCROLL_DURATION);
                     } else {
-                        if (bottom > midpoint) {
-                            scrollBy(top, GOTO_SCROLL_DURATION);
-                        } else {
-                            scrollBy(bottom, GOTO_SCROLL_DURATION);
-                        }
+                        smoothScrollBy(bottom, GOTO_SCROLL_DURATION);
                     }
+
                 }
             } else {
                 mPreviousScrollState = mNewState;

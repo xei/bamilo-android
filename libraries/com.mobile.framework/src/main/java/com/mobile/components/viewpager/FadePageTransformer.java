@@ -1,6 +1,5 @@
 package com.mobile.components.viewpager;
 
-import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -39,23 +38,22 @@ public class FadePageTransformer implements ViewPager.PageTransformer {
      */
     @Override
     public void transformPage(View page, float position) {
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            // Calculate the page position (The received position has the padding left value)
-            final float transformPos = (float) (page.getLeft() - mViewPager.getScrollX() - mViewPager.getPaddingLeft()) / getClientWidth();
-            // Case out of range
-            if (transformPos <= LEFT_POINT || transformPos >= RIGHT_POINT) {
-                page.setAlpha(MIN_ALPHA);
-            }
-            // Case center
-            else if (transformPos == CENTER_POINT) {
-                page.setAlpha(MAX_ALPHA);
-            }
-            // Case position is between -1.0f & 0.0f OR 0.0f & 1.0f
-            else {
-                float alpha = MAX_ALPHA - Math.abs(transformPos);
-                page.setAlpha(alpha < MIN_ALPHA ? MIN_ALPHA : alpha);
-            }
+        // Calculate the page position (The received position has the padding left value)
+        final float transformPos = (float) (page.getLeft() - mViewPager.getScrollX() - mViewPager.getPaddingLeft()) / getClientWidth();
+        // Case out of range
+        if (transformPos <= LEFT_POINT || transformPos >= RIGHT_POINT) {
+            page.setAlpha(MIN_ALPHA);
         }
+        // Case center
+        else if (transformPos == CENTER_POINT) {
+            page.setAlpha(MAX_ALPHA);
+        }
+        // Case position is between -1.0f & 0.0f OR 0.0f & 1.0f
+        else {
+            float alpha = MAX_ALPHA - Math.abs(transformPos);
+            page.setAlpha(alpha < MIN_ALPHA ? MIN_ALPHA : alpha);
+        }
+
     }
 
     /**
