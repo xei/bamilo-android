@@ -1,5 +1,6 @@
 package com.mobile.newFramework.rest.interfaces;
 
+import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.addresses.AddressCities;
@@ -141,7 +142,8 @@ public interface AigApiInterface {
     String getForgotPasswordForm = "getForgotPasswordForm";
 
     @GET("/")
-    void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
+  //  void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
+    void getCreateAddressForm(Callback<BaseResponse<AddressForms>> callback);
 
     String getCreateAddressForm = "getCreateAddressForm";
 
