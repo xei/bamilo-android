@@ -38,7 +38,6 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
