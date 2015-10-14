@@ -4,6 +4,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -128,13 +129,23 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
     private void loadForm(@NonNull List<TargetHelper> targets){
         for(TargetHelper targetHelper : targets){
             if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP){
-
+                createTextViewLink(targetHelper);
             }
         }
         showFragmentContentContainer();
     }
 
-    private void createTextViewLink(){
-
+    private void createTextViewLink(@NonNull final TargetHelper targetHelper){
+        TextView textView = new TextView(this.getContext());
+        textView.setText(Html.fromHtml(targetHelper.getTargetTitle()));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setTextColor(getResources().getColor(R.color.black));
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickStaticPageButton(targetHelper.getTargetValue(), targetHelper.getTargetTitle());
+            }
+        });
+        linksContainer.addView(textView);
     }
 }

@@ -95,7 +95,7 @@ public class TargetHelper implements ITargeting, IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         label = jsonObject.optString(RestConstants.LABEL);
-        splitTarget(jsonObject.getString(RestConstants.JSON_TARGET_TYPE_TAG));
+        splitTarget(jsonObject.getString(RestConstants.TARGET));
         return true;
     }
 
