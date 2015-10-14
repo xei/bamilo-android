@@ -581,7 +581,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setCombos() {
         if (mProduct.hasBundle()) {
-            if (mProduct.getProductBundle() == null || mProduct.getProductBundle().getProducts().size() == 0) {
+            if (mProduct.getProductBundle() == null || CollectionUtils.isEmpty(mProduct.getProductBundle().getProducts())) {
                 triggerGetProductBundle(mProduct.getSku());
             } else {
                 mComboProductsLayout.setVisibility(View.VISIBLE);
