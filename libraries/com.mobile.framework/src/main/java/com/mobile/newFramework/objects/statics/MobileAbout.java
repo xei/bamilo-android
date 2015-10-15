@@ -15,6 +15,15 @@ import java.util.ArrayList;
  */
 public class MobileAbout extends ArrayList<TargetHelper> implements IJSONSerializable {
 
+    public MobileAbout(){
+        super();
+    }
+
+    public MobileAbout(JSONObject jsonObject) throws JSONException {
+        this();
+        initialize(jsonObject);
+    }
+
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         JSONArray mobileAbout = jsonObject.getJSONArray(RestConstants.MOBILE_ABOUT);

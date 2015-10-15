@@ -184,7 +184,9 @@ public enum EventType {
 
     REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/", AigRestContract.NO_CACHE),
 
-    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE);
+    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE),
+
+    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME);
 
 
     public final String action;
