@@ -21,6 +21,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -207,7 +208,7 @@ public class CountryPersistentConfigs {
     public static void saveMoreInfo(Context context, List<TargetHelper> moreInfo){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
-        saveMoreInfo(mEditor,moreInfo);
+        saveMoreInfo(mEditor, moreInfo);
         mEditor.apply();
     }
 
@@ -219,7 +220,7 @@ public class CountryPersistentConfigs {
     }
 
     @Nullable
-    public static List<TargetHelper> getMoreInfo(Context context){
+    public static ArrayList<TargetHelper> getMoreInfo(Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String json = settings.getString(Darwin.KEY_SELECTED_MORE_INFO, null);
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, MobileAbout.class);

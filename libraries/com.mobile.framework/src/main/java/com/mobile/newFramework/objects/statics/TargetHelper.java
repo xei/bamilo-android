@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.statics;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -23,7 +25,7 @@ import org.json.JSONObject;
  * @date 2015/10/14
  *
  */
-public class TargetHelper implements ITargeting, IJSONSerializable {
+public class TargetHelper implements ITargeting, IJSONSerializable, Parcelable {
 
     public static final int DEEP_LINK_SIZE = 2;
 
@@ -108,4 +110,35 @@ public class TargetHelper implements ITargeting, IJSONSerializable {
     public RequiredJson getRequiredJson() {
         return null;
     }
+
+    protected TargetHelper(Parcel in) {
+        label = in.readString();
+        targetType = in.readString();
+        value = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(label);
+        dest.writeString(targetType);
+        dest.writeString(value);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<TargetHelper> CREATOR = new Parcelable.Creator<TargetHelper>() {
+        @Override
+        public TargetHelper createFromParcel(Parcel in) {
+            return new TargetHelper(in);
+        }
+
+        @Override
+        public TargetHelper[] newArray(int size) {
+            return new TargetHelper[size];
+        }
+    };
 }

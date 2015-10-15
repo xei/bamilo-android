@@ -24,6 +24,8 @@ import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.fragments.BaseFragment;
+
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
 
     private ViewGroup linksContainer;
 
-    private List<TargetHelper> targets;
+    private ArrayList<TargetHelper> targets;
 
     /**
      * Get instance
@@ -57,12 +59,19 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        targets = CountryPersistentConfigs.getMoreInfo(this.getContext());
+        Print.i(TAG, "ON CREATE");
+
+        if(savedInstanceState != null){
+            targets = savedInstanceState.getParcelableArrayList(MobileAbout.class.getSimpleName());
+        } else {
+            targets = CountryPersistentConfigs.getMoreInfo(this.getContext());
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Print.i(TAG, "ON VIEW CREATED");
         linksContainer = (ViewGroup) view.findViewById(R.id.links_container);
 
         if(CollectionUtils.isNotEmpty(targets)){
@@ -75,7 +84,14 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
     @Override
     public void onResume() {
         super.onResume();
+        Print.i(TAG, "ON RESUME");
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE");
+        outState.putParcelableArrayList(MobileAbout.class.getSimpleName(), targets);
     }
 
     private void onClickStaticPageButton(String key, String label) {
