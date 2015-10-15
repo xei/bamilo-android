@@ -501,7 +501,4 @@ public interface AigApiInterface {
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
 
-    @GET("/")
-    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
-    String getFaqTerms = "getFaqTerms";
 }
