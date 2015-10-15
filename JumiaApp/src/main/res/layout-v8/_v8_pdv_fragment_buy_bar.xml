@@ -4,18 +4,39 @@
     android:layout_height="@dimen/buy_bar_height"
     android:orientation="horizontal">
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_button_buy"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/color_accent"
-        android:clickable="true"
-        android:gravity="center"
-        android:paddingLeft="@dimen/layout_marginLeft"
-        android:paddingRight="@dimen/layout_marginLeft"
-        android:text="@string/buy_now_button"
-        android:textColor="@color/white" />
+        android:background="@color/black_700">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_button_buy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_accent"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/layout_marginLeft"
+            android:paddingRight="@dimen/layout_marginLeft"
+            android:text="@string/buy_now_button"
+            android:textColor="@color/white" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_button_add_to_save"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingLeft="@dimen/layout_marginLeft"
+            android:paddingRight="@dimen/layout_marginLeft"
+            android:textColor="@color/color_accent"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/pdv_button_call"
