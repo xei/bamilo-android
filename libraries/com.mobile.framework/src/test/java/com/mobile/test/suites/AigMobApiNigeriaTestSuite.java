@@ -1,6 +1,7 @@
 package com.mobile.test.suites;
 
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.test.AigChangePasswordFormTest;
 import com.mobile.test.AigForgotPasswordTest;
@@ -56,6 +57,7 @@ import org.junit.runners.Suite;
         AigGetRegionsTest.class,
         AigGetCitiesTest.class,
         AigGetCustomerDetailsTest.class,
+        AigGetEditAddressFormTest.class,
         AigGetOrdersListTest.class,
         AigGetShoppingCartTest.class,
         AigLogoutCustomerTest.class,
@@ -67,7 +69,7 @@ import org.junit.runners.Suite;
         AigGetCategoriesPaginatedTest.class,
         AigGetCategoryPaginatedTest.class,
         AigGetCreateAddressFormTest.class,
-        AigGetEditAddressFormTest.class,
+
         AigGetForgotPasswordFormTest.class,
         AigGetFormsIndexTest.class,
         AigGetHomePageTest.class,
@@ -91,13 +93,15 @@ import org.junit.runners.Suite;
 public class AigMobApiNigeriaTestSuite {
 
     public static final String TAG = AigMobApiNigeriaTestSuite.class.getSimpleName();
-        public static String HOST = "https://integration-mobile-www.jumia.com.ng/mobapi/v1.8";
+        public static String HOST = "https://alice-staging.jumia.com.ng/mobapi/v1.8";
+        //public static String HOST = "http://alice-integration.jumia.com.ng/mobapi/v1.8";
 
         @BeforeClass
     public static void setUp() {
         Print.initializeTestingMode();
         //AigRestContract.initializeTestingMode();
         AigHttpClient.initializeTestingMode();
+        AigRestContract.AUTHENTICATION_USER_AGENT = "NGAMZ";
         Print.i(TAG, "SETUP");
     }
 

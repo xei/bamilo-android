@@ -119,7 +119,19 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
      * When the facebook login is done with success
      */
     private void onFacebookSuccessLogin() {
-        GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), this).executeAsync();
+
+
+        Bundle parameters = new Bundle();
+        //FacebookHelper.FACEBOOK_AGE_RANGE_TAG+","
+        parameters.putString(FacebookHelper.FACEBOOK_FIELDS_TAG,
+                          FacebookHelper.FACEBOOK_FIRST_NAME_TAG + ","
+                        + FacebookHelper.FACEBOOK_LAST_NAME_TAG + ","
+                        + FacebookHelper.FACEBOOK_GENDER_TAG + ","
+                        + FacebookHelper.FACEBOOK_EMAIL_TAG);
+
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), this);
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     @Override

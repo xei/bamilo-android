@@ -19,7 +19,6 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +45,10 @@ public class CountryPersistentConfigs {
         if (!TextUtils.isEmpty(countryConfigs.getCurrencyPosition()) && countryConfigs.getCurrencyPosition().equals(CountryConfigs.CURRENCY_LEFT_POSITION)) {
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, CountryConfigs.STRING_START_PLACEHOLDER + countryConfigs.getCurrencySymbol());
             // #RTL
-            if (ShopSelector.isRtl() && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, countryConfigs.getCurrencySymbol() + CountryConfigs.STRING_END_PLACEHOLDER);
-            }
+            //FIXME TO VALIDATE
+//            if (ShopSelector.isRtl() && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+//                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, countryConfigs.getCurrencySymbol() + CountryConfigs.STRING_END_PLACEHOLDER);
+//            }
         } else {
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, countryConfigs.getCurrencySymbol() + CountryConfigs.STRING_END_PLACEHOLDER);
         }

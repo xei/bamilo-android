@@ -37,6 +37,11 @@ public class FacebookHelper {
 
     private static final String FB_PERMISSION_PUB_PROFILE = "public_profile";
 
+//    https://developers.facebook.com/docs/facebook-login/permissions/v2.5#reference-user_birthday
+//    private static final String FB_PERMISSION_USER_BIRTHDAY = "user_birthday";
+//    public final static String FACEBOOK_BIRTHDAY_TAG = "birthday";
+//    public final static String FACEBOOK_AGE_RANGE_TAG = "age_range";
+
     public final static String FACEBOOK_EMAIL_TAG = "email";
 
     public final static String FACEBOOK_FIRST_NAME_TAG = "first_name";
@@ -44,6 +49,8 @@ public class FacebookHelper {
     public final static String FACEBOOK_LAST_NAME_TAG = "last_name";
 
     public final static String FACEBOOK_GENDER_TAG = "gender";
+
+    public final static String FACEBOOK_FIELDS_TAG = "fields";
 
     /**
      * Method used to show or hide Facebook views using a flag.<br>
@@ -86,7 +93,7 @@ public class FacebookHelper {
         // Set the UI control
         button.setFragment(fragment);
         // Set the Facebook Login (from app or from dialog)
-        button.setLoginBehavior(LoginBehavior.SSO_WITH_FALLBACK);
+        button.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
         // Set Facebook permissions
         button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE));
         // Set click listener

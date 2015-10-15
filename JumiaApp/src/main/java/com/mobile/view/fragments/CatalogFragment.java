@@ -216,26 +216,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param builder
      */
     private void removeParametersFromQuery(final Uri.Builder builder){
-
-        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-            @Override
-            public void highVersionCallback() {
-                builder.clearQuery();
-                mCompleteUrl = builder.toString();
-            }
-
-            @Override
-            public void lowerVersionCallback() {
-                if (builder.toString().contains("?")) {
-                    // only retains the substring from the beginning to the character '?'
-                    mCompleteUrl = builder.toString().substring(0, builder.toString().indexOf('?'));
-                } else {
-                    // does nothing, because url complete does not have any extra parameters
-                    mCompleteUrl = builder.toString();
-                }
-            }
-        });
-
+        builder.clearQuery();
+        mCompleteUrl = builder.toString();
     }
 
 
