@@ -6,17 +6,17 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.controllers.AppSharingAdapter;
+import com.mobile.controllers.AppSharingSettingsAdapter;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
+import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
@@ -36,7 +36,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class MyAccountFragment extends BaseFragment implements OnItemClickListener{
+public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.OnItemClickListener {
 
     private static final String TAG = MyAccountFragment.class.getSimpleName();
 
@@ -52,11 +52,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     public final static int POSITION_LANGUAGE = 1;
     
-    private ListView optionsList;
+    private ViewGroup optionsList;
     
-    private ListView appSharingList;
+    private ViewGroup appSharingList;
 
-    private ListView chooseLanguageList;
+    private ViewGroup chooseLanguageList;
 
     private MyAccountPushPreferences mPreferencesFragment;
 
@@ -187,13 +187,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Get User Account Option
         String[] myAccountOptions = getResources().getStringArray(R.array.myaccount_array);
         // Get ListView
-        optionsList = (ListView) v.findViewById(R.id.middle_myaccount_list);
+        optionsList = (ViewGroup) v.findViewById(R.id.middle_myaccount_list);
         // Create new Adapter
-        MyAccountAdapter myAccountAdapter = new MyAccountAdapter(getActivity(), myAccountOptions);
-        // Set adapter
-        optionsList.setAdapter(myAccountAdapter);
-        // Set Listener for all items
-        optionsList.setOnItemClickListener(this);
+        MyAccountSettingsAdapter myAccountSettingsAdapter = new MyAccountSettingsAdapter(getActivity(), myAccountOptions);
+
+        new MyAccountAdapter(optionsList, myAccountSettingsAdapter, this).buildLayout();
         
     }
 
@@ -209,37 +207,24 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * Shows app sharing options
      */
     private void showAppSharing(View view) {
-        appSharingList = (ListView)view.findViewById(R.id.middle_app_sharing_list);
-        appSharingList.setAdapter(new AppSharingAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array)));
-        appSharingList.setOnItemClickListener(this);
+        appSharingList = (ViewGroup)view.findViewById(R.id.middle_app_sharing_list);
+        AppSharingSettingsAdapter appSharingSettingsAdapter = new AppSharingSettingsAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array));
+
+        new MyAccountAdapter(appSharingList, appSharingSettingsAdapter, this).buildLayout();
     }
 
     private void showChooseLanguage(View view) {
-        chooseLanguageList = (ListView)view.findViewById(R.id.language_list);
+        chooseLanguageList = (ViewGroup)view.findViewById(R.id.language_list);
         CountrySettingsAdapter.CountryLanguageInformation countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
         chooseLanguageList.setTag(R.string.choose_language, countryInformation);
-        chooseLanguageList.setAdapter(new CountrySettingsAdapter(getActivity(), countryInformation));
-        chooseLanguageList.setOnItemClickListener(this);
+        CountrySettingsAdapter countrySettingsAdapter = new CountrySettingsAdapter(getActivity(), countryInformation);
+
+        new MyAccountAdapter(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
     }
 
     private void showMoreInfo(View view) {
         View container = view.findViewById(R.id.more_info_container);
         container.setOnClickListener(this);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-     */
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Validate item
-        if(parent == this.optionsList){
-            handleOnOptionsListItemClick(position);
-        } else if(parent == this.appSharingList){
-            handleOnAppSharingListItemClick(position);
-        } else if(parent == this.chooseLanguageList){
-            handleOnChooseLanguageItemClick(parent, position);
-        }
     }
 
     @Override
@@ -254,7 +239,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         }
     }
 
-    private void handleOnChooseLanguageItemClick(AdapterView<?> parent, int position) {
+    private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
         if(position == POSITION_COUNTRY){
             getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else if(position == POSITION_LANGUAGE){
@@ -338,5 +323,16 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private void processOnClickMoreInfo() {
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MORE_INFO, null, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
+    @Override
+    public void onItemClick(ViewGroup parent, View view, int position) {
+        // Validate item
+        if(parent == this.optionsList){
+            handleOnOptionsListItemClick(position);
+        } else if(parent == this.appSharingList){
+            handleOnAppSharingListItemClick(position);
+        } else if(parent == this.chooseLanguageList){
+            handleOnChooseLanguageItemClick(parent, position);
+        }
+    }
 }

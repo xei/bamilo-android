@@ -23,9 +23,9 @@ import com.mobile.view.fragments.MyAccountFragment;
  * @version 1.0
  * 
  */
-public class AppSharingAdapter extends MyAccountAdapter{
+public class AppSharingSettingsAdapter extends MyAccountSettingsAdapter {
     
-    public AppSharingAdapter(Context context, String[] options) {
+    public AppSharingSettingsAdapter(Context context, String[] options) {
         super(context, options);
     }
     
