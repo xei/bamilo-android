@@ -7,7 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
- * Created by rsoares on 10/15/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/10/15
+ *
+ * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
 public class MyAccountAdapter {
 
@@ -31,7 +40,7 @@ public class MyAccountAdapter {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void buildLayout(){
+    public void buildLayout() {
         int count = baseAdapter.getCount();
         for(int i = 0; i < count; i++){
             final View viewCreated = baseAdapter.getView(i, null, viewGroup);

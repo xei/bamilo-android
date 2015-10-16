@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -16,11 +15,18 @@ import com.mobile.controllers.AppSharingSettingsAdapter;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
+import com.mobile.controllers.MyAccountMoreInfoAdapter;
 import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.configs.GetFaqTermsHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.statics.MobileAbout;
+import com.mobile.newFramework.objects.statics.TargetHelper;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -28,6 +34,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -36,9 +43,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.OnItemClickListener {
+public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.OnItemClickListener, IResponseCallback {
 
     private static final String TAG = MyAccountFragment.class.getSimpleName();
+
+    private static final String TARGETS_TAG = MobileAbout.class.getSimpleName();
 
     public final static int POSITION_USER_DATA = 0;
 
@@ -58,7 +67,11 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
 
     private ViewGroup chooseLanguageList;
 
+    private ViewGroup moreInfoContainer;
+
     private MyAccountPushPreferences mPreferencesFragment;
+
+    private ArrayList<TargetHelper> targets;
 
     /**
      * Get instance
@@ -100,6 +113,12 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+
+        if(savedInstanceState != null){
+            targets = savedInstanceState.getParcelableArrayList(TARGETS_TAG);
+        } else {
+            targets = CountryPersistentConfigs.getMoreInfo(this.getContext());
+        }
     }
     
     /*
@@ -110,11 +129,18 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+
         showMyAccount(view);
         showPreferences();
         showAppSharing(view);
         showChooseLanguage(view);
-        showMoreInfo(view);
+
+        moreInfoContainer = (ViewGroup)view.findViewById(R.id.more_info_container);
+        if(targets != null){
+            showMoreInfo();
+        } else {
+            triggerFaqAndTerms();
+        }
     }
 
     /*
@@ -139,11 +165,18 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         Print.i(TAG, "ON RESUME");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE");
+        outState.putParcelableArrayList(TARGETS_TAG, targets);
+    }
+
     /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
+         * (non-Javadoc)
+         *
+         * @see com.mobile.view.fragments.MyFragment#onPause()
+         */
     @Override
     public void onPause() {
         super.onPause();
@@ -178,6 +211,10 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
     public void onDestroy() {
         Log.i(TAG, "ON DESTROY");
         super.onDestroy();
+    }
+
+    private void triggerFaqAndTerms() {
+        triggerContentEvent(new GetFaqTermsHelper(), null, this);
     }
 
     /**
@@ -222,9 +259,10 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         new MyAccountAdapter(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
     }
 
-    private void showMoreInfo(View view) {
-        View container = view.findViewById(R.id.more_info_container);
-        container.setOnClickListener(this);
+    private void showMoreInfo() {
+        MyAccountMoreInfoAdapter moreInfoAdapter = new MyAccountMoreInfoAdapter(targets, getActivity());
+        new MyAccountAdapter(moreInfoContainer, moreInfoAdapter, this).buildLayout();
+
     }
 
     @Override
@@ -333,6 +371,54 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
             handleOnAppSharingListItemClick(position);
         } else if(parent == this.chooseLanguageList){
             handleOnChooseLanguageItemClick(parent, position);
+        } else if(parent == this.moreInfoContainer){
+            handleOnMoreInfoItemClick(position);
+        }
+    }
+
+    private void handleOnMoreInfoItemClick(int position) {
+
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        Print.d(TAG, "ON SUCCESS EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess || eventType == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return ;
+        }
+
+        switch (eventType) {
+            case GET_FAQ_TERMS:
+                targets = (MobileAbout) baseResponse.getMetadata().getData();
+                showMoreInfo();
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.i(TAG, "ON ERROR EVENT");
+        EventType eventType = baseResponse.getEventType();
+        // Validate fragment visibility
+        if (isOnStoppingProcess || eventType == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return ;
+        }
+
+        if (super.handleErrorEvent(baseResponse)) {
+            return ;
+        }
+
+//        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+
+        switch (eventType) {
+            case GET_FAQ_TERMS:
+                showMoreInfo();
+                break;
         }
     }
 }

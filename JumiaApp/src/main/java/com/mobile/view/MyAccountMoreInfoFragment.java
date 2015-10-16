@@ -10,17 +10,13 @@ import android.view.ViewGroup;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.fragments.BaseFragment;
@@ -61,11 +57,7 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
 
-        if(savedInstanceState != null){
-            targets = savedInstanceState.getParcelableArrayList(MobileAbout.class.getSimpleName());
-        } else {
-            targets = CountryPersistentConfigs.getMoreInfo(this.getContext());
-        }
+
     }
 
     @Override
@@ -74,11 +66,7 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON VIEW CREATED");
         linksContainer = (ViewGroup) view.findViewById(R.id.links_container);
 
-        if(CollectionUtils.isNotEmpty(targets)){
-            loadForm(targets);
-        } else {
-            triggerFaqAndTerms();
-        }
+
     }
 
     @Override
@@ -99,52 +87,6 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
         bundle.putString(RestConstants.JSON_KEY_TAG, key);
         bundle.putString(RestConstants.JSON_TITLE_TAG, label);
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private void triggerFaqAndTerms() {
-        triggerContentEvent(new GetFaqTermsHelper(), null, this);
-    }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS EVENT");
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return ;
-        }
-
-        switch (eventType) {
-            case GET_FAQ_TERMS:
-                targets = (MobileAbout) baseResponse.getMetadata().getData();
-                loadForm(targets);
-                break;
-        }
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return ;
-        }
-
-        if (super.handleErrorEvent(baseResponse)) {
-            return ;
-        }
-
-//        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        switch (eventType) {
-            case GET_FAQ_TERMS:
-                showContinueShopping();
-                break;
-        }
     }
 
     private void loadForm(@NonNull List<TargetHelper> targets){
@@ -168,5 +110,15 @@ public class MyAccountMoreInfoFragment extends BaseFragment implements IResponse
             }
         });
         linksContainer.addView(textView);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+
     }
 }

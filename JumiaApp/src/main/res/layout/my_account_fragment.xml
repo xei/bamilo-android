@@ -101,26 +101,27 @@
         <!-- MORE SETTINGS -->
 
         <RelativeLayout
-            android:id="@+id/more_info_container"
             style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             android:paddingBottom="@dimen/rounded_margin_mid">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/title_more"
                 style="@style/rounded_box_title_grey"
-                android:text="@string/app_social" />
+                android:text="@string/more" />
 
-            <include
+            <LinearLayout
+                android:id="@+id/more_info_container"
                 android:layout_width="@dimen/inner_container_width"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title_more"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                layout="@layout/my_account_list_item" />
+                android:orientation="vertical" />
 
             <View
                 style="@style/divider_horizontal_orange"

@@ -422,4 +422,7 @@
     <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
     <string name="product_specifications">Product Specifications</string>
     <!-- NEW 2.8 -->
+    <string name="more">More</string>
+    <string name="app_version">App version</string>
+    <string name="update_now">Update Now</string>
 </resources>
