@@ -406,10 +406,6 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
             return ;
         }
 
-        if (super.handleErrorEvent(baseResponse)) {
-            return ;
-        }
-
 //        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         switch (eventType) {
