@@ -21,9 +21,11 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.EventType;
@@ -261,8 +263,8 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
 
     private void showMoreInfo() {
         MyAccountMoreInfoAdapter moreInfoAdapter = new MyAccountMoreInfoAdapter(targets, getActivity());
-        new MyAccountAdapter(moreInfoContainer, moreInfoAdapter, this).buildLayout();
 
+        new MyAccountAdapter(moreInfoContainer, moreInfoAdapter, this).buildLayout();
     }
 
     @Override
@@ -377,7 +379,14 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
     }
 
     private void handleOnMoreInfoItemClick(int position) {
-
+        if(position == MyAccountMoreInfoAdapter.APP_VERSION_POSITION){
+            ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
+        } else {
+            TargetHelper targetHelper = targets.get(position - 1);
+            if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
+                onClickStaticPageButton(targetHelper.getTargetValue(), targetHelper.getTargetTitle());
+            }
+        }
     }
 
     @Override
@@ -420,5 +429,12 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
                 showMoreInfo();
                 break;
         }
+    }
+
+    private void onClickStaticPageButton(String key, String label) {
+        Bundle bundle = new Bundle();
+        bundle.putString(RestConstants.JSON_KEY_TAG, key);
+        bundle.putString(RestConstants.JSON_TITLE_TAG, label);
+        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 }

@@ -2,6 +2,9 @@ package com.mobile.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.OverLoadErrorActivity;
@@ -50,7 +53,16 @@ public class ActivitiesWorkFlow {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, extraText);
         activity.startActivity(Intent.createChooser(sharingIntent, chooserText));
 	}
-	
+
+    public static void startActivityWebLink(@NonNull Activity activity, @NonNull String link){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        activity.startActivity(browserIntent);
+    }
+
+    public static void startActivityWebLink(@NonNull Activity activity, @StringRes int link){
+        startActivityWebLink(activity, activity.getString(link));
+    }
+
 	   /**
      * Start Login Activity validating Customer
      * 

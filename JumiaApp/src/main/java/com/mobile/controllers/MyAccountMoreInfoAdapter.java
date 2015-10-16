@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.utils.CheckVersion;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -65,7 +66,16 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
             TextView updateLabel = (TextView) view.findViewById(R.id.update_label);
 
             appVersionLabel.setText(DeviceInfoHelper.getVersionName(view.getContext()));
-            updateLabel.setText(R.string.update_now);
+
+            if(CheckVersion.needsToShowDialog()) {
+                updateLabel.setText(R.string.update_now);
+                updateLabel.setVisibility(View.VISIBLE);
+                view.setEnabled(true);
+            } else {
+                updateLabel.setVisibility(View.GONE);
+                view.setEnabled(false);
+            }
+
         } else {
             TargetHelper targetHelper = staticPages.get(position - 1);
             optionsName.setText(targetHelper.getTargetTitle());
