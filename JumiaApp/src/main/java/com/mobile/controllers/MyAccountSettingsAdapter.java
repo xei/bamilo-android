@@ -78,29 +78,29 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
         
         optionsName.setText(this.mOptions[position]);
-
-        setViewByPosition(view, position);
+        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
+        optionsDescription.setVisibility(View.INVISIBLE);
 
         // Return the Category Item View
         return view;
     }
 
-    protected void setViewByPosition(View view, int position){
-        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
-        // Validate the current position
-        switch (position) {
-            case MyAccountFragment.POSITION_USER_DATA:
-                optionsDescription.setText(mContext.getResources().getString(R.string.option2_description));
-                break;
-            case MyAccountFragment.POSITION_MY_ADDRESSES:
-                optionsDescription.setText(mContext.getResources().getString(R.string.create_edit_address));
-                break;
-            case MyAccountFragment.POSITION_EMAIL:
-                optionsDescription.setText(mContext.getResources().getString(R.string.option3_description));
-                break;
-        }
-        
-    }
+//    protected void setViewByPosition(View view, int position){
+//        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
+//        // Validate the current position
+//        switch (position) {
+//            case MyAccountFragment.POSITION_USER_DATA:
+//                optionsDescription.setText(mContext.getResources().getString(R.string.option2_description));
+//                break;
+//            case MyAccountFragment.POSITION_MY_ADDRESSES:
+//                optionsDescription.setText(mContext.getResources().getString(R.string.create_edit_address));
+//                break;
+//            case MyAccountFragment.POSITION_EMAIL:
+//                optionsDescription.setText(mContext.getResources().getString(R.string.option3_description));
+//                break;
+//        }
+//
+//    }
     
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.

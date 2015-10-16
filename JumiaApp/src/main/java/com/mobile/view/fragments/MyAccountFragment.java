@@ -5,7 +5,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.controllers.AppSharingSettingsAdapter;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountAdapter;
@@ -251,7 +249,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
      */
     private void showAppSharing(View view) {
         appSharingList = (ViewGroup)view.findViewById(R.id.middle_app_sharing_list);
-        AppSharingSettingsAdapter appSharingSettingsAdapter = new AppSharingSettingsAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array));
+        MyAccountSettingsAdapter appSharingSettingsAdapter = new MyAccountSettingsAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array));
 
         new MyAccountAdapter(appSharingList, appSharingSettingsAdapter, this).buildLayout();
     }
