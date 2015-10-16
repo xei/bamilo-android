@@ -5,6 +5,8 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +30,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -38,6 +41,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -119,7 +123,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         if(savedInstanceState != null){
             targets = savedInstanceState.getParcelableArrayList(TARGETS_TAG);
         } else {
-            targets = CountryPersistentConfigs.getMoreInfo(this.getContext());
+            setTargets(CountryPersistentConfigs.getMoreInfo(this.getContext()));
         }
     }
     
@@ -267,18 +271,6 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         new MyAccountAdapter(moreInfoContainer, moreInfoAdapter, this).buildLayout();
     }
 
-    @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Buy button
-        if(id == R.id.more_info_container){
-            processOnClickMoreInfo();
-        } else{
-            super.onClick(view);
-        }
-    }
-
     private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
         if(position == POSITION_COUNTRY){
             getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -360,10 +352,6 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private void processOnClickMoreInfo() {
-        getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MORE_INFO, null, FragmentController.ADD_TO_BACK_STACK);
-    }
-
     @Override
     public void onItemClick(ViewGroup parent, View view, int position) {
         // Validate item
@@ -402,7 +390,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
 
         switch (eventType) {
             case GET_FAQ_TERMS:
-                targets = (MobileAbout) baseResponse.getMetadata().getData();
+                setTargets((MobileAbout) baseResponse.getMetadata().getData());
                 showMoreInfo();
                 break;
         }
@@ -427,6 +415,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         switch (eventType) {
             case GET_FAQ_TERMS:
                 showMoreInfo();
+                showFragmentContentContainer();
                 break;
         }
     }
@@ -436,5 +425,16 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         bundle.putString(RestConstants.JSON_KEY_TAG, key);
         bundle.putString(RestConstants.JSON_TITLE_TAG, label);
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    private void setTargets(@Nullable List<TargetHelper> targetHelpers){
+        if(CollectionUtils.isNotEmpty(targetHelpers)) {
+            this.targets = new ArrayList<>();
+            for (TargetHelper targetHelper : targetHelpers) {
+                if (targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
+                    this.targets.add(targetHelper);
+                }
+            }
+        }
     }
 }

@@ -388,9 +388,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case MY_ACCOUNT_EDIT_ADDRESS:
                 fragment = MyAccountEditAddressFragment.newInstance(bundle);
                 break;
-            case MY_ACCOUNT_MORE_INFO:
-                fragment = MyAccountMoreInfoFragment.newInstance();
-                break;
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
