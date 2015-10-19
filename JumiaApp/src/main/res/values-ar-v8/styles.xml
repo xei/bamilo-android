@@ -72,4 +72,9 @@
         <item name="android:src">@drawable/ic_overseas_corner</item>
     </style>
 
+    <!-- MY ACCOUNT -->
+
+    <style name="HeaderMyAccountStyle" parent="HeaderStyle">
+        <item name="android:paddingRight">@dimen/my_account_gen_dimen</item>
+    </style>
 </resources>

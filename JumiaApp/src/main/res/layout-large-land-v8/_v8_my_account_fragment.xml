@@ -23,7 +23,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderStyle"
+                    style="@style/HeaderMyAccountStyle"
                     android:text="@string/more" />
             </LinearLayout>
 
@@ -38,7 +38,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderStyle"
+                    style="@style/HeaderMyAccountStyle"
                     android:text="@string/app_social" />
             </LinearLayout>
 
@@ -65,14 +65,14 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderStyle"
+                    style="@style/HeaderMyAccountStyle"
                     android:text="@string/section_title_account" />
             </LinearLayout>
 
             <!-- NOTIFICATION SETTINGS -->
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
+                style="@style/HeaderMyAccountStyle"
                 android:text="@string/section_title_notification" />
             <FrameLayout
                 android:id="@+id/account_preferences_frame"
@@ -90,7 +90,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderStyle"
+                    style="@style/HeaderMyAccountStyle"
                     android:text="@string/choose_language" />
             </LinearLayout>
         </LinearLayout>
