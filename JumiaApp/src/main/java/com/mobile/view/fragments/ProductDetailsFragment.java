@@ -36,6 +36,8 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
@@ -53,6 +55,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -283,6 +286,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onDestroyView() {
         super.onDestroyView();
         Print.d(TAG, "ON DESTROY VIEW");
+        getBaseActivity().mConfigurableCartView.hideMessage();
     }
 
     /*
@@ -1085,7 +1089,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                //get country configs
+                CountryConfigs countryConfigs = CountryPersistentConfigs.getCountryConfigsFromPreferences(JumiaApplication.INSTANCE.getApplicationContext());
+                //if has cart popup, show configurable confirmation message with cart total price
+                if(countryConfigs.hasCartPopup()){
+                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+                    String message = getResources().getString(R.string.cart_total_price, CurrencyFormatter.formatCurrency(purchaseEntity.getTotal()));
+                    getBaseActivity().mConfigurableCartView.showMessage(message);
+                }
+                else{
+                    //show regular message add item to cart
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                }
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
