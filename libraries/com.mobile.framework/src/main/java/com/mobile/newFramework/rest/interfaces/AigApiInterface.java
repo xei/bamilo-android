@@ -142,7 +142,6 @@ public interface AigApiInterface {
     String getForgotPasswordForm = "getForgotPasswordForm";
 
     @GET("/")
-  //  void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
     void getCreateAddressForm(Callback<BaseResponse<AddressForms>> callback);
 
     String getCreateAddressForm = "getCreateAddressForm";

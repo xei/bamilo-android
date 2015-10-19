@@ -1,8 +1,5 @@
 package com.mobile.newFramework.forms;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
@@ -10,39 +7,54 @@ import org.json.JSONObject;
 
 /**
  * Created by alexandrapires on 10/14/15.
+ *
+ * This class is used to keep two separate Form instances when creating addresses
  */
-public class AddressForms implements IJSONSerializable, Parcelable {
+public class AddressForms implements IJSONSerializable {
 
-    private Form shippingForm;
+    private Form mShippingForm;
 
-    private Form billingForm;
+    private Form mBillingForm;
 
 
+    /**
+     * Empty constructor
+     * */
     public AddressForms()
     {
-        shippingForm = new Form();
-        billingForm = new Form();
+        mShippingForm = new Form();
+        mBillingForm = new Form();
     }
 
 
+    /**
+     * Return shipping address form
+     * */
     public Form getShippingForm()
     {
-        return shippingForm;
+        return mShippingForm;
     }
 
+
+    /**
+     * Return billing address form
+     * */
     public Form getBillingForm()
     {
-        return billingForm;
+        return mBillingForm;
     }
 
 
+    /**
+     * Initialize both instances from a jsonObject Form
+     * */
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        if(shippingForm.initialize(jsonObject) &&  billingForm.initialize(jsonObject))
+        if(mShippingForm.initialize(jsonObject) &&  mBillingForm.initialize(jsonObject))
             return true;
 
-        return true;
+        return false;
     }
 
 
@@ -57,28 +69,7 @@ public class AddressForms implements IJSONSerializable, Parcelable {
         return null;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
 
-    }
 
-    protected AddressForms(Parcel in) {
-    }
-
-    public static final Creator<AddressForms> CREATOR = new Creator<AddressForms>() {
-        @Override
-        public AddressForms createFromParcel(Parcel in) {
-            return new AddressForms(in);
-        }
-
-        @Override
-        public AddressForms[] newArray(int size) {
-            return new AddressForms[size];
-        }
-    };
 }
