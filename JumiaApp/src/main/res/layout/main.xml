@@ -93,6 +93,15 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone" />
 
+            <!--CONFIGURABLE CART VIEW -->
+
+            <include
+                android:id="@+id/configurableCartView"
+                layout="@layout/config_confirmation_msg"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
