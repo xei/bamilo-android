@@ -92,7 +92,7 @@ public class HockeyStartup {
             UpdateManager.register(activity, hockeyTocken);
         }
     }
-    
+
     public static boolean isDevEnvironment( Context context ) {
         int resultCheckSignature = checkSignatureForUpdate(context);
         return !(resultCheckSignature == RESULT_KEY_HOCKEY || resultCheckSignature == RESULT_KEY_OTHER);
