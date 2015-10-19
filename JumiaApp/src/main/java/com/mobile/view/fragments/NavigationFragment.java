@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -193,30 +192,25 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     }
     
     /**
-     * Method used to associate the container and fragment
-     * @param container
-     * @param fragment
-     * @param filterType 
-     * @param animated
-     * @author sergiopereira
+     * Method used to associate the container and fragment.
      */
     public void fragmentChildManagerTransition(int container, FragmentType filterType, Fragment fragment, final boolean animated, boolean addToBackStack) {
         final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         // Fragment tag
         String tag = filterType != null ? filterType.toString() : null;
 
-        /**
-         * FIXME: Excluded piece of code due to crash on API = 18.
-         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
-         */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
+//        /**
+//         * FIXME: Excluded piece of code due to crash on API = 18.
+//         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+//         */
+//        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
+//            @Override
+//            public void run() {
                 // Animations
                 if (animated)
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
+//            }
+//        });
 
         // Replace
         fragmentTransaction.replace(container, fragment, tag);

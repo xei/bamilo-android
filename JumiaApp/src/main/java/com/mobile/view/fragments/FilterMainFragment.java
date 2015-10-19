@@ -24,7 +24,6 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -183,18 +182,18 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     public void fragmentChildManagerTransition(int container, Fragment fragment, final boolean animated, boolean addToBackStack) {
         final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
 
-        /**
-         * FIXME: Excluded piece of code due to crash on API = 18.
-         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
-         */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
+//        /**
+//         * FIXME: Excluded piece of code due to crash on API = 18.
+//         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+//         */
+//        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
+//            @Override
+//            public void run() {
                 // Animations
                 if (animated)
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
+//            }
+//        });
 
         // Replace
         fragmentTransaction.replace(container, fragment);

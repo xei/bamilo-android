@@ -506,6 +506,11 @@
     <dimen name="ratings_average_with">160dp</dimen>
     <dimen name="specs_column_with">120dp</dimen>
 
-
     <integer name="dialog_max_item">7</integer>
+
+    <!--LOGIN-->
+    <dimen name="login_main_container_width">@dimen/match_parent</dimen>
+    <dimen name="login_email_container_width">@dimen/match_parent</dimen>
+    <dimen name="register_container_width">@dimen/match_parent</dimen>
+
 </resources>

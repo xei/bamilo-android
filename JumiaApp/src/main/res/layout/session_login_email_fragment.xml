@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="46dp" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="46dp">
 
         <!--INFO-->
 
@@ -28,24 +29,19 @@
             android:singleLine="false"
             android:text="@string/login_email_info" />
 
-        <!-- FORM CONTAINER -->
-
         <Space
             android:layout_width="wrap_content"
             android:layout_height="34dp" />
 
+        <!-- FORM CONTAINER -->
+
         <LinearLayout
             android:id="@+id/login_email_form_container"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/login_email_container_width"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
         <!-- REMEMBER MY EMAIL -->
-
-        <!--<Space-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="8dp" />-->
-
         <!--<include layout="@layout/login_remember_checkbox" />-->
 
         <Space
@@ -57,7 +53,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_email_button_password"
             style="@style/TextCaption"
-            android:layout_gravity="right"
+            android:layout_width="@dimen/login_email_container_width"
+            android:gravity="right"
             android:text="@string/fgt_pass"
             android:textColor="@color/blue1" />
 
@@ -70,6 +67,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_email_button_create"
             style="@style/AigButton.Active"
+            android:layout_width="@dimen/login_email_container_width"
             android:text="@string/continue_label" />
 
     </LinearLayout>

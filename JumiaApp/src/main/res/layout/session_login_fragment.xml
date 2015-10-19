@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="46dp" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="46dp">
 
         <!--INFO-->
 
@@ -34,7 +33,8 @@
 
         <com.mobile.components.customfontviews.FacebookTextView
             android:id="@+id/login_button_facebook"
-            style="@style/AigButton.Facebook" />
+            style="@style/AigButton.Facebook"
+            android:layout_width="@dimen/login_email_container_width" />
 
         <Space
             android:layout_width="wrap_content"
@@ -43,14 +43,12 @@
         <!-- DIVIDER -->
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/login_main_container_width"
             android:layout_height="wrap_content">
 
             <View
                 style="@style/divider_horizontal"
-                android:layout_height="0.75dp"
-                android:layout_centerInParent="true"
-                android:background="@color/grey_divider_light_text" />
+                android:layout_centerInParent="true" />
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/text_header"
@@ -71,6 +69,7 @@
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/login_text_email"
             style="@style/TextField"
+            android:layout_width="@dimen/login_main_container_width"
             android:hint="@string/email_address"
             android:imeOptions="actionDone" />
 
@@ -83,11 +82,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_button_continue"
             style="@style/AigButton.Active"
+            android:layout_width="@dimen/login_main_container_width"
             android:text="@string/continue_label" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="16dp" />
 
     </LinearLayout>
 

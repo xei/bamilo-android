@@ -20,7 +20,7 @@
     <style name="TextField" parent="TextList_2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:background">@drawable/selector_edittext_bottomline</item>
+        <item name="android:background">@drawable/_gen_selector_text_field</item>
         <item name="android:textColorHint">@color/black_700</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:cursorVisible">true</item>
