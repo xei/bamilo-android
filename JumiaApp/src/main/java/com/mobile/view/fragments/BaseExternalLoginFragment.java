@@ -29,17 +29,20 @@ import java.util.Set;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class created to control all external logins that are identical on session login and the checkout about you step
+ * Class created to control all external login interfaces that are identical on session login and the checkout about you step.
  *
- * Created by pcarvalho on 6/30/15.
+ * @author pcarvalho
+ * @modified sergiopereira
  */
 public abstract class BaseExternalLoginFragment extends BaseFragment implements GraphRequest.GraphJSONObjectCallback, FacebookCallback<LoginResult> {
+
+    private static final String TAG = BaseExternalLoginFragment.class.getSimpleName();
 
     protected boolean isNetworkFacebookError = false;
 
     protected boolean facebookLoginClicked = false;
 
-    public CallbackManager callbackManager;
+    protected CallbackManager mFacebookCallbackManager;
 
     /**
      * Constructor
@@ -62,7 +65,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        callbackManager = CallbackManager.Factory.create();
+        mFacebookCallbackManager = CallbackManager.Factory.create();
     }
 
     /*
@@ -71,7 +74,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        Log.e("facebookCallback", "onSuccess");
+        Log.i(TAG, "FacebookCallback onSuccess");
         if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
             Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
         }
@@ -80,7 +83,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onCancel() {
-        Log.e("facebookCallback","onCancel");
+        Log.i(TAG, "FacebookCallback onCancel");
         facebookLoginClicked = false;
         FacebookHelper.facebookLogout();
         showFragmentContentContainer();
@@ -89,7 +92,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onError(FacebookException e) {
-        Log.e("facebookCallback","onError");
+        Log.i(TAG, "FacebookCallback onError");
         facebookLoginClicked = false;
         e.printStackTrace();
         FacebookHelper.facebookLogout();
@@ -124,7 +127,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
 
     @Override
     public void onCompleted(JSONObject user, GraphResponse response) {
-        Log.e("newMeRequest", "onCompleted");
+        Log.i(TAG, "FacebookCallback onCompleted");
         if (user != null) {
             requestFacebookLogin(user);
         } else {
@@ -138,7 +141,6 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
      * Arrays.asList(FacebookHelper.FB_PERMISSION_EMAIL)
      */
     public void repeatFacebookEmailRequest(){
-
         if(!isOnStoppingProcess) {
             showFragmentLoading();
             try {

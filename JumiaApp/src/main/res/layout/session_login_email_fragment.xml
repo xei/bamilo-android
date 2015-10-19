@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="46dp" />
+
+        <!--INFO-->
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextDisplay_1"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/welcome_back_label"
+            android:textColor="@color/black_900" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextCaption"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="@string/login_email_info" />
+
+        <!-- FORM CONTAINER -->
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="34dp" />
+
+        <LinearLayout
+            android:id="@+id/login_email_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- REMEMBER MY EMAIL -->
+
+        <!--<Space-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="8dp" />-->
+
+        <!--<include layout="@layout/login_remember_checkbox" />-->
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="8dp" />
+
+        <!-- FORGOT PASSWORD -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/login_email_button_password"
+            style="@style/TextCaption"
+            android:layout_gravity="right"
+            android:text="@string/fgt_pass"
+            android:textColor="@color/blue1" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+
+        <!-- BUTTON -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/login_email_button_create"
+            style="@style/AigButton.Active"
+            android:text="@string/continue_label" />
+
+    </LinearLayout>
+
+</ScrollView>

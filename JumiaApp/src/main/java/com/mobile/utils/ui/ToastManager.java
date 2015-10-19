@@ -27,6 +27,7 @@ public class ToastManager {
     public static final int ERROR_PRODUCT_OUT_OF_STOCK      = 5;
     public static final int ERROR_ADDED_TO_CART             = 6;
     public static final int ERROR_UNEXPECTED_PLEASE_RETRY   = 7;
+    public static final int ERROR_INVALID_EMAIL             = 12;
 
     /*
      * #### SUCCESS ####
@@ -46,6 +47,7 @@ public class ToastManager {
             ERROR_PRODUCT_OUT_OF_STOCK,
             ERROR_ADDED_TO_CART,
             ERROR_UNEXPECTED_PLEASE_RETRY,
+            ERROR_INVALID_EMAIL,
             // #### SUCCESS ####
             SUCCESS_LOGIN,
             SUCCESS_ADDED_FAVOURITE,
@@ -86,6 +88,9 @@ public class ToastManager {
                 break;
             case ERROR_UNEXPECTED_PLEASE_RETRY:
                 Toast.makeText(context, context.getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
+                break;
+            case ERROR_INVALID_EMAIL:
+                Toast.makeText(context, context.getString(R.string.error_invalid_email), Toast.LENGTH_LONG).show();
                 break;
             /*
              * #### SUCCESS ####

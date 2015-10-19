@@ -68,7 +68,7 @@ public class CheckoutStepManager {
      */
     public static String[] getAllNativeCheckout() {
         return new String[]{
-                FragmentType.ABOUT_YOU.toString(),
+                FragmentType.LOGIN.toString(),
                 FragmentType.MY_ADDRESSES.toString(),
                 FragmentType.CREATE_ADDRESS.toString(),
                 FragmentType.EDIT_ADDRESS.toString(),

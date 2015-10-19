@@ -66,7 +66,7 @@ public class RestConstants {
     public static final String JSON_SCENARIO_TAG = "scenario";
     public static final String JSON_TERMS_TAG = "terms";
     public static final String JSON_LINK_TEXT_TAG = "link_text";
-    public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
+    public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "register[newsletter_categories_subscribed]";
     public static final String DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
@@ -445,4 +445,5 @@ public class RestConstants {
 
 
     public static final String PRICE_RANGE = "price_range";
+    public static final String EXIST = "exist";
 }

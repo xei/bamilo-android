@@ -113,6 +113,7 @@ public class DynamicFormItem {
     private int errorColor;
     //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
+    private OnClickListener mClickListener;
 
     /**
      * The constructor for the DynamicFormItem
@@ -754,7 +755,8 @@ public class DynamicFormItem {
                         result = ((CheckBox) this.dataControl).isChecked();
                     break;
                 case checkBoxLink:
-                    result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
+                    if (this.entry.getValidation().isRequired())
+                        result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
                     break;
                 case radioGroup:
                     boolean valid;
@@ -979,6 +981,13 @@ public class DynamicFormItem {
         //textWatcher = watcher;
     }
 
+    /**
+     * Sets a click listener
+     */
+    public void setOnClickListener(OnClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
     private void buildCheckBoxForTerms(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
@@ -992,35 +1001,40 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setVisibility(View.VISIBLE);
 
-        CheckBox mCheckBox = (CheckBox)this.dataControl.findViewById(R.id.checkbox_terms);
+        CheckBox mCheckBox = (CheckBox) this.dataControl.findViewById(R.id.checkbox_terms);
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
 
-    //    int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-    //    mCheckBox.setPadding(formPadding, 0, 0, 0);
+        //    int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        //    mCheckBox.setPadding(formPadding, 0, 0, 0);
         mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
 
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
         }
 
-        TextView mLinkTextView = (TextView)this.dataControl.findViewById(R.id.textview_terms);
+        TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
         Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
+        mLinkTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickListener != null) mClickListener.onClick(v);
+            }
+        });
 
         //needed: change parent layout to match_parent to be able to align this component to right
-      if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-          LinearLayout.LayoutParams paramsAux = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-          this.dataControl.setLayoutParams(paramsAux);
-      }
+        if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            LinearLayout.LayoutParams paramsAux = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            this.dataControl.setLayoutParams(paramsAux);
+        }
 
         ((ViewGroup) this.control).addView(this.dataControl);
 
         if (hasRules()) {
             //mandatory control
-            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             if (ShopSelector.isRtl()) {
                 params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 params.leftMargin = MANDATORYSIGNALMARGIN;
@@ -1035,13 +1049,10 @@ public class DynamicFormItem {
             this.mandatoryControl.setText("*");
             this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-
-            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                    : View.GONE);
+            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
             ((ViewGroup) this.control).addView(this.mandatoryControl);
             mCheckBox.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
@@ -1049,7 +1060,6 @@ public class DynamicFormItem {
                     } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
                         mandatoryControl.setVisibility(View.VISIBLE);
                     }
-
                 }
             });
 
@@ -1060,7 +1070,7 @@ public class DynamicFormItem {
             if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 this.errorControl.setLayoutDirection(LayoutDirection.RTL);
             }
-            RelativeLayout.LayoutParams errorControlParams = (RelativeLayout.LayoutParams)this.errorControl.getLayoutParams();
+            RelativeLayout.LayoutParams errorControlParams = (RelativeLayout.LayoutParams) this.errorControl.getLayoutParams();
             errorControlParams.addRule(RelativeLayout.BELOW, this.dataControl.getId());
             ((ViewGroup) this.control).addView(this.errorControl);
         }

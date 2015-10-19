@@ -17,6 +17,22 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="TextField" parent="TextList_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/selector_edittext_bottomline</item>
+        <item name="android:textColorHint">@color/black_700</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
+        <item name="android:textCursorDrawable" targetApi="12">@null</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:fontFamily">roboto_regular</item>
+    </style>
+
     <!-- Single line item -->
     <style name="SingleLineStyle" parent="@style/TextList_2">
         <item name="android:layout_width">match_parent</item>
@@ -86,19 +102,7 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="form_edittext_style" parent="form_style">
-        <item name="android:layout_height">@dimen/form_item_height</item>
-        <item name="android:background">@drawable/selector_edittext_bottomline</item>
-        <item name="android:textColorHint">@color/form_text_hint</item>
-        <item name="android:cursorVisible">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:paddingLeft">@dimen/form_padding</item>
-        <item name="android:paddingStart">@dimen/form_padding</item>
-        <item name="android:textCursorDrawable" targetApi="12">@null</item>
-        <item name="android:inputType">text</item>
-        <item name="android:fontFamily">roboto_regular</item>
-    </style>
+
 
     <style name="FormButtonSpinner">
         <item name="android:layout_width">match_parent</item>
@@ -132,12 +136,15 @@
     </style>
 
     <style name="AigButton.Facebook" >
+        <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
         <item name="android:background">@color/blue_205081</item>
         <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
         <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
-        <item name="android:paddingTop">17dp</item>
-        <item name="android:paddingBottom">17dp</item>
-        <item name="android:text">CONTINUE WITH FACEBOOK</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->

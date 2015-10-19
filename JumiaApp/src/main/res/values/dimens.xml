@@ -315,7 +315,7 @@
 
     <dimen name="login_container_width">@dimen/inner_container_width</dimen>
 
-    <dimen name="form_item_height">30dp</dimen>
+    <dimen name="form_item_height">48dp</dimen>
     <!-- 93.33dp reduced to 90dp -->
     <dimen name="form_date_width">90dp</dimen>
 

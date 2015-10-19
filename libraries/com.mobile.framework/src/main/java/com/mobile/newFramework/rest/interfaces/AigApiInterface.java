@@ -23,6 +23,7 @@ import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderTracker;
@@ -499,5 +500,10 @@ public interface AigApiInterface {
     @POST("/")
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    String emailCheck = "emailCheck";
 
 }

@@ -1310,7 +1310,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
+                                                LogOut.perform(new WeakReference<Activity>(BaseActivity.this));
                                             }
                                             dialogLogout.dismiss();
                                         }
@@ -1753,7 +1753,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             // Validate back stack
             if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllNativeCheckoutFromBackStack();
-                onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(ConstantsIntentExtra.FLAG_1, true);
+                onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
             }
 
         }

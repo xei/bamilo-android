@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.app.Activity;
-import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.session.GetLogoutHelper;
@@ -46,7 +45,7 @@ public class LogOut {
      * TODO: Improve this method, if is being discarded the server response why we perform a request...
      * 
      */
-    public static void performLogOut(final WeakReference<Activity> activityRef) {
+    public static void perform(final WeakReference<Activity> activityRef) {
 
         BaseActivity baseActivity = (BaseActivity) activityRef.get();
         if (baseActivity != null) {

@@ -51,7 +51,6 @@ public class FormFactory {
      */
 
 
-    // private DynamicForm shippingForm = null;
     private float scale = 1;
 
     /**
@@ -218,23 +217,9 @@ public class FormFactory {
             ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
         }
 
-//        if (loginForm == null) {
-//            loginForm = createGenericForm(context, form, ctrlParams);
-//        }
-//        return loginForm;
         return createGenericForm(context,form,ctrlParams);
    }
 
-//    /**
-//     * Create the payment methods edit form
-//     *
-//     * @param context The context where the form is to be inserted
-//     * @param form The definition provided by the framework
-//     * @return An instance of a DynamicForm with the form representation implemented
-//     */
-//    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
-//        return createPaymentMethodsForm(context, form, null);
-//    }
 
     /**
      * Create the payment methods edit form
@@ -353,25 +338,6 @@ public class FormFactory {
     }
 
     /**
-     * Create the payment methods edit form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    /*-private DynamicForm createShippingMethodsForm(Context context, Form form) {
-        final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = (int) (5 * scale);
-        final int CTRLMARGIN_RIGHT = 0;
-        final int CTRLMARGIN_BOTTOM = (int) (5 * scale);
-
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
-        return createShippingMethodsForm(context, form, shippingForm, ctrlParams);
-    }*/
-
-    /**
      * This is used as base to create the given form. Here all the controls are instantiated.
      *
      * @param context The context where the form is to be inserted
@@ -403,12 +369,6 @@ public class FormFactory {
         groupLayout.setId(userForm.getNextId());
         groupLayout.setOrientation(LinearLayout.HORIZONTAL);
         groupLayout.setLayoutParams(params);
-
-        // TODO: VALIDATE IF THIS IS NECESSARY : MetaFormExtractor
-//        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
-//        MetaFormExtractor.dumpIFormField(transformedFields);
-
-//      for (IFormField frmEntry : transformedFields) {
 
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
@@ -452,50 +412,5 @@ public class FormFactory {
             ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
         }
     }
-
-    /**
-     * This is used to create the Shipping methods form. Here all the controls are instantiated.
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @param userForm
-     * @param ctrlParams
-     * @return n instance of a DynamicForm with the form representation implemented
-     */
-    /*-private DynamicForm createShippingMethodsForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
-
-        LinearLayout parent;
-        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
-        if (null == userForm) {
-            parent = new LinearLayout(context);
-            LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            parent.setOrientation(LinearLayout.VERTICAL);
-            parent.setLayoutParams(frmParams);
-
-            userForm = new DynamicForm(parent);
-            userForm.setForm( form );
-
-            LinearLayout groupLayout = new LinearLayout(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            groupLayout.setId( userForm.getNextId() );
-            groupLayout.setOrientation(LinearLayout.HORIZONTAL);
-            groupLayout.setLayoutParams(params);
-
-            DynamicFormItem ctrl;
-
-            ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
-            MetaFormExtractor.dumpIFormField(transformedFields);
-
-            for (IFormField frmEntry : transformedFields) {
-                Log.d( TAG, "createShippingMethodsForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
-                ctrl = new DynamicFormItem(userForm, context, frmEntry);
-                userForm.addControl(ctrl, ctrlParams);
-            }
-        } else {
-            ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());
-        }
-
-        return userForm;
-    }*/
 
 }

@@ -413,7 +413,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(true);
             } else {
                 mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800, null));
+                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
             }
         }
     }
@@ -796,7 +796,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-        getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 //    /**

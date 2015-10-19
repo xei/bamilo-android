@@ -54,8 +54,6 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -855,9 +853,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
+            case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
                 JumiaApplication.INSTANCE.setLoggedIn(true);
-                getBaseActivity().triggerGetShoppingCartItemsHelper();
+                // TODO VALIDATE IF THIS IS NECESSARY
+                // getBaseActivity().triggerGetShoppingCartItemsHelper();
                 return true;
             default:
                 break;
@@ -884,7 +884,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-//        errorCode = ErrorCode.IO;
+
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -988,7 +988,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
+        // Case error button
         if (id == R.id.fragment_root_error_button){
             checkErrorButtonBehavior(view);
         }

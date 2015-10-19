@@ -28,11 +28,11 @@ public enum EventType {
 
     LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
 
+    EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
+
     FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?facebook=true", AigRestContract.NO_CACHE),
 
-    GET_LOGIN_FORM_EVENT("login", AigRestContract.MAX_CACHE_TIME),
-
-    GET_LOGIN_FORM_FALLBACK_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
+    GET_LOGIN_FORM_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
 
     LOGOUT_EVENT("https:/customer/logout/", AigRestContract.NO_CACHE),
 
@@ -48,9 +48,7 @@ public enum EventType {
 
     GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata/", AigRestContract.NO_CACHE),
 
-    GET_REGISTRATION_FORM_EVENT("register", AigRestContract.MAX_CACHE_TIME),
-
-    GET_REGISTRATION_FORM_FALLBACK_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
+    GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 
     GET_CHANGE_PASSWORD_FORM_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
 
