@@ -19,6 +19,7 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.GetFacebookLoginHelper;
 import com.mobile.helpers.session.GetLoginHelper;
+import com.mobile.helpers.session.SetSignUpHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -129,6 +130,9 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         mEmailView = (EditText) view.findViewById(R.id.login_text_email);
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
+        // Get
+        view.findViewById(R.id.login_button_guest).setOnClickListener(this);
+
     }
 
     /*
@@ -242,7 +246,6 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     @Override
     public void onClick(View view) {
-        super.onClick(view);
         int id = view.getId();
         // Case FB button
         if (id == R.id.login_button_facebook) {
@@ -252,6 +255,26 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         // Case forgot password
         else if (id == R.id.login_button_continue) {
             onClickCheckEmail();
+        }
+        // Case guest login
+        else if (id == R.id.login_button_guest) {
+            onClickGuestLogin();
+        }
+        // Case super
+        else {
+            super.onClick(view);
+        }
+    }
+
+    private void onClickGuestLogin() {
+        Print.i(TAG, "ON CLICK GUEST LOGIN");
+        // Get email
+        mCustomerEmail = mEmailView.getText().toString();
+        // Trigger to check email
+        if(TextUtils.isNotEmpty(mCustomerEmail) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
+            triggerGuestLogin(mCustomerEmail);
+        } else {
+            ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
         }
     }
 
@@ -277,6 +300,13 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
     /*
      * ################ TRIGGERS ################
      */
+
+    private void triggerGuestLogin(String email) {
+        Print.i(TAG, "TRIGGER EMAIL CHECK");
+        ContentValues values = new ContentValues();
+        values.put("key", email);
+        triggerContentEvent(new SetSignUpHelper(), SetSignUpHelper.createBundle(values), this);
+    }
 
     private void triggerEmailCheck(String email) {
         Print.i(TAG, "TRIGGER EMAIL CHECK");

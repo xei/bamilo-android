@@ -77,6 +77,19 @@
             android:layout_width="wrap_content"
             android:layout_height="16dp" />
 
+
+        <!-- GUEST -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/login_button_guest"
+            style="@style/TextCaption"
+            android:gravity="center"
+            android:text="@string/continue_without_log_in" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="16dp" />
+
         <!-- BUTTON -->
 
         <com.mobile.components.customfontviews.TextView

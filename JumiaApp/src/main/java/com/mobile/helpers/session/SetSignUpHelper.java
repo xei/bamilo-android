@@ -86,4 +86,12 @@ public class SetSignUpHelper extends SuperBaseHelper {
         WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
     }
 
+    public static Bundle createBundle(ContentValues values) {
+        Print.i(TAG, "TRIGGER: SIGN UP " + values.toString());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
+        return bundle;
+    }
+
 }
