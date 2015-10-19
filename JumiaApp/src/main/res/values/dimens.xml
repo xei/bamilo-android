@@ -508,4 +508,6 @@
 
 
     <integer name="dialog_max_item">7</integer>
+
+    <dimen name="my_account_gen_dimen">16dp</dimen>
 </resources>

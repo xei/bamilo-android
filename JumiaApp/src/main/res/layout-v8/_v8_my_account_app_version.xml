@@ -14,8 +14,7 @@
         android:layout_alignParentLeft="true"
         android:textColor="@color/black"
         android:paddingTop="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"/>
+        android:layout_marginLeft="@dimen/my_account_gen_dimen" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/update_label"
@@ -25,6 +24,5 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/app_version_label"
         android:textColor="@color/black_800"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"/>
+        android:layout_marginLeft="@dimen/my_account_gen_dimen" />
 </RelativeLayout>

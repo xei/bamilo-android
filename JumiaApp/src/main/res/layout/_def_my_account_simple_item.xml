@@ -13,6 +13,9 @@
         style="@style/TextCaption"
         android:text="Title"
         android:textColor="@color/black"
-        android:layout_margin="16dp"/>
+        android:layout_marginLeft="@dimen/my_account_gen_dimen"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"/>
 
 </LinearLayout>
