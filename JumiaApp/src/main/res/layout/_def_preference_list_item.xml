@@ -11,8 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/my_account_gen_dimen"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1"
         android:paddingTop="@dimen/rounded_margin_mid">
@@ -24,8 +24,8 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/text_title" />
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@android:id/summary"
