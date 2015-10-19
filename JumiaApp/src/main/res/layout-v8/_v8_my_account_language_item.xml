@@ -10,27 +10,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="vertical"
-        android:paddingTop="@dimen/rounded_margin_mid"
-        android:gravity="left|start">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:gravity="right" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:text="Title"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_title" />
+            android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:text="Info"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_subtitle" />
+            android:textColor="@color/black_800" />
     </LinearLayout>
 
 </LinearLayout>

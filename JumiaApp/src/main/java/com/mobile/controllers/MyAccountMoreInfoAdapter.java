@@ -54,7 +54,7 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate( (position == APP_VERSION_POSITION ? R.layout.my_account_app_version : R.layout.my_account_list_item), parent, false);
+            view = mInflater.inflate( (position == APP_VERSION_POSITION ? R.layout.my_account_app_version : R.layout.my_account_language_item), parent, false);
         }
 
         // Get the Category Name

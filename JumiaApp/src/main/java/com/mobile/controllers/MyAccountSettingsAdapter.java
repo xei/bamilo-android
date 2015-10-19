@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
-import com.mobile.view.fragments.MyAccountFragment;
 
 /**
  * This Class is used to create an adapter for the list of account options. It is called by Home Activity.
@@ -71,7 +70,7 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate(R.layout.my_account_list_item, parent, false);
+            view = mInflater.inflate(R.layout.my_account_language_item, parent, false);
         }
 
         // Get the Category Name
