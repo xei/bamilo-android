@@ -15,6 +15,6 @@
         />
 
     <include
-        layout="@layout/my_account_language_item"/>
+        layout="@layout/_def_my_account_language_item"/>
 
 </RelativeLayout>

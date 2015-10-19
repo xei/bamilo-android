@@ -53,7 +53,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView == null){
-            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout.my_account_language_item, parent, false);
+            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout._def_my_account_language_item, parent, false);
         } else {
             view = convertView;
         }
