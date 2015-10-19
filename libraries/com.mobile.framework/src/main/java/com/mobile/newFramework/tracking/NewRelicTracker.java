@@ -56,8 +56,20 @@ public class NewRelicTracker {
 	 * @author sergiopereira
 	 */
 	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis){
+		noticeFailureTransaction(url, startTimeMillis, endTimeMillis, NetworkFailure.BadServerResponse);
+	}
+
+	/**
+	 * Notice a failure transaction
+	 * @param url
+	 * @param startTimeMillis
+	 * @param endTimeMillis
+	 * @param networkFailure
+	 * @author ricardosoares
+	 */
+	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis, NetworkFailure networkFailure){
 		Print.i(TAG, "ON FAILURE TRANSACTION: " + url);
-		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", startTimeMillis, System.currentTimeMillis(), NetworkFailure.BadServerResponse);
+		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", startTimeMillis, System.currentTimeMillis(), networkFailure);
 	}
 
 }
