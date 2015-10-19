@@ -54,12 +54,12 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate( (position == APP_VERSION_POSITION ? R.layout.my_account_app_version : R.layout.my_account_language_item), parent, false);
+            view = mInflater.inflate( (position == APP_VERSION_POSITION ? R.layout.my_account_app_version : R.layout._def_my_account_simple_item), parent, false);
         }
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
-        view.findViewById(R.id.option_info).setVisibility(View.INVISIBLE);
+//        view.findViewById(R.id.option_info).setVisibility(View.INVISIBLE);
 
         if(position == APP_VERSION_POSITION) {
             optionsName.setText(R.string.app_version);

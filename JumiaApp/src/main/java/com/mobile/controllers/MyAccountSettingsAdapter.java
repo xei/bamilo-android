@@ -70,15 +70,15 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate(R.layout.my_account_language_item, parent, false);
+            view = mInflater.inflate(R.layout._def_my_account_simple_item, parent, false);
         }
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
         
         optionsName.setText(this.mOptions[position]);
-        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
-        optionsDescription.setVisibility(View.INVISIBLE);
+//        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
+//        optionsDescription.setVisibility(View.INVISIBLE);
 
         // Return the Category Item View
         return view;
