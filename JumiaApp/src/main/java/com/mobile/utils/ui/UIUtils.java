@@ -2,6 +2,7 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
@@ -96,5 +97,13 @@ public class UIUtils {
     public static boolean isAnimating(View view) {
         return view != null && view.getAnimation() != null && (view.getAnimation().hasStarted() || !view.getAnimation().hasEnded());
     }
-    
+
+    public static void showViewFadeIn(@NonNull View view) {
+        if (view.getVisibility() != View.VISIBLE) {
+            Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.abc_fade_in);
+            view.startAnimation(animation);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

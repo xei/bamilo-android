@@ -46,6 +46,7 @@ public class EditText extends android.widget.EditText implements FontStyleProvid
         mFontFamily = fontFamily;
         mFontStyle = fontStyle;
         TextView.setFontStyle(this, fontFamily, fontStyle);
+        HoloFontLoader.applyDefaultFont(this);
     }
 
     @Override

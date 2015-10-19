@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Class used to check the customer email.
  */
 public class CustomerEmailCheck implements IJSONSerializable, Parcelable {
 

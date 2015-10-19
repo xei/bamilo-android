@@ -117,6 +117,7 @@ public class HoloFontLoader {
     }
 
     private static void applyInternal(View view, Font font) {
+        // TODO Validate if this is necessary
 //        if (view instanceof ViewGroup) {
 //            final ViewGroup vg = (ViewGroup) view;
 //            final int childCount = vg.getChildCount();

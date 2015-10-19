@@ -30,6 +30,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     protected final static String TAG = FormField.class.getSimpleName();
 
+
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
         void DataSetReceived(Map<String, String> dataSet);
@@ -59,6 +60,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private IFormField mChildFormField;
     private IFormField mParentFormField;
     private boolean isChecked;
+    private String mImage;
 
     /**
      * FormField param constructor
@@ -158,6 +160,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mScenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
+            mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
             mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
@@ -186,19 +189,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if (!TextUtils.isEmpty(apiCall)) {
                 mDataCalls.put(RestConstants.API_CALL, apiCall);
             }
-
-
-            // TODO: Validate if this is necessary v.2.7
-//            /**
-//             * Get data from dataset as json object
-//             */
-//            JSONObject dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
-//            if(dataSetObject != null && dataSetObject.length() > 0){
-//                Iterator<?> it = dataSetObject.keys();
-//                while (it.hasNext()) {
-//                    dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
-//                }
-//            }
 
             // Case options TODO Unify options response
             /**
@@ -491,6 +481,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return mPaymentInfoList;
     }
 
+
+    public String getImage() {
+        return mImage;
+    }
+
     /**
      * Listener used when the data set is received.
      */
@@ -542,6 +537,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mChildFormField);
         dest.writeValue(mParentFormField);
         dest.writeString(mFormat);
+        dest.writeString(mImage);
     }
 
     /**
@@ -582,6 +578,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mFormat = in.readString();
+        mImage = in.readString();
     }
 
     /**

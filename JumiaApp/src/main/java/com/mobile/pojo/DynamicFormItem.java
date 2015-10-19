@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -273,13 +275,13 @@ public class DynamicFormItem {
                 case email:
                 case text:
                 case password:
-                    buildEditableText(params, controlWidth);
+                    buildEditableTextField();
                     break;
                 case relatedNumber:
-                    buildRelatedNumber(params, controlWidth);
+                    buildRelatedNumber();
                     break;
                 case hide:
-                    buildHide(params, controlWidth);
+                    buildHide();
                     break;
                 case rating:
                     buildRatingOptionsTerms(params, controlWidth);
@@ -297,13 +299,13 @@ public class DynamicFormItem {
     /**
      * Create a related number composed by a text and radio group.
      */
-    private void buildRelatedNumber(RelativeLayout.LayoutParams params, int controlWidth) {
+    private void buildRelatedNumber() {
         // Create container
         LinearLayout container = new LinearLayout(this.context);
         container.setOrientation(LinearLayout.VERTICAL);
         this.control = container;
         // Create text field
-        buildEditableText(params, controlWidth);
+        buildEditableTextField();
         // Create radio group
         buildRelatedRadioGroup(container, entry.getRelatedField());
     }
@@ -681,6 +683,8 @@ public class DynamicFormItem {
                 }
                 break;
             case hide:
+                result = this.entry.getValue();
+                break;
             case email:
             case text:
             case password:
@@ -1122,7 +1126,7 @@ public class DynamicFormItem {
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        this.dataControl = View.inflate(this.context, R.layout.form_checkbox, null);
+        this.dataControl = View.inflate(this.context, R.layout._gen_form_check_box, null);
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -1343,106 +1347,110 @@ public class DynamicFormItem {
         textView.setText(entry.getValue());
         ((ViewGroup) this.control).addView(textView);
     }
-
-    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
-        this.control.setLayoutParams(params);
-        // Create text
-        ViewGroup dataContainer = createTextDataContainer(controlWidth);
-
-        int dataControlId = dataContainer.getId();
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
-        if (hasRules()) {
-            this.errorControl = createErrorControl(dataControlId, controlWidth);
-
-            //#RTL
-            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
-            }
-            ((ViewGroup) this.control).addView(this.errorControl);
-        }
-        //#RTL
-        if (ShopSelector.isRtl() && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
-        }
-
-        ((ViewGroup) this.control).addView(dataContainer);
-
-        this.dataControl.setContentDescription(this.entry.getKey());
-        // Listeners
-
-        //TODO
-        //FIXME to be fixed on previous rating reform, uncomment crashes app
-
-//        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
 //
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                EditText dataCtrl = (EditText) v;
-//                if (hasFocus) {
-//                    errorControl.setVisibility(View.GONE);
-//                    mandatoryControl.setVisibility(View.GONE);
-//                    // Uncomment the below line if you want hide the hint when the focus changes
-//                    // dataCtrl.setHint(" ");
-//                    dataCtrl.setCursorVisible(true);
-//                } else {
-//                    if (entry.getValidation().isRequired()) {
-//                        mandatoryControl
-//                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
-//                                        : View.GONE);
-//                    }
-//                    if (dataCtrl.getHint().toString().equals(" ")) {
-//                        dataCtrl.setHint(editText);
-//                    }
+//    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
+//        this.control.setLayoutParams(params);
+//        // Create text
+//        //ViewGroup dataContainer = createTextDataContainer(controlWidth);
+//        ViewGroup dataContainer = buildEditableTextField();
 //
-//                }
+//        int dataControlId = dataContainer.getId();
+//        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 //
-//                if (null != editFocusListener) {
-//                    editFocusListener.onFocusChange(v, hasFocus);
+//        if (hasRules()) {
+//            this.errorControl = createErrorControl(dataControlId, controlWidth);
 //
-//                }
+//            //#RTL
+//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
 //            }
-//        });
+//            ((ViewGroup) this.control).addView(this.errorControl);
+//        }
+//        //#RTL
+//        if (ShopSelector.isRtl() && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
+//        }
 //
-//        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
+//        ((ViewGroup) this.control).addView(dataContainer);
 //
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (null != textWatcher) {
-//                    textWatcher.afterTextChanged(s);
-//                }
-//            }
+//        this.dataControl.setContentDescription(this.entry.getKey());
+//        // Listeners
 //
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                if (null != textWatcher) {
-//                    textWatcher.beforeTextChanged(s, start, count, after);
-//                }
-//            }
+//        //TODO
+//        //FIXME to be fixed on previous rating reform, uncomment crashes app
 //
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (null != textWatcher) {
-//                    textWatcher.onTextChanged(s, start, before, count);
-//                }
-//            }
+////        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
+////
+////            @Override
+////            public void onFocusChange(View v, boolean hasFocus) {
+////                EditText dataCtrl = (EditText) v;
+////                if (hasFocus) {
+////                    errorControl.setVisibility(View.GONE);
+////                    mandatoryControl.setVisibility(View.GONE);
+////                    // Uncomment the below line if you want hide the hint when the focus changes
+////                    // dataCtrl.setHint(" ");
+////                    dataCtrl.setCursorVisible(true);
+////                } else {
+////                    if (entry.getValidation().isRequired()) {
+////                        mandatoryControl
+////                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
+////                                        : View.GONE);
+////                    }
+////                    if (dataCtrl.getHint().toString().equals(" ")) {
+////                        dataCtrl.setHint(editText);
+////                    }
+////
+////                }
+////
+////                if (null != editFocusListener) {
+////                    editFocusListener.onFocusChange(v, hasFocus);
+////
+////                }
+////            }
+////        });
+////
+////        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
+////
+////            @Override
+////            public void afterTextChanged(Editable s) {
+////                if (null != textWatcher) {
+////                    textWatcher.afterTextChanged(s);
+////                }
+////            }
+////
+////            @Override
+////            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+////                if (null != textWatcher) {
+////                    textWatcher.beforeTextChanged(s, start, count, after);
+////                }
+////            }
+////
+////            @Override
+////            public void onTextChanged(CharSequence s, int start, int before, int count) {
+////                if (null != textWatcher) {
+////                    textWatcher.onTextChanged(s, start, before, count);
+////                }
+////            }
+////
+////        });
 //
-//        });
-
-    }
+//    }
 
     /**
      * Creates the control with hidden value
      */
-    private void buildHide(RelativeLayout.LayoutParams params, int controlWidth) {
-        this.control.setLayoutParams(params);
+    private void buildHide() {
+        // TODO Validate if this is necessary
         // Don't allow an hidden control to take visual space
         this.control.setVisibility(View.GONE);
-        createTextDataContainer(controlWidth);
-        EditText editText = ((EditText) this.dataControl);
-        editText.setText(this.entry.getValue());
-        editText.setContentDescription(this.entry.getKey());
-        editText.setVisibility(View.GONE);
+        //this.control.setLayoutParams(params);
+        // Don't allow an hidden control to take visual space
+        //this.control.setVisibility(View.GONE);
+//        createTextDataContainer(controlWidth);
+//        EditText editText = ((EditText) this.dataControl);
+//        editText.setText(this.entry.getValue());
+//        editText.setContentDescription(this.entry.getKey());
+//        editText.setVisibility(View.GONE);
     }
 
     private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
@@ -1789,7 +1797,7 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
+        CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout._gen_form_check_box, null);
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.height = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);
@@ -1841,8 +1849,6 @@ public class DynamicFormItem {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.BELOW, dataControlId);
-
-//            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         errorControl = new RelativeLayout(this.context);
         errorControl.setId(parent.getNextId());
@@ -1903,94 +1909,197 @@ public class DynamicFormItem {
 
     }
 
-    private View createTextDataControl() {
-        // Create text with style
-        EditText textDataControl = (EditText) View.inflate(this.context, R.layout.form_edittext, null);
+//    private View createTextDataControl() {
+//        // Create text with style
+//        EditText textDataControl = (EditText) View.inflate(this.context, R.layout._gen_form_edit_text, null);
+//        // Set hint
+//        if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
+//            textDataControl.setHint(this.entry.getLabel());
+//        }
+//        // Set filters
+//        if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
+//            textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
+//        }
+//        // Set default value
+//        if (!TextUtils.isEmpty(this.entry.getValue())) {
+//            textDataControl.setText(this.entry.getValue());
+//        }
+//        // Set input type
+//        switch (this.entry.getInputType()) {
+//            case relatedNumber:
+//            case number:
+//                int inputTypeNumber = this.entry.getKey().contains(RestConstants.PHONE) ? InputType.TYPE_CLASS_PHONE : InputType.TYPE_CLASS_NUMBER;
+//                textDataControl.setInputType(inputTypeNumber);
+//                break;
+//            case password:
+//                textDataControl.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                break;
+//            case email:
+//                int inputTypeEmail = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
+//                textDataControl.setInputType(inputTypeEmail);
+//                break;
+//            default:
+//                textDataControl.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+//                break;
+//        }
+//        return textDataControl;
+//    }
+
+
+    private void buildEditableTextField() {
+        // Get text field container
+        View container = View.inflate(this.context, R.layout._gen_form_text_field_new, null);
+        // Get text
+        EditText text = (EditText) container.findViewById(R.id.text_field);
+        // Get mandatory
+        TextView mandatory = (TextView) container.findViewById(R.id.text_field_mandatory);
+        // Get icon
+        ImageView icon = (ImageView) container.findViewById(R.id.text_field_icon);
+        // Get password eye
+        CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
-            textDataControl.setHint(this.entry.getLabel());
+            text.setHint(this.entry.getLabel());
         }
         // Set filters
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
-            textDataControl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
+            text.setFilters(new InputFilter[]{new InputFilter.LengthFilter(this.entry.getValidation().max)});
         }
         // Set default value
         if (!TextUtils.isEmpty(this.entry.getValue())) {
-            textDataControl.setText(this.entry.getValue());
+            text.setText(this.entry.getValue());
         }
         // Set input type
         switch (this.entry.getInputType()) {
             case relatedNumber:
             case number:
                 int inputTypeNumber = this.entry.getKey().contains(RestConstants.PHONE) ? InputType.TYPE_CLASS_PHONE : InputType.TYPE_CLASS_NUMBER;
-                textDataControl.setInputType(inputTypeNumber);
+                text.setInputType(inputTypeNumber);
                 break;
             case password:
-                textDataControl.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                setTextWatcher(text, box);
+                setPasswordEye(box, text);
                 break;
             case email:
                 int inputTypeEmail = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
-                textDataControl.setInputType(inputTypeEmail);
+                text.setInputType(inputTypeEmail);
                 break;
             default:
-                textDataControl.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                 break;
         }
-        return textDataControl;
+        // Set mandatory
+        mandatory.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+        // Set next id to parent
+        container.setId(parent.getNextId());
+        // Set error control
+        if (hasRules()) {
+            this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ((ViewGroup) this.control).addView(this.errorControl);
+        }
+        // Save
+        this.dataControl = text;
+        this.mandatoryControl = mandatory;
+        // Add description
+        this.dataControl.setContentDescription(this.entry.getKey());
+        // Add container
+        ((ViewGroup) this.control).addView(container);
     }
 
-    private RelativeLayout createTextDataContainer(int controlWidth) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout dataContainer = new RelativeLayout(this.context);
-        dataContainer.setId(parent.getNextId());
-        dataContainer.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        this.dataControl = createTextDataControl();
-        this.dataControl.setId(parent.getNextId());
-        this.dataControl.setLayoutParams(params);
-        int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
-        this.dataControl.setPadding(formPadding, 0, formPadding, 0);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
-        //#RTL
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (ShopSelector.isRtl()) {
-            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                params.addRule(RelativeLayout.ALIGN_PARENT_END);
-                params.setMarginEnd(MANDATORYSIGNALMARGIN);
-            } else {
-                //<4.2
-                params.leftMargin = MANDATORYSIGNALMARGIN;
-                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+    private void setTextWatcher(final EditText text, final View view) {
+        // Set text watcher
+        text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // ...
             }
-        }
 
-        this.mandatoryControl = new TextView(this.context);
-        this.mandatoryControl.setLayoutParams(params);
-        this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
-        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
-
-        dataContainer.addView(this.dataControl);
-        dataContainer.addView(this.mandatoryControl);
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                dataContainer.setLayoutDirection(LayoutDirection.RTL);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int size = s.length();
+                // Case empty
+                if (size == 0) view.setVisibility(View.GONE);
+                    // Case filled
+                else if (size == 1) UIUtils.showViewFadeIn(view);
             }
-        }
 
-        if (isDatePart()) {
-            dataContainer.setPadding(0, 0, 10, 0);
-        }
-
-        return dataContainer;
+            @Override
+            public void afterTextChanged(Editable s) {
+                // ...
+            }
+        });
     }
+
+    private void setPasswordEye(final CheckBox eye, final EditText text) {
+        // Set password eye
+        eye.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    text.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                } else {
+                    text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
+    }
+
+
+
+//    private RelativeLayout createTextDataContainer(int controlWidth) {
+//
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        RelativeLayout dataContainer = new RelativeLayout(this.context);
+//        dataContainer.setId(parent.getNextId());
+//        dataContainer.setLayoutParams(params);
+//
+//        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        this.dataControl = createTextDataControl();
+//        this.dataControl.setId(parent.getNextId());
+//        this.dataControl.setLayoutParams(params);
+//        int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
+//        this.dataControl.setPadding(formPadding, 0, formPadding, 0);
+//
+//        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+//        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//        params.addRule(RelativeLayout.CENTER_VERTICAL);
+//        params.rightMargin = MANDATORYSIGNALMARGIN;
+//        //#RTL
+//        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+//        if (ShopSelector.isRtl()) {
+//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                params.addRule(RelativeLayout.ALIGN_PARENT_END);
+//                params.setMarginEnd(MANDATORYSIGNALMARGIN);
+//            } else {
+//                //<4.2
+//                params.leftMargin = MANDATORYSIGNALMARGIN;
+//                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+//            }
+//        }
+//
+//        this.mandatoryControl = new TextView(this.context);
+//        this.mandatoryControl.setLayoutParams(params);
+//        this.mandatoryControl.setText("*");
+//        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
+//        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+//        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+//
+//        dataContainer.addView(this.dataControl);
+//        dataContainer.addView(this.mandatoryControl);
+//        //#RTL
+//        if (ShopSelector.isRtl()) {
+//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                dataContainer.setLayoutDirection(LayoutDirection.RTL);
+//            }
+//        }
+//
+//        if (isDatePart()) {
+//            dataContainer.setPadding(0, 0, 10, 0);
+//        }
+//
+//        return dataContainer;
+//    }
 
 
     /**

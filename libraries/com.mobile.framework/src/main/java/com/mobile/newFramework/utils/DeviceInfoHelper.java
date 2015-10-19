@@ -366,21 +366,18 @@ public class DeviceInfoHelper {
         }
     }
 
-//    /**
-//     * Execute callback excluding version.
-//     *
-//     * @param version
-//     * @param runnable
-//     */
-//    public static void executeCodeExcludingVersion(int version, Runnable runnable){
-//        if(runnable != null && android.os.Build.VERSION.SDK_INT != version){
-//            runnable.run();
-//        }
-//    }
+    /**
+     * Execute callback excluding version.
+     */
+    public static void executeCodeExcludingVersion(int version, Runnable runnable){
+        if(runnable != null && android.os.Build.VERSION.SDK_INT != version){
+            runnable.run();
+        }
+    }
 
-//    public static void executeCodeExcludingJellyBeanMr2Version(Runnable run){
-//        executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
-//    }
+    public static void executeCodeExcludingJellyBeanMr2Version(Runnable run){
+        executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
+    }
 
     /**
      * Execute callbacks based on Jelly Bean version.
@@ -389,8 +386,8 @@ public class DeviceInfoHelper {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
     }
 
-//    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
-//        executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
-//    }
+    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
+        executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
+    }
 
 }

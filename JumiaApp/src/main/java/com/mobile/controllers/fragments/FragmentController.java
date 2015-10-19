@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -385,13 +386,13 @@ public class FragmentController {
         Print.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
         final FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
 
-//        /**
-//         * FIXME: Excluded piece of code due to crash on API = 18.
-//         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
-//         */
-//        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-//            @Override
-//            public void run() {
+        /**
+         * FIXME: Excluded piece of code due to crash on API = 18.
+         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+         */
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
+            @Override
+            public void run() {
                 // Case ANIMATION_IN
                 if (animationIn) {
                     fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
@@ -400,8 +401,8 @@ public class FragmentController {
                 else {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
-//            }
-//        });
+            }
+        });
 
 
         /**
