@@ -10,7 +10,6 @@
 
         <!-- ACCOUNT SETTINGS -->
 
-
         <LinearLayout
             android:id="@+id/middle_myaccount_list"
             android:layout_width="@dimen/inner_container_width"
@@ -27,9 +26,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderStyle"
-            android:text="@string/section_title_notification"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:text="@string/section_title_notification" />
 
             <FrameLayout
                 android:id="@+id/account_preferences_frame"

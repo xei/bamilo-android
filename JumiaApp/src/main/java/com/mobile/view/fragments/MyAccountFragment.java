@@ -92,7 +92,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
     public MyAccountFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
-                R.layout._def_my_account_fragment,
+                R.layout.my_account_fragment,
                 R.string.account_name,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
