@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_small"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginStart="@dimen/my_account_gen_dimen"
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1"
         android:paddingTop="@dimen/rounded_margin_mid">
@@ -46,10 +46,10 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/margin_huge"
-        android:paddingEnd="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginEnd="@dimen/my_account_gen_dimen"
+        android:paddingRight="@dimen/rounded_margin_small"
+        android:paddingEnd="@dimen/rounded_margin_small"
         />
 
 

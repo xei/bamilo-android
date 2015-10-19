@@ -25,8 +25,8 @@
         android:id="@+android:id/widget_frame"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:paddingLeft="@dimen/margin_huge"
+        android:layout_marginLeft="@dimen/my_account_gen_dimen"
+        android:paddingLeft="@dimen/rounded_margin_small"
         android:gravity="center_vertical"
         android:orientation="vertical" />
         
@@ -34,7 +34,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1" >
