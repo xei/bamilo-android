@@ -422,4 +422,9 @@
     <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
     <string name="product_specifications">Product Specifications</string>
     <!-- NEW 2.8 -->
+    <string name="informational_text">Item added to Cart</string>
+    <string name="cart_total_price">Your Cart total is %s</string>
+    <string name="cta_button_view_cart">View Cart</string>
+    <string name="cta_link_continue_shopping">Continue Shopping</string>
+
 </resources>
