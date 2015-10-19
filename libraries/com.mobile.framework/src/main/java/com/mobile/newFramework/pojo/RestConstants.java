@@ -98,6 +98,7 @@ public class RestConstants {
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
     public static final String JSON_BRAND_TAG = "brand";
+    public static final String JSON_BRAND_ID_TAG = "brand_id";
     public static final String JSON_CATEGORIES_TAG = "categories";
     public static final String JSON_SIMPLES_TAG = "simples";
     public static final String JSON_IMAGE_LIST_TAG = "image_list";

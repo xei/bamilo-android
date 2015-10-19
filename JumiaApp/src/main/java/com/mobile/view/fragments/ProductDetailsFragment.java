@@ -413,7 +413,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(true);
             } else {
                 mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800, null));
+                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
             }
         }
     }

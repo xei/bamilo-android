@@ -1243,6 +1243,9 @@ public class TrackerDelegator {
             if (!TextUtils.isEmpty(categoryTree)) {
                 bundle.putString(AdjustTracker.TREE, categoryTree);
             }
+            if (!TextUtils.isEmpty(catalogPage.getBrandId())) {
+                bundle.putString(AdjustTracker.BRAND_ID, catalogPage.getBrandId());
+            }
             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
 
             // Search
