@@ -37,7 +37,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
@@ -67,6 +66,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
+import com.mobile.utils.ui.ConfigurableCartView;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
@@ -143,6 +143,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mOffersContainer;
 
     boolean isFromBuyButton;
+
+    public ConfigurableCartView mConfigurableCartView;
 
     /**
      * Empty constructor
@@ -232,6 +234,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         // Offers
         mOffersContainer = view.findViewById(R.id.pdv_other_sellers_button);
+        mConfigurableCartView =  new ConfigurableCartView(view.findViewById(R.id.configurableCartView),getBaseActivity());
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -286,7 +289,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onDestroyView() {
         super.onDestroyView();
         Print.d(TAG, "ON DESTROY VIEW");
-        getBaseActivity().mConfigurableCartView.hideMessage();
+        mConfigurableCartView.hideMessage();
     }
 
     /*
@@ -1089,13 +1092,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                //get country configs
-                CountryConfigs countryConfigs = CountryPersistentConfigs.getCountryConfigsFromPreferences(JumiaApplication.INSTANCE.getApplicationContext());
                 //if has cart popup, show configurable confirmation message with cart total price
-                if(countryConfigs.hasCartPopup()){
+                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
                     PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
                     String message = getResources().getString(R.string.cart_total_price, CurrencyFormatter.formatCurrency(purchaseEntity.getTotal()));
-                    getBaseActivity().mConfigurableCartView.showMessage(message);
+                    mConfigurableCartView.showMessage(message);
                 }
                 else{
                     //show regular message add item to cart
