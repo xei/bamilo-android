@@ -40,6 +40,39 @@ public class TabLayoutUtils {
         tabLayout.setOnTabSelectedListener(listener);
     }
 
+    public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable android.view.View.OnClickListener clickListener) {
+        // About You
+        TabLayout.Tab tab = tabLayout.newTab();
+        tab.setCustomView(R.layout.tab_about_you);
+        tabLayout.addTab(tab);
+        ((View) tab.getCustomView().getParent()).setTag(0);
+        ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
+
+        // Address
+        TabLayout.Tab tab2 = tabLayout.newTab();
+        tab2.setCustomView(R.layout.tab_address);
+        tabLayout.addTab(tab2);
+        ((View) tab2.getCustomView().getParent()).setTag(1);
+        ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
+
+        // Shipping
+        TabLayout.Tab tab3 = tabLayout.newTab();
+        tab3.setCustomView(R.layout.tab_shipping);
+        tabLayout.addTab(tab3);
+        ((View) tab3.getCustomView().getParent()).setTag(2);
+        ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
+
+        // Payment
+        TabLayout.Tab tab4 = tabLayout.newTab();
+        tab4.setCustomView(R.layout.tab_payment);
+        tabLayout.addTab(tab4);
+        ((View) tab4.getCustomView().getParent()).setTag(3);
+        ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
+
+        // Set listener
+        tabLayout.setOnTabSelectedListener(listener);
+    }
+
     public static boolean isNavigationActionWithTabLayout(@Nullable NavigationAction action) {
         return action == NavigationAction.Home || action == NavigationAction.Saved || action == NavigationAction.Basket;
     }
