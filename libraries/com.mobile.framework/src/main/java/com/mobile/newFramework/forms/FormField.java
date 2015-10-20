@@ -60,7 +60,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private IFormField mChildFormField;
     private IFormField mParentFormField;
     private boolean isChecked;
-    private String mImage;
+    private boolean isPrefixField;
 
     /**
      * FormField param constructor
@@ -122,6 +122,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case "radio":
                     mInputType = FormInputType.radioGroup;
                     break;
+                case "choice":
                 case "list":
                 case "select":
                     mInputType = FormInputType.list;
@@ -153,15 +154,15 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             // if the field is one of the supported types
             mId = jsonObject.optString(RestConstants.ID);
-            mKey = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+            mKey = jsonObject.optString(RestConstants.JSON_KEY_TAG); // Used for form images
             mName = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             mScenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
-            mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
             mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
+            isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Case RULES
@@ -418,6 +419,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
+    public boolean isPrefixField() {
+        return isPrefixField;
+    }
+
+    @Override
     public IFormField getRelatedField() {
         return mChildFormField;
     }
@@ -481,11 +487,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return mPaymentInfoList;
     }
 
-
-    public String getImage() {
-        return mImage;
-    }
-
     /**
      * Listener used when the data set is received.
      */
@@ -537,7 +538,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mChildFormField);
         dest.writeValue(mParentFormField);
         dest.writeString(mFormat);
-        dest.writeString(mImage);
+        dest.writeByte((byte) (isPrefixField ? 1 : 0));
     }
 
     /**
@@ -578,7 +579,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mFormat = in.readString();
-        mImage = in.readString();
+        isPrefixField = in.readByte() == 1;
     }
 
     /**

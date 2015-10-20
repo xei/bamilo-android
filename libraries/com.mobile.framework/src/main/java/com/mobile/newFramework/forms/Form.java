@@ -27,6 +27,7 @@ public class Form implements IJSONSerializable, Parcelable {
 
 	public final static String TAG = Form.class.getSimpleName();
 
+    private int mType;
     private String method;
     private String action;
     private ArrayList<FormField> fields;
@@ -65,40 +66,31 @@ public class Form implements IJSONSerializable, Parcelable {
         return mFieldKeyMap;
     }
 
+    public void setType(int mType) {
+        this.mType = mType;
+    }
+
+    public int getType() {
+        return this.mType;
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-     * )
-     */
+         * (non-Javadoc)
+         *
+         * @see
+         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+         * )
+         */
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
             method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
-
-            /*
-            if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
-                fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
-            } else if (FormsMapping.genericMapping.containsKey(id)) {
-                fieldMapping = FormsMapping.genericMapping.get(id);
-            }
-            */
-
             // Case FIELDS
             JSONArray fieldsArray = null;
             if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)){
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
             }
-
-            // TODO Validate if this is necessary v2.7
-//            // Case OPTIONS
-//            else if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)) {
-//                fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-//                Print.d("code1subForms: fieldsArray :  " + fieldsArray.length());
-//            }
-
             // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
@@ -133,15 +125,6 @@ public class Form implements IJSONSerializable, Parcelable {
                 subForms.clear();
                 subForms = null;
             }
-
-            /*
-            if (null != fieldMapping) {
-                // Remove unsorted fields.
-                FormsMapping.removeUnsortedFields(this, fieldMapping);
-                Print.d("initialize: Sorting fields");
-                Collections.sort(fields, new FormsMapping.byFieldOrder());
-            }
-            */
             
         } catch (JSONException e) {
             Print.d("initialize: error parsing jsonobject" + e);
@@ -160,41 +143,19 @@ public class Form implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put(RestConstants.TYPE, mType);
             jsonObject.put(RestConstants.METHOD, method);
             jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
-
             JSONArray fieldArray = new JSONArray();
             for (FormField field : fields) {
                 fieldArray.put(field.toJSON());
             }
-
             jsonObject.put(RestConstants.JSON_FIELDS_TAG, fieldArray);
-
         } catch (JSONException e) {
             Print.d("trying to create json objects failed" + e);
         }
         return jsonObject;
     }
-
-//    public void sortForm(EventType eventType) {
-//        this.eventType = eventType;
-//        sortFormFields();
-//    }
-//
-//    private void sortFormFields() {
-//        if (eventType != null && FormsMapping.genericMapping.containsKey(eventType.toString())) {
-//            fieldMapping = FormsMapping.genericMapping.get(eventType.toString());
-//        } else if (FormsMapping.genericMapping.containsKey(id)) {
-//            fieldMapping = FormsMapping.genericMapping.get(id);
-//        }
-//
-//        if (null != fieldMapping) {
-//            // Remove unsorted fields.
-//            FormsMapping.removeUnsortedFields(this, fieldMapping);
-//            Print.d("initialize: Sorting fields");
-//            Collections.sort(fields, new FormsMapping.byFieldOrder());
-//        }
-//    }
     
     @Override
     public int describeContents() {
@@ -203,6 +164,7 @@ public class Form implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mType);
         dest.writeString(method);
         dest.writeString(action);
         dest.writeList(fields);
@@ -212,6 +174,7 @@ public class Form implements IJSONSerializable, Parcelable {
      * Parcel constructor
      */
     private Form(Parcel in) {
+        mType = in.readInt();
         method = in.readString();
         action = in.readString();
         fields = new ArrayList<>();

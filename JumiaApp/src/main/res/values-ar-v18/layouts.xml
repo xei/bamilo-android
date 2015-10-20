@@ -136,6 +136,7 @@
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
+    <item name="gen_form_text_field"                    type="layout">@layout/_def_gen_form_text_field</item>
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>

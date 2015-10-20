@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
+    <!-- ICON -->
+
     <ImageView
         android:id="@+id/text_field_icon"
         android:layout_width="25dp"
@@ -10,16 +12,33 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:src="@drawable/btn_eyeopen"
         android:contentDescription="@string/app_name"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
+    <!-- PREFIX TEXT -->
+
+    <com.mobile.components.absspinner.IcsSpinner
+        android:id="@+id/text_field_spinner_prefix"
+        style="@style/form_style"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_toRightOf="@id/text_field_icon"
+        android:background="@drawable/spinner_background_holo_orange"
+        android:clickable="true"
+        android:spinnerMode="dropdown"
+        android:visibility="gone" />
+
+    <!-- EDIT TEXT -->
 
     <com.mobile.components.customfontviews.EditText
         android:id="@+id/text_field"
         style="@style/TextField"
-        android:layout_toRightOf="@id/text_field_icon"
+        android:layout_toLeftOf="@+id/text_field_spinner_suffix"
+        android:layout_toRightOf="@id/text_field_spinner_prefix"
         android:paddingEnd="50dp"
         android:paddingRight="50dp" />
+
+    <!-- PASSWORD EYE -->
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/text_field_password_check_box"
@@ -33,6 +52,8 @@
         android:button="@drawable/_gen_selector_password_eye"
         android:visibility="gone" />
 
+    <!-- MANDATORY -->
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/text_field_mandatory"
         android:layout_width="wrap_content"
@@ -44,5 +65,18 @@
         android:text="*"
         android:textColor="@color/accent"
         android:textSize="18sp" />
+
+    <!-- SUFFIX TEXT -->
+
+    <com.mobile.components.absspinner.IcsSpinner
+        android:id="@id/text_field_spinner_suffix"
+        style="@style/form_style"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/spinner_background_holo_orange"
+        android:clickable="true"
+        android:spinnerMode="dropdown"
+        android:visibility="gone" />
 
 </RelativeLayout>

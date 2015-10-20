@@ -17,32 +17,38 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
-import com.mobile.helpers.session.GetFacebookLoginHelper;
-import com.mobile.helpers.session.GetLoginHelper;
-import com.mobile.helpers.session.SetSignUpHelper;
+import com.mobile.helpers.session.LoginFacebookHelper;
+import com.mobile.helpers.session.LoginGuestHelper;
+import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Class TODO
+ * Class used to perform login via Facebook,
  * @author sergiopereira
  */
 public class SessionLoginMainFragment extends BaseExternalLoginFragment implements IResponseCallback {
@@ -132,7 +138,6 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         // Get
         view.findViewById(R.id.login_button_guest).setOnClickListener(this);
-
     }
 
     /*
@@ -163,9 +168,13 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             triggerAutoLogin();
         }
+        // Case resume from facebook dialog
+        else if(facebookLoginClicked) {
+            facebookLoginClicked = false;
+        }
         // Case show content
         else {
-            Print.i(TAG, "FORM IS NULL");
+            Print.i(TAG, "USER WITHOUT CREDENTIALS");
             // Clean the Facebook Session
             FacebookHelper.facebookLogout();
             // Show content
@@ -302,10 +311,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
      */
 
     private void triggerGuestLogin(String email) {
-        Print.i(TAG, "TRIGGER EMAIL CHECK");
-        ContentValues values = new ContentValues();
-        values.put("key", email);
-        triggerContentEvent(new SetSignUpHelper(), SetSignUpHelper.createBundle(values), this);
+        Print.i(TAG, "TRIGGER GUEST LOGIN");
+        triggerContentEvent(new LoginGuestHelper(), LoginGuestHelper.createBundle(email), this);
     }
 
     private void triggerEmailCheck(String email) {
@@ -315,13 +322,13 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     private void triggerAutoLogin() {
         Print.i(TAG, "TRIGGER AUTO LOGIN");
-        triggerContentEvent(new GetLoginHelper(), GetLoginHelper.createAutoLoginBundle(), this);
+        triggerContentEvent(new LoginHelper(), LoginHelper.createAutoLoginBundle(), this);
     }
 
     @Override
     public void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
         Print.i(TAG, "TRIGGER FACEBOOK LOGIN");
-        triggerContentEventNoLoading(new GetFacebookLoginHelper(), GetFacebookLoginHelper.createBundle(values, saveCredentials), this);
+        triggerContentEventNoLoading(new LoginFacebookHelper(), LoginFacebookHelper.createBundle(values, saveCredentials), this);
     }
 
     /*
@@ -351,6 +358,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 bundle.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
                 getBaseActivity().onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
+            case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
                 // Get Customer
@@ -358,9 +366,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
                 // Tracking
-                TrackerDelegator.trackLoginSuccessful(customer, true, true);
+                if (eventType == EventType.GUEST_LOGIN_EVENT) {
+                    TrackerDelegator.storeFirstCustomer(customer);
+                    TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                } else {
+                    TrackerDelegator.trackLoginSuccessful(customer, true, true);
+                }
                 // Validate the next step
-                GetLoginHelper.validateNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
+                CheckoutStepManager.validateNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
                 return;
             default:
                 break;
@@ -386,21 +399,66 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
                 showFragmentContentContainer();
                 break;
+            case GUEST_LOGIN_EVENT:
+                // Tracking
+                TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
             case FACEBOOK_LOGIN_EVENT:
+                // Tracking
+                if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
             case LOGIN_EVENT:
-                // Clear credentials case auto login failed
-                clearCredentials();
+                // Tracking
+                if(eventType == EventType.LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
                 // Logout
                 LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
-                // Facebook logout
-                FacebookHelper.facebookLogout();
-                // Tracking
-                String value = eventType == EventType.FACEBOOK_LOGIN_EVENT ? GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
-                TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, value);
+                // Show warning
+                ErrorCode errorCode = baseResponse.getError().getErrorCode();
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
+                    // Show dialog or toast
+                    if (!showErrorDialog(errors, R.string.error_signup_title)) {
+                        ToastManager.show(getBaseActivity(), ToastManager.ERROR_NO_CONNECTION);
+                    }
+                } else {
+                    showUnexpectedErrorWarning();
+                }
                 // Show content
                 showFragmentContentContainer();
+                break;
             default:
                 break;
+        }
+    }
+
+        /**
+     * Dialog used to show an error
+     */
+    private boolean showErrorDialog(Map<String, List<String>> errors, int titleId) {
+        Print.d(TAG, "SHOW ERROR DIALOG");
+        List<String> errorMessages = null;
+        if (errors != null) {
+            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
+        }
+        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+            showFragmentContentContainer();
+            dialog = DialogGenericFragment.newInstance(true, false,
+                    getString(titleId),
+                    errorMessages.get(0),
+                    getString(R.string.ok_label),
+                    "",
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dismissDialogFragment();
+                            }
+                        }
+                    });
+            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            return true;
+        } else {
+            return false;
         }
     }
 

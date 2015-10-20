@@ -9,6 +9,7 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -21,6 +22,11 @@ public class EmailCheckHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.EMAIL_CHECK;
+    }
+
+    @Override
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
     }
 
     @Override

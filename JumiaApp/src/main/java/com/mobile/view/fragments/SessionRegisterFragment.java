@@ -20,7 +20,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
-import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -53,8 +52,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     private Form mForm;
 
     private Bundle mFormSavedState;
-
-    //private CheckBox mRememberEmailCheck;
 
     private DynamicForm mDynamicForm;
 
@@ -117,8 +114,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         ((TextView) view.findViewById(R.id.register_text_info)).setText(text);
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.register_form_container);
-        // Get remember email
-        //mRememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         // Get create button
         View mCreateButton = view.findViewById(R.id.register_button_create);
         mCreateButton.setOnClickListener(this);
@@ -155,7 +150,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         super.onSaveInstanceState(outState);
         // Case rotation save state
-        mDynamicForm.saveFormState(outState);
+        if (mDynamicForm != null) {
+            mDynamicForm.saveFormState(outState);
+        }
     }
 
     @Override
@@ -163,9 +160,11 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
-        Bundle bundle = new Bundle();
-        mDynamicForm.saveFormState(bundle);
-        mFormSavedState = bundle;
+        if(mDynamicForm != null) {
+            Bundle bundle = new Bundle();
+            mDynamicForm.saveFormState(bundle);
+            mFormSavedState = bundle;
+        }
     }
 
     @Override
@@ -194,16 +193,15 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     private void loadForm(Form form) {
         // Create form view
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
-        //serverForm.setOnFocusChangeListener(focus_listener);
-        //mDynamicForm.setOnItemSelectedListener(selected_listener);
-        //serverForm.setTextWatcher(text_watcher);
+        // Set request callback
+        mDynamicForm.setRequestCallBack(this); // FormInputType.relatedNumber
         // Set click listener
-        mDynamicForm.setOnClickListener(this, FormInputType.checkBoxLink);
+        mDynamicForm.setOnClickListener(this); // FormInputType.checkBoxLink
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value
         if (TextUtils.isNotEmpty(mCustomerEmail)) {
-            mDynamicForm.setInitialParam(FormInputType.email, mCustomerEmail);
+            mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
         }
         // Add form view
         mFormContainer.addView(mDynamicForm.getContainer());
@@ -306,12 +304,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
                 // Get Register Completed Event
-                Customer customer = (Customer) baseResponse.getMetadata().getData();
+                //Customer customer = (Customer) baseResponse.getMetadata().getData();
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                // Persist user email or empty that value after successfully login
-                // CustomerPreferences.setRememberedEmail(getBaseActivity(), mRememberEmailCheck.isChecked() ? customer.getEmail() : null);
                 // Notify user
                 ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_LOGIN);
                 // Finish
@@ -347,7 +343,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             case REGISTER_ACCOUNT_EVENT:
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                // Validate erros
+                // Validate errors
                 ErrorCode code = baseResponse.getError().getErrorCode();
                 Map<String, List<String>> messages = baseResponse.getErrorMessages();
                 validateErrorMessage(code, messages);

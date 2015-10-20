@@ -37,12 +37,18 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.FormConstants;
+import com.mobile.helpers.address.PhonePrefixesHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.FieldValidation;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.objects.addresses.PhonePrefix;
+import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -89,6 +95,9 @@ public class DynamicFormItem {
     private final static String TAG = DynamicFormItem.class.getSimpleName();
 
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
+    public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
+
+    private static final String ICON_PREFIX = "ic_form_";
 
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
@@ -115,7 +124,6 @@ public class DynamicFormItem {
     private int errorColor;
     //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
-    private OnClickListener mClickListener;
 
     /**
      * The constructor for the DynamicFormItem
@@ -188,15 +196,15 @@ public class DynamicFormItem {
         return mandatoryControl;
     }
 
-    /**
-     * Gets if the control has a mandatory flag, This flag indicates that the user must fill this
-     * field before submiting the form.
-     *
-     * @return true or false depending of the control is mandatory or not
-     */
-    public boolean getMandatory() {
-        return this.entry.getValidation().isRequired();
-    }
+//    /**
+//     * Gets if the control has a mandatory flag, This flag indicates that the user must fill this
+//     * field before submiting the form.
+//     *
+//     * @return true or false depending of the control is mandatory or not
+//     */
+//    public boolean getMandatory() {
+//        return this.entry.getValidation().isRequired();
+//    }
 
 //    /**
 //     * Gets the error text associated to this control
@@ -300,6 +308,55 @@ public class DynamicFormItem {
      * Create a related number composed by a text and radio group.
      */
     private void buildRelatedNumber() {
+        // Validate related field
+        FormInputType type = entry.getRelatedField().getInputType();
+        // Case radio group
+        if(type == FormInputType.radioGroup) buildRelatedNumberWithRadioGroup();
+        // Case list
+        else if(type == FormInputType.list) buildRelatedNumberWithListGroup();
+        // Case unknown
+        else Print.w(TAG, "WARNING: UNKNOWN RELATED NUMBER");
+    }
+
+    private void buildRelatedNumberWithListGroup() {
+        // Create text field
+        View group = buildEditableTextField();
+        // Create list with api call
+        buildRelatedListGroup(group, this.entry.getRelatedField());
+    }
+
+
+    private void buildRelatedListGroup(View container, IFormField entry) {
+        // Get spinner
+        int viewId = entry.isPrefixField() ? R.id.text_field_spinner_prefix : R.id.text_field_spinner_suffix;
+        final IcsSpinner spinner = (IcsSpinner) container.findViewById(viewId);
+        spinner.setVisibility(View.VISIBLE);
+        spinner.setTag(RELATED_LIST_GROUP_TAG);
+        // Get api call
+        String url = entry.getDataCalls().get(RestConstants.API_CALL);
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            // Get prefixes
+            JumiaApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
+                @Override
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    PhonePrefixes prefixes = (PhonePrefixes) baseResponse.getMetadata().getData();
+                    ArrayAdapter<PhonePrefix> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, prefixes);
+                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+                    spinner.setSelection(prefixes.getDefaultPosition());
+                }
+                @Override
+                public void onRequestError(BaseResponse baseResponse) {
+                    if(parent.hasResponseCallback()) {
+                        parent.getRequestCallBack().get().onRequestError(baseResponse);
+                    }
+                }
+            });
+        }
+    }
+
+    private void buildRelatedNumberWithRadioGroup() {
         // Create container
         LinearLayout container = new LinearLayout(this.context);
         container.setOrientation(LinearLayout.VERTICAL);
@@ -309,7 +366,6 @@ public class DynamicFormItem {
         // Create radio group
         buildRelatedRadioGroup(container, entry.getRelatedField());
     }
-
 
     /**
      * Create an horizontal radio group
@@ -985,13 +1041,6 @@ public class DynamicFormItem {
         //textWatcher = watcher;
     }
 
-    /**
-     * Sets a click listener
-     */
-    public void setOnClickListener(OnClickListener clickListener) {
-        mClickListener = clickListener;
-    }
-
     private void buildCheckBoxForTerms(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
@@ -1024,7 +1073,9 @@ public class DynamicFormItem {
         mLinkTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mClickListener != null) mClickListener.onClick(v);
+                if(parent.hasClickListener()) {
+                    parent.getClickListener().get().onClick(v);
+                }
             }
         });
 
@@ -1459,17 +1510,13 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
 
         if (this.entry.getDataSet().size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                    R.layout.form_spinner_item, new ArrayList<>(this.entry.getDataSet()
-                    .values()));
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
-
         } else {
             ArrayList<String> default_string = new ArrayList<>();
             default_string.add("Empty");
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                    R.layout.form_spinner_item, default_string);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         }
@@ -1946,9 +1993,10 @@ public class DynamicFormItem {
 //    }
 
 
-    private void buildEditableTextField() {
+
+    private View buildEditableTextField() {
         // Get text field container
-        View container = View.inflate(this.context, R.layout._gen_form_text_field_new, null);
+        View container = View.inflate(this.context, R.layout.gen_form_text_field, null);
         // Get text
         EditText text = (EditText) container.findViewById(R.id.text_field);
         // Get mandatory
@@ -1957,6 +2005,11 @@ public class DynamicFormItem {
         ImageView icon = (ImageView) container.findViewById(R.id.text_field_icon);
         // Get password eye
         CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
+        // Set icon
+        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM || this.parent.getForm().getType() == FormConstants.LOGIN_FORM) {
+            UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
+            icon.setVisibility(View.VISIBLE);
+        }
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text.setHint(this.entry.getLabel());
@@ -2005,6 +2058,8 @@ public class DynamicFormItem {
         this.dataControl.setContentDescription(this.entry.getKey());
         // Add container
         ((ViewGroup) this.control).addView(container);
+        // Return the view
+        return container;
     }
 
     private void setTextWatcher(final EditText text, final View view) {
@@ -2173,4 +2228,6 @@ public class DynamicFormItem {
         }
 
     }
+
+
 }

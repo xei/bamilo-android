@@ -6,6 +6,7 @@ import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.objects.addresses.PhonePrefixes;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -505,5 +506,9 @@ public interface AigApiInterface {
     @POST("/")
     void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
     String emailCheck = "emailCheck";
+
+    @GET("/")
+    void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
+    String getPhonePrefixes = "getPhonePrefixes";
 
 }

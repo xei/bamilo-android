@@ -446,4 +446,6 @@ public class RestConstants {
 
     public static final String PRICE_RANGE = "price_range";
     public static final String EXIST = "exist";
+    public static final String IS_DEFAULT = "is_default";
+    public static final String POSITION = "position";
 }

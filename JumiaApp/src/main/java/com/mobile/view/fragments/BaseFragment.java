@@ -971,10 +971,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
-    protected void clearCredentials() {
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-    }
+//    protected void clearCredentials() {
+//        JumiaApplication.INSTANCE.setLoggedIn(false);
+//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//    }
 
     /*
      * ########### LISTENERS ###########

@@ -30,7 +30,7 @@ public enum EventType {
 
     EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
 
-    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?facebook=true", AigRestContract.NO_CACHE),
+    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin", AigRestContract.NO_CACHE),
 
     GET_LOGIN_FORM_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
 
@@ -92,7 +92,7 @@ public enum EventType {
 
     GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
 
-    SET_SIGNUP_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
+    GUEST_LOGIN_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
 
     GET_CREATE_ADDRESS_FORM_EVENT("http:/forms/addresscreate/", AigRestContract.MAX_CACHE_TIME),
 
@@ -123,6 +123,8 @@ public enum EventType {
     GET_CITIES_EVENT,
 
     GET_POSTAL_CODE_EVENT,
+
+    GET_PHONE_PREFIXES,
 
     GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.view.R;
 
@@ -104,6 +105,12 @@ public class UIUtils {
             view.startAnimation(animation);
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static void setDrawableByString(ImageView imageView, String name) {
+        Context context = imageView.getContext();
+        int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        imageView.setImageResource(id);
     }
 
 }

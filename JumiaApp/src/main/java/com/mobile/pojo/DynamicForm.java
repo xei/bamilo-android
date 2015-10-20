@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
@@ -19,6 +20,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,16 +44,17 @@ import java.util.List;
  */
 public class DynamicForm implements Iterable<DynamicFormItem> {
 
-    private final static String TAG = DynamicForm.class.getSimpleName();
+    public final static String TAG = DynamicForm.class.getSimpleName();
 
     private ViewGroup base;
     private List<DynamicFormItem> controls;
     private int lastID = 0x7f096000;
     private Form form;
-
     private OnFocusChangeListener focus_listener;
     private IcsAdapterView.OnItemSelectedListener itemSelected_listener;
     private TextWatcher text_watcher;
+    private WeakReference<View.OnClickListener> mClickListener;
+    private WeakReference<IResponseCallback> mRequestCallBack;
 
     /**
      * The constructor for the DynamicForm
@@ -213,14 +216,14 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return ++lastID;
     }
 
-    /**
-     * Gets the last used ID
-     *
-     * @return the last id used to create a control
-     */
-    public int getLastId() {
-        return lastID;
-    }
+//    /**
+//     * Gets the last used ID
+//     *
+//     * @return the last id used to create a control
+//     */
+//    public int getLastId() {
+//        return lastID;
+//    }
 
     /**
      * Get the form object that is return from the framework containing all the
@@ -304,12 +307,25 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
                 model.put(control.getName(), control.getValue());
                 // Get related option
                 IFormField related = control.getEntry().getRelatedField();
-                RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
-                // Get selected position
-                int idx = group.getSelectedIndex();
-                // Get option value from related item
-                String value = related.getOptions().get(idx).getValue();
-                model.put(related.getName(), value);
+                // Validate related type
+                FormInputType relatedType = related.getInputType();
+                // Case radio group
+                if(relatedType == FormInputType.radioGroup) {
+                    RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
+                    // Get selected position
+                    int idx = group.getSelectedIndex();
+                    // Get option value from related item
+                    String value = related.getOptions().get(idx).getValue();
+                    model.put(related.getName(), value);
+                }
+                // Case list group
+                else if (relatedType == FormInputType.list) {
+                    IcsSpinner spinner = (IcsSpinner) control.getControl().findViewWithTag(DynamicFormItem.RELATED_LIST_GROUP_TAG);
+                    FormListItem item = (FormListItem) spinner.getSelectedItem();
+                    if (item != null) {
+                        model.put(related.getName(), item.getValue());
+                    }
+                }
             }
             // Case default
             else if (null != control && null != control.getValue()) {
@@ -496,26 +512,35 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     /**
      * Sets a click listener to a specific form type or to all case null.
      */
-    public void setOnClickListener(View.OnClickListener listener, @Nullable FormInputType formType) {
-        for (DynamicFormItem dynamicFormItem : this) {
-            // Case terms and conditions
-            if (dynamicFormItem.getType() == formType) {
-                dynamicFormItem.setOnClickListener(listener);
-            }
-            // Case apply to all
-            else if(formType == null) {
-                dynamicFormItem.setOnClickListener(listener);
-            }
-        }
+    public void setOnClickListener(View.OnClickListener listener) {
+        mClickListener = new WeakReference<>(listener);
     }
 
-    public void setInitialParam(@NonNull FormInputType formType, @NonNull Object value) {
+    public void setInitialValue(@NonNull FormInputType formType, @NonNull Object value) {
         for (DynamicFormItem dynamicFormItem : this) {
-            // Case terms and conditions
             if (dynamicFormItem.getType() == formType) {
                 dynamicFormItem.setValue(value);
             }
         }
     }
 
+    public void setRequestCallBack(IResponseCallback requestCallBack) {
+        mRequestCallBack = new WeakReference<>(requestCallBack);
+    }
+
+    public boolean hasClickListener() {
+        return  mClickListener != null && mClickListener.get() != null;
+    }
+
+    public boolean hasResponseCallback() {
+        return  mRequestCallBack != null && mRequestCallBack.get() != null;
+    }
+
+    public WeakReference<View.OnClickListener> getClickListener() {
+        return mClickListener;
+    }
+
+    public WeakReference<IResponseCallback> getRequestCallBack() {
+        return mRequestCallBack;
+    }
 }

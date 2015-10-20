@@ -14,7 +14,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.GetLoginFormHelper;
-import com.mobile.helpers.session.GetLoginHelper;
+import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
@@ -46,8 +46,6 @@ import java.util.Map;
 public class SessionLoginEmailFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = SessionLoginEmailFragment.class.getSimpleName();
-
-    //protected CheckBox mRememberEmailCheck;
 
     private ViewGroup mFormContainer;
 
@@ -125,8 +123,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON VIEW CREATED");
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.login_email_form_container);
-        // Get remember email
-        // mRememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         // Get forgot password
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
         // Get continue button
@@ -179,7 +175,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Case rotation save state
-        mDynamicForm.saveFormState(outState);
+        if (mDynamicForm != null) {
+            mDynamicForm.saveFormState(outState);
+        }
     }
 
     /*
@@ -192,9 +190,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
-        Bundle bundle = new Bundle();
-        mDynamicForm.saveFormState(bundle);
-        mFormSavedState = bundle;
+        if(mDynamicForm != null) {
+            Bundle bundle = new Bundle();
+            mDynamicForm.saveFormState(bundle);
+            mFormSavedState = bundle;
+        }
     }
 
     /*
@@ -238,7 +238,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value
         if (TextUtils.isNotEmpty(mCustomerEmail)) {
-            mDynamicForm.setInitialParam(FormInputType.email, mCustomerEmail);
+            mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
         }
         // Add form view
         mFormContainer.addView(mDynamicForm.getContainer());
@@ -303,7 +303,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     }
 
     private void triggerLogin(ContentValues values) {
-        triggerContentEvent(new GetLoginHelper(), GetLoginHelper.createLoginBundle(values), this);
+        triggerContentEvent(new LoginHelper(), LoginHelper.createLoginBundle(values), this);
     }
 
     private void triggerLoginForm() {
@@ -332,8 +332,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
-                // Persist user email or empty that value after successfully login
-                //CustomerPreferences.setRememberedEmail(getBaseActivity(), mRememberEmailCheck.isChecked() ? customer.getEmail() : null);
                 // Notify user
                 ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_LOGIN);
                 // Finish
@@ -368,8 +366,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Case login event
         else if (eventType == EventType.LOGIN_EVENT) {
-            // Clear credentials case auto login failed
-            clearCredentials();
             // Tracking
             TrackerDelegator.trackLoginFailed(false, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             // Validate and show errors

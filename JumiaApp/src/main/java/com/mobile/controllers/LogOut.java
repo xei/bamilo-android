@@ -10,6 +10,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.BaseActivity;
 
 import java.lang.ref.WeakReference;
@@ -76,6 +77,8 @@ public class LogOut {
      * Clear cart data from memory and other components.
      */
     private static void cleanData(BaseActivity baseActivity) {
+        // Facebook logout
+        FacebookHelper.facebookLogout();
         // Clear cookies, cart, credentials
         AigHttpClient.getInstance().clearCookieStore();
         // Clean wish list
