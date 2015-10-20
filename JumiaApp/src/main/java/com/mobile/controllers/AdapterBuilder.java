@@ -16,9 +16,8 @@ import android.widget.BaseAdapter;
  * @version 1.0
  * @date 2015/10/15
  *
- * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
-public class MyAccountAdapter {
+public class AdapterBuilder {
 
     public interface OnItemClickListener{
         void onItemClick(ViewGroup parent, View view, int position);
@@ -30,12 +29,12 @@ public class MyAccountAdapter {
 
     private OnItemClickListener onItemClickListener;
 
-    public MyAccountAdapter(@NonNull ViewGroup viewGroup, @NonNull BaseAdapter baseAdapter) {
+    public AdapterBuilder(@NonNull ViewGroup viewGroup, @NonNull BaseAdapter baseAdapter) {
         this.viewGroup = viewGroup;
         this.baseAdapter = baseAdapter;
     }
 
-    public MyAccountAdapter(@NonNull ViewGroup viewGroup, @NonNull BaseAdapter baseAdapter, @Nullable OnItemClickListener onItemClickListener) {
+    public AdapterBuilder(@NonNull ViewGroup viewGroup, @NonNull BaseAdapter baseAdapter, @Nullable OnItemClickListener onItemClickListener) {
         this(viewGroup, baseAdapter);
         this.onItemClickListener = onItemClickListener;
     }

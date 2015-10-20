@@ -15,7 +15,15 @@ import com.mobile.view.R;
 import com.mobile.view.fragments.MyAccountFragment;
 
 /**
- * Created by rsoares on 8/25/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/08/25
+ *
  */
 public class CountrySettingsAdapter extends BaseAdapter{
 

@@ -14,7 +14,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
-import com.mobile.controllers.MyAccountAdapter;
+import com.mobile.controllers.AdapterBuilder;
 import com.mobile.controllers.MyAccountMoreInfoAdapter;
 import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -47,7 +47,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.OnItemClickListener, IResponseCallback {
+public class MyAccountFragment extends BaseFragment implements AdapterBuilder.OnItemClickListener, IResponseCallback {
 
     private static final String TAG = MyAccountFragment.class.getSimpleName();
 
@@ -232,7 +232,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         // Create new Adapter
         MyAccountSettingsAdapter myAccountSettingsAdapter = new MyAccountSettingsAdapter(getActivity(), myAccountOptions);
 
-        new MyAccountAdapter(optionsList, myAccountSettingsAdapter, this).buildLayout();
+        new AdapterBuilder(optionsList, myAccountSettingsAdapter, this).buildLayout();
         
     }
 
@@ -251,7 +251,7 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         appSharingList = (ViewGroup)view.findViewById(R.id.middle_app_sharing_list);
         MyAccountSettingsAdapter appSharingSettingsAdapter = new MyAccountSettingsAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array));
 
-        new MyAccountAdapter(appSharingList, appSharingSettingsAdapter, this).buildLayout();
+        new AdapterBuilder(appSharingList, appSharingSettingsAdapter, this).buildLayout();
     }
 
     private void showChooseLanguage(View view) {
@@ -260,13 +260,13 @@ public class MyAccountFragment extends BaseFragment implements MyAccountAdapter.
         chooseLanguageList.setTag(R.string.choose_language, countryInformation);
         CountrySettingsAdapter countrySettingsAdapter = new CountrySettingsAdapter(getActivity(), countryInformation);
 
-        new MyAccountAdapter(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
+        new AdapterBuilder(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
     }
 
     private void showMoreInfo() {
         MyAccountMoreInfoAdapter moreInfoAdapter = new MyAccountMoreInfoAdapter(targets, getActivity());
 
-        new MyAccountAdapter(moreInfoContainer, moreInfoAdapter, this).buildLayout();
+        new AdapterBuilder(moreInfoContainer, moreInfoAdapter, this).buildLayout();
     }
 
     private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
