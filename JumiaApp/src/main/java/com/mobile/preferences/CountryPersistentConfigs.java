@@ -73,6 +73,8 @@ public class CountryPersistentConfigs {
         mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, countryConfigs.isReviewLoginRequired());
         // Flag
         mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
+        //has_cart_popup
+        mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         mEditor.apply();
     }
 
@@ -207,5 +209,11 @@ public class CountryPersistentConfigs {
     public static boolean hasLanguages(Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return hasLanguages(sharedPrefs);
+    }
+
+    public static boolean hasCartPopup(Context context){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP,false);
+
     }
 }
