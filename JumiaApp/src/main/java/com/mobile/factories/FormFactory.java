@@ -121,6 +121,7 @@ public class FormFactory {
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+            case FormConstants.USER_DATA_FORM:
                 parent = createRegistrationForm(context, form, ctrlParams);
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:

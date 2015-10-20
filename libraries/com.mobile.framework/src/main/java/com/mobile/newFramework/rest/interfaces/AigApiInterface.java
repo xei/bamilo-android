@@ -166,6 +166,11 @@ public interface AigApiInterface {
 
     String getPaymentMethodsForm = "getPaymentMethodsForm";
 
+    @GET("/")
+    void getUserDataForm(Callback<BaseResponse<Form>> callback);
+
+    String getUserDataForm = "getUserDataForm";
+
     /*
      * ## CATALOG
      */
