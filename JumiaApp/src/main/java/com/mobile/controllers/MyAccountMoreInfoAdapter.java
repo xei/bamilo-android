@@ -17,7 +17,15 @@ import com.mobile.view.R;
 import java.util.List;
 
 /**
- * Created by rsoares on 10/15/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/10/15
+ *
  */
 public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
