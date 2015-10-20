@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -71,6 +73,13 @@ public class ConfigurableCartView {
                 hideMessage();
             }
         });
+
+        //change image direction if is rtl
+        if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN_MR1)
+        {
+            ImageView checkImage = (ImageView) mConfigurablecartViewBar.findViewById(R.id.im_check);
+            checkImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_success_message_rtl));
+        }
 
         isShowing = false;
 

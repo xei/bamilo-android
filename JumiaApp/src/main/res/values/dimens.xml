@@ -509,4 +509,6 @@
 
     <integer name="dialog_max_item">7</integer>
     <integer name="config_add_cart_anim_duration">500</integer>
+
+    <dimen name="confirm_msg_padding">6dp</dimen>
 </resources>
