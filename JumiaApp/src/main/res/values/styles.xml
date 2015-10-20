@@ -680,10 +680,10 @@
     </style>
 
     <!-- TEASER CONTAINER -->
-    <style name="TeaserWhiteContainerStyle">
-        <item name="android:paddingBottom">@dimen/dimen_mat_8px</item>
-        <item name="android:background">@android:color/white</item>
-    </style>
+    <!--<style name="TeaserWhiteContainerStyle">-->
+        <!--<item name="android:paddingBottom">@dimen/dimen_mat_8px</item>-->
+        <!--<item name="android:background">@android:color/white</item>-->
+    <!--</style>-->
 
     <style name="dialog_title">
         <item name="android:layout_width">match_parent</item>
@@ -699,7 +699,7 @@
     </style>
 
     <!-- SMALL TEASER -->
-    <style name="SmallTeaserStyle" parent="CardViewFloatStyle">
+    <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
         <item name="android:layout_marginLeft">@dimen/dimen_mat_4px</item>
@@ -707,7 +707,7 @@
     </style>
 
     <!-- PRODUCT TEASER -->
-    <style name="ProductTeaserStyle" parent="CardViewFloatStyle">
+    <style name="ProductTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
         <item name="android:layout_marginLeft">@dimen/dimen_mat_4px</item>
@@ -745,9 +745,9 @@
 
     <!-- WHITE HORIZONTAL LIST -->
 
-    <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
-        <item name="android:background">@android:color/white</item>
-    </style>
+    <!--<style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >-->
+        <!--<item name="android:background">@android:color/white</item>-->
+    <!--</style>-->
 
     <!-- PDV -->
 
