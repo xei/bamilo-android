@@ -290,6 +290,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
+        } else {
+            if(mShippingFormContainer.getChildCount() == 0){
+                // Have to create set a Dynamic form in order to not have the parent dependencies.
+                // this happens when user goes from create address to another screen through the overflow menu, and presses back.
+                // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
+                shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+                mShippingFormContainer.addView(shippingFormGenerator.getContainer());
+                mShippingFormContainer.refreshDrawableState();
+            }
         }
 
         // Billing form
@@ -298,6 +307,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             mBillingFormContainer.removeAllViews();
             mBillingFormContainer.addView(billingFormGenerator.getContainer());
             mBillingFormContainer.refreshDrawableState();
+        } else {
+            if(mBillingFormContainer.getChildCount() == 0){
+                // Have to create set a Dynamic form in order to not have the parent dependencies
+                // this happens when user goes from create address to another screen through the overflow menu, and presses back.
+                // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
+                billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+                mBillingFormContainer.addView(billingFormGenerator.getContainer());
+                mBillingFormContainer.refreshDrawableState();
+            }
         }
 
         // Define if CITY is a List or Text
