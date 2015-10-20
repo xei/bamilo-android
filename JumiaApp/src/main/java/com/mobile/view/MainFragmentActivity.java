@@ -317,7 +317,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance(bundle);
+                fragment = MyOrdersFragment.getInstance();
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();

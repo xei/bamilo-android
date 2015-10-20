@@ -5,24 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- TABS -->
+<RelativeLayout
+    android:id="@+id/empty_orders_layout"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_400">
 
-    <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
-        android:id="@+id/my_orders_pager_tab"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/empty_orders_image"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/tabBar"
-        app:stsBottomBorderThickness="0dp"
-        app:stsIndicatorColor="@color/orange_tab_bar"
-        app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness"
-        android:layoutDirection="ltr"/>
+        android:layout_centerInParent="true"
+        android:background="@drawable/img_warning"/>
 
-    <!-- CONTENT -->
-
-    <com.mobile.components.viewpager.RtlViewPager
-        android:id="@+id/my_orders_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/empty_orders_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_700"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/empty_orders_image"
+        android:gravity="center_vertical"
+        android:text="No Orders Found"/>
+    <com.mobile.components.customfontviews.Button
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="START SHOPPING"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/empty_orders_label"
+        android:background="@color/color_accent"
+        />
+</RelativeLayout>
 </LinearLayout>

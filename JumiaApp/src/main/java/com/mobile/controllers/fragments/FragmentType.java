@@ -62,10 +62,10 @@ public enum FragmentType {
     PRODUCT_OFFERS,
     INNER_SHOP,
     VARIATIONS,
-
     WRITE_REVIEW_SELLER,
     FILTERS,
-    COMBOPAGE
+    COMBOPAGE,
+    ORDER_STATUS
     ;
 
     private int id;
