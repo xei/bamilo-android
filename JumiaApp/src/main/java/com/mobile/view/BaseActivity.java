@@ -1587,10 +1587,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         finish();
     }
 
-    public void onClickTav(){
-        Print.i(TAG, "onClickTav");
-    }
-
     /*
      * ########## CHECKOUT HEADER ##########
      */
