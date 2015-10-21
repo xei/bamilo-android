@@ -485,7 +485,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
         // Case to set title
         else {
-            mSupportActionBar.setLogo(null);
             setActionBarTitle(actionBarTitleResId);
         }
     }
