@@ -129,16 +129,17 @@ public class CheckoutStepManager {
         }
     }
 
-    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules){
+    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules) {
         priceRulesContainer.removeAllViews();
         if (priceRules != null && priceRules.size() > 0) {
             priceRulesContainer.setVisibility(View.VISIBLE);
             LayoutInflater mLayoutInflater = LayoutInflater.from(context);
             Set<String> priceRulesKeys = priceRules.keySet();
             for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,priceRulesContainer, false);
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, priceRulesContainer, false);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+ CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                // TODO Use place holder
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
                 priceRulesContainer.addView(priceRuleElement);
             }
         } else {
@@ -147,7 +148,16 @@ public class CheckoutStepManager {
     }
 
 
-    public static void validateNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi) {
+    /**
+     * Method used to validate the next after log in.
+     * @param activity - The activity
+     * @param isInCheckoutProcess - Checkout flag
+     * @param mParentFragmentType - The parent fragment type
+     * @param nextStepFromParent - The next step from parent
+     * @param nextStepFromApi - The next step from Api, used case is in checkout process
+     * @author spereira
+     */
+    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi) {
         // Case next step from api
         if(isInCheckoutProcess) {
             goToCheckoutNextStepFromApi(activity, mParentFragmentType, nextStepFromApi);

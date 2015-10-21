@@ -373,7 +373,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     TrackerDelegator.trackLoginSuccessful(customer, true, true);
                 }
                 // Validate the next step
-                CheckoutStepManager.validateNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
+                CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
                 return;
             default:
                 break;

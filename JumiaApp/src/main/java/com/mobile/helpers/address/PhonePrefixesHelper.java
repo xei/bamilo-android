@@ -13,7 +13,8 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Helper used to get the postal codes for a specific city
+ * Helper used to get the phone prefixes.
+ * @author spereira
  */
 public class PhonePrefixesHelper extends SuperBaseHelper {
     

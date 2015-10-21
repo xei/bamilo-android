@@ -13,7 +13,8 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Helper used to check the email
+ * Helper used to check the email.
+ * @author spereira 
  */
 public class EmailCheckHelper extends SuperBaseHelper {
     
