@@ -63,7 +63,16 @@ public class ActivitiesWorkFlow {
         startActivityWebLink(activity, activity.getString(link));
     }
 
-	   /**
+    public static void startMarketActivity(@NonNull Activity activity) throws android.content.ActivityNotFoundException {
+
+        String uri = activity.getString(R.string.google_play_store_uri, activity.getString(R.string.package_name_market));
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(uri));
+        activity.startActivity(intent);
+
+    }
+
+	/**
      * Start Login Activity validating Customer
      * 
      * @param activity

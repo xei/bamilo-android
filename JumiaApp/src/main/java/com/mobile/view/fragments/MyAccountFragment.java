@@ -366,7 +366,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void handleOnMoreInfoItemClick(int position) {
         if(position == MyAccountMoreInfoAdapter.APP_VERSION_POSITION){
-            ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
+            try {
+                ActivitiesWorkFlow.startMarketActivity(getActivity());
+            } catch(android.content.ActivityNotFoundException ex){
+                ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
+            }
         } else {
             TargetHelper targetHelper = targets.get(position - 1);
             if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
