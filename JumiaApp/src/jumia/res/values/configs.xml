@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="rtl_enabled">true</bool>
-
-    <string name="package_name_market">com.jumia.android</string>
 </resources>

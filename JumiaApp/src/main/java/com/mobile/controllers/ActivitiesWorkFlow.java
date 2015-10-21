@@ -65,7 +65,7 @@ public class ActivitiesWorkFlow {
 
     public static void startMarketActivity(@NonNull Activity activity) throws android.content.ActivityNotFoundException {
 
-        String uri = activity.getString(R.string.google_play_store_uri, activity.getString(R.string.package_name_market));
+        String uri = activity.getString(R.string.market_store_uri, activity.getString(R.string.id_market));
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(uri));
         activity.startActivity(intent);

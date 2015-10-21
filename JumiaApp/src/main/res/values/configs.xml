@@ -36,5 +36,7 @@
     <string name="adjust_app_token">tx59byfttp6z</string>
     <item name="adjust_is_production_env" type="bool">false</item>
 
-    <string name="google_play_store_uri">market://details?id=%s</string>
+    <string name="market_store_uri">market://details?id=%s</string>
+
+    <string name="id_market">com.jumia.android</string>
 </resources>
