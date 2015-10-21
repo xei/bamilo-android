@@ -3,7 +3,6 @@
 
     <!-- APP -->
     <string name="app_name">Bamilo Live</string>
-    <bool name="is_to_show_dev_env">true</bool>
     <item name="is_daraz_specific" type="bool">true</item>
 
     <!-- COUNTRIES -->
