@@ -50,6 +50,7 @@
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/SHOP</string>
 
-    <string name="package_name_market">com.shop.android</string>
+    <!-- MARKET -->
+    <string name="id_market">com.shop.android</string>
 
 </resources>
