@@ -17,7 +17,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -75,15 +74,15 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null && orderSummary != null && regions != null){
-            loadCreateAddressForm(mFormResponse);
+        } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
+            loadCreateAddressForm(mFormShipping,mFormBilling);
         } else {
             triggerCreateAddressForm();
         }
     }
 
-    protected void loadCreateAddressForm(Form form) {
-        super.loadCreateAddressForm(form);
+    protected void loadCreateAddressForm(Form formShipping,Form formBilling) {
+        super.loadCreateAddressForm(formShipping,formBilling);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 

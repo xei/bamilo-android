@@ -4,7 +4,6 @@
 
     <!-- APP -->
     <string name="app_name">Daraz Live</string>
-    <bool name="is_to_show_dev_env">true</bool>
 
     <!-- COUNTRIES -->
     <string name="countries_url">http://shareptcmobile.eu.pn/dtmobapi/</string>
