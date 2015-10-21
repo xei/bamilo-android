@@ -18,8 +18,8 @@ import com.mobile.helpers.checkout.GetShippingMethodsHelper;
 import com.mobile.helpers.checkout.SetShippingMethodHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.objects.checkout.Fulfillment;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -48,8 +48,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private static final String SUB_SELECTION_STATE = "sub_selection";
 
     private ViewGroup mShippingContainer;
-
-    private ViewGroup mShippingMethodsContainer;
 
     private ShippingMethodFormBuilder mFormResponse;
 
@@ -104,7 +102,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         } else{
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
@@ -116,14 +113,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        // Get containers
-        mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_container);
-        mShippingMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
+        // Get container
+        mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
+        // Get price
+        // TODO
         // Get and show addresses
         triggerGetShippingMethods();
-
     }
     
     /*
@@ -154,6 +151,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
+        // TODO VALIDATE THIS
         if(mFormResponse == null) 
             return;
         int itemId = mFormResponse.getSelectionId(0);
@@ -221,11 +220,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private void loadForm(ShippingMethodFormBuilder form) {
         Print.i(TAG, "LOAD FORM");
         mFormResponse = form;
-        mShippingMethodsContainer.removeAllViews();
-        mFormResponse.generateForm(getBaseActivity(), mShippingMethodsContainer);
-        //mShippingMethodsContainer.addView(nFormContainer);
-        mShippingMethodsContainer.refreshDrawableState();
-//        mShippingContainer.addView(FulfillmentUiBuilder.getView(this.getActivity(),));
+        mShippingContainer.removeAllViews();
+        mFormResponse.generateForm(getBaseActivity(), mShippingContainer);
+        mShippingContainer.refreshDrawableState();
         // Set the saved selection
         if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
         
@@ -249,13 +246,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     @Override
     public void onClick(View view) {
-        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Submit
         if(id == R.id.checkout_button_enter) onClickSubmitShippingMethod();
-        // Unknown view
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        // Super
+        else super.onClick(view);
     }
     
     /*
@@ -265,14 +261,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-    
-    /**
-     * Process the click on retry button.
-     * @author paulo
-     */
-    private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
@@ -281,7 +269,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
+
     /**
      * Process the click on submit button
      * @author sergiopereira
@@ -289,7 +277,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private void onClickSubmitShippingMethod() {
         Print.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         ContentValues values = mFormResponse.getValues();
-        if(values != null && values.size() > 0){
+        if(CollectionUtils.isNotEmpty(values)){
             triggerSubmitShippingMethod(values);
         }
     }
@@ -300,19 +288,17 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
   
     /**
      * Process the success response
-     * @return boolean
      */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-        
+        // Validate event
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
             onSuccessGetShippingMethods(baseResponse);
@@ -323,32 +309,25 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         default:
             break;
         }
-        
-        return true;
     }
 
     /**
      * Process the error response
-     * @return boolean
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-        
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-        
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
-            return true;
+            return;
         }
-        
         EventType eventType = baseResponse.getEventType();
-        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        //Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_SHIPPING_METHODS_EVENT:
             onErrorGetShippingMethods();
@@ -359,8 +338,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         default:
             break;
         }
-        
-        return false;
     }
 
     public void onSuccessGetShippingMethods(BaseResponse baseResponse){
@@ -376,8 +353,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         loadForm(form);
         ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getFulfillmentList();
         loadFulfillment(fulfillmentList);
-
-
 
         //Total price
         CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
@@ -430,22 +405,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     /**
      * ########### RESPONSE LISTENER ###########  
      */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-     
+
+
     /*
      * (non-Javadoc)
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-    
+
+
 }

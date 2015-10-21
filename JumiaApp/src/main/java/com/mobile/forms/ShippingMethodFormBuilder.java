@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
 
@@ -31,26 +32,12 @@ public class ShippingMethodFormBuilder implements Parcelable  {
         this.groupList = new ArrayList<>();
     }
 
-//    public View generateForm(Context context){
-//        LinearLayout parent;
-//
-//        parent = new LinearLayout(context);
-//        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        parent.setOrientation(LinearLayout.VERTICAL);
-//        parent.setLayoutParams(frmParams);
-//
-//        generateForm(context, parent);
-//
-//        return parent;
-//    }
-    
-    
     /**
      * Generate a form using the view parent
      */
-    public View generateForm(Context context, ViewGroup parent){
-        if(shippingMethodFormBuilderHolder.fields != null && shippingMethodFormBuilderHolder.fields.size() > 0){
-            for(int i = 0; i<shippingMethodFormBuilderHolder.fields.size(); i++){
+    public View generateForm(Context context, ViewGroup parent) {
+        if (CollectionUtils.isNotEmpty(shippingMethodFormBuilderHolder.fields)) {
+            for (int i = 0; i < shippingMethodFormBuilderHolder.fields.size(); i++) {
                 ShippingMethodForm field = new ShippingMethodForm(shippingMethodFormBuilderHolder.fields.get(i));
                 ShippingRadioGroupList mGroup = field.generateForm(context);
                 groupList.add(mGroup);

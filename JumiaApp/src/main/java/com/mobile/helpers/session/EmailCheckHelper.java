@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -43,7 +44,7 @@ public class EmailCheckHelper extends SuperBaseHelper {
     public static Bundle createBundle(String email) {
         // Item data
         ContentValues values = new ContentValues();
-        values.put("email_check[email]", email);
+        values.put(RestConstants.EMAIL, email);
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
