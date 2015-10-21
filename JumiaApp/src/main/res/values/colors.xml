@@ -94,7 +94,7 @@
     <color name="search_hint_color">@color/white</color>
     <color name="search_edit_color">@color/white</color>
     <color name="splash_background_color">@color/grey_dividerlight</color>
-    <color name="window_background_color">@color/white_f9f9f9</color>
+    <color name="window_background_color">@color/black_300</color>
     <color name="checkout_bar_background_color">?attr/colorPrimary</color>
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
