@@ -424,6 +424,8 @@
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
+    <string name="save_for_later">Save for later</string>
+    <string name="remove_from_saved">Remove from saved</string>
     <string name="more">More</string>
     <string name="app_version">App version</string>
     <string name="update_now">Update Now</string>
