@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  *
+ * This class uses an adapter to build static layouts without notify's feature.
+ *
  * @author ricardosoares
  * @version 1.0
  * @date 2015/10/15

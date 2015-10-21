@@ -42,7 +42,7 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-
+        // Has always at least one item
         return 1 + (staticPages != null ? staticPages.size(): 0);
     }
 
