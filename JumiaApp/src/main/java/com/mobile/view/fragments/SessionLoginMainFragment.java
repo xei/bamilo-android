@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Patterns;
 import android.view.View;
 
@@ -136,8 +137,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         mEmailView = (EditText) view.findViewById(R.id.login_text_email);
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
-        // Get
-        view.findViewById(R.id.login_button_guest).setOnClickListener(this);
+        // Get and set guest button
+        setGuestButton(view.findViewById(R.id.login_button_guest), isInCheckoutProcess);
     }
 
     /*
@@ -247,6 +248,20 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
     public void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
+    }
+
+    /*
+     * ################ LISTENERS ################
+     */
+
+    /**
+     * Method used to show the guest login only for checkout process.
+     */
+    private void setGuestButton(@NonNull View view, boolean checkout) {
+        if(checkout) {
+            view.setVisibility(View.VISIBLE);
+            view.setOnClickListener(this);
+        }
     }
 
      /*

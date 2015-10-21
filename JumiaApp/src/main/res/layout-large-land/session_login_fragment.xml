@@ -92,11 +92,9 @@
                     android:id="@+id/login_button_guest"
                     style="@style/TextCaption"
                     android:layout_gravity="center"
-                    android:text="@string/continue_without_log_in" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp" />
+                    android:text="@string/continue_without_log_in"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"/>
 
                 <!-- BUTTON -->
 
