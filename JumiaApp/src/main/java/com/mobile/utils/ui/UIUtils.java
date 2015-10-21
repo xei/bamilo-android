@@ -96,5 +96,36 @@ public class UIUtils {
     public static boolean isAnimating(View view) {
         return view != null && view.getAnimation() != null && (view.getAnimation().hasStarted() || !view.getAnimation().hasEnded());
     }
+
+
+/**
+ * Animate a view sliding from down to top
+ * @param context -  fragment context
+ * @param animatedView -  the animated view
+ * */
+    public static void animateSlideUp(Context context, View animatedView)
+    {
+        animatedView.clearAnimation();
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+        animatedView.startAnimation(animation);
+        animatedView.setVisibility(View.GONE);
+
+    }
+
+
+    /**
+     * Animate a view sliding from top to down
+     * @param context -  fragment context
+     * @param animatedView -  the animated view
+     * */
+
+    public static void animateSlideDown(Context context, View animatedView)
+    {
+        animatedView.clearAnimation();
+        animatedView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+        animatedView.startAnimation(animation);
+
+    }
     
 }
