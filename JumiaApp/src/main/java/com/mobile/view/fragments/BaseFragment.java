@@ -961,6 +961,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
+        // Case unexpected error from server data
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            showFragmentMaintenance();
+        }
 
         /**
          * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
