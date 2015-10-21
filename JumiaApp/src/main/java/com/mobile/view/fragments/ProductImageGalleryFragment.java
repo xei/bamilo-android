@@ -15,6 +15,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
@@ -43,6 +44,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     private JumiaViewPagerWithZoom mViewPager;
 
+    private RelativeLayout mOutOfStockOverlay;
+
     private ArrayList<String> mImageList;
 
     private HorizontalScrollView mHorizontalScrollView;
@@ -50,6 +53,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     private ViewGroup mThumbnailContainer;
 
     private boolean enabledInfiniteSlide;
+
+    private boolean mIsOutOfStock;
 
     /**
      * Constructor using a nested flag
@@ -119,6 +124,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             enabledInfiniteSlide = arguments.getBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, true);
             mImageList = arguments.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
             isNestedFragment = arguments.getBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT);
+            mIsOutOfStock = arguments.getBoolean(ConstantsIntentExtra.OUT_OF_STOCK);
         }
     }
 
@@ -132,6 +138,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON VIEW CREATED");
         // Get pager
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+        // Get Overlay
+        mOutOfStockOverlay = (RelativeLayout) view.findViewById(R.id.pdv_image_oos_overlay);
         // HorizontalScrollView
         mHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
         // Get thumbnail indicator
@@ -178,6 +186,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mImageList);
         outState.putBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT, isNestedFragment);
         outState.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, enabledInfiniteSlide);
+        outState.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, mIsOutOfStock);
     }
 
     /*
@@ -227,6 +236,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
      * Set product image gallery
      */
     private void createGallery() {
+
+        if(mIsOutOfStock){
+            mOutOfStockOverlay.setVisibility(View.VISIBLE);
+        } else {
+            mOutOfStockOverlay.setVisibility(View.GONE);
+        }
+
         // Setted in order to show the no image placeholder on PDV view
         if (CollectionUtils.isEmpty(mImageList)) {
             mImageList = new ArrayList<>();

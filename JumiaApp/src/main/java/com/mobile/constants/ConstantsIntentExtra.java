@@ -40,6 +40,7 @@ public class ConstantsIntentExtra {
     public static final String PRODUCT = mPackage + "Product";
     public static final String PRODUCT_GALLERY_POS = mPackage + "ProductPosition";
     public static final String PRODUCT_BRAND = mPackage + "brand";
+    public static final String OUT_OF_STOCK = mPackage + "OutOfStock";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
