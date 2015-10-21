@@ -36,6 +36,7 @@
             style="@style/AigButton.AddToSaved"
             android:visibility="gone"
             android:textStyle="bold"
+            android:textAllCaps="true"
             android:textColor="@color/color_accent" />
 
     </RelativeLayout>

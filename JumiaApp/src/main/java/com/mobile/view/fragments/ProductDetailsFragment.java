@@ -934,13 +934,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate customer is logged in
         if (JumiaApplication.isCustomerLoggedIn()) {
             try {
-                // Get item
-                if (!TextUtils.equals(((TextView) view).getText(), getString(R.string.save_for_later).toUpperCase())) {
-                    mSaveForLater.setText(getString(R.string.save_for_later).toUpperCase());
+                // if view is selected it means that the product is currently on the saved list and user want to remove it
+                if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mProduct);
                 } else {
-                    mSaveForLater.setText(getString(R.string.remove_from_saved).toUpperCase());
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
                 }
@@ -1336,9 +1334,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSaveForLater.setVisibility(View.VISIBLE);
             mBuyButton.setVisibility(View.GONE);
             if(mProduct.isWishList()){
-                mSaveForLater.setText(getString(R.string.remove_from_saved).toUpperCase());
+                mSaveForLater.setText(getString(R.string.remove_from_saved));
+                mSaveForLater.setSelected(true);
             } else {
-                mSaveForLater.setText(getString(R.string.save_for_later).toUpperCase());
+                mSaveForLater.setText(getString(R.string.save_for_later));
+                mSaveForLater.setSelected(false);
             }
         } else {
             mBuyButton.setVisibility(View.VISIBLE);
