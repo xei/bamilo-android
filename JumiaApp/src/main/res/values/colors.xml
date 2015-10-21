@@ -60,7 +60,7 @@
 
     <color name="kickout_background">#111111</color>
     <color name="white_95_op">#f2ffffff</color>
-
+    <color name="white_70_op">#B3ffffff</color>
     <!-- DATE PICKER-->
 
     <color name="date_picker_text_normal">#FF999999</color>
