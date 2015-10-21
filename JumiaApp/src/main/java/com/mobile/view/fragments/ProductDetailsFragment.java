@@ -66,7 +66,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
-import com.mobile.utils.ui.ConfigurableCartView;
+import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
@@ -144,7 +144,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     boolean isFromBuyButton;
 
-    public ConfigurableCartView mConfigurableCartView;
+    public ConfirmationCartMessageView mConfirmationCartMessageView;
 
     /**
      * Empty constructor
@@ -234,7 +234,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         // Offers
         mOffersContainer = view.findViewById(R.id.pdv_other_sellers_button);
-        mConfigurableCartView =  new ConfigurableCartView(view.findViewById(R.id.configurableCartView),getBaseActivity());
+        mConfirmationCartMessageView =  new ConfirmationCartMessageView(view.findViewById(R.id.configurableCartView),getBaseActivity());
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -289,7 +289,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onDestroyView() {
         super.onDestroyView();
         Print.d(TAG, "ON DESTROY VIEW");
-        mConfigurableCartView.hideMessage();
+        mConfirmationCartMessageView.hideMessage();
     }
 
     /*
@@ -1093,10 +1093,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 //if has cart popup, show configurable confirmation message with cart total price
-                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+                if(!CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
                     PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-                    String message = getResources().getString(R.string.cart_total_price, CurrencyFormatter.formatCurrency(purchaseEntity.getTotal()));
-                    mConfigurableCartView.showMessage(message);
+                    mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
                 }
                 else{
                     //show regular message add item to cart
