@@ -88,8 +88,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onResume();
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null && regions != null){
-            loadCreateAddressForm(mFormResponse);
+        } else if(mFormShipping != null &&  mFormBilling!= null && regions != null){
+            loadCreateAddressForm(mFormShipping,mFormBilling);
         } else {
             triggerCreateAddressForm();
         }

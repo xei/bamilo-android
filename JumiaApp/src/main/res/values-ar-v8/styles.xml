@@ -43,14 +43,14 @@
     <!-- ################# MATERIAL ################# -->
 
     <!-- SMALL TEASER -->
-    <style name="SmallTeaserStyle" parent="CardViewFloatStyle">
+    <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
         <item name="android:layout_marginRight">@dimen/dimen_mat_4px</item>
     </style>
 
     <!-- PRODUCT TEASER -->
-    <style name="ProductTeaserStyle" parent="CardViewFloatStyle">
+    <style name="ProductTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
         <item name="android:layout_marginRight">@dimen/dimen_mat_4px</item>
