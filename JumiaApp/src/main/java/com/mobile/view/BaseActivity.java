@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -90,9 +89,7 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -441,6 +438,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
             mSupportActionBar.setElevation(0);
+            mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         }
         // Set tab layout
         setupTabBarLayout();
@@ -1402,10 +1400,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setText(getString(actionBarTitleResId));
         //getSupportActionBar().setDisplayShowTitleEnabled(true);
         //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
 
     public void setActionBarTitle(@NonNull String title) {
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
     }
 
@@ -1416,6 +1416,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setVisibility(View.GONE);
         //getSupportActionBar().setTitle("");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
 
