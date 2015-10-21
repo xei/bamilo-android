@@ -35,16 +35,17 @@ import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +102,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * Empty constructor
      */
     public OrderHistoryFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.order_history_main);
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.MyOrders,
+                R.layout.order_history_main,
+                R.string.my_orders_label,
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*
@@ -517,8 +522,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         
         selectedProduct = selectedProd;
         
-        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
-        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
+//        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
+//        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
         
     }
     

@@ -424,4 +424,5 @@
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
+    <string name="items_in_your_order">Items in your order</string>
 </resources>
