@@ -41,6 +41,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
@@ -301,7 +302,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 }
                 
                 pageIndex = orders.getCurrentPage();
-                totalPages = orders.getTotalOrders();
+                totalPages = orders.getNumPages();
+
                 if(pageIndex <= totalPages){
                     mIsLoadingMore = false;
                     
@@ -334,6 +336,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                     showProductsLoading(false);
                     mIsLoadingMore = true;
                     return false;
+                }
+
+                if(orders.getTotalOrders() <= NUM_ORDERS){
+                    mIsLoadingMore = true;
                 }
             }
             
@@ -511,6 +517,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
+        bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, ShopSelector.isRtl() ? 0 : 1);
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
