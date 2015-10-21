@@ -300,7 +300,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 // Have to create set a Dynamic form in order to not have the parent dependencies.
                 // this happens when user goes from create address to another screen through the overflow menu, and presses back.
                 // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-                shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+                shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
                 mShippingFormContainer.addView(shippingFormGenerator.getContainer());
                 mShippingFormContainer.refreshDrawableState();
             }
@@ -317,7 +317,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 // Have to create set a Dynamic form in order to not have the parent dependencies
                 // this happens when user goes from create address to another screen through the overflow menu, and presses back.
                 // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-                billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
+                billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormBilling);
                 mBillingFormContainer.addView(billingFormGenerator.getContainer());
                 mBillingFormContainer.refreshDrawableState();
             }
