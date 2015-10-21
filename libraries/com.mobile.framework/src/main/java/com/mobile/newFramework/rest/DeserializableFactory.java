@@ -1,6 +1,7 @@
 package com.mobile.newFramework.rest;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 
@@ -18,6 +19,7 @@ public class DeserializableFactory {
 
     //private static final String TAG = DeserializableFactory.class.getSimpleName();
 
+    @Nullable
     public IJSONSerializable createObject(@NonNull String object) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         //Print.i(TAG, "CREATE OBJECT");
         Class<?> objectClass = Class.forName(object);
