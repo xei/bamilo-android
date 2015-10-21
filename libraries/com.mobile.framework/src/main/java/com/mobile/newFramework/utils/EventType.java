@@ -30,7 +30,7 @@ public enum EventType {
 
     EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
 
-    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin", AigRestContract.NO_CACHE),
+    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/", AigRestContract.NO_CACHE),
 
     GET_LOGIN_FORM_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
 
@@ -100,7 +100,7 @@ public enum EventType {
 
     GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist", AigRestContract.NO_CACHE),
+    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist/", AigRestContract.NO_CACHE),
 
     SET_DEFAULT_ADDRESS("https:/customer/makedefaultaddress/", AigRestContract.NO_CACHE),
 
@@ -110,9 +110,9 @@ public enum EventType {
 
     CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
 
-    CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", AigRestContract.NO_CACHE),
+    CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
 
-    EDIT_ADDRESS_EVENT("https:/customer/addressedit", AigRestContract.NO_CACHE),
+    EDIT_ADDRESS_EVENT("https:/customer/addressedit/", AigRestContract.NO_CACHE),
 
     GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
 

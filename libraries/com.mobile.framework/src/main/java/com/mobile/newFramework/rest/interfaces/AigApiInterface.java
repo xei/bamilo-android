@@ -325,7 +325,6 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
     String loginCustomer = "loginCustomer";
 
     @FormUrlEncoded
