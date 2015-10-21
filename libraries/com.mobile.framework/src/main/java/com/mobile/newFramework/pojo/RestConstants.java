@@ -49,6 +49,7 @@ public class RestConstants {
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
     public static final String URL = "url";
+    public static final String ZOOM = "zoom";
 
     // Form Tags
     public static final String JSON_FORM_TAG = "form";
