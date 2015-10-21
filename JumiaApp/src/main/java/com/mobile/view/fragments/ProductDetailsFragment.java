@@ -1093,7 +1093,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 //if has cart popup, show configurable confirmation message with cart total price
-                if(!CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
                     PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
                     mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
                 }
