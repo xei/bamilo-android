@@ -1,5 +1,7 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntRange;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,7 +15,7 @@ import com.mobile.view.R;
  * Proprietary and confidential.
  *
  * @author ricardosoares
- * @version 1.0
+ * @version 1.1
  * @date 2015/04/13
  */
 public class WarningFactory {
@@ -229,7 +231,7 @@ public class WarningFactory {
             return this;
         }
 
-        Builder setBackground(int drawable){
+        Builder setBackground(@DrawableRes int drawable){
             mWarningBar.setBackgroundResource(drawable);
             mWarningBar.setAlpha(0.95f);
             return this;
@@ -240,14 +242,14 @@ public class WarningFactory {
             return this;
         }
 
-        Builder setImage(int image){
+        Builder setImage(@DrawableRes int image){
             View imageView = mWarningBar.findViewById(R.id.warning_image);
             imageView.setVisibility(View.VISIBLE);
             ((ImageView)imageView).setImageResource(image);
             return this;
         }
 
-        Builder setAnimationDuration(int animationLength){
+        Builder setAnimationDuration(@IntRange(from=0) int animationLength){
             this.animationLength = animationLength;
             return this;
         }
