@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.view.ViewStub;
 
 import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.HashMap;
@@ -68,7 +71,7 @@ public class CheckoutStepManager {
      */
     public static String[] getAllNativeCheckout() {
         return new String[]{
-                FragmentType.ABOUT_YOU.toString(),
+                FragmentType.LOGIN.toString(),
                 FragmentType.MY_ADDRESSES.toString(),
                 FragmentType.CREATE_ADDRESS.toString(),
                 FragmentType.EDIT_ADDRESS.toString(),
@@ -126,21 +129,79 @@ public class CheckoutStepManager {
         }
     }
 
-    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules){
+    public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules) {
         priceRulesContainer.removeAllViews();
         if (priceRules != null && priceRules.size() > 0) {
             priceRulesContainer.setVisibility(View.VISIBLE);
             LayoutInflater mLayoutInflater = LayoutInflater.from(context);
             Set<String> priceRulesKeys = priceRules.keySet();
             for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,priceRulesContainer, false);
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, priceRulesContainer, false);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+ CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                // TODO Use place holder
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
                 priceRulesContainer.addView(priceRuleElement);
             }
         } else {
             priceRulesContainer.setVisibility(View.GONE);
         }
     }
+
+
+    /**
+     * Method used to validate the next after log in.
+     * @param activity - The activity
+     * @param isInCheckoutProcess - Checkout flag
+     * @param mParentFragmentType - The parent fragment type
+     * @param nextStepFromParent - The next step from parent
+     * @param nextStepFromApi - The next step from Api, used case is in checkout process
+     * @author spereira
+     */
+    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi) {
+        // Case next step from api
+        if(isInCheckoutProcess) {
+            goToCheckoutNextStepFromApi(activity, mParentFragmentType, nextStepFromApi);
+        } else {
+            goToNextStepFromParent(activity, nextStepFromParent);
+        }
+    }
+
+    private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent) {
+        // Validate the next step
+        if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {
+            Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
+            FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+            Bundle args = new Bundle();
+            args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+            activity.onSwitchFragment(nextStepFromParent, args, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Print.i(TAG, "NEXT STEP FROM PARENT: BACK");
+            activity.onBackPressed();
+        }
+    }
+
+    /**
+     * Method used to switch the checkout step
+     */
+    private static void goToCheckoutNextStepFromApi(BaseActivity activity, FragmentType mParentFragmentType, FragmentType nextStepType) {
+        // Get next step
+        if (nextStepType == null || nextStepType == FragmentType.UNKNOWN) {
+            Print.w(TAG, "NEXT STEP FROM API IS NULL");
+            //super.showFragmentErrorRetry();
+            activity.onBackPressed();
+        } else {
+            Print.i(TAG, "NEXT STEP FROM API: " + nextStepType.toString());
+            // Case comes from MY_ACCOUNT
+            if(mParentFragmentType == FragmentType.MY_ACCOUNT) {
+                if(nextStepType == FragmentType.CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
+                else if(nextStepType == FragmentType.EDIT_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_EDIT_ADDRESS;
+                else if(nextStepType == FragmentType.MY_ADDRESSES) nextStepType = FragmentType.MY_ACCOUNT_MY_ADDRESSES;
+            }
+            // Clean stack for new native checkout on the back stack (auto login)
+            activity.removeAllNativeCheckoutFromBackStack();
+            activity.onSwitchFragment(nextStepType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
 
 }

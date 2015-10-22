@@ -60,7 +60,7 @@
 
     <color name="kickout_background">#111111</color>
     <color name="white_95_op">#f2ffffff</color>
-
+    <color name="white_70_op">#B3ffffff</color>
     <!-- DATE PICKER-->
 
     <color name="date_picker_text_normal">#FF999999</color>
@@ -94,9 +94,11 @@
     <color name="search_hint_color">@color/white</color>
     <color name="search_edit_color">@color/white</color>
     <color name="splash_background_color">@color/grey_dividerlight</color>
-    <color name="window_background_color">@color/white_f9f9f9</color>
+    <color name="window_background_color">@color/black_300</color>
     <color name="checkout_bar_background_color">?attr/colorPrimary</color>
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
+    <color name="blue_205081">#205081</color>
+    <color name="red_dd4b39">#dd4b39</color>
 
 </resources>

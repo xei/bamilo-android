@@ -548,7 +548,7 @@ public class FragmentController {
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
                         if(
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.LOGIN.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
