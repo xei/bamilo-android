@@ -34,4 +34,9 @@ public class ConstantsCheckout {
     
     public static final int NO_CHECKOUT = 0;
 
+    public static final int TAB_CHECKOUT_ABOUT_YOU = 0;
+    public static final int TAB_CHECKOUT_BILLING = 1;
+    public static final int TAB_CHECKOUT_SHIPPING = 2;
+    public static final int TAB_CHECKOUT_PAYMENT = 3;
+
 }

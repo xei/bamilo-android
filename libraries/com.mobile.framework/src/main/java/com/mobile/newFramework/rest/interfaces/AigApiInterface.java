@@ -36,6 +36,7 @@ import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
+import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -511,4 +512,7 @@ public interface AigApiInterface {
     void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
     String getPhonePrefixes = "getPhonePrefixes";
 
+    @GET("/")
+    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
+    String getFaqTerms = "getFaqTerms";
 }

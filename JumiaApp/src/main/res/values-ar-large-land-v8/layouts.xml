@@ -21,5 +21,6 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment"           type="layout">@layout/_v8_track_order_fragment</item>
     <item name="order_history_main"             type="layout">@layout/_v8_order_history_main</item>
+    <item name="my_account_fragment"                   type="layout">@layout/_v8_my_account_fragment</item>
     
 </resources>

@@ -761,6 +761,13 @@
         <item name="android:src">@drawable/ic_overseas_corner</item>
     </style>
 
+    <!-- MY ACCOUNT -->
+
+    <style name="HeaderMyAccountStyle" parent="HeaderStyle">
+        <item name="android:paddingLeft">@dimen/my_account_gen_dimen</item>
+        <item name="android:paddingStart">@dimen/my_account_gen_dimen</item>
+    </style>
+
     <!-- MATERIAL BOTTOM SHEET -->
 
     <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
