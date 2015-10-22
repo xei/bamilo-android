@@ -33,8 +33,8 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
@@ -359,7 +359,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     case MotionEvent.ACTION_UP:
                         if (items != null && items.size() > 0) {
                             TrackerDelegator.trackCheckout(items);
-                            getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, null, FragmentController.ADD_TO_BACK_STACK);
+
+
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS, true);
+                            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
                         } else {
                             String title = getString(R.string.shoppingcart_alert_header);
                             String message = getString(R.string.shoppingcart_alert_message_no_items);

@@ -61,7 +61,7 @@
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
-                style="@style/form_edittext_style"
+                style="@style/TextField"
                 android:layout_marginEnd="@dimen/rounded_margin_mid"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"

@@ -53,7 +53,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
-import com.mobile.helpers.session.GetLoginHelper;
+import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
@@ -259,7 +259,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.FragmentActivity#onStart()
+     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
      */
     @Override
     protected void onStart() {
@@ -439,6 +439,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
             mSupportActionBar.setElevation(0);
+            mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         }
         // Set tab layout
         setupTabBarLayout();
@@ -1317,7 +1318,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
+                                                LogOut.perform(new WeakReference<Activity>(BaseActivity.this));
                                             }
                                             dialogLogout.dismiss();
                                         }
@@ -1406,10 +1407,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setText(getString(actionBarTitleResId));
         //getSupportActionBar().setDisplayShowTitleEnabled(true);
         //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
 
     public void setActionBarTitle(@NonNull String title) {
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
     }
 
@@ -1420,6 +1423,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setVisibility(View.GONE);
         //getSupportActionBar().setTitle("");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
 
@@ -1702,7 +1706,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             // Validate back stack
             if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllNativeCheckoutFromBackStack();
-                onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(ConstantsIntentExtra.FLAG_1, true);
+                onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
             }
 
         }
@@ -1809,7 +1817,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
+        JumiaApplication.INSTANCE.sendRequest(new LoginHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");

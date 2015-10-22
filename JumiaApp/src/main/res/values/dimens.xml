@@ -315,7 +315,7 @@
 
     <dimen name="login_container_width">@dimen/inner_container_width</dimen>
 
-    <dimen name="form_item_height">30dp</dimen>
+    <dimen name="form_item_height">48dp</dimen>
     <!-- 93.33dp reduced to 90dp -->
     <dimen name="form_date_width">90dp</dimen>
 
@@ -506,6 +506,13 @@
     <dimen name="ratings_average_with">160dp</dimen>
     <dimen name="specs_column_with">120dp</dimen>
 
-
     <integer name="dialog_max_item">7</integer>
+
+    <dimen name="my_account_gen_dimen">16dp</dimen>
+
+    <!--LOGIN-->
+    <dimen name="login_main_container_width">@dimen/match_parent</dimen>
+    <dimen name="login_email_container_width">@dimen/match_parent</dimen>
+    <dimen name="register_container_width">@dimen/match_parent</dimen>
+
 </resources>

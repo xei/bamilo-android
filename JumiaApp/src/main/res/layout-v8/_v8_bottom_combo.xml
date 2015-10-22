@@ -6,8 +6,7 @@
 
     >
 
-    <TextView
-        android:id="@+id/sep1"
+    <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@drawable/line_separator"

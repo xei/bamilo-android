@@ -193,12 +193,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     }
     
     /**
-     * Method used to associate the container and fragment
-     * @param container
-     * @param fragment
-     * @param filterType 
-     * @param animated
-     * @author sergiopereira
+     * Method used to associate the container and fragment.
      */
     public void fragmentChildManagerTransition(int container, FragmentType filterType, Fragment fragment, final boolean animated, boolean addToBackStack) {
         final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();

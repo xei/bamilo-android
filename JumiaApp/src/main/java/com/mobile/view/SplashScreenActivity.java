@@ -607,7 +607,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     break;
             }
 
-        } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
+        }
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            setLayoutMaintenance(eventType);
+        }
+        else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection

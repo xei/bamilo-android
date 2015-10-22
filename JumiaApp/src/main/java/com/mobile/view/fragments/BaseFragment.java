@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -54,8 +55,6 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -126,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -138,7 +137,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor used only by nested fragments
      */
-    public BaseFragment(Boolean isNestedFragment, int layoutResId) {
+    public BaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = 0;
@@ -159,7 +158,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -855,9 +854,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
+            case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
                 JumiaApplication.INSTANCE.setLoggedIn(true);
-                getBaseActivity().triggerGetShoppingCartItemsHelper();
+                // TODO VALIDATE IF THIS IS NECESSARY
+                // getBaseActivity().triggerGetShoppingCartItemsHelper();
                 return true;
             default:
                 break;
@@ -884,7 +885,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-//        errorCode = ErrorCode.IO;
+
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -961,6 +962,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
+        // Case unexpected error from server data
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            showFragmentMaintenance();
+        }
 
         /**
          * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
@@ -971,10 +976,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
-    protected void clearCredentials() {
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-    }
+//    protected void clearCredentials() {
+//        JumiaApplication.INSTANCE.setLoggedIn(false);
+//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//    }
 
     /*
      * ########### LISTENERS ###########
@@ -988,7 +993,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
+        // Case error button
         if (id == R.id.fragment_root_error_button){
             checkErrorButtonBehavior(view);
         }
