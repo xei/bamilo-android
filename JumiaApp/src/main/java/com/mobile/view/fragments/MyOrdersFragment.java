@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public class MyOrdersFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = OrderHistoryFragment.class.getSimpleName();
+    private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
     private ArrayList<Order> ordersList = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-
+        
         if(savedInstanceState != null) {
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
@@ -176,6 +176,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
 
     protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        // Hide dialog progress
+        hideActivityProgress();
         Print.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {

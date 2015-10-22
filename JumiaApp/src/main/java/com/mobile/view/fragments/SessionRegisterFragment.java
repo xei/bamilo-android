@@ -1,23 +1,12 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -31,64 +20,49 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
-import com.mobile.newFramework.forms.NewsletterOption;
-import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
-import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Class used to manage the register form
+ *
  * @author sergiopereira
- * 
  */
-public class SessionRegisterFragment extends BaseFragment {
+public class SessionRegisterFragment extends BaseFragment implements IResponseCallback, OnClickListener {
 
     private static final String TAG = SessionRegisterFragment.class.getSimpleName();
 
-    private Button registerButton;
+    private Form mForm;
 
-    private CheckBox rememberEmailCheck;
+    private Bundle mFormSavedState;
 
-    private TextView loginText;
+    private DynamicForm mDynamicForm;
 
-    private CheckBox checkTerms;
+    private ViewGroup mFormContainer;
 
-    private TextView linkText;
+    private boolean isSubscribingNewsletter;
 
-    private TextView mandatory;
-
-    private static DynamicForm serverForm;
-
-    private DynamicFormItem termsLink;
-
-    private DynamicFormItem newsletterSubscribe;
-
-    private LinearLayout container;
+    private String mCustomerEmail;
 
     /**
-     * 
-     * @return
+     * Get new instance of register fragment
      */
     public static SessionRegisterFragment getInstance(Bundle bundle) {
         SessionRegisterFragment fragment = new SessionRegisterFragment();
@@ -102,622 +76,313 @@ public class SessionRegisterFragment extends BaseFragment {
     public SessionRegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
-                R.layout.register,
+                R.layout.session_register_fragment_main,
                 R.string.register_title,
                 KeyboardState.ADJUST_CONTENT);
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+     * ###### LIFE CYCLE ######
      */
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        // Saved form state
+        mFormSavedState = savedInstanceState;
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            // Force load form if comes from deep link
-            String path = arguments.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if (path != null && path.equals(DeepLinkManager.TAG)) {
-                JumiaApplication.INSTANCE.registerForm = null;
-            }
+            // Get customer email
+            mCustomerEmail = arguments.getString(ConstantsIntentExtra.DATA);
         }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Print.i(TAG, "ON CREATE VIEW");
+        // Get info
+        String text = String.format(getString(R.string.register_info), getString(R.string.app_name));
+        ((TextView) view.findViewById(R.id.register_text_info)).setText(text);
+        // Get form container
+        mFormContainer = (ViewGroup) view.findViewById(R.id.register_form_container);
+        // Get create button
+        View mCreateButton = view.findViewById(R.id.register_button_create);
+        mCreateButton.setOnClickListener(this);
+        // Validate the current state
+        onValidateState();
     }
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onStart()
-     */
+
+    private void onValidateState() {
+        // Case form is empty
+        if (mForm == null) {
+            triggerRegisterForm();
+        }
+        // Case load form
+        else {
+            loadForm(mForm);
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
-        // Used for UG
-        forceInputAlignToLeft();
-        if (JumiaApplication.INSTANCE.registerForm != null) {
-            Print.d(TAG, " ON RESUME -> load From");
-            loadForm(JumiaApplication.INSTANCE.registerForm);
-            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-        } else {
-            triggerRegisterForm();
-        }
-
-        getFormComponents();
-        setFormComponents();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-
-        if (container != null) {
-            try {
-                container.removeAllViews();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
-        if (null != serverForm) {
-
-            for (DynamicFormItem item : serverForm) {
-                item.saveState(outState);
-            }
-
-            // TODO use an alternative to persist filled fields on rotation
-            JumiaApplication.INSTANCE.registerSavedInstanceState = outState;
-        }
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
         super.onSaveInstanceState(outState);
-    }
-
-    public void saveFormState() {
-        if (null != serverForm) {
-            Print.d(TAG, "  -----> SAVE FORM STATE <--------- ");
-
-            if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
-                JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
-            }
-
-            for (DynamicFormItem item : serverForm) {
-                item.saveState(JumiaApplication.INSTANCE.registerSavedInstanceState);
-            }
+        // Case rotation save state
+        if (mDynamicForm != null) {
+            mDynamicForm.saveFormState(outState);
         }
     }
 
-    /**
-     * ##### LAYOUT ####
-     */
-
-    /**
-     * Get Components
-     */
-    private void getFormComponents() {
-        registerButton = (Button) getView().findViewById(R.id.register_button_submit);
-        rememberEmailCheck = (CheckBox) getView().findViewById( R.id.login_remember_user_email);
-        loginText = (TextView) getView().findViewById(R.id.loginText);
-        // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-
-        registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-        HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
-
-        // checkTerms.setOnClickListener(click);
-    }
-
-    /**
-     * Set Components
-     */
-    private void setFormComponents() {
-        setSubmitButton();
-        setLoginListener();
-    }
-
-    /**
-     * #### LISTENERS ####
-     */
-
-    /**
-     * Set Submit button Listener
-     */
-    private void setSubmitButton() {
-        registerButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Print.d(TAG, "registerButton onClick");
-                if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
-                    getBaseActivity().hideKeyboard();
-                    requestRegister();
-                } else if (!checkTermsIfRequired()) {
-                    mandatory.setVisibility(View.VISIBLE);
-                    getBaseActivity().hideKeyboard();
-                    // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                } else {
-                    getBaseActivity().hideKeyboard();
-                    // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets the listener to the login button
-     */
-    private void setLoginListener() {
-        loginText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-                Print.d(TAG, "register canceled via login click");
-            }
-        });
-    }
-
-    /**
-     * create the listener to monitor the changes to the mandatory fields, to enable the register
-     * button when all the mandatory fields are filled
-     */
-    OnFocusChangeListener focus_listener = new OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            // saveFormState();
-            if (!hasFocus) {
-                checkInputFields();
-            }
-        }
-    };
-
-    /**
-     * 
-     */
-    IcsAdapterView.OnItemSelectedListener selected_listener = new IcsAdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-            checkInputFields();
-        }
-
-        @Override
-        public void onNothingSelected(IcsAdapterView<?> parent) {
-        }
-    };
-
-    /**
-     * 
-     */
-    TextWatcher text_watcher = new TextWatcher() {
-        @Override
-        public void afterTextChanged(Editable s) {
-            checkInputFields();
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-    };
-
-    /**
-     * #### CHECKS ####
-     */
-
-    /**
-     * 
-     * @return
-     */
-    private boolean checkTermsIfRequired() {
-        if (termsLink != null && checkTerms != null) {
-            return !termsLink.getMandatory() || checkTerms.isChecked();
-        }
-
-        return true;
-    }
-
-    /**
-     * This method checks if both passwords inserted match
-     * 
-     * @return true if yes false if not
-     */
-    private boolean checkPasswords() {
-        boolean result = true;
-
-        Iterator<DynamicFormItem> iter = serverForm.getIterator();
-        String old = "";
-
-        while (iter.hasNext()) {
-            DynamicFormItem item = iter.next();
-            if (item.getType() == FormInputType.password) {
-                if (old.equals("")) {
-                    old = item.getValue();
-                } else {
-                    result &= old.equals(item.getValue());
-                    if (!result) {
-                        item.ShowError(getString(R.string.form_passwordsnomatch));
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * This method validates if all necessary input fields are filled
-     */
-    private void checkInputFields() {
-        if (getView() == null) {
-            Print.w(TAG, "CHECK INPUT FIELDS VIEW IS NULL!");
-            return;
-        }
-        registerButton = (Button) getView().findViewById(R.id.register_button_submit);
-
-        if (serverForm.checkRequired() && checkTermsIfRequired()) {
-            // Log.d( TAG, "checkInputFieds: check passed" );
-            registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
-            HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
-        } else {
-            // Log.d( TAG, "checkInputFieds: check not passed" );
-            registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-            HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
+    @Override
+    public void onPause() {
+        super.onPause();
+        Print.i(TAG, "ON PAUSE");
+        // Case goes to back stack save the state
+        if(mDynamicForm != null) {
+            Bundle bundle = new Bundle();
+            mDynamicForm.saveFormState(bundle);
+            mFormSavedState = bundle;
         }
     }
 
-    /**
-     * #### EVENT SUPPORT ####
-     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Print.i(TAG, "ON STOP");
+    }
 
-    /**
-     * Request a register
-     * 
-     */
-    void requestRegister() {
-        // Create Event Manager
-        ContentValues values = serverForm.save();
-        String newsletterType = getSubscribeType();
-        if (newsletterType != null && values.containsKey(newsletterSubscribe.getName())) {
-            values.remove(newsletterSubscribe.getName());
-            values.put(newsletterSubscribe.getName(), newsletterType);
-        }
-        triggerRegister(values);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Print.i(TAG, "ON DESTROY VIEW");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Print.i(TAG, "ON DESTROY");
+        mForm = null;
+        mDynamicForm = null;
     }
 
     /**
-     * #### EVENTS ####
-     */
-
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-
-        if (getBaseActivity() != null) {
-            super.handleSuccessEvent(baseResponse);
-        } else {
-            return true;
-        }
-        EventType eventType = baseResponse.getEventType();
-        switch (eventType) {
-        case REGISTER_ACCOUNT_EVENT:
-            
-            try {
-                if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
-            } catch (NullPointerException | ClassCastException e) {
-                e.printStackTrace();
-            }
-
-            showFragmentContentContainer();
-            // Get Register Completed Event
-            Customer customer = (Customer)baseResponse.getMetadata().getData();
-            JumiaApplication.CUSTOMER = customer;
-            Bundle params = new Bundle();
-            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.REGISTER);
-            TrackerDelegator.trackSignupSuccessful(params);
-
-            JumiaApplication.INSTANCE.registerForm = null;
-            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-
-            // Persist user email or empty that value after successfully login
-            CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
-
-            // Finish
-            getActivity().onBackPressed();
-            Print.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
-            return false;
-        case GET_REGISTRATION_FORM_EVENT:
-            showFragmentContentContainer();
-            Form form = (Form)baseResponse.getMetadata().getData();
-            Print.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
-            if (null != form) {
-                JumiaApplication.INSTANCE.registerForm = form;
-                loadForm(form);
-            }
-            break;
-        default:
-            break;
-        }
-        return true;
-    }
-
-    /**
-     * 
-     * @param form
+     *
      */
     private void loadForm(Form form) {
-        serverForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
-        serverForm.setOnFocusChangeListener(focus_listener);
-        serverForm.setOnItemSelectedListener(selected_listener);
-        serverForm.setTextWatcher(text_watcher);
-
-        container = (LinearLayout) getView().findViewById(R.id.registerform_container);
-        try {
-            container.removeAllViews();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+        // Create form view
+        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
+        // Set request callback
+        mDynamicForm.setRequestCallBack(this); // FormInputType.relatedNumber
+        // Set click listener
+        mDynamicForm.setOnClickListener(this); // FormInputType.checkBoxLink
+        // Load saved state
+        mDynamicForm.loadSaveFormState(mFormSavedState);
+        // Set initial value
+        if (TextUtils.isNotEmpty(mCustomerEmail)) {
+            mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
         }
-        container.addView(serverForm.getContainer());
-        setTermsListener();
-        // TODO use an alternative to persist filled fields on rotation
-        if (null != JumiaApplication.INSTANCE.registerSavedInstanceState && null != serverForm) {
-            Iterator<DynamicFormItem> iter = serverForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
-                item.loadState(JumiaApplication.INSTANCE.registerSavedInstanceState);
-            }
-        }
-
+        // Add form view
+        mFormContainer.addView(mDynamicForm.getContainer());
+        // Show
         showFragmentContentContainer();
     }
 
-    private String getSubscribeType() {
-        String result = null;
-        newsletterSubscribe = serverForm.getItemByKey(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG);
-        if (newsletterSubscribe == null) {
-            return result;
-        }
-
-        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).getNewsletterOptions();
-
-        if (newsletterSubscribe.getEditControl() != null && ((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) {
-            DynamicFormItem genderForm = serverForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
-            if (newsletterOptions != null) {
-                for (NewsletterOption newsletterOption : newsletterOptions) {
-                    if (newsletterOption.label.toLowerCase().contains(genderForm.getValue().toLowerCase())) {
-                        result = newsletterOption.value;
-                        return result;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private void setTermsListener() {
-        termsLink = serverForm.getItemByKey(RestConstants.JSON_TERMS_TAG);
-        if (termsLink == null) {
-            return;
-        }
-
-        mandatory = (TextView) termsLink.getMandatoryControl();
-
-        linkText = (TextView) termsLink.getEditControl().findViewWithTag(
-                RestConstants.JSON_TERMS_TAG);
-        linkText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveFormState();
-                Bundle bundle = new Bundle();
-                bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
-                bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
-                getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-            }
-        });
-
-        checkTerms = (CheckBox) termsLink.getEditControl().findViewWithTag("checkbox");
-        checkTerms.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if(termsLink.hasRules()) {
-                    if (((CheckBox) v).isChecked()) {
-                        mandatory.setVisibility(View.GONE);
-                    } else {
-                        mandatory.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                if (serverForm != null && serverForm.checkRequired()) {
-                    registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
-                    HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
-                } else {
-                    registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-                    HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
-                }
-            }
-        });
-
-    }
-
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "ON ERROR EVENT");
-        
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-
-        if (super.handleErrorEvent(baseResponse)) {
-            return true;
-        }
-        EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
-            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);
-                List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
-                if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
-                    showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.error_register_title),
-                            getString(R.string.error_register_alreadyexists),
-                            getString(R.string.ok_label), 
-                            "", 
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
-                } else {
-                    showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.error_register_title),
-                            getString(R.string.incomplete_alert),
-                            getString(R.string.ok_label), 
-                            "", 
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-//    /**
-//     * #### FUNCTIONS NOT USED ON REGISTER ACTIVITY ####
-//     */
-//
-//    /**
-//     * Measures a text against a text textview size to determine if the text will fit
-//     *
-//     * @param v
-//     *            The textview to measure against
-//     * @param text
-//     *            The text to measure
-//     * @param width
-//     *            the max width it can have
-//     * @return True, if the textsize is bigger than the width; False, if the textsize is smaller
-//     *         than the width
-//     */
-//    public boolean isToBig(TextView v, String text, int width) {
-//        return (v.getPaint().measureText(text) > width);
-//    }
-
     /**
-     * TRIGGERS
-     * 
-     * @author sergiopereira
-     * @param values
+     * Request a register
      */
-    private void triggerRegister(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new RegisterHelper(), bundle, mCallBack);
-    }
-
-    private void triggerRegisterForm() {
-        triggerContentEvent(new GetRegisterFormHelper(), null, mCallBack);
-    }
-
-    /**
-     * CALLBACK
-     * 
-     * @author sergiopereira
-     */
-    IResponseCallback mCallBack = new IResponseCallback() {
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
+    void requestRegister() {
+        // Get values
+        ContentValues values = mDynamicForm.save();
+        // Get value from newsletter
+        isSubscribingNewsletter = false;
+        if(values.containsKey(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG)) {
+            isSubscribingNewsletter = values.getAsBoolean(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG);
         }
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
+        // Register user
+        triggerRegister(values);
+    }
 
     /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     * ######## LISTENERS ########
      */
+
+    @Override
+    public void onClick(View view) {
+        // Get id
+        int id = view.getId();
+        // Case create button
+        if (id == R.id.register_button_create) {
+            onClickCreate();
+        }
+        // Case terms and conditions from form
+        else if (id == R.id.textview_terms) {
+            onClickTermsAndConditions();
+        }
+        // Case default
+        else {
+            super.onClick(view);
+        }
+    }
+
+    private void onClickTermsAndConditions() {
+        Bundle bundle = new Bundle();
+        bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
+        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
+        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+
+    private void onClickCreate() {
+        // Hide keyboard
+        getBaseActivity().hideKeyboard();
+        // Case valid
+        if (mDynamicForm.checkPasswords() && mDynamicForm.validate()) {
+            requestRegister();
+        }
+        // Case invalid
+        else {
+            // Tracking
+            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+        }
+    }
+
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        onResume();
+        onValidateState();
+    }
+
+    /*
+     * ############# TRIGGERS #############
+     */
+
+    private void triggerRegister(ContentValues values) {
+        triggerContentEvent(new RegisterHelper(), RegisterHelper.createBundle(values), this);
+    }
+
+    private void triggerRegisterForm() {
+        triggerContentEvent(new GetRegisterFormHelper(), null, this);
+    }
+
+    /*
+     * ############# CALLBACKS #############
+     */
+
+    public void onRequestComplete(BaseResponse baseResponse) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Call super
+        super.handleSuccessEvent(baseResponse);
+        // Validate event
+        EventType eventType = baseResponse.getEventType();
+        Print.d(TAG, "ON SUCCESS: " + eventType.toString());
+        switch (eventType) {
+            case REGISTER_ACCOUNT_EVENT:
+                // Get Register Completed Event
+                //Customer customer = (Customer) baseResponse.getMetadata().getData();
+                // Tracking
+                if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
+                TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
+                // Notify user
+                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_LOGIN);
+                // Finish
+                getActivity().onBackPressed();
+                break;
+            case GET_REGISTRATION_FORM_EVENT:
+                mForm = (Form) baseResponse.getMetadata().getData();
+                loadForm(mForm);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public void onRequestError(BaseResponse baseResponse) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Super
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
+        // Validate
+        EventType eventType = baseResponse.getEventType();
+        Print.d(TAG, "ON ERROR: " + eventType.toString());
+        switch (eventType) {
+            case GET_REGISTRATION_FORM_EVENT:
+                showUnexpectedErrorWarning();
+                break;
+            case REGISTER_ACCOUNT_EVENT:
+                // Tracking
+                TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+                // Validate errors
+                ErrorCode code = baseResponse.getError().getErrorCode();
+                Map<String, List<String>> messages = baseResponse.getErrorMessages();
+                validateErrorMessage(code, messages);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void validateErrorMessage(ErrorCode errorCode, Map<String, List<String>> errorMessages) {
+        // Validate error
+        if (errorCode == ErrorCode.REQUEST_ERROR) {
+            List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+            // Validate error message
+            int message =  R.string.incomplete_alert;
+            if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
+                message = R.string.error_register_alreadyexists;
+            }
+            // Show container
+            showFragmentContentContainer();
+            // Show dialog
+            dialog = DialogGenericFragment.newInstance(true, false,
+                    getString(R.string.error_register_title),
+                    getString(message),
+                    getString(R.string.ok_label),
+                    "",
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = v.getId();
+                            if (id == R.id.button1) {
+                                dismissDialogFragment();
+                            }
+                        }
+                    });
+            dialog.show(getActivity().getSupportFragmentManager(), null);
+        } else {
+            showUnexpectedErrorWarning();
+        }
     }
 
 }

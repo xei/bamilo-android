@@ -123,6 +123,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             //
             if (getBaseActivity().getSupportActionBar() != null) {
                 getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+                getBaseActivity().getSupportActionBar().setLogo(null);
             }
         }
     }

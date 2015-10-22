@@ -49,4 +49,5 @@ public interface IFormField {
 
     boolean isDefaultSelection();
 
+    boolean isPrefixField();
 }

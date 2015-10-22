@@ -20,17 +20,26 @@
         android:background="@color/black_900"
         android:src="@drawable/ic_call" />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_button_buy"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/color_accent"
-        android:clickable="true"
-        android:gravity="center"
-        android:paddingLeft="@dimen/layout_marginLeft"
-        android:paddingRight="@dimen/layout_marginLeft"
-        android:text="@string/buy_now_button"
-        android:textColor="@color/white" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/black_700"
+        android:layout_height="match_parent">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_button_buy"
+            style="@style/AigButton.Active"
+            android:text="@string/buy_now_button" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_button_add_to_save"
+            style="@style/AigButton.AddToSaved"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/color_accent" />
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
