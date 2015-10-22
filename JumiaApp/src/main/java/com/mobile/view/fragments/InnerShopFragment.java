@@ -33,6 +33,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
@@ -52,20 +53,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     private static final String HTML_TYPE = "text/html";
 
     private static final String HTML_ENCODING = "utf-8";
-
-    private static final int DEEP_LINK_SIZE = 2;
-
-    private static final int DEEP_LINK_TARGET_POSITION = 0;
-
-    private static final int DEEP_LINK_URL_POSITION = 1;
-
-    private static final String DEEP_LINK_DELIMITER = "::";
-
-    private static final String TARGET_TYPE_PDV = "pdv";
-
-    private static final String TARGET_TYPE_CATALOG = "catalog";
-
-    private static final String TARGET_TYPE_CAMPAIGN = "campaign";
 
     private static final int WEB_VIEW_LOAD_DELAY = 400;
 
@@ -386,24 +373,27 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param link The deep link
      */
     private void processDeepLink(String link) {
-        // Split pdv::http or catalog::http or campaign::http
-        String[] deepLink = TextUtils.split(link, DEEP_LINK_DELIMITER);
+
+        TargetHelper targetHelper = new TargetHelper(link);
+
+        // Target
+        String target = targetHelper.getTarget();
+        // Link
+        String url = targetHelper.getTargetValue();
+
         // Validate deep link
-        if (deepLink.length == DEEP_LINK_SIZE) {
-            // Target
-            String target = deepLink[DEEP_LINK_TARGET_POSITION];
-            // Link
-            String url = deepLink[DEEP_LINK_URL_POSITION];
+        if (TextUtils.isNotEmpty(target) && TextUtils.isNotEmpty(url)) {
+
             // Case pdv
-            if (TextUtils.equals(TARGET_TYPE_PDV, target)) {
+            if (TextUtils.equals(TargetHelper.TARGET_TYPE_PDV, target)) {
                 gotoProduct(url);
             }
             // Case catalog
-            else if (TextUtils.equals(TARGET_TYPE_CATALOG, target)) {
+            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CATALOG, target)) {
                 gotoCatalog(url);
             }
             // Case campaign
-            else if (TextUtils.equals(TARGET_TYPE_CAMPAIGN, target)) {
+            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CAMPAIGN, target)) {
                 gotoCampaign(url);
             }
             // Case unknown

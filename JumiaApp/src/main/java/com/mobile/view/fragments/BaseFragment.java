@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -124,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -136,7 +137,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor used only by nested fragments
      */
-    public BaseFragment(Boolean isNestedFragment, int layoutResId) {
+    public BaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = 0;
@@ -157,7 +158,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
