@@ -7,7 +7,6 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,16 +121,16 @@ public class Order implements IJSONSerializable, Parcelable {
             mDate = jsonObject.optString(RestConstants.JSON_ORDER_DATE_TAG);
             mOrderNumber = jsonObject.optString(RestConstants.JSON_NUMBER_TAG);
             mOrderTotal = jsonObject.optString(RestConstants.JSON_ORDER_TOTAL_TAG);
-            mPayment = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_TAG).optString(RestConstants.JSON_TITLE_TAG);
+        //    mPayment = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_TAG).optString(RestConstants.JSON_TITLE_TAG);
 
-            JSONArray productsArray = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+        /*    JSONArray productsArray = jsonObject.optJSONArray(RestConstants.PRODUCTS);
             if (null != productsArray && productsArray.length() > 0)
                 for (int j = 0; j < productsArray.length(); j++) {
 
                     OrderItem product = new OrderItem(productsArray.optJSONObject(j));
 
                     mOrderProducts.add(product);
-                }
+                }*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,15 +157,15 @@ public class Order implements IJSONSerializable, Parcelable {
 
     protected Order(Parcel in) {
         mOrderNumber = in.readString();
-        mPayment = in.readString();
+   //     mPayment = in.readString();
         mDate = in.readString();
         mOrderTotal = in.readString();
-        if (in.readByte() == 0x01) {
+   /*     if (in.readByte() == 0x01) {
             mOrderProducts = new ArrayList<>();
             in.readList(mOrderProducts, OrderItem.class.getClassLoader());
         } else {
             mOrderProducts = null;
-        }
+        }*/
     }
 
     @Override
@@ -177,15 +176,15 @@ public class Order implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mOrderNumber);
-        dest.writeString(mPayment);
+  //      dest.writeString(mPayment);
         dest.writeString(mDate);
         dest.writeString(mOrderTotal);
-        if (mOrderProducts == null) {
+    /*    if (mOrderProducts == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(mOrderProducts);
-        }
+        }*/
     }
 
     @SuppressWarnings("unused")
