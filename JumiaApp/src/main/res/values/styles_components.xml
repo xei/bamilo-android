@@ -17,6 +17,22 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="TextField" parent="TextList_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/_gen_selector_text_field</item>
+        <item name="android:textColorHint">@color/black_700</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
+        <item name="android:textCursorDrawable" targetApi="12">@null</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:fontFamily">roboto_regular</item>
+    </style>
+
     <style name="HeaderStyleCenter" parent="@style/TextHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -94,20 +110,6 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="form_edittext_style" parent="form_style">
-        <item name="android:layout_height">@dimen/form_item_height</item>
-        <item name="android:background">@drawable/selector_edittext_bottomline</item>
-        <item name="android:textColorHint">@color/form_text_hint</item>
-        <item name="android:cursorVisible">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:paddingLeft">@dimen/form_padding</item>
-        <item name="android:paddingStart">@dimen/form_padding</item>
-        <item name="android:textCursorDrawable" targetApi="12">@null</item>
-        <item name="android:inputType">text</item>
-        <item name="android:fontFamily">roboto_regular</item>
-    </style>
-
     <style name="FormButtonSpinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -116,6 +118,44 @@
         <item name="android:textSize">@dimen/text_form</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">left|start|bottom</item>
+    </style>
+
+    <!-- BUTTONS -->
+
+    <style name="AigButton" parent="TextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="AigButton.Active" >
+        <item name="android:background">@color/color_accent</item>
+    </style>
+
+    <style name="AigButton.GooglePlus" >
+        <item name="android:background">@color/red_dd4b39</item>
+    </style>
+
+    <style name="AigButton.Facebook" >
+        <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
+        <item name="android:background">@color/blue_205081</item>
+        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
+    </style>
+
+    <style name="AigButton.AddToSaved" >
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->

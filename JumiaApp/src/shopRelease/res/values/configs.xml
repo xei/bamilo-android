@@ -3,4 +3,6 @@
 
     <!-- MERGE FROM shop -->
 
+    <item name="adjust_is_production_env" type="bool">true</item>
+
 </resources>
