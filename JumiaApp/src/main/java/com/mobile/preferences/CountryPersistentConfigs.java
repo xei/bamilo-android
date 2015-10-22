@@ -3,6 +3,9 @@ package com.mobile.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.mobile.controllers.CountrySettingsAdapter;
@@ -11,10 +14,15 @@ import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.objects.statics.MobileAbout;
+import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by spereira on 5/27/15.
@@ -73,6 +81,9 @@ public class CountryPersistentConfigs {
         mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, countryConfigs.isReviewLoginRequired());
         // Flag
         mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
+
+        saveMoreInfo(mEditor, countryConfigs.getMobileAbout());
+
         //has_cart_popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         mEditor.apply();
@@ -197,6 +208,26 @@ public class CountryPersistentConfigs {
         mEditor.apply();
     }
 
+    public static void saveMoreInfo(Context context, @Nullable List<TargetHelper> moreInfo){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sharedPrefs.edit();
+        saveMoreInfo(mEditor, moreInfo);
+        mEditor.apply();
+    }
+
+    public static void saveMoreInfo(SharedPreferences.Editor mEditor, @Nullable List<TargetHelper> moreInfo){
+        String json = new Gson().toJson(moreInfo);
+        mEditor.putString(Darwin.KEY_SELECTED_MORE_INFO, json);
+    }
+
+    @Nullable
+    public static ArrayList<TargetHelper> getMoreInfo(Context context){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String json = settings.getString(Darwin.KEY_SELECTED_MORE_INFO, null);
+        return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, MobileAbout.class);
+    }
+
+    @Nullable
     public static Languages getLanguages(SharedPreferences settings){
         String json = settings.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null);
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, Languages.class);

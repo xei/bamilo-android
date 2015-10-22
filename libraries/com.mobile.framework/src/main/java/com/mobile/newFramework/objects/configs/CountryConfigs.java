@@ -5,10 +5,14 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.statics.MobileAbout;
+import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 /**
@@ -45,6 +49,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private boolean isReviewLoginRequired;
     private boolean isFacebookAvailable;
     private Languages languages;
+    private List<TargetHelper> mobileAbout;
     private boolean hasCartPopup;
 
     /**
@@ -140,6 +145,12 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
             isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
         }
         languages = new Languages(jsonObject);
+
+        try {
+            mobileAbout = new MobileAbout(jsonObject);
+        } catch (JSONException ex) {
+        }
+
         hasCartPopup = jsonObject.optBoolean(RestConstants.JSON_COUNTRY_HAS_CART_POPUP);
         return true;
     }
@@ -338,5 +349,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public Languages getLanguages() {
         return languages;
+    }
+
+    public List<TargetHelper> getMobileAbout() {
+        return mobileAbout;
     }
 }
