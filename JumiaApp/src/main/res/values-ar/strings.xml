@@ -419,4 +419,6 @@
     <string name="policy">السياسة</string>
     <string name="delivery_time_placeholder" formatted="false">وقت التوصيل: %d - %d يوم</string>
     <string name="product_specifications">المواصفات</string>
+    <!-- NEW 2.8 -->
+    <string name="order_track_check">You can check your order status visiting the My Orders area</string>
 </resources>
