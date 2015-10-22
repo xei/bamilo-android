@@ -24,25 +24,13 @@
         android:paddingStart="@dimen/form_radiobutton_shipping_margin"
         android:paddingRight="@dimen/form_radiobutton_shipping_margin"
         android:paddingEnd="@dimen/form_radiobutton_shipping_margin"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/payment_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
+        android:visibility="visible" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/payment_text"
-            style="@style/text_normal"
-            android:layout_height="wrap_content"
-            android:ellipsize="none"
-            android:fontFamily="roboto_light"
-            android:paddingBottom="@dimen/margin_20px"
-            android:paddingTop="@dimen/margin_20px"
-            android:singleLine="false"
-            android:visibility="gone" />
+            style="@style/MultiLineStyle"
+            android:visibility="visible"
+            android:text="sdasdasdasdasasdasda"/>
         <!--
             https://code.google.com/p/android/issues/detail?id=2254
             FIXED only showing 2 lines

@@ -15,7 +15,8 @@
             android:id="@+id/checkout_shipping_methods_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/rounded_margin_mid">
+            android:layout_marginBottom="@dimen/rounded_margin_mid"
+            android:orientation="vertical">
 
             <!-- TITLE -->
 

@@ -220,9 +220,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private void loadForm(ShippingMethodFormBuilder form) {
         Print.i(TAG, "LOAD FORM");
         mFormResponse = form;
-        mShippingContainer.removeAllViews();
+
+        // mShippingContainer.removeAllViews();
         mFormResponse.generateForm(getBaseActivity(), mShippingContainer);
-        mShippingContainer.refreshDrawableState();
+        //mShippingContainer.refreshDrawableState();
+
         // Set the saved selection
         if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
         
@@ -401,16 +403,5 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "TRIGGER: GET SHIPPING METHODS");
         triggerContentEvent(new GetShippingMethodsHelper(), null, this);
     }
-    
-    /**
-     * ########### RESPONSE LISTENER ###########  
-     */
-
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-
 
 }

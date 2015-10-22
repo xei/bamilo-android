@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/white">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +53,7 @@
             <com.mobile.components.customfontviews.TextView
                 style="@style/text_header"
                 android:layout_centerInParent="true"
-                android:background="@color/white"
+                android:background="@color/window_background_color"
                 android:paddingLeft="@dimen/login_margin_small"
                 android:paddingRight="@dimen/login_margin_small"
                 android:text="@string/or_text"

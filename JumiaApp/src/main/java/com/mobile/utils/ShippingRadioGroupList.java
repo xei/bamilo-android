@@ -27,38 +27,25 @@ public class ShippingRadioGroupList extends RadioGroup {
 
     private final static String TAG = ShippingRadioGroupList.class.getSimpleName();
 
-//    public interface OnRadioGroupSelected {
-//        public void onRadioGroupItemSelected(int position);
-//    }
-
-//    public static final int NO_DEFAULT_SELECTION = -1;
-
     private ArrayList<String> mItems;
     private ShippingMethodForm mForm;
-
     private HashMap<String, ArrayList<ShippingMethodSubForm>> subForms;
-
     private String mDefaultSelected;
     private int mDefaultSelectedId;
-    private RadioGroup mGroup;
     private LayoutInflater mInflater;
-    Context mContext;
 
     public ShippingRadioGroupList(Context context) {
         super(context);
-        mContext = context;
         init();
     }
 
     public ShippingRadioGroupList(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         init();
     }
 
     private void init() {
         mInflater = LayoutInflater.from(getContext());
-        mGroup = this;
     }
 
     public void setItems(ShippingMethodForm form, String defaultSelected) {
@@ -73,7 +60,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     private void updateRadioGroup() {
 
         try {
-            mGroup.removeAllViews();
+            this.removeAllViews();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -86,7 +73,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             /**
              * Global Container
              */
-            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup, false);
+            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, this, false);
 
             // Hide first divider
             if (idx == 0) {
@@ -125,9 +112,9 @@ public class ShippingRadioGroupList extends RadioGroup {
 
                     // Validate number of options
                     if(shippingSubForm.shippingMethodSubFormHolder.options.size() > 0){
-                        shippingSubForm.generateForm(mContext, extras);
+                        shippingSubForm.generateForm(getContext(), extras);
                     } else{
-                        shippingSubForm.dataControl = new View(mContext);
+                        shippingSubForm.dataControl = new View(getContext());
                     }
                 }
             }
@@ -137,7 +124,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             } else {
                 ShippingMethod shippingMethod = new ShippingMethod();
                 shippingMethod.shippingMethodHolder = mForm.optionsShippingMethod.get(mItems.get(idx));
-                View view = shippingMethod.generateForm(mContext);
+                View view = shippingMethod.generateForm(getContext());
                 if(view != null){
                     extras.addView(view);
                 }
@@ -163,7 +150,7 @@ public class ShippingRadioGroupList extends RadioGroup {
 
             buttonContainer.addView(button, layoutParams);
 
-            mGroup.addView(mLinearLayout);
+            this.addView(mLinearLayout);
             
             // Put the selected radio button from server or default 0
             if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected) || idx == 0) {
@@ -205,14 +192,14 @@ public class ShippingRadioGroupList extends RadioGroup {
             }
         }
         setSelection(mLinearLayout.getId());
-        mGroup.check(mLinearLayout.getId());
+        this.check(mLinearLayout.getId());
     }
 
 
     public int getSelectedIndex() {
-        int radioButtonID = mGroup.getCheckedRadioButtonId();
-        View radioButton = mGroup.findViewById(radioButtonID);
-        int idx = mGroup.indexOfChild(radioButton);
+        int radioButtonID = this.getCheckedRadioButtonId();
+        View radioButton = this.findViewById(radioButtonID);
+        int idx = this.indexOfChild(radioButton);
         Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
         return idx;
     }
@@ -228,8 +215,8 @@ public class ShippingRadioGroupList extends RadioGroup {
     public void setSelection(int idx) {
         if (idx >= 0) {
             Print.i(TAG, "code1selection : id is : " + idx);
-            if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
-                RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
+            if (this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
+                RadioButton button = (RadioButton) this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
                 button.setChecked(true);
                 Print.i(TAG, "code1selection : id is : " + idx + " second");
             }
@@ -261,12 +248,12 @@ public class ShippingRadioGroupList extends RadioGroup {
 
     private void cleanOtherSelections(int idx) {
         Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
-        for (int i = 0; i < mGroup.getChildCount(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             if (i != idx) {
-                if (mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i) instanceof RadioButton) {
-                    RadioButton button = (RadioButton) mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
+                if (this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i) instanceof RadioButton) {
+                    RadioButton button = (RadioButton) this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
                     button.setChecked(false);
-                    mGroup.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
+                    this.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
                     Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
                 }
             }
@@ -275,7 +262,7 @@ public class ShippingRadioGroupList extends RadioGroup {
 
 //    public boolean validateSelected() {
 //        boolean result = false;
-//        mGroup.getCheckedRadioButtonId();
+//        this.getCheckedRadioButtonId();
 //
 //        return result;
 //    }
@@ -284,15 +271,15 @@ public class ShippingRadioGroupList extends RadioGroup {
     // String result = mContext.getString(R.string.register_required_text);
     //
     // result = ((DynamicFormItem)
-    // generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0)).getMessage();
+    // generatedForms.get(this.getCheckedRadioButtonId()).getItem(0)).getMessage();
     //
     // return result;
     // }
     //
     // public ContentValues getSubFieldParameters(){
     // ContentValues result = null;
-    // if(generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null){
-    // result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
+    // if(generatedForms != null && generatedForms.get(this.getCheckedRadioButtonId()) != null){
+    // result = generatedForms.get(this.getCheckedRadioButtonId()).save();
     // }
     //
     //
@@ -301,8 +288,8 @@ public class ShippingRadioGroupList extends RadioGroup {
     //
     public String getSelectedFieldName() {
         String result;
-        if (mGroup.getCheckedRadioButtonId() >= 0) {
-            result = mItems.get(mGroup.getCheckedRadioButtonId());
+        if (this.getCheckedRadioButtonId() >= 0) {
+            result = mItems.get(this.getCheckedRadioButtonId());
         } else {
             result = mItems.get(mDefaultSelectedId);
         }
@@ -312,7 +299,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     public ContentValues getValues() {
         Print.i(TAG, "code1values : adding valeus " + subForms.toString());
         ContentValues mContentValues = new ContentValues();
-        int idx = mGroup.getCheckedRadioButtonId();
+        int idx = this.getCheckedRadioButtonId();
         if (idx < 0) {
             idx = mDefaultSelectedId;
         }

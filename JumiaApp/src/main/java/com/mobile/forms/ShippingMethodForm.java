@@ -24,8 +24,11 @@ public class ShippingMethodForm extends ShippingMethodFormHolder implements Parc
 
     private ShippingRadioGroupList mShippingRadioGroupList;
 
+    /**
+     * Empty constructor
+     */
     public ShippingMethodForm(){
-
+        // ...
     }
 
     public ShippingMethodForm(ShippingMethodFormHolder shippingMethodFormHolder){
