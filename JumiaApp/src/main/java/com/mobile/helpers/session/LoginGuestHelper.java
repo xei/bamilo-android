@@ -8,6 +8,7 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -69,7 +70,7 @@ public class LoginGuestHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String email) {
         ContentValues values = new ContentValues();
-        values.put("register_signup[email]", email);
+        values.put(RestConstants.EMAIL, email);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);

@@ -29,7 +29,7 @@ public class RestConstants {
     // Customer Tags
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
-    public static final String JSON_EMAIL_TAG = "email";
+    public static final String EMAIL = "email";
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
 
