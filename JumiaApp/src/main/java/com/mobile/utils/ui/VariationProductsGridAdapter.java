@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -27,7 +27,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
 
     private Context mContext;
 
-    private OnViewHolderClickListener mOnViewHolderClicked;
+    private OnProductListViewHolderClickListener mOnViewHolderClicked;
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
@@ -137,7 +137,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
      * Set the listener the click on view holder.
      * @param listener - the listener
      */
-    public void setOnViewHolderClickListener(OnViewHolderClickListener listener) {
+    public void setOnViewHolderClickListener(OnProductListViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
 

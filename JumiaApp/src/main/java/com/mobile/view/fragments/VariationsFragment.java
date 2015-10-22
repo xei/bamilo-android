@@ -7,7 +7,7 @@ import android.view.View;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
@@ -24,7 +24,7 @@ import java.util.EnumSet;
  * Created by alexandrapires on 9/17/15.
  * This class allows to open a page with a product's variations. It opens the PDV of a variation clicking in an item
  */
-public class VariationsFragment extends BaseFragment implements OnViewHolderClickListener {
+public class VariationsFragment extends BaseFragment implements OnProductListViewHolderClickListener {
 
     protected static final String TAG = VariationsFragment.class.getSimpleName();
 
