@@ -32,7 +32,7 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
      */
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

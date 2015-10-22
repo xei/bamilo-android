@@ -60,7 +60,7 @@ public class AddressForms implements IJSONSerializable {
 
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.ARRAY_DATA_FIRST;
     }
 
