@@ -52,7 +52,7 @@ public class Customer implements IJSONSerializable, Parcelable {
             id = jsonObject.getString(RestConstants.ID);
             firstName = jsonObject.getString(RestConstants.FIRST_NAME);
             lastName = jsonObject.getString(RestConstants.LAST_NAME);
-            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
+            email = jsonObject.getString(RestConstants.EMAIL);
             gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
             // Get wish list products
@@ -176,7 +176,7 @@ public class Customer implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.FIRST_NAME, firstName);
             jsonObject.put(RestConstants.LAST_NAME, lastName);
-            jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
+            jsonObject.put(RestConstants.EMAIL, email);
             jsonObject.put(RestConstants.JSON_GENDER_TAG, gender);
         } catch (JSONException e) {
             e.printStackTrace();

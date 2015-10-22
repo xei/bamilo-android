@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.framework.R;
@@ -118,13 +117,14 @@ public class HoloFontLoader {
     }
 
     private static void applyInternal(View view, Font font) {
-        if (view instanceof ViewGroup) {
-            final ViewGroup vg = (ViewGroup) view;
-            final int childCount = vg.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                applyInternal(vg.getChildAt(i), font);
-            }
-        }
+        // TODO Validate if this is necessary
+//        if (view instanceof ViewGroup) {
+//            final ViewGroup vg = (ViewGroup) view;
+//            final int childCount = vg.getChildCount();
+//            for (int i = 0; i < childCount; i++) {
+//                applyInternal(vg.getChildAt(i), font);
+//            }
+//        }
         // Case View with interface FontStyleProvider
         if (view instanceof FontStyleProvider) {
             final FontStyleProvider provider = (FontStyleProvider) view;
@@ -191,14 +191,14 @@ public class HoloFontLoader {
         return flag;
     }
 
-    public static interface FontStyleProvider {
-        public String getFontFamily();
+    public interface FontStyleProvider {
+        String getFontFamily();
 
-        public int getFontStyle();
+        int getFontStyle();
 
-        public void setFontStyle(String fontFamily, int fontStyle);
+        void setFontStyle(String fontFamily, int fontStyle);
 
-        public void setTypeface(Typeface typeface);
+        void setTypeface(Typeface typeface);
     }
 
     public static class Font implements Cloneable {

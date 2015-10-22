@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="46dp" />
+
+        <!--INFO-->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/login_text_info"
+            style="@style/TextCaption"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_login_user"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="@string/login_main_info" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <!-- FORM CONTAINER -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- FACEBOOK -->
+
+            <com.mobile.components.customfontviews.FacebookTextView
+                android:id="@+id/login_button_facebook"
+                style="@style/AigButton.Facebook"
+                android:layout_width="@dimen/login_main_container_width" />
+
+            <!-- DIVIDER -->
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp">
+
+                <View
+                    style="@style/divider_vertical"
+                    android:layout_centerInParent="true" />
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/text_header"
+                    android:layout_centerInParent="true"
+                    android:background="@color/window_background_color"
+                    android:text="@string/or_text"
+                    android:textColor="@color/grey_divider_light_text" />
+            </RelativeLayout>
+
+            <!-- FORM CONTAINER -->
+
+            <LinearLayout
+                android:layout_width="@dimen/login_main_container_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- EMAIL -->
+
+                <com.mobile.components.customfontviews.EditText
+                    android:id="@+id/login_text_email"
+                    style="@style/TextField"
+                    android:hint="@string/email_address"
+                    android:imeOptions="actionDone" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp" />
+
+                <!-- GUEST -->
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/login_button_guest"
+                    style="@style/TextCaption"
+                    android:layout_gravity="center"
+                    android:text="@string/continue_without_log_in"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"/>
+
+                <!-- BUTTON -->
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/login_button_continue"
+                    style="@style/AigButton.Active"
+                    android:text="@string/continue_label" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

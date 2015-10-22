@@ -30,6 +30,8 @@ public class ToastManager {
     public static final int ERROR_UNEXPECTED_PLEASE_RETRY   = 8;
     public static final int ERROR_SSL_SSL_HOST_MISMATCH     = 9;
     public static final int ERROR_SSL_GENERIC               = 10;
+    public static final int ERROR_INVALID_EMAIL             = 11;
+    
 
     /*
      * #### SUCCESS ####
@@ -51,6 +53,7 @@ public class ToastManager {
             ERROR_UNEXPECTED_PLEASE_RETRY,
             ERROR_SSL_SSL_HOST_MISMATCH,
             ERROR_SSL_GENERIC,
+            ERROR_INVALID_EMAIL,
             // #### SUCCESS ####
             SUCCESS_LOGIN,
             SUCCESS_ADDED_FAVOURITE,
@@ -91,6 +94,9 @@ public class ToastManager {
                 break;
             case ERROR_UNEXPECTED_PLEASE_RETRY:
                 Toast.makeText(context, context.getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
+                break;
+            case ERROR_INVALID_EMAIL:
+                Toast.makeText(context, context.getString(R.string.error_invalid_email), Toast.LENGTH_LONG).show();
                 break;
             /*
              * #### SUCCESS ####

@@ -5,5 +5,4 @@
     android:layout_gravity="left|start"
     android:drawablePadding="@dimen/form_check_padding"
     android:paddingStart="@dimen/form_check_padding"
-    android:paddingLeft="@dimen/form_check_padding"
-    />
+    android:paddingLeft="@dimen/form_check_padding" />
