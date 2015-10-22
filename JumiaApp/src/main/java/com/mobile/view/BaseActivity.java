@@ -438,6 +438,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
             mSupportActionBar.setElevation(0);
+            mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         }
         // Set tab layout
         setupTabBarLayout();
@@ -1399,10 +1400,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setText(getString(actionBarTitleResId));
         //getSupportActionBar().setDisplayShowTitleEnabled(true);
         //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
 
     public void setActionBarTitle(@NonNull String title) {
+        mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
     }
 
@@ -1413,6 +1416,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         //logoTextView.setVisibility(View.GONE);
         //getSupportActionBar().setTitle("");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
 

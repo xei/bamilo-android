@@ -145,6 +145,11 @@
         <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
     </style>
 
+    <style name="AigButton.AddToSaved" >
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
 

@@ -117,11 +117,11 @@ public class FormFactory {
                 parent = createEditAddressForm(context, form, ctrlParams);
                 break;
             case FormConstants.LOGIN_FORM:
-                form.setType(FormConstants.LOGIN_FORM); // Used to show icons
+                form.setType(formType); // Used to show icons
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
-                form.setType(FormConstants.REGISTRATION_FORM);  // Used to show icons
+                form.setType(formType);  // Used to show icons
                 parent = createRegistrationForm(context, form, ctrlParams);
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:

@@ -424,6 +424,8 @@
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
+    <string name="save_for_later">Save for later</string>
+    <string name="remove_from_saved">Remove from saved</string>
     <string name="continue_label">Continue</string>
     <string name="login_main_info">Log in to your %s account to access your profile, saved favorites, order info, and more.</string>
     <string name="welcome_back_label">Welcome Back</string>
@@ -435,5 +437,4 @@
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
     <string name="continue_without_log_in">Continue without log in</string>
-
 </resources>

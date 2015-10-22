@@ -1,5 +1,7 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,7 +16,7 @@ import com.mobile.view.R;
  * Proprietary and confidential.
  *
  * @author ricardosoares
- * @version 1.1
+ * @version 1.2
  * @date 2015/06/15
  */
 public class ErrorLayoutFactory {
@@ -230,17 +232,17 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        Builder setButtonMessage(int message){
+        Builder setButtonMessage(@StringRes int message){
             ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setText(message);
             return this;
         }
 
-        Builder setButtonBackground(int background){
+        Builder setButtonBackground(@DrawableRes int background){
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setBackgroundResource(background);
             return this;
         }
 
-        Builder setImage(int image){
+        Builder setImage(@DrawableRes int image){
             View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
             imageView.setVisibility(View.VISIBLE);
             ((ImageView)imageView).setImageResource(image);
@@ -252,7 +254,7 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        Builder setPrincipalMessage(int message){
+        Builder setPrincipalMessage(@StringRes int message){
             View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
             messageView.setVisibility(View.VISIBLE);
             ((TextView)messageView).setText(message);
@@ -264,7 +266,7 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        Builder setDetailMessage(int message){
+        Builder setDetailMessage(@StringRes int message){
             View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
             ((TextView)messageView).setText(message);
