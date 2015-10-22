@@ -26,12 +26,10 @@
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
+        <!-- #### Radio Button View -->
+        <item name="android:radioButtonStyle">@style/Widget.Jumia.RadioButton</item>
         <!-- #### Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
-        <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_green</item>
-        <!-- <item name="android:listChoiceIndicatorSingle">@drawable/selector_btn_check_holo_orange</item> -->
-        <item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_green</item>
-        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/selector_btn_check_holo_orange</item>-->
         <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
         <!-- #### Custom Spinner View -->
@@ -88,11 +86,18 @@
 
     <!--<item name="queryHint">@string/action_label_search_hint</item>-->
 
+    <!-- Radio Button -->
+
+    <style name="Widget.Jumia.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <!--<item name="android:listChoiceIndicatorSingle">@drawable/_gen_selector_radio_button</item>-->
+        <item name="android:button">@drawable/_gen_selector_radio_button</item>
+    </style>
+
     <!-- Check Box -->
 
     <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/selector_btn_check_holo_green</item>
-        <!-- <item name="android:button">@drawable/selector_btn_check_holo_orange</item> -->
+        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
+        <item name="android:button">@drawable/_gen_selector_check_box</item>
     </style>
 
     <!-- List View -->

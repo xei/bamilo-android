@@ -2,10 +2,9 @@
 <com.mobile.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/login_remember_user_email"
     style="@style/form_checkbox_style"
-    android:checked="true"
     android:layout_gravity="left|start"
-    android:paddingStart="@dimen/form_check_padding"
-    android:paddingLeft="@dimen/form_check_padding"
+    android:checked="true"
     android:drawablePadding="@dimen/form_check_padding"
-    android:text="@string/login_remember_user_email"
-    />
+    android:paddingLeft="@dimen/form_check_padding"
+    android:paddingStart="@dimen/form_check_padding"
+    android:text="@string/login_remember_user_email" />
