@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -26,12 +25,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetApiInfoHelper;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.configs.Section;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -42,14 +41,15 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.HockeyStartup;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -84,7 +84,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private View mErrorFallBackStub;
 
-    private Bundle mLastSuccessResponse;
+    private BaseResponse mLastSuccessResponse;
 
     private ErrorLayoutFactory mErrorLayoutFactory;
 
@@ -115,6 +115,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
+        // Check DeepLink
+//        checkDeepLink();
     }
 
     /*
@@ -196,16 +198,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            Bundle bundle = (Bundle) msg.obj;
-            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-            EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+            BaseResponse baseResponse = (BaseResponse) msg.obj;
+            ErrorCode errorCode = baseResponse.getError().getErrorCode();
+            EventType eventType = baseResponse.getEventType();
 
             Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
 
-            onRequestComplete(bundle);
+            onRequestComplete(baseResponse);
         }
     };
 
@@ -288,10 +290,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
-        if (Build.VERSION.SDK_INT >= 9) {
-            devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-            devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
-        }
+        devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+        devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
+
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
@@ -332,7 +333,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * )
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
@@ -340,10 +341,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
 
         // Case error use the last success response to request the next step
-        mLastSuccessResponse = bundle;
+        mLastSuccessResponse = baseResponse;
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError() != null ? baseResponse.getError().getErrorCode() : null;
 
         Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
@@ -359,11 +360,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (eventType == EventType.INITIALIZE) {
             onProcessInitialize();
         } else if (eventType == EventType.GET_API_INFO) {
-            onProcessApiEvent(bundle);
+            onProcessApiEvent(baseResponse);
         } else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS) {
             onProcessCountryConfigsEvent();
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-            onProcessGlobalConfigsEvent(bundle);
+            onProcessGlobalConfigsEvent(baseResponse);
         }
         // Case error
         else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
@@ -391,22 +392,25 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Process the global configs event
      * @author sergiopereira
      */
-    private void onProcessGlobalConfigsEvent(Bundle bundle) {
+    private void onProcessGlobalConfigsEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+                // Validate if there is any country from deeplink when starting the app from clean slate
+                if(!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(), initializationHandler)){
+                    LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+                }
             } else {
-                onRequestError(bundle);
+                onRequestError(baseResponse);
             }
         } else {
             Print.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 JumiaApplication.INSTANCE.init(initializationHandler);
             } else {
-                onRequestError(bundle);
+                onRequestError(baseResponse);
             }
         }
     }
@@ -436,7 +440,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountriesConfigsError() {
         Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesGeneralConfigsHelper(), null, this);
+        JumiaApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
     }
 
     /**
@@ -489,10 +493,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the api md5 event
      */
-    private void onProcessApiEvent(Bundle bundle) {
+    private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getMetadata().getData();
         // Validate out dated sections
-        if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
+        if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
@@ -518,18 +523,18 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR RESPONSE");
         if (!shouldHandleEvent) {
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
         // Get data
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         @SuppressWarnings("unchecked")
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         Print.i(TAG, "ERROR CODE: " + errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -602,7 +607,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     break;
             }
 
-        } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
+        }
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            setLayoutMaintenance(eventType);
+        }
+        else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
                 Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection

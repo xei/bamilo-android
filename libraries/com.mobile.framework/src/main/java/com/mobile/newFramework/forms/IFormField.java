@@ -15,11 +15,13 @@ public interface IFormField {
 
     String getName();
 
-    InputType getInputType();
+    FormInputType getInputType();
 
     String getLabel();
 
     String getLinkText();
+
+    String getFormat();
 
     Map<String, String> getDataSet();
 
@@ -47,4 +49,5 @@ public interface IFormField {
 
     boolean isDefaultSelection();
 
+    boolean isPrefixField();
 }

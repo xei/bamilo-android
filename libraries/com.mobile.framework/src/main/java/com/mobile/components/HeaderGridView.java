@@ -16,12 +16,9 @@
 
 package com.mobile.components;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +30,6 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
-
-import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 
@@ -80,13 +75,11 @@ public class HeaderGridView extends GridView {
 
     public HeaderGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        saveNumColumnsFromAttrs(context, attrs);
         initHeaderGridView();
     }
 
     public HeaderGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        saveNumColumnsFromAttrs(context, attrs);
         initHeaderGridView();
     }
 
@@ -221,23 +214,7 @@ public class HeaderGridView extends GridView {
             super.setAdapter(adapter);
         }
     }
-    
-    /**
-     * Save the number of columns from the attribute set 
-     * @param context
-     * @param attrs
-     * @author sergiopereira
-     */
-    private void saveNumColumnsFromAttrs(Context context, AttributeSet attrs){
-        // Android Version 11+ uses a specific method
-        if(Build.VERSION.SDK_INT >= 11) return;
-        // Old Android Versions save the number of columns from the attribute set
-        int[] attrsArray = new int[] { android.R.attr.numColumns };
-        TypedArray ta = context.obtainStyledAttributes(attrs, attrsArray);
-        mNumColumns = ta.getInt(0, 1);
-        Print.i(TAG, "ON SAVE NUMBER OF COLUMNS: " + mNumColumns);
-        ta.recycle();
-    }
+
     
     /**
      * <p>Get the number of columns:
@@ -247,9 +224,7 @@ public class HeaderGridView extends GridView {
      * @author sergiopereira
      */
 	private int getNumColumnsCompat() {
-		if (Build.VERSION.SDK_INT >= 11)
-			mNumColumns = getNumColumnsV11();
-		//Log.i(TAG, "ON GET NUMBER OF COLUMNS: " + mNumColumns);
+        mNumColumns = getNumColumnsV11();
 		return mNumColumns;
 	}
 
@@ -257,7 +232,6 @@ public class HeaderGridView extends GridView {
      * Get the number of columns
      * @return int
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private int getNumColumnsV11() {
         return getNumColumns();
     }

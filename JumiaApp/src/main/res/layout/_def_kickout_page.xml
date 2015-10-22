@@ -54,7 +54,7 @@
             android:layout_marginBottom="@dimen/margin_60px"
             android:layout_below="@id/kickout_logo"
             android:text="@string/kickout_page_title"
-            android:textColor="@color/orange_ffa200"
+            android:textColor="@color/color_accent"
             android:textSize="@dimen/text_xl" />
 
         <com.mobile.components.customfontviews.TextView

@@ -2,7 +2,6 @@ package com.mobile.newFramework.utils.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.TextUtils;
@@ -97,7 +96,7 @@ public class CurrencyFormatter {
             throw new RuntimeException("currency converter not initialized");
         }
         try {
-            return String.format(currencyUnitPattern, formatter.format(value));
+            return formatCurrencyPattern(formatter.format(value));
         } catch (NumberFormatException e) {
             //In case of bad formatting, return the parsed value with no currency sign
             Print.e(TAG, "bad formatting for value = " + value, e);
@@ -119,7 +118,7 @@ public class CurrencyFormatter {
                 NumberFormat format = NumberFormat.getInstance(apiLocale);
                 Number number = format.parse(value);
                 Double valueDouble = number.doubleValue();
-                return String.format(currencyUnitPattern, formatter.format(valueDouble));
+                return formatCurrencyPattern(formatter.format(valueDouble));
             } catch (NumberFormatException e) {
                 //In case of bad formatting, return the parsed value with no currency sign
                 Print.e(TAG, "bad formatting for value = " + value, e);
@@ -166,7 +165,7 @@ public class CurrencyFormatter {
      */
     @SuppressWarnings("unused")
     private static NumberFormat getNumberFormat() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 ? createNumberFormatter() : DecimalFormat.getCurrencyInstance();
+        return DecimalFormat.getCurrencyInstance();
     }
     
     /**
@@ -174,6 +173,7 @@ public class CurrencyFormatter {
      * @return NumberFormat
      * @author GuilhermeSilva
      */
+    @Deprecated
 	private static NumberFormat createNumberFormatter() {
 		//Log.d( TAG, "createNumberFormatter for android 2.x");
 		NumberFormat formatter;
@@ -200,6 +200,10 @@ public class CurrencyFormatter {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static String formatCurrencyPattern(String toFormat){
+        return String.format(currencyUnitPattern, toFormat);
     }
     
 }

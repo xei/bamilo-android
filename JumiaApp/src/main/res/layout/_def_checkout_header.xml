@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey_dark"
+    android:background="@color/tabBar"
     android:layoutDirection="locale"
     android:orientation="vertical" >
 
@@ -176,6 +176,6 @@
     <View
         style="@style/divider_horizontal"
         android:layout_height="@dimen/checkout_header_divider_height"
-        android:background="@color/orange_ffa200" />
+        android:background="@color/color_accent" />
 
 </LinearLayout>

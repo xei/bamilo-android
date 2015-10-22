@@ -1,7 +1,5 @@
 package com.mobile.helpers.checkout;
 
-import android.os.Bundle;
-
 import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutFormShipping;
@@ -9,7 +7,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -32,13 +29,34 @@ public class GetShippingMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         CheckoutFormShipping shippingMethodsForm = (CheckoutFormShipping) baseResponse.getMetadata().getData();
-        ShippingMethodFormBuilder form = new ShippingMethodFormBuilder();
-        form.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
-        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, shippingMethodsForm.getOrderSummary());
+
+        ShippingMethodFormStruct shippingMethodFormStruct = new ShippingMethodFormStruct(shippingMethodsForm);
+
+        baseResponse.getMetadata().setData(shippingMethodFormStruct);
+    }
+
+    public class ShippingMethodFormStruct extends CheckoutFormShipping {
+        private ShippingMethodFormBuilder formBuilder;
+
+        public ShippingMethodFormStruct(){}
+
+        ShippingMethodFormStruct(CheckoutFormShipping shippingMethodsForm){
+            super(shippingMethodsForm);
+            formBuilder = new ShippingMethodFormBuilder();
+            formBuilder.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
+        }
+
+
+        public ShippingMethodFormBuilder getFormBuilder() {
+            return formBuilder;
+        }
+
+        public void setFormBuilder(ShippingMethodFormBuilder formBuilder) {
+            this.formBuilder = formBuilder;
+        }
     }
 
 }

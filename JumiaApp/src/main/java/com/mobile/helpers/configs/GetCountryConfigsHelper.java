@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.helpers.SuperBaseHelper;
@@ -13,7 +11,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.preferences.CountryPersistentConfigs;
 
@@ -40,8 +37,8 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();

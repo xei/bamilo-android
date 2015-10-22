@@ -3,12 +3,12 @@ package com.mobile.newFramework.objects.catalog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.framework.R;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilters;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -22,13 +22,9 @@ import java.util.ArrayList;
  * Class used to represent a catalog page.<br>
  * @author sergiopereira
  */
-public class CatalogPage implements IJSONSerializable, Parcelable {
+public class CatalogPage implements IJSONSerializable, Parcelable{
 
     protected static final String TAG = CatalogPage.class.getSimpleName();
-
-    public static final int MAX_ITEMS_PER_PAGE = 24;
-
-    public static final int FIRST_PAGE = 1;
 
     private String mId;
 
@@ -36,9 +32,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private int mTotal;
 
-    private int mPage = 1;
+    private int mPage = IntConstants.FIRST_PAGE;
 
-    private int mMaxPages = 1;
+    private int mMaxPages = IntConstants.FIRST_PAGE;
 
     private ArrayList<ProductRegular> mProducts;
 
@@ -59,7 +55,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         //...
     }
 
-    public CatalogPage(JSONObject metadataObject) throws JSONException{
+    public CatalogPage(JSONObject metadataObject) throws JSONException {
         this();
         initialize(metadataObject);
     }
@@ -185,7 +181,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * @return number or pages
      */
     private int calcMaxPages() {
-        return (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
+        return (mTotal / IntConstants.MAX_ITEMS_PER_PAGE) + ((mTotal % IntConstants.MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
@@ -217,7 +213,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Update the max pages that application can request
         mMaxPages = calcMaxPages();
         // Case replace data
-        if(mPage == FIRST_PAGE) mProducts = catalog.getProducts();
+        if(mPage == IntConstants.FIRST_PAGE) mProducts = catalog.getProducts();
         // Case append data
         else CollectionUtils.addAll(mProducts, catalog.getProducts());
     }
@@ -307,6 +303,28 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
      * ############### Parcelable ###############
      */
 
+    protected CatalogPage(Parcel in) {
+        mId = in.readString();
+        mName = in.readString();
+        mTotal = in.readInt();
+        mPage = in.readInt();
+        mMaxPages = in.readInt();
+        if (in.readByte() == 0x01) {
+            mProducts = new ArrayList<ProductRegular>();
+            in.readList(mProducts, ProductRegular.class.getClassLoader());
+        } else {
+            mProducts = null;
+        }
+        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
+        mSearchTerm = in.readString();
+        if (in.readByte() == 0x01) {
+            filters = new ArrayList<CatalogFilter>();
+            in.readList(filters, CatalogFilter.class.getClassLoader());
+        } else {
+            filters = null;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -325,51 +343,27 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mProducts);
         }
+        dest.writeValue(mCatalogBanner);
+        dest.writeString(mSearchTerm);
         if (filters == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(filters);
         }
-        dest.writeValue(mCatalogBanner);
-        dest.writeString(mSearchTerm);
-
     }
 
-    /**
-     * Parcel constructor
-     */
-    private CatalogPage(Parcel in){
-        mId = in.readString();
-        mName = in.readString();
-        mTotal = in.readInt();
-        mPage = in.readInt();
-        mMaxPages = in.readInt();
-        if (in.readByte() == 0x01) {
-            mProducts = new ArrayList<>();
-            in.readList(mProducts, ProductRegular.class.getClassLoader());
-        } else {
-            mProducts = null;
-        }
-        if (in.readByte() == 0x01) {
-            filters = new ArrayList<>();
-            in.readList(filters, CatalogFilter.class.getClassLoader());
-        } else {
-            filters = null;
-        }
-        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
-        mSearchTerm = in.readString();
-    }
-
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
+        @Override
         public CatalogPage createFromParcel(Parcel in) {
             return new CatalogPage(in);
         }
 
+        @Override
         public CatalogPage[] newArray(int size) {
             return new CatalogPage[size];
         }
     };
-
 
 }

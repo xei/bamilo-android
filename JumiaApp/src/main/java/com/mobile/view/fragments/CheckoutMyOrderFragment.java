@@ -25,6 +25,7 @@ import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -44,6 +45,7 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to shoe the order
@@ -105,7 +107,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * Empty constructor
      */
     public CheckoutMyOrderFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
                 R.string.checkout_label,
@@ -574,12 +576,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     /**
      * Process the success event
      *
-     * @param bundle The success response
+     * @param baseResponse The success response
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -598,6 +600,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
+                    Bundle bundle = new Bundle();
+                    //        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
+                    //        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, "" + mOrderFinish.getVatValue());
@@ -615,12 +620,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     /**
      * Process the error event
      *
-     * @param bundle The error response
+     * @param baseResponse The error response
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -629,13 +634,13 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
 
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
@@ -644,7 +649,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 boolean hasErrorMessage = false;
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
                     hasErrorMessage = showErrorDialog(errors);
                 }
                 if (!hasErrorMessage) {
@@ -664,7 +669,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     /**
      * Dialog used to show an error
      */
-    private boolean showErrorDialog(HashMap<String, List<String>> errors) {
+    private boolean showErrorDialog(Map<String, List<String>> errors) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> temp = null;
         if (errors != null) {

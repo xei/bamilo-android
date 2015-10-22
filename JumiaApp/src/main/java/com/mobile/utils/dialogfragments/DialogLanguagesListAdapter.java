@@ -22,7 +22,7 @@ public class DialogLanguagesListAdapter extends DialogListAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.dialog_language_list_item, parent, false);
+            view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
         } else {
             view = convertView;
         }

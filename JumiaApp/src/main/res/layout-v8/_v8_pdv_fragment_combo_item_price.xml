@@ -1,0 +1,24 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/combo_item_height"
+    android:gravity="center_vertical"
+    android:paddingRight="10dp">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/txTotalComboPrice"
+        style="@style/TextCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="RS 524"
+        android:textColor="@color/color_accent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="left"
+        android:src="@drawable/ic_arrow_combo" />
+
+</RelativeLayout>

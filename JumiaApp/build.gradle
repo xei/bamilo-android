@@ -23,12 +23,18 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    useLibrary 'org.apache.http.legacy'
+
+    dexOptions {
+        jumboMode true
+    }
 
     defaultConfig {
         applicationId "com.mobile.view"
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 22
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
@@ -110,18 +116,18 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.7"
-            versionCode getAppVersionCode(55)
+            versionName "2.8"
+            versionCode getAppVersionCode(56)
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "ar"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.7"
-            versionCode 55
+            versionName "2.8"
+            versionCode 56
             signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
             }
@@ -129,10 +135,10 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.7"
-            versionCode 57
+            versionName "2.8"
+            versionCode 58
             signingConfig signingConfigs.jumiaMtnngSigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
             }
@@ -140,10 +146,10 @@ android {
 
         jumiaBlackberry {
             applicationId "com.jumia.blackberry"
-            versionName "2.7"
-            versionCode 11
+            versionName "2.8"
+            versionCode 12
             signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "pt","ar"
+            resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
             }
@@ -154,16 +160,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.5"
-            versionCode getAppVersionCode(9)
+            versionName "1.6"
+            versionCode getAppVersionCode(10)
             signingConfig signingConfigs.shopSigning
             resConfigs "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.5"
-            versionCode 9
+            versionName "1.6"
+            versionCode 10
             signingConfig signingConfigs.shopSigning
             resConfigs "my"
             android.sourceSets {
@@ -176,18 +182,18 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.5"
-            versionCode getAppVersionCode(10)
+            versionName "1.6"
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.darazSigning
-            resConfigs "en","ur"
+            resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.5"
-            versionCode 10
+            versionName "1.6"
+            versionCode 11
             signingConfig signingConfigs.darazSigning
-            resConfigs "en","ur"
+            resConfigs "en", "ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
             }
@@ -198,10 +204,10 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.7"
-            versionCode getAppVersionCode(12)
+            versionName "1.8"
+            versionCode getAppVersionCode(13)
             signingConfig signingConfigs.bamiloSigning
-            resConfigs "fa-rIR"
+            resConfigs "fa"
         }
 
     }
@@ -245,6 +251,13 @@ android.applicationVariants.all { variant ->
 }
 
 /**
+ * Validate all translations
+ */
+task translationsValidation << {
+    executeWaitAndPrintCmd(['ruby', 'JumiaApp/scripts/validate_str_placeholders.rb'])
+}
+
+/**
  *  PMD static analysis
  */
 task pmd(type: Pmd) {
@@ -255,7 +268,6 @@ task pmd(type: Pmd) {
     //ruleSets = ["java-basic", "java-strings", "java-braces"]
     ruleSetFiles = files("pmd-ruleset.xml")
     ruleSets = []
-
 }
 
 /**
@@ -283,7 +295,6 @@ task findbugs(type: FindBugs) {
  * @return
  */
 def executeWaitAndPrintCmd(List cmd) {
-
     println cmd
     def proc = cmd.execute()
     proc.waitFor()

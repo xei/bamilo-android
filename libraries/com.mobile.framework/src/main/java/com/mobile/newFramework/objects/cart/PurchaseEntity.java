@@ -247,6 +247,27 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return TextUtils.isNotEmpty(mShippingMethod);
     }
 
+
+    /**
+     * @return A string with all attribute set Ids separated by ;
+     */
+    public String getAttributeSetIdList() {
+        String attributeList = "";
+        PurchaseCartItem item;
+        if(mCartItems != null && mCartItems.size() > 0){
+
+            for (int i = 0; i < mCartItems.size() ; i++) {
+                if (TextUtils.isEmpty(attributeList)) {
+                    attributeList = mCartItems.get(i).getAttributeSetId();
+                } else {
+                    attributeList = attributeList +";"+ mCartItems.get(i).getAttributeSetId();
+                }
+            }
+
+        }
+        return attributeList;
+    }
+
 	/*
      * ########### PARCELABLE ###########
 	 */

@@ -53,7 +53,7 @@ public class ReviewFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Product,
                 R.layout.review_fragment,
-                NO_TITLE,
+                R.string.review,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -94,7 +94,6 @@ public class ReviewFragment extends BaseFragment {
 
         //clean form from write Review form
         JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.cleanSellerReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
     

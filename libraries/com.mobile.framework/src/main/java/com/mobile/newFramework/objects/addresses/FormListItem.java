@@ -106,7 +106,7 @@ public class FormListItem implements IJSONSerializable, Parcelable {
 	/**
 	 * Constructor with parcel
 	 */
-	private FormListItem(Parcel in) {
+	protected FormListItem(Parcel in) {
 		mValue = in.readInt();
 		mLabel = in.readString();
 	}

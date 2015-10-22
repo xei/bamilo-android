@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <GridView
+    <!--WISH LIST-->
+
+    <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/wish_list_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_list_item_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingBottom="@dimen/button_container_height" />
+        android:paddingLeft="@dimen/margin_10px"
+        android:paddingRight="@dimen/margin_10px" />
 
-    <LinearLayout
-        style="@style/button_container"
-        android:layout_alignBottom="@id/wish_list_grid"
-        android:orientation="vertical">
+    <!--LOADING MORE-->
 
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/button_shop_all"
-            style="@style/button_orange_landscape"
-            android:text="@string/favourite_addalltocart" />
-    </LinearLayout>
+    <include
+        android:id="@+id/wish_list_loading_more"
+        layout="@layout/fragment_loading_more"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_90px"
+        android:layout_alignBottom="@id/wish_list_grid" />
 
 </RelativeLayout>

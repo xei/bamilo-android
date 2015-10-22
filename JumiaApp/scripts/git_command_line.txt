@@ -1,0 +1,4 @@
+
+
+ # Delete all merged branches with tag NAFAMZ from origin
+ git branch -r --merged | grep 'NAFAMZ' | git push origin $(awk -F '/' '{ print ":"$2 }')

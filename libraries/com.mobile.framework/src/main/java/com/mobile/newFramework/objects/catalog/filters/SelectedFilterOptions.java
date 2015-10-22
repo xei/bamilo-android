@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.SparseArray;
 
 /**
@@ -14,7 +16,7 @@ import android.util.SparseArray;
  * @date 2015/09/07
  *
  */
-public class SelectedFilterOptions extends SparseArray<MultiFilterOptionInterface> implements FilterOptionInterface {
+public class SelectedFilterOptions extends SparseArray<MultiFilterOptionInterface> implements FilterOptionInterface, Parcelable {
 
     public SelectedFilterOptions(){}
 
@@ -27,4 +29,26 @@ public class SelectedFilterOptions extends SparseArray<MultiFilterOptionInterfac
             }
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
+
+    protected SelectedFilterOptions(Parcel in) {
+    }
+
+    public static final Parcelable.Creator<SelectedFilterOptions> CREATOR = new Parcelable.Creator<SelectedFilterOptions>() {
+        public SelectedFilterOptions createFromParcel(Parcel source) {
+            return new SelectedFilterOptions(source);
+        }
+
+        public SelectedFilterOptions[] newArray(int size) {
+            return new SelectedFilterOptions[size];
+        }
+    };
 }

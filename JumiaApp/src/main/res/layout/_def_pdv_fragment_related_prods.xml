@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black_300"
+    android:layout_marginBottom="@dimen/dimen_mat_8px"
+    android:orientation="vertical">
+
+    <!-- HEADER -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_related_title"
+        style="@style/HeaderStyle"
+        android:text="@string/may_like" />
+
+    <!-- CONTENT -->
+
+    <com.mobile.components.ExpandableGridViewComponent
+        android:id="@+id/pdv_related_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="1dp"
+        android:numColumns="@integer/pdv_related_products_num_columns"
+        android:scrollbars="none"
+        android:verticalSpacing="1dp" />
+
+</LinearLayout>

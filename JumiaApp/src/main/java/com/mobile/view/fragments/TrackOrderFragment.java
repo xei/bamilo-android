@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -22,17 +19,15 @@ import com.mobile.helpers.checkout.GetTrackOrderHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * @author Manuel Silva
@@ -58,8 +53,6 @@ public class TrackOrderFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static TrackOrderFragment getInstance(Bundle bundle) {
         TrackOrderFragment fragment = new TrackOrderFragment();
@@ -71,11 +64,7 @@ public class TrackOrderFragment extends BaseFragment {
      * Empty constructor
      */
     public TrackOrderFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
-                R.layout.track_order_fragment,
-                R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.track_order_fragment);
     }
 
     /*
@@ -255,13 +244,13 @@ public class TrackOrderFragment extends BaseFragment {
             args.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
                 @Override
-                public void onRequestError(Bundle bundle) {
-                    onErrorEvent(bundle);
+                public void onRequestError(BaseResponse baseResponse) {
+                    onErrorEvent(baseResponse);
                 }
                 
                 @Override
-                public void onRequestComplete(Bundle bundle) {
-                    onSuccessEvent(bundle);
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    onSuccessEvent(baseResponse);
                 }
             });
         } else {
@@ -377,19 +366,19 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.VISIBLE);
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         Print.d(TAG, "ON SUCCESS EVENT");
-        mOrderTracker = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        mOrderTracker = (OrderTracker) baseResponse.getMetadata().getData();
         showFragmentContentContainer();
         processSuccess();
         return true;
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
@@ -399,7 +388,7 @@ public class TrackOrderFragment extends BaseFragment {
         if(TextUtils.isEmpty(order_number))
             processError();
 
-        super.handleErrorEvent(bundle);
+        super.handleErrorEvent(baseResponse);
         
         return true;
     }

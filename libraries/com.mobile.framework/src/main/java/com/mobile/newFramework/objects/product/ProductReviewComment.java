@@ -30,6 +30,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     private double rating = 0.0;
     private String optionTitle="";
     private int average = -1;
+    private int totalStars = -1;
     private ArrayList<RatingStar> ratingStars;
 
     public ProductReviewComment() {
@@ -52,6 +53,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);
             name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
             date = jsonObject.getString(RestConstants.JSON_COMMENT_DATE_TAG);
+            totalStars = jsonObject.getInt(RestConstants.JSON_TOTAL_STARS_TAG);
             //only for seller reviews
             average = jsonObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG,-1);
 
@@ -120,6 +122,8 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     public String getDate() {
         return date;
     }
+
+    public int getTotalStars() { return totalStars; }
 
     /**
      * @return the rating

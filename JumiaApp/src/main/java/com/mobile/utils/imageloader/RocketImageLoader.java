@@ -5,8 +5,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.http.AndroidHttpClient;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,7 +18,6 @@ import com.android.volley.RequestQueue.RequestFilter;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
@@ -221,7 +218,8 @@ public class RocketImageLoader {
                 }
 
                 // clear any previous image
-                imageView.setImageResource(placeHolderImageId);
+                if(placeHolderImageId != -1)
+                    imageView.setImageResource(placeHolderImageId);
 
                 imgContainer = volleyImageLoader.get(imageUrl, new ImageListener() {
 
@@ -264,9 +262,16 @@ public class RocketImageLoader {
                                     progressView.setVisibility(View.GONE);
                                 }
 
-                                Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
-                                imageView.setImageBitmap(response.getBitmap());
-                                imageView.startAnimation(animation);
+                                // Animation
+                                Boolean noAnimate = (Boolean) imageView.getTag(R.id.no_animate);
+                                if (noAnimate == null || noAnimate) {
+                                    imageView.setImageBitmap(response.getBitmap());
+                                } else {
+                                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
+                                    imageView.setImageBitmap(response.getBitmap());
+                                    imageView.startAnimation(animation);
+                                }
+
                                 
                                 if (listener != null) {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());
@@ -429,14 +434,7 @@ public class RocketImageLoader {
         }
 
         if (stack == null) {
-            if (Build.VERSION.SDK_INT >= 9) {
-                stack = new HurlStack();
-            } else {
-                // Prior to Gingerbread, HttpUrlConnection was unreliable.
-                // See:
-                // http://android-developers.blogspot.com/2011/09/androids-http-clients.html
-                stack = new HttpClientStack(AndroidHttpClient.newInstance(userAgent));
-            }
+            stack = new HurlStack();
         }
 
         Network network = new BasicNetwork(stack);

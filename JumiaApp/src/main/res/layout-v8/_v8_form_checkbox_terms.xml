@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:gravity="right|center_vertical"
+    android:layout_gravity="right|center_vertical"
+    >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/textview_terms"
+        style="@style/text_form"
+        android:layout_width="wrap_content"
+        android:gravity="right"
+        android:layout_height="match_parent"
+        android:textColor="@color/blue_basic"/>
+
+    <com.mobile.components.customfontviews.CheckBox
+        android:id="@+id/checkbox_terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|end"
+        android:button="@null"
+        android:background="@null"
+        android:drawableRight="@drawable/selector_btn_check_holo_green"
+        android:drawableEnd="@drawable/selector_btn_check_holo_green"
+        android:drawablePadding="@dimen/form_check_padding"
+        android:paddingRight="@dimen/form_check_padding"
+        style="@style/form_checkbox_style"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_form"/>
+
+
+</LinearLayout>

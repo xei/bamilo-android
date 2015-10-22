@@ -199,60 +199,56 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
     /**
      * ########### Parcelable ###########
      */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.os.Parcelable#describeContents()
-	 */
+
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeDouble(mSavePrice);
         dest.writeInt(mStockPercentage);
-        dest.writeDouble(mMaxSavingPercentage);
-        dest.writeBooleanArray(new boolean[] { hasUniqueSize });
-        dest.writeList(mSizes);
-        dest.writeParcelable(mSelectedSize, 0);
-        dest.writeInt(mSelectedSizePosition);
+        dest.writeByte((byte) (hasUniqueSize ? 0x01 : 0x00));
         dest.writeInt(mRemainingTime);
+        if (mSizes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mSizes);
+        }
+        dest.writeValue(mSelectedSize);
+        dest.writeInt(mSelectedSizePosition);
     }
 
-    /**
-     * Parcel constructor
-     */
-    public CampaignItem(Parcel in) {
+    protected CampaignItem(Parcel in) {
+        super(in);
         mSavePrice = in.readDouble();
         mStockPercentage = in.readInt();
-        boolean[] bolArray = new boolean[1];
-        in.readBooleanArray(bolArray);
-        hasUniqueSize = bolArray[0];
-        mSizes = new ArrayList<>();
-        in.readList(mSizes, CampaignItemSize.class.getClassLoader());
-        mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
-        mSelectedSizePosition = in.readInt();
+        hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
+        if (in.readByte() == 0x01) {
+            mSizes = new ArrayList<CampaignItemSize>();
+            in.readList(mSizes, CampaignItemSize.class.getClassLoader());
+        } else {
+            mSizes = null;
+        }
+        mSelectedSize = (CampaignItemSize) in.readValue(CampaignItemSize.class.getClassLoader());
+        mSelectedSizePosition = in.readInt();
     }
 
-    /**
-     * Create parcelable
-     */
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<CampaignItem> CREATOR = new Parcelable.Creator<CampaignItem>() {
+        @Override
         public CampaignItem createFromParcel(Parcel in) {
             return new CampaignItem(in);
         }
 
+        @Override
         public CampaignItem[] newArray(int size) {
             return new CampaignItem[size];
         }
     };
-
 }

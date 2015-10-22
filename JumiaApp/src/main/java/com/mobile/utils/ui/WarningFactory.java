@@ -1,6 +1,8 @@
 package com.mobile.utils.ui;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntRange;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,7 +19,7 @@ import java.lang.annotation.RetentionPolicy;
  * Proprietary and confidential.
  *
  * @author ricardosoares
- * @version 1.0
+ * @version 1.1
  * @date 2015/04/13
  */
 public class WarningFactory {
@@ -41,6 +43,8 @@ public class WarningFactory {
     public static final int PROBLEM_FETCHING_DATA = 6;
     public static final int PROBLEM_FETCHING_DATA_ANIMATION = 7;
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
+    public static final int ADDED_TO_SAVED = 9;
+    public static final int REMOVE_FROM_SAVED = 10;
 
     @IntDef({
         CHOOSE_ONE_SIZE,
@@ -50,7 +54,9 @@ public class WarningFactory {
         ERROR_ADD_TO_CART,
         PROBLEM_FETCHING_DATA,
         PROBLEM_FETCHING_DATA_ANIMATION,
-        ERROR_ADD_PRODUCTS_TO_CART
+        ERROR_ADD_PRODUCTS_TO_CART,
+        ADDED_TO_SAVED, 
+        REMOVE_FROM_SAVED
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface WarningErrorType{}
@@ -115,6 +121,12 @@ public class WarningFactory {
                 break;
             case PROBLEM_FETCHING_DATA_ANIMATION:
                 showWarningProblemFetchingData(true);
+                break;
+            case ADDED_TO_SAVED:
+                showWarningAddedItemToSaved();
+                break;
+            case REMOVE_FROM_SAVED:
+                showWarningRemovedItemFromSaved();
                 break;
         }
     }
@@ -226,6 +238,32 @@ public class WarningFactory {
         }
     }
 
+    private void showWarningAddedItemToSaved(){
+        if(actualWarning != ADDED_TO_SAVED) {
+            new Builder().setText(R.string.products_added_saved)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = ADDED_TO_SAVED;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
+    private void showWarningRemovedItemFromSaved(){
+        if(actualWarning != REMOVE_FROM_SAVED) {
+            new Builder().setText(R.string.products_removed_saved)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = REMOVE_FROM_SAVED;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
     public void hideWarning(){
         new Builder().hide();
     }
@@ -246,9 +284,9 @@ public class WarningFactory {
             return this;
         }
 
-        Builder setBackground(int drawable){
+        Builder setBackground(@DrawableRes int drawable){
             mWarningBar.setBackgroundResource(drawable);
-            UIUtils.setAlpha(mWarningBar, 0.95f);
+            mWarningBar.setAlpha(0.95f);
             return this;
         }
 
@@ -257,14 +295,14 @@ public class WarningFactory {
             return this;
         }
 
-        Builder setImage(int image){
+        Builder setImage(@DrawableRes int image){
             View imageView = mWarningBar.findViewById(R.id.warning_image);
             imageView.setVisibility(View.VISIBLE);
             ((ImageView)imageView).setImageResource(image);
             return this;
         }
 
-        Builder setAnimationDuration(int animationLength){
+        Builder setAnimationDuration(@IntRange(from=0) int animationLength){
             this.animationLength = animationLength;
             return this;
         }

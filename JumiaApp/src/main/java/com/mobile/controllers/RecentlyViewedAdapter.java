@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,8 +12,8 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView name;
         private TextView discount;
         private TextView price;
-        private TextView discountPercentage;
+        private TextView percentage;
         private TextView brand;
         private View isNew;
         private Button varianceButton;
@@ -131,7 +130,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.brand = (TextView) itemView.findViewById(R.id.item_brand);
             item.price = (TextView) itemView.findViewById(R.id.item_regprice);
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            item.discountPercentage = (TextView) itemView.findViewById(R.id.item_percentage);
+            item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
             item.variantChooseError = itemView.findViewById(R.id.error_variant);
             item.stockError = itemView.findViewById(R.id.error_stock);
@@ -217,30 +216,11 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             prodItem.brand.setText(brand);
             // Set name
             prodItem.name.setText(addableToCart.getName());
+
+            ProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
             // Validate special price
-            if (addableToCart.hasDiscount()) {
-                // Set discount
-                prodItem.discount.setText(CurrencyFormatter.formatCurrency(addableToCart.getSpecialPrice()));
-                // TODO placeholder
-                int discountPercentage = addableToCart.getMaxSavingPercentage();
-                prodItem.discountPercentage.setText("-" + discountPercentage + "%");
-                prodItem.discount.setVisibility(View.VISIBLE);
-                prodItem.discountPercentage.setVisibility(View.VISIBLE);
-                // Set price
-                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
-                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                prodItem.price.setSelected(true);
-                prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
-            } else {
-                // Set price
-                prodItem.discount.setVisibility(View.GONE);
-                prodItem.discountPercentage.setVisibility(View.INVISIBLE);
-                prodItem.price.setText(CurrencyFormatter.formatCurrency(addableToCart.getPrice()));
-                prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
-                prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
-            }
+            ProductUtils.setDiscountRules(addableToCart, prodItem.percentage);
+
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility
                 prodItem.deleteButton.setVisibility(View.INVISIBLE);

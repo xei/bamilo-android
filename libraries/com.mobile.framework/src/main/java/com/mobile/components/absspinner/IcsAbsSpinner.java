@@ -19,7 +19,6 @@ package com.mobile.components.absspinner;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -36,7 +35,6 @@ import android.widget.SpinnerAdapter;
  * @attr ref android.R.styleable#AbsSpinner_entries
  */
 public abstract class IcsAbsSpinner extends IcsAdapterView<SpinnerAdapter> {
-    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     SpinnerAdapter mAdapter;
 
@@ -232,13 +230,8 @@ public abstract class IcsAbsSpinner extends IcsAdapterView<SpinnerAdapter> {
         preferredHeight = Math.max(preferredHeight, getSuggestedMinimumHeight());
         preferredWidth = Math.max(preferredWidth, getSuggestedMinimumWidth());
 
-        if (IS_HONEYCOMB) {
-            heightSize = resolveSizeAndState(preferredHeight, heightMeasureSpec, 0);
-            widthSize = resolveSizeAndState(preferredWidth, widthMeasureSpec, 0);
-        } else {
-            heightSize = resolveSize(preferredHeight, heightMeasureSpec);
-            widthSize = resolveSize(preferredWidth, widthMeasureSpec);
-        }
+        heightSize = resolveSizeAndState(preferredHeight, heightMeasureSpec, 0);
+        widthSize = resolveSizeAndState(preferredWidth, widthMeasureSpec, 0);
 
         setMeasuredDimension(widthSize, heightSize);
         mHeightMeasureSpec = heightMeasureSpec;

@@ -9,10 +9,10 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Android 6.0 Dangerous Permission -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Android 6.0 Dangerous Permission -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- Android 6.0 Dangerous Permission -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
@@ -31,7 +31,7 @@
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />
+        android:required="false" /> <!-- Android 6.0 Dangerous Permission -->
 
     <!-- ##################################### -->
     <!-- ############# Features ############## -->
@@ -66,13 +66,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Jumia"
         android:supportsRtl="@bool/rtl_enabled"
-        tools:ignore="UnusedAttribute">
+        android:theme="@style/Theme.Jumia"
+        tools:ignore="UnusedAttribute" >
         <activity
-            android:name="com.mobile.view.SplashScreenActivity"
+            android:name=".SplashScreenActivity"
             android:noHistory="true"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="unspecified" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -90,36 +90,30 @@
                 <data android:scheme="@string/dp_app_name_uppercase" />
                 <data android:scheme="@string/dp_app_name_lowercase" />
             </intent-filter>
-
         </activity>
-        <!--<activity-->
-            <!--android:name="com.facebook.LoginActivity"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-
         <activity
-            android:name="com.mobile.view.MainFragmentActivity"
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".MainFragmentActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.mobile.view.MainFragmentTabletActivity"
+            android:name=".MainFragmentTabletActivity"
             android:exported="true"
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
         <activity
-            android:name="com.mobile.view.ProductImageGalleryActivity"
+            android:name=".ProductImageGalleryActivity"
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.mobile.view.OverLoadErrorActivity"
+            android:name=".OverLoadErrorActivity"
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
@@ -139,7 +133,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationName"
             android:value="@string/app_name" />
@@ -148,11 +141,12 @@
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
 
+
         <!-- ############# AD4Push: A4SService ############# -->
         <service
             android:name="com.ad4screen.sdk.A4SService"
             android:label="A4S Service"
-            android:process=":A4SService">
+            android:process=":A4SService" >
             <meta-data
                 android:name="com.ad4screen.partnerid"
                 android:value="@string/ad4push_partner_id" />
@@ -174,12 +168,15 @@
                 android:name="com.ad4screen.logging"
                 android:value="false" />
             <!-- Optional Code for >= Kitkat (4.4) Notifications -->
-            <meta-data android:name="com.ad4screen.notifications.icon"
+            <meta-data
+                android:name="com.ad4screen.notifications.icon"
                 android:value="ic_stat_notifications" />
             <!-- Optional Code for >= Lollipop (5.0) Notifications -->
-            <meta-data android:name="com.ad4screen.notifications.accent_color"
+            <meta-data
+                android:name="com.ad4screen.notifications.accent_color"
                 android:value="@color/color_accent" />
-            <!-- Cache delay in seconds
+            <!--
+            Cache delay in seconds
             <meta-data android:name="com.ad4screen.cache.delay" android:value="15" />
             -->
 
@@ -194,7 +191,7 @@
 
         <receiver
             android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -202,27 +199,24 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.mobile.utils.receivers.PushNotificationReceiver"
-            android:permission="${applicationId}.permission.A4S_SEND">
+            android:permission="${applicationId}.permission.A4S_SEND" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
                 <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
                 <action android:name="com.ad4screen.sdk.intent.action.CLOSED" />
 
                 <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <!--<category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />-->
-                <!--<category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />-->
+                <!-- <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" /> -->
+                <!-- <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" /> -->
             </intent-filter>
         </receiver>
-
-        <!-- PRE INSTALL -->
-        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
 
         <!-- ######################################## -->
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->
+
 
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
@@ -231,7 +225,7 @@
         <!-- android:name="com.mobile.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="com.mobile.utils.receivers.InstallReceiver"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -241,7 +235,7 @@
         <!-- ################# WEAR ################## -->
         <!-- ######################################### -->
 
-        <service android:name="com.mobile.utils.JumiaWearableListenerService">
+        <service android:name="com.mobile.utils.JumiaWearableListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>

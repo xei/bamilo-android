@@ -1,5 +1,6 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,6 +8,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +24,7 @@ import org.json.JSONObject;
  * @date 2015/09/03
  *
  */
-public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
+public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
 
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
@@ -50,6 +52,10 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
         multi = jsonObject.getBoolean(RestConstants.JSON_MULTI);
         filterSeparator = multi ? jsonObject.getString(RestConstants.JSON_FILTER_SEPARATOR) : jsonObject.optString(RestConstants.JSON_FILTER_SEPARATOR);
 
+        if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)) {
+            parseFields(jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG));
+        }
+
         setOptionType(id);
 
         return true;
@@ -57,7 +63,12 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     protected abstract void setOptionType(String id);
 
-    protected abstract String getValues();
+    protected abstract ContentValues getValues();
+
+    public abstract boolean hasAppliedFilters();
+
+    protected void parseFields(JSONArray fieldsArray) throws JSONException {
+    }
 
     @Override
     public JSONObject toJSON() {
@@ -89,14 +100,6 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
         this.name = name;
     }
 
-    public String getFilterSeparator() {
-        return filterSeparator;
-    }
-
-    public void setFilterSeparator(String filterSeparator) {
-        this.filterSeparator = filterSeparator;
-    }
-
     public Class getOptionType() {
         return optionType;
     }
@@ -110,6 +113,28 @@ public abstract class CatalogFilter implements IJSONSerializable , Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(this.id);
+        dest.writeByte(multi ? (byte) 1 : (byte) 0);
+        dest.writeString(this.name);
+        dest.writeString(this.filterSeparator);
+        dest.writeSerializable(this.optionType);
     }
+
+    protected CatalogFilter(Parcel in) {
+        this.id = in.readString();
+        this.multi = in.readByte() != 0;
+        this.name = in.readString();
+        this.filterSeparator = in.readString();
+        this.optionType = (Class) in.readSerializable();
+    }
+
+//    public static final Parcelable.Creator<CatalogFilter> CREATOR = new Parcelable.Creator<CatalogFilter>() {
+//        public CatalogFilter createFromParcel(Parcel source) {
+//            return new CatalogFilter(source);
+//        }
+//
+//        public CatalogFilter[] newArray(int size) {
+//            return new CatalogFilter[size];
+//        }
+//    };
 }

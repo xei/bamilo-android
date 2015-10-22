@@ -9,7 +9,6 @@ package com.mobile.controllers.fragments;
 public enum FragmentType {
     UNKNOWN,
     LOGIN,
-    MY_ADDRESSES_LOGIN,
     REGISTER,
     FORGOT_PASSWORD,
     POPULARITY,
@@ -33,7 +32,7 @@ public enum FragmentType {
     SHOPPING_CART,
     CHECKOUT_BASKET,
     CHECKOUT_THANKS,
-    TERMS,
+    STATIC_PAGE,
     MY_ACCOUNT,
     MY_ACCOUNT_MY_ADDRESSES,
     MY_ACCOUNT_CREATE_ADDRESS,
@@ -45,7 +44,6 @@ public enum FragmentType {
     EDIT_ADDRESS,
     SHIPPING_METHODS,
     PAYMENT_METHODS,
-    ABOUT_YOU,
     MY_ORDER,
     CHECKOUT_EXTERNAL_PAYMENT,
     HEADLESS_CART,
@@ -54,14 +52,18 @@ public enum FragmentType {
     NAVIGATION_MENU,
     NAVIGATION_CATEGORIES_ROOT_LEVEL,
     NAVIGATION_CATEGORIES_SUB_LEVEL,
-    FAVORITE_LIST,
+    WISH_LIST,
     RECENT_SEARCHES_LIST,
     RECENTLY_VIEWED_LIST,
     MY_ORDERS,
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
     INNER_SHOP,
-    WRITE_REVIEW_SELLER;
+    VARIATIONS,
+    WRITE_REVIEW_SELLER,
+    FILTERS,
+    COMBO_PAGE,
+    LOGIN_EMAIL;
 
     private int id;
     private final static String DIVIDER = ":";

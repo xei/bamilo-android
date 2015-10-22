@@ -4,8 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -13,7 +11,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -58,8 +55,8 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setCart(null);
@@ -67,9 +64,9 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
+        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
     }
 
 }

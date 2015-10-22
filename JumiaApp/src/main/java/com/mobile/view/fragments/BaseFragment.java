@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +34,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
@@ -45,16 +48,16 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -72,8 +75,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
 
     public static final int NO_INFLATE_LAYOUT = 0;
-
-    public static final int NO_TITLE = 0;
 
     private NavigationAction action;
 
@@ -124,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -136,28 +137,28 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor used only by nested fragments
      */
-    public BaseFragment(Boolean isNestedFragment, int layoutResId) {
+    public BaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = 0;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-    /**
-     * Constructor used only by PDV fragments
-     */
-    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-        this.enabledMenuItems = enabledMenuItems;
-        this.action = action;
-        this.titleResId = titleResId;
-        this.adjustState = adjust_state;
-        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-    }
+//    /**
+//     * Constructor used only by PDV fragments
+//     */
+//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+//        this.enabledMenuItems = enabledMenuItems;
+//        this.action = action;
+//        this.titleResId = titleResId;
+//        this.adjustState = adjust_state;
+//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+//    }
 
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -235,8 +236,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-        // Get content layout
-        mContentView = view.findViewById(R.id.content_container);
+//        // Get content layout
+//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -249,16 +250,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-        // Hide search component for change country
-        if (this.action == NavigationAction.Country) {
-            // Hide search component
-            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-        }
+//        // Hide search component for change country
+//        if (this.action == NavigationAction.Country) {
+//            // Hide search component
+//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
+//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
+            // Method used to set a bottom margin
+            TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
+
     }
 
     /**
@@ -313,9 +317,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-            if(action != null){
-                getBaseActivity().updateNavigationMenu(action);
-            }
+//            if(action != null){
+//                getBaseActivity().updateNavigationMenu(action);
+//            }
         }
     }
 
@@ -666,6 +670,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
+    public void showInfoAddToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        }
+    }
+
+    public void showInfoAddToShoppingCartFailed() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+        }
+    }
+
     /**
      * Set the inflated stub
      * @param stub The view stub
@@ -717,7 +733,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(ShopSelector.isRtl()){
+                if(ShopSelector.isRtlShop()){
                     inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -766,7 +782,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateMaintenance(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
         // Validate venture
-        if (ShopSelector.isRtl()) {
+        if (ShopSelector.isRtlShop()) {
             MaintenancePage.setMaintenancePageBamilo(inflated, this);
         } else {
             MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
@@ -820,13 +836,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle success response
-     * @param bundle The success bundle
+     * @param baseResponse The success response
      * @return intercept or not
      */
-    public boolean handleSuccessEvent(Bundle bundle) {
+    public boolean handleSuccessEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -838,9 +854,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
+            case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
                 JumiaApplication.INSTANCE.setLoggedIn(true);
-                getBaseActivity().triggerGetShoppingCartItemsHelper();
+                // TODO VALIDATE IF THIS IS NECESSARY
+                // getBaseActivity().triggerGetShoppingCartItemsHelper();
                 return true;
             default:
                 break;
@@ -850,24 +868,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle error response.
-     * @param bundle The error bundle
+     * @param baseResponse The error bundle
      * @return intercept or not
      */
     @SuppressWarnings("unchecked")
-    public boolean handleErrorEvent(final Bundle bundle) {
+    public boolean handleErrorEvent(final BaseResponse baseResponse) {
         Print.i(TAG, "ON HANDLE ERROR EVENT");
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        EventTask eventTask = baseResponse.getEventTask();
 
-        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
+        if (!baseResponse.isPrioritary()) {
             return false;
         }
 
         if (errorCode == null) {
             return false;
         }
-//        errorCode = ErrorCode.IO;
+
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -901,7 +919,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     showFragmentMaintenance();
                     return true;
                 case REQUEST_ERROR:
-                    HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                     List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                     String dialogMsg = "";
                     if (validateMessages == null || validateMessages.isEmpty()) {
@@ -944,14 +962,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
+        // Case unexpected error from server data
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            showFragmentMaintenance();
+        }
+
+        /**
+         * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
+         * // CODE_CUSTOMER_NOT_LOGGED_IN should be an ErrorCode
+         * // CASE REQUEST_ERROR && CUSTOMER_NOT_LOGGED_IN
+         */
+
         return false;
-
     }
 
-    protected void clearCredentials() {
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-    }
+//    protected void clearCredentials() {
+//        JumiaApplication.INSTANCE.setLoggedIn(false);
+//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//    }
 
     /*
      * ########### LISTENERS ###########
@@ -965,7 +993,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
+        // Case error button
         if (id == R.id.fragment_root_error_button){
             checkErrorButtonBehavior(view);
         }
@@ -1142,5 +1170,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         campaigns.add(campaign);
         return campaigns;
     }
+
+
+
 
 }

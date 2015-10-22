@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical">
+
+    <View
+        style="@style/line_grey_style"
+        android:id="@+id/newsletter_line"
+        android:layout_below="@+id/myaccount_newsletter_checkbox"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:visibility="visible" />
+
+    <com.mobile.components.customfontviews.CheckBox
+        android:id="@+id/myaccount_newsletter_checkbox"
+        style="@style/form_checkbox_style"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|end"
+        android:background="@drawable/selector_clickableitem_highlight"
+        android:button="@null"
+        android:drawableEnd="@drawable/selector_btn_check_holo_green"
+        android:drawableRight="@drawable/selector_btn_check_holo_green"
+        android:padding="@dimen/rounded_margin_mid" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/myaccount_newslleter_option"
+        style="@style/text_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:padding="@dimen/rounded_margin_mid"/>
+
+</RelativeLayout>

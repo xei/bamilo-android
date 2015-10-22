@@ -20,23 +20,14 @@ import org.json.JSONObject;
  */
 public class FeaturedItem implements IJSONSerializable, Parcelable {
 
-    private String id;
     private String url;
     private String name;
     protected String imageUrl;
 
     public FeaturedItem() {
-        this.id = "";
         this.url = "";
         this.name = "";
         this.imageUrl = "";
-    }
-
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
     }
 
     /**
@@ -67,8 +58,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        id = jsonObject.optString(RestConstants.ID);
-        url = jsonObject.optString(RestConstants.URL);        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);        imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        url = jsonObject.optString(RestConstants.URL);
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         // concat brand and name instead of using only name
@@ -111,7 +101,6 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 	 */
 
     protected FeaturedItem(Parcel in) {
-        id = in.readString();
         url = in.readString();
         name = in.readString();
         imageUrl = in.readString();
@@ -124,7 +113,6 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
         dest.writeString(url);
         dest.writeString(name);
         dest.writeString(imageUrl);

@@ -1,5 +1,6 @@
 package com.mobile.newFramework.objects.configs;
 
+import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by rsoares on 5/21/15.
  */
-public class AvailableCountries extends ArrayList<CountryObject> implements com.mobile.newFramework.objects.IJSONSerializable {
+public class AvailableCountries extends ArrayList<CountryObject> implements IJSONSerializable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {

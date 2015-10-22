@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="true" >
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+    <!-- PAYMENT -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@dimen/checkout_main_container" >
+
+        <!-- CONTENT -->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/checkout_button_container"
+            android:layout_alignParentTop="true"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <!-- PAYMENT METHODS -->
+
+                <include layout="@layout/checkout_payment_methods" />
+
+                <!-- VOUCHER -->
+
+                <include layout="@layout/voucher_insert_layout" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- NEXT BUTTON -->
+
+        <LinearLayout
+            android:id="@id/checkout_button_container"
+            style="@style/button_container"
+            android:layout_alignParentBottom="true" >
+
+            <com.mobile.components.customfontviews.Button
+                android:id="@+id/checkout_button_enter"
+                style="@style/button_orange_landscape"
+                android:layout_width="@dimen/inner_container_width"
+                android:text="@string/next_button" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

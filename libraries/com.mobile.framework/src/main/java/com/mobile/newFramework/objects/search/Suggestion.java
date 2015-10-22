@@ -2,11 +2,11 @@ package com.mobile.newFramework.objects.search;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

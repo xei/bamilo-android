@@ -1,15 +1,13 @@
 package com.mobile.helpers.checkout;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -30,17 +28,17 @@ public class GetPaymentMethodsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         // Create bundle
         CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
+//        bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, responseData.getOrderSummary());
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, responseData.getForm());
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
-        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get("payment_method").getPaymentInfoList());
+        JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList());
     }
 
 }

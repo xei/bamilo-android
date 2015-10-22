@@ -1,16 +1,13 @@
 package com.mobile.newFramework.utils.shop;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.configs.Version;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
@@ -18,7 +15,6 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Locale;
@@ -53,6 +49,10 @@ public final class ShopSelector {
 
 	private static String countryCode;
 
+	private static boolean isLayoutRtl;
+
+	private static boolean isSingleShopCountry;
+
 	/**
 	 * Hidden default constructor for utility class.
 	 */
@@ -77,8 +77,9 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+
+		initShopDynamics(context.getResources());
+
 		// Trackers
 		AdjustTracker.startup(context);
 		AdjustTracker.initializeAdjust(context);
@@ -96,8 +97,8 @@ public final class ShopSelector {
 		// Rest client
         AigRestContract.init(context);
 		AigHttpClient.getInstance(context);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+
+		initShopDynamics(context.getResources());
 	}
 
 	/**
@@ -108,8 +109,8 @@ public final class ShopSelector {
 		// Rest client
 		AigRestContract.init(context, requestHost, basePath);
 		AigHttpClient.getInstance(context);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+
+		initShopDynamics(context.getResources());
 	}
 
 	/**
@@ -129,8 +130,8 @@ public final class ShopSelector {
 		// Currency formatter
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);
-		// Rtl flag
-		isRtlShop = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+
+		initShopDynamics(context.getResources());
 	}
 	
 	/**
@@ -147,11 +148,10 @@ public final class ShopSelector {
 	 * Sets the locale for the app by using the language code.
 	 */
 	private static void setLocale(Context context, String language) {
-		//Print.i(TAG, "ON SET LOCALE: language " + language);
+		Print.i(TAG, "ON SET LOCALE: language " + language);
 		// Get language and country code
 		countryCode = language;
 		String[] languageCountry = language.split("_");
-
 		// Create new locale
 		Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
 		// Set as default
@@ -164,7 +164,17 @@ public final class ShopSelector {
         Print.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}
 
+	private static void initShopDynamics(Resources resources){
+		isRtlShop = resources.getBoolean(R.bool.is_bamilo_specific);
+		isLayoutRtl = resources.getBoolean(R.bool.is_layout_rtl);
+		isSingleShopCountry = resources.getBoolean(R.bool.is_single_shop_country);
+	}
+
 	public static boolean isRtl() {
+		return isLayoutRtl;
+	}
+
+	public static boolean isRtlShop(){
 		return isRtlShop;
 	}
 	
@@ -184,4 +194,7 @@ public final class ShopSelector {
 		return countryCode;
 	}
 
+	public static boolean isSingleShopCountry() {
+		return isSingleShopCountry;
+	}
 }

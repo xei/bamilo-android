@@ -50,6 +50,10 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     }
 
+    public PurchaseCartItem(JSONObject jsonObject) {
+        initialize(jsonObject);
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -265,6 +269,9 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         return mSpecialPriceConverted > 0;
     }
 
+    public String getAttributeSetId (){
+        return mAttributeSetId;
+    }
     /**
      * ########### Parcelable ###########
      *

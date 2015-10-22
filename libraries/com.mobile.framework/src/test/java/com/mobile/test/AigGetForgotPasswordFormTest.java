@@ -24,7 +24,7 @@ public class AigGetForgotPasswordFormTest extends AigTestCase {
 
     @Override
     public String getUrl() {
-        return AigMobApiNigeriaTestSuite.HOST+"/forms/addressedit/";
+        return AigMobApiNigeriaTestSuite.HOST+"/forms/forgotpassword/";
     }
 
     @Override

@@ -4,16 +4,15 @@
 package com.mobile.helpers.products;
 
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.BundleList;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -49,11 +48,15 @@ public class GetProductBundleHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundle);
     }
 
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, android.os.Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        BundleList productBundle = (BundleList) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productBundle);
+
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String sku) {
+        // Item data
+        Bundle bundle = new Bundle();
+        bundle.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
+        return bundle;
     }
 
 }

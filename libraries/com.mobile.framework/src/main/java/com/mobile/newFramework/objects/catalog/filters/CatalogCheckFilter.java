@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
+import android.os.Parcel;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -12,23 +15,21 @@ import java.util.ArrayList;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- *
+ * <p/>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
- *
  *
  * @author ricardosoares
  * @version 1.0
  * @date 2015/09/04
- *
  */
-public class CatalogCheckFilter extends CatalogFilter{
+public class CatalogCheckFilter extends CatalogFilter {
 
     private ArrayList<MultiFilterOptionInterface> filterOptions;
 
     private SelectedFilterOptions selectedFilterOptions;
 
-    public CatalogCheckFilter(){
+    public CatalogCheckFilter() {
         filterOptions = new ArrayList<>();
         selectedFilterOptions = new SelectedFilterOptions();
     }
@@ -56,15 +57,24 @@ public class CatalogCheckFilter extends CatalogFilter{
     }
 
     @Override
-    protected String getValues() {
-        return multi ? processMulti() : processSingle();
+    protected ContentValues getValues() {
+        ContentValues values = new ContentValues();
+        if (hasAppliedFilters()) {
+            values.put(id, multi ? processMulti() : processSingle());
+        }
+        return values;
+    }
+
+    @Override
+    public boolean hasAppliedFilters() {
+        return CollectionUtils.isNotEmpty(selectedFilterOptions);
     }
 
     private String processSingle() {
         return CollectionUtils.isNotEmpty(selectedFilterOptions) ? selectedFilterOptions.valueAt(0).getVal() : "";
     }
 
-    private String processMulti(){
+    private String processMulti() {
         String value = processSingle();
         for (int i = 1; i < selectedFilterOptions.size(); i++) {
             value += filterSeparator + selectedFilterOptions.valueAt(i).getVal();
@@ -84,20 +94,14 @@ public class CatalogCheckFilter extends CatalogFilter{
         return filterOptions;
     }
 
-    public void setFilterOptions(ArrayList<MultiFilterOptionInterface> filterOptions) {
-        this.filterOptions = filterOptions;
-    }
-
     protected MultiFilterOptionInterface getFilterOptionType(JSONObject jsonObject) throws JSONException {
         try {
             MultiFilterOptionInterface object = (MultiFilterOptionInterface) optionType.newInstance();
-            if(object instanceof IJSONSerializable){
+            if (object instanceof IJSONSerializable) {
                 ((IJSONSerializable) object).initialize(jsonObject);
             }
             return object;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -107,19 +111,55 @@ public class CatalogCheckFilter extends CatalogFilter{
         return selectedFilterOptions;
     }
 
-    public void setSelectedFilterOptions(SelectedFilterOptions selectedFilterOptions) {
-        this.selectedFilterOptions = selectedFilterOptions;
-    }
-
-    public void switchSelectedOptions(SelectedFilterOptions selectedFilterOptions){
-        for(MultiFilterOptionInterface filterOption : filterOptions){
+    public void switchSelectedOptions(SelectedFilterOptions selectedFilterOptions) {
+        for (MultiFilterOptionInterface filterOption : filterOptions) {
             filterOption.setSelected(false);
         }
 
-        for(int j = 0; j < selectedFilterOptions.size(); j++){
+        for (int j = 0; j < selectedFilterOptions.size(); j++) {
             selectedFilterOptions.valueAt(j).setSelected(true);
         }
 
         this.selectedFilterOptions = selectedFilterOptions;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        if (filterOptions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(filterOptions);
+        }
+        dest.writeValue(selectedFilterOptions);
+    }
+
+    protected CatalogCheckFilter(Parcel in) {
+        super(in);
+        if (in.readByte() == 0x01) {
+            filterOptions = new ArrayList<>();
+            in.readList(filterOptions, MultiFilterOptionInterface.class.getClassLoader());
+        } else {
+            filterOptions = null;
+        }
+        selectedFilterOptions = (SelectedFilterOptions) in.readValue(SelectedFilterOptions.class.getClassLoader());
+
+    }
+
+    public static final Creator<CatalogCheckFilter> CREATOR = new Creator<CatalogCheckFilter>() {
+        public CatalogCheckFilter createFromParcel(Parcel source) {
+            return new CatalogCheckFilter(source);
+        }
+
+        public CatalogCheckFilter[] newArray(int size) {
+            return new CatalogCheckFilter[size];
+        }
+    };
+
 }

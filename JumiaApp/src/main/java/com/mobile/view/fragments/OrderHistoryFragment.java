@@ -27,26 +27,25 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.objects.orders.OrderItem;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Paulo Carvalho
@@ -92,8 +91,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     
     /**
      * Get instance
-     * 
-     * @return
      */
     public static OrderHistoryFragment getInstance() {
         return new OrderHistoryFragment();
@@ -103,11 +100,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * Empty constructor
      */
     public OrderHistoryFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
-                R.layout.order_history_main,
-                R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.order_history_main);
     }
 
     /*
@@ -138,7 +131,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
             
-                Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
+                //Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
         }
         
     }
@@ -255,18 +248,18 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
 
     IResponseCallback mCallBack = new IResponseCallback() {
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
     
     
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT");
         mReceivedError = false;
         // Validate fragment visibility
@@ -275,16 +268,17 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             return true;
         }
 
-        if(super.handleSuccessEvent(bundle))
+        if(super.handleSuccessEvent(baseResponse))
             return true;
         
             
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         switch (eventType) {
         case GET_MY_ORDERS_LIST_EVENT:
-            
-            ArrayList<Order> ordersResponse =  bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+            MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+
+            ArrayList<Order> ordersResponse =  orders.getOrders();
             
             if(CollectionUtils.isEmpty(ordersList) && CollectionUtils.isEmpty(ordersResponse)){
                 // show error/empty screen
@@ -293,15 +287,16 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 return false;
             }
             
-            if(bundle.getInt(GetMyOrdersListHelper.CURRENT_PAGE) != 0 && bundle.getInt(GetMyOrdersListHelper.TOTAL_PAGES) != 0){
-                if(pageIndex == bundle.getInt(GetMyOrdersListHelper.CURRENT_PAGE)){
+            if(orders.getCurrentPage() != 0 && orders.getTotalOrders() != 0){
+                if(pageIndex == orders.getCurrentPage()){
                     //is already showing the last page of the orders
                     mIsLoadingMore = true;
                     showProductsLoading(false);
                 }
                 
-                pageIndex = bundle.getInt(GetMyOrdersListHelper.CURRENT_PAGE);
-                totalPages = bundle.getInt(GetMyOrdersListHelper.TOTAL_PAGES);
+                pageIndex = orders.getCurrentPage();
+                totalPages = orders.getNumPages();
+
                 if(pageIndex <= totalPages){
                     mIsLoadingMore = false;
                     
@@ -335,6 +330,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                     mIsLoadingMore = true;
                     return false;
                 }
+
+                if(orders.getTotalOrders() <= NUM_ORDERS){
+                    mIsLoadingMore = true;
+                }
             }
             
             return true;
@@ -345,7 +344,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         return true;
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -354,12 +353,12 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         }
 
         boolean errorHandled = false;
-        if(super.handleErrorEvent(bundle))
+        if(super.handleErrorEvent(baseResponse))
             errorHandled = true;
         
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         switch (eventType) {
         case GET_MY_ORDERS_LIST_EVENT:
             if(isVisible && !errorHandled){
@@ -372,9 +371,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                         try{
                             boolean isNotLoggedIn = false;
                             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                                 if (errorMessages != null) {
-                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_LOGOUT_NOTLOGGED_IN)) {
+                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
                                         triggerLogin();
                                         isNotLoggedIn =true;
                                     }
@@ -511,6 +510,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
+        bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, ShopSelector.isRtl() ? 0 : 1);
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

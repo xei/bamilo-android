@@ -14,7 +14,12 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 
 /**
+ * Adapter that shows a list of generic items for a dialg
+ *
  * Created by rsoares on 8/25/15.
+ *
+ * @modified Paulo Carvalho
+ *
  */
 public class DialogListAdapter extends BaseAdapter {
 
@@ -25,6 +30,8 @@ public class DialogListAdapter extends BaseAdapter {
     protected ArrayList<String> mItems;
 
     protected ArrayList<String> mItemsAvailable;
+
+    public static final int DIALOG_LIST_TYPE = 0;
 
     /**
      * Constructor
@@ -92,11 +99,15 @@ public class DialogListAdapter extends BaseAdapter {
         if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
             view.setEnabled(false);
             textView.setVisibility(View.GONE);
-            textViewUnAvailable.setVisibility(View.VISIBLE);
-            textViewUnAvailable.setText(mItems.get(position));
+            if(textViewUnAvailable != null){
+                textViewUnAvailable.setVisibility(View.VISIBLE);
+                textViewUnAvailable.setText(mItems.get(position));
+            }
         } else {
             view.setEnabled(true);
-            textViewUnAvailable.setVisibility(View.GONE);
+            if(textViewUnAvailable != null)
+                textViewUnAvailable.setVisibility(View.GONE);
+
             textView.setVisibility(View.VISIBLE);
             textView.setText(mItems.get(position));
         }

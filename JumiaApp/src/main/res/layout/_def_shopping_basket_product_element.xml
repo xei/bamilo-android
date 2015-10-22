@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <View
+        android:id="@+id/top_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/catalog_item_vertical_padding" />
+
+    <!-- DELETE BUTTON -->
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/button_delete"
+        android:layout_width="@dimen/delete_button_size"
+        android:layout_height="@dimen/delete_button_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/top_spacer"
+        android:layout_margin="@dimen/delete_button_margin"
+        android:background="@drawable/selector_btn_remove_item"
+        android:contentDescription="@string/shoppingcart_item_btn_delete"
+        android:clickable="true"/>
+
+    <!-- BRAND -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_brand"
+        style="@style/text_title"
+        android:layout_width="match_parent"
+        android:layout_below="@id/top_spacer"
+        android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:layout_marginEnd="@dimen/product_item_text_right_margin"
+        android:text="BRAND"
+        android:visibility="gone" />
+
+    <!-- NAME -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_name"
+        style="@style/text_normal"
+        android:layout_width="match_parent"
+        android:layout_below="@id/item_brand"
+        android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:layout_marginEnd="@dimen/product_item_text_right_margin"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="Name" />
+
+    <!-- DISCOUNT -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_discount"
+        style="@style/text_price"
+        android:layout_alignLeft="@id/item_name"
+        android:layout_alignStart="@id/item_name"
+        android:layout_below="@id/item_name"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="roboto_bold"
+        android:text="Discount" />
+
+    <!-- PRICE -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_regprice"
+        style="@style/text_price"
+        android:layout_alignTop="@id/item_discount"
+        android:layout_below="@id/item_name"
+        android:layout_toRightOf="@id/item_discount"
+        android:layout_toEndOf="@id/item_discount"
+        android:text="Price"
+        android:textColor="@color/grey_middlelight" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_gravity="left|start"
+        android:visibility="gone"
+        android:layout_below="@id/item_discount"/>
+
+    <!-- VARIATION -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/variances_container"
+        style="@style/text_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/item_percentage"
+        android:visibility="gone" />
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/changequantity_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_spacer"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="-5dp"
+        android:layout_marginEnd="-5dp"
+        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:gravity="bottom|center_horizontal|right|end"
+        android:text="Press"
+        android:textSize="@dimen/text_s"
+        android:visibility="visible"
+        android:textColor="@color/black"/>
+
+    <View
+        android:id="@id/bottom_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/catalog_list_item_image_padding"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

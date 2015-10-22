@@ -3,11 +3,10 @@
  */
 package com.mobile.helpers.products;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.OfferList;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -26,6 +25,7 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     public static final String ALL_OFFERS = "all_offers";
 
+    public static final String OFFER_SKU = "sku";
 
     @Override
     public EventType getEventType() {
@@ -36,12 +36,17 @@ public class GetProductOffersHelper extends SuperBaseHelper {
     public void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductOffers);
     }
-
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        OfferList productOffers = (OfferList) baseResponse.getMetadata().getData();
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productOffers);
+    
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(OFFER_SKU, sku);
+        values.put(ALL_OFFERS, true);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
     
 }

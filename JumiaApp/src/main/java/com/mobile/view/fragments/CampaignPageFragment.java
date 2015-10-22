@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +30,7 @@ import android.widget.ProgressBar;
 import com.mobile.components.HeaderGridView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
-import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -45,6 +44,7 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
@@ -54,9 +54,10 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -81,15 +82,15 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public int BRAND = R.id.brand;
 
     public int PRICE = R.id.price;
-    
+
     public int PROD = R.id.product;
-    
+
     public int SKU = R.id.sku;
-    
+
     public int SIZE = R.id.size;
-    
+
     public int STOCK = R.id.stock;
-    
+
     public int DISCOUNT = R.id.discount;
     
     private Campaign mCampaign;
@@ -176,7 +177,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getTargetUrl());
+        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getCampaignId());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
@@ -317,7 +318,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Load the bitmap
             String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
             RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-                
+
                 @Override
                 public void onLoadedSuccess(String url, Bitmap bitmap) {
                     // Show content
@@ -325,7 +326,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     bannerState = BannerVisibility.VISIBLE;
                     showContent(bannerView);
                 }
-                
+
                 @Override
                 public void onLoadedError() {
                     bannerView.setVisibility(View.GONE);
@@ -334,7 +335,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     // Show content
                     showContent(bannerView);
                 }
-                
+
                 @Override
                 public void onLoadedCancel() {
                     bannerView.setVisibility(View.GONE);
@@ -434,7 +435,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         String name = (String) view.getTag(NAME);
         String brand = (String) view.getTag(BRAND);
         double price = (Double) view.getTag(PRICE);
-        double discount = (Double) view.getTag(DISCOUNT);
+        int discount = (Integer) view.getTag(DISCOUNT);
         
         Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
@@ -507,15 +508,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void triggerGetCampaign(String id){
         Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, mTeaserCampaign.getTargetUrl());
-        bundle.putString(GetCampaignHelper.CAMPAIGN_TAG, id);
-        triggerContentEvent(new GetCampaignHelper(), bundle, this);
+        triggerContentEvent(new GetCampaignHelper(), GetCampaignHelper.createBundle(id), this);
     }
     
     /**
      * Trigger to add item to cart
-     * @param values
      * @author sergiopereira
      */
     private void triggerAddToCart(ContentValues values){
@@ -531,12 +528,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     /**
      * Filter the success response
-     * @param bundle
+     * @param baseResponse
      * @return boolean
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
@@ -546,13 +543,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
 
         // Update cart info
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
-            mCampaign = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCampaign = (Campaign)baseResponse.getMetadata().getData();
             /*--
              * Don't apply Timer if there are no products with remainingTime defined
              */
@@ -575,13 +572,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     /**
      * Filter the error response
-     * @param bundle
+     * @param baseResponse
      * @return boolean
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+    public void onRequestError(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
@@ -610,7 +607,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         */
         
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(baseResponse)) return;
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
@@ -654,34 +651,18 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * ########### ADAPTER ###########  
      */    
     
-    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener{
+    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener, DialogCampaignItemSizeListFragment.OnDialogListListener {
         
         // private static final int YELLOW_PERCENTAGE = 34 < X < 64
         
         private static final int GREEN_PERCENTAGE = 64;
         
         private static final int ORANGE_PERCENTAGE = 34;
-
-        public int NAME = R.id.name;
-
-        public int BRAND = R.id.brand;
-
-        public int PRICE = R.id.price;
-        
-        public int PROD = R.id.product;
-        
-        public int SKU = R.id.sku;
-        
-        public int SIZE = R.id.size;
-        
-        public int STOCK = R.id.stock;
-        
-        public int DISCOUNT = R.id.discount;
         
         private LayoutInflater mInflater;
         
         private OnClickListener mOnClickParentListener;
-        
+
         /**
          * A representation of each item on the list
          */
@@ -692,7 +673,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             private ImageView mImage;
             private View progress;
             private View mSizeContainer;
-            private IcsSpinner mSizeSpinner;
+            private Button mSizeSpinner;
             private TextView mPrice;
             private TextView mDiscount;
             private TextView mSave;
@@ -719,10 +700,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
         
         /**
-         * 
-         * @param context
-         * @param items
-         * @param parentListener
+         * Constructor
          */
         public CampaignAdapter(Context context, ArrayList<CampaignItem> items, OnClickListener parentListener) {
             super(context, R.layout.campaign_fragment_list_item, items);
@@ -761,9 +739,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Get the recycled view
-         * @param view
-         * @return ItemView
-         * @author sergiopereira
          */
         private ItemView getItemView(View view){
             ItemView item;
@@ -782,7 +757,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 // Get size container
                 item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
                 // Get size spinner
-                item.mSizeSpinner = (IcsSpinner) view.findViewById(R.id.campaign_item_size_spinner);
+                item.mSizeSpinner = (Button) view.findViewById(R.id.campaign_item_size_spinner);
                 // Get price
                 item.mPrice = (TextView) view.findViewById(R.id.campaign_item_price);
                 // Get discount
@@ -810,9 +785,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
         
         /**
-         * Set the campaign data 
-         * @param view
-         * @param item
+         * Set the campaign data
          * @author sergiopereira
          */
         private void setData(ItemView view, CampaignItem item, int position) {
@@ -870,7 +843,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     offerEnded.setVisibility(View.INVISIBLE);
 
                     // Set full opacity to image
-                    UIUtils.setAlpha(image, 1F);
+                    image.setAlpha(1F);
                 // show "Offer Ended" and disable product
                 } else {
                     Print.d(TAG, "Product expired!");
@@ -883,7 +856,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 offerEnded.setVisibility(View.INVISIBLE);
 
                 // Set full opacity to image
-                UIUtils.setAlpha(image, 1F);
+                image.setAlpha(1F);
             }
         }
 
@@ -936,9 +909,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         /**
          * convert value of time in a two digit <code>String</code>
-         * 
-         * @param number
-         * @return
          */
         private String twoDigitString(int number) {
             if (number == 0) {
@@ -952,13 +922,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         /**
          * Show Timer with text "00:00:00" and disable buttons and redirects to PDV
-         * 
-         * @param timerContainer
-         * @param buttonBuy
-         * @param offerEnded
-         * @param timer
-         * @param name
-         * @param image
          */
         private void showOfferEnded(View timerContainer, View buttonBuy, View offerEnded, TextView timer, View name, View image, View imageContainer) {
             timerContainer.setVisibility(View.VISIBLE);
@@ -974,36 +937,22 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             imageContainer.setOnClickListener(null);
 
             // Set product image as defocused
-            UIUtils.setAlpha(image, 0.5F);
+            image.setAlpha(0.5F);
         }
 
         /**
          * Set the price and special price view
-         * @param view
-         * @param item
          * @author sergiopereira
          */
         private void setPriceContainer(ItemView view, CampaignItem item){
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            if(item.hasDiscount()) {
-                view.mPrice.setVisibility(View.VISIBLE);
-                // Set discount
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getSpecialPrice()));
-                view.mPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                // Set discount
-                view.mPrice.setVisibility(View.GONE);
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-            }
+            ProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
         }
         
         /**
          * Set the save value
-         * @param view
-         * @param item
          * @author sergiopereira
          */
         private void setSaveContainer(ItemView view, CampaignItem item){
@@ -1025,8 +974,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Set a view as clickable saving the position
-         * @param view
-         * @param position
          * @author sergiopereira
          */
         private void setClickableView(View view, int position) {
@@ -1037,8 +984,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
  
         /**
          * Hide or show the stock off
-         * @param view
-         * @param item
          * @author ricardosoares
          */
         private void setStockOff(ItemView view, CampaignItem item){
@@ -1062,12 +1007,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Hide or show the size container
-         * @param view
-         * @param item
-         * @param position
          * @author sergiopereira
          */
-        private void setSizeContainer(ItemView view, CampaignItem item, int position){
+        private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
             if(!item.hasUniqueSize() && item.hasSizes()) {
                 // Show container
@@ -1079,7 +1021,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
                 // Apply the adapter to the spinner
-                view.mSizeSpinner.setAdapter(adapter);
+//                view.mSizeSpinner.setAdapter(adapter);
                 
                 // Checks if product has only one size to select (S, M, L - only available L)
                 if(sizes.size() == 1){
@@ -1096,12 +1038,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
                 if(item.hasSelectedSize()) {
-                    view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
+                    view.mSizeSpinner.setText(item.getSizes().get(item.getSelectedSizePosition()).size);
                 }
                 // Force reload content to redraw the default selection value
                 adapter.notifyDataSetChanged();
                 // Apply the select listener
-                view.mSizeSpinner.setOnItemSelectedListener(this);
+                view.mSizeSpinner.setOnClickListener(this);
+
             } else {
                 // Hide the size container
                 view.mSizeContainer.setVisibility(View.GONE);
@@ -1121,8 +1064,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 
         /**
          * Set the stock bar color
-         * @param view
-         * @param stock
          * @author sergiopereira
          */
         private void setStockBar(ProgressBar view, int stock) {
@@ -1143,7 +1084,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         /**
          * ######### LISTENERS #########
          */
-        
+
         @Override
         public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
@@ -1152,6 +1093,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
             campaignItem.setSelectedSizePosition(position);
             campaignItem.setSelectedSize(size);
+//            this.notifyDataSetChanged();
+            Print.d(TAG, "selected simple");
         }
 
         @Override
@@ -1193,21 +1136,53 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             String position = view.getTag().toString();
             // Get the campaign
             CampaignItem item = getItem(Integer.valueOf(position));
-            // Get selected size
-            CampaignItemSize selectedSize = item.getSelectedSize();
-            // Add new tags
-            view.setTag(PROD, item.getSku());
-            view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
-            view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
-            view.setTag(STOCK, item.hasStock());
-            view.setTag(NAME, item.getName());
-            view.setTag(BRAND, item.getBrand());
-            view.setTag(PRICE, item.getPriceForTracking());
-            view.setTag(DISCOUNT, item.getMaxSavingPercentage());
-            //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
-            // Send to listener
-            if(mOnClickParentListener != null)
-                mOnClickParentListener.onClick(view);
+
+            int id = view.getId();
+            if(id == R.id.campaign_item_size_spinner){
+                showVariantsDialog(item);
+            } else {
+
+                // Get selected size
+                CampaignItemSize selectedSize = item.getSelectedSize();
+                // Add new tags
+                view.setTag(PROD, item.getSku());
+                view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
+                view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
+                view.setTag(STOCK, item.hasStock());
+                view.setTag(NAME, item.getName());
+                view.setTag(BRAND, item.getBrand());
+                view.setTag(PRICE, item.getPriceForTracking());
+                view.setTag(DISCOUNT, item.getMaxSavingPercentage());
+                //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
+                // Send to listener
+                if (mOnClickParentListener != null)
+                    mOnClickParentListener.onClick(view);
+            }
+        }
+
+        protected void showVariantsDialog(CampaignItem item) {
+
+            try {
+                DialogCampaignItemSizeListFragment dialog = DialogCampaignItemSizeListFragment.newInstance(
+                        getBaseActivity(),
+                        getString(R.string.product_variance_choose),
+                        item,
+                        this);
+                dialog.show(getFragmentManager(), null);
+            } catch (NullPointerException e) {
+                Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+            }
+        }
+
+
+        @Override
+        public void onDialogListItemSelect(int position) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDialogListClickView(View view) {
+
         }
     }
     

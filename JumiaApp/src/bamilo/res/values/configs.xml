@@ -2,10 +2,10 @@
 <resources>
     
 	<!-- APP -->
-	<bool name="is_to_show_dev_env">true</bool>
 	<item name="is_bamilo_specific" type="bool">true</item>
 	<bool name="is_force_http">true</bool>
     <bool name="rtl_enabled">true</bool>
+    <bool name="is_layout_rtl">true</bool>
 
 	<!-- COUNTRIES -->
 	<!-- country.xml -->
@@ -36,7 +36,6 @@
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
     <string name="adjust_app_token">5ktqpxh59vp4</string>
-    <item name="adjust_is_production_env" type="bool">false</item>
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
@@ -53,4 +52,7 @@
 
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/BAMILO</string>
+
+    <!-- MARKET -->
+    <string name="id_market">com.bamilo.android</string>
 </resources>

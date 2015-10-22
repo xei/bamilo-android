@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  *
  */
-public class DialogSimpleListFragment extends DialogFragment implements OnItemClickListener, OnClickListener {
+public class DialogSimpleListFragment extends BottomSheet implements OnItemClickListener, OnClickListener {
 
     private final static String TAG = DialogSimpleListFragment.class.getSimpleName();
 
@@ -45,7 +44,6 @@ public class DialogSimpleListFragment extends DialogFragment implements OnItemCl
 
 	private OnDialogListListener mListener;
 
-
 	/**
 	 *
 	 * @author sergiopereira
@@ -56,6 +54,8 @@ public class DialogSimpleListFragment extends DialogFragment implements OnItemCl
         void onDialogListItemSelect(int position);
 
         void onDialogListClickView(View view);
+
+        void onDialogListDismiss();
     }
 
     /**
@@ -86,13 +86,14 @@ public class DialogSimpleListFragment extends DialogFragment implements OnItemCl
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
+	    //setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
+        //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Jumia_Dialog_Bottom_Sheet);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-	 */
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    return inflater.inflate(R.layout.dialog_list_content, container);
@@ -117,6 +118,8 @@ public class DialogSimpleListFragment extends DialogFragment implements OnItemCl
         setSizeGuide(view, mProduct.getSizeGuideUrl());
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        // Set Max list size
+        setListSize(list, mProduct.getSimples().size());
         // Validate adapter
         DialogListAdapter mAdapter = new DialogListAdapter(mProduct.getSimples());
         // Add adapter
@@ -171,6 +174,9 @@ public class DialogSimpleListFragment extends DialogFragment implements OnItemCl
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        if (mListener != null) {
+            mListener.onDialogListDismiss();
+        }
     }
 
     @Override

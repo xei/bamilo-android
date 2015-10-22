@@ -1,9 +1,9 @@
 package com.mobile.newFramework.objects.product.pojo;
 
 import android.os.Parcel;
-import android.text.TextUtils;
 
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,14 +17,16 @@ public class ProductSimple extends ProductBase {
 
     private String mVariationValue;
     private int mQuantity;
-    private int mMinDeliveryTime;
-    private int mMaxDeliveryTime;
 
     /**
      * Empty constructor.
      */
     public ProductSimple() {
         super();
+    }
+
+    public ProductSimple(JSONObject jsonObject) throws JSONException {
+        initialize(jsonObject);
     }
 
     /* (non-Javadoc)
@@ -48,9 +50,6 @@ public class ProductSimple extends ProductBase {
 
         mQuantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
 
-        // TODO use delivery_time
-        mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_MIN_DELIVERY_TAG);
-        mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_MAX_DELIVERY_TAG);
         return true;
     }
 
@@ -60,14 +59,6 @@ public class ProductSimple extends ProductBase {
 
     public int getQuantity() {
         return mQuantity;
-    }
-
-    public int getMinDeliveryTime() {
-        return mMinDeliveryTime;
-    }
-
-    public int getMaxDeliveryTime() {
-        return mMaxDeliveryTime;
     }
 
     public boolean isOutOfStock() {
@@ -89,16 +80,12 @@ public class ProductSimple extends ProductBase {
         super.writeToParcel(dest, flags);
         dest.writeString(mVariationValue);
         dest.writeInt(mQuantity);
-        dest.writeInt(mMinDeliveryTime);
-        dest.writeInt(mMaxDeliveryTime);
     }
 
     private ProductSimple(Parcel in) {
         super(in);
         mVariationValue = in.readString();
         mQuantity = in.readInt();
-        mMinDeliveryTime = in.readInt();
-        mMaxDeliveryTime = in.readInt();
     }
 
     public static final Creator<ProductSimple> CREATOR = new Creator<ProductSimple>() {

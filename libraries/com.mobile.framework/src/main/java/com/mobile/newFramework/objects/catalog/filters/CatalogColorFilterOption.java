@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -38,7 +40,29 @@ public class CatalogColorFilterOption extends CatalogCheckFilterOption {
         return hexValue;
     }
 
-    public void setHexValue(String hexValue) {
-        this.hexValue = hexValue;
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(this.hexValue);
+    }
+
+    protected CatalogColorFilterOption(Parcel in) {
+        super(in);
+        this.hexValue = in.readString();
+    }
+
+    public static final Creator<CatalogColorFilterOption> CREATOR = new Creator<CatalogColorFilterOption>() {
+        public CatalogColorFilterOption createFromParcel(Parcel source) {
+            return new CatalogColorFilterOption(source);
+        }
+
+        public CatalogColorFilterOption[] newArray(int size) {
+            return new CatalogColorFilterOption[size];
+        }
+    };
 }

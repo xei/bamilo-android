@@ -4,15 +4,15 @@
     android:layout_height="wrap_content">
 
     <include
-        layout="@layout/my_account_list_item"/>
+        layout="@layout/_def_my_account_language_item"/>
 
     <ImageView
         android:id="@+id/flag"
         android:layout_width="@dimen/item_height_normal"
         android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_huge"
-        android:layout_marginEnd="@dimen/margin_huge"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginEnd="@dimen/my_account_gen_dimen"
         android:padding="@dimen/margin_mid"
         android:src="@mipmap/ic_launcher"
         android:layout_alignParentRight="true"

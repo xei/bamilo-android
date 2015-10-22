@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.cache.WishListCache;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +23,6 @@ public class ProductRegular extends ProductBase {
     protected String mImageUrl;
     private String mCategories;
     protected boolean isNew;
-    protected boolean isWishList;
     protected double mAvgRating;
     protected int mTotalReviews;
     protected int mTotalRatings;
@@ -40,13 +41,25 @@ public class ProductRegular extends ProductBase {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
         super.initialize(jsonObject);
+
+        return initializeProductRegular(jsonObject);
+    }
+
+    protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        // Optional
+        // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        if(TextUtils.isEmpty(mImageUrl)) {
+            mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
+        }
+        // Is new
         isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG);
-        isWishList = jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG);
+        // Wish List flag
+        if (jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG)) {
+            WishListCache.add(mSku);
+        }
         mCategories = jsonObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         // Rating
         JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
@@ -89,11 +102,7 @@ public class ProductRegular extends ProductBase {
     }
 
     public boolean isWishList() {
-        return isWishList;
-    }
-
-    public void setIsWishList(boolean isWishList) {
-        this.isWishList = isWishList;
+        return WishListCache.has(mSku);
     }
 
     public double getAvgRating() {
@@ -125,7 +134,6 @@ public class ProductRegular extends ProductBase {
         mImageUrl = in.readString();
         mCategories = in.readString();
         isNew = in.readByte() != 0x00;
-        isWishList = in.readByte() != 0x00;
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
@@ -139,7 +147,6 @@ public class ProductRegular extends ProductBase {
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);
         dest.writeByte((byte) (isNew ? 0x01 : 0x00));
-        dest.writeByte((byte) (isWishList ? 0x01 : 0x00));
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);

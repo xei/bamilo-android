@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_above="@+id/buttons"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/filters_key"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="@color/black_400"
+            android:footerDividersEnabled="true"
+            android:dividerHeight="1dp"/>
+
+        <View style="@style/VerticalListDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="vertical"
+            >
+
+            <!-- TITLE -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/filter_title"
+                style="@style/HeaderStyle"
+                android:text="TITLE"
+                />
+
+            <View style="@style/HorizontalListDivider" />
+
+            <FrameLayout
+                android:id="@+id/dialog_filter_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+               />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- BUTTONS -->
+
+    <include android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        layout="@layout/filter_bottom_buttons"/>
+</RelativeLayout>

@@ -1,12 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/catalog_tool_bar_height"
-    android:background="@color/grey_background"
+    android:background="@color/white"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="@dimen/margin_10px">
+    android:orientation="horizontal">
 
-    <!-- SORT -->
+    <!-- FILTER -->
 
     <LinearLayout
         android:layout_width="0dp"
@@ -14,14 +13,22 @@
         android:layout_weight="1"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
+        android:layout_gravity="center"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/catalog_bar_button_sort"
-            style="@style/catalog_tool_bar_text"
-            android:drawableLeft="@drawable/selector_catalog_sort"
-            android:drawableStart="@drawable/selector_catalog_sort"
-            android:text="@string/products_sort_popularity" />
+            android:id="@+id/catalog_bar_button_filter"
+            style="@style/TextList_2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/margin_10px"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawableStart="@drawable/selector_catalog_filter"
+            android:text="@string/filter_label" />
+
 
     </LinearLayout>
 
@@ -37,7 +44,7 @@
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
-    <!-- FILTER -->
+    <!-- SORT -->
 
     <LinearLayout
         android:layout_width="0dp"
@@ -45,26 +52,44 @@
         android:layout_weight="1"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
+        android:layout_gravity="center"
         android:gravity="center">
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/catalog_bar_button_filter"
-            style="@style/catalog_tool_bar_text"
-            android:drawableLeft="@drawable/selector_catalog_filter"
-            android:drawableStart="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label" />
+            android:id="@+id/catalog_bar_button_sort"
+            style="@style/TextList_2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/margin_10px"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawableStart="@drawable/selector_catalog_sort"
+            android:text="@string/products_sort_popularity" />
+
 
     </LinearLayout>
 
-    <!-- GRID LAYOUT -->
+    <!-- DIVIDER -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <View
+            style="@style/divider_vertical"
+            android:layout_margin="@dimen/margin_10px" />
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
         android:layout_width="@dimen/dimen_160px"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dimen_10px"
-        android:layout_marginStart="@dimen/dimen_10px"
         android:background="@android:color/white"
-        android:src="@drawable/selector_catalog_gridview" />
+        android:src="@drawable/selector_catalog_list" />
+
+
 
 </LinearLayout>

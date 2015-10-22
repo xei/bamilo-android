@@ -1,5 +1,8 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -19,13 +22,14 @@ import org.json.JSONObject;
  * @date 2015/09/03
  *
  */
-public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionInterface {
+public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionInterface, Parcelable {
 
     private int min;
     private int max;
     private int interval;
     private int rangeMin;
     private int rangeMax;
+    private PriceFilterCheckBoxOption checkBoxOption;
 
     public CatalogPriceFilterOption(){}
 
@@ -34,12 +38,13 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
         initialize(jsonObject);
     }
 
-    public CatalogPriceFilterOption(CatalogPriceFilterOption priceFilterOption){
+    CatalogPriceFilterOption(CatalogPriceFilterOption priceFilterOption){
         this.min = priceFilterOption.min;
         this.max = priceFilterOption.max;
         this.interval = priceFilterOption.interval;
         this.rangeMin = priceFilterOption.rangeMin;
         this.rangeMax = priceFilterOption.rangeMax;
+        this.checkBoxOption = new PriceFilterCheckBoxOption(priceFilterOption.checkBoxOption);
     }
 
     @Override
@@ -67,24 +72,12 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
         return min;
     }
 
-    public void setMin(int min) {
-        this.min = min;
-    }
-
     public int getMax() {
         return max;
     }
 
-    public void setMax(int max) {
-        this.max = max;
-    }
-
     public int getInterval() {
         return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
     }
 
     public int getRangeMin() {
@@ -107,4 +100,47 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     public SingleFilterOptionInterface clone() {
         return new CatalogPriceFilterOption(this);
     }
+
+
+    public PriceFilterCheckBoxOption getCheckBoxOption() {
+        return checkBoxOption;
+    }
+
+    public void setCheckBoxOption(PriceFilterCheckBoxOption checkBoxOption) {
+        this.checkBoxOption = checkBoxOption;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.min);
+        dest.writeInt(this.max);
+        dest.writeInt(this.interval);
+        dest.writeInt(this.rangeMin);
+        dest.writeInt(this.rangeMax);
+        dest.writeParcelable(this.checkBoxOption, flags);
+    }
+
+    protected CatalogPriceFilterOption(Parcel in) {
+        this.min = in.readInt();
+        this.max = in.readInt();
+        this.interval = in.readInt();
+        this.rangeMin = in.readInt();
+        this.rangeMax = in.readInt();
+        this.checkBoxOption = in.readParcelable(PriceFilterCheckBoxOption.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CatalogPriceFilterOption> CREATOR = new Parcelable.Creator<CatalogPriceFilterOption>() {
+        public CatalogPriceFilterOption createFromParcel(Parcel source) {
+            return new CatalogPriceFilterOption(source);
+        }
+
+        public CatalogPriceFilterOption[] newArray(int size) {
+            return new CatalogPriceFilterOption[size];
+        }
+    };
 }

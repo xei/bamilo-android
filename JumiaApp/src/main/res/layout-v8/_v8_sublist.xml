@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/layout_padding">
+
+
+    <View style="@style/divider_horizontal"
+        android:id="@+id/separator"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="gone"
+        android:layout_gravity="top"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_sublist_button"
+        style="@style/TextCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item sublist"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
+
+
+</RelativeLayout>

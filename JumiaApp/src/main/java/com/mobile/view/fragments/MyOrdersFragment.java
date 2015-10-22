@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -43,8 +40,6 @@ public class MyOrdersFragment extends BaseFragment {
 
     /**
      * Get instance
-     *
-     * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
         MyOrdersFragment fragment = new MyOrdersFragment();
@@ -56,7 +51,7 @@ public class MyOrdersFragment extends BaseFragment {
      * Empty constructor
      */
     public MyOrdersFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
                 R.layout.myorders_fragment_main,
                 R.string.my_orders_label,
@@ -92,6 +87,9 @@ public class MyOrdersFragment extends BaseFragment {
             //If comes from login page, means that it has to go to OrderHistory
             if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
                 mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
+            }
+            if(arguments.containsKey(ConstantsIntentExtra.MY_ORDER_POS)){
+                mPositionToStart = arguments.getInt(ConstantsIntentExtra.MY_ORDER_POS);
             }
         } else {
             // If app is on Rtl mode, the view pager must start from the end
@@ -148,6 +146,7 @@ public class MyOrdersFragment extends BaseFragment {
         Print.i(TAG, "ON RESUME");
         if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
             // Show the pre selection
+            mPositionToStart =  mMyOrdersPager.getCurrentItem();
             mMyOrdersPager.setCurrentItem(mPositionToStart, true);
         } else {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");

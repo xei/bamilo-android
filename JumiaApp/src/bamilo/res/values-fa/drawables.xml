@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="img_instructions_right_tap">@drawable/img_instructions_right_tap_rtl</item>
+    <item type="drawable" name="img_instructions_tap">@drawable/img_instructions_tap_rtl</item>
+    <item type="drawable" name="img_emptycart">@drawable/img_emptycart_rtl</item>
+    <item type="drawable" name="img_stepinactive">@drawable/img_stepinactive_rtl</item>
+    <item type="drawable" name="img_stepactive">@drawable/img_stepactive_rtl</item>
+    <item type="drawable" name="arrow_side">@drawable/arrow_side_rtl</item>
+    <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
+    <item type="drawable" name="ic_menu_cart_pressed">@drawable/ic_menu_cart_pressed_rtl</item>
+    <item type="drawable" name="ic_menu_cart">@drawable/ic_menu_cart_rtl</item>
+    <item type="drawable" name="spinner_default_holo_orange">@drawable/spinner_default_holo_orange_rtl</item>
+    <item type="drawable" name="spinner_disabled_holo_orange">@drawable/spinner_disabled_holo_orange_rtl</item>
+    <item type="drawable" name="spinner_focused_holo_orange">@drawable/spinner_focused_holo_orange_rtl</item>
+    <item type="drawable" name="spinner_pressed_holo_orange">@drawable/spinner_pressed_holo_orange_rtl</item>
+    <item type="drawable" name="spinnerbutton_normal_holo_light">@drawable/spinnerbutton_normal_holo_light_rtl</item>
+    <item type="drawable" name="spinnerbutton_pressed_holo_light">@drawable/spinnerbutton_pressed_holo_light_rtl</item>
+    <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
+    <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
+
+</resources>

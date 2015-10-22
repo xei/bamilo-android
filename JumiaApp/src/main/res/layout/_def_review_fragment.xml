@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="locale" >
+
+        <LinearLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_large" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_huge"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginStart="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/review_ratings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/title_review"
+                    style="@style/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="left|start"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:gravity="left|start"
+                    android:text="" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_mid" >
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/posted_by"
+                        style="@style/text_normal"
+                        android:text="@string/posted_by"
+                        android:textSize="@dimen/text_s" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/review_username"
+                        style="@style/text_normal"
+                        android:layout_marginLeft="@dimen/rounded_margin_small"
+                        android:layout_marginStart="@dimen/rounded_margin_small"
+                        android:text="User"
+                        android:textSize="@dimen/text_s" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/review_date"
+                        style="@style/text_normal"
+                        android:layout_marginLeft="@dimen/rounded_margin_small"
+                        android:layout_marginStart="@dimen/rounded_margin_small"
+                        android:text="Date"
+                        android:textSize="@dimen/text_s" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                style="@style/divider_horizontal"
+                android:layout_marginTop="@dimen/margin_huge" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_huge"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginStart="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/review_comment"
+                    style="@style/text_normal"
+                    android:ellipsize="none"
+                    android:singleLine="false"
+                    android:text="This is a really interesting comment." />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

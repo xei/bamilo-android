@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.addresses.AddressRegions;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -34,13 +32,6 @@ public class GetRegionsHelper extends SuperBaseHelper {
     @Override
     protected void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getRegions);
-    }
-
-    @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        AddressRegions regions = (AddressRegions) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, regions);
     }
 
     public static Bundle createBundle(String url) {

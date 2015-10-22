@@ -301,7 +301,7 @@ public class Ad4PushTracker {
     private void stopingSDK(Context context, boolean isToStop) {
         if (null != mA4S) {
             Print.d(TAG, "Stop SDK:" + isToStop);
-            mA4S.setDoNotTrackEnabled(context, isToStop);
+            A4S.setDoNotTrackEnabled(context, isToStop);
         }
     }
 
@@ -487,18 +487,19 @@ public class Ad4PushTracker {
      * @param cartQt
      * @param cartValue
      */
-    public void trackCheckoutStarted(int cartQt, double cartValue) {
+    public void trackCheckoutStarted(int cartQt, double cartValue, String attributeIds) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
             prefs.putString(ORDER_STATUS, CHECKOUT_STARTED);
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartQt);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK CHECKOUT STARTED: " + prefs.toString());
         }
     }
 
-    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon) {
+    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon, String attributeIds) {
 
         // String currency = CurrencyFormatter.getCurrencyCode();
         String currency = CurrencyFormatter.EURO_CODE;
@@ -533,6 +534,7 @@ public class Ad4PushTracker {
             prefs.putString(PURCHASE_COUPON_STATUS, coupon);
             prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
             prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             // Clean other values
             //XXX
 //            prefs.putInt(FAVORITES_TO_CART_SKU, 0);
@@ -551,15 +553,8 @@ public class Ad4PushTracker {
      */
     public void trackAddToFavorites(String productSKU) {
         if (isEnabled) {
-            // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(WISHLIST_NUMBER, ++wishlistNumber);
-            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
@@ -568,20 +563,11 @@ public class Ad4PushTracker {
 
     /**
      * Track the remove item from favorites.
-     *
-     * @param productSKU
      */
-    public void trackRemoveFromWishlist(String productSKU) {
+    public void trackRemoveFromWishList(String productSKU) {
         if (isEnabled) {
-            // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(WISHLIST_NUMBER, --wishlistNumber);
-            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
@@ -590,17 +576,9 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart from favorites.
-     *
-     * @param sku
-     * @param price
-     * @param name
-     * @param category
      */
     public void trackAddToCartFromFav(String sku, double price, String name, String category) {
         if (isEnabled) {
-            // Get the number of favorites
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-            int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             // Track add to cart from fav
             Bundle prefs = new Bundle();
             prefs.putString(FAVORITES_TO_CART_SKU, sku);
@@ -653,10 +631,9 @@ public class Ad4PushTracker {
 
     public void trackSearch(String searchTerm) {
         if (isEnabled) {
-            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
             Bundle prefs = new Bundle();
             prefs.putString(LAST_SEARCH, searchTerm);
-            prefs.putString(LAST_SEARCH_DATE, currentDateAndTime);
+            prefs.putString(LAST_SEARCH_DATE, DateTimeUtils.getCurrentDateTime());
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK SEARCH: " + prefs.toString());
         }
@@ -719,11 +696,12 @@ public class Ad4PushTracker {
      * @param cartValue
      * @author sergiopereira
      */
-    public void trackCart(double cartValue, int cartCount) {
+    public void trackCart(double cartValue, int cartCount, String attributeIds) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartCount);
+            prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK CART VALUE: " + prefs.toString());
         }
@@ -830,7 +808,7 @@ public class Ad4PushTracker {
                 prefs.putString(MOST_VIEWED_BRAND, brand);
                 mA4S.updateDeviceInfo(prefs);
                 Print.i(TAG, "TRACK TOP BRAND: " + prefs.toString());
-            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
+            } catch (IllegalStateException | InterruptedException | UnsupportedEncodingException | NullPointerException e) {
                 e.printStackTrace();
             }
         }

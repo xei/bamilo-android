@@ -24,6 +24,7 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.checkout.GetPaymentMethodsHelper;
 import com.mobile.helpers.checkout.SetPaymentMethodHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
@@ -32,6 +33,9 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
+import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
@@ -74,6 +78,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private boolean noPaymentNeeded = false;
     
     private boolean removeVoucher = false;
+    
     private PurchaseEntity orderSummary;
 
     private ContentValues mSavedState;
@@ -81,6 +86,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private String paymentName = "";
 
     private View checkoutTotalView;
+
+    private View buttonEnterLayout;
     
     /**
      * Get new instance of CheckoutPaymentMethodsFragment.
@@ -94,7 +101,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * Empty constructor
      */
     public CheckoutPaymentMethodsFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Checkout,
                 R.layout.checkout_payment_main,
                 R.string.checkout_label,
@@ -142,7 +149,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-
+        buttonEnterLayout = view.findViewById(R.id.checkout_button_container);
         //checkout total view
         if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
             checkoutTotalView = view.findViewById(R.id.total_view_stub);
@@ -266,6 +273,15 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
+
+        if(getView().findViewById(R.id.text_information) == null) {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.VISIBLE);
+            buttonEnterLayout.setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.GONE);
+            buttonEnterLayout.setVisibility(View.GONE);
+        }
+
         showFragmentContentContainer();
     }
     
@@ -426,7 +442,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -434,14 +450,15 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             return;
         }
         
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:
             Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
-            orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+            CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
+            orderSummary = responseData.getOrderSummary();
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
             CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary);
             if(orderSummary != null && orderSummary.getTotal() == 0){
@@ -450,7 +467,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 generateNoPayment();
             } else {
                 // Form
-                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = responseData.getForm();
                 loadForm(form);                
             }
             updateVoucher(orderSummary);
@@ -458,13 +475,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         case SET_PAYMENT_METHOD_EVENT:
             Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             // Get next step
-            FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getMetadata().getData();
+            FragmentType nextFragment = nextStepStruct.getFragmentType();
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
             // Tracking
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
             String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
             TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, ((SetPaymentMethod) nextStepStruct.getCheckoutStepObject()).getOrderSummary());
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
             break;
         case ADD_VOUCHER:
@@ -490,20 +510,20 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
 
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
     	// Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         // Get event type and error
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         // Validate event type
         switch (eventType) {

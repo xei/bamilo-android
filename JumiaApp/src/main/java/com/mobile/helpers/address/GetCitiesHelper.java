@@ -54,16 +54,35 @@ public class GetCitiesHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
-        AddressCities cities = (AddressCities) baseResponse.getMetadata().getData();
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, cities);
-        bundle.putString(CUSTOM_TAG, customTag);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+        AddressCitiesStruct cities = new AddressCitiesStruct( (AddressCities)baseResponse.getMetadata().getData());
+        cities.setCustomTag(customTag);
+        baseResponse.getMetadata().setData(cities);
     }
 
+    public class AddressCitiesStruct extends AddressCities {
+        private String customTag;
+
+        public AddressCitiesStruct(){}
+
+        public AddressCitiesStruct(AddressCities addressCities){
+            super(addressCities);
+        }
+
+
+        public String getCustomTag() {
+            return customTag;
+        }
+
+        public void setCustomTag(String customTag) {
+            this.customTag = customTag;
+        }
+    }
+    
     public static Bundle createBundle(String url, int region, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
+        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // FIXME: API v2.0
         bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
         bundle.putString(GetCitiesHelper.CUSTOM_TAG, tag);
         return bundle;

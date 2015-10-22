@@ -2,15 +2,12 @@ package com.mobile.newFramework.objects.product.pojo;
 
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,18 +19,10 @@ import org.json.JSONObject;
  * // TODO USE THE PRODUCT BASE
  *
  */
-public class ProductOffer implements IJSONSerializable, Parcelable{
+public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
     protected static final String TAG = ProductOffer.class.getSimpleName();
 
-    private String sku;
-    private String simpleSku;
-    private String priceOffer;
-    private double priceOfferDouble;
-    private double priceOfferConverted;
-    private String specialPriceOffer;
-    private double specialPriceOfferDouble;
-    private double specialPriceOfferConverted;
     private int maxDeliveryTime;
     private int minDeliveryTime;
     private Seller seller;
@@ -43,14 +32,6 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
      */
     @SuppressWarnings("unused")
     public ProductOffer() {
-        sku ="";
-        simpleSku = "";
-        priceOffer = "";
-        priceOfferDouble = 0.0;
-        priceOfferConverted = 0.0;
-        specialPriceOffer = "";
-        specialPriceOfferDouble = 0.0;
-        specialPriceOfferConverted = 0.0;
         maxDeliveryTime = 0;
         minDeliveryTime = 0;
         seller = new Seller();
@@ -60,15 +41,6 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
      * Complete product empty constructor.
      */
     public ProductOffer(JSONObject offer) {
-
-        sku ="";
-        simpleSku = "";
-        priceOffer = "";
-        priceOfferDouble = 0.0;
-        priceOfferConverted = 0.0;
-        specialPriceOffer = "";
-        specialPriceOfferDouble = 0.0;
-        specialPriceOfferConverted = 0.0;
         maxDeliveryTime = 0;
         minDeliveryTime = 0;
         seller = new Seller();
@@ -95,40 +67,14 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
 
             if(productObject != null){
 
-                sku = productObject.optString(RestConstants.SKU);
+                initializeProductBase(productObject);
 
-                priceOffer = productObject.optString(RestConstants.JSON_PRICE_TAG);
-
-                if (!CurrencyFormatter.isNumber(priceOffer)) {
-                    priceOffer = "0";
-                }
-                priceOfferDouble = Double.parseDouble(priceOffer);
-
-                priceOfferConverted = productObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0.0);
-
-                specialPriceOffer = productObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-
-                if (!CurrencyFormatter.isNumber(specialPriceOffer)) {
-                    specialPriceOffer = "0.0";
-                }
-                specialPriceOfferDouble = Double.parseDouble(specialPriceOffer);
-
-                specialPriceOfferConverted = productObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG,0.0);
-
-                JSONArray simplesArray = productObject.optJSONArray(RestConstants.JSON_SIMPLES_TAG);
+                initializeProductMultiple(productObject);
 
                 minDeliveryTime = productObject.optInt(RestConstants.JSON_MIN_DELIVERY_TAG);
                 maxDeliveryTime = productObject.optInt(RestConstants.JSON_MAX_DELIVERY_TAG);
 
-                //Simple array it's only supposed to have one simple, is a "buy now" kind of product
-                if(simplesArray != null && simplesArray.length() > 0){
-                    JSONObject simpleObject = simplesArray.getJSONObject(0);
-                    simpleSku = simpleObject.optString(RestConstants.SKU);
-
-                }
-
             }
-
 
         } catch (JSONException e) {
 
@@ -153,16 +99,12 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
         return RequiredJson.NONE;
     }
 
-    public String getSku() {
-        return sku;
+    public double getFinalPrice() {
+        return mSpecialPrice == 0.0 ? mPrice : mSpecialPrice;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getSimpleSku() {
-        return simpleSku;
+    public String getFinalPriceString() {
+        return mSpecialPrice == 0.0 ? mPrice+"" : mSpecialPrice+"";
     }
 
     public int getMaxDeliveryTime() {
@@ -181,32 +123,10 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
         this.seller = seller;
     }
 
-    public double getFinalPrice() {
-        return specialPriceOfferDouble == 0.0 ? priceOfferDouble : specialPriceOfferDouble;
-    }
-
-    public String getFinalPriceString() {
-        return specialPriceOfferDouble == 0.0 ? priceOffer : specialPriceOffer;
-    }
-
     /*
      * ############ PARCELABLE ############
      */
 
-
-    protected ProductOffer(Parcel in) {
-        sku = in.readString();
-        simpleSku = in.readString();
-        priceOffer = in.readString();
-        priceOfferDouble = in.readDouble();
-        priceOfferConverted = in.readDouble();
-        specialPriceOffer = in.readString();
-        specialPriceOfferDouble = in.readDouble();
-        specialPriceOfferConverted = in.readDouble();
-        maxDeliveryTime = in.readInt();
-        minDeliveryTime = in.readInt();
-        seller = (Seller) in.readValue(Seller.class.getClassLoader());
-    }
 
     @Override
     public int describeContents() {
@@ -215,31 +135,26 @@ public class ProductOffer implements IJSONSerializable, Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(sku);
-        dest.writeString(simpleSku);
-        dest.writeString(priceOffer);
-        dest.writeDouble(priceOfferDouble);
-        dest.writeDouble(priceOfferConverted);
-        dest.writeString(specialPriceOffer);
-        dest.writeDouble(specialPriceOfferDouble);
-        dest.writeDouble(specialPriceOfferConverted);
-        dest.writeInt(maxDeliveryTime);
-        dest.writeInt(minDeliveryTime);
-        dest.writeValue(seller);
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.maxDeliveryTime);
+        dest.writeInt(this.minDeliveryTime);
+        dest.writeParcelable(this.seller, 0);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ProductOffer> CREATOR = new Parcelable.Creator<ProductOffer>() {
-        @Override
-        public ProductOffer createFromParcel(Parcel in) {
-            return new ProductOffer(in);
+    protected ProductOffer(Parcel in) {
+        super(in);
+        this.maxDeliveryTime = in.readInt();
+        this.minDeliveryTime = in.readInt();
+        this.seller = in.readParcelable(Seller.class.getClassLoader());
+    }
+
+    public static final Creator<ProductOffer> CREATOR = new Creator<ProductOffer>() {
+        public ProductOffer createFromParcel(Parcel source) {
+            return new ProductOffer(source);
         }
 
-        @Override
         public ProductOffer[] newArray(int size) {
             return new ProductOffer[size];
         }
     };
-
-
 }

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.util.SparseArray;
 
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,11 @@ public class FilterSelectionController {
     public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters){
         this.catalogFilters = catalogFilters;
         initialValues = new FilterOptionInterface[catalogFilters.size()];
+    }
+
+    public FilterSelectionController(ArrayList<CatalogFilter> catalogFilters, FilterOptionInterface[] initialValues) {
+        this.catalogFilters = catalogFilters;
+        this.initialValues = initialValues;
     }
 
     /**
@@ -108,12 +112,16 @@ public class FilterSelectionController {
     public ContentValues getValues(){
         ContentValues contentValues = new ContentValues();
         for (CatalogFilter filter : catalogFilters) {
-            String value = filter.getValues();
-            if(TextUtils.isNotEmpty(value)){
-                contentValues.put(filter.getId(), value);
-            }
+            contentValues.putAll(filter.getValues());
         }
         return contentValues;
     }
 
+    public ArrayList<CatalogFilter> getCatalogFilters() {
+        return catalogFilters;
+    }
+
+    public FilterOptionInterface[] getInitialValues() {
+        return initialValues;
+    }
 }

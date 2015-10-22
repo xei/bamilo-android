@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- HEADER TITLE -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_specs_title"
+        style="@style/HeaderStyle"
+        android:text="@string/seller_info"
+        android:layout_marginBottom="16dp"/>
+
+    <!--CONTENT -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_seller_name"
+        style="@style/TextBody_1"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <!-- DELIVERY TIME -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_seller_delivery_info"
+        style="@style/TextHeader"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+
+    <!-- WARRANTY: OPTIONAL -->
+    
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_seller_warranty"
+        style="@style/TextHeader"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
+        android:layout_marginBottom="16dp"
+        android:drawableLeft="@drawable/ic_warranty"
+        android:drawableStart="@drawable/ic_warranty"
+        android:drawablePadding="16dp"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <!-- DELIVERY TIME: OVERSEAS -->
+
+    <RelativeLayout
+        android:id="@+id/pdv_seller_overseas_delivery_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginStart="@dimen/layout_padding"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:visibility="gone">
+
+        <!-- TITLE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_seller_overseas_delivery_title"
+            style="@style/TextHeader"
+            android:drawableLeft="@drawable/ic_overseas"
+            android:drawableStart="@drawable/ic_overseas"
+            android:drawablePadding="16dp"
+            android:textColor="@color/black" />
+
+        <!-- TEXT BLACK -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_seller_overseas_delivery_text_black"
+            style="@style/TextCaption"
+            android:layout_below="@id/pdv_seller_overseas_delivery_title"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:visibility="gone"/>
+
+        <!-- TEXT ORANGE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_seller_overseas_delivery_text_orange"
+            style="@style/TextCaption"
+            android:layout_below="@id/pdv_seller_overseas_delivery_text_black"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:singleLine="false"
+            android:textColor="@color/color_accent"
+            android:visibility="gone"/>
+
+        <!-- LINK -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdv_seller_overseas_delivery_link"
+            style="@style/TextCaption"
+            android:layout_below="@id/pdv_seller_overseas_delivery_text_orange"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:clickable="true"
+            android:singleLine="false"
+            android:paddingTop="16dp"
+            android:textColor="@color/color_accent"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

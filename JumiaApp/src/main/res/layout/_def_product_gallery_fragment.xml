@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!--THUMBNAIL INDICATOR-->
+
+    <include
+        android:id="@+id/pdv_thumbnail_indicator_scroll"
+        layout="@layout/_def_pdv_fragment_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <!-- VIEW PAGER -->
+
+    <com.mobile.components.viewpager.JumiaViewPagerWithZoom
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/pdv_thumbnail_indicator_scroll"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/selector_list_item_highlight" />
+
+    <include layout="@layout/_def_pdv_fragment_image_oos"
+        android:id="@+id/pdv_image_oos_overlay"
+        android:layout_width="match_parent"
+        android:layout_alignTop="@id/viewpager"
+        android:visibility="gone"
+        android:layout_alignBottom="@id/viewpager"
+        android:layout_alignLeft="@id/viewpager"
+        android:layout_alignRight="@id/viewpager"
+        android:layout_height="match_parent"/>
+
+    <!--
+    <com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator
+        android:id="@+id/view_pager_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+       -->
+
+    <!-- CLOSE BUTTON -->
+
+    <ImageView
+        android:id="@+id/gallery_button_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_btn_close"
+        android:visibility="gone" />
+
+</RelativeLayout>

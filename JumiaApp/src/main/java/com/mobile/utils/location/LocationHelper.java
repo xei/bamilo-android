@@ -18,7 +18,7 @@ import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.objects.configs.Language;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -71,9 +71,9 @@ public class LocationHelper implements LocationListener {
      * @author sergiopereira
      */
     public void autoCountrySelection(Context context, Handler callback){
-    	this.context = context;
-    	this.callback = callback;
-    	
+
+        initializeLocationHelper(context, callback);
+
     	// From device
         TelephonyManager deviceManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         // From network
@@ -95,7 +95,7 @@ public class LocationHelper implements LocationListener {
     /**
      * ################## REQUESTS ################## 
      */
-    
+
     /**
      * Get the country code from Network configurations
      * @param deviceManager
@@ -132,7 +132,7 @@ public class LocationHelper implements LocationListener {
     
     
     /**
-     * Get the country code from the last known loaction using the GeoCoder api.
+     * Get the country code from the last known location using the GeoCoder api.
      * @param locationManager
      * @return true or false
      * @author sergiopereira
@@ -239,7 +239,7 @@ public class LocationHelper implements LocationListener {
         @Override
         public void run() {
             Print.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
-            // Valdiate flag
+            // Validate flag
             if(!locationReceived) {
                 // Remove the listener previously added
                 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -258,10 +258,10 @@ public class LocationHelper implements LocationListener {
      * @param countryCode
      * @return true or false
      */
-    private boolean isCountryAvailable(String countryCode) {
+    public boolean isCountryAvailable(String countryCode) {
         // Filter country code 
         if(countryCode == null || countryCode.length() != 2) return NO_SELECTED;
-        
+
         // Valdiate countries available
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -390,11 +390,11 @@ public class LocationHelper implements LocationListener {
      */
     private void sendUserInteractionMessage(EventType eventType, ErrorCode errorType){
         Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
         Message msg = new Message();
-        msg.obj = bundle;
+        msg.obj = new BaseResponse<>(eventType,errorType);
         callback.sendMessage(msg);
     }
     
@@ -402,8 +402,17 @@ public class LocationHelper implements LocationListener {
      * Send the INITIALIZE message to JumiaApplication
      * @author sergiopereira
      */
-    private void sendInitializeMessage(){
+    public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
         JumiaApplication.INSTANCE.init(callback);
+    }
+
+    /**
+     * set location helper context and callback
+     * @param ctx
+     */
+    public void initializeLocationHelper (Context ctx, Handler callback){
+        this.context = ctx;
+        this.callback = callback;
     }
 }

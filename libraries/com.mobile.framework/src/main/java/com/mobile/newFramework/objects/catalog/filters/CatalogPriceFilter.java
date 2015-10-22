@@ -1,7 +1,11 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.content.ContentValues;
+import android.os.Parcel;
+
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,12 +21,12 @@ import org.json.JSONObject;
  * @date 2015/09/04
  *
  */
-public class CatalogPriceFilter extends CatalogFilter{
+public class CatalogPriceFilter extends CatalogFilter {
 
     private CatalogPriceFilterOption option;
 
     public CatalogPriceFilter(){
-
+        option = new CatalogPriceFilterOption();
     }
 
     public CatalogPriceFilter(JSONObject jsonObject) throws JSONException {
@@ -33,8 +37,19 @@ public class CatalogPriceFilter extends CatalogFilter{
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
-        option = new CatalogPriceFilterOption(jsonObject.getJSONObject(RestConstants.JSON_OPTION_TAG));
+        option.initialize(jsonObject.getJSONObject(RestConstants.JSON_OPTION_TAG));
         return true;
+    }
+
+    @Override
+    protected void parseFields(JSONArray fieldsArray) throws JSONException {
+        if(fieldsArray.length() != 0){
+            try{
+                option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
+            }catch (JSONException ex){
+
+            }
+        }
     }
 
     @Override
@@ -42,15 +57,40 @@ public class CatalogPriceFilter extends CatalogFilter{
         optionType = CatalogPriceFilterOption.class;
     }
 
+
     @Override
-    protected String getValues() {
-        return (option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax()) ? option.getRangeMin() + filterSeparator + option.getRangeMax() : null;
+    public boolean hasAppliedFilters() {
+        return hasAppliedPriceValues() || hasAppliedCheckBoxOption();
+    }
+
+    protected ContentValues getValues() {
+        ContentValues values = new ContentValues();
+
+        if(hasAppliedPriceValues()){
+            values.put(id, option.getRangeMin() + filterSeparator + option.getRangeMax());
+        }
+
+        if(hasAppliedCheckBoxOption()) {
+            values.put(option.getCheckBoxOption().getId(), true);
+        }
+        return values;
+    }
+
+    private boolean hasAppliedPriceValues(){
+        return option.getRangeMin() != option.getMin() || option.getRangeMax() != option.getMax();
+    }
+
+    private boolean hasAppliedCheckBoxOption(){
+        return option.getCheckBoxOption() != null && option.getCheckBoxOption().isSelected();
     }
 
     @Override
     public void cleanFilter() {
         option.setRangeMin(option.getMin());
         option.setRangeMax(option.getMax());
+        if(option.getCheckBoxOption() != null) {
+            option.getCheckBoxOption().setSelected(false);
+        }
     }
 
     public CatalogPriceFilterOption getOption() {
@@ -61,4 +101,29 @@ public class CatalogPriceFilter extends CatalogFilter{
         this.option = option;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(this.option, flags);
+    }
+
+    protected CatalogPriceFilter(Parcel in) {
+        super(in);
+        this.option = in.readParcelable(CatalogPriceFilterOption.class.getClassLoader());
+    }
+
+    public static final Creator<CatalogPriceFilter> CREATOR = new Creator<CatalogPriceFilter>() {
+        public CatalogPriceFilter createFromParcel(Parcel source) {
+            return new CatalogPriceFilter(source);
+        }
+
+        public CatalogPriceFilter[] newArray(int size) {
+            return new CatalogPriceFilter[size];
+        }
+    };
 }

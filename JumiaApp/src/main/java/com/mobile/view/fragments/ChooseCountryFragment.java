@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -15,20 +12,21 @@ import android.widget.ListView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountryAdapter;
-import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
-import com.mobile.helpers.configs.GetCountryConfigsHelper;
+import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.configs.CountryConfigs;
+import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -45,7 +43,7 @@ import java.util.EnumSet;
  * 
  * @author sergiopereira
  */
-public class ChooseCountryFragment extends BaseFragment implements IResponseCallback {
+public class ChooseCountryFragment extends BaseFragment implements IResponseCallback, OnItemClickListener {
 
     private static final String TAG = ChooseCountryFragment.class.getSimpleName();
 
@@ -59,6 +57,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
     private boolean isChangeCountry;
 
+    private ListView mCountryListView;
+
     /**
      * Get instance
      * @return ChangeCountryFragment
@@ -71,10 +71,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * Empty constructor
      */
     public ChooseCountryFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.Country,
                 R.layout.change_country,
-                R.string.nav_country,
+                ShopSelector.getShopId() != null ? R.string.nav_country : IntConstants.ACTION_BAR_NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -109,19 +109,23 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        
+        // List view
+        mCountryListView = (ListView) view.findViewById(R.id.change_country_list);
         // Validate the current shop
         if(ShopSelector.getShopId() != null) {
             // Get and show new available countries
             isChangeCountry = true;
-            triggerGetJumiaCountries();
+            triggerGetAvailableCountries();
         } else {
             // Show available countries from memory/database, loaded in splash screen.
             isChangeCountry = false;
             showAvailableCountries();
-            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+            //
+            if (getBaseActivity().getSupportActionBar() != null) {
+                getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+                getBaseActivity().getSupportActionBar().setLogo(null);
+            }
         }
-        
     }
 
     /*
@@ -208,17 +212,17 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
 
     private void showAvailableCountries() {
-
         // Data
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String selectedCountry = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
-        
+        String countryIso = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
+        String countryUrl = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
+        // Validate data
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0){
             // Get countries from database
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
             // Validate data from database
             if(JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
-                triggerGetJumiaCountries();
+                triggerGetAvailableCountries();
                 return;   
             }
         } 
@@ -232,35 +236,34 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();
-            if(selectedCountry != null && selectedCountry.equalsIgnoreCase(country.getCountryIso())){
+            String iso = country.getCountryIso();
+            String url = country.getCountryUrl();
+            if(countryIso != null && countryIso.equalsIgnoreCase(iso) && TextUtils.equals(countryUrl, url)){
                 selected = count;
             }
             count++;
         }
         
         // Inflate
-        final ListView countryList = (ListView) getView().findViewById(R.id.change_country_list);
+
         if(countryAdapter == null){
-            countryAdapter = new CountryAdapter(getActivity(), countries, flagsList);
+            countryAdapter = new CountryAdapter(context, countries, flagsList);
         }
         countryAdapter.updateValues(countries);
-        countryList.setAdapter(countryAdapter);
-        countryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        mCountryListView.setAdapter(countryAdapter);
+        mCountryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
         if (selected > SHOP_NOT_SELECTED) {
-            countryList.setItemChecked(selected, true);
+            mCountryListView.setItemChecked(selected, true);
         }
 
         // Listener
-        countryList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                handleOnItemClick((ListView) parent, position);
-            }
-        });
+        mCountryListView.setOnItemClickListener(this);
     }
 
-    private void handleOnItemClick(final ListView countryList, final int position) {
-        countryList.setItemChecked(position, true);
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+        ((ListView) parent).setItemChecked(position, true);
 
         final CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
         final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
@@ -286,16 +289,13 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
     protected boolean setCountry(CountryObject countryObject, int position){
         CountryPersistentConfigs.eraseCountryPreferences(context);
-        CountryPersistentConfigs.saveLanguages(context,countryObject.getLanguages());
+        CountryPersistentConfigs.saveLanguages(context, countryObject.getLanguages());
         return setCountry(position);
     }
 
     /**
      * Save the selected country
-     * @param position
-     *
-     * @return true if changed successfully
-     * @return false otherwise
+     * @return true if changed successfully false otherwise
      */
     protected boolean setCountry(int position) {
 
@@ -343,8 +343,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * Trigger used to get all Jumia Available countries
      * @author sergiopereira
      */
-    private void triggerGetJumiaCountries() {
-        triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
+    private void triggerGetAvailableCountries() {
+        triggerContentEvent(new GetAvailableCountriesHelper(), null, this);
     }
 
     /*
@@ -367,7 +367,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     private void onClickRetryButton(){
         Print.d(TAG, "ON CLICK: RETRY BUTTON");
-        triggerGetJumiaCountries();
+        triggerGetAvailableCountries();
     }
     
     /*
@@ -379,7 +379,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -387,13 +387,13 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             return;
         }
         // Get event type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate event type
         switch (eventType) {
             case GET_GLOBAL_CONFIGURATIONS:
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
-                JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getMetadata().getData();
                 // Show countries
                 showAvailableCountries();
                 showFragmentContentContainer();
@@ -409,18 +409,18 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type and error type
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
-        if(super.handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(baseResponse)) return;
         
         // Validate event type
         switch (eventType) {

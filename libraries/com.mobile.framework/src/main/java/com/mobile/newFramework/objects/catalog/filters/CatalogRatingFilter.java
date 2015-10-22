@@ -1,5 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
+import android.os.Parcel;
+
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -26,8 +28,8 @@ public class CatalogRatingFilter extends CatalogCheckFilter{
         initialize(jsonObject);
     }
 
-    protected int min;
-    protected int max;
+    private int min;
+    private int max;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
@@ -41,4 +43,40 @@ public class CatalogRatingFilter extends CatalogCheckFilter{
     protected void setOptionType(String id) {
         optionType = CatalogRatingFilterOption.class;
     }
+
+    public int getMin() {
+        return min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.min);
+        dest.writeInt(this.max);
+    }
+
+    protected CatalogRatingFilter(Parcel in) {
+        super(in);
+        this.min = in.readInt();
+        this.max = in.readInt();
+    }
+
+    public static final Creator<CatalogRatingFilter> CREATOR = new Creator<CatalogRatingFilter>() {
+        public CatalogRatingFilter createFromParcel(Parcel source) {
+            return new CatalogRatingFilter(source);
+        }
+
+        public CatalogRatingFilter[] newArray(int size) {
+            return new CatalogRatingFilter[size];
+        }
+    };
 }

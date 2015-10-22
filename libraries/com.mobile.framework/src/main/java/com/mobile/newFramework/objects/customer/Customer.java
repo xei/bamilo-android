@@ -6,10 +6,14 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashSet;
 
 /**
  * Class that represents a Customer. Alice_Model_RatingForm[title]=Teste
@@ -27,7 +31,7 @@ public class Customer implements IJSONSerializable, Parcelable {
     private String gender;
     private String birthday;
     private boolean guest;
-
+    private HashSet<String> mWishListCache;
 
     /**
      * Customer empty constructor
@@ -48,9 +52,21 @@ public class Customer implements IJSONSerializable, Parcelable {
             id = jsonObject.getString(RestConstants.ID);
             firstName = jsonObject.getString(RestConstants.FIRST_NAME);
             lastName = jsonObject.getString(RestConstants.LAST_NAME);
-            email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
+            email = jsonObject.getString(RestConstants.EMAIL);
             gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
+            // Get wish list products
+            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
+            if (jsonArray != null && jsonArray.length() > 0) {
+                mWishListCache = new HashSet<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.optJSONObject(i);
+                    String sku = item.optString(RestConstants.SKU);
+                    if (TextUtils.isNotEmpty(sku)) {
+                        mWishListCache.add(sku);
+                    }
+                }
+            }
         } catch (JSONException e) {
             Print.e(TAG, "ERROR: JSE ON PARSING CUSTOMER", e);
             return false;
@@ -143,6 +159,13 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.guest = guest;
     }
 
+    /**
+     * Wish list for cache.
+     */
+    public HashSet<String> getWishListCache() {
+        return mWishListCache;
+    }
+
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
      */
@@ -153,7 +176,7 @@ public class Customer implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.ID, id);
             jsonObject.put(RestConstants.FIRST_NAME, firstName);
             jsonObject.put(RestConstants.LAST_NAME, lastName);
-            jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
+            jsonObject.put(RestConstants.EMAIL, email);
             jsonObject.put(RestConstants.JSON_GENDER_TAG, gender);
         } catch (JSONException e) {
             e.printStackTrace();
