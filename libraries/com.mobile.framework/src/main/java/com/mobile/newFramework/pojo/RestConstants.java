@@ -448,4 +448,8 @@ public class RestConstants {
     public static final String EXIST = "exist";
     public static final String IS_DEFAULT = "is_default";
     public static final String POSITION = "position";
+
+    public static final String TARGET = "target";
+
+    public static final String MOBILE_ABOUT = "mobile_about_cms";
 }

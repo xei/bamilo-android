@@ -437,5 +437,8 @@
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="more">More</string>
+    <string name="app_version">App version</string>
+    <string name="update_now">Update Now</string>
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
 </resources>
