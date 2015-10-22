@@ -1600,19 +1600,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         boolean result = true;
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                selectCheckoutStep(0);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_BILLING:
-                selectCheckoutStep(1);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_BILLING);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_SHIPPING:
-                selectCheckoutStep(2);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_PAYMENT:
-                selectCheckoutStep(3);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_ORDER:
