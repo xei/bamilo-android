@@ -3,8 +3,6 @@ package com.mobile.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -202,7 +200,7 @@ public class CountryPersistentConfigs {
     public static void saveLanguages(Context context, Languages languages){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
-        saveLanguages(mEditor,languages);
+        saveLanguages(mEditor, languages);
         mEditor.apply();
     }
 
