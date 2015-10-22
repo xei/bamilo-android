@@ -387,7 +387,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-            case COMBO_PAGE:
+            case COMBOPAGE:
                 fragment = ComboFragment.getInstance(bundle);
                 break;
             case FILTERS:
