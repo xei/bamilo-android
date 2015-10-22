@@ -31,7 +31,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     private boolean prioritary;
 
-    private ContentValues parameters;
+    protected ContentValues mParameters;
 
     public SuperBaseHelper(){
         mEventType = getEventType();
@@ -87,7 +87,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
 
-        return CollectionUtils.isNotEmpty(parameters) ? CollectionUtils.convertContentValuesToMap(parameters): null;
+        return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
     }
 
     /**
@@ -169,10 +169,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected final void appendParameters(ContentValues parameters){
         if(CollectionUtils.isNotEmpty(parameters)){
-            if(this.parameters == null){
-                this.parameters = new ContentValues();
+            if(this.mParameters == null){
+                this.mParameters = new ContentValues();
             }
-            this.parameters.putAll(parameters);
+            this.mParameters.putAll(parameters);
         }
     }
 

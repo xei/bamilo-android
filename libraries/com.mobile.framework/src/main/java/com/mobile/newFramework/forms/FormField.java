@@ -30,6 +30,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     protected final static String TAG = FormField.class.getSimpleName();
 
+
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
         void DataSetReceived(Map<String, String> dataSet);
@@ -59,6 +60,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private IFormField mChildFormField;
     private IFormField mParentFormField;
     private boolean isChecked;
+    private boolean isPrefixField;
 
     /**
      * FormField param constructor
@@ -120,6 +122,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case "radio":
                     mInputType = FormInputType.radioGroup;
                     break;
+                case "choice":
                 case "list":
                 case "select":
                     mInputType = FormInputType.list;
@@ -151,7 +154,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             // if the field is one of the supported types
             mId = jsonObject.optString(RestConstants.ID);
-            mKey = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+            mKey = jsonObject.optString(RestConstants.JSON_KEY_TAG); // Used for form images
             mName = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
@@ -159,6 +162,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
             mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
+            isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Case RULES
@@ -186,19 +190,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if (!TextUtils.isEmpty(apiCall)) {
                 mDataCalls.put(RestConstants.API_CALL, apiCall);
             }
-
-
-            // TODO: Validate if this is necessary v.2.7
-//            /**
-//             * Get data from dataset as json object
-//             */
-//            JSONObject dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
-//            if(dataSetObject != null && dataSetObject.length() > 0){
-//                Iterator<?> it = dataSetObject.keys();
-//                while (it.hasNext()) {
-//                    dataSet.put((String) dataSetObject.get(key), (String) dataSetObject.get(key));
-//                }
-//            }
 
             // Case options TODO Unify options response
             /**
@@ -428,6 +419,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
+    public boolean isPrefixField() {
+        return isPrefixField;
+    }
+
+    @Override
     public IFormField getRelatedField() {
         return mChildFormField;
     }
@@ -542,6 +538,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mChildFormField);
         dest.writeValue(mParentFormField);
         dest.writeString(mFormat);
+        dest.writeByte((byte) (isPrefixField ? 1 : 0));
     }
 
     /**
@@ -582,6 +579,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
         mFormat = in.readString();
+        isPrefixField = in.readByte() == 1;
     }
 
     /**

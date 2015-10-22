@@ -39,6 +39,8 @@ public class WarningFactory {
     public static final int PROBLEM_FETCHING_DATA = 6;
     public static final int PROBLEM_FETCHING_DATA_ANIMATION = 7;
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
+    public static final int ADDED_TO_SAVED = 9;
+    public static final int REMOVE_FROM_SAVED = 10;
 
     /**
      * The last warning that was built and might be re-used.
@@ -100,6 +102,12 @@ public class WarningFactory {
                 break;
             case PROBLEM_FETCHING_DATA_ANIMATION:
                 showWarningProblemFetchingData(true);
+                break;
+            case ADDED_TO_SAVED:
+                showWarningAddedItemToSaved();
+                break;
+            case REMOVE_FROM_SAVED:
+                showWarningRemovedItemFromSaved();
                 break;
         }
     }
@@ -208,6 +216,32 @@ public class WarningFactory {
                 new Builder().startAnimation();
             }
 
+        }
+    }
+
+    private void showWarningAddedItemToSaved(){
+        if(actualWarning != ADDED_TO_SAVED) {
+            new Builder().setText(R.string.products_added_saved)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = ADDED_TO_SAVED;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
+    private void showWarningRemovedItemFromSaved(){
+        if(actualWarning != REMOVE_FROM_SAVED) {
+            new Builder().setText(R.string.products_removed_saved)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = REMOVE_FROM_SAVED;
+        } else {
+            new Builder().startAnimation();
         }
     }
 

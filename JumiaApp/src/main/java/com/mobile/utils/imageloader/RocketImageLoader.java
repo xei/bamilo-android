@@ -218,7 +218,8 @@ public class RocketImageLoader {
                 }
 
                 // clear any previous image
-                imageView.setImageResource(placeHolderImageId);
+                if(placeHolderImageId != -1)
+                    imageView.setImageResource(placeHolderImageId);
 
                 imgContainer = volleyImageLoader.get(imageUrl, new ImageListener() {
 
