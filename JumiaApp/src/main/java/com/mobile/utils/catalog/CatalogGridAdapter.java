@@ -2,7 +2,6 @@ package com.mobile.utils.catalog;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +17,8 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductListAdapter;
+import com.mobile.controllers.ProductListAdapter;
 import com.mobile.utils.ui.ProductListViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

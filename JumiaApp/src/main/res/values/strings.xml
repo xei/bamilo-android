@@ -438,4 +438,5 @@
     <string name="create_label">Create</string>
     <string name="continue_without_log_in">Continue without log in</string>
     <string name="items_in_your_order">Items in your order</string>
+    <string name="delivered_label">Delivered</string>
 </resources>

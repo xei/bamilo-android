@@ -1,15 +1,15 @@
-package com.mobile.utils.ui;
+package com.mobile.controllers;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.interfaces.OnProductListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductListViewHolder;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -21,15 +21,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
 
     protected List<ProductRegular> mDataSet;
 
-    private OnProductListViewHolderClickListener mOnViewHolderClicked;
-
     public ProductListAdapter(@NonNull List<ProductRegular> mDataSet) {
         this.mDataSet = mDataSet;
-    }
-
-    public ProductListAdapter(@NonNull List<ProductRegular> mDataSet, @Nullable OnProductListViewHolderClickListener mOnViewHolderClicked) {
-        this(mDataSet);
-        this.mOnViewHolderClicked = mOnViewHolderClicked;
     }
 
     @Override
