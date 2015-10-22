@@ -1,73 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 
     <LinearLayout
-        style="@style/rounded_box"
-        android:layout_above="@+id/btn_checkout_continue_container"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/margin_30px" >
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        >
+
+
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/text_normal"
-            android:layout_marginBottom="@dimen/margin_60px"
-            android:drawableLeft="@drawable/img_success"
+            style="@style/TextDisplay_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_success_checkout"
+            android:drawableStart="@drawable/ic_success_checkout"
             android:drawablePadding="@dimen/margin_20px"
-            android:drawableStart="@drawable/img_success"
-            android:gravity="center"
-            android:lines="1"
-            android:singleLine="false"
             android:text="@string/thank_you_order_title"
-            android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/checkout_thanks_thankyou_text_size" />
+            />
+
+
+
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/text_normal"
-            android:layout_marginBottom="@dimen/margin_40px"
-            android:ellipsize="none"
+            style="@style/TextCaption"
+            android:textColor="@color/black_700"
             android:gravity="center"
-            android:singleLine="false"
+            android:layout_marginTop="@dimen/margin_90px"
+            android:layout_marginLeft="@dimen/margin_60px"
+            android:layout_marginRight="@dimen/margin_60px"
             android:text="@string/order_success"
-            android:textSize="@dimen/checkout_thanks_message_text_size" />
+            />
+
+        <!-- HEADER -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_number_id"
-            style="@style/text_bold"
-            android:layout_width="@dimen/checkout_thanks_order_width"
-            android:layout_height="@dimen/checkout_thanks_order_height"
-            android:layout_marginBottom="@dimen/margin_40px"
-            android:background="@drawable/field_coupon"
+            style="@style/HeaderStyleCenter"
             android:gravity="center"
-            android:text="@string/go_shop_text"
-            android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/checkout_thanks_order_text_size" />
+            android:textStyle="bold"
+            android:ellipsize="none"
+            android:layout_marginTop="@dimen/margin_60px"
+            android:text="2454613"
+            />
+
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_text"
-            style="@style/text_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="none"
+            style="@style/TextCaption"
+            android:textColor="@color/black_700"
             android:gravity="center"
+            android:layout_marginTop="@dimen/margin_60px"
+            android:layout_marginLeft="@dimen/margin_60px"
+            android:layout_marginRight="@dimen/margin_60px"
             android:singleLine="false"
-            android:text="@string/order_track_success"
-            android:textSize="@dimen/checkout_thanks_message_text_size" />
-    </LinearLayout>
+            android:text="@string/order_track_check"
+            />
 
-    <LinearLayout
-        android:id="@id/btn_checkout_continue_container"
-        style="@style/button_container"
-        android:layout_alignParentBottom="true" >
+
+        <!-- BUTTON -->
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/btn_checkout_continue"
-            style="@style/button_orange_landscape"
-            android:layout_width="@dimen/inner_container_width"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buy_bar_height"
+            android:layout_marginTop="@dimen/dimen_mat_124px"
+            android:layout_marginLeft="@dimen/margin_60px"
+            android:layout_marginRight="@dimen/margin_60px"
+            android:background="@color/color_accent"
+            android:textColor="@color/white"
             android:contentDescription="@string/checkout_continue_button_description"
             android:text="@string/continue_shopping" />
+
+
+
+
+
     </LinearLayout>
 
-</RelativeLayout>
+
+</ScrollView>
