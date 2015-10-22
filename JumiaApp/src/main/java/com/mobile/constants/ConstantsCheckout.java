@@ -1,5 +1,10 @@
 package com.mobile.constants;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * This Class has constants for the checkout activity, indicating which step is to be activated <p/><br> 
  *
@@ -23,20 +28,39 @@ public class ConstantsCheckout {
     public static final String CHECKOUT_THANKS_ORDER_TAX = "transaction_tax"; 
     public static final String CHECKOUT_THANKS_PAYMENT_METHOD = "payment_method";
     public static final String CHECKOUT_THANKS_ORDER_TOTAL = "order_grand_total";
-    
-    public static final int CHECKOUT_ABOUT_YOU = -1;
-    public static final int CHECKOUT_BILLING = -2;
-    public static final int CHECKOUT_SHIPPING = -3;
-    public static final int CHECKOUT_PAYMENT = -4;
-    public static final int CHECKOUT_ORDER = -5;
-    public static final int CHECKOUT_THANKS = -6;
-    public static final int CHECKOUT_NO_SET_HEADER = -7;
-    
-    public static final int NO_CHECKOUT = 0;
 
-    public static final int TAB_CHECKOUT_ABOUT_YOU = 0;
-    public static final int TAB_CHECKOUT_BILLING = 1;
-    public static final int TAB_CHECKOUT_SHIPPING = 2;
-    public static final int TAB_CHECKOUT_PAYMENT = 3;
+    /***** Checkout Type ******/
+    public static final int CHECKOUT_ABOUT_YOU = 0;
+    public static final int CHECKOUT_BILLING = 1;
+    public static final int CHECKOUT_SHIPPING = 2;
+    public static final int CHECKOUT_PAYMENT = 3;
+    public static final int CHECKOUT_ORDER = 4;
+    public static final int CHECKOUT_THANKS = 5;
+    public static final int CHECKOUT_NO_SET_HEADER = 6;
+    public static final int NO_CHECKOUT = -1;
+
+    @IntDef({
+            CHECKOUT_ABOUT_YOU,
+            CHECKOUT_BILLING,
+            CHECKOUT_SHIPPING,
+            CHECKOUT_PAYMENT,
+            CHECKOUT_ORDER,
+            CHECKOUT_THANKS,
+            CHECKOUT_NO_SET_HEADER,
+            NO_CHECKOUT,
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface CheckoutType{}
+
+    /***** Checkout Tab Type ******/
+
+    @IntDef({
+            CHECKOUT_ABOUT_YOU,
+            CHECKOUT_BILLING,
+            CHECKOUT_SHIPPING,
+            CHECKOUT_PAYMENT,
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface CheckoutTabType{}
 
 }

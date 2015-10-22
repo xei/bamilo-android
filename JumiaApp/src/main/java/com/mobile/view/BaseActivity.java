@@ -1598,51 +1598,20 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Set the current checkout step otherwise return false
      */
-    public boolean setCheckoutHeader(int checkoutStep) {
+    public boolean setCheckoutHeader(@ConstantsCheckout.CheckoutType int checkoutStep) {
         Print.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
-        int visibility = View.VISIBLE;
-        boolean result = true;
-        switch (checkoutStep) {
-            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
-                updateBaseComponentsInCheckout(visibility);
-                break;
-            case ConstantsCheckout.CHECKOUT_BILLING:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_BILLING);
-                updateBaseComponentsInCheckout(visibility);
-                break;
-            case ConstantsCheckout.CHECKOUT_SHIPPING:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
-                updateBaseComponentsInCheckout(visibility);
-                break;
-            case ConstantsCheckout.CHECKOUT_PAYMENT:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
-                updateBaseComponentsInCheckout(visibility);
-                break;
-            case ConstantsCheckout.CHECKOUT_ORDER:
-            case ConstantsCheckout.CHECKOUT_THANKS:
-                visibility = View.GONE;
-                updateBaseComponentsInCheckout(visibility);
-                break;
-//            case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
-//                // Hide title and total
-//                hideTitle();
-//                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-//                break;
-            case ConstantsCheckout.NO_CHECKOUT:
-                visibility = View.GONE;
-                result = false;
-                updateBaseComponentsOutCheckout(visibility);
-                break;
-            default:
-                Print.e(TAG, "checkoutStep unknown");
-                visibility = View.GONE;
-                result = false;
-                updateBaseComponentsOutCheckout(visibility);
-                break;
+
+        if(ConstantsCheckout.NO_CHECKOUT == checkoutStep){
+            updateBaseComponentsOutCheckout(View.GONE);
+            return false;
+        } else if(checkoutStep == ConstantsCheckout.CHECKOUT_ORDER || checkoutStep == ConstantsCheckout.CHECKOUT_THANKS){
+            updateBaseComponentsInCheckout(View.GONE);
+            return true;
+        } else {
+            selectCheckoutStep(checkoutStep);
+            updateBaseComponentsInCheckout(View.VISIBLE);
+            return true;
         }
-        // Return value
-        return result;
     }
 
     /**
@@ -1658,6 +1627,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     /**
      * Update the base components in checkout
+     *
      */
     private void updateBaseComponentsInCheckout(int visibility) {
         Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
@@ -1670,25 +1640,25 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Set the selected checkout step
      */
-    private void selectCheckoutStep(int step) {
+    private void selectCheckoutStep(@ConstantsCheckout.CheckoutTabType int step) {
         mCheckoutTabLayout.getTabAt(step).select();
     }
 
     /**
      * Checkout header click listener associated to each item on layout
      */
-    public void onCheckoutHeaderClickListener(int step) {
+    public void onCheckoutHeaderClickListener(@ConstantsCheckout.CheckoutTabType int step) {
         Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
         // CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
 
         // CHECKOUT_BILLING  - step == 1
         // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
-        if (step == 1 && mCheckoutTabLayout.getSelectedTabPosition() > 1) {
+        if (step == ConstantsCheckout.CHECKOUT_BILLING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_BILLING) {
             selectCheckoutStep(step);
         }
         // CHECKOUT_SHIPPING  - step == 2
         // If selected tab is the CHECKOUT_PAYMENT, allow click
-        else if (step == 2 && mCheckoutTabLayout.getSelectedTabPosition() > 2) {
+        else if (step == ConstantsCheckout.CHECKOUT_SHIPPING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_SHIPPING) {
             selectCheckoutStep(step);
         }
         // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
@@ -1749,7 +1719,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
         @Override
         public void onClick(android.view.View v) {
-            onCheckoutHeaderClickListener((int) v.getTag());
+            @ConstantsCheckout.CheckoutTabType int tab = (int) v.getTag();
+            onCheckoutHeaderClickListener(tab);
         }
     };
 

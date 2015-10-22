@@ -45,28 +45,28 @@ public class TabLayoutUtils {
         TabLayout.Tab tab = tabLayout.newTab();
         tab.setCustomView(R.layout.tab_about_you);
         tabLayout.addTab(tab);
-        ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
+        ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
         ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Address
         TabLayout.Tab tab2 = tabLayout.newTab();
         tab2.setCustomView(R.layout.tab_address);
         tabLayout.addTab(tab2);
-        ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_BILLING);
+        ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_BILLING);
         ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Shipping
         TabLayout.Tab tab3 = tabLayout.newTab();
         tab3.setCustomView(R.layout.tab_shipping);
         tabLayout.addTab(tab3);
-        ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
+        ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_SHIPPING);
         ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Payment
         TabLayout.Tab tab4 = tabLayout.newTab();
         tab4.setCustomView(R.layout.tab_payment);
         tabLayout.addTab(tab4);
-        ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
+        ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_PAYMENT);
         ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Set listener
