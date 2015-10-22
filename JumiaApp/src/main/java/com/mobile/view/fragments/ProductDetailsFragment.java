@@ -112,6 +112,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private TextView mDiscountPercentageText;
 
+    private TextView mSaveForLater;
+
+    private TextView mBuyButton;
+
     private boolean isRelatedItem = false;
 
     private static String categoryTree = "";
@@ -238,7 +242,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
-        view.findViewById(R.id.pdv_button_buy).setOnClickListener(this);
+        mBuyButton = (TextView) view.findViewById(R.id.pdv_button_buy);
+        mBuyButton.setOnClickListener(this);
+        // Save for later
+        mSaveForLater = (TextView) view.findViewById(R.id.pdv_button_add_to_save);
+        mSaveForLater.setOnClickListener(this);
     }
 
     /*
@@ -420,7 +428,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(true);
             } else {
                 mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800, null));
+                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
             }
         }
     }
@@ -551,10 +559,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     *
+     * function that sets the state of the wishlist button
      */
     private void setWishListButton() {
         mWishListButton.setSelected(mProduct.isWishList());
+        // validate if its saved to know which string to show in case of OOS
+        setOutOfStockButton();
     }
 
 
@@ -662,6 +672,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
+            args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
             fragment = ProductImageGalleryFragment.getInstanceAsNested(args);
             FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
@@ -694,7 +705,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-            ToastManager.show(getBaseActivity(), value ? ToastManager.SUCCESS_ADDED_FAVOURITE : ToastManager.SUCCESS_REMOVED_FAVOURITE);
+            getBaseActivity().warningFactory.showWarning(value ? WarningFactory.ADDED_TO_SAVED : WarningFactory.REMOVE_FROM_SAVED);
+            setOutOfStockButton();
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
         }
@@ -731,6 +743,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_call) onClickCallToOrder();
         // Case buy button
         else if (id == R.id.pdv_button_buy) onClickBuyProduct();
+        // Case saved for later
+        else if (id == R.id.pdv_button_add_to_save) onClickSaveForLateButton(view);
         // Case combos section
         else if (id == R.id.pdv_combos_container) onClickCombosProduct();
         // Case other offers
@@ -803,7 +817,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
         bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-        getBaseActivity().onSwitchFragment(FragmentType.COMBOPAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 //    /**
@@ -863,14 +877,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductSimple simple = mProduct.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            // Validate quantity
-            if (simple.isOutOfStock()) {
-                ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
-            } else {
-                triggerAddItemToCart(mProduct.getSku(), simple.getSku());
-                // Tracking
-                TrackerDelegator.trackProductAddedToCart(mProduct, simple.getSku(), mGroupType);
-            }
+            triggerAddItemToCart(mProduct.getSku(), simple.getSku());
+            // Tracking
+            TrackerDelegator.trackProductAddedToCart(mProduct, simple.getSku(), mGroupType);
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
@@ -918,6 +927,30 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
+            }
+        } else {
+            // Goto login
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Process the click on saved for later button
+     */
+    private void onClickSaveForLateButton(View view) {
+        // Validate customer is logged in
+        if (JumiaApplication.isCustomerLoggedIn()) {
+            try {
+                // if view is selected it means that the product is currently on the saved list and user want to remove it
+                if (view.isSelected()) {
+                    triggerRemoveFromWishList(mProduct.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mProduct);
+                } else {
+                    triggerAddToWishList(mProduct.getSku());
+                    TrackerDelegator.trackAddToFavorites(mProduct);
+                }
+            } catch (NullPointerException e) {
+                Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
             }
         } else {
             // Goto login
@@ -1301,6 +1334,32 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     }
 
+    /**
+     * functions that verifies if product simple is out of stock
+     */
+    private boolean verifyOutOfStock(){
+        return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple().isOutOfStock());
+    }
+
+    /**
+     * function that dependent of the the stock and if its saved, sets the correct string for the button
+     */
+    private void setOutOfStockButton(){
+        if(verifyOutOfStock()){
+            mSaveForLater.setVisibility(View.VISIBLE);
+            mBuyButton.setVisibility(View.GONE);
+            if(mProduct.isWishList()){
+                mSaveForLater.setText(getString(R.string.remove_from_saved));
+                mSaveForLater.setSelected(true);
+            } else {
+                mSaveForLater.setText(getString(R.string.save_for_later));
+                mSaveForLater.setSelected(false);
+            }
+        } else {
+            mBuyButton.setVisibility(View.VISIBLE);
+            mSaveForLater.setVisibility(View.GONE);
+        }
+    }
 
     private class ComboItemClickListener implements OnClickListener {
         ViewGroup bundleItemView;
