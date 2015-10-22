@@ -3,14 +3,15 @@
  */
 package com.mobile.view.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.OrdersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
@@ -40,11 +41,16 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
     private ArrayList<Order> ordersList = new ArrayList<>();
 
+    private ListView ordersListView;
+
+    OrdersListAdapterNew ordersAdapter;
+
+    private View emptyOrdersView;
+
     private static final int NUM_ORDERS = 25;
 
     private int pageIndex = 1;
 
-    private int totalPages = 0;
 
     /**
      * Get instance
@@ -65,11 +71,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
      *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
-    @Override
+  /*  @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
-    }
+    }*/
 
     /*
      * (non-Javadoc)
@@ -99,13 +105,31 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-//        ordersListView = (ListView) view.findViewById(R.id.orders_list);
-//        ordersListView.setOnScrollListener(onScrollListener);
+        ordersListView = (ListView) view.findViewById(R.id.orders_list);
+        ordersListView.setOnScrollListener(onScrollListener);
+        emptyOrdersView = view.findViewById(R.id.empty_orders_layout);
     }
 
 
     private void setEmptyScreenState(boolean isToShow){
 
+        if(isToShow)
+        {
+            ordersListView.setVisibility(View.GONE);
+            emptyOrdersView.setVisibility(View.VISIBLE);
+        }else
+        {
+            emptyOrdersView.setVisibility(View.GONE);
+            ordersListView.setVisibility(View.VISIBLE);
+
+            if(ordersAdapter == null)
+                ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(),ordersList) ;
+            else
+                ordersAdapter.updateOrders(ordersList);
+            ordersListView.setAdapter(ordersAdapter);
+            Print.w(TAG, "------------ LAYOUT BUILD ENDED -------------- ");
+
+        }
     }
 
     /*
@@ -171,22 +195,20 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        // Hide dialog progress
-        hideActivityProgress();
+      //  onSuccessEvent(baseResponse);
         Print.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
+        // Hide dialog progress
+        hideActivityProgress();
+        Print.w(TAG, "------------ ACTIVITY PROGRESS HIDDEN -------------- ");
+
         if(super.handleSuccessEvent(baseResponse))
-            return true;
+            return;
 
 
         EventType eventType = baseResponse.getEventType();
@@ -195,21 +217,86 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
             case GET_MY_ORDERS_LIST_EVENT:
                 MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
 
-                ArrayList<Order> ordersResponse =  orders.getOrders();
+                ordersList =  orders.getOrders();
 
-                if(CollectionUtils.isEmpty(ordersList) && CollectionUtils.isEmpty(ordersResponse)){
+                if(CollectionUtils.isEmpty(ordersList)){
+                    Print.w(TAG, "------------ ORDERS LIST EMPTY -------------- ");
                     // show error/empty screen
                     setEmptyScreenState(true);
-                    showProductsLoading(false);
-                    return false;
+                    //    showProductsLoading(false);
+
+                }else
+                {
+                    Print.w(TAG, "------------ ORDERS LIST NOT EMPTY -------------- ");
+                    setEmptyScreenState(false);
                 }
-                return true;
+                break;
 
             default:
                 break;
         }
-        return true;
     }
+
+
+    protected void onSuccessEvent(BaseResponse baseResponse) {
+
+        Print.d(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        // Hide dialog progress
+        hideActivityProgress();
+        Print.w(TAG, "------------ ACTIVITY PROGRESS HIDDEN -------------- ");
+
+        if(super.handleSuccessEvent(baseResponse))
+            return;
+
+
+        EventType eventType = baseResponse.getEventType();
+
+        switch (eventType) {
+            case GET_MY_ORDERS_LIST_EVENT:
+                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+
+                ordersList =  orders.getOrders();
+
+                if(CollectionUtils.isEmpty(ordersList)){
+                    Print.w(TAG, "------------ ORDERS LIST EMPTY -------------- ");
+                    // show error/empty screen
+                    setEmptyScreenState(true);
+                //    showProductsLoading(false);
+
+                }else
+                {
+                    Print.w(TAG, "------------ ORDERS LIST NOT EMPTY -------------- ");
+                    setEmptyScreenState(false);
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+
+    /**
+     * sets list of orders
+     *
+     * @param orders
+     */
+    private void setupOrders(ArrayList<Order> orders) {
+
+        ordersAdapter = new OrdersListAdapterNew(getActivity().getApplicationContext(), orders);
+
+        ordersListView.setAdapter(ordersAdapter);
+
+        ordersListView.setVisibility(View.VISIBLE);
+
+        }
 
     protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
@@ -301,16 +388,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 //        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
-    /**
-     * sets list of orders
-     *
-     * @param orders
-     */
-    private void setupOrders(ArrayList<Order> orders) {
 
-//        ordersAdapter = new OrdersListAdapter(getActivity().getApplicationContext(), orders, this);
-
-    }
 
     @Override
     protected void onClickRetryButton(View view) {
