@@ -10,4 +10,10 @@
     <!-- KICKOUT -->
 
     <dimen name="kickout_box_width">600dp</dimen>
+
+    <!--LOGIN-->
+    <dimen name="register_container_width">552dp</dimen>
+
+
+
 </resources>
