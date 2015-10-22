@@ -8,6 +8,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -21,7 +22,9 @@ import com.mobile.view.R;
  */
 
 
-public class ConfirmationCartMessageView {
+public class ConfirmationCartMessageView implements View.OnClickListener {
+
+    private final static String TAG = ConfirmationCartMessageView.class.getSimpleName();
 
     protected View mConfigurablecartViewBar;
 
@@ -46,32 +49,17 @@ public class ConfirmationCartMessageView {
  * */
     public ConfirmationCartMessageView(View mConfigurablecartViewBar, Context context){
 
-        if(mConfigurablecartViewBar == null){
-            throw new IllegalStateException("configurablecartViewBar bar not initialized");
-        }
+            this.mContext = context;
+            this.mConfigurablecartViewBar = mConfigurablecartViewBar;
 
-        this.mContext = context;
-        this.mConfigurablecartViewBar = mConfigurablecartViewBar;
+            mTxCartTotalPrice = (TextView) mConfigurablecartViewBar.findViewById(R.id.tx_cart_total_price);
+            mCTAButtonViewCart = (Button) mConfigurablecartViewBar.findViewById(R.id.cta_button_view_cart);
+            mCTAContinueShopping = (Button) mConfigurablecartViewBar.findViewById(R.id.cta_link_continue_shopping);
 
-        mTxCartTotalPrice = (TextView) mConfigurablecartViewBar.findViewById(R.id.tx_cart_total_price);
-        mCTAButtonViewCart = (Button) mConfigurablecartViewBar.findViewById(R.id.cta_button_view_cart);
-        mCTAButtonViewCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideMessage();
-                ((BaseActivity) ConfirmationCartMessageView.this.mContext).onSwitchFragment(FragmentType.SHOPPING_CART, new Bundle(), FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+            mCTAButtonViewCart.setOnClickListener(this);
+            mCTAContinueShopping.setOnClickListener(this);
 
-        mCTAContinueShopping = (Button) mConfigurablecartViewBar.findViewById(R.id.cta_link_continue_shopping);
-        mCTAContinueShopping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideMessage();
-            }
-        });
-
-        isShowing = false;
+            isShowing = false;
 
     }
 
@@ -93,13 +81,32 @@ public class ConfirmationCartMessageView {
      * @param totalCartPrice - total price in cart
      * */
     public void showMessage(double totalCartPrice){
-        String message = this.mContext.getResources().getString(R.string.cart_total_price,CurrencyFormatter.formatCurrency(totalCartPrice));
-        mTxCartTotalPrice.setText(message);
-        isShowing = true;
-        UIUtils.animateSlideDown(mContext, mConfigurablecartViewBar);
+
+        try {
+            String message = this.mContext.getResources().getString(R.string.cart_total_price, CurrencyFormatter.formatCurrency(totalCartPrice));
+            mTxCartTotalPrice.setText(message);
+            isShowing = true;
+            UIUtils.animateSlideDown(mContext, mConfigurablecartViewBar);
+
+        }catch(Exception e){
+            Print.e(TAG, "ERROR IN SHOW MESSAGE: "+ e.getMessage());
+        }
     }
 
 
+    @Override
+    public void onClick(View view) {
 
+        switch(view.getId())
+        {
+            case R.id.tx_cart_total_price:
+                hideMessage();
+                ((BaseActivity) ConfirmationCartMessageView.this.mContext).onSwitchFragment(FragmentType.SHOPPING_CART, new Bundle(), FragmentController.ADD_TO_BACK_STACK);
+                break;
 
+            default: hideMessage();
+                break;
+        }
+
+    }
 }
