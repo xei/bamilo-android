@@ -136,6 +136,7 @@
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
+    <item name="gen_form_text_field"                    type="layout">@layout/_def_gen_form_text_field</item>
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
@@ -160,7 +161,7 @@
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
-    <item name="form_checkbox"                          type="layout">@layout/_def_form_checkbox</item>
+    <item name="_gen_form_check_box"                          type="layout">@layout/_def_form_checkbox</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
     <!--<item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>-->
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>

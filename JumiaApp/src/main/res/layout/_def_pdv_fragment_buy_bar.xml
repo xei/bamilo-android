@@ -28,8 +28,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_buy"
             style="@style/AigButton.Active"
-            android:text="@string/buy_now_button"
-            android:textColor="@color/white" />
+            android:text="@string/buy_now_button" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_add_to_save"

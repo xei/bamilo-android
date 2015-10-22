@@ -55,8 +55,6 @@ import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -856,9 +854,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
+            case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
                 JumiaApplication.INSTANCE.setLoggedIn(true);
-                getBaseActivity().triggerGetShoppingCartItemsHelper();
+                // TODO VALIDATE IF THIS IS NECESSARY
+                // getBaseActivity().triggerGetShoppingCartItemsHelper();
                 return true;
             default:
                 break;
@@ -885,7 +885,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (errorCode == null) {
             return false;
         }
-//        errorCode = ErrorCode.IO;
+
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
@@ -962,6 +962,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     break;
             }
         }
+        // Case unexpected error from server data
+        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
+            showFragmentMaintenance();
+        }
 
         /**
          * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
@@ -972,10 +976,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
-    protected void clearCredentials() {
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-    }
+//    protected void clearCredentials() {
+//        JumiaApplication.INSTANCE.setLoggedIn(false);
+//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//    }
 
     /*
      * ########### LISTENERS ###########
@@ -989,7 +993,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
+        // Case error button
         if (id == R.id.fragment_root_error_button){
             checkErrorButtonBehavior(view);
         }

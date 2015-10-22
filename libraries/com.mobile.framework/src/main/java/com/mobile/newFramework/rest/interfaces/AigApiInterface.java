@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.objects.addresses.PhonePrefixes;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -24,6 +25,7 @@ import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderTracker;
@@ -324,7 +326,6 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
     String loginCustomer = "loginCustomer";
 
     @FormUrlEncoded
@@ -501,6 +502,15 @@ public interface AigApiInterface {
     @POST("/")
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    String emailCheck = "emailCheck";
+
+    @GET("/")
+    void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
+    String getPhonePrefixes = "getPhonePrefixes";
 
     @GET("/")
     void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);

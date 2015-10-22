@@ -101,6 +101,15 @@ public class TrackerDelegator {
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
 
+    public static void trackLoginSuccessful(Customer customer, boolean autoLogin, boolean fromFacebook) {
+        Bundle params = new Bundle();
+        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+        params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, autoLogin);
+        params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, fromFacebook);
+        params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
+        trackLoginSuccessful(params);
+    }
+
     public static void trackLoginSuccessful(Bundle params) {
         TrackingEvent event;
 
@@ -347,9 +356,8 @@ public class TrackerDelegator {
     /**
      * Track signup successful.
      */
-    public static void trackSignupSuccessful(Bundle params) {
-        Customer customer = params.getParcelable(CUSTOMER_KEY);
-        String location = params.getString(LOCATION_KEY);
+    public static void trackSignupSuccessful(String location) {
+        Customer customer = JumiaApplication.CUSTOMER;
         // Validate customer
         if (customer == null) return;
         // GA
