@@ -448,4 +448,6 @@ public class RestConstants {
     public static final String EXIST = "exist";
     public static final String IS_DEFAULT = "is_default";
     public static final String POSITION = "position";
+    public static final String UPDATED_AT = "updated_at";
+    public static final String ORDER_NUMBER = "order_number";
 }

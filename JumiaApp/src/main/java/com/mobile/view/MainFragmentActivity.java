@@ -42,7 +42,7 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.OrderHistoryFragment;
+import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -312,7 +312,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = OrderHistoryFragment.getInstance();
+                fragment = MyOrdersFragment.getInstance(bundle);
+                break;
+            case ORDER_STATUS:
+                fragment = OrderStatusFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();

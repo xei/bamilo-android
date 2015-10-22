@@ -528,7 +528,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     public void SelectedOrder(Order order, ViewGroup productsContainer, boolean toShowInnerProds, int selectedProd) {
         
         selectedProduct = selectedProd;
-        
+        Bundle bundle = new Bundle();
+        bundle.putString(OrderStatusFragment.ORDER, order.getmOrderNumber());
+        getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
 //        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
 //        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
         

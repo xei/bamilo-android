@@ -1,11 +1,13 @@
 package com.mobile.helpers.checkout;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
@@ -32,16 +34,16 @@ public class GetTrackOrderHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        Map<String, String> data = new HashMap<>();
-        data.put(ORDER_NR, args.getString(ORDER_NR));
-        return data;
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
 //        new TrackOrder(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.trackOrder);
     }
 
+    public static Bundle createBundle(String orderNr) {
+        ContentValues values = new ContentValues();
+        values.put(ORDER_NR, orderNr);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
+    }
 }

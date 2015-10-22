@@ -36,7 +36,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     private String creation_date;
     private String payment_method;
     private String last_order_update;
-    private ArrayList<OrderTrackerItem> orderTracketItems;
+    private ArrayList<OrderTrackerItem> orderTrackerItems;
 
 
     /**
@@ -48,7 +48,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	creation_date = "";
     	payment_method = "";
     	last_order_update = "";
-    	orderTracketItems = new ArrayList<>();
+    	orderTrackerItems = new ArrayList<>();
     }
 
 //    /**
@@ -70,7 +70,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 //    	this.creation_date = d;
 //    	this.payment_method = p;
 //    	this.last_order_update = l;
-//    	this.orderTracketItems = oI;
+//    	this.orderTrackerItems = oI;
 //    }
 
 
@@ -91,7 +91,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 //    }
 
     public ArrayList<OrderTrackerItem> getOrderTrackerItems(){
-    	return this.orderTracketItems;
+    	return this.orderTrackerItems;
     }
 
     /*
@@ -102,7 +102,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
+		order_id = jsonObject.optString(RestConstants.ORDER_NUMBER);
         creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
         payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
         last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
@@ -115,7 +115,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			orderTracketItems.add(mOrderTrackerItem);
+			orderTrackerItems.add(mOrderTrackerItem);
 		}
         return true;
     }
@@ -173,7 +173,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 	    dest.writeString(creation_date);
 	    dest.writeString(payment_method);
 	    dest.writeString(last_order_update);
-	    dest.writeList(orderTracketItems);
+	    dest.writeList(orderTrackerItems);
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	creation_date = in.readString();
     	payment_method = in.readString();
     	last_order_update = in.readString();
-    	orderTracketItems = new ArrayList<>();
-    	in.readList(orderTracketItems, OrderTrackerItem.class.getClassLoader());
+    	orderTrackerItems = new ArrayList<>();
+    	in.readList(orderTrackerItems, OrderTrackerItem.class.getClassLoader());
     }
 
 	/**

@@ -14,6 +14,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -25,12 +26,11 @@ import org.json.JSONObject;
  * @author manuelsilva
  * 
  */
-public class OrderTrackerItem implements IJSONSerializable, Parcelable{
+public class OrderTrackerItem extends ProductRegular{
 
 	public final static String TAG = OrderTrackerItem.class.getSimpleName();
 
-    private String sku;
-    private String name;
+    private String delivery;
     private String quantity;
     private String status;
     private String status_update;
@@ -39,8 +39,6 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
      * OrderTrackerItem empty constructor.
      */
     public OrderTrackerItem() {
-    	sku = "";
-    	name = "";
     	quantity = "";
     	status = "";
     	status_update = "";
@@ -68,15 +66,6 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
 //    	this.status_update = std;
 //    }
 
-
-    public String getSku(){
-    	return this.sku;
-    }
-
-    public String getName(){
-    	return this.name;
-    }
-
     public String getQuantity(){
     	return this.quantity;
     }
@@ -95,15 +84,15 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-
-        sku = jsonObject.optString(RestConstants.SKU);
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-		quantity = jsonObject.optString(RestConstants.JSON_QUANTITY_TAG);
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        super.initialize(jsonObject);
+        delivery = jsonObject.getString(RestConstants.DELIVERY);
+		quantity = jsonObject.getString(RestConstants.JSON_QUANTITY_TAG);
 //		Log.i(TAG, "code1 name : "+name);
 		try {
-			status = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_TAG);
-			status_update = jsonObject.getJSONArray(RestConstants.JSON_ORDER_STATUS_TAG).getJSONObject(0).optString(RestConstants.JSON_ORDER_ITEM_STATUS_UPDATE_TAG);
+            JSONObject statusObject = jsonObject.getJSONObject(RestConstants.JSON_ORDER_STATUS_TAG);
+			status = statusObject.optString(RestConstants.LABEL);
+			status_update = statusObject.optString(RestConstants.UPDATED_AT);
 //			Log.i(TAG, "code1 status : "+status);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -123,8 +112,6 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
         JSONObject jsonObject = new JSONObject();
         try {
 
-            jsonObject.put(RestConstants.SKU, sku);
-            jsonObject.put(RestConstants.JSON_NAME_TAG, name);
             jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
             jsonObject.put(RestConstants.JSON_ORDER_STATUS_TAG, status);
 
@@ -139,54 +126,8 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
         return null;
     }
 
-    /**
-     * ########### Parcelable ###########
-     * @author sergiopereira
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.os.Parcelable#describeContents()
-     */
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-	 */
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeString(sku);
-	    dest.writeString(name);
-	    dest.writeString(quantity);
-	    dest.writeString(status);
-	    dest.writeString(status_update);
-	}
-
-	/**
-	 * Parcel constructor
-	 */
-	private OrderTrackerItem(Parcel in) {
-    	this.sku = in.readString();
-    	this.name = in.readString();
-    	this.quantity = in.readString();
-    	this.status = in.readString();
-    	this.status_update = in.readString();
+    public String getDelivery() {
+        return delivery;
     }
 
-	/**
-	 * Create parcelable
-	 */
-	public static final Creator<OrderTrackerItem> CREATOR = new Creator<OrderTrackerItem>() {
-        public OrderTrackerItem createFromParcel(Parcel in) {
-            return new OrderTrackerItem(in);
-        }
-
-        public OrderTrackerItem[] newArray(int size) {
-            return new OrderTrackerItem[size];
-        }
-    };
 }

@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHolder>{
 
-    protected List<ProductRegular> mDataSet;
+    protected List<? extends ProductRegular> mDataSet;
 
-    public ProductListAdapter(@NonNull List<ProductRegular> mDataSet) {
+    public ProductListAdapter(@NonNull List<? extends ProductRegular> mDataSet) {
         this.mDataSet = mDataSet;
     }
 
