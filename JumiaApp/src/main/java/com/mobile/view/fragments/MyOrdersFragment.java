@@ -3,13 +3,16 @@
  */
 package com.mobile.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OrdersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentController;
@@ -35,7 +38,7 @@ import java.util.Map;
  * @author Paulo Carvalho
  *
  */
-public class MyOrdersFragment extends BaseFragment implements IResponseCallback {
+public class MyOrdersFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener {
 
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
@@ -71,11 +74,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
      *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
-  /*  @Override
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
-    }*/
+    }
 
     /*
      * (non-Javadoc)
@@ -107,6 +110,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "ON VIEW CREATED");
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
+        ordersListView.setOnItemClickListener(this);
         emptyOrdersView = view.findViewById(R.id.empty_orders_layout);
     }
 
@@ -219,13 +223,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
         if(super.handleSuccessEvent(baseResponse))
             return;
 
-
         EventType eventType = baseResponse.getEventType();
 
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
-
                 ordersList =  orders.getOrders();
 
                 if(CollectionUtils.isEmpty(ordersList)){
@@ -239,6 +241,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
                 break;
 
             default:
+                //show empty screen by default
+                showListOrders(false);
                 break;
         }
 
@@ -250,7 +254,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
      *
      * @param orders
      */
-    private void setupOrders(ArrayList<Order> orders) {
+  /*  private void setupOrders(ArrayList<Order> orders) {
 
         ordersAdapter = new OrdersListAdapterNew(getActivity().getApplicationContext(), orders);
 
@@ -258,7 +262,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
         ordersListView.setVisibility(View.VISIBLE);
 
-        }
+        }*/
+
 
     protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
@@ -337,7 +342,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
     }
 
-
+/*
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -349,7 +354,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 //        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
             // Unknown view
 //        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
+    }*/
+
+
+
 
 
 
@@ -375,8 +383,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "onSaveInstanceState");
 
-            if(ordersList != null && ordersList.size() > 0)
-                outState.putParcelableArrayList("orders",ordersList );
+        if(ordersList != null && ordersList.size() > 0)
+            outState.putParcelableArrayList("orders",ordersList );
 
         super.onSaveInstanceState(outState);
 
@@ -436,4 +444,22 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 //        triggerContentEventNoLoading(new GetMyOrdersListHelper(), bundle, mCallBack);
 
     }
+
+
+
+/**
+ * Clicking on an list item allows to get the order status
+ * */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Order selectedOrder =  ordersList.get(position);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR,selectedOrder.getmOrderNumber());
+        getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
+
 }
