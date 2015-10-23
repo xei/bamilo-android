@@ -49,6 +49,7 @@ public class RestConstants {
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
     public static final String URL = "url";
+    public static final String ZOOM = "zoom";
 
     // Form Tags
     public static final String JSON_FORM_TAG = "form";
@@ -448,4 +449,8 @@ public class RestConstants {
     public static final String EXIST = "exist";
     public static final String IS_DEFAULT = "is_default";
     public static final String POSITION = "position";
+
+    public static final String TARGET = "target";
+
+    public static final String MOBILE_ABOUT = "mobile_about_cms";
 }

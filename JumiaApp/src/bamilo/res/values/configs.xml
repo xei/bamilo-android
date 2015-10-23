@@ -52,4 +52,7 @@
 
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/BAMILO</string>
+
+    <!-- MARKET -->
+    <string name="id_market">com.bamilo.android</string>
 </resources>

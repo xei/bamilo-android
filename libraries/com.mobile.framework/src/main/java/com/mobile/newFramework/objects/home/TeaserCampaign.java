@@ -85,10 +85,10 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetUrl()
+	 * @see com.mobile.newFramework.objects.catalog.ITargeting#getTargetValue()
 	 */
 	@Override
-	public String getTargetUrl() {
+	public String getTargetValue() {
 		return url;
 	}
 

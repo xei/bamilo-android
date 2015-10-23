@@ -32,10 +32,10 @@ public class CheckVersion {
     private static final String DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY = "update_seen";
 
     private static long sLastUpdate = 0;
-    private static final long UPDATE_INTERVALL_MILLIS = 60 * 60 * 1000;
+    private static final long UPDATE_INTERVAL_MILLIS = 60 * 60 * 1000;
 
     enum UpdateStatus {
-        NOT_AVAILBLE,
+        NOT_AVAILABLE,
         FORCED_AVAILABLE,
         OPTIONAL_AVAILABLE,
         OPTIONAL_AVAILABLE_IGNORED
@@ -141,8 +141,8 @@ public class CheckVersion {
 
     private static boolean runEvents() {
         long now = System.currentTimeMillis();
-        Print.d(TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
-        if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVALL_MILLIS) {
+        Print.d(TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVAL_MILLIS);
+        if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVAL_MILLIS) {
             Print.d(TAG, "runEvents: init or intervall passed - triggering");
             sLastUpdate = now;
             return true;
@@ -196,7 +196,7 @@ public class CheckVersion {
                 checkResult = UpdateStatus.OPTIONAL_AVAILABLE;
             }
         } else {
-            checkResult = UpdateStatus.NOT_AVAILBLE;
+            checkResult = UpdateStatus.NOT_AVAILABLE;
         }
 
         Print.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
