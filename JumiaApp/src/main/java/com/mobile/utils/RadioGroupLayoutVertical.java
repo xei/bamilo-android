@@ -16,6 +16,7 @@ import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.PaymentInfo;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
@@ -109,8 +110,11 @@ public class RadioGroupLayoutVertical extends RadioGroup {
      */
     private void createRadioButton(int idx, HashMap<String, PaymentInfo> paymentsInfoList, boolean addInnerForm) {
         final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
-        final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
-        final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
+//        final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
+        final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.radio_extras_container);
+
+//        final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
+        final RadioButton button = (RadioButton) mLinearLayout.findViewById(R.id.radio_shipping);
 
         if (addInnerForm) {
             Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
@@ -142,10 +146,9 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         mLinearLayout.setLayoutParams(mParams);
         
         if (paymentsInfoList != null && paymentsInfoList.size() > 0 && paymentsInfoList.containsKey(mItems.get(idx))) {
-            
+            TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
             String paymentText = paymentsInfoList.get(mItems.get(idx)).getText();
-            if(paymentText != null && paymentText.length() > 0){
-                TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
+            if(TextUtils.isNotEmpty(paymentText)){
                 mTextView.setText(paymentText);
                 mTextView.setVisibility(View.VISIBLE);
             }
@@ -158,8 +161,8 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 //            }
         }
 
-        final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
-        button.setId(idx);
+
+        //button.setId(idx);
         button.setText(mItems.get(idx));
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
         layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
@@ -187,7 +190,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         }
 
 
-        buttonContainer.addView(button, layoutParams);
+//        buttonContainer.addView(button, layoutParams);
 
         mGroup.addView(mLinearLayout);
     }
@@ -213,9 +216,10 @@ public class RadioGroupLayoutVertical extends RadioGroup {
             if (mGroup.getChildAt(idx) instanceof RadioButton) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx);
                 button.setChecked(true);
-            } else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
-                RadioButton button = (RadioButton) mGroup.getChildAt(idx)
-                        .findViewById(R.id.radio_container).findViewById(idx);
+            }
+//            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
+            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_shipping) instanceof RadioButton) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
                 button.setChecked(true);
             }
         }
@@ -228,9 +232,10 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 button.setChecked(true);
                 setSelection(idx);
                 mGroup.check(idx);
-            } else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
-                RadioButton button = (RadioButton) mGroup.getChildAt(idx)
-                        .findViewById(R.id.radio_container).findViewById(idx);
+            }
+//            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
+            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_shipping) instanceof RadioButton) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
                 button.setChecked(true);
                 setSelection(idx);
                 mGroup.check(idx);

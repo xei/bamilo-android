@@ -54,7 +54,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private int mSelectionSaved = -1;
 
     private int mSubSelectionSaved = -1;
-    
+
+    private View mCheckoutTotalBar;
+
     /**
      * Get instance
      * @return CheckoutShippingMethodsFragment
@@ -117,8 +119,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-        // Get price
-        // TODO
+        // Get total bar
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
         // Get and show addresses
         triggerGetShippingMethods();
     }
@@ -344,20 +346,18 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     public void onSuccessGetShippingMethods(BaseResponse baseResponse){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-
+        //
         GetShippingMethodsHelper.ShippingMethodFormStruct shippingMethodsForm = (GetShippingMethodsHelper.ShippingMethodFormStruct)baseResponse.getMetadata().getData();
-
         // Get order summary
         PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
         // Form
         ShippingMethodFormBuilder form = shippingMethodsForm.getFormBuilder();
         loadForm(form);
-        ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getFulfillmentList();
+        ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getmFulfillmentList();
         loadFulfillment(fulfillmentList);
-
-        //Total price
-        CheckoutStepManager.setTotalBar(getView().findViewById(R.id.checkout_button_container), orderSummary);
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
     public void onSuccessSetShippingMethods(BaseResponse baseResponse){

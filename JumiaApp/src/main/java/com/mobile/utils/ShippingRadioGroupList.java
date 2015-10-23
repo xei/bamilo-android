@@ -71,7 +71,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             // Get main container
             final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, this, false);
             // Get info container
-            final LinearLayout extras = (LinearLayout) container.findViewById(R.id.extras);
+            final LinearLayout extras = (LinearLayout) container.findViewById(R.id.radio_extras_container);
 
             // For each element verify if it has extras if so add them to the view
             ArrayList<ShippingMethodSubForm> tmpSubForms = new ArrayList<>();
@@ -149,7 +149,6 @@ public class ShippingRadioGroupList extends RadioGroup {
                         element.dataControl.setVisibility(View.VISIBLE);
                     }
                 }
-                    
             }
         } else {
             extras.setVisibility(View.GONE);
@@ -159,7 +158,6 @@ public class ShippingRadioGroupList extends RadioGroup {
                         element.dataControl.setVisibility(View.GONE);
                     }
                 }
-                
             }
         }
         setSelection(container.getId());
@@ -175,18 +173,9 @@ public class ShippingRadioGroupList extends RadioGroup {
         return idx;
     }
 
-//    public String getItemByIndex(int idx) {
-//        if (mItems == null)
-//            return null;
-//        if (idx < 0)
-//            return null;
-//        return mItems.get(idx);
-//    }
-
     public void setSelection(final int idx) {
         if (idx >= 0) {
             Print.i(TAG, "code1selection : id is : " + idx);
-            //View view = this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
             View view = this.getChildAt(idx).findViewById(R.id.radio_shipping);
             if (view instanceof RadioButton) {
                 ((RadioButton) view).setChecked(true);
@@ -200,11 +189,10 @@ public class ShippingRadioGroupList extends RadioGroup {
         Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
         for (int i = 0; i < this.getChildCount(); i++) {
             if (i != idx) {
-                //View view = this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
                 View view = this.getChildAt(i).findViewById(R.id.radio_shipping);
                 if (view instanceof RadioButton) {
                     ((RadioButton) view).setChecked(false);
-                    this.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
+                    this.getChildAt(i).findViewById(R.id.radio_extras_container).setVisibility(View.GONE);
                     Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
                 }
             }
@@ -233,33 +221,6 @@ public class ShippingRadioGroupList extends RadioGroup {
         return -1;
     }
 
-
-//    public boolean validateSelected() {
-//        boolean result = false;
-//        this.getCheckedRadioButtonId();
-//
-//        return result;
-//    }
-
-    // public String getErrorMessage(){
-    // String result = mContext.getString(R.string.register_required_text);
-    //
-    // result = ((DynamicFormItem)
-    // generatedForms.get(this.getCheckedRadioButtonId()).getItem(0)).getMessage();
-    //
-    // return result;
-    // }
-    //
-    // public ContentValues getSubFieldParameters(){
-    // ContentValues result = null;
-    // if(generatedForms != null && generatedForms.get(this.getCheckedRadioButtonId()) != null){
-    // result = generatedForms.get(this.getCheckedRadioButtonId()).save();
-    // }
-    //
-    //
-    // return result;
-    // }
-    //
     public String getSelectedFieldName() {
         String result;
         if (this.getCheckedRadioButtonId() >= 0) {

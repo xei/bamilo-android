@@ -42,6 +42,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- Single line item -->
+    <style name="AigRadioButton.SingleLineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
     <!-- Sub list item -->
     <style name="SubListItemStyle" parent="@style/TextCaption">
         <item name="android:layout_width">match_parent</item>
@@ -112,6 +122,10 @@
         <item name="android:gravity">left|start|bottom</item>
     </style>
 
+    <style name="FormButtonSpinner.DropDown">
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
     <!-- BUTTONS -->
 
     <style name="AigButton" parent="TextButton">
@@ -150,7 +164,14 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
+    <!-- RADIO BUTTON -->
 
+    <style name="AigRadioButton" parent="SingleLineStyle">
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+    </style>
+
+    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
 </resources>

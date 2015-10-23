@@ -148,10 +148,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-        buttonEnterLayout = view.findViewById(R.id.checkout_button_container);
+        buttonEnterLayout = view.findViewById(R.id.checkout_total_bar);
         //checkout total view
         if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
-            checkoutTotalView = view.findViewById(R.id.checkout_button_container);
+            checkoutTotalView = view.findViewById(R.id.checkout_total_bar);
 //            ((ViewStub) checkoutTotalView).setOnInflateListener(new ViewStub.OnInflateListener() {
 //                @Override
 //                public void onInflate(ViewStub stub, View inflated) {
@@ -459,7 +459,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
             orderSummary = responseData.getOrderSummary();
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
+            // Set the checkout total bar
             CheckoutStepManager.setTotalBar(checkoutTotalView, orderSummary);
+            //
             if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;

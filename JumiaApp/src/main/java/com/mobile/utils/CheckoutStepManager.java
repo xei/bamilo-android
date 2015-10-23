@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.mobile.components.customfontviews.AutoResizeTextView;
+import com.mobile.components.customfontviews.AutoResizeTextViewNew;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -85,7 +85,7 @@ public class CheckoutStepManager {
     /**
      * Method used to set the total bar for MyAccount.
      */
-    public static void setTotalBarForMyAccount(View view) {
+    public static void setTotalBarForMyAccount(@NonNull View view) {
         // Hide total view
         view.findViewById(R.id.checkout_total_label).setVisibility(View.GONE);
         // Set next label
@@ -93,7 +93,7 @@ public class CheckoutStepManager {
         textView.setText(view.getContext().getResources().getString(R.string.save_label));
         float weight = ((LinearLayout.LayoutParams) textView.getLayoutParams()).weight;
         // Set the view group with the same text weight
-        ((LinearLayout) view.findViewById(R.id.checkout_button_container)).setWeightSum(weight);
+        ((LinearLayout) view.findViewById(R.id.checkout_total_bar)).setWeightSum(weight);
     }
 
     /**
@@ -110,7 +110,7 @@ public class CheckoutStepManager {
             final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
             final int color1 = resources.getColor(R.color.black);
             final int color2 = resources.getColor(R.color.black_800);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+            final AutoResizeTextViewNew titleTextView = ((AutoResizeTextViewNew) view.findViewById(R.id.checkout_total_label));
             titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
             titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue, color1, color2));
             titleTextView.post(new Runnable() {

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/checkout_button_container"
+    android:id="@+id/checkout_total_bar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:orientation="horizontal"
     android:weightSum="5">
 
-    <com.mobile.components.customfontviews.AutoResizeTextView
+    <com.mobile.components.customfontviews.AutoResizeTextViewNew
         android:id="@+id/checkout_total_label"
         style="@style/TextList_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"
         android:ellipsize="none"
+        android:singleLine="false"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:gravity="start|center_vertical"
         android:text="@string/order_summary_total_label" />
 

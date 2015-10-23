@@ -12,7 +12,6 @@ import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.ShippingRadioGroupList;
-import com.mobile.view.R;
 
 import java.util.ArrayList;
 
@@ -65,12 +64,13 @@ public class ShippingMethodFormBuilder implements Parcelable  {
             return -1;
         }
     }
-    
-    public void setSelections(int groupId, int itemId, int subItemId){
+
+    public void setSelections(int groupId, int itemId, int subItemId) {
         try {
-            if (groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId) instanceof RadioButton) {
-                groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId).performClick();
-                if(subItemId != -1)
+            View view = groupList.get(groupId).findViewById(itemId);
+            if ( view instanceof RadioButton) {
+                view.performClick();
+                if (subItemId != -1)
                     groupList.get(groupId).setSubSelection(itemId, subItemId);
             }
         } catch (Exception ignored) {
