@@ -43,7 +43,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
 
 
     @Override
-    public Object getItem(int position) {
+    public Order getItem(int position) {
         if(CollectionUtils.isNotEmpty(orders))
             return orders.get(position);
         return null;
