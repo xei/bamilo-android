@@ -96,7 +96,7 @@
     <item name="order_history_main"                     type="layout">@layout/_def_order_history_main</item>
 
     <!-- HOME -->
-    <item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>
+    <!--<item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>-->
     <item name="home_teaser_brand"                      type="layout">@layout/_def_home_teaser_brand</item>
     <item name="home_teaser_brand_item"                 type="layout">@layout/_def_home_teaser_brand_item</item>
     <item name="home_teaser_campaign"                   type="layout">@layout/_def_home_teaser_campaign</item>

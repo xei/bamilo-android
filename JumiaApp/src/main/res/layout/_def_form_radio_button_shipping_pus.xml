@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/radio_divider"
+        style="@style/divider_horizontal" />
+
+    <LinearLayout
+        android:id="@+id/radio_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+    <LinearLayout
+        android:id="@+id/extras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/form_radiobutton_shipping_margin"
+        android:paddingStart="@dimen/form_radiobutton_shipping_margin"
+        android:paddingRight="@dimen/form_radiobutton_shipping_margin"
+        android:paddingEnd="@dimen/form_radiobutton_shipping_margin"
+        android:visibility="visible"
+        android:background="@color/red_basic">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/payment_text"
+            style="@style/MultiLineStyle"
+            android:visibility="visible"
+            android:text="sdasdasdasdasasdasda"/>
+        <!--
+            https://code.google.com/p/android/issues/detail?id=2254
+            FIXED only showing 2 lines
+            by setting android:ellipsize="none" after being set up as end by style="@style/text_normal"
+        -->
+    </LinearLayout>
+
+</LinearLayout>
