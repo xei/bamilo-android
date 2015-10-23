@@ -24,13 +24,17 @@ import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -50,24 +54,38 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     private View emptyOrdersView;
 
-    private static final int NUM_ORDERS = 25;
+   // private static final int NUM_ORDERS = 25;
+
+   private static final int NUM_ORDERS = 5;
+
 
     private int pageIndex = 1;
+
+    int mCurrentScrollState;
+
+    int mCurrentVisibleItemCount;
+
+
+    /**
+     * Empty constructor
+     */
+    public MyOrdersFragment() {
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.MyOrders,
+                R.layout.myorders_fragment_main,
+                IntConstants.ACTION_BAR_NO_TITLE,
+                KeyboardState.NO_ADJUST_CONTENT);
+    }
 
 
     /**
      * Get instance
      */
     public static MyOrdersFragment getInstance() {
-        return new MyOrdersFragment();
+        MyOrdersFragment fragment = new MyOrdersFragment();
+        return fragment;
     }
 
-    /**
-     * Empty constructor
-     */
-    public MyOrdersFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.myorders_fragment_main);
-    }
 
     /*
      * (non-Javadoc)
@@ -108,34 +126,72 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        ordersListView = (ListView) view.findViewById(R.id.orders_list);
-        ordersListView.setOnScrollListener(onScrollListener);
-        ordersListView.setOnItemClickListener(this);
-        emptyOrdersView = view.findViewById(R.id.empty_orders_layout);
+
+        if(savedInstanceState != null) {
+            if(savedInstanceState.containsKey("orders"))
+                ordersList = savedInstanceState.getParcelableArrayList("orders");
+            //Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
+        }
+
+        loadViews(view);
+
     }
 
 
     /**
-     * If true, shows the order list, if false shows empty screen
+     * Load views
      * */
-    private void showListOrders(boolean isToShow)
+    private void loadViews(View view)
     {
-        if(isToShow)
-        {
-            ordersListView.setVisibility(View.GONE);
-            emptyOrdersView.setVisibility(View.VISIBLE);
-        }else
-        {
-            emptyOrdersView.setVisibility(View.GONE);
-            ordersListView.setVisibility(View.VISIBLE);
+        ordersListView = (ListView) view.findViewById(R.id.orders_list);
+        ordersListView.setOnScrollListener(onScrollListener);
+        ordersListView.setOnItemClickListener(this);
+        emptyOrdersView = view.findViewById(R.id.empty_orders_layout);
 
-            if(ordersAdapter == null)
-                ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(),ordersList) ;
-            else
-                ordersAdapter.updateOrders(ordersList);
-            ordersListView.setAdapter(ordersAdapter);
-
+        if(CollectionUtils.isEmpty(ordersList)) {
+           triggerGetOrderList();
+        }else {
+            showListOrders();
         }
+    }
+
+
+    /**
+     * If true, shows the order list
+     * */
+    private void showListOrders()
+    {
+
+        emptyOrdersView.setVisibility(View.GONE);
+        ordersListView.setVisibility(View.VISIBLE);
+
+        if(ordersAdapter == null)
+            ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(),ordersList) ;
+        else
+            ordersAdapter.updateOrders(ordersList);
+
+        ordersListView.setAdapter(ordersAdapter);
+
+    }
+
+
+
+    private void appendToList()
+    {
+        if(ordersAdapter != null) {
+            ordersAdapter.appendOrders(ordersList);
+            //update
+        }
+    }
+
+
+    /**
+     * Shows empty screen
+     * */
+    private void showEmptyScreen()
+    {
+        ordersListView.setVisibility(View.GONE);
+        emptyOrdersView.setVisibility(View.VISIBLE);
     }
 
 
@@ -194,8 +250,18 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Print.i(TAG, "ON DESTROY VIEW");
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Print.i(TAG, "ON DESTROY");
     }
+
+
+
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
@@ -206,6 +272,9 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public void onRequestComplete(BaseResponse baseResponse) {
         onSuccessEvent(baseResponse);
     }
+
+
+
 
 
     protected void onSuccessEvent(BaseResponse baseResponse) {
@@ -230,47 +299,36 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
                 ordersList =  orders.getOrders();
 
-                if(CollectionUtils.isEmpty(ordersList)){
+                if(CollectionUtils.isEmpty(ordersList) && pageIndex != 1){
                     // show error/empty screen
-                    showListOrders(true);
+                    showEmptyScreen();
                 //    showProductsLoading(false);
 
                 }else {
-                    showListOrders(false);
+                    if(pageIndex > 1)
+                        appendToList();
+                    else
+                        showListOrders();
                 }
                 break;
 
             default:
                 //show empty screen by default
-                showListOrders(false);
+                showEmptyScreen();
                 break;
         }
 
     }
 
 
-    /**
-     * sets list of orders
-     *
-     * @param orders
-     */
-  /*  private void setupOrders(ArrayList<Order> orders) {
-
-        ordersAdapter = new OrdersListAdapterNew(getActivity().getApplicationContext(), orders);
-
-        ordersListView.setAdapter(ordersAdapter);
-
-        ordersListView.setVisibility(View.VISIBLE);
-
-        }*/
 
 
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+
+    protected void onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
         }
 
         boolean errorHandled = false;
@@ -301,24 +359,22 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                                 }
                             }
                             if(!isNotLoggedIn){
-                                showListOrders(true);
+                                showEmptyScreen();
                               //  showProductsLoading(false);
                             }
                         } catch (ClassCastException | NullPointerException e){
-                            showListOrders(true);
+                            showEmptyScreen();
                          //   showProductsLoading(false);
                         }
                     }
                 } else {
                     Print.w("ORDER", "ERROR notVisible");
                 }
-
-                return true;
-
+                break;
             default:
                 break;
         }
-        return false;
+
     }
 
 
@@ -379,14 +435,17 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
+
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         Print.i(TAG, "onSaveInstanceState");
 
         if(ordersList != null && ordersList.size() > 0)
             outState.putParcelableArrayList("orders",ordersList );
 
-        super.onSaveInstanceState(outState);
 
     }
 
@@ -398,26 +457,36 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+            mCurrentScrollState = scrollState;
+
+            if (mCurrentVisibleItemCount > 0 && mCurrentScrollState == SCROLL_STATE_IDLE) {
+                pageIndex++;
+                getMoreProducts();
+            }
+
         }
 
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+            mCurrentVisibleItemCount = visibleItemCount;
+
+
             // Sample calculation to determine if the last item is fully
             // visible.
-//            if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
-//                if (!mIsLoadingMore && !mReceivedError && totalPages != pageIndex) {
-//                    new Handler().post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mIsLoadingMore = true;
-//                            Print.w("ORDER", "LOAD MORE");
-//                            showProductsLoading(true);
-//                            getMoreProducts();
-//                        }
-//                    });
-//                }
-//            }
+     /*       if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
+                if (!mIsLoadingMore) {
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIsLoadingMore = true;
+                            Print.w("ORDER", "LOAD MORE");
+                          //  showProductsLoading(true);
+                            getMoreProducts();
+                        }
+                    });
+                }
+            }*/
         }
     };
 
@@ -437,11 +506,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
      */
     private void getMoreProducts(){
 
-//        Bundle bundle = new Bundle();
-//
-//        bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex + 1);
-//        bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-//        triggerContentEventNoLoading(new GetMyOrdersListHelper(), bundle, mCallBack);
+        Bundle bundle = new Bundle();
+        bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex + 1);
+        bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
+        triggerContentEventNoLoading(new GetMyOrdersListHelper(), bundle, this);
 
     }
 
@@ -453,7 +521,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Order selectedOrder =  ordersList.get(position);
+        Order selectedOrder =  ordersAdapter.getItem(position);
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR,selectedOrder.getmOrderNumber());
