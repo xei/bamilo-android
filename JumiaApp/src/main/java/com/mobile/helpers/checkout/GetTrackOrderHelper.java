@@ -44,4 +44,15 @@ public class GetTrackOrderHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.trackOrder);
     }
 
+
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(String orderNumber) {
+        // Item data
+        Bundle bundle = new Bundle();
+        bundle.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
+        return bundle;
+    }
+
 }
