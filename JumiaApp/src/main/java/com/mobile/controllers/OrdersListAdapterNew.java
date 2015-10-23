@@ -60,7 +60,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null)
-            convertView = LayoutInflater.from(context).inflate(R.layout.def_myorders_pending_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.myorders_pending_list_item, parent, false);
 
         Order order = orders.get(position);
 
