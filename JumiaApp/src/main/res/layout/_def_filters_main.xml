@@ -15,12 +15,13 @@
             android:id="@+id/filters_key"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/black_300"
             android:layout_weight="1"
             android:divider="@color/black_400"
             android:footerDividersEnabled="true"
             android:dividerHeight="1dp"/>
 
-        <View style="@style/VerticalListDivider" />
+        <View style="@style/VerticalListDivider_black_400" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                 android:text="TITLE"
                 />
 
-            <View style="@style/HorizontalListDivider" />
+            <View style="@style/HorizontalListDivider_black400" />
 
             <FrameLayout
                 android:id="@+id/dialog_filter_container"
